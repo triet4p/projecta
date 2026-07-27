@@ -1,0 +1,6 @@
+# Projecta — Production overrides
+# Immutable image references, restart policy, CPU/memory limits,
+# production logging, minimal network exposure, reverse-proxy/TLS integration.
+# NO bind-mount source code.
+# Merge: docker compose -f compose.yaml -f compose.prod.yaml config
+# See: docs/initialization/08-Deployment-Choice.md §5

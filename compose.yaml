@@ -1,0 +1,5 @@
+# Projecta — Base Compose topology
+# Defines: service names, internal ports, networks, volumes, health checks,
+# service dependencies, and stable environment-variable contract.
+# Do NOT put local-only or production-only overrides here.
+# See: docs/initialization/08-Deployment-Choice.md §5

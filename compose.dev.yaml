@@ -1,0 +1,5 @@
+# Projecta — Local development overrides
+# Published debug ports, dev image targets, Compose Watch / hot reload,
+# seed data, developer-friendly logging.
+# Merge: docker compose -f compose.yaml -f compose.dev.yaml config
+# See: docs/initialization/08-Deployment-Choice.md §5
