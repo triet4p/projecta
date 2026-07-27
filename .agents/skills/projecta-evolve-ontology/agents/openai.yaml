@@ -1,0 +1,4 @@
+interface:
+  display_name: "Projecta Ontology Evolution"
+  short_description: "Propose governed ontology changes for review"
+  default_prompt: "Use $projecta-evolve-ontology to propose and implement a reviewable ontology change for Projecta."
