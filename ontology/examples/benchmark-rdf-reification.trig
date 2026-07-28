@@ -1,0 +1,43 @@
+# Benchmark Fixture — RDF Reification Representation
+# Shared scenario: an asserted Requirement with validFrom metadata.
+# This representation uses rdf:Statement (standard RDF reification)
+# to carry provenance metadata about the validFrom triple.
+#
+# Corresponding queries: ontology/competency-questions/benchmark-queries.rq
+# Sections: BENCH-REIF-*
+
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix projecta-data: <https://w3id.org/projecta/data/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout/asserted> {
+    projecta-data:req-address-confirmation
+        a projecta:Requirement ;
+        rdfs:label "Address confirmation step before payment" ;
+        projecta:belongsToProject projecta-data:project-ecommerce-checkout ;
+        # The base fact is asserted directly.
+        projecta:validFrom "2026-07-29"^^xsd:date .
+}
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout/provenance> {
+    # Reification: an rdf:Statement describes the validFrom triple.
+    projecta-data:stmt-validfrom-001
+        a rdf:Statement ;
+        rdf:subject projecta-data:req-address-confirmation ;
+        rdf:predicate projecta:validFrom ;
+        rdf:object "2026-07-29"^^xsd:date ;
+        projecta:ontologyVersion "0.2.0" ;
+        prov:wasAssociatedWith projecta-data:person-le ;
+        prov:endedAtTime "2026-07-29T10:15:00Z"^^xsd:dateTime .
+
+    projecta-data:person-le
+        a projecta:Person ;
+        rdfs:label "Le" .
+
+    projecta-data:project-ecommerce-checkout
+        a projecta:Project ;
+        rdfs:label "Ecommerce Checkout Redesign" .
+}

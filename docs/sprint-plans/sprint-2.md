@@ -37,10 +37,10 @@ Status legend: [ ] pending / [~] in progress / [x] done
   view, graph isolation, project scope và temporal validity.
 - [x] **S2-03 — Review lifecycle competency questions:** Human duyệt câu hỏi và
   loại các câu đòi API/UI/LLM hoặc domain vocabulary chưa thuộc slice.
-- [ ] **S2-04 — Freeze the v0.1 compatibility baseline:** Liệt kê released IRIs,
+- [x] **S2-04 — Freeze the v0.1 compatibility baseline:** Liệt kê released IRIs,
   graph/query behavior và 32 Sprint 1 checks phải tiếp tục pass; phân loại v0.2
   là additive hay breaking.
-- [ ] **S2-05 — Benchmark assertion metadata representations:** Dùng cùng một
+- [x] **S2-05 — Benchmark assertion metadata representations:** Dùng cùng một
   provenance/temporal fixture để so sánh assertion node, RDF reification và
   RDF-star trong Jena về query, SHACL, update và migration impact.
 - [ ] **S2-06 — Decide the assertion representation:** Human chọn representation

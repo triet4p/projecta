@@ -1,0 +1,46 @@
+# Benchmark Fixture — RDF-star Representation
+# Shared scenario: an asserted Requirement with validFrom metadata.
+# This representation uses RDF-star quoted triples (<< ... >>)
+# to carry provenance metadata directly on the validFrom triple.
+#
+# Corresponding queries: ontology/competency-questions/benchmark-queries.rq
+# Sections: BENCH-STAR-*
+#
+# IMPORTANT: This file uses RDF-star syntax (<< s p o >>).
+# It requires a parser that supports Turtle-star / TriG-star:
+#   - Jena 4.6.0+ (riot --rdf-star)
+#   - rdflib 7.0.0+ with RDF-star plugin
+# Validation: docker compose run --rm jena riot --validate --rdf-star \
+#   ontology/examples/benchmark-rdf-star.trig
+
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix projecta-data: <https://w3id.org/projecta/data/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout/asserted> {
+    projecta-data:req-address-confirmation
+        a projecta:Requirement ;
+        rdfs:label "Address confirmation step before payment" ;
+        projecta:belongsToProject projecta-data:project-ecommerce-checkout ;
+        # The base fact is asserted directly.
+        projecta:validFrom "2026-07-29"^^xsd:date .
+}
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout/provenance> {
+    # RDF-star: provenance metadata is attached directly to the quoted triple.
+    << projecta-data:req-address-confirmation projecta:validFrom "2026-07-29"^^xsd:date >>
+        projecta:ontologyVersion "0.2.0" ;
+        prov:wasAssociatedWith projecta-data:person-le ;
+        prov:endedAtTime "2026-07-29T10:15:00Z"^^xsd:dateTime .
+
+    projecta-data:person-le
+        a projecta:Person ;
+        rdfs:label "Le" .
+
+    projecta-data:project-ecommerce-checkout
+        a projecta:Project ;
+        rdfs:label "Ecommerce Checkout Redesign" .
+}

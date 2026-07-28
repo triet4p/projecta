@@ -1,0 +1,218 @@
+# Benchmark Queries — Assertion Metadata Representations
+#
+# This file contains equivalent queries for each of the three representations:
+#   AN  = Assertion Node
+#   REIF = RDF Reification (rdf:Statement)
+#   STAR = RDF-star (quoted triples)
+#
+# Each query answers the same underlying question. The query IDs match
+# the benchmark document: docs/ontology/assertion-representation-benchmark.md
+#
+# Fixture files:
+#   ontology/examples/benchmark-assertion-node.trig
+#   ontology/examples/benchmark-rdf-reification.trig
+#   ontology/examples/benchmark-rdf-star.trig
+
+PREFIX projecta: <https://w3id.org/projecta/ontology/>
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#>
+PREFIX prov:  <http://www.w3.org/ns/prov#>
+
+# ============================================================================
+# BENCH-Q1: "What is the validFrom date of requirement R?"
+# ============================================================================
+
+# --- BENCH-Q1-AN Assertion Node: Get validFrom via assertion node ---
+# Pattern: traverse hasAssertion → assertedProperty/assertedValue
+SELECT ?validFrom WHERE {
+    <https://w3id.org/projecta/data/req-address-confirmation>
+        projecta:hasAssertion ?asn .
+    ?asn projecta:assertedProperty projecta:validFrom ;
+         projecta:assertedValue ?validFrom .
+}
+
+# --- BENCH-Q1-REIF RDF Reification: Get validFrom directly (no indirection) ---
+# Pattern: read the property directly from the subject
+SELECT ?validFrom WHERE {
+    <https://w3id.org/projecta/data/req-address-confirmation>
+        projecta:validFrom ?validFrom .
+}
+
+# --- BENCH-Q1-STAR RDF-star: Get validFrom directly (no indirection) ---
+# Pattern: read the property directly from the subject — same as REIF
+SELECT ?validFrom WHERE {
+    <https://w3id.org/projecta/data/req-address-confirmation>
+        projecta:validFrom ?validFrom .
+}
+
+
+# ============================================================================
+# BENCH-Q2: "Who asserted the validFrom date of requirement R, and when?"
+# ============================================================================
+
+# --- BENCH-Q2-AN Assertion Node: Get provenance from assertion node ---
+SELECT ?reviewer ?assertionTime ?ontologyVersion WHERE {
+    <https://w3id.org/projecta/data/req-address-confirmation>
+        projecta:hasAssertion ?asn .
+    ?asn projecta:assertedProperty projecta:validFrom ;
+         prov:wasAssociatedWith ?reviewer ;
+         prov:endedAtTime ?assertionTime ;
+         projecta:ontologyVersion ?ontologyVersion .
+}
+
+# --- BENCH-Q2-REIF RDF Reification: Get provenance from rdf:Statement ---
+SELECT ?reviewer ?assertionTime ?ontologyVersion WHERE {
+    ?stmt a rdf:Statement ;
+        rdf:subject <https://w3id.org/projecta/data/req-address-confirmation> ;
+        rdf:predicate projecta:validFrom ;
+        rdf:object ?validFrom ;
+        prov:wasAssociatedWith ?reviewer ;
+        prov:endedAtTime ?assertionTime ;
+        projecta:ontologyVersion ?ontologyVersion .
+}
+
+# --- BENCH-Q2-STAR RDF-star: Get provenance from quoted triple ---
+SELECT ?reviewer ?assertionTime ?ontologyVersion WHERE {
+    << <https://w3id.org/projecta/data/req-address-confirmation>
+       projecta:validFrom ?validFrom >>
+        prov:wasAssociatedWith ?reviewer ;
+        prov:endedAtTime ?assertionTime ;
+        projecta:ontologyVersion ?ontologyVersion .
+}
+
+
+# ============================================================================
+# BENCH-Q3: "List all assertions about requirement R with their provenance"
+# ============================================================================
+
+# --- BENCH-Q3-AN Assertion Node: List all assertion nodes ---
+SELECT ?property ?value ?reviewer ?assertionTime WHERE {
+    <https://w3id.org/projecta/data/req-address-confirmation>
+        projecta:hasAssertion ?asn .
+    ?asn projecta:assertedProperty ?property ;
+         projecta:assertedValue ?value ;
+         prov:wasAssociatedWith ?reviewer ;
+         prov:endedAtTime ?assertionTime .
+}
+
+# --- BENCH-Q3-REIF RDF Reification: List all reified statements ---
+SELECT ?property ?value ?reviewer ?assertionTime WHERE {
+    ?stmt a rdf:Statement ;
+        rdf:subject <https://w3id.org/projecta/data/req-address-confirmation> ;
+        rdf:predicate ?property ;
+        rdf:object ?value ;
+        prov:wasAssociatedWith ?reviewer ;
+        prov:endedAtTime ?assertionTime .
+}
+
+# --- BENCH-Q3-STAR RDF-star: List all quoted triples about the requirement ---
+SELECT ?property ?value ?reviewer ?assertionTime WHERE {
+    << <https://w3id.org/projecta/data/req-address-confirmation> ?property ?value >>
+        prov:wasAssociatedWith ?reviewer ;
+        prov:endedAtTime ?assertionTime .
+}
+
+
+# ============================================================================
+# BENCH-Q4: "Does requirement R have a validFrom assertion confirmed by Le?"
+# ============================================================================
+
+# --- BENCH-Q4-AN Assertion Node: ASK with assertion node ---
+ASK {
+    <https://w3id.org/projecta/data/req-address-confirmation>
+        projecta:hasAssertion ?asn .
+    ?asn projecta:assertedProperty projecta:validFrom ;
+         prov:wasAssociatedWith <https://w3id.org/projecta/data/person-le> .
+}
+
+# --- BENCH-Q4-REIF RDF Reification: ASK with rdf:Statement ---
+ASK {
+    ?stmt a rdf:Statement ;
+        rdf:subject <https://w3id.org/projecta/data/req-address-confirmation> ;
+        rdf:predicate projecta:validFrom ;
+        prov:wasAssociatedWith <https://w3id.org/projecta/data/person-le> .
+}
+
+# --- BENCH-Q4-STAR RDF-star: ASK with quoted triple ---
+ASK {
+    << <https://w3id.org/projecta/data/req-address-confirmation>
+       projecta:validFrom ?validFrom >>
+        prov:wasAssociatedWith <https://w3id.org/projecta/data/person-le> .
+}
+
+
+# ============================================================================
+# BENCH-Q5: "Update: supersede the validFrom — set new validFrom with provenance"
+# ============================================================================
+
+# --- BENCH-Q5-AN Assertion Node: INSERT new assertion node, keep old ---
+# (No DELETE needed — old assertion node is retained for history)
+# INSERT DATA {
+#     <https://w3id.org/projecta/data/req-address-confirmation>
+#         projecta:hasAssertion <https://w3id.org/projecta/data/asn-validfrom-002> .
+#     <https://w3id.org/projecta/data/asn-validfrom-002>
+#         a projecta:Assertion ;
+#         projecta:assertedProperty projecta:validFrom ;
+#         projecta:assertedValue "2026-08-15"^^xsd:date ;
+#         projecta:ontologyVersion "0.2.0" ;
+#         prov:wasAssociatedWith <https://w3id.org/projecta/data/person-le> ;
+#         prov:endedAtTime "2026-08-15T14:00:00Z"^^xsd:dateTime .
+# }
+
+# --- BENCH-Q5-REIF RDF Reification: INSERT new triple + new reification ---
+# The old validFrom triple remains (immutable history).
+# The new one is asserted alongside it.
+# INSERT DATA {
+#     <https://w3id.org/projecta/data/req-address-confirmation>
+#         projecta:validFrom "2026-08-15"^^xsd:date .
+#     <https://w3id.org/projecta/data/stmt-validfrom-002>
+#         a rdf:Statement ;
+#         rdf:subject <https://w3id.org/projecta/data/req-address-confirmation> ;
+#         rdf:predicate projecta:validFrom ;
+#         rdf:object "2026-08-15"^^xsd:date ;
+#         projecta:ontologyVersion "0.2.0" ;
+#         prov:wasAssociatedWith <https://w3id.org/projecta/data/person-le> ;
+#         prov:endedAtTime "2026-08-15T14:00:00Z"^^xsd:dateTime .
+# }
+
+# --- BENCH-Q5-STAR RDF-star: INSERT new triple + new quoted triple metadata ---
+# INSERT DATA {
+#     <https://w3id.org/projecta/data/req-address-confirmation>
+#         projecta:validFrom "2026-08-15"^^xsd:date .
+#     << <https://w3id.org/projecta/data/req-address-confirmation>
+#        projecta:validFrom "2026-08-15"^^xsd:date >>
+#         projecta:ontologyVersion "0.2.0" ;
+#         prov:wasAssociatedWith <https://w3id.org/projecta/data/person-le> ;
+#         prov:endedAtTime "2026-08-15T14:00:00Z"^^xsd:dateTime .
+# }
+
+
+# ============================================================================
+# BENCH-Q6: "Which assertion is CURRENT for requirement R's validFrom?"
+# ============================================================================
+
+# --- BENCH-Q6-AN Assertion Node: Most recent assertion by timestamp ---
+SELECT ?validFrom ?assertionTime WHERE {
+    <https://w3id.org/projecta/data/req-address-confirmation>
+        projecta:hasAssertion ?asn .
+    ?asn projecta:assertedProperty projecta:validFrom ;
+         projecta:assertedValue ?validFrom ;
+         prov:endedAtTime ?assertionTime .
+} ORDER BY DESC(?assertionTime) LIMIT 1
+
+# --- BENCH-Q6-REIF RDF Reification: Most recent reified statement ---
+SELECT ?validFrom ?assertionTime WHERE {
+    ?stmt a rdf:Statement ;
+        rdf:subject <https://w3id.org/projecta/data/req-address-confirmation> ;
+        rdf:predicate projecta:validFrom ;
+        rdf:object ?validFrom ;
+        prov:endedAtTime ?assertionTime .
+} ORDER BY DESC(?assertionTime) LIMIT 1
+
+# --- BENCH-Q6-STAR RDF-star: Most recent quoted triple ---
+SELECT ?validFrom ?assertionTime WHERE {
+    << <https://w3id.org/projecta/data/req-address-confirmation>
+       projecta:validFrom ?validFrom >>
+        prov:endedAtTime ?assertionTime .
+} ORDER BY DESC(?assertionTime) LIMIT 1

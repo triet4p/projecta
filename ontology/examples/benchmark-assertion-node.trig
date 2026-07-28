@@ -1,0 +1,44 @@
+# Benchmark Fixture — Assertion Node Representation
+# Shared scenario: an asserted Requirement with validFrom metadata.
+# This representation uses an explicit assertion node (named individual)
+# to carry provenance metadata about the validFrom triple.
+#
+# Corresponding queries: ontology/competency-questions/benchmark-queries.rq
+# Sections: BENCH-AN-*
+
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix projecta-data: <https://w3id.org/projecta/data/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout/asserted> {
+    projecta-data:req-address-confirmation
+        a projecta:Requirement ;
+        rdfs:label "Address confirmation step before payment" ;
+        projecta:belongsToProject projecta-data:project-ecommerce-checkout .
+
+    # The validFrom date is NOT asserted directly on the requirement.
+    # Instead, it is asserted through an assertion node.
+    projecta-data:req-address-confirmation
+        projecta:hasAssertion projecta-data:asn-validfrom-001 .
+}
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout/provenance> {
+    projecta-data:asn-validfrom-001
+        a projecta:Assertion ;
+        projecta:assertedProperty projecta:validFrom ;
+        projecta:assertedValue "2026-07-29"^^xsd:date ;
+        projecta:ontologyVersion "0.2.0" ;
+        prov:wasAssociatedWith projecta-data:person-le ;
+        prov:endedAtTime "2026-07-29T10:15:00Z"^^xsd:dateTime .
+
+    projecta-data:person-le
+        a projecta:Person ;
+        rdfs:label "Le" .
+
+    projecta-data:project-ecommerce-checkout
+        a projecta:Project ;
+        rdfs:label "Ecommerce Checkout Redesign" .
+}
