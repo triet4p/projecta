@@ -1,0 +1,23 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+
+# Negative fixture: Missing project assignment
+# A Note without belongsToProject — violates project scoping.
+# Detection query CQ-BOUND-001 should return TRUE on this fixture.
+
+GRAPH <https://w3id.org/projecta/data/project/negative-test/missing-project/> {
+
+  <https://w3id.org/projecta/data/project/negative-test/person/y>
+    a projecta:Person ;
+    projecta:name "Y" .
+
+  # VIOLATION: This Note has author and timestamp but NO belongsToProject.
+  # Every Note must be project-scoped.
+  <https://w3id.org/projecta/data/project/negative-test/note/no-project>
+    a projecta:Note ;
+    projecta:name "Note Without Project" ;
+    projecta:authoredBy <https://w3id.org/projecta/data/project/negative-test/person/y> ;
+    projecta:recordedAt "2026-07-28T11:00:00Z"^^xsd:dateTime .
+
+}

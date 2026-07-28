@@ -1,0 +1,41 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+
+# Negative fixture: Invalid relation
+# A NoteItem whose hasItemType points to a Person instead of a NoteItemType.
+# Detection query should return TRUE — the object of hasItemType must be
+# an instance of projecta:NoteItemType.
+
+GRAPH <https://w3id.org/projecta/data/project/negative-test/invalid-itemtype/> {
+
+  <https://w3id.org/projecta/data/project/negative-test/company/x>
+    a projecta:Project ;
+    projecta:name "Company X" .
+
+  <https://w3id.org/projecta/data/project/negative-test/person/z>
+    a projecta:Person ;
+    projecta:name "Z" .
+
+  <https://w3id.org/projecta/data/project/negative-test/note/valid>
+    a projecta:Note ;
+    projecta:name "Valid Note" ;
+    projecta:belongsToProject <https://w3id.org/projecta/data/project/negative-test/company/x> ;
+    projecta:authoredBy <https://w3id.org/projecta/data/project/negative-test/person/z> ;
+    projecta:recordedAt "2026-07-28T12:00:00Z"^^xsd:dateTime ;
+    projecta:hasNoteItem <https://w3id.org/projecta/data/project/negative-test/note-item/valid> ;
+    projecta:hasNoteItem <https://w3id.org/projecta/data/project/negative-test/note-item/invalid> .
+
+  # This NoteItem has a valid type (Requirement is a NoteItemType).
+  <https://w3id.org/projecta/data/project/negative-test/note-item/valid>
+    a projecta:NoteItem ;
+    projecta:hasItemType projecta:requirement ;
+    projecta:contentText "This item has a valid type." .
+
+  # VIOLATION: hasItemType points to a Person, not a NoteItemType.
+  <https://w3id.org/projecta/data/project/negative-test/note-item/invalid>
+    a projecta:NoteItem ;
+    projecta:hasItemType <https://w3id.org/projecta/data/project/negative-test/person/z> ;
+    projecta:contentText "This item has an INVALID type - points to a Person." .
+
+}

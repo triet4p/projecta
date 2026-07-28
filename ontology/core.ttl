@@ -1,0 +1,66 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:      <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms:  <http://purl.org/dc/terms/> .
+
+# ── Ontology metadata ─────────────────────────────────────────────
+<https://w3id.org/projecta/ontology/v/0.1/>
+    a owl:Ontology ;
+    owl:versionIRI <https://w3id.org/projecta/ontology/v/0.1/> ;
+    owl:versionInfo "0.1.0" ;
+    rdfs:label "Projecta Ontology — Sprint 1 Kernel" ;
+    rdfs:comment "Minimum ontology kernel for the Quick Note vertical slice. Defines the foundation class hierarchy (Entity, Context, Project, Actor, Person, SourceArtifact) and shared properties (belongsToProject, name)."@en ;
+    dcterms:description "Sprint 1 ontology kernel covering the Quick Note vertical slice: project-scoped note capture with typed note items, author provenance, and controlled vocabulary for segment types. Does not include SHACL shapes, inference rules, candidate extraction, or connector-specific terms."@en ;
+    dcterms:created "2026-07-28"^^xsd:date ;
+    dcterms:creator "Projecta contributors" ;
+    dcterms:license <https://www.apache.org/licenses/LICENSE-2.0> ;
+    rdfs:seeAlso <https://w3id.org/projecta/docs/term-inventory-sprint-1> .
+
+# ── Classes ────────────────────────────────────────────────────────
+
+projecta:Entity a owl:Class ;
+    rdfs:label "Entity" ;
+    rdfs:comment "The most general class in the Projecta domain — anything with durable identity that can be referenced, described, and reasoned about." .
+
+projecta:Context a owl:Class ;
+    rdfs:subClassOf projecta:Entity ;
+    rdfs:label "Context" ;
+    rdfs:comment "A scope or container within which other entities exist and derive their context." .
+
+projecta:Project a owl:Class ;
+    rdfs:subClassOf projecta:Context ;
+    rdfs:label "Project" ;
+    rdfs:comment "A distinct body of work with its own scope, team, timeline, and knowledge boundary." .
+
+projecta:Actor a owl:Class ;
+    rdfs:subClassOf projecta:Entity ;
+    rdfs:label "Actor" ;
+    rdfs:comment "An entity capable of performing actions — authoring, confirming, deciding." .
+
+projecta:Person a owl:Class ;
+    rdfs:subClassOf projecta:Actor ;
+    rdfs:label "Person" ;
+    rdfs:comment "A human individual who participates in projects." .
+
+projecta:SourceArtifact a owl:Class ;
+    rdfs:subClassOf projecta:Entity ;
+    rdfs:label "Source Artifact" ;
+    rdfs:comment "An evidentiary record — raw input that serves as the provenance origin for candidate and asserted knowledge." .
+
+# ── Object properties ──────────────────────────────────────────────
+
+projecta:belongsToProject a owl:ObjectProperty ;
+    rdfs:label "belongs to project" ;
+    rdfs:comment "Relates a project-scoped entity to its containing Project." ;
+    rdfs:domain projecta:Entity ;
+    rdfs:range projecta:Project .
+
+# ── Datatype properties ────────────────────────────────────────────
+
+projecta:name a owl:DatatypeProperty ;
+    rdfs:label "name" ;
+    rdfs:comment "A human-readable display name for an entity." ;
+    rdfs:domain projecta:Entity ;
+    rdfs:range xsd:string .

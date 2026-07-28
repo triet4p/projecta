@@ -1,0 +1,52 @@
+# Negative Data-Quality Queries — Sprint 1
+#
+# Each ASK query detects a specific data-quality violation.
+# Expected: TRUE on the corresponding negative fixture, FALSE on clean demo.
+#
+# Run against the ontology + a negative fixture to verify detection works.
+
+PREFIX projecta: <https://w3id.org/projecta/ontology/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+# --- NEG-ORPHAN-NOTEITEM ---
+# Detect NoteItems without a parent Note.
+# Negative fixture: negative-orphan-noteitem.trig
+# Clean demo:       false (no orphans)
+# Negative fixture: true  (1 orphan found)
+
+ASK {
+  ?noteItem a projecta:NoteItem .
+  FILTER NOT EXISTS {
+    ?note projecta:hasNoteItem ?noteItem .
+  }
+  FILTER NOT EXISTS {
+    ?noteItem projecta:isItemOf ?note .
+  }
+}
+
+# --- NEG-MISSING-PROJECT ---
+# Detect Notes without a project assignment.
+# Negative fixture: negative-missing-project.trig
+# Clean demo:       false (all notes have project)
+# Negative fixture: true  (1 note missing project)
+
+ASK {
+  ?note a projecta:Note .
+  FILTER NOT EXISTS {
+    ?note projecta:belongsToProject ?project .
+  }
+}
+
+# --- NEG-INVALID-ITEMTYPE ---
+# Detect NoteItems with hasItemType pointing to a non-NoteItemType.
+# Negative fixture: negative-invalid-itemtype.trig
+# Clean demo:       false (all item types are valid)
+# Negative fixture: true  (1 item points to Person)
+
+ASK {
+  ?noteItem a projecta:NoteItem ;
+            projecta:hasItemType ?type .
+  FILTER NOT EXISTS {
+    ?type a projecta:NoteItemType .
+  }
+}

@@ -11,7 +11,7 @@ Projecta is documentation-first. Begin with `docs/initialization/README.md`, the
 5. Applicable `.agents/rules/`.
 6. Existing implementation.
 
-Read `.agents/memory/decisions.md` before architecture or technology changes. Use `$log-decision` for an approved decision; do not rewrite prior entries. Before diagnosing a recurring bug, search `.agents/memory/lessons.md` when it exists. Use `$log-lesson` after resolving a reusable bug or environment-specific issue.
+Read `.agents/memory/decisions.md` before architecture or technology changes. Use `$log-decision` for an approved decision; do not rewrite prior entries. Before diagnosing a recurring bug, search `.agents/memory/lessons-learned.md` when it exists. Use `$log-lesson` after resolving a reusable bug or environment-specific issue.
 
 ## Project Structure
 

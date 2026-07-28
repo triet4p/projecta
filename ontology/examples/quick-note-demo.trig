@@ -1,0 +1,84 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov:     <http://www.w3.org/ns/prov#> .
+
+# Demo Graph: Quick Note positive example.
+# Maps to docs/use-cases/quick-note.md section 3.
+# BrSE Le, Sprint Review, Ecommerce Checkout Redesign, 6-item note.
+#
+# Instance IRIs follow the namespace policy pattern:
+#   https://w3id.org/projecta/data/project/{project-id}/{entity-type}/{local-id}
+#
+# Full IRIs are used because Turtle compact URIs (prefixed names)
+# cannot contain "/" characters.
+
+GRAPH <https://w3id.org/projecta/data/project/ecommerce-checkout/> {
+
+  # -- Project --------------------------------------------------------
+
+  <https://w3id.org/projecta/data/project/ecommerce-checkout>
+    a projecta:Project ;
+    projecta:name "Ecommerce Checkout Redesign" .
+
+  # -- Person ---------------------------------------------------------
+
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/person/le>
+    a projecta:Person ;
+    projecta:name "Le" .
+
+  # -- Note -----------------------------------------------------------
+
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/note/sprint-review-2026-07-28>
+    a projecta:Note ;
+    projecta:name "2026-07-28 Sprint Review - Ecommerce Checkout" ;
+    projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> ;
+    projecta:authoredBy <https://w3id.org/projecta/data/project/ecommerce-checkout/person/le> ;
+    projecta:recordedAt "2026-07-28T10:30:00Z"^^xsd:dateTime .
+
+  # -- NoteItems ------------------------------------------------------
+
+  # NI-1: Requirement
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/note-item/ni-1>
+    a projecta:NoteItem ;
+    projecta:isItemOf <https://w3id.org/projecta/data/project/ecommerce-checkout/note/sprint-review-2026-07-28> ;
+    projecta:hasItemType projecta:requirement ;
+    projecta:contentText "Khách hàng yêu cầu thêm bước xác nhận địa chỉ trước khi thanh toán. Cần làm rõ: có bắt buộc với KH đã lưu địa chỉ không?" .
+
+  # NI-2: Risk
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/note-item/ni-2>
+    a projecta:NoteItem ;
+    projecta:isItemOf <https://w3id.org/projecta/data/project/ecommerce-checkout/note/sprint-review-2026-07-28> ;
+    projecta:hasItemType projecta:risk ;
+    projecta:contentText "Anh Tuấn (Dev lead) báo rằng API tính thuế bên thứ 3 đang bị timeout 15% request. Cần investigation." .
+
+  # NI-3: Decision
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/note-item/ni-3>
+    a projecta:NoteItem ;
+    projecta:isItemOf <https://w3id.org/projecta/data/project/ecommerce-checkout/note/sprint-review-2026-07-28> ;
+    projecta:hasItemType projecta:decision ;
+    projecta:contentText "Team quyết định dùng Redis để cache kết quả tính thuế trong 30 phút." .
+
+  # NI-4: Task
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/note-item/ni-4>
+    a projecta:NoteItem ;
+    projecta:isItemOf <https://w3id.org/projecta/data/project/ecommerce-checkout/note/sprint-review-2026-07-28> ;
+    projecta:hasItemType projecta:task ;
+    projecta:contentText "Hỗ trợ VNPay — chưa rõ ai làm, chưa có estimate." .
+
+  # NI-5: Question
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/note-item/ni-5>
+    a projecta:NoteItem ;
+    projecta:isItemOf <https://w3id.org/projecta/data/project/ecommerce-checkout/note/sprint-review-2026-07-28> ;
+    projecta:hasItemType projecta:question ;
+    projecta:contentText "Liệu API tính thuế có hỗ trợ batch request không? Cần hỏi bên vendor." .
+
+  # NI-6: Assumption
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/note-item/ni-6>
+    a projecta:NoteItem ;
+    projecta:isItemOf <https://w3id.org/projecta/data/project/ecommerce-checkout/note/sprint-review-2026-07-28> ;
+    projecta:hasItemType projecta:assumption ;
+    projecta:contentText "Giả định: KH có thể upload tối đa 3 file đính kèm cho mỗi đơn hàng." .
+
+}

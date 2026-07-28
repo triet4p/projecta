@@ -3,3 +3,43 @@
 # service dependencies, and stable environment-variable contract.
 # Do NOT put local-only or production-only overrides here.
 # See: docs/initialization/08-Deployment-Choice.md §5
+
+name: projecta
+
+services:
+  jena:
+    profiles: ["tools"]
+    build:
+      context: ./infra/docker/fuseki
+      args:
+        JENA_VERSION: "6.1.0"
+    image: projecta-jena:6.1.0
+    working_dir: /data
+    volumes:
+      - ./ontology:/data:ro
+      - ./scripts:/scripts:ro
+      - jena-data:/var/lib/fuseki
+    environment:
+      FUSEKI_BASE: /var/lib/fuseki
+
+  ontology-test:
+    profiles: ["tools"]
+    build:
+      context: ./infra/docker/fuseki
+      args:
+        JENA_VERSION: "6.1.0"
+    image: projecta-jena:6.1.0
+    working_dir: /data
+    volumes:
+      - ./ontology:/data:ro
+      - ./scripts:/scripts:ro
+    entrypoint:
+      - uv
+      - run
+      - --offline
+      - --script
+      - /scripts/validate_ontology.py
+      - /data
+
+volumes:
+  jena-data:

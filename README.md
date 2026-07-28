@@ -4,7 +4,11 @@ Ontology-driven project intelligence for BrSE and project coordination workflows
 
 ## Status
 
-Projecta is currently in the architecture and semantic-foundation stage. The repository contains the approved initialization documents and agent governance; executable application services have not been implemented yet.
+Projecta is currently in the semantic-foundation stage. The Sprint 1 ontology
+kernel, demo graph, competency queries, negative fixtures, and containerized
+Jena validation are implemented and pass automated review. Ontology v0.1 is
+approved as the repository-local semantic baseline; public w3id.org registration
+is deferred. Application services have not been implemented.
 
 ## Vision
 
@@ -38,6 +42,8 @@ Do not duplicate their instructions in other contributor documents.
 
 ## Development Direction
 
+Theo dõi roadmap và sprint đang hoạt động tại [Project Plan](docs/PLAN.md).
+
 The first recommended vertical slice is:
 
 ```text
@@ -50,7 +56,14 @@ Quick Note
 → Project context query
 ```
 
-The target stack and repository layout are documented in `06-Tech-Stack.md`. Local and early-production deployment use the Compose-first approach in `08-Deployment-Choice.md`. Commands will be added when their executable configuration is introduced.
+The target stack and repository layout are documented in `06-Tech-Stack.md`. Local and early-production deployment use the Compose-first approach in `08-Deployment-Choice.md`.
+
+Validate the current semantic artifacts with:
+
+```text
+docker compose run --build --rm ontology-test
+docker compose -f compose.yaml -f compose.dev.yaml config
+```
 
 ## License
 

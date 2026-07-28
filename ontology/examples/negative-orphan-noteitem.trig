@@ -1,0 +1,41 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+
+# Negative fixture: Orphan NoteItem
+# A NoteItem without a parent Note (no isItemOf relationship).
+# Detection query CQ-BOUND-002 should return TRUE on this fixture.
+
+GRAPH <https://w3id.org/projecta/data/project/negative-test/orphan-item/> {
+
+  <https://w3id.org/projecta/data/project/negative-test/project>
+    a projecta:Project ;
+    projecta:name "Negative Test Project" .
+
+  <https://w3id.org/projecta/data/project/negative-test/person/x>
+    a projecta:Person ;
+    projecta:name "X" .
+
+  # A Note that looks normal...
+  <https://w3id.org/projecta/data/project/negative-test/note/normal>
+    a projecta:Note ;
+    projecta:name "Normal Note" ;
+    projecta:belongsToProject <https://w3id.org/projecta/data/project/negative-test/project> ;
+    projecta:authoredBy <https://w3id.org/projecta/data/project/negative-test/person/x> ;
+    projecta:recordedAt "2026-07-28T10:00:00Z"^^xsd:dateTime ;
+    projecta:hasNoteItem <https://w3id.org/projecta/data/project/negative-test/note-item/ok> .
+
+  # This NoteItem IS connected (hasNoteItem from the Note above).
+  <https://w3id.org/projecta/data/project/negative-test/note-item/ok>
+    a projecta:NoteItem ;
+    projecta:hasItemType projecta:risk ;
+    projecta:contentText "This item is correctly linked." .
+
+  # ORPHAN: This NoteItem has NO incoming hasNoteItem and no isItemOf.
+  # It exists in the graph but is not connected to any Note.
+  <https://w3id.org/projecta/data/project/negative-test/note-item/orphan>
+    a projecta:NoteItem ;
+    projecta:hasItemType projecta:question ;
+    projecta:contentText "This item is orphan - no parent Note." .
+
+}

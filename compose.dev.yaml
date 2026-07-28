@@ -3,3 +3,8 @@
 # seed data, developer-friendly logging.
 # Merge: docker compose -f compose.yaml -f compose.dev.yaml config
 # See: docs/initialization/08-Deployment-Choice.md §5
+
+services:
+  jena:
+    ports:
+      - "3030:3030"

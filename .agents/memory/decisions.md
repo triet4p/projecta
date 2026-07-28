@@ -18,3 +18,64 @@
 **Alternatives considered:** Keeping the canonical source under a root `skills` directory, installing only under the global Codex directory, and maintaining synchronized repository and global copies.
 **Reason:** Ontology governance skills must evolve atomically with Projecta's initialization documents, ontology artifacts, and decision records. A repository-local single source prevents stale global behavior from silently applying obsolete semantic rules to this project.
 **Consequences:** Agents working on Projecta must discover and use `.agents/skills/projecta-evolve-ontology`; changes must be made there and versioned with the repository. Any future global installation requires a new explicit decision and a synchronization strategy.
+
+## [2026-07-28] Adopt w3id.org/projecta base IRI and naming conventions
+
+**Decision:** Use `https://w3id.org/projecta/ontology/` as the base IRI with `projecta:` as the single vocabulary prefix for Sprint 1; PascalCase for classes, camelCase for object and datatype properties, kebab-case for named individuals, and `<ClassName>Shape` for SHACL shapes. Version IRI follows `https://w3id.org/projecta/ontology/v/{MAJOR}.{MINOR}/`; instance data lives under `https://w3id.org/projecta/data/` with project-scoped sub-paths.
+**Alternatives considered:** purl.org (equally viable but w3id.org has stronger W3C community governance); hypothetical domains like projecta.dev (no domain ownership); module-specific prefixes like `comm:` and `core:` from the start (premature modularization for the kernel phase); retaining the `brse:` placeholder prefix from earlier documentation examples (role-specific, not product-oriented).
+**Reason:** A stable, persistent base IRI that does not depend on domain ownership is essential for an ontology-driven platform whose contracts span connectors, services, and data. W3C Permanent Identifier Community Group hosting achieves that without operational overhead. A single flat namespace keeps the Sprint 1 kernel simple — authoring and querying 10–15 terms across separate module namespaces adds complexity with no benefit until the term count grows. camelCase for properties aligns with community practice (Dublin Core, FOAF, Schema.org) and reads naturally in SPARQL.
+**Consequences:** All Turtle/TriG files, SHACL shapes, SPARQL queries, and named graph IRIs must use the approved namespace. The `brse:` prefix used in illustrative examples within docs/initialization/ is superseded and must not appear in new artifacts. Module sub-namespaces (core, comm, work, etc.) are authorized only after Sprint 1 when the kernel reaches a term count that justifies modularization. w3id.org registration must be completed before the first public release.
+
+## [2026-07-28] Run Jena CLI via docker compose, not host install or raw docker run
+
+**Decision:** Build a custom `projecta-jena:6.1.0` image from `docker/jena/Dockerfile` and run all Jena CLI tools (`riot`, `sparql`, `tdb2.tdbloader`, `shacl`) via `docker compose run --rm jena <command>`. The image includes Python 3 + rdflib so SPARQL query testing handles TriG named graphs natively. Test runner scripts live in `scripts/`, not `ontology/`.
+**Alternatives considered:** Installing Jena binaries directly on the host (rejected — pollutes host, creates version drift); using prebuilt `stain/jena` image (rejected — doesn't include Python/rdflib, version not pinned, last updated 2024); raw `docker run` with volume mounts (rejected — `docker compose run` provides consistent project-level configuration).
+**Reason:** Docker Compose is the deployment baseline per the [2026-07-27] decision. A custom image pins Jena to 6.1.0 (latest stable, May 2026), includes rdflib for TriG named-graph support without workaround files, and keeps all configuration in `docker-compose.yml`. Scripts in `scripts/` keep operational tooling separate from ontology source artifacts.
+**Consequences:** Any CI pipeline or developer running tests must use `docker compose run --rm jena`. The image must be rebuilt when Jena or its dependencies change. No temp/demo Turtle files should be created to work around TriG limitations — rdflib handles named graphs natively inside the container. The `scripts/test-runner.sh` is the single entry point for all ontology validation.
+
+## [2026-07-28] Use the canonical repository layout for semantic tooling
+
+**Decision:** Keep `compose.yaml` as the single base Compose topology, place the Jena/Fuseki image under `infra/docker/fuseki`, keep executable validation tools under `scripts`, store ontology governance documents under `docs/ontology`, and colocate Sprint 1 review artifacts under `docs/sprint-plans/sprint-1`.
+**Alternatives considered:** Retaining a parallel `docker-compose.yml`, keeping a root-level `docker` directory, leaving validation code under `ontology/competency-questions`, and retaining a root-level `artifacts` directory.
+**Reason:** The approved repository and deployment designs already define root Compose overlays, infrastructure under `infra`, executable tooling under `scripts`, and durable documentation under `docs`. A second layout created competing entry points and made it unclear which files were canonical.
+**Consequences:** This supersedes only the path and Compose-file details of the earlier Jena CLI decision; Jena 6.1.0, the custom image, Docker-based execution, rdflib TriG handling, and `scripts/test-runner.sh` remain unchanged. Commands must use `docker compose -f compose.yaml`, and new work must not introduce parallel Compose manifests or new top-level infrastructure/artifact directories without an explicit decision.
+
+## [2026-07-28] Use a Docker-native ontology validation entry point
+
+**Decision:** Run the complete ontology suite through the Compose service
+`ontology-test` using
+`docker compose run --build --rm ontology-test`. The service invokes
+`scripts/validate_ontology.py` inside the pinned Jena image; the Python runner
+calls Jena `riot` for RDF syntax and rdflib for deterministic query assertions.
+**Alternatives considered:** Keeping the host-side Bash wrapper, adding a
+PowerShell wrapper alongside it, and documenting a sequence of raw
+`docker compose run jena` commands.
+**Reason:** A Compose service is one cross-platform entry point for Windows,
+Linux, and CI. It keeps Jena and Python dependencies inside the container and
+avoids requiring Bash, WSL, or duplicated host scripts.
+**Consequences:** This supersedes the `scripts/test-runner.sh` entry-point
+details in the earlier Jena CLI and canonical-layout decisions. Ontology
+validation must remain runnable with the single Compose command above, and the
+service must exit nonzero when any syntax, vocabulary, competency-query, or
+negative-fixture assertion fails.
+
+## [2026-07-28] Release ontology v0.1 with kebab-case controlled IRIs
+
+**Decision:** Approve the repository-local Projecta ontology v0.1 release, use
+kebab-case IRIs for all nine `NoteItemType` controlled individuals, license the
+ontology under Apache 2.0, and defer w3id.org registration until before the
+first public release.
+**Alternatives considered:** Retaining PascalCase controlled-individual IRIs,
+using a data-specific license such as CC-BY-4.0, and registering the public
+w3id.org redirect during Sprint 1.
+**Reason:** Kebab-case follows the already approved namespace decision and
+avoids collisions with future PascalCase domain classes such as
+`projecta:Requirement`. Apache 2.0 keeps repository and ontology licensing
+consistent. Registration is unnecessary for a repository-local baseline but
+remains mandatory before public IRI publication.
+**Consequences:** The released controlled IRIs are
+`projecta:requirement`, `projecta:decision`, `projecta:question`,
+`projecta:task`, `projecta:risk`, `projecta:assumption`,
+`projecta:constraint`, `projecta:progress-update`, and
+`projecta:research-need`. Future releases must not reuse or silently rename
+them; incompatible changes require deprecation and migration guidance.

@@ -1,0 +1,124 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:      <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov:     <http://www.w3.org/ns/prov#> .
+@prefix dcterms:  <http://purl.org/dc/terms/> .
+
+# ── Ontology metadata ─────────────────────────────────────────────
+# This file shares the Sprint 1 ontology IRI with core.ttl.
+# Both files contribute triples to the same ontology graph.
+# Load core.ttl before communication.ttl; the files are co-members,
+# not import targets of each other.
+
+<https://w3id.org/projecta/ontology/v/0.1/>
+    a owl:Ontology ;
+    owl:versionIRI <https://w3id.org/projecta/ontology/v/0.1/> ;
+    owl:versionInfo "0.1.0" ;
+    rdfs:label "Projecta Ontology — Sprint 1 Kernel (Communication module)" ;
+    rdfs:comment "Quick Note vocabulary: Note, NoteItem, NoteItemType, authorship properties, and the controlled NoteItemType vocabulary."@en ;
+    dcterms:created "2026-07-28"^^xsd:date ;
+    dcterms:creator "Projecta contributors" ;
+    dcterms:license <https://www.apache.org/licenses/LICENSE-2.0> .
+
+# ── Classes ────────────────────────────────────────────────────────
+
+projecta:Note a owl:Class ;
+    rdfs:subClassOf projecta:SourceArtifact ;
+    rdfs:label "Note" ;
+    rdfs:comment "A human-authored capture event — free-form text recorded in the context of a specific project. Serves as the entry point for knowledge extraction." .
+
+projecta:NoteItem a owl:Class ;
+    rdfs:subClassOf projecta:Entity ;
+    rdfs:label "Note Item" ;
+    rdfs:comment "A typed text segment within a Note — a single capture of a Requirement, Decision, Question, Task, Risk, Assumption, Constraint, Progress Update, or Research Need." .
+
+projecta:NoteItemType a owl:Class ;
+    rdfs:subClassOf projecta:Entity ;
+    rdfs:label "Note Item Type" ;
+    rdfs:comment "The kind of information captured in a NoteItem — a controlled vocabulary of segment types." .
+
+# ── Object properties ──────────────────────────────────────────────
+
+projecta:hasNoteItem a owl:ObjectProperty ;
+    rdfs:label "has note item" ;
+    rdfs:comment "Relates a Note to its typed content segments." ;
+    rdfs:domain projecta:Note ;
+    rdfs:range projecta:NoteItem .
+
+projecta:isItemOf a owl:ObjectProperty ;
+    rdfs:label "is item of" ;
+    rdfs:comment "Relates a NoteItem back to its parent Note." ;
+    owl:inverseOf projecta:hasNoteItem .
+
+projecta:authoredBy a owl:ObjectProperty ;
+    rdfs:label "authored by" ;
+    rdfs:comment "Relates a SourceArtifact to the Person who created it." ;
+    rdfs:subPropertyOf prov:wasAttributedTo ;
+    rdfs:domain projecta:SourceArtifact ;
+    rdfs:range projecta:Person .
+
+projecta:authorOf a owl:ObjectProperty ;
+    rdfs:label "author of" ;
+    rdfs:comment "Relates a Person to a SourceArtifact they authored." ;
+    owl:inverseOf projecta:authoredBy .
+
+projecta:hasItemType a owl:ObjectProperty ;
+    rdfs:label "has item type" ;
+    rdfs:comment "Relates a NoteItem to its classification type from the controlled NoteItemType vocabulary." ;
+    rdfs:domain projecta:NoteItem ;
+    rdfs:range projecta:NoteItemType .
+
+# ── Datatype properties ────────────────────────────────────────────
+
+projecta:contentText a owl:DatatypeProperty ;
+    rdfs:label "content text" ;
+    rdfs:comment "The raw text content of a NoteItem — the evidentiary text captured by the author." ;
+    rdfs:domain projecta:NoteItem ;
+    rdfs:range xsd:string .
+
+projecta:recordedAt a owl:DatatypeProperty ;
+    rdfs:label "recorded at" ;
+    rdfs:comment "The timestamp when a SourceArtifact was captured or created." ;
+    rdfs:subPropertyOf prov:generatedAtTime ;
+    rdfs:domain projecta:SourceArtifact ;
+    rdfs:range xsd:dateTime .
+
+# ── Controlled vocabulary: NoteItemType individuals ────────────────
+
+projecta:requirement a projecta:NoteItemType ;
+    rdfs:label "Requirement" ;
+    rdfs:comment "A needed capability, feature, or constraint expressed by a stakeholder." .
+
+projecta:decision a projecta:NoteItemType ;
+    rdfs:label "Decision" ;
+    rdfs:comment "A conclusion or choice made after consideration." .
+
+projecta:question a projecta:NoteItemType ;
+    rdfs:label "Question" ;
+    rdfs:comment "An open inquiry requiring investigation or clarification." .
+
+projecta:task a projecta:NoteItemType ;
+    rdfs:label "Task" ;
+    rdfs:comment "A unit of work to be performed." .
+
+projecta:risk a projecta:NoteItemType ;
+    rdfs:label "Risk" ;
+    rdfs:comment "A potential event or condition with negative consequences." .
+
+projecta:assumption a projecta:NoteItemType ;
+    rdfs:label "Assumption" ;
+    rdfs:comment "A belief treated as true without verification at the time of capture." .
+
+projecta:constraint a projecta:NoteItemType ;
+    rdfs:label "Constraint" ;
+    rdfs:comment "A limitation or restriction on design or implementation choices." .
+
+projecta:progress-update a projecta:NoteItemType ;
+    rdfs:label "Progress Update" ;
+    rdfs:comment "A status report on work completed or in progress." .
+
+projecta:research-need a projecta:NoteItemType ;
+    rdfs:label "Research Need" ;
+    rdfs:comment "A topic requiring investigation or information gathering." .

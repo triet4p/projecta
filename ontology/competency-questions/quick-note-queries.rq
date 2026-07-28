@@ -1,0 +1,227 @@
+# Competency Queries — Quick Note Slice (Sprint 1)
+#
+# 14 SPARQL queries covering the Quick Note vertical slice.
+# Run against the Sprint 1 ontology kernel (core.ttl + communication.ttl)
+# and the demo graph (examples/quick-note-demo.trig).
+#
+# Each query is delimited by "# --- CQ-XXX-NNN ---" for programmatic splitting.
+
+PREFIX projecta: <https://w3id.org/projecta/ontology/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+# ───────────────────────────────────────────────────────────────────
+# Demo instance IRIs used in VALUES clauses:
+#   <https://w3id.org/projecta/data/project/ecommerce-checkout>              -- project
+#   <https://w3id.org/projecta/data/project/ecommerce-checkout/person/le>    -- author
+#   <https://w3id.org/projecta/data/project/ecommerce-checkout/note/...>     -- note
+#   <https://w3id.org/projecta/data/project/ecommerce-checkout/note-item/..> -- items
+# ───────────────────────────────────────────────────────────────────
+
+# --- CQ-NOTE-001 ---
+# List notes in a project.
+# Question: Những note nào thuộc project P?
+# Answer shape: ?note, ?title, ?recordedAt
+# Expected (demo): 1 row
+
+SELECT ?note ?title ?recordedAt WHERE {
+  VALUES ?project { <https://w3id.org/projecta/data/project/ecommerce-checkout> }
+  ?note a projecta:Note ;
+        projecta:name ?title ;
+        projecta:recordedAt ?recordedAt ;
+        projecta:belongsToProject ?project .
+}
+
+# --- CQ-NOTE-002 ---
+# Retrieve author of a note.
+# Question: Ai là tác giả của note N?
+# Answer shape: ?author, ?authorName
+# Expected (demo): Le
+
+SELECT ?author ?authorName WHERE {
+  VALUES ?note { <https://w3id.org/projecta/data/project/ecommerce-checkout/note/sprint-review-2026-07-28> }
+  ?note a projecta:Note ;
+        projecta:authoredBy ?author .
+  ?author a projecta:Person ;
+          projecta:name ?authorName .
+}
+
+# --- CQ-NOTE-003 ---
+# Retrieve creation timestamp of a note.
+# Question: Note N được tạo khi nào?
+# Answer shape: ?recordedAt
+# Expected (demo): 2026-07-28T10:30:00Z
+
+SELECT ?recordedAt WHERE {
+  VALUES ?note { <https://w3id.org/projecta/data/project/ecommerce-checkout/note/sprint-review-2026-07-28> }
+  ?note a projecta:Note ;
+        projecta:recordedAt ?recordedAt .
+}
+
+# --- CQ-NOTE-004 ---
+# Retrieve project of a note.
+# Question: Note N thuộc project nào?
+# Answer shape: ?project, ?projectName
+# Expected (demo): Ecommerce Checkout Redesign
+
+SELECT ?project ?projectName WHERE {
+  VALUES ?note { <https://w3id.org/projecta/data/project/ecommerce-checkout/note/sprint-review-2026-07-28> }
+  ?note a projecta:Note ;
+        projecta:belongsToProject ?project .
+  ?project a projecta:Project ;
+           projecta:name ?projectName .
+}
+
+# --- CQ-NOTEITEM-001 ---
+# List items in a note with their types.
+# Question: Note N chứa những note item nào, mỗi item thuộc loại gì?
+# Answer shape: ?noteItem, ?itemType, ?contentText
+# Expected (demo): 6 rows (1 per type)
+
+SELECT ?noteItem ?itemType ?contentText WHERE {
+  VALUES ?note { <https://w3id.org/projecta/data/project/ecommerce-checkout/note/sprint-review-2026-07-28> }
+  ?noteItem a projecta:NoteItem ;
+            projecta:isItemOf ?note ;
+            projecta:hasItemType ?itemType ;
+            projecta:contentText ?contentText .
+}
+
+# --- CQ-NOTEITEM-002 ---
+# Filter items by type in a project.
+# Question: Những note item nào thuộc loại T trong project P?
+# Answer shape: ?noteItem, ?contentText, ?note, ?noteTitle
+# Expected (demo, T=Risk): 1 row (tax API timeout)
+
+SELECT ?noteItem ?contentText ?note ?noteTitle WHERE {
+  VALUES (?project ?targetType) {
+    (<https://w3id.org/projecta/data/project/ecommerce-checkout> projecta:risk)
+  }
+  ?note a projecta:Note ;
+        projecta:name ?noteTitle ;
+        projecta:belongsToProject ?project .
+  ?noteItem a projecta:NoteItem ;
+            projecta:isItemOf ?note ;
+            projecta:hasItemType ?targetType ;
+            projecta:contentText ?contentText .
+}
+
+# --- CQ-NOTEITEM-003 ---
+# Retrieve full content of a note item.
+# Question: Nội dung đầy đủ của note item I là gì?
+# Answer shape: ?contentText, ?itemType
+# Expected (demo, ni-1): Requirement text about address confirmation
+
+SELECT ?contentText ?itemType WHERE {
+  VALUES ?noteItem { <https://w3id.org/projecta/data/project/ecommerce-checkout/note-item/ni-1> }
+  ?noteItem a projecta:NoteItem ;
+            projecta:hasItemType ?itemType ;
+            projecta:contentText ?contentText .
+}
+
+# --- CQ-PROV-001 ---
+# Notes authored by a person in a project.
+# Question: Người A đã tạo những note nào trong project P?
+# Answer shape: ?note, ?title, ?recordedAt
+# Expected (demo): 1 row (Le's sprint review note)
+
+SELECT ?note ?title ?recordedAt WHERE {
+  VALUES (?project ?author) {
+    (<https://w3id.org/projecta/data/project/ecommerce-checkout>
+     <https://w3id.org/projecta/data/project/ecommerce-checkout/person/le>)
+  }
+  ?note a projecta:Note ;
+        projecta:name ?title ;
+        projecta:recordedAt ?recordedAt ;
+        projecta:belongsToProject ?project ;
+        projecta:authoredBy ?author .
+}
+
+# --- CQ-PROV-002 ---
+# Provenance chain for a note item.
+# Question: Note item I có nguồn gốc từ đâu (note nào, ai viết, khi nào)?
+# Answer shape: ?note, ?noteTitle, ?author, ?authorName, ?recordedAt
+# Expected (demo, ni-1): sprint review note, Le, 2026-07-28T10:30:00Z
+
+SELECT ?note ?noteTitle ?author ?authorName ?recordedAt WHERE {
+  VALUES ?noteItem { <https://w3id.org/projecta/data/project/ecommerce-checkout/note-item/ni-1> }
+  ?noteItem a projecta:NoteItem ;
+            projecta:isItemOf ?note .
+  ?note a projecta:Note ;
+        projecta:name ?noteTitle ;
+        projecta:authoredBy ?author ;
+        projecta:recordedAt ?recordedAt .
+  ?author a projecta:Person ;
+          projecta:name ?authorName .
+}
+
+# --- CQ-PROV-003 ---
+# All items captured by a person (across all projects).
+# Question: Người A đã capture những note item nào (trên tất cả project)?
+# Answer shape: ?noteItem, ?itemType, ?contentText, ?project
+# Expected (demo): 6 rows (all items by Le)
+
+SELECT ?noteItem ?itemType ?contentText ?project WHERE {
+  VALUES ?author { <https://w3id.org/projecta/data/project/ecommerce-checkout/person/le> }
+  ?note a projecta:Note ;
+        projecta:authoredBy ?author ;
+        projecta:belongsToProject ?project .
+  ?noteItem a projecta:NoteItem ;
+            projecta:isItemOf ?note ;
+            projecta:hasItemType ?itemType ;
+            projecta:contentText ?contentText .
+}
+
+# --- CQ-COUNT-001 ---
+# Item count by type in a project.
+# Question: Trong project P, mỗi loại note item có bao nhiêu mục?
+# Answer shape: ?itemType, ?count
+# Expected (demo): 6 rows, count=1 each
+
+SELECT ?itemType (COUNT(?noteItem) AS ?count) WHERE {
+  VALUES ?project { <https://w3id.org/projecta/data/project/ecommerce-checkout> }
+  ?note a projecta:Note ;
+        projecta:belongsToProject ?project .
+  ?noteItem a projecta:NoteItem ;
+            projecta:isItemOf ?note ;
+            projecta:hasItemType ?itemType .
+}
+GROUP BY ?itemType
+ORDER BY ?itemType
+
+# --- CQ-COUNT-002 ---
+# Note count in a project.
+# Question: Project P có bao nhiêu note?
+# Answer shape: ?count
+# Expected (demo): 1
+
+SELECT (COUNT(?note) AS ?count) WHERE {
+  VALUES ?project { <https://w3id.org/projecta/data/project/ecommerce-checkout> }
+  ?note a projecta:Note ;
+        projecta:belongsToProject ?project .
+}
+
+# --- CQ-BOUND-001 ---
+# Detect notes without project assignment.
+# Question: Có note nào không thuộc project nào không?
+# Answer shape: boolean
+# Expected (demo): false
+
+ASK {
+  ?note a projecta:Note .
+  FILTER NOT EXISTS {
+    ?note projecta:belongsToProject ?project .
+  }
+}
+
+# --- CQ-BOUND-002 ---
+# Detect note items without a parent note.
+# Question: Có note item nào không thuộc note nào không?
+# Answer shape: boolean
+# Expected (demo): false
+
+ASK {
+  ?noteItem a projecta:NoteItem .
+  FILTER NOT EXISTS {
+    ?noteItem projecta:isItemOf ?note .
+  }
+}
