@@ -29,13 +29,13 @@ triển khai API, UI, LLM extraction, connector hoặc persistent runtime.
 
 Status legend: [ ] pending / [~] in progress / [x] done
 
-- [ ] **S2-01 — Fix the lifecycle slice boundary:** Viết use case từ một
+- [x] **S2-01 — Fix the lifecycle slice boundary:** Viết use case từ một
   Sprint 1 `NoteItem` tới candidate, review decision và asserted fact; kèm
   positive example, counterexamples và non-goals.
-- [ ] **S2-02 — Draft lifecycle competency questions:** Tạo 12–18 câu hỏi có
+- [x] **S2-02 — Draft lifecycle competency questions:** Tạo 12–18 câu hỏi có
   expected answer shape cho knowledge status, evidence, reviewer, current/history
   view, graph isolation, project scope và temporal validity.
-- [ ] **S2-03 — Review lifecycle competency questions:** Human duyệt câu hỏi và
+- [x] **S2-03 — Review lifecycle competency questions:** Human duyệt câu hỏi và
   loại các câu đòi API/UI/LLM hoặc domain vocabulary chưa thuộc slice.
 - [ ] **S2-04 — Freeze the v0.1 compatibility baseline:** Liệt kê released IRIs,
   graph/query behavior và 32 Sprint 1 checks phải tiếp tục pass; phân loại v0.2
