@@ -4,3 +4,26 @@
 # NO bind-mount source code.
 # Merge: docker compose -f compose.yaml -f compose.prod.yaml config
 # See: docs/initialization/08-Deployment-Choice.md §5
+
+services:
+  fuseki:
+    restart: unless-stopped
+    logging:
+      driver: local
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1536M
+
+  semantic-core:
+    build: !reset null
+    image: ${SEMANTIC_CORE_IMAGE:?SEMANTIC_CORE_IMAGE must be an immutable CI image reference}
+    restart: unless-stopped
+    logging:
+      driver: local
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M

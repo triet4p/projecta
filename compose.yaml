@@ -41,5 +41,92 @@ services:
       - /scripts/validate_ontology.py
       - /data
 
+  fuseki:
+    build:
+      context: ./infra/docker/fuseki
+      args:
+        JENA_VERSION: "6.1.0"
+    image: projecta-fuseki:6.1.0
+    command:
+      - ./fuseki-server
+      - --config
+      - /config/fuseki-config.ttl
+    volumes:
+      - fuseki-data:/var/lib/fuseki
+      - ./infra/docker/fuseki/config/fuseki-config.ttl:/config/fuseki-config.ttl:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:3030/$$/ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 10s
+
+  fuseki-bootstrap:
+    image: projecta-fuseki:6.1.0
+    depends_on:
+      fuseki:
+        condition: service_healthy
+    working_dir: /data
+    volumes:
+      - ./ontology:/data:ro
+      - ./scripts:/scripts:ro
+    entrypoint:
+      - uv
+      - run
+      - --offline
+      - python
+      - /scripts/bootstrap_fuseki.py
+    environment:
+      FUSEKI_DATASET_URL: http://fuseki:3030/projecta
+    restart: "no"
+
+  semantic-core:
+    build:
+      context: ./services/semantic-core
+      target: runtime
+    image: projecta-semantic-core:local
+    depends_on:
+      fuseki-bootstrap:
+        condition: service_completed_successfully
+    environment:
+      FUSEKI_BASE_URL: http://fuseki:3030/projecta
+    volumes:
+      - ./ontology:/ontology:ro
+
+  semantic-core-system-test:
+    profiles: ["system-test"]
+    build:
+      context: ./services/semantic-core
+      target: development
+    image: projecta-semantic-core:system-test
+    command: ["mvn", "--batch-mode", "verify"]
+    depends_on:
+      semantic-core-runtime-test:
+        condition: service_started
+    environment:
+      FUSEKI_BASE_URL: http://fuseki:3030/projecta
+      SEMANTIC_CORE_HTTP_URL: http://semantic-core-runtime-test:8080
+    volumes:
+      - ./ontology:/ontology:ro
+    restart: "no"
+
+  semantic-core-runtime-test:
+    profiles: ["system-test"]
+    build:
+      context: ./services/semantic-core
+      target: runtime
+    image: projecta-semantic-core:runtime-test
+    depends_on:
+      fuseki-bootstrap:
+        condition: service_completed_successfully
+    environment:
+      FUSEKI_BASE_URL: http://fuseki:3030/projecta
+      SEMANTIC_CORE_TRUSTED_PROJECT_ID: ecommerce-checkout
+      SEMANTIC_CORE_TRUSTED_ACTOR_ID: le
+    volumes:
+      - ./ontology:/ontology:ro
+    restart: "no"
+
 volumes:
   jena-data:
+  fuseki-data:

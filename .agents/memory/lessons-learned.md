@@ -69,3 +69,16 @@ TriG fixtures.
 **Watch out for:** Any Jena CLI SHACL check over TriG or any test that treats a
 zero exit status as data conformance. Keep graph-agnostic Jena SHACL checks
 separate from named-graph dataset checks.
+
+## [2026-07-29] UV-managed Python is not available as python3 in the Fuseki image
+
+**Symptom:** The `fuseki-bootstrap` Compose service failed at startup with
+`exec: "python3": executable file not found in $PATH` even though the shared
+Fuseki/Jena image installs Python through UV.
+**Root cause:** `uv python install` stores the managed interpreter under
+`UV_PYTHON_INSTALL_DIR`; it does not create a system `python3` executable on
+`PATH` in the Java runtime image.
+**Fix / workaround:** Invoke the script through `uv run --offline python` so
+UV resolves its installed managed interpreter without a network request.
+**Watch out for:** Any Compose entrypoint or shell command in the Fuseki/Jena
+image that assumes a system Python binary after only `uv python install`.
