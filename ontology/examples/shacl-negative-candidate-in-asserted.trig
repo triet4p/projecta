@@ -1,0 +1,7 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+
+# Intended-invalid: a Candidate must not appear in an asserted graph.
+GRAPH <https://w3id.org/projecta/data/project/ecommerce-checkout/asserted/> {
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/bad>
+    a projecta:Candidate .
+}

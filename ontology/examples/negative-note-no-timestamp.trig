@@ -1,0 +1,27 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+
+# Negative Fixture: Note without recordedAt
+# Tests: NoteShape recordedAt minCount 1 — SHACL must FAIL on this graph.
+# Applies to: source-shapes.ttl → projecta:NoteShape
+
+GRAPH <https://w3id.org/projecta/data/project/ecommerce-checkout/sources/> {
+
+  <https://w3id.org/projecta/data/project/ecommerce-checkout>
+    a projecta:Project ;
+    projecta:name "Ecommerce Checkout Redesign" .
+
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/person/le>
+    a projecta:Person ;
+    projecta:name "Le" .
+
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/note/bad-note>
+    a projecta:Note ;
+    projecta:name "Note missing timestamp" ;
+    projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> ;
+    projecta:authoredBy <https://w3id.org/projecta/data/project/ecommerce-checkout/person/le> .
+    # VIOLATION: recordedAt is missing
+
+}

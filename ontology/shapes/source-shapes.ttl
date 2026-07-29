@@ -1,0 +1,119 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh:       <http://www.w3.org/ns/shacl#> .
+@prefix prov:     <http://www.w3.org/ns/prov#> .
+
+# Source Shapes — Sprint 2 (S2-11)
+#
+# SHACL shapes for v0.1 source artifacts (Note, NoteItem).
+# These shapes validate the sources graph contract.
+#
+# All shapes are additive — they enforce constraints on v0.1 classes
+# without changing any v0.1 IRI.
+
+# ============================================================================
+# NoteShape — validates project-scoped capture events
+# ============================================================================
+
+projecta:NoteShape a sh:NodeShape ;
+    sh:targetClass projecta:Note ;
+    rdfs:label "Note Shape" ;
+    rdfs:comment "Validates cardinality and datatype constraints for Note instances in the sources graph." ;
+
+    # belongsToProject: exactly 1
+    sh:property [
+        sh:path projecta:belongsToProject ;
+        sh:class projecta:Project ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "A Note must belong to exactly one Project."
+    ] ;
+
+    # authoredBy: exactly 1, must be a Person
+    sh:property [
+        sh:path projecta:authoredBy ;
+        sh:class projecta:Person ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "A Note must have exactly one author who is a Person."
+    ] ;
+
+    # recordedAt: exactly 1, xsd:dateTime
+    sh:property [
+        sh:path projecta:recordedAt ;
+        sh:datatype xsd:dateTime ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "A Note must have exactly one recordedAt timestamp of type xsd:dateTime."
+    ] ;
+
+    # name: at least 1, xsd:string
+    sh:property [
+        sh:path projecta:name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "A Note must have exactly one name of type xsd:string."
+    ] ;
+
+    # hasNoteItem: optional (0..*), but if present must be NoteItem
+    sh:property [
+        sh:path projecta:hasNoteItem ;
+        sh:class projecta:NoteItem ;
+        sh:message "If a Note has items, each must be a NoteItem."
+    ] .
+
+# ============================================================================
+# NoteItemShape — validates typed note segments
+# ============================================================================
+
+projecta:NoteItemShape a sh:NodeShape ;
+    sh:targetClass projecta:NoteItem ;
+    rdfs:label "Note Item Shape" ;
+    rdfs:comment "Validates cardinality, datatype, and controlled-vocabulary constraints for NoteItem instances in the sources graph." ;
+
+    # isItemOf: exactly 1 parent Note
+    sh:property [
+        sh:path projecta:isItemOf ;
+        sh:class projecta:Note ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "A NoteItem must belong to exactly one Note via isItemOf."
+    ] ;
+
+    # hasItemType: exactly 1, must be a NoteItemType individual
+    sh:property [
+        sh:path projecta:hasItemType ;
+        sh:class projecta:NoteItemType ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "A NoteItem must have exactly one hasItemType that is a NoteItemType."
+    ] ;
+
+    # contentText: exactly 1, xsd:string
+    sh:property [
+        sh:path projecta:contentText ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "A NoteItem must have exactly one contentText of type xsd:string."
+    ] ;
+
+    # hasItemType must be one of the 9 controlled individuals
+    sh:property [
+        sh:path projecta:hasItemType ;
+        sh:in (
+            projecta:requirement
+            projecta:decision
+            projecta:question
+            projecta:task
+            projecta:risk
+            projecta:assumption
+            projecta:constraint
+            projecta:progress-update
+            projecta:research-need
+        ) ;
+        sh:message "A NoteItem's hasItemType must be one of the 9 controlled NoteItemType individuals."
+    ] .

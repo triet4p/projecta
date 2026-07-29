@@ -1,0 +1,16 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+
+# Intended-invalid: provenance must not cross project boundaries.
+GRAPH <https://w3id.org/projecta/data/project/project-a/candidates/> {
+  <https://w3id.org/projecta/data/project/project-a/candidate/bad>
+    a projecta:Candidate ;
+    projecta:belongsToProject <https://w3id.org/projecta/data/project/project-a> ;
+    prov:wasDerivedFrom <https://w3id.org/projecta/data/project/project-b/note-item/source> .
+}
+
+GRAPH <https://w3id.org/projecta/data/project/project-b/sources/> {
+  <https://w3id.org/projecta/data/project/project-b/note-item/source>
+    a projecta:NoteItem ;
+    projecta:belongsToProject <https://w3id.org/projecta/data/project/project-b> .
+}

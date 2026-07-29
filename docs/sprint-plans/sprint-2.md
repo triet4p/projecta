@@ -43,50 +43,52 @@ Status legend: [ ] pending / [~] in progress / [x] done
 - [x] **S2-05 — Benchmark assertion metadata representations:** Dùng cùng một
   provenance/temporal fixture để so sánh assertion node, RDF reification và
   RDF-star trong Jena về query, SHACL, update và migration impact.
-- [ ] **S2-06 — Decide the assertion representation:** Human chọn representation
+- [x] **S2-06 — Decide the assertion representation:** Human chọn representation
   hoặc yêu cầu thêm evidence; ghi approved choice bằng `$log-decision`.
-- [ ] **S2-07 — Draft the v0.2 term inventory:** Dùng
+- [x] **S2-07 — Draft the v0.2 term inventory:** Dùng
   `$projecta-evolve-ontology` và semantic commitment interview cho mọi class,
   property, state/value hoặc assertion/activity node được competency questions
   yêu cầu.
-- [ ] **S2-08 — Review semantic commitments:** Human duyệt identity, lifecycle,
+- [x] **S2-08 — Review semantic commitments:** Human duyệt identity, lifecycle,
   class-vs-state-vs-relation, hierarchy, domain/range, provenance, temporal
   semantics và module ownership.
-- [ ] **S2-09 — Implement the additive v0.2 vocabulary:** Tạo các Turtle module
+- [x] **S2-09 — Implement the additive v0.2 vocabulary:** Tạo các Turtle module
   tối thiểu và metadata/version declarations theo approved inventory; không đổi
   v0.1 IRIs.
-- [ ] **S2-10 — Define the named-graph contract:** Tạo canonical graph IRI
+- [x] **S2-10 — Define the named-graph contract:** Tạo canonical graph IRI
   templates và dataset fixture cho sources, candidates, asserted, inferred và
   provenance trong một project.
-- [ ] **S2-11 — Implement source shapes:** Tạo SHACL cho `Note`/`NoteItem`
+- [x] **S2-11 — Implement source shapes:** Tạo SHACL cho `Note`/`NoteItem`
   cardinality, datatype, parent relation, project scope và controlled item type;
   kèm conforming và intended-failure fixtures.
-- [ ] **S2-12 — Implement candidate evidence shapes:** Validate source evidence,
+- [x] **S2-12 — Implement candidate evidence shapes:** Validate source evidence,
   proposed ontology version, verification state, generator/model or actor,
   timestamp và project scope; candidate không được masquerade as asserted fact.
-- [ ] **S2-13 — Implement isolation shapes:** Phát hiện candidate trong asserted
+- [x] **S2-13 — Implement isolation shapes:** Phát hiện candidate trong asserted
   graph, inferred fact trong asserted graph, missing project, cross-project
   relation và provenance visibility mismatch.
-- [ ] **S2-14 — Implement temporal lifecycle shapes:** Validate permitted
+- [x] **S2-14 — Implement temporal lifecycle shapes:** Validate permitted
   lifecycle states, reviewer/confirmation evidence, `validFrom`/`validTo`,
   supersession/retraction history và invalid time intervals.
-- [ ] **S2-15 — Implement lifecycle competency tests:** Viết SPARQL SELECT/ASK
+- [x] **S2-15 — Implement lifecycle competency tests:** Viết SPARQL SELECT/ASK
   với exact expected results cho approved questions, gồm current view và
   historical view mà không overwrite history.
-- [ ] **S2-16 — Extend Docker-native validation:** Chạy Jena SHACL positive and
+- [x] **S2-16 — Extend Docker-native validation:** Chạy Jena SHACL positive and
   negative tests, v0.2 query regression và toàn bộ 32 Sprint 1 checks từ
   `ontology-test`; mọi intended-invalid fixture phải fail đúng constraint.
-- [ ] **S2-17 — Record inference scope:** Phân tích rule impact; chỉ thêm
+- [x] **S2-17 — Record inference scope:** Phân tích rule impact; chỉ thêm
   deterministic rule nếu approved competency question cần nó, nếu không ghi rõ
   business inference được defer thay vì tạo rule để minh họa.
-- [ ] **S2-18 — Prepare v0.2 compatibility artifacts:** Cập nhật version metadata,
+- [x] **S2-18 — Prepare v0.2 compatibility artifacts:** Cập nhật version metadata,
   changelog, compatibility note và migration artifact; migration no-op phải được
   ghi rõ nếu thay đổi hoàn toàn additive.
-- [ ] **S2-19 — Run the v0.2 review packet:** Tổng hợp semantic commitments,
+- [x] **S2-19 — Run the v0.2 review packet:** Tổng hợp semantic commitments,
   alternatives, artifact diff, validation evidence, compatibility, unresolved
   questions và explicit human actions.
-- [ ] **S2-20 — Approve or revise ontology v0.2:** Human quyết định release,
-  yêu cầu sửa hoặc giữ `IMPLEMENTED_PENDING_RELEASE_APPROVAL`.
+- [x] **S2-20 — Approve or revise ontology v0.2:** Human approved the v0.2
+  semantic commitments, validation behavior, additive compatibility
+  classification, no-op migration, named-graph contract, and release on
+  2026-07-29.
 
 ## Definition of Done
 

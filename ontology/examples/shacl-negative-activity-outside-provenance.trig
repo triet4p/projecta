@@ -1,0 +1,7 @@
+@prefix prov: <http://www.w3.org/ns/prov#> .
+
+# Intended-invalid: lifecycle activities must only appear in provenance.
+GRAPH <https://w3id.org/projecta/data/project/ecommerce-checkout/asserted/> {
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/activity/bad>
+    a prov:Activity .
+}

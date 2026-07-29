@@ -1,0 +1,152 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh:       <http://www.w3.org/ns/shacl#> .
+@prefix prov:     <http://www.w3.org/ns/prov#> .
+
+# Isolation Shapes — Sprint 2 (S2-13)
+#
+# SHACL shapes that enforce named-graph isolation rules.
+# These are SPARQL-based shapes because graph membership is not
+# encoded in RDF triples — it is a property of the dataset structure.
+#
+# Each shape uses sh:sparql with a GRAPH clause to detect entities
+# in the wrong named graph.
+
+# ============================================================================
+# CandidateNotInAsserted — detect Candidate in asserted graph
+# ============================================================================
+
+projecta:CandidateNotInAssertedShape a sh:NodeShape ;
+    sh:targetClass projecta:Candidate ;
+    rdfs:label "Candidate Not In Asserted Shape" ;
+    rdfs:comment "Detects Candidate instances that appear in the asserted graph. Candidates must only exist in the candidates graph." ;
+    sh:sparql [
+        sh:message "Candidate found in asserted graph. Candidates must only exist in the candidates graph." ;
+        sh:select """
+            PREFIX projecta: <https://w3id.org/projecta/ontology/>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            SELECT $this WHERE {
+                GRAPH ?g {
+                    $this a projecta:Candidate .
+                }
+                FILTER (STRENDS(STR(?g), "/asserted/"))
+            }
+            """
+    ] .
+
+# ============================================================================
+# KnowledgeItemNotInCandidates — detect asserted facts in candidates graph
+# ============================================================================
+
+projecta:KnowledgeItemNotInCandidatesShape a sh:NodeShape ;
+    sh:targetClass projecta:KnowledgeItem ;
+    rdfs:label "KnowledgeItem Not In Candidates Shape" ;
+    rdfs:comment "Detects KnowledgeItem instances that appear in the candidates graph. Asserted facts must only exist in the asserted or inferred graphs." ;
+    sh:sparql [
+        sh:message "KnowledgeItem found in candidates graph. Asserted facts must only exist in asserted or inferred graphs." ;
+        sh:select """
+            PREFIX projecta: <https://w3id.org/projecta/ontology/>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            SELECT $this WHERE {
+                GRAPH ?g {
+                    $this a projecta:KnowledgeItem .
+                }
+                FILTER (STRENDS(STR(?g), "/candidates/"))
+            }
+            """
+    ] .
+
+# ============================================================================
+# NoteItemNotOutsideSources — detect NoteItem outside sources graph
+# ============================================================================
+
+projecta:NoteItemNotOutsideSourcesShape a sh:NodeShape ;
+    sh:targetClass projecta:NoteItem ;
+    rdfs:label "NoteItem Only In Sources Shape" ;
+    rdfs:comment "Detects NoteItem instances outside the sources graph. Source artifacts must only exist in the sources graph." ;
+    sh:sparql [
+        sh:message "NoteItem found outside sources graph. Source artifacts must only exist in the sources graph." ;
+        sh:select """
+            PREFIX projecta: <https://w3id.org/projecta/ontology/>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            SELECT $this WHERE {
+                GRAPH ?g {
+                    $this a projecta:NoteItem .
+                }
+                FILTER (!STRENDS(STR(?g), "/sources/"))
+            }
+            """
+    ] .
+
+# ============================================================================
+# MissingProject — detect lifecycle entities without belongsToProject
+# ============================================================================
+
+projecta:CandidateMissingProjectShape a sh:NodeShape ;
+    sh:targetClass projecta:Candidate ;
+    rdfs:label "Candidate Missing Project Shape" ;
+    rdfs:comment "Detects Candidate instances without a belongsToProject link." ;
+    sh:property [
+        sh:path projecta:belongsToProject ;
+        sh:minCount 1 ;
+        sh:message "Every Candidate must have a belongsToProject."
+    ] .
+
+projecta:KnowledgeItemMissingProjectShape a sh:NodeShape ;
+    sh:targetClass projecta:KnowledgeItem ;
+    rdfs:label "KnowledgeItem Missing Project Shape" ;
+    rdfs:comment "Detects KnowledgeItem instances without a belongsToProject link." ;
+    sh:property [
+        sh:path projecta:belongsToProject ;
+        sh:minCount 1 ;
+        sh:message "Every KnowledgeItem must have a belongsToProject."
+    ] .
+
+# ============================================================================
+# CrossProjectProvenance — detect prov:wasDerivedFrom across projects
+# ============================================================================
+
+projecta:CrossProjectProvenanceShape a sh:NodeShape ;
+    sh:targetSubjectsOf prov:wasDerivedFrom ;
+    rdfs:label "Cross-Project Provenance Shape" ;
+    rdfs:comment "Detects prov:wasDerivedFrom links where source and target belong to different projects. Cross-project provenance requires explicit authorization." ;
+    sh:sparql [
+        sh:message "Cross-project prov:wasDerivedFrom detected — source and target belong to different projects." ;
+        sh:select """
+            PREFIX projecta: <https://w3id.org/projecta/ontology/>
+            PREFIX prov: <http://www.w3.org/ns/prov#>
+            SELECT $this WHERE {
+                GRAPH ?subjectGraph {
+                    $this prov:wasDerivedFrom ?source ;
+                          projecta:belongsToProject ?project1 .
+                }
+                GRAPH ?sourceGraph {
+                    ?source projecta:belongsToProject ?project2 .
+                }
+                FILTER (?project1 != ?project2)
+            }
+            """
+    ] .
+
+# ============================================================================
+# ProvActivityNotInProvenance — detect prov:Activity outside provenance graph
+# ============================================================================
+
+projecta:ProvActivityNotInProvenanceShape a sh:NodeShape ;
+    sh:targetClass prov:Activity ;
+    rdfs:label "ProvActivity In Provenance Shape" ;
+    rdfs:comment "Detects prov:Activity instances outside the provenance graph. All activities must only exist in the provenance graph." ;
+    sh:sparql [
+        sh:message "prov:Activity found outside provenance graph. All activities must only exist in the provenance graph." ;
+        sh:select """
+            PREFIX prov: <http://www.w3.org/ns/prov#>
+            SELECT $this WHERE {
+                GRAPH ?g {
+                    $this a prov:Activity .
+                }
+                FILTER (!STRENDS(STR(?g), "/provenance/"))
+            }
+            """
+    ] .

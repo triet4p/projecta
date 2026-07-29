@@ -6,6 +6,22 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-07-29
+
+### Added
+
+- Added the governed knowledge-lifecycle ontology proposal, including
+  provenance, temporal metadata, named-graph isolation, fixtures, and
+  competency queries.
+- Added a no-op v0.1.0-to-v0.2.0 migration artifact for the additive
+  compatibility path.
+
+### Fixed
+
+- Made ontology validation read Jena's SHACL conformance report and test both
+  intended-invalid constraints and named-graph isolation without flattening
+  TriG graph membership.
+
 ## [0.1.0] - 2026-07-28
 
 ### Added

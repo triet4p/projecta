@@ -1,6 +1,6 @@
 @prefix lm: <http://jena.hpl.hp.com/2004/08/location-mapping#> .
 
-# Jena Location Mapping — Sprint 1
+# Jena Location Mapping — Sprint 2
 #
 # Usage:
 #   riot --location-mapping=infra/docker/fuseki/config/location-mapping.ttl ontology/core.ttl
@@ -10,10 +10,14 @@
 
 [] lm:mapping
    [ lm:name "https://w3id.org/projecta/ontology/v/0.1/" ;
-     lm:altName "ontology/core.ttl" ] ;
+     lm:altName "ontology/core.ttl" ] .
 
-   # PROV-O — cache locally or load from web.
-   # Uncomment and provide a local copy when offline testing is needed.
-   # [ lm:name "http://www.w3.org/ns/prov-o" ;
-   #   lm:altName "ontology/cache/prov-o.ttl" ] ;
-.
+[] lm:mapping
+   [ lm:name "https://w3id.org/projecta/ontology/v/0.2/" ;
+     lm:altName "ontology/provenance.ttl" ] .
+
+# PROV-O — cache locally or load from web.
+# Uncomment and provide a local copy when offline testing is needed.
+# [] lm:mapping
+#    [ lm:name "http://www.w3.org/ns/prov-o" ;
+#      lm:altName "ontology/cache/prov-o.ttl" ] .

@@ -1,0 +1,182 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh:       <http://www.w3.org/ns/shacl#> .
+@prefix prov:     <http://www.w3.org/ns/prov#> .
+
+# Temporal Lifecycle Shapes — Sprint 2 (S2-14)
+#
+# SHACL shapes for temporal validity, permitted lifecycle transitions,
+# reviewer evidence, and invalid time intervals.
+
+# ============================================================================
+# KnowledgeItemShape — validates asserted facts
+# ============================================================================
+
+projecta:KnowledgeItemShape a sh:NodeShape ;
+    sh:targetClass projecta:KnowledgeItem ;
+    rdfs:label "Knowledge Item Shape" ;
+    rdfs:comment "Validates that every KnowledgeItem has provenance, project scope, and valid temporal metadata." ;
+
+    # belongsToProject: exactly 1
+    sh:property [
+        sh:path projecta:belongsToProject ;
+        sh:class projecta:Project ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "A KnowledgeItem must belong to exactly one Project."
+    ] ;
+
+    # prov:wasDerivedFrom: at least 1 link to originating Candidate
+    sh:property [
+        sh:path prov:wasDerivedFrom ;
+        sh:minCount 1 ;
+        sh:message "A KnowledgeItem must be derived from at least one Candidate."
+    ] ;
+
+    # validFrom: exactly 1, xsd:date
+    sh:property [
+        sh:path projecta:validFrom ;
+        sh:datatype xsd:date ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "A KnowledgeItem must have exactly one validFrom date."
+    ] ;
+
+    # validTo: optional (0 or 1), xsd:date
+    # Only present when the fact is superseded or retracted
+    sh:property [
+        sh:path projecta:validTo ;
+        sh:datatype xsd:date ;
+        sh:maxCount 1 ;
+        sh:message "If present, validTo must be an xsd:date."
+    ] .
+
+# ============================================================================
+# ValidTimeIntervalShape — validTo must not be before validFrom
+# ============================================================================
+
+projecta:ValidTimeIntervalShape a sh:NodeShape ;
+    sh:targetClass projecta:KnowledgeItem ;
+    rdfs:label "Valid Time Interval Shape" ;
+    rdfs:comment "Ensures that when both validFrom and validTo are present, validTo is not earlier than validFrom." ;
+    sh:sparql [
+        sh:message "validTo must not be earlier than validFrom." ;
+        sh:select """
+            PREFIX projecta: <https://w3id.org/projecta/ontology/>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            SELECT $this WHERE {
+                $this projecta:validFrom ?from ;
+                      projecta:validTo ?to .
+                FILTER (?to < ?from)
+            }
+            """
+    ] .
+
+# ============================================================================
+# SupersededHasValidTo — superseded facts must have validTo
+# ============================================================================
+
+projecta:SupersededHasValidToShape a sh:NodeShape ;
+    sh:targetClass projecta:KnowledgeItem ;
+    rdfs:label "Superseded Has ValidTo Shape" ;
+    rdfs:comment "A KnowledgeItem linked via supersededBy must have a validTo date." ;
+    sh:sparql [
+        sh:message "A superseded KnowledgeItem must have a validTo date." ;
+        sh:select """
+            PREFIX projecta: <https://w3id.org/projecta/ontology/>
+            SELECT $this WHERE {
+                $this projecta:supersededBy ?replacement .
+                FILTER NOT EXISTS {
+                    $this projecta:validTo ?to .
+                }
+            }
+            """
+    ] .
+
+# ============================================================================
+# RetractedHasReason — retracted facts must have retractionReason
+# ============================================================================
+
+projecta:RetractedHasReasonShape a sh:NodeShape ;
+    sh:targetClass projecta:KnowledgeItem ;
+    rdfs:label "Retracted Has Reason Shape" ;
+    rdfs:comment "A retracted KnowledgeItem must carry a retractionReason." ;
+    sh:sparql [
+        sh:message "A retracted KnowledgeItem must have a retractionReason." ;
+        sh:select """
+            PREFIX projecta: <https://w3id.org/projecta/ontology/>
+            SELECT $this WHERE {
+                $this projecta:validTo ?to .
+                # Heuristic: a KnowledgeItem with validTo but without supersededBy
+                # is likely retracted and needs a retractionReason.
+                FILTER NOT EXISTS {
+                    $this projecta:supersededBy ?replacement .
+                }
+                FILTER NOT EXISTS {
+                    $this projecta:retractionReason ?reason .
+                }
+            }
+            """
+    ] .
+
+# ============================================================================
+# ReviewActivityShape — validates review activities have required evidence
+# ============================================================================
+
+projecta:ReviewActivityShape a sh:NodeShape ;
+    sh:targetSubjectsOf projecta:reviewDecision ;
+    rdfs:label "Review Activity Shape" ;
+    rdfs:comment "Validates that review activities carry reviewer identity, timestamp, and a reviewDecision." ;
+
+    # A review activity is identified by its explicit reviewDecision. Other
+    # PROV activities (extraction and assertion) have different evidence.
+    sh:property [
+        sh:path prov:wasAssociatedWith ;
+        sh:minCount 1 ;
+        sh:message "A review activity must have an associated reviewer (prov:wasAssociatedWith)."
+    ] ;
+
+    sh:property [
+        sh:path prov:endedAtTime ;
+        sh:datatype xsd:dateTime ;
+        sh:minCount 1 ;
+        sh:message "A review activity must have an endedAtTime timestamp."
+    ] ;
+
+    sh:property [
+        sh:path projecta:reviewDecision ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "A review activity must have exactly one reviewDecision."
+    ] ;
+
+    # reviewDecision must be confirmed or rejected
+    sh:property [
+        sh:path projecta:reviewDecision ;
+        sh:in (projecta:confirmed projecta:rejected) ;
+        sh:message "A reviewDecision must be either confirmed or rejected."
+    ] .
+
+# ============================================================================
+# ReificationConsistencyShape — rdf:Statement object must match direct triple
+# ============================================================================
+
+projecta:ReificationConsistencyShape a sh:NodeShape ;
+    sh:targetClass rdf:Statement ;
+    rdfs:label "Reification Consistency Shape" ;
+    rdfs:comment "Ensures that an rdf:Statement's rdf:object matches the corresponding direct triple value. Prevents drift between the asserted fact and its reification metadata." ;
+    sh:sparql [
+        sh:message "rdf:object of Statement must match the direct triple value on the subject." ;
+        sh:select """
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            SELECT $this WHERE {
+                $this rdf:subject ?s ;
+                      rdf:predicate ?p ;
+                      rdf:object ?o1 .
+                ?s ?p ?o2 .
+                FILTER (?o1 != ?o2)
+            }
+            """
+    ] .

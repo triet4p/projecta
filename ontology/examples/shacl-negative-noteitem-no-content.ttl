@@ -1,0 +1,27 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+
+# Flat Turtle for SHACL validation — NoteItem without contentText.
+# Tests: NoteItemShape contentText minCount 1.
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout>
+    a projecta:Project ;
+    projecta:name "Ecommerce Checkout Redesign" .
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout/person/le>
+    a projecta:Person ;
+    projecta:name "Le" .
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout/note/sprint-review-2026-07-28>
+    a projecta:Note ;
+    projecta:name "2026-07-28 Sprint Review" ;
+    projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> ;
+    projecta:authoredBy <https://w3id.org/projecta/data/project/ecommerce-checkout/person/le> ;
+    projecta:recordedAt "2026-07-28T10:30:00Z"^^xsd:dateTime .
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout/note-item/ni-bad>
+    a projecta:NoteItem ;
+    projecta:isItemOf <https://w3id.org/projecta/data/project/ecommerce-checkout/note/sprint-review-2026-07-28> ;
+    projecta:hasItemType projecta:requirement .

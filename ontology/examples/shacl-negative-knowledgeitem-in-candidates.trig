@@ -1,0 +1,7 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+
+# Intended-invalid: asserted knowledge must not appear in a candidates graph.
+GRAPH <https://w3id.org/projecta/data/project/ecommerce-checkout/candidates/> {
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/requirement/bad>
+    a projecta:KnowledgeItem .
+}

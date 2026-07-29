@@ -1,0 +1,106 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:      <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov:     <http://www.w3.org/ns/prov#> .
+@prefix dcterms:  <http://purl.org/dc/terms/> .
+
+# ── Ontology metadata ─────────────────────────────────────────────
+# This file is a co-member of the v0.2 ontology alongside temporal.ttl.
+# It contributes lifecycle vocabulary: Candidate, LifecycleStatus,
+# lifecycle properties, and controlled lifecycle-state individuals.
+# Load core.ttl and communication.ttl (v0.1) before this file;
+# load temporal.ttl after this file.
+#
+# All v0.1 IRIs are preserved — this file is purely additive.
+
+<https://w3id.org/projecta/ontology/v/0.2/>
+    a owl:Ontology ;
+    owl:versionIRI <https://w3id.org/projecta/ontology/v/0.2/> ;
+    owl:versionInfo "0.2.0" ;
+    rdfs:label "Projecta Ontology — Sprint 2 (Provenance module)" ;
+    rdfs:comment "Lifecycle vocabulary for the Governed Knowledge Lifecycle slice: Candidate, LifecycleStatus, lifecycle object/datatype properties, and the controlled LifecycleStatus vocabulary. Reuses PROV-O for activity and derivation provenance."@en ;
+    dcterms:created "2026-07-28"^^xsd:date ;
+    dcterms:creator "Projecta contributors" ;
+    dcterms:license <https://www.apache.org/licenses/LICENSE-2.0> ;
+    rdfs:seeAlso <https://w3id.org/projecta/docs/term-inventory-sprint-2> .
+
+# ── Classes ────────────────────────────────────────────────────────
+
+projecta:Candidate a owl:Class ;
+    rdfs:subClassOf projecta:Entity ;
+    rdfs:label "Candidate" ;
+    rdfs:comment "A proposed knowledge item derived from a source NoteItem that has not yet been confirmed by a human reviewer. Lives in the candidates graph. Must pass through validation and review before an asserted fact is created from it." .
+
+projecta:LifecycleStatus a owl:Class ;
+    rdfs:subClassOf projecta:Entity ;
+    rdfs:label "Lifecycle Status" ;
+    rdfs:comment "The kind of lifecycle state a Candidate or asserted fact is in — a controlled vocabulary of states in the knowledge lifecycle. Parallel to NoteItemType as a controlled-vocabulary container class." .
+
+# ── Object properties ──────────────────────────────────────────────
+
+projecta:candidateStatus a owl:ObjectProperty ;
+    rdfs:label "candidate status" ;
+    rdfs:comment "The current lifecycle state of a Candidate. This is a convenience denormalization — the authoritative lifecycle history is recorded as prov:Activity instances in the provenance graph." ;
+    rdfs:domain projecta:Candidate ;
+    rdfs:range projecta:LifecycleStatus .
+
+projecta:reviewDecision a owl:ObjectProperty ;
+    rdfs:label "review decision" ;
+    rdfs:comment "The outcome of a review activity — confirmed or rejected. Attached to the prov:Activity that recorded the review." ;
+    rdfs:range projecta:LifecycleStatus .
+
+# ── Datatype properties ────────────────────────────────────────────
+
+projecta:rejectionReason a owl:DatatypeProperty ;
+    rdfs:label "rejection reason" ;
+    rdfs:comment "A human-authored explanation of why a candidate was rejected. Immutable once recorded." ;
+    rdfs:domain projecta:Candidate ;
+    rdfs:range xsd:string .
+
+projecta:generator a owl:DatatypeProperty ;
+    rdfs:label "generator" ;
+    rdfs:comment "Identifier of the extraction model or tool version that generated a Candidate. Convention: {tool}-v{version}." ;
+    rdfs:domain projecta:Candidate ;
+    rdfs:range xsd:string .
+
+projecta:proposedOntologyVersion a owl:DatatypeProperty ;
+    rdfs:label "proposed ontology version" ;
+    rdfs:comment "The ontology version under which a Candidate was proposed. Convention: semver." ;
+    rdfs:domain projecta:Candidate ;
+    rdfs:range xsd:string .
+
+# ── Controlled vocabulary: LifecycleStatus individuals ─────────────
+
+projecta:extracted a projecta:LifecycleStatus ;
+    rdfs:label "Extracted" ;
+    rdfs:comment "A candidate has been generated from a source NoteItem but has not yet been validated." .
+
+projecta:validated a projecta:LifecycleStatus ;
+    rdfs:label "Validated" ;
+    rdfs:comment "The candidate has passed SHACL shape validation." .
+
+projecta:pending-review a projecta:LifecycleStatus ;
+    rdfs:label "Pending Review" ;
+    rdfs:comment "The candidate has passed validation and is awaiting human review." .
+
+projecta:confirmed a projecta:LifecycleStatus ;
+    rdfs:label "Confirmed" ;
+    rdfs:comment "A human reviewer has approved the candidate. It is now eligible for assertion promotion." .
+
+projecta:rejected a projecta:LifecycleStatus ;
+    rdfs:label "Rejected" ;
+    rdfs:comment "A human reviewer has rejected the candidate. It will not be promoted to an asserted fact." .
+
+projecta:asserted a projecta:LifecycleStatus ;
+    rdfs:label "Asserted" ;
+    rdfs:comment "The confirmed candidate has been promoted to an asserted fact in the asserted graph." .
+
+projecta:superseded a projecta:LifecycleStatus ;
+    rdfs:label "Superseded" ;
+    rdfs:comment "The asserted fact has been replaced by a newer asserted fact. The old fact remains in the asserted graph with validTo set." .
+
+projecta:retracted a projecta:LifecycleStatus ;
+    rdfs:label "Retracted" ;
+    rdfs:comment "The asserted fact has been withdrawn because it was found to be incorrect. The fact remains in the asserted graph with a retraction reason." .

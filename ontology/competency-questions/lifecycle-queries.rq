@@ -1,0 +1,204 @@
+# Lifecycle Competency Queries — Sprint 2 (S2-15)
+#
+# SPARQL queries for the approved lifecycle competency questions.
+# Each query targets the lifecycle-demo.trig fixture and has an
+# exact expected result documented in the query header.
+#
+# Query IDs match ontology/competency-questions/lifecycle.md.
+# Delimiter format: # --- CQ-XXX-NNN ---
+# Parser: scripts/validate_ontology.py → query_blocks()
+
+PREFIX projecta: <https://w3id.org/projecta/ontology/>
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#>
+PREFIX prov:  <http://www.w3.org/ns/prov#>
+
+# ============================================================================
+# Knowledge Status
+# ============================================================================
+
+# --- CQ-LC-001 ---
+# Current status of a specific candidate
+# Expected: 1 row, candidateStatus = projecta:confirmed
+SELECT ?candidateStatus WHERE {
+    <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/req-address-confirmation>
+        projecta:candidateStatus ?candidateStatus .
+}
+
+# --- CQ-LC-002 ---
+# All candidates in a given lifecycle state within the project
+# Expected: 1 row (the address-confirmation candidate in confirmed state)
+SELECT ?candidate ?sourceNoteItem WHERE {
+    ?candidate a projecta:Candidate ;
+        projecta:candidateStatus projecta:confirmed ;
+        projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> ;
+        prov:wasDerivedFrom ?sourceNoteItem .
+}
+
+# --- CQ-LC-003 ---
+# Full lifecycle history of a candidate (all provenance activities)
+# Expected: 3 rows (extraction, review, assertion activities)
+SELECT ?activity ?activityLabel ?activityTime WHERE {
+    ?activity a prov:Activity ;
+        rdfs:label ?activityLabel ;
+        prov:endedAtTime ?activityTime ;
+        projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> .
+    {
+        ?activity prov:used <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/req-address-confirmation> .
+    } UNION {
+        ?activity prov:generated <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/req-address-confirmation> .
+    }
+} ORDER BY ?activityTime
+
+# ============================================================================
+# Evidence and Source Traceability
+# ============================================================================
+
+# --- CQ-EV-001 ---
+# Source evidence for a candidate: trace back to NoteItem, Note, and author
+# Expected: 1 row — sourceNoteItem = ni-1, note = sprint-review, author = le
+SELECT ?sourceNoteItem ?sourceContentText ?sourceType ?sourceNote ?sourceAuthorName WHERE {
+    <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/req-address-confirmation>
+        prov:wasDerivedFrom ?sourceNoteItem .
+    ?sourceNoteItem a projecta:NoteItem ;
+        projecta:contentText ?sourceContentText ;
+        projecta:hasItemType ?sourceType ;
+        projecta:isItemOf ?sourceNote .
+    ?sourceNote projecta:authoredBy ?sourceAuthor .
+    ?sourceAuthor projecta:name ?sourceAuthorName .
+}
+
+# --- CQ-EV-002 ---
+# Full provenance chain from asserted fact through candidate to source
+# Expected: 1 row — candidate, extraction activity, reviewer = le
+SELECT ?sourceNoteItem ?candidate ?extractionActivity ?generator ?reviewer ?assertionTime WHERE {
+    <https://w3id.org/projecta/data/project/ecommerce-checkout/requirement/req-address-confirmation>
+        prov:wasDerivedFrom ?candidate .
+    ?candidate prov:wasDerivedFrom ?sourceNoteItem ;
+        projecta:generator ?generator ;
+        prov:wasGeneratedBy ?extractionActivity .
+    ?reviewActivity a prov:Activity ;
+        prov:used ?candidate ;
+        projecta:reviewDecision projecta:confirmed ;
+        prov:wasAssociatedWith ?reviewer ;
+        prov:endedAtTime ?assertionTime .
+}
+
+# --- CQ-EV-003 ---
+# Generator identity for a candidate
+# Expected: 1 row — generator = "projecta-extractor-v0.2.0", version = "0.2.0"
+SELECT ?generator ?proposedOntologyVersion WHERE {
+    <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/req-address-confirmation>
+        projecta:generator ?generator ;
+        projecta:proposedOntologyVersion ?proposedOntologyVersion .
+}
+
+# ============================================================================
+# Reviewer and Review Decision
+# ============================================================================
+
+# --- CQ-REV-001 ---
+# Review decision for a candidate: who, what decision, when
+# Expected: 1 row — reviewer = Le, decision = confirmed, time = 2026-07-29T10:15:00Z
+SELECT ?reviewerName ?reviewDecision ?reviewTime WHERE {
+    ?reviewActivity a prov:Activity ;
+        prov:used <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/req-address-confirmation> ;
+        projecta:reviewDecision ?reviewDecision ;
+        prov:wasAssociatedWith ?reviewer ;
+        prov:endedAtTime ?reviewTime .
+    ?reviewer projecta:name ?reviewerName .
+}
+
+# ============================================================================
+# Current and Historical View
+# ============================================================================
+
+# --- CQ-TEMP-001 ---
+# Current asserted facts (not superseded/retracted) in the project
+# Expected: 1 row — req-address-confirmation, Requirement, validFrom = 2026-07-29
+SELECT ?assertedFact ?factType ?factLabel ?validFrom WHERE {
+    ?assertedFact a projecta:KnowledgeItem ;
+        a ?factType ;
+        rdfs:label ?factLabel ;
+        projecta:validFrom ?validFrom ;
+        projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> .
+    FILTER (?factType != projecta:KnowledgeItem)
+    FILTER NOT EXISTS { ?assertedFact projecta:validTo ?to . }
+}
+
+# --- CQ-TEMP-004 ---
+# Temporal validity interval of an asserted fact
+# Expected: 1 row — validFrom = 2026-07-29, isCurrent = true (no validTo)
+SELECT ?validFrom ?validTo ?isCurrent WHERE {
+    <https://w3id.org/projecta/data/project/ecommerce-checkout/requirement/req-address-confirmation>
+        projecta:validFrom ?validFrom .
+    OPTIONAL {
+        <https://w3id.org/projecta/data/project/ecommerce-checkout/requirement/req-address-confirmation>
+            projecta:validTo ?validTo .
+    }
+    BIND (!BOUND(?validTo) AS ?isCurrent)
+}
+
+# ============================================================================
+# Graph Isolation
+# ============================================================================
+
+# --- CQ-ISO-001 ---
+# Detect candidates in the asserted graph
+# Expected: ASK result = false
+ASK {
+    GRAPH ?g {
+        ?candidate a projecta:Candidate .
+    }
+    FILTER (STRENDS(STR(?g), "/asserted/"))
+}
+
+# --- CQ-ISO-002 ---
+# Detect KnowledgeItem instances in the candidates graph
+# Expected: ASK result = false
+ASK {
+    GRAPH ?g {
+        ?item a projecta:KnowledgeItem .
+    }
+    FILTER (STRENDS(STR(?g), "/candidates/"))
+}
+
+# ============================================================================
+# Project Scope
+# ============================================================================
+
+# --- CQ-SCOPE-001 ---
+# All lifecycle entities belonging to a project (candidates + asserted + provenance)
+# Expected: 5+ rows — 1 candidate, 1 Requirement, 3 activities, 1 rdf:Statement
+SELECT ?entity ?entityType WHERE {
+    {
+        GRAPH <https://w3id.org/projecta/data/project/ecommerce-checkout/candidates/> {
+            ?entity a ?entityType .
+            ?entity projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> .
+        }
+    } UNION {
+        GRAPH <https://w3id.org/projecta/data/project/ecommerce-checkout/asserted/> {
+            ?entity a ?entityType .
+            ?entity projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> .
+        }
+    } UNION {
+        GRAPH <https://w3id.org/projecta/data/project/ecommerce-checkout/provenance/> {
+            ?entity a ?entityType .
+            ?entity projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> .
+        }
+    }
+}
+
+# --- CQ-SCOPE-002 ---
+# Detect lifecycle entities without project assignment
+# Expected: ASK result = false
+ASK {
+    {
+        ?candidate a projecta:Candidate .
+        FILTER NOT EXISTS { ?candidate projecta:belongsToProject ?p . }
+    } UNION {
+        ?item a projecta:KnowledgeItem .
+        FILTER NOT EXISTS { ?item projecta:belongsToProject ?p . }
+    }
+}

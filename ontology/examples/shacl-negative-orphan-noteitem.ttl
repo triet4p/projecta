@@ -1,0 +1,16 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+
+# Flat Turtle for SHACL validation — NoteItem without parent Note.
+# Tests: NoteItemShape isItemOf minCount 1.
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout>
+    a projecta:Project ;
+    projecta:name "Ecommerce Checkout Redesign" .
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout/note-item/ni-orphan>
+    a projecta:NoteItem ;
+    projecta:hasItemType projecta:requirement ;
+    projecta:contentText "Orphan item with no parent note." .

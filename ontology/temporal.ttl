@@ -1,0 +1,71 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:      <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov:     <http://www.w3.org/ns/prov#> .
+@prefix dcterms:  <http://purl.org/dc/terms/> .
+
+# ── Ontology metadata ─────────────────────────────────────────────
+# This file is a co-member of the v0.2 ontology alongside provenance.ttl.
+# It contributes asserted-knowledge classes (KnowledgeItem, Requirement)
+# and temporal/dependency properties (validFrom, validTo, supersededBy,
+# retractionReason).
+# Load provenance.ttl before this file.
+#
+# All v0.1 IRIs are preserved — this file is purely additive.
+
+<https://w3id.org/projecta/ontology/v/0.2/>
+    a owl:Ontology ;
+    owl:versionIRI <https://w3id.org/projecta/ontology/v/0.2/> ;
+    owl:versionInfo "0.2.0" ;
+    rdfs:label "Projecta Ontology — Sprint 2 (Temporal module)" ;
+    rdfs:comment "Asserted-knowledge vocabulary for the Governed Knowledge Lifecycle slice: KnowledgeItem, Requirement, temporal validity properties, and supersession/retraction properties."@en ;
+    dcterms:created "2026-07-28"^^xsd:date ;
+    dcterms:creator "Projecta contributors" ;
+    dcterms:license <https://www.apache.org/licenses/LICENSE-2.0> .
+
+# ── Classes ────────────────────────────────────────────────────────
+
+projecta:KnowledgeItem a owl:Class ;
+    rdfs:subClassOf projecta:Entity ;
+    rdfs:label "Knowledge Item" ;
+    rdfs:comment "A unit of confirmed, human-validated knowledge in the asserted graph. Every KnowledgeItem has provenance tracing back through a Candidate to a source NoteItem. Carries temporal validity metadata (validFrom, validTo) and may be superseded or retracted." .
+
+projecta:Requirement a owl:Class ;
+    rdfs:subClassOf projecta:KnowledgeItem ;
+    rdfs:label "Requirement" ;
+    rdfs:comment "A needed capability, feature, or constraint expressed by a stakeholder — now an asserted fact in the knowledge graph. Distinct from the v0.1 NoteItemType individual projecta:requirement (kebab-case), which is a source-evidence tag." .
+
+# ── Object properties ──────────────────────────────────────────────
+
+projecta:supersededBy a owl:ObjectProperty ;
+    rdfs:label "superseded by" ;
+    rdfs:comment "Relates a superseded KnowledgeItem to the KnowledgeItem that replaces it. The old fact remains in the asserted graph with validTo set." ;
+    rdfs:domain projecta:KnowledgeItem ;
+    rdfs:range projecta:KnowledgeItem .
+
+projecta:supersedes a owl:ObjectProperty ;
+    rdfs:label "supersedes" ;
+    rdfs:comment "Relates a KnowledgeItem to the older KnowledgeItem it replaces." ;
+    owl:inverseOf projecta:supersededBy .
+
+# ── Datatype properties ────────────────────────────────────────────
+
+projecta:validFrom a owl:DatatypeProperty ;
+    rdfs:label "valid from" ;
+    rdfs:comment "The date from which an asserted KnowledgeItem is considered effective. Immutable once set — corrections produce a new assertion with its own rdf:Statement provenance." ;
+    rdfs:domain projecta:KnowledgeItem ;
+    rdfs:range xsd:date .
+
+projecta:validTo a owl:DatatypeProperty ;
+    rdfs:label "valid to" ;
+    rdfs:comment "The date at which an asserted KnowledgeItem ceased to be effective. Absent when the fact is still current. Set when the fact is superseded or retracted." ;
+    rdfs:domain projecta:KnowledgeItem ;
+    rdfs:range xsd:date .
+
+projecta:retractionReason a owl:DatatypeProperty ;
+    rdfs:label "retraction reason" ;
+    rdfs:comment "A human-authored explanation of why an asserted KnowledgeItem was retracted. Immutable once recorded." ;
+    rdfs:domain projecta:KnowledgeItem ;
+    rdfs:range xsd:string .

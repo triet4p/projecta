@@ -53,3 +53,19 @@ run it with `docker compose run --build --rm ontology-test`.
 **Watch out for:** Prefer container entrypoints or Compose services for
 cross-platform workflows. Add host-shell wrappers only when they provide
 platform-specific value and are not the sole canonical entry point.
+
+## [2026-07-29] Jena SHACL CLI exit status does not indicate conformance
+
+**Symptom:** The ontology suite reported passing SHACL positive fixtures even
+when a Jena validation report contained violations.
+**Root cause:** `shacl validate` exits with status 0 after producing a valid RDF
+validation report regardless of the report's `sh:conforms` value. It also loads
+TriG as a graph and warns that named-graph data is ignored.
+**Fix / workaround:** Parse Jena's Turtle report and require exactly one
+`sh:conforms true` for positive fixtures; require `sh:conforms false` plus the
+expected result message for negative fixtures. Evaluate graph-sensitive
+`sh:sparql` isolation constraints against an unflattened `rdflib.Dataset` with
+TriG fixtures.
+**Watch out for:** Any Jena CLI SHACL check over TriG or any test that treats a
+zero exit status as data conformance. Keep graph-agnostic Jena SHACL checks
+separate from named-graph dataset checks.
