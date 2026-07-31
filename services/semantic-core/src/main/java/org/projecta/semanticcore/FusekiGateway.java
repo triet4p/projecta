@@ -21,15 +21,18 @@ public final class FusekiGateway {
         this.datasetUrl = datasetUrl;
     }
 
+    /** Executes a service-authored ASK query and returns its boolean result. */
     public boolean ask(String query) {
         var response = send("query", "application/sparql-query", query);
         return response.matches("(?s).*\"boolean\"\\s*:\\s*true.*") || response.contains("<boolean>true</boolean>");
     }
 
+    /** Executes a service-authored SELECT query and returns its SPARQL JSON response. */
     public String select(String query) {
         return send("query", "application/sparql-query", query);
     }
 
+    /** Executes one service-authored SPARQL Update request against the configured dataset. */
     public void update(String update) {
         send("update", "application/sparql-update", update);
     }

@@ -22,11 +22,13 @@ public final class FusekiQueryService {
         this.validation = validation;
     }
 
+    /** Validates one candidate in the trusted project's candidates graph. */
     public CandidateValidationResult validate(ProjectId project, String candidateId) {
         candidate(project, candidateId);
         return validation.validate(project, candidateId);
     }
 
+    /** Returns the finite current-knowledge view, optionally restricted to an allowlisted type. */
     public List<Map<String, String>> current(ProjectId project, String type) {
         if (type != null && !type.equals("Requirement"))
             throw new IllegalArgumentException("knowledge-item type is not allowlisted");
@@ -37,6 +39,7 @@ public final class FusekiQueryService {
                 + "validFrom> ?validFrom . } }"));
     }
 
+    /** Returns ordered reviewer decisions that used the specified project-scoped candidate. */
     public List<Map<String, String>> history(ProjectId project, String candidateId) {
         return rows(gateway.select("SELECT ?activity ?decision ?reviewer ?endedAt WHERE { GRAPH <"
                 + router.route(project, GraphRole.PROVENANCE) + "> { ?activity <" + PROV + "used> <"
@@ -44,6 +47,7 @@ public final class FusekiQueryService {
                 + "wasAssociatedWith> ?reviewer ; <" + PROV + "endedAtTime> ?endedAt . } } ORDER BY ?endedAt"));
     }
 
+    /** Returns the asserted-item-to-candidate-to-source reviewer evidence chain. */
     public List<Map<String, String>> evidence(ProjectId project, String itemId) {
         var item = "https://w3id.org/projecta/data/project/" + project.value() + "/requirement/" + itemId;
         return rows(gateway.select(

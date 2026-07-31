@@ -26,6 +26,11 @@ public final class RemoteCandidateValidationService {
                 shapesDirectory.resolve("candidate-shapes.ttl").toUri().toString());
     }
 
+    /**
+     * Validates only the requested candidate, its direct project closure, and released ontology terms.
+     *
+     * @throws CandidateNotFoundException when the candidate is absent from the trusted project graph
+     */
     public CandidateValidationResult validate(ProjectId project, String candidateId) {
         var candidateIri = candidateIri(project, candidateId);
         var candidates =
@@ -56,6 +61,7 @@ public final class RemoteCandidateValidationService {
         return new CandidateValidationResult(report.conforms(), violations);
     }
 
+    /** Convenience predicate for callers that do not need SHACL violation details. */
     public boolean conforms(ProjectId project, String candidateId) {
         return validate(project, candidateId).conforms();
     }

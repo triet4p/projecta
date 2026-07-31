@@ -23,6 +23,11 @@ public final class FusekiLifecycleService {
         this.validation = validation;
     }
 
+    /**
+     * Confirms a candidate without an idempotency record, for in-process callers and focused tests.
+     *
+     * <p>The runtime HTTP boundary uses {@link #confirmDecision} instead.
+     */
     public synchronized String confirm(
             ProjectId project, String candidateId, String reviewerId, String label, LocalDate validFrom) {
         return confirm(project, candidateId, reviewerId, label, validFrom, null, null, null, null);
@@ -169,6 +174,11 @@ public final class FusekiLifecycleService {
                 + " } }");
     }
 
+    /**
+     * Atomically rejects a candidate and stores the human reason and idempotency record in Fuseki.
+     *
+     * <p>The returned result marks whether this request committed the decision or replayed it.
+     */
     public synchronized Rejection reject(
             ProjectId project, String candidateId, String reviewerId, String idempotencyKey, String reason) {
         require(idempotencyKey, "idempotency key");

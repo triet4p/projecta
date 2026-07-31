@@ -17,6 +17,7 @@ import java.util.Map;
 public final class SemanticCoreApplication {
     private SemanticCoreApplication() {}
 
+    /** Starts the HTTP boundary after composing the Fuseki-backed runtime dependencies. */
     public static void main(String[] args) {
         var configuration = SemanticCoreConfiguration.fromEnvironment(System.getenv());
         var readiness = new FusekiReadiness(HttpClient.newHttpClient(), configuration);
