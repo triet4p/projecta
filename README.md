@@ -4,11 +4,27 @@ Ontology-driven project intelligence for BrSE and project coordination workflows
 
 ## Status
 
-Projecta is currently in the semantic-foundation stage. The Sprint 1 ontology
-kernel, demo graph, competency queries, negative fixtures, and containerized
-Jena validation are implemented and pass automated review. Ontology v0.1 is
-approved as the repository-local semantic baseline; public w3id.org registration
-is deferred. Application services have not been implemented.
+Projecta has completed M1 (the executable semantic foundation) and M2 (the
+Manual Quick Note slice). Ontology v0.1, v0.2, and the additive v0.3.0
+evidence-offset extension are approved repository-local releases.
+
+The current working vertical slice is:
+
+- FastAPI accepts a trusted, typed Quick Note.
+- The Semantic Core atomically records source notes, deterministic candidates,
+  evidence, and provenance in project-scoped graphs.
+- Candidates can be validated, confirmed, or rejected through the API.
+- Confirmed candidates produce asserted Requirements; rejected candidates do
+  not create asserted items.
+- Capture and review retries are idempotent, with transaction rollback,
+  project isolation, and restart persistence covered by automated tests.
+
+The canonical Sprint 4 suite passed 103/103 ontology checks, Java verification,
+and 10 API end-to-end tests. LLM extraction, inference materialization,
+authentication/authorization, connectors, public deployment, pagination, and
+edit/delete workflows remain out of scope. See the [project plan](docs/PLAN.md)
+and [Sprint 4 review packet](docs/sprint-plans/sprint-4/review-packet.md) for
+the current delivery evidence.
 
 ## Vision
 
@@ -27,6 +43,9 @@ Microsoft Teams is an initial connector, not the system center. Connectors, LLM 
 - [Technology stack](docs/initialization/06-Tech-Stack.md)
 - [Build-and-learn path](docs/initialization/07-Learning-Path-Index.md)
 - [Deployment choice](docs/initialization/08-Deployment-Choice.md)
+- [Application API contract](docs/architecture/application-api.md)
+- [Semantic Core API contract](docs/architecture/semantic-core-api.md)
+- [Quick Note use case](docs/use-cases/quick-note.md)
 
 ## Repository Guidance
 
@@ -44,17 +63,19 @@ Do not duplicate their instructions in other contributor documents.
 
 Theo dõi roadmap và sprint đang hoạt động tại [Project Plan](docs/PLAN.md).
 
-The first recommended vertical slice is:
+The implemented M2 slice is:
 
 ```text
 Quick Note
-→ Candidate extraction
+→ Deterministic candidate extraction
 → SHACL validation
-→ Human confirmation
-→ Asserted RDF
-→ Rule inference
-→ Project context query
+→ Human confirmation or rejection
+→ Asserted RDF and provenance
+→ Project-scoped reads
 ```
+
+Inference remains a preserved boundary, not a materialized output, until a
+future milestone has an approved competency question and rule.
 
 The target stack and repository layout are documented in `06-Tech-Stack.md`. Local and early-production deployment use the Compose-first approach in `08-Deployment-Choice.md`.
 
@@ -63,6 +84,12 @@ Validate the current semantic artifacts with:
 ```text
 docker compose run --build --rm ontology-test
 docker compose -f compose.yaml -f compose.dev.yaml config
+```
+
+Run the full Sprint 4 system suite with:
+
+```text
+pwsh -File scripts/run_system_tests.ps1
 ```
 
 ## License
