@@ -1,0 +1,66 @@
+PREFIX projecta: <https://w3id.org/projecta/ontology/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# --- CQ-M2-SRC-001 ---
+SELECT ?raw ?author ?recordedAt WHERE {
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/note/m2-001>
+    projecta:rawText ?raw ; projecta:authoredBy ?author ; projecta:recordedAt ?recordedAt .
+}
+
+# --- CQ-M2-SRC-002 ---
+SELECT ?item ?type ?start ?end ?text WHERE {
+  ?item a projecta:NoteItem ; projecta:isItemOf <https://w3id.org/projecta/data/project/ecommerce-checkout/note/m2-001> ;
+    projecta:hasItemType ?type ; projecta:evidenceStartOffset ?start ; projecta:evidenceEndOffset ?end ; projecta:contentText ?text .
+}
+
+# --- CQ-M2-CAND-001 ---
+SELECT ?candidate ?source WHERE {
+  ?candidate a projecta:Candidate ; prov:wasDerivedFrom ?source ;
+    projecta:candidateStatus projecta:validated .
+  ?source projecta:isItemOf <https://w3id.org/projecta/data/project/ecommerce-checkout/note/m2-001> ;
+    projecta:hasItemType projecta:requirement .
+}
+
+# --- CQ-M2-CAND-002 ---
+SELECT ?candidate ?source ?note ?author ?start ?end WHERE {
+  ?candidate prov:wasDerivedFrom ?source .
+  ?source projecta:isItemOf ?note ; projecta:evidenceStartOffset ?start ;
+    projecta:evidenceEndOffset ?end .
+  ?note projecta:authoredBy ?author .
+  FILTER(?candidate = <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/m2-req>)
+}
+
+# --- CQ-M2-REV-001 ---
+SELECT ?activity ?decision ?reviewer ?endedAt WHERE {
+  ?activity prov:used <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/m2-risk> ;
+    projecta:reviewDecision ?decision ; prov:wasAssociatedWith ?reviewer ;
+    prov:endedAtTime ?endedAt .
+}
+
+# --- CQ-M2-ASSERT-001 ---
+SELECT ?item ?type ?candidate ?reviewer WHERE {
+  ?item a projecta:KnowledgeItem, ?type ; prov:wasDerivedFrom ?candidate ;
+    prov:wasAttributedTo ?reviewer ; projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> .
+  FILTER(?type = projecta:Requirement)
+}
+
+# --- CQ-M2-ASSERT-002 ---
+SELECT ?asserted WHERE {
+  ?asserted a projecta:KnowledgeItem ; prov:wasDerivedFrom
+    <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/m2-risk> .
+}
+
+# --- CQ-M2-PROV-001 ---
+SELECT ?record ?note WHERE {
+  ?record rdf:value ?fingerprint ; prov:generated ?note .
+  ?note a projecta:Note ; projecta:rawText ?raw .
+}
+
+# --- CQ-M2-ISO-001 ---
+SELECT ?candidate WHERE {
+  ?candidate projecta:belongsToProject <https://w3id.org/projecta/data/project/other-project> ;
+    prov:wasDerivedFrom ?source .
+  ?source projecta:isItemOf <https://w3id.org/projecta/data/project/ecommerce-checkout/note/m2-001> .
+}

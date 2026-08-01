@@ -12,7 +12,7 @@ import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFParser;
 
 /** Executes only service-authored, project-scoped SPARQL against the configured Fuseki dataset. */
-public final class FusekiGateway {
+public class FusekiGateway {
     private final HttpClient client;
     private final URI datasetUrl;
 

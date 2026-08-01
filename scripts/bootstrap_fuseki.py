@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Idempotently load released Projecta ontology modules through Fuseki HTTP."""
+"""Idempotently load Projecta's local M2 ontology draft through Fuseki HTTP."""
 
 from __future__ import annotations
 
@@ -10,8 +10,8 @@ import urllib.request
 from pathlib import Path
 
 
-ONTOLOGY_GRAPH = "https://w3id.org/projecta/data/ontology/v/0.2/"
-MODULES = ("core.ttl", "provenance.ttl", "temporal.ttl")
+ONTOLOGY_GRAPH = "https://w3id.org/projecta/data/ontology/dev/"
+MODULES = ("core.ttl", "communication.ttl", "provenance.ttl", "temporal.ttl", "evidence.ttl")
 
 
 def main() -> int:
@@ -30,7 +30,7 @@ def main() -> int:
         if not 200 <= response.status < 300:
             raise RuntimeError(f"Fuseki returned HTTP {response.status}")
 
-    print(f"Loaded {len(MODULES)} released ontology modules into {ONTOLOGY_GRAPH}")
+    print(f"Loaded {len(MODULES)} local ontology modules into {ONTOLOGY_GRAPH}")
     return 0
 
 

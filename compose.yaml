@@ -92,6 +92,25 @@ services:
       FUSEKI_BASE_URL: http://fuseki:3030/projecta
     volumes:
       - ./ontology:/ontology:ro
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/health/ready"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  api:
+    build:
+      context: ./apps/api
+      target: runtime
+    image: projecta-api:local
+    depends_on:
+      semantic-core:
+        condition: service_healthy
+    environment:
+      PROJECTA_API_SEMANTIC_CORE_URL: http://semantic-core:8080
+      PROJECTA_API_TRUSTED_CONTEXT_SECRET: ${PROJECTA_API_TRUSTED_CONTEXT_SECRET:?PROJECTA_API_TRUSTED_CONTEXT_SECRET must be set}
+    expose:
+      - "8000"
 
   semantic-core-system-test:
     profiles: ["system-test"]
@@ -125,6 +144,35 @@ services:
       SEMANTIC_CORE_TRUSTED_ACTOR_ID: le
     volumes:
       - ./ontology:/ontology:ro
+    restart: "no"
+
+  api-runtime-test:
+    profiles: ["system-test"]
+    build:
+      context: ./apps/api
+      target: runtime
+    image: projecta-api:runtime-test
+    depends_on:
+      semantic-core-runtime-test:
+        condition: service_healthy
+    environment:
+      PROJECTA_API_SEMANTIC_CORE_URL: http://semantic-core-runtime-test:8080
+      PROJECTA_API_TRUSTED_CONTEXT_SECRET: ${PROJECTA_API_TRUSTED_CONTEXT_SECRET:?PROJECTA_API_TRUSTED_CONTEXT_SECRET must be set}
+    restart: "no"
+
+  api-system-test:
+    profiles: ["system-test"]
+    build:
+      context: ./apps/api
+      target: test
+    image: projecta-api:system-test
+    command: ["uv", "run", "pytest", "-q"]
+    depends_on:
+      api-runtime-test:
+        condition: service_healthy
+    environment:
+      PROJECTA_API_HTTP_URL: http://api-runtime-test:8000
+      PROJECTA_API_CONTEXT_SECRET: ${PROJECTA_API_TRUSTED_CONTEXT_SECRET:?PROJECTA_API_TRUSTED_CONTEXT_SECRET must be set}
     restart: "no"
 
 volumes:

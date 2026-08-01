@@ -1,0 +1,44 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix prov:     <http://www.w3.org/ns/prov#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+
+# Compatibility fixture: a v0.2 Candidate references a legacy Note/NoteItem
+# without v0.3 rawText or evidence offset properties.
+
+GRAPH <https://w3id.org/projecta/data/project/legacy-compat/> {
+  <https://w3id.org/projecta/data/project/legacy-compat>
+    a projecta:Project ;
+    projecta:name "Legacy Compatibility Project" .
+
+  <https://w3id.org/projecta/data/project/legacy-compat/person/le>
+    a projecta:Person ;
+    projecta:name "Le" .
+
+  <https://w3id.org/projecta/data/project/legacy-compat/note/legacy-001>
+    a projecta:Note ;
+    projecta:name "Legacy v0.2 note" ;
+    projecta:belongsToProject <https://w3id.org/projecta/data/project/legacy-compat> ;
+    projecta:authoredBy <https://w3id.org/projecta/data/project/legacy-compat/person/le> ;
+    projecta:recordedAt "2026-07-29T10:00:00Z"^^xsd:dateTime .
+
+  <https://w3id.org/projecta/data/project/legacy-compat/note-item/legacy-001>
+    a projecta:NoteItem ;
+    projecta:isItemOf <https://w3id.org/projecta/data/project/legacy-compat/note/legacy-001> ;
+    projecta:hasItemType projecta:requirement ;
+    projecta:contentText "Legacy requirement" .
+}
+
+GRAPH <https://w3id.org/projecta/data/project/legacy-compat/candidates/> {
+  <https://w3id.org/projecta/data/project/legacy-compat/candidate/legacy-001>
+    a projecta:Candidate ;
+    projecta:candidateStatus projecta:validated ;
+    projecta:generator "legacy-extractor-v0.2.0" ;
+    projecta:proposedOntologyVersion "0.2.0" ;
+    projecta:belongsToProject <https://w3id.org/projecta/data/project/legacy-compat> ;
+    prov:wasDerivedFrom <https://w3id.org/projecta/data/project/legacy-compat/note-item/legacy-001> ;
+    prov:wasGeneratedBy <https://w3id.org/projecta/data/project/legacy-compat/activity/extract-001> ;
+    prov:generatedAtTime "2026-07-29T10:00:00Z"^^xsd:dateTime .
+
+  <https://w3id.org/projecta/data/project/legacy-compat/activity/extract-001>
+    a prov:Activity .
+}

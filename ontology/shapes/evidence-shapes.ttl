@@ -1,0 +1,70 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh:       <http://www.w3.org/ns/shacl#> .
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+
+# These shapes target Note/NoteItem for the v0.3 M2 contract. Runtime
+# validation selects them from Candidate/projecta:proposedOntologyVersion;
+# legacy v0.1/v0.2 records use source-shapes.ttl without evidence constraints.
+
+projecta:M2NoteEvidenceShape a sh:NodeShape ;
+    sh:targetClass projecta:Note ;
+    rdfs:label "M2 Note Evidence Shape" ;
+    sh:property [
+        sh:path projecta:rawText ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minLength 1 ;
+        sh:message "An M2 Note must have exactly one non-empty canonical rawText."
+    ] .
+
+projecta:M2NoteItemEvidenceShape a sh:NodeShape ;
+    sh:targetClass projecta:NoteItem ;
+    rdfs:label "M2 Note Item Evidence Shape" ;
+    sh:property [
+        sh:path projecta:evidenceStartOffset ;
+        sh:datatype xsd:nonNegativeInteger ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "An M2 NoteItem must have one non-negative evidence start offset."
+    ] ;
+    sh:property [
+        sh:path projecta:evidenceEndOffset ;
+        sh:datatype xsd:positiveInteger ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "An M2 NoteItem must have one positive evidence end offset."
+    ] ;
+    sh:sparql [
+        sh:message "A NoteItem evidence range must be in-bounds, non-empty, and equal its contentText substring." ;
+        sh:select """
+            PREFIX projecta: <https://w3id.org/projecta/ontology/>
+            SELECT $this WHERE {
+                $this projecta:isItemOf ?note ;
+                      projecta:evidenceStartOffset ?start ;
+                      projecta:evidenceEndOffset ?end ;
+                      projecta:contentText ?content .
+                ?note projecta:rawText ?raw .
+                BIND(STRLEN(?raw) AS ?rawLength)
+                BIND(?end - ?start AS ?length)
+                BIND(SUBSTR(?raw, ?start + 1, ?length) AS ?span)
+                FILTER(?start >= ?end || ?end > ?rawLength || ?span != ?content)
+            }
+        """
+    ] ;
+    sh:sparql [
+        sh:message "M2 NoteItem evidence ranges in the same Note must not overlap." ;
+        sh:select """
+            PREFIX projecta: <https://w3id.org/projecta/ontology/>
+            SELECT $this WHERE {
+                $this projecta:isItemOf ?note ;
+                      projecta:evidenceStartOffset ?start ;
+                      projecta:evidenceEndOffset ?end .
+                ?other projecta:isItemOf ?note ;
+                       projecta:evidenceStartOffset ?otherStart ;
+                       projecta:evidenceEndOffset ?otherEnd .
+                FILTER($this != ?other && ?start < ?otherEnd && ?otherStart < ?end)
+            }
+        """
+    ] .

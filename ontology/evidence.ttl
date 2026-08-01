@@ -1,0 +1,32 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix owl:      <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms:  <http://purl.org/dc/terms/> .
+
+<https://w3id.org/projecta/ontology/v/0.3/>
+    a owl:Ontology ;
+    owl:versionIRI <https://w3id.org/projecta/ontology/v/0.3/> ;
+    owl:versionInfo "0.3.0" ;
+    rdfs:label "Projecta Ontology — Sprint 4 Evidence Extension" ;
+    rdfs:comment "Evidence terms for canonical Quick Note text and exact NoteItem spans."@en ;
+    dcterms:created "2026-07-31"^^xsd:date ;
+    dcterms:creator "Projecta contributors" .
+
+projecta:rawText a owl:DatatypeProperty ;
+    rdfs:label "raw text" ;
+    rdfs:comment "The complete canonical text body captured in a Note." ;
+    rdfs:domain projecta:Note ;
+    rdfs:range xsd:string .
+
+projecta:evidenceStartOffset a owl:DatatypeProperty ;
+    rdfs:label "evidence start offset" ;
+    rdfs:comment "The inclusive zero-based Unicode-code-point location where a NoteItem begins in its parent Note raw text." ;
+    rdfs:domain projecta:NoteItem ;
+    rdfs:range xsd:nonNegativeInteger .
+
+projecta:evidenceEndOffset a owl:DatatypeProperty ;
+    rdfs:label "evidence end offset" ;
+    rdfs:comment "The exclusive zero-based Unicode-code-point location immediately after a NoteItem in its parent Note raw text." ;
+    rdfs:domain projecta:NoteItem ;
+    rdfs:range xsd:positiveInteger .

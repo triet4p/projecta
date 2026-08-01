@@ -1,166 +1,145 @@
-# Quick Note Use Case — Slice Boundary
+# Quick Note Use Case — M2 Executable Boundary
 
-## 1. Purpose
+**Status:** HUMAN_APPROVED
 
-This document defines the precise boundary of the Quick Note use case for Sprint 1. It serves as the authoritative reference for competency questions (S1-02), term inventory (S1-06), and ontology design decisions that follow.
+## Purpose
 
-## 2. Use Case: Quick Note Capture
+This is the Sprint 4 executable boundary for manual Quick Note capture. It
+supersedes the Sprint 1 delivery boundary while preserving its released source
+semantics. It defines the input that the application may accept and the graph
+effects that the Semantic Core must produce; it is not an API implementation.
 
-### 2.1. Actor
+## Actors and Preconditions
 
-- BrSE (primary).
-- Project Coordinator.
-- Technical Business Analyst.
+The capture actor is a BrSE, Project Coordinator, or Technical Business
+Analyst. Trusted middleware supplies a project ID, actor ID, and request ID;
+none comes from the request body. The actor is authorized for that project.
 
-### 2.2. Trigger
+The caller submits one non-empty Unicode raw note and an ordered, non-empty
+list of typed segments. Every segment has one released `NoteItemType`, a
+half-open evidence range `[startOffset, endOffset)`, and text exactly equal to
+the indicated raw-note substring. Offsets count Unicode code points, not UTF-8
+bytes or UTF-16 code units. Segments may be adjacent or disjoint; overlapping
+segments are rejected for M2.
 
-The actor is in or preparing for a meeting, reviewing a conversation thread, or processing information from any channel. They need to capture structured knowledge quickly without switching to a formal documentation tool.
+## Canonical Capture Request
 
-### 2.3. Preconditions
+```json
+{
+  "rawText": "Confirm address before payment. Tax API timeout is 15%.",
+  "segments": [
+    {
+      "type": "requirement",
+      "startOffset": 0,
+      "endOffset": 31,
+      "text": "Confirm address before payment."
+    },
+    {
+      "type": "risk",
+      "startOffset": 32,
+      "endOffset": 55,
+      "text": "Tax API timeout is 15%."
+    }
+  ]
+}
+```
 
-- The actor is authenticated.
-- A target project exists (the note is always project-scoped).
-- The actor has permission to create notes in that project.
+The application canonicalizes line endings to `\n` before calculating offsets,
+preserves all other characters, and sends the canonical request plus trusted
+context to the Semantic Core. The server creates opaque note, note-item, and
+candidate IDs. Clients cannot select RDF IRIs, graph IRIs, SPARQL, candidate
+IDs, reviewer IDs, or asserted-item IDs.
 
-### 2.4. Main Flow
+## Main Flow and Graph Diff
 
-1. Actor opens Quick Note in the context of a specific project.
-2. Actor writes free-form text — this may span multiple paragraphs and cover multiple topics.
-3. Actor optionally tags segments with a type: Requirement, Decision, Question, Task, Risk, Assumption, Constraint, Progress Update, or Research Need.
-4. System persists the note as a `SourceArtifact` with:
-   - Raw text content.
-   - Project reference.
-   - Actor identity.
-   - Timestamp.
-   - Optional type tags per segment.
-5. System returns a confirmation with the note identifier.
+1. The application validates the canonical request before requesting any
+   semantic mutation.
+2. The Semantic Core routes the request only from trusted project context and
+   atomically creates the source Note and one source NoteItem per segment in
+   `/sources/`.
+3. It atomically creates one deterministic Candidate per valid NoteItem in
+   `/candidates/`, with released lifecycle, generator, ontology-version, and
+   source provenance fields.
+4. It appends extraction provenance activities in `/provenance/`. The asserted
+   and inferred graphs are unchanged.
+5. The response returns opaque IDs, canonical offsets, candidate status, and
+   the request ID.
 
-### 2.5. Postconditions
+The required graph-level result is:
 
-- A new `Note` entity exists in the project's sources graph.
-- The note content is available for downstream candidate extraction (Sprint 2+).
-- The note does **not** automatically create asserted knowledge items.
-- The note has complete provenance: who wrote it, when, in which project.
+| Graph | Required M2 effect |
+|---|---|
+| sources | One `Note` and one typed `NoteItem` per valid segment; raw source remains immutable. |
+| candidates | One `Candidate` per source NoteItem, derived from that item and marked `extracted`. |
+| provenance | Extraction activity and links needed to traverse candidate → NoteItem → Note → author. |
+| asserted | No write during capture. |
+| inferred | No write during capture; inference is not an M2 acceptance criterion. |
 
-### 2.6. Alternative Flows
+## Deterministic Mapping
 
-- **Edit after creation:** Actor may edit the raw text of an existing note. Previous versions are retained.
-- **Delete:** Actor may delete a note. Deletion is soft (retained with status metadata).
-- **Multi-project note:** Not supported in Sprint 1 — a note belongs to exactly one project.
+Mapping is limited to the released controlled values: `requirement`,
+`decision`, `question`, `task`, `risk`, `assumption`, `constraint`,
+`progress-update`, and `research-need`. A segment maps only to the candidate
+representation supported by the released v0.2 contract. It performs no LLM
+extraction, automatic classification, entity linking, confidence scoring, or
+fact assertion.
 
-## 3. Positive Example
+## Idempotency and Atomicity
 
-### 3.1. Scenario
+Capture has a required opaque idempotency key scoped to trusted project and the
+canonical request fingerprint. The first successful capture creates the graph
+effects above. A replay with the same scope, key, and canonical body returns
+the original result and writes no duplicate source, candidate, or provenance
+records. Reusing a key with different canonical content fails with a conflict.
 
-BrSE Le is in a sprint review meeting for project "Ecommerce Checkout Redesign." They hear several pieces of information and open Quick Note to capture them.
+If source validation, candidate validation, graph routing, or storage fails,
+the operation fails as a whole: no partial source, candidate, or provenance
+write may remain. Idempotency bookkeeping is operational state, not RDF domain
+truth.
 
-### 3.2. Raw Input
+## Failure Cases
 
-> **2026-07-28 Sprint Review — Ecommerce Checkout**
->
-> - Khách hàng yêu cầu thêm bước xác nhận địa chỉ trước khi thanh toán. Cần làm rõ: có bắt buộc với KH đã lưu địa chỉ không? [Requirement]
-> - Anh Tuấn (Dev lead) báo rằng API tính thuế bên thứ 3 đang bị timeout 15% request. Cần investigation. [Risk]
-> - Team quyết định dùng Redis để cache kết quả tính thuế trong 30 phút. [Decision]
-> - Hỗ trợ VNPay — chưa rõ ai làm, chưa có estimate. [Task]
-> - Liệu API tính thuế có hỗ trợ batch request không? Cần hỏi bên vendor. [Question]
-> - Giả định: KH có thể upload tối đa 3 file đính kèm cho mỗi đơn hàng. [Assumption]
+| Condition | Required outcome |
+|---|---|
+| Missing or invalid trusted context | Reject before payload processing; reveal no project data. |
+| Empty raw text or no segments | Reject with a request-validation error; no mutation. |
+| Unknown, missing, or repeated segment type | Reject; no mutation. |
+| Offset outside the canonical raw text, `startOffset >= endOffset`, mismatch between span and text, or overlap | Reject; no mutation. |
+| Segment violates released source/candidate validation | Reject; no mutation. |
+| Idempotency key reused with different request | Conflict; no mutation. |
+| Semantic-store failure | Service failure; transaction rollback; no graph detail or stack trace. |
 
-### 3.3. What This Demonstrates
+## Review and Read Boundary
 
-- **One note, multiple item types:** The note captures a Requirement, Risk, Decision, Task, Question, and Assumption — all in a single capture session.
-- **Project-scoped:** Everything belongs to "Ecommerce Checkout Redesign."
-- **Human-authored:** Le wrote this based on their own understanding; nothing was auto-generated.
-- **Source artifact role:** This is raw input. None of these items are asserted knowledge yet — they must go through extraction, validation, and human confirmation before becoming part of the asserted graph.
-- **Traceable:** The note has an author, timestamp, and project reference.
+Candidate validation and confirm/reject continue through the released Semantic
+Core lifecycle. Confirmation can create an asserted `KnowledgeItem`; rejection
+cannot. Read flows may return candidate history, current asserted items, and
+the evidence/provenance chain only within trusted project scope.
 
-## 4. Counterexamples
+## Acceptance Scenario
 
-The following scenarios are explicitly **not** Quick Note captures. They illustrate common misunderstandings of the boundary.
+Given trusted context for project `ecommerce-checkout`, Le captures the two
+segments in the canonical request. The system returns one note and two
+candidates. The sources graph holds the note and exact typed source items; the
+candidates graph holds two `extracted` candidates, each derived from its own
+item; the provenance graph records both extraction paths. Confirming the
+requirement candidate creates one asserted item traceable through its candidate
+to the original source span. Rejecting the risk candidate creates no asserted
+item. Replaying the capture returns the original IDs, and the inferred graph
+remains empty throughout.
 
-### 4.1. Counterexample A: Meeting Transcript
+## Explicit Non-Goals
 
-> **System-generated transcript:**
-> "Vâng, em nghĩ là mình nên thêm cái bước xác nhận địa chỉ. Ừ, đúng rồi. Mà cái vụ API tính thuế hình như đang bị chậm, để em check lại xem sao..."
+- Note edit, delete, versioning, and bulk capture.
+- Transcript ingestion, connector-originated capture, UI behavior, and
+  authentication-provider implementation.
+- LLM extraction, automatic type assignment, entity linking, confidence, or
+  auto-assertion.
+- Materialized inference rules or inferred facts.
+- Client-provided RDF/SPARQL/graph routing or cross-project capture.
 
-**Why this is NOT a Quick Note:**
+## Open Governance Gate
 
-- This is a system-generated transcript, not a human-authored note.
-- It contains filler, hesitation, and conversational noise — not structured capture.
-- The system cannot determine which parts are decisions, questions, or off-topic remarks.
-- Transcripts are explicitly out of scope per [Project Scope §3.1](../initialization/02-Project-Scope.md#31-transcript-first-meeting-intelligence).
-
-### 4.2. Counterexample B: Direct Jira Task Creation
-
-> Actor opens Jira, creates a new task "Implement address confirmation step" with description, assignee, story points, sprint assignment, and acceptance criteria.
-
-**Why this is NOT a Quick Note:**
-
-- This bypasses the semantic core entirely — no source artifact is created.
-- It creates an asserted WorkItem directly in an external system without any Projecta provenance linking it to the decision context.
-- Jira is a connector — task creation through it is a downstream action (Sprint 3+), not the capture mechanism.
-
-### 4.3. Counterexample C: AI-Generated Summary Without Human Input
-
-> System listens to a Teams meeting, transcribes it, and outputs: "Based on the meeting, the following requirements were identified: 1. Add address confirmation step. 2. Fix tax API timeout issue..."
-
-**Why this is NOT a Quick Note:**
-
-- No human authored this — the BrSE did not actively capture information.
-- There is no human judgment about what matters and what does not.
-- The output skips the candidate stage and presents AI output as if it were asserted knowledge.
-- This violates both the "no transcript dependency" principle and the "candidate before assertion" principle from the [Project Overview](../initialization/01-Project-Overview.md#73-deterministic-where-possible).
-
-### 4.4. Counterexample D: Free-Form Personal Note Without Project Scope
-
-> BrSE writes in their personal notepad: "Nhớ hỏi anh Tuấn về API tax. Còn vụ VNPay chưa biết ai làm."
-
-**Why this is NOT a Quick Note (in the Projecta sense):**
-
-- No project scope — the system cannot associate this with "Ecommerce Checkout Redesign."
-- No structured capture boundary — the system cannot separate this from the actor's personal notes.
-- No source artifact with provenance metadata — it is a private memory aid, not a system entity.
-
-## 5. Non-Goals for Sprint 1
-
-The following capabilities are explicitly excluded from the Sprint 1 Quick Note slice:
-
-| Non-Goal | Reason | Target Sprint |
-|---|---|---|
-| LLM-powered candidate extraction from note text | Sprint 1 focuses on the ontology kernel and use case boundary, not AI extraction | Sprint 2+ |
-| Automatic classification of note segments | Classification is a candidate-extraction concern | Sprint 2+ |
-| Entity linking (linking note items to existing ontology entities) | Requires an asserted graph and inference rules | Sprint 3+ |
-| SHACL validation of extracted candidates | Validation machinery is in scope for Sprint 1 ontology, but validating extracted candidates requires extraction first | Sprint 2 |
-| Human confirmation workflow UI | Confirmation lifecycle is modeled in the ontology, but the interaction flow is not part of Sprint 1 | Sprint 3+ |
-| Editing or deleting notes after creation | Core capture is the priority; mutation flows are a subsequent concern | Sprint 3+ |
-| Cross-project or shared notes | Single-project scope only | Not scheduled |
-| Connector-triggered note creation (e.g., from Teams message) | Manual capture only; connector integration is future work | Sprint 3+ |
-| Note templates or structured forms | Free-text capture only; templates are a UX concern | Not scheduled |
-| Full-text search across notes | Retrieval infrastructure is out of scope for Sprint 1 | Sprint 4+ |
-
-## 6. What the Ontology Kernel Must Support
-
-For Sprint 1, the ontology kernel must define:
-
-- **`Note`** as a subclass of `SourceArtifact` — a human-authored capture event.
-- **`NoteItem`** as a typed segment within a Note, with one of the following types: Requirement, Decision, Question, Task, Risk, Assumption, Constraint, ProgressUpdate, ResearchNeed.
-- **`belongsToProject`** — the mandatory project scope for every Note.
-- **`hasNoteItem`** — the relationship between a Note and its typed segments.
-- **`authoredBy`** — the Actor (Person) who wrote the note.
-- **`recordedAt`** — the timestamp of capture.
-- **Provenance:** Every Note and NoteItem must be traceable to its author, project, and timestamp via PROV-O properties.
-
-The ontology does **not** need to model in Sprint 1:
-
-- Full semantic lifecycle states (Extracted → Validated → … → Asserted) beyond what the Core Ontology requires — complete transition logic is Sprint 2.
-- Extraction rules or LLM prompt templates.
-- UI or API contracts.
-- Connector-specific Note origins.
-
-## 7. Acceptance Criteria for This Slice
-
-- [x] The Quick Note use case is documented with actor, trigger, preconditions, main flow, and postconditions.
-- [x] A concrete positive example demonstrates a realistic multi-type capture scenario.
-- [x] At least three counterexamples clarify what Quick Note is NOT.
-- [x] Non-goals are explicitly listed with rationale and target sprint.
-- [x] The ontology kernel requirements derived from this use case are identified.
-- [x] Human reviewer confirms the use case boundary before S1-02 (competency questions) proceeds.
+The evidence-offset extension is implemented as a local v0.3 draft and is
+covered by the M2 query, positive, negative, and runtime validation evidence.
+It still requires separate human release approval before publication.

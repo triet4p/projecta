@@ -1,0 +1,17 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+GRAPH <https://w3id.org/projecta/data/project/unicode-demo/sources/> {
+  <https://w3id.org/projecta/data/project/unicode-demo> a projecta:Project .
+  <https://w3id.org/projecta/data/project/unicode-demo/person/le> a projecta:Person .
+  <https://w3id.org/projecta/data/project/unicode-demo/note/emoji>
+    a projecta:Note ; projecta:name "Unicode evidence" ; projecta:rawText "😀 task" ;
+    projecta:belongsToProject <https://w3id.org/projecta/data/project/unicode-demo> ;
+    projecta:authoredBy <https://w3id.org/projecta/data/project/unicode-demo/person/le> ;
+    projecta:recordedAt "2026-08-01T10:00:00Z"^^xsd:dateTime .
+  <https://w3id.org/projecta/data/project/unicode-demo/note-item/emoji>
+    a projecta:NoteItem ; projecta:isItemOf <https://w3id.org/projecta/data/project/unicode-demo/note/emoji> ;
+    projecta:hasItemType projecta:task ; projecta:contentText "😀 task" ;
+    projecta:evidenceStartOffset "0"^^xsd:nonNegativeInteger ;
+    projecta:evidenceEndOffset "6"^^xsd:positiveInteger .
+}

@@ -2,9 +2,11 @@ package org.projecta.semanticcore;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /** Finite read and validation views backed by Fuseki; no client SPARQL crosses this boundary. */
 public final class FusekiQueryService {
@@ -28,6 +30,59 @@ public final class FusekiQueryService {
         return validation.validate(project, candidateId);
     }
 
+    /** Validates and atomically promotes one conforming extracted candidate. */
+    public CandidateValidationResult validateAndMarkValidated(ProjectId project, String candidateId, String actorId) {
+        var result = validate(project, candidateId);
+        if (result.conforms()) {
+            markValidated(project, candidateId, actorId);
+        }
+        return result;
+    }
+
+    /** Marks a conforming extracted candidate ready for the released human-review operations. */
+    public void markValidated(ProjectId project, String candidateId, String actorId) {
+        var candidate = candidate(project, candidateId);
+        if (actorId == null || !actorId.matches("[a-z0-9][a-z0-9-]{0,62}")) {
+            throw new IllegalArgumentException("actor ID is invalid");
+        }
+        var projectIri = "https://w3id.org/projecta/data/project/" + project.value();
+        var activity = projectIri + "/activity/validate-" + UUID.randomUUID();
+        gateway.update(
+                """
+                DELETE { GRAPH <%s> { <%s> <%scandidateStatus> <%sextracted> } }
+                INSERT {
+                  GRAPH <%s> { <%s> <%scandidateStatus> <%svalidated> }
+                  GRAPH <%s> { <%s> a <http://www.w3.org/ns/prov#Activity> ;
+                    <http://www.w3.org/ns/prov#used> <%s> ;
+                    <http://www.w3.org/ns/prov#wasAssociatedWith> <%s> ;
+                    <http://www.w3.org/ns/prov#endedAtTime> "%s"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+                    <https://w3id.org/projecta/ontology/belongsToProject> <%s> ;
+                    <http://www.w3.org/2000/01/rdf-schema#label> "candidate-validation" . }
+                }
+                WHERE { GRAPH <%s> { <%s> a <%sCandidate> ; <%scandidateStatus> <%sextracted> . } }
+                """
+                        .formatted(
+                                router.route(project, GraphRole.CANDIDATES),
+                                candidate,
+                                PROJECTA,
+                                PROJECTA,
+                                router.route(project, GraphRole.CANDIDATES),
+                                candidate,
+                                PROJECTA,
+                                PROJECTA,
+                                router.route(project, GraphRole.PROVENANCE),
+                                activity,
+                                candidate,
+                                "https://w3id.org/projecta/data/project/" + project.value() + "/person/" + actorId,
+                                OffsetDateTime.now(),
+                                projectIri,
+                                router.route(project, GraphRole.CANDIDATES),
+                                candidate,
+                                PROJECTA,
+                                PROJECTA,
+                                PROJECTA));
+    }
+
     /** Returns the finite current-knowledge view, optionally restricted to an allowlisted type. */
     public List<Map<String, String>> current(ProjectId project, String type) {
         if (type != null && !type.equals("Requirement"))
@@ -47,14 +102,19 @@ public final class FusekiQueryService {
                 + "wasAssociatedWith> ?reviewer ; <" + PROV + "endedAtTime> ?endedAt . } } ORDER BY ?endedAt"));
     }
 
-    /** Returns the asserted-item-to-candidate-to-source reviewer evidence chain. */
+    /** Returns the asserted-item-to-candidate-to-exact-source reviewer evidence chain. */
     public List<Map<String, String>> evidence(ProjectId project, String itemId) {
         var item = "https://w3id.org/projecta/data/project/" + project.value() + "/requirement/" + itemId;
         return rows(gateway.select(
-                "SELECT ?candidate ?source ?reviewer WHERE { GRAPH <" + router.route(project, GraphRole.ASSERTED)
+                "SELECT ?candidate ?source ?note ?rawText ?sourceText ?startOffset ?endOffset ?author ?reviewer WHERE { GRAPH <"
+                        + router.route(project, GraphRole.ASSERTED)
                         + "> { <" + item + "> <" + PROV + "wasDerivedFrom> ?candidate ; <" + PROV
                         + "wasAttributedTo> ?reviewer . } GRAPH <" + router.route(project, GraphRole.CANDIDATES)
-                        + "> { ?candidate <" + PROV + "wasDerivedFrom> ?source . } }"));
+                        + "> { ?candidate <" + PROV + "wasDerivedFrom> ?source . } GRAPH <"
+                        + router.route(project, GraphRole.SOURCES) + "> { ?source <" + PROJECTA
+                        + "isItemOf> ?note ; <" + PROJECTA + "contentText> ?sourceText ; <" + PROJECTA
+                        + "evidenceStartOffset> ?startOffset ; <" + PROJECTA + "evidenceEndOffset> ?endOffset . ?note <"
+                        + PROJECTA + "rawText> ?rawText ; <" + PROJECTA + "authoredBy> ?author . } }"));
     }
 
     private List<Map<String, String>> rows(String body) {

@@ -54,7 +54,7 @@ public final class FusekiLifecycleService {
         var item = assertedIri == null
                 ? "https://w3id.org/projecta/data/project/" + project.value() + "/requirement/" + UUID.randomUUID()
                 : assertedIri;
-        var activity = item + "/activity/confirm";
+        var activity = item + "/activity/confirm-" + UUID.randomUUID();
         var statement = item + "/statement/valid-from";
         var now = OffsetDateTime.now().toString();
         var update =
@@ -66,7 +66,7 @@ public final class FusekiLifecycleService {
                   GRAPH <%s> { <%s> <https://w3id.org/projecta/ontology/candidateStatus> <https://w3id.org/projecta/ontology/asserted> . }
                   %s
                 }
-                WHERE { GRAPH <%s> { <%s> a <https://w3id.org/projecta/ontology/Candidate> ; <https://w3id.org/projecta/ontology/candidateStatus> ?status ; <http://www.w3.org/ns/prov#wasDerivedFrom> ?source ; <http://www.w3.org/ns/prov#wasGeneratedBy> ?generator ; <http://www.w3.org/ns/prov#generatedAtTime> ?generatedAt ; <https://w3id.org/projecta/ontology/generator> ?generatorName ; <https://w3id.org/projecta/ontology/proposedOntologyVersion> ?version ; <https://w3id.org/projecta/ontology/belongsToProject> <https://w3id.org/projecta/data/project/%s> . FILTER(?status IN (<https://w3id.org/projecta/ontology/validated>, <https://w3id.org/projecta/ontology/pending-review>)) } %s }
+                WHERE { GRAPH <%s> { <%s> a <https://w3id.org/projecta/ontology/Candidate> ; <https://w3id.org/projecta/ontology/candidateStatus> ?status ; <http://www.w3.org/ns/prov#wasDerivedFrom> ?source ; <http://www.w3.org/ns/prov#wasGeneratedBy> ?generator ; <http://www.w3.org/ns/prov#generatedAtTime> ?generatedAt ; <https://w3id.org/projecta/ontology/generator> ?generatorName ; <https://w3id.org/projecta/ontology/proposedOntologyVersion> ?version ; <https://w3id.org/projecta/ontology/belongsToProject> <https://w3id.org/projecta/data/project/%s> . FILTER(?status IN (<https://w3id.org/projecta/ontology/validated>, <https://w3id.org/projecta/ontology/pending-review>)) FILTER EXISTS { GRAPH <%s> { ?source <https://w3id.org/projecta/ontology/hasItemType> <https://w3id.org/projecta/ontology/requirement> . } } } %s }
                 """
                         .formatted(
                                 router.route(project, GraphRole.CANDIDATES),
@@ -97,10 +97,12 @@ public final class FusekiLifecycleService {
                                                 + literal(requestFingerprint)
                                                 + " ; <http://www.w3.org/2000/01/rdf-schema#label> \"confirmation-idempotency\" ; <http://www.w3.org/2000/01/rdf-schema#comment> "
                                                 + literal(attemptToken)
+                                                + " ; <" + PROV + "generated> <" + item + ">"
                                                 + " . }",
                                 router.route(project, GraphRole.CANDIDATES),
                                 candidate,
                                 project.value(),
+                                router.route(project, GraphRole.SOURCES),
                                 keyRecord == null
                                         ? ""
                                         : "FILTER NOT EXISTS { GRAPH <"
@@ -143,19 +145,19 @@ public final class FusekiLifecycleService {
             String label,
             LocalDate validFrom) {
         requireKey(idempotencyKey);
-        var item =
-                "https://w3id.org/projecta/data/project/" + project.value() + "/requirement/confirm-" + idempotencyKey;
         var record = idempotencyRecord(project, idempotencyKey);
         var fingerprint = "confirm|" + candidateId + "|" + label + "|" + validFrom;
         if (gateway.ask("ASK { GRAPH <" + router.route(project, GraphRole.PROVENANCE) + "> { <" + record
                 + "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> " + literal(fingerprint) + " } }")) {
-            return new Confirmation(item, true);
+            return new Confirmation(recordedResource(project, record), true);
         }
         if (gateway.ask(
                 "ASK { GRAPH <" + router.route(project, GraphRole.PROVENANCE) + "> { <" + record + "> ?p ?o } }")) {
             throw new IllegalArgumentException("idempotency key was already used for another request");
         }
         var attemptToken = UUID.randomUUID().toString();
+        var item = "https://w3id.org/projecta/data/project/" + project.value() + "/requirement/"
+                + OpaqueIds.random("req-");
         confirm(project, candidateId, reviewerId, label, validFrom, item, record, fingerprint, attemptToken);
         var created = gateway.ask("ASK { GRAPH <" + router.route(project, GraphRole.PROVENANCE) + "> { <" + record
                 + "> <http://www.w3.org/2000/01/rdf-schema#comment> " + literal(attemptToken) + " } }");
@@ -191,13 +193,13 @@ public final class FusekiLifecycleService {
         var fingerprint = "reject|" + candidateId + "|" + reason;
         if (gateway.ask("ASK { GRAPH <" + router.route(project, GraphRole.PROVENANCE) + "> { <" + keyRecord
                 + "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> " + literal(fingerprint) + " } }")) {
-            return new Rejection(candidateId, reason, candidate + "/activity/reject-" + idempotencyKey, true);
+            return new Rejection(candidateId, reason, recordedResource(project, keyRecord), true);
         }
         if (gateway.ask(
                 "ASK { GRAPH <" + router.route(project, GraphRole.PROVENANCE) + "> { <" + keyRecord + "> ?p ?o } }")) {
             throw new IllegalArgumentException("idempotency key was already used for another request");
         }
-        var activity = candidate + "/activity/reject-" + idempotencyKey;
+        var activity = candidate + "/activity/" + OpaqueIds.random("reject-");
         var attemptToken = UUID.randomUUID().toString();
         var now = OffsetDateTime.now().toString();
         var update =
@@ -223,7 +225,7 @@ public final class FusekiLifecycleService {
                                 now,
                                 keyRecord,
                                 literal(fingerprint),
-                                literal(attemptToken),
+                                literal(attemptToken) + " ; <" + PROV + "generated> <" + activity + ">",
                                 router.route(project, GraphRole.CANDIDATES),
                                 candidate,
                                 router.route(project, GraphRole.PROVENANCE),
@@ -264,7 +266,19 @@ public final class FusekiLifecycleService {
     }
 
     private String idempotencyRecord(ProjectId project, String key) {
-        return "https://w3id.org/projecta/data/project/" + project.value() + "/idempotency/" + key;
+        return "https://w3id.org/projecta/data/project/" + project.value() + "/idempotency/"
+                + OpaqueIds.idempotencyDigest(key);
+    }
+
+    private String recordedResource(ProjectId project, String record) {
+        var response = gateway.select("SELECT ?resource WHERE { GRAPH <" + router.route(project, GraphRole.PROVENANCE)
+                + "> { <" + record + "> <" + PROV + "generated> ?resource } }");
+        var match = java.util.regex.Pattern.compile("\\\"value\\\"\\s*:\\s*\\\"([^\\\"]+)\\\"")
+                .matcher(response);
+        if (!match.find()) {
+            throw new IllegalStateException("idempotency record is incomplete");
+        }
+        return match.group(1);
     }
 
     private static String literal(String value) {

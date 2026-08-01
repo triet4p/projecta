@@ -14,3 +14,13 @@ services:
       - "8080:8080"
     environment:
       SEMANTIC_CORE_LOG_LEVEL: DEBUG
+
+  api:
+    build:
+      target: development
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./apps/api/src:/app/src
+    environment:
+      PROJECTA_API_SEMANTIC_CORE_URL: http://semantic-core:8080

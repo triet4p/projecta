@@ -1,0 +1,13 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+
+GRAPH <https://w3id.org/projecta/data/project/project-a/sources/> {
+  <https://w3id.org/projecta/data/project/project-b/note-item/n> a projecta:NoteItem ;
+    projecta:isItemOf <https://w3id.org/projecta/data/project/project-b/note/n> ;
+    projecta:belongsToProject <https://w3id.org/projecta/data/project/project-b> .
+}
+GRAPH <https://w3id.org/projecta/data/project/project-a/candidates/> {
+  <https://w3id.org/projecta/data/project/project-a/candidate/c>
+    a projecta:Candidate ; projecta:belongsToProject <https://w3id.org/projecta/data/project/project-a> ;
+    prov:wasDerivedFrom <https://w3id.org/projecta/data/project/project-b/note-item/n> .
+}

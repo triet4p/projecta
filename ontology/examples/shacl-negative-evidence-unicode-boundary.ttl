@@ -1,0 +1,11 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/projecta/data/project/unicode-boundary> a projecta:Project .
+<https://w3id.org/projecta/data/project/unicode-boundary/note/n>
+  a projecta:Note ; projecta:rawText "😀x" ;
+  projecta:belongsToProject <https://w3id.org/projecta/data/project/unicode-boundary> .
+<https://w3id.org/projecta/data/project/unicode-boundary/note-item/n>
+  a projecta:NoteItem ; projecta:isItemOf <https://w3id.org/projecta/data/project/unicode-boundary/note/n> ;
+  projecta:contentText "😀x" ; projecta:evidenceStartOffset "0"^^xsd:nonNegativeInteger ;
+  projecta:evidenceEndOffset "3"^^xsd:positiveInteger .

@@ -25,6 +25,7 @@ public final class SemanticCoreApplication {
         var router = new GraphIriRouter();
         var validation = new RemoteCandidateValidationService(gateway, router, Path.of("/ontology/shapes"));
         var lifecycle = new FusekiLifecycleService(gateway, router, validation);
+        var capture = new QuickNoteCaptureService(gateway, router, validation::validateCapture);
         var queries = new FusekiQueryService(gateway, router, validation);
         var application = Javalin.create(config -> {
             config.routes.exception(RuntimeException.class, (exception, context) -> writeProblem(context, exception));
@@ -36,6 +37,18 @@ public final class SemanticCoreApplication {
                         } else {
                             context.status(503).json(new HealthResponse("not-ready"));
                         }
+                    })
+                    .post("/v1/quick-notes/captures", context -> {
+                        var trusted = trustedContext(context);
+                        var result = capture.capture(
+                                trusted.projectId(),
+                                trusted.actorId(),
+                                context.header("Idempotency-Key"),
+                                context.bodyAsClass(QuickNoteCaptureService.CaptureRequest.class));
+                        context.status(result.replayed() ? 200 : 201)
+                                .json(Map.of(
+                                        "note", Map.of("id", result.noteId(), "recordedAt", result.recordedAt()),
+                                        "candidates", result.candidates()));
                     })
                     .post("/v1/candidates/{candidateId}/confirmations", context -> {
                         var trusted = trustedContext(context);
@@ -61,11 +74,12 @@ public final class SemanticCoreApplication {
                                         "decision",
                                         "confirmed",
                                         "assertedItemId",
-                                        decision.itemIri()));
+                                        opaqueIdentifier(decision.itemIri())));
                     })
                     .post("/v1/candidates/{candidateId}/validations", context -> {
                         var trusted = trustedContext(context);
-                        var result = queries.validate(trusted.projectId(), context.pathParam("candidateId"));
+                        var result = queries.validateAndMarkValidated(
+                                trusted.projectId(), context.pathParam("candidateId"), trusted.actorId());
                         if (!result.conforms()) {
                             throw new CandidateInvalidException(result);
                         }
@@ -141,6 +155,10 @@ public final class SemanticCoreApplication {
         return context.header("X-Request-Id") == null ? "unknown" : context.header("X-Request-Id");
     }
 
+    private static String opaqueIdentifier(String iri) {
+        return iri.substring(iri.lastIndexOf('/') + 1);
+    }
+
     private static void writeProblem(io.javalin.http.Context context, RuntimeException exception) {
         var problem = new ApiErrorTranslator().translate(requestId(context), exception);
         Map<String, Object> body = new LinkedHashMap<>();
@@ -158,7 +176,8 @@ public final class SemanticCoreApplication {
 
     private static TrustedProjectContext trustedContext(io.javalin.http.Context context) {
         try {
-            return TrustedProjectContext.fromEnvironment(System.getenv());
+            return TrustedProjectContext.fromPrivateHeadersOrEnvironment(
+                    context.header("X-Projecta-Project-Id"), context.header("X-Projecta-Actor-Id"), System.getenv());
         } catch (IllegalStateException exception) {
             throw new io.javalin.http.UnauthorizedResponse("trusted project context is required");
         }

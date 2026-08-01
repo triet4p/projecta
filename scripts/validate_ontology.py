@@ -49,6 +49,7 @@ V02_ONTOLOGY_FILES = ONTOLOGY_FILES + (
     ONTOLOGY_DIR / "provenance.ttl",
     ONTOLOGY_DIR / "temporal.ttl",
 )
+V03_ONTOLOGY_FILES = V02_ONTOLOGY_FILES + (ONTOLOGY_DIR / "evidence.ttl",)
 V02_SYNTAX_FILES = V02_ONTOLOGY_FILES + (
     EXAMPLES_DIR / "lifecycle-demo.trig",
     EXAMPLES_DIR / "benchmark-assertion-node.trig",
@@ -56,11 +57,33 @@ V02_SYNTAX_FILES = V02_ONTOLOGY_FILES + (
     EXAMPLES_DIR / "benchmark-rdf-star.trig",
     EXAMPLES_DIR / "negative-note-no-timestamp.trig",
     EXAMPLES_DIR / "negative-noteitem-no-content.trig",
+    EXAMPLES_DIR / "quick-note-v02-legacy-candidate.trig",
     SHAPES_DIR / "source-shapes.ttl",
     SHAPES_DIR / "candidate-shapes.ttl",
     SHAPES_DIR / "isolation-shapes.ttl",
     SHAPES_DIR / "temporal-shapes.ttl",
 )
+V03_SYNTAX_FILES = V03_ONTOLOGY_FILES + (
+    EXAMPLES_DIR / "quick-note-m2-demo.trig",
+    EXAMPLES_DIR / "quick-note-m2-unicode.trig",
+    EXAMPLES_DIR / "shacl-negative-evidence-offset.ttl",
+    EXAMPLES_DIR / "shacl-negative-evidence-overlap.ttl",
+    EXAMPLES_DIR / "shacl-negative-evidence-unicode-boundary.ttl",
+    EXAMPLES_DIR / "shacl-negative-evidence-cross-project.trig",
+    SHAPES_DIR / "evidence-shapes.ttl",
+)
+
+M2_EXPECTED_ROWS = {
+    "CQ-M2-SRC-001": 1,
+    "CQ-M2-SRC-002": 2,
+    "CQ-M2-CAND-001": 1,
+    "CQ-M2-CAND-002": 1,
+    "CQ-M2-REV-001": 1,
+    "CQ-M2-ASSERT-001": 1,
+    "CQ-M2-ASSERT-002": 0,
+    "CQ-M2-PROV-001": 1,
+    "CQ-M2-ISO-001": 0,
+}
 
 # ── v0.1 expected results ───────────────────────────────────────────
 EXPECTED_ROWS = {
@@ -118,6 +141,7 @@ LIFECYCLE_EXPECTED_ASK = {
 SHACL_POSITIVE = (
     EXAMPLES_DIR / "quick-note-demo.trig",
     EXAMPLES_DIR / "lifecycle-demo.trig",
+    EXAMPLES_DIR / "quick-note-v02-legacy-candidate.trig",
 )
 
 # ── SHACL negative fixtures (must fail specific shapes) ─────────────
@@ -155,6 +179,10 @@ ISOLATION_NEGATIVE = {
         "projecta:CrossProjectProvenanceShape",
         rdflib.URIRef("https://w3id.org/projecta/ontology/CrossProjectProvenanceShape"),
     ),
+    EXAMPLES_DIR / "shacl-negative-evidence-cross-project.trig": (
+        "projecta:CrossProjectProvenanceShape",
+        rdflib.URIRef("https://w3id.org/projecta/ontology/CrossProjectProvenanceShape"),
+    ),
 }
 
 
@@ -181,7 +209,7 @@ def query_blocks(path: Path) -> dict[str, str]:
     content = path.read_text(encoding="utf-8")
     matches = list(
         re.finditer(
-            r"(?m)^# --- ([A-Z]+(?:-[A-Z]+)*-\d+|NEG-[A-Z-]+) ---\s*$",
+            r"(?m)^# --- ([A-Z0-9]+(?:-[A-Z0-9]+)*-\d+|NEG-[A-Z-]+) ---\s*$",
             content,
         )
     )
@@ -427,10 +455,16 @@ def validate_shacl_positive(
         result = subprocess.run(cmd, capture_output=True, check=False, text=True, cwd=str(ONTOLOGY_DIR))
         report = _shacl_report(result)
         conforms = _shacl_conforms(report) if report is not None else None
+        messages = {
+            str(message)
+            for message in report.objects(
+                None, rdflib.URIRef("http://www.w3.org/ns/shacl#resultMessage")
+            )
+        } if report is not None else set()
         passed = result.returncode == 0 and conforms is True
         detail = "sh:conforms=true" if passed else (
             "missing or malformed Jena SHACL report" if conforms is None
-            else "sh:conforms=false"
+            else f"sh:conforms=false; messages={sorted(messages)}"
         )
         checks.append(
             Check(
@@ -474,6 +508,38 @@ def validate_shacl_negative(
             )
         )
     return checks
+
+
+def validate_single_shacl_negative(
+    data_file: Path, shape_files: tuple[Path, ...], expected_message: str
+) -> Check:
+    """Validate one v0.3 intended-invalid source-evidence fixture."""
+    shape_args: list[str] = []
+    for shape_file in shape_files:
+        shape_args.extend(["-shapes", str(shape_file.relative_to(ONTOLOGY_DIR))])
+    result = subprocess.run(
+        ["shacl", "validate"] + shape_args + ["-datafile", _shacl_data_path(data_file)],
+        capture_output=True,
+        check=False,
+        text=True,
+        cwd=str(ONTOLOGY_DIR),
+    )
+    report = _shacl_report(result)
+    conforms = _shacl_conforms(report) if report is not None else None
+    messages = {
+        str(message)
+        for message in report.objects(
+            None, rdflib.URIRef("http://www.w3.org/ns/shacl#resultMessage")
+        )
+    } if report is not None else set()
+    passed = result.returncode == 0 and conforms is False and expected_message in messages
+    return Check(
+        "SHACL fails: examples/shacl-negative-evidence-offset.ttl",
+        passed,
+        "sh:conforms=false; detected expected constraint"
+        if passed
+        else f"actual conforms={conforms}, messages={sorted(messages)}",
+    )
 
 
 def _dataset_from_files(files: tuple[Path, ...]) -> rdflib.Dataset:
@@ -602,6 +668,43 @@ def main() -> int:
 
     # ── v0.2 named-graph SHACL SPARQL constraints ────────────────────
     checks.extend(validate_named_graph_isolation())
+
+    # ── v0.3 draft evidence extension ───────────────────────────────
+    checks.extend(validate_syntax(V03_SYNTAX_FILES, "v0.3"))
+    m2_graph = merge_dataset(V03_ONTOLOGY_FILES + (EXAMPLES_DIR / "quick-note-m2-demo.trig",))
+    checks.extend(
+        validate_competency_queries(
+            m2_graph,
+            CQ_DIR / "quick-note-m2-queries.rq",
+            M2_EXPECTED_ROWS,
+            {},
+            "v0.3",
+        )
+    )
+    m2_shapes = (SHAPES_DIR / "source-shapes.ttl", SHAPES_DIR / "evidence-shapes.ttl")
+    checks.extend(validate_shacl_positive((EXAMPLES_DIR / "quick-note-m2-demo.trig",), m2_shapes))
+    checks.extend(validate_shacl_positive((EXAMPLES_DIR / "quick-note-m2-unicode.trig",), m2_shapes))
+    checks.append(
+        validate_single_shacl_negative(
+            EXAMPLES_DIR / "shacl-negative-evidence-offset.ttl",
+            m2_shapes,
+            "A NoteItem evidence range must be in-bounds, non-empty, and equal its contentText substring.",
+        )
+    )
+    checks.append(
+        validate_single_shacl_negative(
+            EXAMPLES_DIR / "shacl-negative-evidence-overlap.ttl",
+            m2_shapes,
+            "M2 NoteItem evidence ranges in the same Note must not overlap.",
+        )
+    )
+    checks.append(
+        validate_single_shacl_negative(
+            EXAMPLES_DIR / "shacl-negative-evidence-unicode-boundary.ttl",
+            m2_shapes,
+            "A NoteItem evidence range must be in-bounds, non-empty, and equal its contentText substring.",
+        )
+    )
 
     # ── Report ──────────────────────────────────────────────────────
     for check in checks:

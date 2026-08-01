@@ -72,7 +72,8 @@ SPARQL, graph IRIs, internal Fuseki URLs, or stack traces.
 `POST /candidates/{candidateId}/validations`
 
 Request body is empty. The service reads the candidate only from the trusted
-project's candidates graph and validates it with released v0.2 shapes.
+  project's candidates graph and validates it with the candidate, source, and
+  evidence shapes available in the local ontology draft.
 
 Success (`200 OK`):
 
@@ -88,10 +89,10 @@ Success (`200 OK`):
 
 A non-conformant candidate returns `422 CANDIDATE_INVALID` with structured
 violations. This endpoint has no idempotency-key requirement because it is
-read-plus-validation and must not promote a candidate or mutate asserted data.
-The S3-03 review must confirm whether a successful validation records a
-provenance activity; until then, response semantics are fixed but that write is
-not assumed by the HTTP contract.
+  read-plus-validation and promotes a conforming extracted candidate to
+  `validated`. The promotion and its `prov:Activity` (including actor, project,
+  candidate, and timestamp) are one conditional Fuseki update, so a failed or
+  repeated transition cannot create a partial validation record.
 
 ### 4.2 Confirm a candidate
 

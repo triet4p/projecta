@@ -96,3 +96,28 @@ them; incompatible changes require deprecation and migration guidance.
 **Alternatives considered:** Kotlin on the JVM, Spring Boot, and Quarkus (including a native-image delivery path).
 **Reason:** The Semantic Core is a small, internal, transaction-heavy Jena/Fuseki service. Java matches Jena's primary API and Java 21 requirement without an added Kotlin compiler or native-image compatibility burden; Javalin keeps the domain-safe HTTP boundary explicit and lighter than a full application platform while retaining embedded-server lifecycle control and testability. The approved Compose-first workflow makes a JVM image sufficient until measured deployment requirements justify native compilation.
 **Consequences:** Service code, dependency management, tests, and image stages use Maven and Java 21 inside containers; contributors do not need a host Java installation. Javalin-adjacent JSON, validation, logging, and test dependencies must be selected explicitly. Spring Boot and Quarkus are not introduced unless a future decision reverses this baseline, and native-image work is deferred.
+
+## [2026-07-31] Use uv for the Python application build baseline
+
+**Decision:** Use uv with Python 3.12, `pyproject.toml`, and committed `uv.lock` for the FastAPI application.
+**Alternatives considered:** Poetry with `poetry.lock`, and maintaining separate pip requirements files alongside either project manager.
+**Reason:** Both uv and Poetry provide a reproducible lock and can run pytest, Ruff, and pyright, but the repository already runs a UV-managed Python 3.12 inside the pinned Jena image. uv keeps Python selection, dependency synchronization, and command execution in one pinned container-friendly tool, avoiding an additional Poetry installation layer for the first Python vertical slice.
+**Consequences:** S4-09 must create and commit one `uv.lock`; development, CI, and every API container stage use locked uv synchronization. Poetry files and parallel requirements files are not introduced, and commands in UV-managed images use `uv run` rather than assuming `python3` is on `PATH`.
+
+## [2026-08-01] Release ontology v0.3 and the M2 Manual Quick Note slice
+
+**Decision:** Approve Sprint 4 and release the additive ontology v0.3.0 evidence
+extension together with the M2 Manual Quick Note vertical slice.
+**Alternatives considered:** Keep the validated implementation as
+`0.3.0-draft`, release the API while leaving its semantic contract pending, or
+defer exact evidence offsets to a later slice.
+**Reason:** The canonical suite passes 103 ontology checks, Java verification,
+and 10 API end-to-end tests. Unicode code-point offsets, source/candidate graph
+validation, project isolation, transaction rollback, idempotency, provenance,
+and v0.1/v0.2 compatibility have executable evidence and passed human review.
+**Consequences:** New M2 captures propose ontology version `0.3.0` and use the
+strict evidence shapes. Exactly `0.1.0` and `0.2.0` retain legacy validation;
+unknown or malformed versions fail closed through current strict shapes. The
+release is additive and requires no existing-data backfill. Authentication,
+authorization, public deployment, edit/delete, LLM extraction, and inference
+remain outside the released scope.

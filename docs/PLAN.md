@@ -15,14 +15,12 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 ## Milestones
 
 - [x] **M1 — Executable Semantic Foundation (Sprints 1–3):** Ontology kernel, SHACL/provenance lifecycle và Jena Semantic Core chạy thật.
-- [ ] **M2 — Manual Quick Note Slice (Sprint 4):** Note → candidate → review → assertion → inference qua API tối thiểu.
+- [x] **M2 — Manual Quick Note Slice (Sprint 4):** Typed note → deterministic
+  candidate → human review → assertion/evidence qua API tối thiểu; giữ inference
+  boundary nhưng chưa materialize rule chưa được duyệt.
 - [ ] **M3 — LLM Extraction and Evaluation (Sprint 5):** Structured candidate extraction có evidence và evaluation dataset.
 - [ ] **M4 — Retrieval and Coordination (Sprint 6):** Project-scoped queries, requirement history, blockers và evidence-backed answers.
 - [ ] **M5 — Connector and Production Evolution (Sprint 7+):** Mock/manual framework, connector thật đầu tiên, security và operational hardening.
-
-## Active Sprints
-
-- None.
 
 ## Completed Sprints
 
@@ -32,10 +30,11 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   *Completed 2026-07-29; ontology v0.2 approved with 73/73 checks passing.*
 - [Sprint 3 — Executable Semantic Core](sprint-plans/sprint-3.md) — *Completed
   2026-07-30; Fuseki-backed runtime and M1 human-approved.*
+- [Sprint 4 — Manual Quick Note Slice](sprint-plans/sprint-4.md) — *Completed
+  2026-08-01; M2 and ontology v0.3.0 human-approved and released.*
 
 ## Planned Sprints
 
-- **Sprint 4:** Manual Quick Note API, deterministic candidates và human review flow.
 - **Sprint 5:** Provider-agnostic LLM extraction, entity linking và evaluation.
 - **Sprint 6:** Semantic retrieval, rules, projections và grounded response.
 

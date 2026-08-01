@@ -1,0 +1,64 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+GRAPH <https://w3id.org/projecta/data/project/ecommerce-checkout/sources/> {
+  <https://w3id.org/projecta/data/project/ecommerce-checkout> a projecta:Project ; projecta:name "Ecommerce Checkout" .
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/person/le> a projecta:Person ; projecta:name "Le" .
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/note/m2-001>
+    a projecta:Note ; projecta:name "M2 Quick Note" ; projecta:rawText "Add address confirmation. Tax API timeout." ;
+    projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> ;
+    projecta:authoredBy <https://w3id.org/projecta/data/project/ecommerce-checkout/person/le> ;
+    projecta:recordedAt "2026-07-31T10:00:00Z"^^xsd:dateTime .
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/note-item/m2-001>
+    a projecta:NoteItem ; projecta:isItemOf <https://w3id.org/projecta/data/project/ecommerce-checkout/note/m2-001> ;
+    projecta:hasItemType projecta:requirement ; projecta:contentText "Add address confirmation." ;
+    projecta:evidenceStartOffset "0"^^xsd:nonNegativeInteger ; projecta:evidenceEndOffset "25"^^xsd:positiveInteger .
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/note-item/m2-002>
+    a projecta:NoteItem ; projecta:isItemOf <https://w3id.org/projecta/data/project/ecommerce-checkout/note/m2-001> ;
+    projecta:hasItemType projecta:risk ; projecta:contentText "Tax API timeout." ;
+    projecta:evidenceStartOffset "26"^^xsd:nonNegativeInteger ; projecta:evidenceEndOffset "42"^^xsd:positiveInteger .
+}
+
+GRAPH <https://w3id.org/projecta/data/project/ecommerce-checkout/candidates/> {
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/m2-req>
+    a projecta:Candidate ; projecta:candidateStatus projecta:validated ;
+    projecta:generator "manual-quick-note-v0.3.0" ; projecta:proposedOntologyVersion "0.3.0" ;
+    projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> ;
+    prov:wasDerivedFrom <https://w3id.org/projecta/data/project/ecommerce-checkout/note-item/m2-001> .
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/m2-risk>
+    a projecta:Candidate ; projecta:candidateStatus projecta:rejected ; projecta:rejectionReason "Operational risk." ;
+    projecta:generator "manual-quick-note-v0.3.0" ; projecta:proposedOntologyVersion "0.3.0" ;
+    projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> ;
+    prov:wasDerivedFrom <https://w3id.org/projecta/data/project/ecommerce-checkout/note-item/m2-002> .
+}
+
+GRAPH <https://w3id.org/projecta/data/project/ecommerce-checkout/asserted/> {
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/requirement/m2-asserted>
+    a projecta:KnowledgeItem, projecta:Requirement ; rdfs:label "Add address confirmation." ;
+    projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> ;
+    prov:wasDerivedFrom <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/m2-req> ;
+    prov:wasAttributedTo <https://w3id.org/projecta/data/project/ecommerce-checkout/person/le> .
+}
+
+GRAPH <https://w3id.org/projecta/data/project/ecommerce-checkout/provenance/> {
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/activity/extract-m2-req>
+    a prov:Activity ; prov:used <https://w3id.org/projecta/data/project/ecommerce-checkout/note-item/m2-001> ;
+    prov:generated <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/m2-req> .
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/activity/extract-m2-risk>
+    a prov:Activity ; prov:used <https://w3id.org/projecta/data/project/ecommerce-checkout/note-item/m2-002> ;
+    prov:generated <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/m2-risk> .
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/activity/confirm-m2>
+    a prov:Activity ; prov:used <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/m2-req> ;
+    prov:wasAssociatedWith <https://w3id.org/projecta/data/project/ecommerce-checkout/person/le> ;
+    projecta:reviewDecision projecta:confirmed ; prov:endedAtTime "2026-07-31T10:01:00Z"^^xsd:dateTime .
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/activity/reject-m2>
+    a prov:Activity ; prov:used <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/m2-risk> ;
+    prov:wasAssociatedWith <https://w3id.org/projecta/data/project/ecommerce-checkout/person/le> ;
+    projecta:reviewDecision projecta:rejected ; prov:endedAtTime "2026-07-31T10:02:00Z"^^xsd:dateTime .
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/idempotency/capture-demo>
+    rdf:value "capture-fingerprint" ; prov:generated
+    <https://w3id.org/projecta/data/project/ecommerce-checkout/note/m2-001> .
+}

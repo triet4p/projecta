@@ -12,4 +12,21 @@ public record TrustedProjectContext(ProjectId projectId, String actorId) {
         }
         return new TrustedProjectContext(new ProjectId(project), actor);
     }
+
+    /**
+     * Resolves context injected by the private Application API boundary.
+     *
+     * <p>The Semantic Core is never exposed on the public network. During direct runtime tests the
+     * server-established environment context remains available as a fallback.
+     */
+    public static TrustedProjectContext fromPrivateHeadersOrEnvironment(
+            String project, String actor, Map<String, String> environment) {
+        if (project == null && actor == null) {
+            return fromEnvironment(environment);
+        }
+        if (project == null || actor == null || actor.isBlank()) {
+            throw new IllegalArgumentException("trusted project context is incomplete");
+        }
+        return new TrustedProjectContext(new ProjectId(project), actor);
+    }
 }

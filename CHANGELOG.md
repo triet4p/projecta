@@ -6,6 +6,21 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-08-01
+
+### Added
+
+- Added the Manual Quick Note M2 API slice: typed capture, deterministic
+  candidates, human review, and evidence-backed reads through FastAPI and
+  Semantic Core.
+
+### Fixed
+
+- Hardened the M2 slice with fail-closed trusted context, code-point-consistent
+  evidence offsets, pre-commit SHACL validation, opaque server-derived IDs,
+  source-type-preserving confirmation, atomic validation provenance, complete
+  draft evidence fixtures, and downstream contract-error mapping.
+
 ## [0.2.0] - 2026-07-29
 
 ### Added
