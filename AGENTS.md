@@ -52,3 +52,6 @@ Follow `docs/initialization/06-Tech-Stack.md` and `08-Deployment-Choice.md` when
 Derive test scope from the changed layer and its initialization document. Ontology changes must follow the validation and review packet required by `$projecta-evolve-ontology`.
 
 PRs should state intent, affected boundaries, validation evidence, and unresolved risks. Reference the applicable rules instead of restating them. Never commit secrets, credentials, sensitive payloads, or production data.
+
+## Graphify
+You should use graphify to understand codebase more effiency, instead of scan all codebase. See `$graphify` skills
