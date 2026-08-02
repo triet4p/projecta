@@ -52,6 +52,19 @@ class CaptureRequest(BaseModel):
         return self
 
 
+class ExtractionRequest(BaseModel):
+    """Untyped Quick Note input for M3 extraction."""
+
+    model_config = ConfigDict(extra="forbid")
+    raw_text: str = Field(min_length=1, alias="rawText")
+    extraction_version: Literal["m3.v1"] = Field(default="m3.v1", alias="extractionVersion")
+
+    @model_validator(mode="after")
+    def normalize_line_endings(self) -> "ExtractionRequest":
+        self.raw_text = self.raw_text.replace("\r\n", "\n").replace("\r", "\n")
+        return self
+
+
 class NoteResponse(BaseModel):
     """Opaque source Note identity returned after a committed capture."""
 

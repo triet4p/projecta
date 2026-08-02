@@ -94,6 +94,28 @@ public final class FusekiQueryService {
                 + "validFrom> ?validFrom . } }"));
     }
 
+    /** Returns a bounded allowlisted entity context for same-project link proposals. */
+    public List<Map<String, String>> entityLinkContext(ProjectId project, int limit) {
+        if (limit < 1 || limit > 100) {
+            throw new IllegalArgumentException("entity link context limit must be between 1 and 100");
+        }
+        var projectIri = "https://w3id.org/projecta/data/project/" + project.value();
+        var rows = rows(gateway.select(
+                "SELECT DISTINCT ?entity ?type ?label WHERE { GRAPH <"
+                        + router.route(project, GraphRole.ASSERTED)
+                        + "> { ?entity <" + PROJECTA + "belongsToProject> <" + projectIri
+                        + "> ; a ?type ; <http://www.w3.org/2000/01/rdf-schema#label> ?label . VALUES ?type { <" + PROJECTA
+                        + "Requirement> <" + PROJECTA + "Decision> <" + PROJECTA + "Question> <" + PROJECTA
+                        + "Risk> <" + PROJECTA + "Assumption> <" + PROJECTA + "Constraint> <" + PROJECTA
+                        + "ResearchFinding> <" + PROJECTA + "Task> <" + PROJECTA + "ProgressClaim> <" + PROJECTA + "Person> <" + PROJECTA + "Team> } } } ORDER BY ?entity LIMIT " + limit));
+        return rows.stream()
+                .map(row -> Map.of(
+                        "id", opaqueIdentifier(row.get("type")) + "--" + opaqueIdentifier(row.get("entity")),
+                        "type", opaqueIdentifier(row.get("type")),
+                        "label", row.get("label")))
+                .toList();
+    }
+
     /** Returns ordered reviewer decisions that used the specified project-scoped candidate. */
     public List<Map<String, String>> history(ProjectId project, String candidateId) {
         return rows(gateway.select("SELECT ?activity ?decision ?reviewer ?endedAt WHERE { GRAPH <"
@@ -137,5 +159,10 @@ public final class FusekiQueryService {
         if (id == null || !id.matches("[a-z0-9][a-z0-9-]{0,62}"))
             throw new IllegalArgumentException("candidate ID is invalid");
         return "https://w3id.org/projecta/data/project/" + project.value() + "/candidate/" + id;
+    }
+
+    private static String opaqueIdentifier(String iri) {
+        var slash = iri.lastIndexOf('/');
+        return slash < 0 ? iri : iri.substring(slash + 1);
     }
 }

@@ -1,0 +1,16 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout/candidates/> {
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/link-cross>
+      a projecta:Candidate, projecta:EntityLinkCandidate ;
+      projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> ;
+      projecta:proposedLabel "foreign team" ;
+      projecta:linkTarget <https://w3id.org/projecta/data/project/other/entity/team> ;
+      projecta:confidence "0.75"^^xsd:decimal .
+}
+
+<https://w3id.org/projecta/data/project/other/asserted/> {
+  <https://w3id.org/projecta/data/project/other/entity/team>
+      a projecta:Entity ; projecta:belongsToProject <https://w3id.org/projecta/data/project/other> .
+}

@@ -1,0 +1,107 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix owl:      <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov:     <http://www.w3.org/ns/prov#> .
+@prefix dcterms:  <http://purl.org/dc/terms/> .
+
+# APPROVED — additive M3 vocabulary approved by the user on 2026-08-02.
+<https://w3id.org/projecta/ontology/v/0.4/>
+    a owl:Ontology ;
+    owl:versionIRI <https://w3id.org/projecta/ontology/v/0.4/> ;
+    owl:versionInfo "0.4.0" ;
+    rdfs:label "Projecta Ontology — Sprint 5 LLM Extraction" ;
+    rdfs:comment "Approved additive vocabulary for typed entity, relation, and bounded link candidates and extraction activity configuration metadata."@en ;
+    dcterms:created "2026-08-02"^^xsd:date .
+
+projecta:EntityCandidate a owl:Class ;
+    rdfs:subClassOf projecta:Candidate ;
+    rdfs:label "Entity Candidate" ;
+    rdfs:comment "An unconfirmed proposal that a source mention denotes an allowlisted project entity type." .
+
+projecta:RelationCandidate a owl:Class ;
+    rdfs:subClassOf projecta:Candidate ;
+    rdfs:label "Relation Candidate" ;
+    rdfs:comment "An unconfirmed proposal for an allowlisted relation between valid project-scoped entities." .
+
+projecta:EntityLinkCandidate a owl:Class ;
+    rdfs:subClassOf projecta:Candidate ;
+    rdfs:label "Entity Link Candidate" ;
+    rdfs:comment "An unconfirmed proposal linking a source mention to an existing bounded entity in the same project." .
+
+projecta:proposedClass a owl:ObjectProperty ;
+    rdfs:domain projecta:EntityCandidate ;
+    rdfs:range owl:Class ;
+    rdfs:label "proposed class" .
+
+projecta:proposedLabel a owl:DatatypeProperty ;
+    rdfs:domain projecta:EntityCandidate ;
+    rdfs:range xsd:string ;
+    rdfs:label "proposed label" .
+
+projecta:confidence a owl:DatatypeProperty ;
+    rdfs:domain projecta:Candidate ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "confidence" ;
+    rdfs:comment "A model-reported proposal score in [0,1]; it is not probability of truth and never establishes verification." .
+
+projecta:relationSource a owl:ObjectProperty ;
+    rdfs:domain projecta:RelationCandidate ;
+    rdfs:range projecta:Entity ;
+    rdfs:label "relation source" .
+
+projecta:relationTarget a owl:ObjectProperty ;
+    rdfs:domain projecta:RelationCandidate ;
+    rdfs:range projecta:Entity ;
+    rdfs:label "relation target" .
+
+projecta:proposedPredicate a owl:ObjectProperty ;
+    rdfs:domain projecta:RelationCandidate ;
+    rdfs:range owl:ObjectProperty ;
+    rdfs:label "proposed predicate" .
+
+projecta:linkTarget a owl:ObjectProperty ;
+    rdfs:domain projecta:EntityLinkCandidate ;
+    rdfs:range projecta:Entity ;
+    rdfs:label "link target" .
+
+projecta:modelVersion a owl:DatatypeProperty ;
+    rdfs:domain prov:Activity ;
+    rdfs:range xsd:string ;
+    rdfs:label "model version" .
+
+projecta:promptVersion a owl:DatatypeProperty ;
+    rdfs:domain prov:Activity ;
+    rdfs:range xsd:string ;
+    rdfs:label "prompt version" .
+
+projecta:schemaVersion a owl:DatatypeProperty ;
+    rdfs:domain prov:Activity ;
+    rdfs:range xsd:string ;
+    rdfs:label "extraction schema version" .
+
+# M3 allowlists these existing or additive domain classes and relation terms.
+projecta:Decision a owl:Class ; rdfs:subClassOf projecta:Entity ; rdfs:label "Decision" .
+projecta:Question a owl:Class ; rdfs:subClassOf projecta:Entity ; rdfs:label "Question" .
+projecta:Task a owl:Class ; rdfs:subClassOf projecta:Entity ; rdfs:label "Task" .
+projecta:Risk a owl:Class ; rdfs:subClassOf projecta:Entity ; rdfs:label "Risk" .
+projecta:Assumption a owl:Class ; rdfs:subClassOf projecta:Entity ; rdfs:label "Assumption" .
+projecta:Constraint a owl:Class ; rdfs:subClassOf projecta:Entity ; rdfs:label "Constraint" .
+projecta:ProgressClaim a owl:Class ; rdfs:subClassOf projecta:Entity ; rdfs:label "Progress Claim" .
+projecta:ResearchFinding a owl:Class ; rdfs:subClassOf projecta:Entity ; rdfs:label "Research Finding" .
+projecta:Team a owl:Class ; rdfs:subClassOf projecta:Entity ; rdfs:label "Team" .
+
+projecta:implements a owl:ObjectProperty ; rdfs:domain projecta:Entity ; rdfs:range projecta:Entity .
+projecta:blocks a owl:ObjectProperty ; rdfs:domain projecta:Entity ; rdfs:range projecta:Entity .
+projecta:dependsOn a owl:ObjectProperty ; rdfs:domain projecta:Entity ; rdfs:range projecta:Entity .
+projecta:supports a owl:ObjectProperty ; rdfs:domain projecta:Entity ; rdfs:range projecta:Entity .
+projecta:answers a owl:ObjectProperty ; rdfs:domain projecta:Entity ; rdfs:range projecta:Entity .
+projecta:resolves a owl:ObjectProperty ; rdfs:domain projecta:Entity ; rdfs:range projecta:Entity .
+projecta:constrainedBy a owl:ObjectProperty ; rdfs:domain projecta:Entity ; rdfs:range projecta:Entity .
+
+projecta:abstentionReason a owl:DatatypeProperty ;
+    rdfs:domain prov:Activity ;
+    rdfs:range xsd:string ;
+    rdfs:label "abstention reason" ;
+    rdfs:comment "Auditable reason why an extraction activity produced no candidates."@en .

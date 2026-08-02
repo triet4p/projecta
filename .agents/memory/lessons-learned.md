@@ -82,3 +82,59 @@ Fuseki/Jena image installs Python through UV.
 UV resolves its installed managed interpreter without a network request.
 **Watch out for:** Any Compose entrypoint or shell command in the Fuseki/Jena
 image that assumes a system Python binary after only `uv python install`.
+
+## [2026-08-02] Java ingestion must validate Unicode evidence against source text
+
+**Symptom:** The initial M3 Semantic Core ingestion validation accepted evidence when offsets were ordered, even if the evidence text did not match the raw note or offsets crossed a supplementary Unicode code point.
+**Root cause:** Validation checked only numeric offset bounds and did not independently verify the source substring. Java string indexing is UTF-16 based while the M3 contract uses Unicode code-point offsets.
+**Fix / workaround:** Normalize line endings, convert the source to a code-point array, and require each candidate’s evidence text to equal the code-point slice before SHACL validation or persistence.
+**Watch out for:** Any cross-language evidence contract involving emoji or other supplementary characters; offset validation must be repeated at every persistence boundary.
+
+## [2026-08-02] DeepSeek Responses requires its dedicated model and root base URL
+
+**Symptom:** Requests sent with the legacy `deepseek-chat` model and `/v1` base URL returned HTTP 400 from the Responses endpoint; after compatibility correction, some long generations exceeded the original ten-second timeout.
+**Root cause:** DeepSeek’s Responses API guide currently limits the Responses surface to `deepseek-v4-flash`, documents `https://api.deepseek.com` as the base URL, and the provider can take longer than the initial low timeout for some cases.
+**Fix / workaround:** Use the documented root base URL and `deepseek-v4-flash`, omit unsupported request fields, provide a fully required strict schema, and use a 60-second timeout with bounded retries for transient malformed/timeout responses.
+**Watch out for:** Chat API model defaults and `/v1` compatibility settings must not be copied into the Responses-specific configuration without checking the provider’s current compatibility table.
+
+## [2026-08-02] Approved ontology can still be absent from the runtime contract
+
+**Symptom:** Sprint 5 documentation marked v0.4 approved while candidate ingestion emitted note-local IRIs, Semantic Core lifecycle used a different candidate route, and runtime/canonical SHACL validation excluded the approved v0.4 shapes.
+**Root cause:** Semantic approval was recorded as documentation state without completing the runtime version path, canonical IRI contract, bootstrap module list, and release regression suite.
+**Fix / workaround:** Emit project-scoped `/candidate/{id}` IRIs, load v0.4 ontology/shapes in bootstrap and Semantic Core, resolve canonical same-project targets at the mutation boundary, persist empty extraction provenance, and add v0.4 syntax/query/positive/negative checks to the 119-check suite.
+**Watch out for:** A human-approved ontology is not release-ready until its shapes are loaded at every write boundary and its canonical IRIs, lifecycle transitions, fixtures, and regression suite agree.
+
+## [2026-08-02] SHACL target closure must include referenced asserted entities
+
+**Symptom:** Relation/link candidates passed API allowlists but could fail Semantic Core SHACL because the validation model contained candidate payloads without the asserted target resources.
+**Root cause:** The validation boundary treated the candidate graph as self-contained even though v0.4 range and same-project constraints depend on target entity declarations in the asserted graph.
+**Fix / workaround:** Add bounded relation/link target closure from the trusted asserted graph to both pre-commit and post-ingestion validation, and declare the complete runtime allowlist in v0.4.
+**Watch out for:** Any SHACL `sh:class`, project-scope, or target-existence constraint that references another graph must explicitly load a trusted closure before validation.
+
+## [2026-08-02] Containerized tests must not assume repository-relative parent depth
+
+**Symptom:** API runtime crashed in `/app` while loading configuration, and the replay fixture test failed during collection because local `Path.parents[...]` assumptions do not exist in the container image.
+**Root cause:** Local source layout and container layout differ; the runtime image receives configuration through Compose and the test image needs an explicit evaluation fixture mount.
+**Fix / workaround:** Discover a local `.env` only when it exists, let Compose inject runtime variables, and mount `evaluation/` read-only with an explicit `PROJECTA_REPLAY_FIXTURE` path for system tests.
+**Watch out for:** Never encode host repository depth into production startup or container test fixtures; fail clearly when an explicitly required path is absent.
+
+## [2026-08-03] Exact-span quality gates can fail because the gold annotation is wrong
+
+**Symptom:** A live extraction was reported as having an incorrect exact span even though its end offset matched the Unicode code-point length of the source text.
+**Root cause:** The `s5.v1` gold case annotated a 44-code-point sentence with `endOffset: 45`, and the replay fixture repeated the same invalid bound. Evaluator comparisons trusted the gold payload without first validating it against the source.
+**Fix / workaround:** Correct both fixtures to offset 44 and make the evaluator fail closed by validating every gold evidence slice and its bounds before computing quality metrics.
+**Watch out for:** Replay agreement is not proof that gold evidence is valid. Validate gold spans independently whenever datasets, provider probes, or cross-language Unicode offsets change.
+
+## [2026-08-03] SPARQL JSON replay parsing must not depend on serialization whitespace
+
+**Symptom:** A repeated M3 extraction succeeded on its first request but returned `409 INVALID_LIFECYCLE_STATE` on the idempotent replay.
+**Root cause:** Semantic Core extracted the note IRI by searching for the exact substring `\"value\":\"`; Fuseki emitted standards-compliant SPARQL JSON with spaces around separators, so the existing replay record appeared unavailable.
+**Fix / workaround:** Parse `results.bindings[0].note.value` with Jackson, require exactly one binding, and cover pretty-printed SPARQL JSON with a regression test.
+**Watch out for:** Never parse JSON or SPARQL result sets with fixed string markers; formatting and binding order are not contract guarantees.
+
+## [2026-08-03] Canonical system tests must separate provider transport from application E2E
+
+**Symptom:** The canonical Compose E2E could fail or be skipped based on live provider credentials and model output, making implementation regressions indistinguishable from external quality failures.
+**Root cause:** The system runtime used the configured external LLM even though the Sprint 5 acceptance task required a credential-free replay path.
+**Fix / workaround:** Run the canonical HTTP API/Semantic Core/Fuseki chain with the versioned `ReplayGateway` fixture, and keep the DeepSeek probe as a separate explicit live-quality gate.
+**Watch out for:** External-provider evaluations may supplement deterministic E2E but must not replace it or redefine implementation pass/fail status.

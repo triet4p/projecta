@@ -1,0 +1,55 @@
+PREFIX projecta: <https://w3id.org/projecta/ontology/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+
+# Draft M3 query inventory. Fixture identifiers are intentionally abstract;
+# S5-04 maps each question to the released v0.3 terms and identifies gaps.
+
+# --- CQ-M3-SRC-001 ---
+SELECT ?note ?start ?end ?evidence WHERE {
+  ?activity a prov:Activity ; prov:used ?note ; projecta:extractionRunId ?run .
+  ?candidate prov:wasGeneratedBy ?activity ; projecta:evidenceStartOffset ?start ;
+      projecta:evidenceEndOffset ?end ; projecta:evidenceText ?evidence .
+}
+
+# --- CQ-M3-PROV-001 ---
+SELECT ?activity ?model ?modelVersion ?promptVersion ?schemaVersion ?ontologyVersion WHERE {
+  ?activity a prov:Activity ; projecta:modelId ?model ; projecta:modelVersion ?modelVersion ;
+      projecta:promptVersion ?promptVersion ; projecta:schemaVersion ?schemaVersion ;
+      projecta:ontologyVersion ?ontologyVersion .
+}
+
+# --- CQ-M3-CAND-001 ---
+SELECT ?candidate ?type ?confidence ?start ?end WHERE {
+  ?candidate a projecta:Candidate ; a ?type ; projecta:confidence ?confidence ;
+      projecta:evidenceStartOffset ?start ; projecta:evidenceEndOffset ?end .
+}
+
+# --- CQ-M3-REL-001 ---
+SELECT ?relation ?predicate ?source ?target ?confidence WHERE {
+  ?relation a projecta:RelationCandidate ; projecta:proposedPredicate ?predicate ;
+      projecta:sourceEntity ?source ; projecta:targetEntity ?target ;
+      projecta:confidence ?confidence .
+}
+
+# --- CQ-M3-LINK-002 ---
+ASK {
+  ?link a projecta:EntityLinkCandidate ; projecta:targetEntity ?target .
+  FILTER NOT EXISTS { ?target projecta:belongsToProject ?trustedProject }
+}
+
+# --- CQ-M3-REVIEW-001 ---
+SELECT ?candidate ?decision ?reviewer ?time WHERE {
+  ?activity a prov:Activity ; prov:used ?candidate ; projecta:reviewDecision ?decision ;
+      prov:wasAssociatedWith ?reviewer ; prov:endedAtTime ?time .
+}
+
+# --- CQ-M3-SCOPE-001 ---
+ASK {
+  ?entity projecta:belongsToProject ?project .
+  FILTER (?project != ?trustedProject)
+}
+
+# --- CQ-M3-REPLAY-001 ---
+SELECT ?fingerprint ?result WHERE {
+  ?record projecta:requestFingerprint ?fingerprint ; projecta:replayResult ?result .
+}

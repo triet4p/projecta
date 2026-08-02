@@ -50,6 +50,7 @@ V02_ONTOLOGY_FILES = ONTOLOGY_FILES + (
     ONTOLOGY_DIR / "temporal.ttl",
 )
 V03_ONTOLOGY_FILES = V02_ONTOLOGY_FILES + (ONTOLOGY_DIR / "evidence.ttl",)
+V04_ONTOLOGY_FILES = V03_ONTOLOGY_FILES + (ONTOLOGY_DIR / "llm-extraction-v04.ttl",)
 V02_SYNTAX_FILES = V02_ONTOLOGY_FILES + (
     EXAMPLES_DIR / "lifecycle-demo.trig",
     EXAMPLES_DIR / "benchmark-assertion-node.trig",
@@ -71,6 +72,11 @@ V03_SYNTAX_FILES = V03_ONTOLOGY_FILES + (
     EXAMPLES_DIR / "shacl-negative-evidence-unicode-boundary.ttl",
     EXAMPLES_DIR / "shacl-negative-evidence-cross-project.trig",
     SHAPES_DIR / "evidence-shapes.ttl",
+)
+V04_SYNTAX_FILES = V04_ONTOLOGY_FILES + (
+    EXAMPLES_DIR / "llm-extraction-v04-draft.trig",
+    EXAMPLES_DIR / "shacl-negative-llm-extraction-cross-project.trig",
+    SHAPES_DIR / "llm-extraction-draft-shapes.ttl",
 )
 
 M2_EXPECTED_ROWS = {
@@ -388,7 +394,7 @@ def _to_flat_turtle(data_file: Path) -> Path:
     dataset = rdflib.Dataset()
     # Shapes use sh:class and controlled vocabulary values that are declared
     # by the ontology, so validate the fixture in its actual ontology context.
-    for ontology_file in V02_ONTOLOGY_FILES:
+    for ontology_file in V04_ONTOLOGY_FILES:
         dataset.parse(ontology_file, format="turtle")
     fmt = "trig" if data_file.suffix == ".trig" else "turtle"
     dataset.parse(data_file, format=fmt)
@@ -534,7 +540,7 @@ def validate_single_shacl_negative(
     } if report is not None else set()
     passed = result.returncode == 0 and conforms is False and expected_message in messages
     return Check(
-        "SHACL fails: examples/shacl-negative-evidence-offset.ttl",
+        f"SHACL fails: {data_file.relative_to(ONTOLOGY_DIR)}",
         passed,
         "sh:conforms=false; detected expected constraint"
         if passed
@@ -691,6 +697,30 @@ def main() -> int:
             "A NoteItem evidence range must be in-bounds, non-empty, and equal its contentText substring.",
         )
     )
+
+    # ── v0.4 approved M3 extraction ontology ────────────────────────
+    checks.extend(validate_syntax(V04_SYNTAX_FILES, "v0.4"))
+    m3_graph = merge_dataset(V04_ONTOLOGY_FILES + (EXAMPLES_DIR / "llm-extraction-v04-draft.trig",))
+    m3_dataset = _dataset_from_files(V04_ONTOLOGY_FILES + (EXAMPLES_DIR / "llm-extraction-v04-draft.trig",))
+    checks.extend(
+        validate_competency_queries(
+            m3_graph,
+            CQ_DIR / "llm-extraction-v04-draft-queries.rq",
+            {"CQ-M3-CAND-ENTITY-001": 1, "CQ-M3-CAND-RELATION-001": 0, "CQ-M3-CONFIGURATION-001": 1},
+            {"CQ-M3-LINK-BOUNDARY-001": False},
+            "v0.4",
+            dataset=m3_dataset,
+        )
+    )
+    checks.extend(validate_shacl_positive(
+        (EXAMPLES_DIR / "llm-extraction-v04-draft.trig",),
+        (SHAPES_DIR / "llm-extraction-draft-shapes.ttl",),
+    ))
+    checks.append(validate_single_shacl_negative(
+        EXAMPLES_DIR / "shacl-negative-llm-extraction-cross-project.trig",
+        (SHAPES_DIR / "llm-extraction-draft-shapes.ttl",),
+        "A draft entity link target must belong to the candidate project.",
+    ))
     checks.append(
         validate_single_shacl_negative(
             EXAMPLES_DIR / "shacl-negative-evidence-overlap.ttl",

@@ -36,6 +36,14 @@ class SemanticCoreClient(Protocol):
         key: str | None = None,
     ) -> object: ...
 
+    async def entity_link_context(
+        self, context: TrustedRequestContext, limit: int = 50
+    ) -> list[dict[str, str]]: ...
+
+    async def ingest_extraction(
+        self, context: TrustedRequestContext, key: str, body: object
+    ) -> object: ...
+
 
 class HttpSemanticCoreClient:
     """Private HTTP adapter that forwards only trusted metadata and typed bodies."""
@@ -87,6 +95,35 @@ class HttpSemanticCoreClient:
         if response.is_error:
             raise _problem(response.status_code, payload)
         return {**_mapping(payload), "_projecta_http_status": response.status_code}
+
+    async def entity_link_context(
+        self, context: TrustedRequestContext, limit: int = 50
+    ) -> list[dict[str, str]]:
+        """Read only bounded same-project entity IDs, types, and labels."""
+        if limit < 1 or limit > 100:
+            raise ValueError("entity link context limit must be between 1 and 100")
+        payload = await self.request(context, "GET", f"/v1/entities/link-context?limit={limit}")
+        if not isinstance(payload, dict):
+            raise SemanticCoreProblem(503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core returned invalid link context")
+        typed_payload = cast(dict[str, object], payload)
+        if not isinstance(typed_payload.get("entities"), list):
+            raise SemanticCoreProblem(503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core returned invalid link context")
+        result: list[dict[str, str]] = []
+        items = cast(list[object], typed_payload["entities"])
+        for item in items:
+            if not isinstance(item, dict):
+                raise SemanticCoreProblem(503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core returned invalid link context")
+            typed_item = cast(dict[str, object], item)
+            if not all(isinstance(typed_item.get(key), str) for key in ("id", "type", "label")):
+                raise SemanticCoreProblem(503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core returned invalid link context")
+            result.append({key: str(typed_item[key]) for key in ("id", "type", "label")})
+        return result
+
+    async def ingest_extraction(
+        self, context: TrustedRequestContext, key: str, body: object
+    ) -> object:
+        """Persist a normalized M3 batch through the finite Core operation."""
+        return await self.request(context, "POST", "/v1/quick-notes/extractions", body, key)
 
 
 def _mapping(value: object) -> Mapping[str, object]:

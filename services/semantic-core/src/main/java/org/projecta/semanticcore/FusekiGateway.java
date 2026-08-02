@@ -48,6 +48,12 @@ public class FusekiGateway {
                 .build();
         try {
             var response = client.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+            if (response.statusCode() == 404) {
+                // Fuseki does not materialize an empty named graph until its first write.
+                // Treating that normal state as an empty graph is required for first capture
+                // and for target-closure validation of projects with no asserted data yet.
+                return ModelFactory.createDefaultModel();
+            }
             if (response.statusCode() < 200 || response.statusCode() >= 300) {
                 throw new IllegalStateException("semantic store graph request failed");
             }

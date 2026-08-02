@@ -1,0 +1,64 @@
+{
+  "fixtureVersion": "s5.replay.v1",
+  "schemaVersion": "m3.v1",
+  "responses": {
+    "basic-requirement-001": {
+      "schemaVersion": "m3.v1",
+      "modelId": "replay",
+      "modelVersion": "s5.replay.v1",
+      "entities": [
+        {
+          "type": "Requirement",
+          "label": "Confirm the shipping address before payment.",
+          "evidence": {"startOffset": 0, "endOffset": 44, "text": "Confirm the shipping address before payment."},
+          "confidence": "0.99"
+        }
+      ],
+      "relations": [],
+      "links": [],
+      "usage": {"inputTokens": 0, "outputTokens": 0, "totalTokens": 0}
+    },
+    "empty-001": {
+      "schemaVersion": "m3.v1",
+      "modelId": "replay",
+      "modelVersion": "s5.replay.v1",
+      "entities": [],
+      "relations": [],
+      "links": [],
+      "abstentionReason": "no supported proposal",
+      "usage": {"inputTokens": 0, "outputTokens": 0, "totalTokens": 0}
+    },
+    "relation-implements-001": {
+      "schemaVersion": "m3.v1", "modelId": "replay", "modelVersion": "s5.replay.v1",
+      "entities": [],
+      "relations": [{"predicate": "implements", "sourceEntityId": "Task--entity-address-task", "targetEntityId": "Requirement--entity-checkout-req", "evidence": {"startOffset": 0, "endOffset": 64, "text": "The address validation task implements the checkout requirement."}, "confidence": "0.95"}],
+      "links": [], "usage": {"inputTokens": 0, "outputTokens": 0, "totalTokens": 0}
+    },
+    "bounded-link-001": {
+      "schemaVersion": "m3.v1", "modelId": "replay", "modelVersion": "s5.replay.v1",
+      "entities": [], "relations": [],
+      "links": [{"mention": "checkout team", "targetEntityId": "Team--entity-checkout-team", "evidence": {"startOffset": 13, "endOffset": 26, "text": "checkout team"}, "confidence": "0.94"}],
+      "usage": {"inputTokens": 0, "outputTokens": 0, "totalTokens": 0}
+    },
+    "unicode-span-001": {
+      "schemaVersion": "m3.v1", "modelId": "replay", "modelVersion": "s5.replay.v1",
+      "entities": [{"type": "Task", "label": "kiểm tra API thuế", "evidence": {"startOffset": 8, "endOffset": 25, "text": "kiểm tra API thuế"}, "confidence": "0.91"}],
+      "relations": [], "links": [], "usage": {"inputTokens": 0, "outputTokens": 0, "totalTokens": 0}
+    },
+    "ambiguous-001": {
+      "schemaVersion": "m3.v1", "modelId": "replay", "modelVersion": "s5.replay.v1",
+      "entities": [], "relations": [], "links": [], "abstentionReason": "insufficient specificity",
+      "usage": {"inputTokens": 0, "outputTokens": 0, "totalTokens": 0}
+    },
+    "adversarial-instructions-001": {
+      "schemaVersion": "m3.v1", "modelId": "replay", "modelVersion": "s5.replay.v1",
+      "entities": [], "relations": [], "links": [], "abstentionReason": "untrusted instructions are not domain evidence",
+      "usage": {"inputTokens": 0, "outputTokens": 0, "totalTokens": 0}
+    },
+    "cross-project-link-001": {
+      "schemaVersion": "m3.v1", "modelId": "replay", "modelVersion": "s5.replay.v1",
+      "entities": [], "relations": [], "links": [], "abstentionReason": "bounded context policy rejects unavailable project target",
+      "usage": {"inputTokens": 0, "outputTokens": 0, "totalTokens": 0}
+    }
+  }
+}

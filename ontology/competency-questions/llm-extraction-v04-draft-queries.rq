@@ -1,0 +1,29 @@
+PREFIX projecta: <https://w3id.org/projecta/ontology/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+
+# Approved v0.4 M3 competency queries.
+# --- CQ-M3-CAND-ENTITY-001 ---
+SELECT ?candidate ?class ?label ?confidence WHERE {
+  ?candidate a projecta:EntityCandidate ; projecta:proposedClass ?class ;
+      projecta:proposedLabel ?label ; projecta:confidence ?confidence .
+}
+
+# --- CQ-M3-CAND-RELATION-001 ---
+SELECT ?candidate ?predicate ?source ?target ?confidence WHERE {
+  ?candidate a projecta:RelationCandidate ; projecta:proposedPredicate ?predicate ;
+      projecta:relationSource ?source ; projecta:relationTarget ?target ;
+      projecta:confidence ?confidence .
+}
+
+# --- CQ-M3-LINK-BOUNDARY-001 ---
+ASK {
+  ?candidate a projecta:EntityLinkCandidate ; projecta:belongsToProject ?project ;
+      projecta:linkTarget ?target .
+  FILTER NOT EXISTS { ?target projecta:belongsToProject ?project }
+}
+
+# --- CQ-M3-CONFIGURATION-001 ---
+SELECT ?activity ?model ?prompt ?schema WHERE {
+  ?activity a prov:Activity ; projecta:modelVersion ?model ;
+      projecta:promptVersion ?prompt ; projecta:schemaVersion ?schema .
+}

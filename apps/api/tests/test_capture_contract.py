@@ -38,6 +38,11 @@ class FakeSemanticCoreClient:
     ) -> object:
         return {"requestId": context.request_id, "items": []}
 
+    async def entity_link_context(
+        self, context: TrustedRequestContext, limit: int = 50
+    ) -> list[dict[str, str]]:
+        return [{"id": "Requirement--req-01", "type": "Requirement", "label": "Checkout"}]
+
 
 def app_headers() -> dict[str, str]:
     """Return headers that a trusted deployment adapter would inject."""
@@ -49,9 +54,38 @@ def app_headers() -> dict[str, str]:
     }
 
 
+def _make_settings(secret: str) -> Settings:
+    return Settings(
+        trusted_context_secret=secret,
+        PROJECTA_LLM_TYPE="openai-response",
+        PROJECTA_LLM_BASE_URL="https://api.deepseek.com",
+        PROJECTA_LLM_API_KEY="test-key",
+        PROJECTA_LLM_MODEL="deepseek-v4-flash",
+    )
+
+
+async def test_link_context_read_is_project_scoped_and_bounded() -> None:
+    app = create_app(_make_settings("test-secret"), FakeSemanticCoreClient())
+
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        response = await client.get(
+            "/v1/entities/link-context?limit=10",
+            headers=app_headers(),
+        )
+
+    assert response.status_code == 200
+    assert response.headers["X-Request-Id"] == "req-01"
+    assert response.json() == {
+        "requestId": "req-01",
+        "entities": [
+            {"id": "Requirement--req-01", "type": "Requirement", "label": "Checkout"}
+        ],
+    }
+
+
 async def test_capture_requires_trusted_context() -> None:
     """Anonymous public calls cannot choose a project or actor."""
-    app = create_app(Settings(trusted_context_secret="test-secret"), FakeSemanticCoreClient())
+    app = create_app(_make_settings("test-secret"), FakeSemanticCoreClient())
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         response = await client.post("/v1/quick-notes", json={"rawText": "A", "segments": []})
     assert response.status_code == 401
@@ -59,7 +93,7 @@ async def test_capture_requires_trusted_context() -> None:
 
 async def test_capture_rejects_context_when_deployment_secret_is_missing() -> None:
     """Missing deployment configuration cannot become an unauthenticated scope selector."""
-    app = create_app(Settings(trusted_context_secret=""), FakeSemanticCoreClient())
+    app = create_app(_make_settings(""), FakeSemanticCoreClient())
     headers = app_headers() | {"Idempotency-Key": "capture-missing-secret"}
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         response = await client.post(
@@ -72,7 +106,7 @@ async def test_capture_rejects_context_when_deployment_secret_is_missing() -> No
 
 async def test_capture_validates_exact_offsets_and_returns_opaque_ids() -> None:
     """A valid typed note is forwarded only after canonical local validation."""
-    app = create_app(Settings(trusted_context_secret="test-secret"), FakeSemanticCoreClient())
+    app = create_app(_make_settings("test-secret"), FakeSemanticCoreClient())
     headers = app_headers() | {"Idempotency-Key": "capture-01"}
     body = {
         "rawText": "Add address confirmation.",
@@ -93,7 +127,7 @@ async def test_capture_validates_exact_offsets_and_returns_opaque_ids() -> None:
 
 async def test_capture_rejects_mismatched_evidence_before_downstream_call() -> None:
     """An evidence range that does not reproduce segment text is invalid input."""
-    app = create_app(Settings(trusted_context_secret="test-secret"), FakeSemanticCoreClient())
+    app = create_app(_make_settings("test-secret"), FakeSemanticCoreClient())
     headers = app_headers() | {"Idempotency-Key": "capture-02"}
     body = {
         "rawText": "Add address confirmation.",
@@ -121,7 +155,7 @@ async def test_capture_normalizes_line_endings_and_preserves_replay_status() -> 
             return result
 
     core = RecordingCore()
-    app = create_app(Settings(trusted_context_secret="test-secret"), core)
+    app = create_app(_make_settings("test-secret"), core)
     headers = app_headers() | {"Idempotency-Key": "capture-03"}
     body = {
         "rawText": "Confirm address.\r\nTax timeout.",
@@ -147,7 +181,7 @@ async def test_downstream_errors_are_sanitized_and_keep_request_id() -> None:
         ) -> CaptureResponse:
             raise SemanticCoreProblem(500, "INTERNAL_ERROR", "Fuseki http://private-store/graph")
 
-    app = create_app(Settings(trusted_context_secret="test-secret"), FailingCore())
+    app = create_app(_make_settings("test-secret"), FailingCore())
     headers = app_headers() | {"Idempotency-Key": "capture-04"}
     body = {
         "rawText": "Confirm address.",
@@ -169,7 +203,7 @@ async def test_http_client_maps_connect_error_to_contract_unavailable() -> None:
         raise httpx.ConnectError("downstream unavailable", request=request)
 
     client = HttpSemanticCoreClient("http://semantic-core", httpx.MockTransport(handler))
-    app = create_app(Settings(trusted_context_secret="test-secret"), client)
+    app = create_app(_make_settings("test-secret"), client)
     headers = app_headers() | {"Idempotency-Key": "capture-connect-error"}
     body = {
         "rawText": "A",
@@ -189,7 +223,7 @@ async def test_http_client_maps_non_json_success_to_contract_unavailable() -> No
         return httpx.Response(200, text="not-json")
 
     client = HttpSemanticCoreClient("http://semantic-core", httpx.MockTransport(handler))
-    app = create_app(Settings(trusted_context_secret="test-secret"), client)
+    app = create_app(_make_settings("test-secret"), client)
     headers = app_headers() | {"Idempotency-Key": "capture-invalid-response"}
     body = {
         "rawText": "A",

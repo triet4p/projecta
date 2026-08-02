@@ -5,6 +5,10 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 from projecta_api.config import Settings
+from projecta_api.extraction.service import ExtractionOrchestrator
+from projecta_api.llm.gateway import LLMGateway, NormalizedGatewayError
+from projecta_api.llm.openai_responses import OpenAIResponsesGateway
+from projecta_api.llm.resilience import ResilientGateway
 from projecta_api.routes import create_router
 from projecta_api.semantic_core import (
     HttpSemanticCoreClient,
@@ -19,11 +23,24 @@ async def live() -> dict[str, str]:
 
 
 def create_app(
-    settings: Settings | None = None, semantic_client: SemanticCoreClient | None = None
+    settings: Settings | None = None,
+    semantic_client: SemanticCoreClient | None = None,
+    gateway: LLMGateway | None = None,
 ) -> FastAPI:
     """Create the application without performing network I/O."""
-    actual_settings = settings or Settings()
+    actual_settings = settings or Settings()  # pyright: ignore[reportCallIssue]
     client = semantic_client or HttpSemanticCoreClient(str(actual_settings.semantic_core_url))
+    resilient_gateway = ResilientGateway(
+        gateway
+        or OpenAIResponsesGateway(
+            base_url=str(actual_settings.llm_base_url),
+            api_key=actual_settings.llm_api_key.get_secret_value(),
+        ),
+        max_retries=2,
+    )
+    extraction = ExtractionOrchestrator(
+        resilient_gateway, client, actual_settings.llm_model, timeout_seconds=60.0
+    )
     app = FastAPI(title="Projecta Application API", version="0.1.0")
     app.state.settings = actual_settings
 
@@ -54,6 +71,17 @@ def create_app(
             "SEMANTIC_CONTRACT_UNAVAILABLE": "The semantic service is temporarily unavailable.",
         }[code]
         return _problem(request, status_code, code, "Semantic Core request failed", detail)
+
+    @app.exception_handler(NormalizedGatewayError)
+    async def gateway_problem(request: Request, error: NormalizedGatewayError) -> JSONResponse:
+        """Map provider-neutral extraction failures without exposing provider details."""
+        return _problem(
+            request,
+            503,
+            "SEMANTIC_CONTRACT_UNAVAILABLE",
+            "Extraction request failed",
+            "The extraction operation could not be completed safely.",
+        )
 
     @app.exception_handler(HTTPException)
     async def http_problem(request: Request, error: HTTPException) -> JSONResponse:
@@ -86,7 +114,7 @@ def create_app(
         )
 
     app.add_api_route("/health/live", live, methods=["GET"])
-    app.include_router(create_router(client))
+    app.include_router(create_router(client, extraction))
     return app
 
 

@@ -1,0 +1,41 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout/candidates/> {
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/entity-1>
+      a projecta:Candidate, projecta:EntityCandidate ;
+      projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> ;
+      prov:wasDerivedFrom <https://w3id.org/projecta/data/project/ecommerce-checkout/note/m3-1/item-1> ;
+      projecta:proposedClass projecta:Requirement ;
+      projecta:proposedLabel "tax API timeout investigation" ;
+      projecta:confidence "0.91"^^xsd:decimal .
+
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/link-1>
+      a projecta:Candidate, projecta:EntityLinkCandidate ;
+      projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> ;
+      prov:wasDerivedFrom <https://w3id.org/projecta/data/project/ecommerce-checkout/note/m3-1/item-1> ;
+      projecta:proposedLabel "checkout team" ;
+      projecta:linkTarget <https://w3id.org/projecta/data/project/ecommerce-checkout/entity/checkout-team> ;
+      projecta:confidence "0.88"^^xsd:decimal .
+}
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout/sources/> {
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/note/m3-1/item-1>
+      a projecta:NoteItem ;
+      projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> ;
+      projecta:contentText "tax API timeout investigation" ;
+      projecta:isItemOf <https://w3id.org/projecta/data/project/ecommerce-checkout/note/m3-1> ;
+      projecta:evidenceStartOffset 33 ; projecta:evidenceEndOffset 63 .
+}
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout/asserted/> {
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/entity/checkout-team>
+      a projecta:Entity ; projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> .
+}
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout/provenance/> {
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/activity/extract-1>
+      a prov:Activity ; projecta:modelVersion "replay-1" ; projecta:promptVersion "m3-v1" ;
+      projecta:schemaVersion "m3.v1" .
+}

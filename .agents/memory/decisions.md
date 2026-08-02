@@ -121,3 +121,52 @@ unknown or malformed versions fail closed through current strict shapes. The
 release is additive and requires no existing-data backfill. Authentication,
 authorization, public deployment, edit/delete, LLM extraction, and inference
 remain outside the released scope.
+
+## [2026-08-02] Use OpenAI Responses API as the first M3 provider adapter
+
+**Decision:** Implement the first live M3 provider adapter against the OpenAI Responses API with strict structured JSON Schema output, while keeping `LLMGateway` provider-neutral and selecting the model only from required runtime configuration.
+**Alternatives considered:** Google Gemini structured output, Anthropic Messages tool-schema output, and a self-hosted vLLM OpenAI-compatible endpoint.
+**Reason:** The benchmark found OpenAI's structured-output contract and Python/Pydantic integration provide the smallest typed adapter surface for the current extraction slice, with explicit refusal/status and usage handling; replay remains the canonical CI path. This is a provider adapter choice, not a domain or ontology contract.
+**Consequences:** S5-15 may add the pinned OpenAI SDK only behind the gateway adapter. Runtime must provide `OPENAI_API_KEY` through the deployment secret boundary and a non-empty model configuration; no credential or provider payload is stored in Git or telemetry. Replacing OpenAI later must change only adapter/configuration code and preserve the gateway, extraction schema, ontology, and API contracts. Gemini, Anthropic, and vLLM remain eligible future adapters.
+
+## [2026-08-02] Route the first Responses adapter through DeepSeek
+
+**Decision:** Use the OpenAI-compatible Responses API through the configurable DeepSeek endpoint for the first live M3 adapter, with `OPENAI_RESPONSE_BASE_URL`, `OPENAI_RESPONSE_API_KEY`, and `PROJECTA_LLM_MODEL` as deployment configuration.
+**Alternatives considered:** Direct OpenAI-hosted Responses API from the earlier S5-08 decision, Google Gemini structured output, Anthropic tool-schema output, and replay-only execution.
+**Reason:** The user explicitly selected the DeepSeek Responses API guide while retaining the OpenAI-compatible request/response abstraction. This preserves the provider-neutral gateway and lets canonical CI remain replay-based while real calls target the configured DeepSeek endpoint.
+**Consequences:** The adapter must not hardcode a DeepSeek URL or model, must fail closed without the API key/model, and must normalize compatibility differences at the adapter boundary. The earlier OpenAI-hosted choice is superseded for the first live endpoint; changing endpoint/provider remains a configuration/adapter change and cannot alter the domain contract.
+
+## [2026-08-02] Require one explicit PROJECTA_LLM environment contract
+
+**Decision:** Require `PROJECTA_LLM_TYPE`, `PROJECTA_LLM_BASE_URL`, `PROJECTA_LLM_API_KEY`, and `PROJECTA_LLM_MODEL` for every live LLM startup and accept only `openai-response/openai` as the current type.
+**Alternatives considered:** Preserve the earlier `OPENAI_RESPONSE_*` aliases, retain source defaults for the DeepSeek URL/model, or silently disable live extraction when configuration is incomplete.
+**Reason:** Provider selection and credentials must be deployment-owned and auditable; source fallbacks caused the evaluator to use an unintended `/v1` endpoint instead of the user’s `.env` configuration.
+**Consequences:** Missing or unsupported configuration fails closed at settings/evaluator startup. No legacy aliases, URL/model defaults, or skip/fallback path may be reintroduced; future provider types must be added as an explicit reviewed contract change.
+
+## [2026-08-02] Accept the explicit openai-response and openai LLM types
+
+**Decision:** Set `PROJECTA_LLM_TYPE` to either `openai-response` or `openai`; both use the current OpenAI-compatible Responses adapter while the remaining endpoint, credential, and model values come from the required `PROJECTA_LLM_*` variables.
+**Alternatives considered:** Keep the erroneous combined value `openai-response/openai`, accept arbitrary provider strings, or add separate unreviewed adapter behavior for `openai`.
+**Reason:** The environment contract needs a simple provider/type discriminator with two explicit values and must reject typos without reintroducing defaults or fallback routing.
+**Consequences:** Settings and live evaluation validate against exactly these two values; adding another type requires an explicit contract and adapter decision.
+
+## [2026-08-02] Approve the Sprint 5 v0.4 extraction ontology
+
+**Decision:** Approve the additive v0.4 ontology, SHACL shapes, fixtures, and competency queries for M3 typed entity, relation, and bounded same-project link candidates.
+**Alternatives considered:** Keep the artifacts as proposal-only, defer approval to a later sprint, or remove the candidate-specific vocabulary and retain opaque application JSON.
+**Reason:** The user explicitly approved the Sprint 5 ontology after implementation and validation; the candidate boundary, exact evidence, provenance metadata, allowlists, and same-project constraints are sufficiently defined and tested for the M3 slice.
+**Consequences:** The v0.4 vocabulary is approved for Sprint 5 and remains additive to v0.3 with no data migration. Candidates remain reviewable proposal data and are never automatically asserted; future semantic changes require a new reviewed ontology decision.
+
+## [2026-08-02] Make v0.4 runtime validation and candidate lifecycle canonical
+
+**Decision:** Treat the approved v0.4 M3 ontology as a runtime contract: persist candidates under the canonical project candidate route, load v0.4 SHACL shapes and ontology modules in Semantic Core, resolve only existing same-project canonical entity IRIs, and persist abstention activity provenance even when no candidate is produced.
+**Alternatives considered:** Keep note-local candidate IRIs, validate only in the API, reconstruct generic `/entity/{id}` targets, or omit empty extraction provenance.
+**Reason:** Those alternatives allowed lifecycle lookup mismatches, fabricated/cross-project targets, unvalidated v0.4 payloads, and unauditable abstentions; the release boundary requires the Semantic Core to enforce the approved semantic contract at its mutation boundary.
+**Consequences:** Candidate confirmation/rejection/validation now operate on the same IRIs emitted by ingestion, v0.4 is included in canonical ontology regression, and every extraction outcome has durable provenance. Any future ontology version must add an explicit runtime shape/version path and regression fixture.
+
+## [2026-08-02] Amend v0.4 with allowlist declarations and abstention provenance
+
+**Decision:** Amend the approved v0.4 ontology to declare every M3 allowlisted entity class and relation predicate, add `Team` for bounded link context, and add `abstentionReason` as an optional extraction-activity audit property.
+**Alternatives considered:** Leave runtime allowlists broader than the ontology, reuse an unrelated existing term, or keep abstention only in application telemetry.
+**Reason:** Runtime SHACL must validate the same vocabulary that the API accepts, and empty extraction outcomes must be queryable from persisted provenance without relying on logs.
+**Consequences:** The v0.4 approval remains valid with this additive amendment; the canonical ontology suite and runtime bootstrap must include the amended terms, and future allowlist changes require another reviewed amendment.

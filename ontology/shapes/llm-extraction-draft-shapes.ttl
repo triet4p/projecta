@@ -1,0 +1,44 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix owl:      <http://www.w3.org/2002/07/owl#> .
+@prefix prov:     <http://www.w3.org/ns/prov#> .
+@prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh:       <http://www.w3.org/ns/shacl#> .
+
+# APPROVED v0.4 shapes — approved by the user on 2026-08-02.
+projecta:DraftEntityCandidateShape a sh:NodeShape ;
+    sh:targetClass projecta:EntityCandidate ;
+    sh:property [ sh:path projecta:proposedClass ; sh:minCount 1 ; sh:maxCount 1 ; sh:class owl:Class ] ;
+    sh:property [ sh:path projecta:proposedLabel ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ; sh:minLength 1 ] ;
+    sh:property [ sh:path projecta:confidence ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:decimal ; sh:minInclusive 0 ; sh:maxInclusive 1 ] .
+
+projecta:DraftRelationCandidateShape a sh:NodeShape ;
+    sh:targetClass projecta:RelationCandidate ;
+    sh:property [ sh:path projecta:relationSource ; sh:minCount 1 ; sh:maxCount 1 ; sh:class projecta:Entity ] ;
+    sh:property [ sh:path projecta:relationTarget ; sh:minCount 1 ; sh:maxCount 1 ; sh:class projecta:Entity ] ;
+    sh:property [ sh:path projecta:proposedPredicate ; sh:minCount 1 ; sh:maxCount 1 ; sh:class owl:ObjectProperty ] ;
+    sh:property [ sh:path projecta:confidence ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:decimal ; sh:minInclusive 0 ; sh:maxInclusive 1 ] .
+
+projecta:DraftEntityLinkCandidateShape a sh:NodeShape ;
+    sh:targetClass projecta:EntityLinkCandidate ;
+    sh:property [ sh:path projecta:proposedLabel ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ; sh:minLength 1 ] ;
+    sh:property [ sh:path projecta:linkTarget ; sh:minCount 1 ; sh:maxCount 1 ; sh:class projecta:Entity ] ;
+    sh:property [ sh:path projecta:confidence ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:decimal ; sh:minInclusive 0 ; sh:maxInclusive 1 ] ;
+    sh:sparql [ sh:message "A draft entity link target must belong to the candidate project." ; sh:select """
+        PREFIX projecta: <https://w3id.org/projecta/ontology/>
+        SELECT $this WHERE {
+          $this projecta:belongsToProject ?project ; projecta:linkTarget ?target .
+          FILTER NOT EXISTS { ?target projecta:belongsToProject ?project }
+        }
+    """ ] .
+
+projecta:DraftExtractionActivityShape a sh:NodeShape ;
+    sh:targetClass prov:Activity ;
+    sh:property [ sh:path projecta:modelVersion ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+    sh:property [ sh:path projecta:promptVersion ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+    sh:property [ sh:path projecta:schemaVersion ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] .
+
+projecta:DraftAbstentionActivityShape a sh:NodeShape ;
+    sh:targetClass prov:Activity ;
+    sh:property [ sh:path projecta:abstentionReason ; sh:maxCount 1 ; sh:datatype xsd:string ] .

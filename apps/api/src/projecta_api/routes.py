@@ -1,14 +1,15 @@
 """HTTP routes for typed capture, review, and finite read operations."""
 
-from typing import Annotated, cast
+from typing import Annotated, Protocol, cast
 
-from fastapi import APIRouter, Depends, Header, Response
+from fastapi import APIRouter, Depends, Header, Query, Response
 
 from projecta_api.context import TrustedRequestContext, trusted_context
 from projecta_api.models import (
     CaptureRequest,
     CaptureResponse,
     ConfirmationRequest,
+    ExtractionRequest,
     RejectionRequest,
 )
 from projecta_api.semantic_core import SemanticCoreClient
@@ -17,9 +18,24 @@ Context = Annotated[TrustedRequestContext, Depends(trusted_context)]
 Key = Annotated[str, Header(alias="Idempotency-Key", min_length=1, max_length=128)]
 
 
-def create_router(client: SemanticCoreClient) -> APIRouter:
+class ExtractionService(Protocol):
+    async def extract(self, context: TrustedRequestContext, key: str, request: ExtractionRequest) -> object: ...
+
+
+def create_router(client: SemanticCoreClient, extraction: ExtractionService | None = None) -> APIRouter:
     """Create routes bound to one finite Semantic Core client."""
     router = APIRouter()
+
+    @router.post("/v1/quick-notes/extractions")
+    async def extract(
+        payload: ExtractionRequest, context: Context, idempotency_key: Key, response: Response
+    ) -> object:
+        if extraction is None:
+            raise RuntimeError("extraction service is not configured")
+        result = await extraction.extract(context, idempotency_key, payload)
+        result = _preserve_core_status(response, result)
+        response.headers["X-Request-Id"] = context.request_id
+        return result
 
     @router.post("/v1/quick-notes", response_model=CaptureResponse, status_code=201)
     async def capture(
@@ -90,6 +106,16 @@ def create_router(client: SemanticCoreClient) -> APIRouter:
         result = _preserve_core_status(response, result)
         response.headers["X-Request-Id"] = context.request_id
         return result
+
+    @router.get("/v1/entities/link-context")
+    async def entity_link_context(
+        context: Context,
+        response: Response,
+        limit: Annotated[int, Query(ge=1, le=100)] = 50,
+    ) -> object:
+        entities = await client.entity_link_context(context, limit)
+        response.headers["X-Request-Id"] = context.request_id
+        return {"requestId": context.request_id, "entities": entities}
 
     @router.get("/v1/knowledge-items/{item_id}/evidence")
     async def evidence(item_id: str, context: Context, response: Response) -> object:

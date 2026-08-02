@@ -7,6 +7,23 @@ $exitCode = 0
 $hadTrustedContextSecret = Test-Path Env:PROJECTA_API_TRUSTED_CONTEXT_SECRET
 $previousTrustedContextSecret = $env:PROJECTA_API_TRUSTED_CONTEXT_SECRET
 $runnerManagedSecret = $false
+$llmEnvironment = @{
+    PROJECTA_LLM_TYPE = 'openai-response'
+    PROJECTA_LLM_BASE_URL = 'https://system-test.invalid'
+    PROJECTA_LLM_API_KEY = 'system-test-not-a-secret'
+    PROJECTA_LLM_MODEL = 'replay:basic-requirement-001'
+}
+$previousLlmEnvironment = @{}
+
+foreach ($entry in $llmEnvironment.GetEnumerator()) {
+    $path = "Env:$($entry.Key)"
+    $exists = Test-Path $path
+    $previousLlmEnvironment[$entry.Key] = @{
+        Exists = $exists
+        Value = if ($exists) { (Get-Item $path).Value } else { $null }
+    }
+    Set-Item -Path $path -Value $entry.Value
+}
 
 function Get-DotEnvTrustedContextSecret {
     $envFile = Join-Path (Split-Path -Parent $PSScriptRoot) '.env'
@@ -67,6 +84,14 @@ try {
     }
 }
 finally {
+    foreach ($entry in $previousLlmEnvironment.GetEnumerator()) {
+        $path = "Env:$($entry.Key)"
+        if ($entry.Value.Exists) {
+            Set-Item -Path $path -Value $entry.Value.Value
+        } else {
+            Remove-Item $path -ErrorAction SilentlyContinue
+        }
+    }
     if ($runnerManagedSecret) {
         if ($hadTrustedContextSecret) {
             $env:PROJECTA_API_TRUSTED_CONTEXT_SECRET = $previousTrustedContextSecret

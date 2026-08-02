@@ -26,6 +26,7 @@ public final class SemanticCoreApplication {
         var validation = new RemoteCandidateValidationService(gateway, router, Path.of("/ontology/shapes"));
         var lifecycle = new FusekiLifecycleService(gateway, router, validation);
         var capture = new QuickNoteCaptureService(gateway, router, validation::validateCapture);
+        var extraction = new LlmCandidateIngestionService(gateway, router, validation);
         var queries = new FusekiQueryService(gateway, router, validation);
         var application = Javalin.create(config -> {
             config.routes.exception(RuntimeException.class, (exception, context) -> writeProblem(context, exception));
@@ -48,6 +49,19 @@ public final class SemanticCoreApplication {
                         context.status(result.replayed() ? 200 : 201)
                                 .json(Map.of(
                                         "note", Map.of("id", result.noteId(), "recordedAt", result.recordedAt()),
+                                        "candidates", result.candidates()));
+                    })
+                    .post("/v1/quick-notes/extractions", context -> {
+                        var trusted = trustedContext(context);
+                        var result = extraction.ingest(
+                                trusted.projectId(),
+                                trusted.actorId(),
+                                context.header("Idempotency-Key"),
+                                context.bodyAsClass(LlmCandidateIngestionService.IngestionRequest.class));
+                        context.status(result.replayed() ? 200 : 201)
+                                .json(Map.of(
+                                        "requestId", requestId(context),
+                                        "note", Map.of("id", result.noteId()),
                                         "candidates", result.candidates()));
                     })
                     .post("/v1/candidates/{candidateId}/confirmations", context -> {
@@ -123,6 +137,14 @@ public final class SemanticCoreApplication {
                                 requestId(context),
                                 "items",
                                 queries.current(trusted.projectId(), context.queryParam("type"))));
+                    })
+                    .get("/v1/entities/link-context", context -> {
+                        var trusted = trustedContext(context);
+                        var rawLimit = context.queryParam("limit");
+                        var limit = rawLimit == null ? 50 : Integer.parseInt(rawLimit);
+                        context.json(Map.of(
+                                "requestId", requestId(context),
+                                "entities", queries.entityLinkContext(trusted.projectId(), limit)));
                     })
                     .get("/v1/candidates/{candidateId}/history", context -> {
                         var trusted = trustedContext(context);

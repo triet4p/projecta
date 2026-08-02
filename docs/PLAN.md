@@ -18,7 +18,9 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 - [x] **M2 — Manual Quick Note Slice (Sprint 4):** Typed note → deterministic
   candidate → human review → assertion/evidence qua API tối thiểu; giữ inference
   boundary nhưng chưa materialize rule chưa được duyệt.
-- [ ] **M3 — LLM Extraction and Evaluation (Sprint 5):** Structured candidate extraction có evidence và evaluation dataset.
+- [x] **M3 — LLM Extraction and Evaluation (Sprint 5):** Core implementation,
+  ontology checks, and canonical system-test execution hoàn tất; clean Compose
+  validation passed 2026-08-03. Release còn blocked bởi corrected live-quality rerun.
 - [ ] **M4 — Retrieval and Coordination (Sprint 6):** Project-scoped queries, requirement history, blockers và evidence-backed answers.
 - [ ] **M5 — Connector and Production Evolution (Sprint 7+):** Mock/manual framework, connector thật đầu tiên, security và operational hardening.
 
@@ -33,9 +35,14 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 - [Sprint 4 — Manual Quick Note Slice](sprint-plans/sprint-4.md) — *Completed
   2026-08-01; M2 and ontology v0.3.0 human-approved and released.*
 
+## Active Sprints
+
+- [Sprint 5 — LLM Extraction and Evaluation](sprint-plans/sprint-5.md) —
+  *Implementation and deterministic release gates complete 2026-08-03; M3/v0.4
+  approved, with only the corrected live-quality rerun pending.*
+
 ## Planned Sprints
 
-- **Sprint 5:** Provider-agnostic LLM extraction, entity linking và evaluation.
 - **Sprint 6:** Semantic retrieval, rules, projections và grounded response.
 
 ## Backlog / Future Work
