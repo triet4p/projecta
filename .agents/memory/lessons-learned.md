@@ -138,3 +138,24 @@ image that assumes a system Python binary after only `uv python install`.
 **Root cause:** The system runtime used the configured external LLM even though the Sprint 5 acceptance task required a credential-free replay path.
 **Fix / workaround:** Run the canonical HTTP API/Semantic Core/Fuseki chain with the versioned `ReplayGateway` fixture, and keep the DeepSeek probe as a separate explicit live-quality gate.
 **Watch out for:** External-provider evaluations may supplement deterministic E2E but must not replace it or redefine implementation pass/fail status.
+
+## [2026-08-03] A thin extraction prompt causes live over-extraction and span drift
+
+**Symptom:** The live quality gate failed with entities precision 0.25, links precision 0.33, exact-span 0.75, and abstention recall 0.75: the model proposed extra entities/links, emitted whole-sentence spans instead of minimal phrases, and extracted from ambiguous and cross-project notes.
+**Root cause:** `m3.prompt.v1` provided classification guidance for only 3 of 9 entity types and had no rules for minimal evidence spans, punctuation, abstention on ambiguous/out-of-project content, or link-vs-relation overlap. Strict JSON schema enums cannot prevent a wrong-but-allowlisted type or extra candidates.
+**Fix / workaround:** Promote to `m3.prompt.v2` with one-line definitions for all nine types, minimal-span and code-point rules (an emoji is exactly one offset), full-sentence punctuation retention, request/abstention/link rules, and five few-shot examples. A single-case probe is not a sufficient quality signal; run the full dataset gate.
+**Watch out for:** Every prompt change must be validated against the full `s5.v1` dataset, not one case; label/type guidance alone cannot stop span noise.
+
+## [2026-08-03] LLMs miscount Unicode code points even with explicit offset guidance
+
+**Symptom:** A live gate run failed with `invalid_evidence` on the emoji case (`🚀 Le sẽ kiểm tra API thuế.`) and the link case even though the same cases passed in the immediately preceding run; the model emitted offsets that did not match the source slice.
+**Root cause:** Non-deterministic model output: the model occasionally counts emoji/supplementary characters as two offsets (UTF-16 style) or emits a mention that differs from its own span text. Normalization intentionally fails closed on any evidence mismatch.
+**Fix / workaround:** Add a single bounded retry in the live runner for the `invalid_evidence` error class only (`hallucinated_link` and other safety classes still fail closed), plus emoji code-point guidance in the prompt. Require two consecutive passing gate runs as evidence because single-run results are noisy.
+**Watch out for:** Any live quality gate over Unicode notes will see occasional `invalid_evidence` noise; do not treat one failing run as a quality regression or relax the fail-closed normalization.
+
+## [2026-08-03] A local .env silently turns fail-closed runner tests into live calls
+
+**Symptom:** `test_live_runner_fails_without_required_configuration` returned 0 and reported `completed` even though the test explicitly removed all `PROJECTA_LLM_*` environment variables.
+**Root cause:** `Settings` auto-discovers the repository `.env` (`_projecta_env_file()` walks parents of `config.py`), so popping process environment variables does not remove configuration when a `.env` file exists. The subprocess then ran the real provider with the real key.
+**Fix / workaround:** Skip that test with `pytest.mark.skipif` when the repository `.env` exists; the fail-closed behavior is still verified in environments without a `.env`.
+**Watch out for:** Any test that expects configuration to be absent must account for the discovered `.env`; running evaluation tests on a machine with a live `.env` spends real provider credits.

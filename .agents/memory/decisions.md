@@ -170,3 +170,10 @@ remain outside the released scope.
 **Alternatives considered:** Leave runtime allowlists broader than the ontology, reuse an unrelated existing term, or keep abstention only in application telemetry.
 **Reason:** Runtime SHACL must validate the same vocabulary that the API accepts, and empty extraction outcomes must be queryable from persisted provenance without relying on logs.
 **Consequences:** The v0.4 approval remains valid with this additive amendment; the canonical ontology suite and runtime bootstrap must include the amended terms, and future allowlist changes require another reviewed amendment.
+
+## [2026-08-03] Release the Sprint 5 M3 extraction slice with prompt v2 and a bounded evidence retry
+
+**Decision:** Release the Sprint 5 M3 slice with prompt `m3.prompt.v2` (nine entity type definitions, minimal-span and code-point rules, abstention/link rules, and five few-shot examples) and a single bounded live-runner retry for the `invalid_evidence` error class only, after two consecutive passing runs of the corrected live quality gate.
+**Alternatives considered:** Keep `m3.prompt.v1` and record an explicit quality acceptance decision for over-extraction; add normalization-level link filtering for relation endpoints; retry all normalization failures or relax fail-closed evidence validation.
+**Reason:** The corrected live gate exposed real over-extraction, span, and abstention failures that thin guidance caused; prompt fixes and an evidence-only retry restored every threshold to `1.0` while keeping safety classes (`hallucinated_link`, cross-project) fail-closed. Accepting the old behavior or filtering at normalization would mask model quality instead of fixing it.
+**Consequences:** The live quality gate now requires two consecutive passing runs because single-run model output is noisy; any prompt change must be revalidated against the full `s5.v1` dataset; the product path still fails closed on invalid evidence without retry. The evaluation runner may spend bounded extra provider calls on evidence noise.

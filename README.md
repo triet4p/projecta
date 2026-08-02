@@ -4,26 +4,32 @@ Ontology-driven project intelligence for BrSE and project coordination workflows
 
 ## Status
 
-Projecta has completed M1 (the executable semantic foundation) and M2 (the
-Manual Quick Note slice). Ontology v0.1, v0.2, and the additive v0.3.0
-evidence-offset extension are approved repository-local releases.
+Projecta has completed M1 (the executable semantic foundation), M2 (the
+Manual Quick Note slice), and M3 (the LLM extraction slice). Ontology v0.1,
+v0.2, v0.3, and the additive v0.4 candidate vocabulary are approved
+repository-local releases.
 
 The current working vertical slice is:
 
-- FastAPI accepts a trusted, typed Quick Note.
-- The Semantic Core atomically records source notes, deterministic candidates,
-  evidence, and provenance in project-scoped graphs.
+- FastAPI accepts an untyped Quick Note and produces typed entity, relation,
+  and same-project link candidates through a provider-neutral LLM gateway
+  (live provider or deterministic replay).
+- The Semantic Core atomically records source notes, exact-evidence
+  candidates, and provenance in project-scoped graphs, and enforces the v0.4
+  SHACL contract at the mutation boundary.
 - Candidates can be validated, confirmed, or rejected through the API.
+  Abstentions are persisted as auditable extraction provenance.
 - Confirmed candidates produce asserted Requirements; rejected candidates do
-  not create asserted items.
-- Capture and review retries are idempotent, with transaction rollback,
-  project isolation, and restart persistence covered by automated tests.
+  not create asserted items; no model output is ever asserted automatically.
+- Capture, extraction, and review retries are idempotent, with transaction
+  rollback, project isolation, and restart persistence covered by tests.
 
-The canonical Sprint 4 suite passed 103/103 ontology checks, Java verification,
-and 10 API end-to-end tests. LLM extraction, inference materialization,
-authentication/authorization, connectors, public deployment, pagination, and
+The canonical Sprint 5 suite passed 119/119 ontology checks, Semantic Core
+35/35 tests, 51/51 API end-to-end tests, a clean offline replay evaluation
+(all metrics `1.0`), and the live provider quality gate twice consecutively.
+Authentication/authorization, connectors, public deployment, pagination, and
 edit/delete workflows remain out of scope. See the [project plan](docs/PLAN.md)
-and [Sprint 4 review packet](docs/sprint-plans/sprint-4/review-packet.md) for
+and [Sprint 5 review packet](docs/sprint-plans/sprint-5/review-packet.md) for
 the current delivery evidence.
 
 ## Vision
@@ -63,11 +69,12 @@ Do not duplicate their instructions in other contributor documents.
 
 Theo dõi roadmap và sprint đang hoạt động tại [Project Plan](docs/PLAN.md).
 
-The implemented M2 slice is:
+The implemented M3 slice is:
 
 ```text
 Quick Note
-→ Deterministic candidate extraction
+→ LLM extraction or deterministic replay
+→ Normalization and exact Unicode evidence validation
 → SHACL validation
 → Human confirmation or rejection
 → Asserted RDF and provenance
@@ -86,10 +93,17 @@ docker compose run --build --rm ontology-test
 docker compose -f compose.yaml -f compose.dev.yaml config
 ```
 
-Run the full Sprint 4 system suite with:
+Run the full Sprint 5 system suite (API tests, replay evaluation, and the
+Compose E2E chain) with:
 
 ```text
-pwsh -File scripts/run_system_tests.ps1
+pwsh -File scripts/run_sprint5.ps1
+```
+
+The live provider quality gate is opt-in and credential-gated:
+
+```text
+pwsh -File scripts/run_sprint5.ps1 -RunLive
 ```
 
 ## License

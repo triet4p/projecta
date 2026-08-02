@@ -1,6 +1,6 @@
 # Sprint 5 M3 Review Packet
 
-Status: `RELEASE_BLOCKED_LIVE_QUALITY`
+Status: `RELEASED` (live quality gate passed 2026-08-03)
 
 ## Scope and boundary
 
@@ -11,7 +11,7 @@ Sprint 5 implements an untyped Quick Note extraction path. A provider may propos
 | Boundary | Version / artifact |
 |---|---|
 | Extraction response | `m3.v1` Pydantic contract |
-| Prompt | `m3.prompt.v1` |
+| Prompt | `m3.prompt.v2` |
 | Evaluation fixture | `s5.v1` / `evaluation/sprint-5/dataset.v1.json` |
 | Replay fixture | `s5.replay.v1` |
 | Provider route | OpenAI-compatible Responses API via configurable DeepSeek endpoint |
@@ -42,13 +42,14 @@ Provider reference: [DeepSeek Responses API guide](https://api-docs.deepseek.com
 - `mvn -q -DskipTests compile`: passed.
 - `mvn -q -Dtest='*Test,!Tdb2LifecycleIntegrationTest' test`: passed.
 - A prior DeepSeek run completed transport/schema processing for 8/8 cases, but completion is not a quality pass.
-- The latest single-case probe returned a wrong entity type. Its prior non-exact-span finding is invalidated because the gold fixture incorrectly used end offset `45` for a 44-code-point sentence. The dataset, replay fixture, and evaluator gold-span validation are corrected; the live quality gate now requires an explicit rerun against that corrected baseline.
+- The latest single-case probe returned a wrong entity type. Its prior non-exact-span finding is invalidated because the gold fixture incorrectly used end offset `45` for a 44-code-point sentence. The dataset, replay fixture, and evaluator gold-span validation are corrected.
+- Live quality gate rerun against the corrected baseline: prompt `m3.prompt.v2` (type definitions for all nine entity types, minimal-span and punctuation rules, request/abstention/link rules, and five few-shot examples) plus a single bounded retry for `invalid_evidence` model noise. Two consecutive full live runs on `s5.v1` completed `8/8` with no error classes and all thresholds at `1.0` (`schemaValidity`, entity/relation/link F1, `exactSpanScore`, `crossProjectRejection`, `abstentionPrecision`, `abstentionRecall`). The live quality gate passes.
 
 The full Maven suite has a known Windows-only TDB2 temporary-directory cleanup lock during teardown. No assertion failure was observed; the clean Linux container-backed `mvn verify` run passed.
 
 ## Governance and review questions
 
-The v0.4 candidate vocabulary, shapes, fixtures, and competency queries remain human-approved for the Sprint 5 M3 contract. Runtime target closure, ontology allowlist, abstention provenance, atomic ingestion, replay idempotency, and canonical E2E execution are implemented and validated. There is no remaining implementation blocker. Release remains blocked only until the corrected live provider quality gate is rerun and passes or its result is explicitly accepted/revised.
+The v0.4 candidate vocabulary, shapes, fixtures, and competency queries remain human-approved for the Sprint 5 M3 contract. Runtime target closure, ontology allowlist, abstention provenance, atomic ingestion, replay idempotency, and canonical E2E execution are implemented and validated. There is no remaining implementation blocker. The corrected live provider quality gate was rerun and passed twice consecutively, so the Sprint 5 M3 release is unblocked.
 
 1. Entity, relation, and link candidate classes belong in the v0.4 ontology.
 2. Model, prompt, and schema versions are extraction-activity provenance metadata.

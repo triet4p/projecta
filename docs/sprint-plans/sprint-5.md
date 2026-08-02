@@ -145,7 +145,7 @@ Status legend: [ ] pending / [~] in progress / [x] done
   replay parsing, validate gold spans, separate deterministic Compose E2E from
   the live provider, align every bounded entity type route including
   `ProgressClaim`, and pass the clean canonical suite.
-- [ ] **S5-35 — Rerun the corrected live quality gate:** Run the approved
+- [x] **S5-35 — Rerun the corrected live quality gate:** Run the approved
   provider against corrected `s5.v1`, evaluate all quality thresholds, and
   either release M3 or record an explicit quality acceptance/revision decision.
 
