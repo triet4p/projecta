@@ -38,7 +38,12 @@ public final class RemoteCandidateValidationService {
                 this.m2Shapes,
                 shapesDirectory.resolve("evidence-shapes.ttl").toUri().toString());
         this.m3Shapes = ModelFactory.createDefaultModel().add(this.m2Shapes);
-        RDFDataMgr.read(this.m3Shapes, shapesDirectory.resolve("llm-extraction-draft-shapes.ttl").toUri().toString());
+        RDFDataMgr.read(
+                this.m3Shapes,
+                shapesDirectory
+                        .resolve("llm-extraction-draft-shapes.ttl")
+                        .toUri()
+                        .toString());
     }
 
     /**
@@ -59,7 +64,11 @@ public final class RemoteCandidateValidationService {
         data.add(candidates
                 .listStatements(candidate, null, (org.apache.jena.rdf.model.RDFNode) null)
                 .toList());
-        addTargetClosure(data, candidates, gateway.graph(router.route(project, GraphRole.ASSERTED).toString()), candidate);
+        addTargetClosure(
+                data,
+                candidates,
+                gateway.graph(router.route(project, GraphRole.ASSERTED).toString()),
+                candidate);
         candidates
                 .listObjectsOfProperty(
                         candidate, candidates.createProperty("https://w3id.org/projecta/ontology/belongsToProject"))
@@ -133,7 +142,11 @@ public final class RemoteCandidateValidationService {
         var candidateModel = ModelFactory.createDefaultModel();
         parse(candidateModel, candidateTurtle);
         data.add(candidateModel);
-        addTargetClosure(data, candidateModel, gateway.graph(router.route(project, GraphRole.ASSERTED).toString()), null);
+        addTargetClosure(
+                data,
+                candidateModel,
+                gateway.graph(router.route(project, GraphRole.ASSERTED).toString()),
+                null);
         var provenanceModel = ModelFactory.createDefaultModel();
         parse(provenanceModel, provenanceTurtle);
         data.add(provenanceModel);
@@ -183,17 +196,22 @@ public final class RemoteCandidateValidationService {
         var resources = new java.util.ArrayList<Resource>();
         var subjects = focus == null ? candidates.listSubjects().toList() : List.of(focus);
         for (var subject : subjects) {
-            candidates.listObjectsOfProperty(subject, relationSource)
+            candidates
+                    .listObjectsOfProperty(subject, relationSource)
                     .filterKeep(org.apache.jena.rdf.model.RDFNode::isResource)
                     .forEachRemaining(node -> resources.add(node.asResource()));
-            candidates.listObjectsOfProperty(subject, relationTarget)
+            candidates
+                    .listObjectsOfProperty(subject, relationTarget)
                     .filterKeep(org.apache.jena.rdf.model.RDFNode::isResource)
                     .forEachRemaining(node -> resources.add(node.asResource()));
-            candidates.listObjectsOfProperty(subject, linkTarget)
+            candidates
+                    .listObjectsOfProperty(subject, linkTarget)
                     .filterKeep(org.apache.jena.rdf.model.RDFNode::isResource)
                     .forEachRemaining(node -> resources.add(node.asResource()));
         }
-        resources.forEach(resource -> data.add(asserted.listStatements(resource, null, (org.apache.jena.rdf.model.RDFNode) null).toList()));
+        resources.forEach(
+                resource -> data.add(asserted.listStatements(resource, null, (org.apache.jena.rdf.model.RDFNode) null)
+                        .toList()));
     }
 
     private static Model loadShapes(Path shapesDirectory, String... filenames) {

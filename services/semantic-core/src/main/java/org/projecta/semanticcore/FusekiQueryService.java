@@ -100,14 +100,14 @@ public final class FusekiQueryService {
             throw new IllegalArgumentException("entity link context limit must be between 1 and 100");
         }
         var projectIri = "https://w3id.org/projecta/data/project/" + project.value();
-        var rows = rows(gateway.select(
-                "SELECT DISTINCT ?entity ?type ?label WHERE { GRAPH <"
-                        + router.route(project, GraphRole.ASSERTED)
-                        + "> { ?entity <" + PROJECTA + "belongsToProject> <" + projectIri
-                        + "> ; a ?type ; <http://www.w3.org/2000/01/rdf-schema#label> ?label . VALUES ?type { <" + PROJECTA
-                        + "Requirement> <" + PROJECTA + "Decision> <" + PROJECTA + "Question> <" + PROJECTA
-                        + "Risk> <" + PROJECTA + "Assumption> <" + PROJECTA + "Constraint> <" + PROJECTA
-                        + "ResearchFinding> <" + PROJECTA + "Task> <" + PROJECTA + "ProgressClaim> <" + PROJECTA + "Person> <" + PROJECTA + "Team> } } } ORDER BY ?entity LIMIT " + limit));
+        var rows = rows(gateway.select("SELECT DISTINCT ?entity ?type ?label WHERE { GRAPH <"
+                + router.route(project, GraphRole.ASSERTED)
+                + "> { ?entity <" + PROJECTA + "belongsToProject> <" + projectIri
+                + "> ; a ?type ; <http://www.w3.org/2000/01/rdf-schema#label> ?label . VALUES ?type { <" + PROJECTA
+                + "Requirement> <" + PROJECTA + "Decision> <" + PROJECTA + "Question> <" + PROJECTA
+                + "Risk> <" + PROJECTA + "Assumption> <" + PROJECTA + "Constraint> <" + PROJECTA
+                + "ResearchFinding> <" + PROJECTA + "Task> <" + PROJECTA + "ProgressClaim> <" + PROJECTA + "Person> <"
+                + PROJECTA + "Team> } } } ORDER BY ?entity LIMIT " + limit));
         return rows.stream()
                 .map(row -> Map.of(
                         "id", opaqueIdentifier(row.get("type")) + "--" + opaqueIdentifier(row.get("entity")),

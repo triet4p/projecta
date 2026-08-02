@@ -25,8 +25,7 @@ class LlmCandidateIngestionServiceTest {
                 return query.contains("/progressclaim/claim-01>");
             }
         }
-        var service = new LlmCandidateIngestionService(
-                new TrustedGateway(), new GraphIriRouter(), null);
+        var service = new LlmCandidateIngestionService(new TrustedGateway(), new GraphIriRouter(), null);
 
         assertEquals(
                 "https://w3id.org/projecta/data/project/demo/progressclaim/claim-01",
@@ -35,7 +34,8 @@ class LlmCandidateIngestionServiceTest {
 
     @Test
     void parsesReplayNoteFromStandardsCompliantSparqlJson() {
-        var response = """
+        var response =
+                """
                 {
                   "head" : { "vars" : [ "note" ] },
                   "results" : {
@@ -63,14 +63,20 @@ class LlmCandidateIngestionServiceTest {
 
     @Test
     void rejectsUnsupportedEntityTypeBeforeMutation() {
-        var service = new LlmCandidateIngestionService(
-                null, new GraphIriRouter(), null);
+        var service = new LlmCandidateIngestionService(null, new GraphIriRouter(), null);
         var request = new LlmCandidateIngestionService.IngestionRequest(
-                "A note", "replay", "v1", "p1", "m3.v1",
+                "A note",
+                "replay",
+                "v1",
+                "p1",
+                "m3.v1",
                 List.of(new LlmCandidateIngestionService.EntityProposal("Unknown", "x", "A", 0, 1, 0.5)),
-                List.of(), List.of());
+                List.of(),
+                List.of());
 
-        assertThrows(IllegalArgumentException.class, () -> service.ingest(new ProjectId("project"), "actor", "key", request));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> service.ingest(new ProjectId("project"), "actor", "key", request));
     }
 
     @Test
@@ -131,8 +137,7 @@ class LlmCandidateIngestionServiceTest {
         var turtle = LlmCandidateIngestionService.sourceTriples(
                 project, "actor", note, projectIri, raw, request, "2026-08-03T00:00:00Z");
         var service = new LlmCandidateIngestionService(null, new GraphIriRouter(), null);
-        var candidates = service.candidateTriples(
-                project, note, projectIri, request, "2026-08-03T00:00:00Z");
+        var candidates = service.candidateTriples(project, note, projectIri, request, "2026-08-03T00:00:00Z");
         var provenance = LlmCandidateIngestionService.provenanceTriples(
                 project,
                 "actor",
@@ -144,11 +149,10 @@ class LlmCandidateIngestionServiceTest {
                 request,
                 "2026-08-03T00:00:00Z");
 
-        assertDoesNotThrow(() -> RDFParser.fromString(turtle, Lang.TURTLE)
-                .parse(ModelFactory.createDefaultModel()));
-        assertDoesNotThrow(() -> RDFParser.fromString(candidates, Lang.TURTLE)
-                .parse(ModelFactory.createDefaultModel()));
-        assertDoesNotThrow(() -> RDFParser.fromString(provenance, Lang.TURTLE)
-                .parse(ModelFactory.createDefaultModel()));
+        assertDoesNotThrow(() -> RDFParser.fromString(turtle, Lang.TURTLE).parse(ModelFactory.createDefaultModel()));
+        assertDoesNotThrow(
+                () -> RDFParser.fromString(candidates, Lang.TURTLE).parse(ModelFactory.createDefaultModel()));
+        assertDoesNotThrow(
+                () -> RDFParser.fromString(provenance, Lang.TURTLE).parse(ModelFactory.createDefaultModel()));
     }
 }
