@@ -14,7 +14,7 @@ def test_prompt_is_versioned_and_sorts_server_context() -> None:
         ],
     )
 
-    assert PROMPT_VERSION == "m3.prompt.v1"
+    assert PROMPT_VERSION == "m3.prompt.v2"
     assert "Return only JSON" in system
     assert user.index('"entity-a"') < user.index('"entity-b"')
     assert '"entityTypes":["Requirement","Risk"]' in user

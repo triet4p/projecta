@@ -14,7 +14,7 @@ def test_telemetry_contains_counts_and_versions_only() -> None:
         requestId="req-1",
         provider="deepseek",
         modelVersion="deepseek-v4-flash",
-        promptVersion="m3.prompt.v1",
+        promptVersion="m3.prompt.v2",
         schemaVersion="m3.v1",
         latencyMs=12,
         entityCount=1,

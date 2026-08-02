@@ -19,7 +19,7 @@ from projecta_api.config import Settings
 from projecta_api.extraction.normalize import normalize_extraction
 from projecta_api.extraction.prompt import build_extraction_prompt
 from projecta_api.extraction.service import _response_schema
-from projecta_api.llm.gateway import GatewayRequest
+from projecta_api.llm.gateway import GatewayRequest, NormalizedGatewayError
 from projecta_api.llm.openai_responses import OpenAIResponsesGateway
 from projecta_api.llm.resilience import ResilientGateway
 
@@ -49,17 +49,25 @@ async def run() -> int:
             case.get("entityContext", []),
         )
         try:
-            result = await gateway.extract(
-                GatewayRequest(
-                    schemaVersion="m3.v1",
-                    modelId=settings.llm_model,
-                    systemPrompt=system,
-                    userPrompt=user,
-                    responseSchema=_response_schema(),
-                    timeoutSeconds=60,
-                )
-            )
-            normalized = normalize_extraction(case["rawText"], result.extraction, case.get("entityContext", []))
+            normalized = None
+            for attempt in range(2):
+                try:
+                    result = await gateway.extract(
+                        GatewayRequest(
+                            schemaVersion="m3.v1",
+                            modelId=settings.llm_model,
+                            systemPrompt=system,
+                            userPrompt=user,
+                            responseSchema=_response_schema(),
+                            timeoutSeconds=60,
+                        )
+                    )
+                    normalized = normalize_extraction(case["rawText"], result.extraction, case.get("entityContext", []))
+                    break
+                except NormalizedGatewayError as error:
+                    if attempt == 1 or error.error_class != "invalid_evidence":
+                        raise
+            assert normalized is not None
             outputs[case["id"]] = normalized.model_dump(mode="json", by_alias=True)
             completed += 1
         except Exception as error:  # noqa: BLE001 - report only normalized class safely
