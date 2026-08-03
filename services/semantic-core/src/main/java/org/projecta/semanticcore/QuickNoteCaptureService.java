@@ -72,8 +72,7 @@ public final class QuickNoteCaptureService {
         if (!validationResult.conforms()) {
             throw new CandidateInvalidException(validationResult);
         }
-        gateway.update(
-                """
+        gateway.update("""
                 INSERT {
                   GRAPH <%s> { %s }
                   GRAPH <%s> { %s }
@@ -82,16 +81,15 @@ public final class QuickNoteCaptureService {
                 WHERE {
                   FILTER NOT EXISTS { GRAPH <%s> { <%s> ?existingPredicate ?existingObject } }
                 }
-                """
-                        .formatted(
-                                sourceGraph,
-                                sources,
-                                candidateGraph,
-                                candidates,
-                                provenanceGraph,
-                                provenance,
-                                provenanceGraph,
-                                record));
+                """.formatted(
+                        sourceGraph,
+                        sources,
+                        candidateGraph,
+                        candidates,
+                        provenanceGraph,
+                        provenance,
+                        provenanceGraph,
+                        record));
 
         if (!gateway.ask("ASK { GRAPH <" + provenanceGraph + "> { <" + record + "> <" + RDF + "value> "
                 + literal(fingerprint) + " } }")) {

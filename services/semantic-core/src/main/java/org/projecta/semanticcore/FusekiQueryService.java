@@ -47,8 +47,7 @@ public final class FusekiQueryService {
         }
         var projectIri = "https://w3id.org/projecta/data/project/" + project.value();
         var activity = projectIri + "/activity/validate-" + UUID.randomUUID();
-        gateway.update(
-                """
+        gateway.update("""
                 DELETE { GRAPH <%s> { <%s> <%scandidateStatus> <%sextracted> } }
                 INSERT {
                   GRAPH <%s> { <%s> <%scandidateStatus> <%svalidated> }
@@ -60,27 +59,26 @@ public final class FusekiQueryService {
                     <http://www.w3.org/2000/01/rdf-schema#label> "candidate-validation" . }
                 }
                 WHERE { GRAPH <%s> { <%s> a <%sCandidate> ; <%scandidateStatus> <%sextracted> . } }
-                """
-                        .formatted(
-                                router.route(project, GraphRole.CANDIDATES),
-                                candidate,
-                                PROJECTA,
-                                PROJECTA,
-                                router.route(project, GraphRole.CANDIDATES),
-                                candidate,
-                                PROJECTA,
-                                PROJECTA,
-                                router.route(project, GraphRole.PROVENANCE),
-                                activity,
-                                candidate,
-                                "https://w3id.org/projecta/data/project/" + project.value() + "/person/" + actorId,
-                                OffsetDateTime.now(),
-                                projectIri,
-                                router.route(project, GraphRole.CANDIDATES),
-                                candidate,
-                                PROJECTA,
-                                PROJECTA,
-                                PROJECTA));
+                """.formatted(
+                        router.route(project, GraphRole.CANDIDATES),
+                        candidate,
+                        PROJECTA,
+                        PROJECTA,
+                        router.route(project, GraphRole.CANDIDATES),
+                        candidate,
+                        PROJECTA,
+                        PROJECTA,
+                        router.route(project, GraphRole.PROVENANCE),
+                        activity,
+                        candidate,
+                        "https://w3id.org/projecta/data/project/" + project.value() + "/person/" + actorId,
+                        OffsetDateTime.now(),
+                        projectIri,
+                        router.route(project, GraphRole.CANDIDATES),
+                        candidate,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA));
     }
 
     /** Returns the finite current-knowledge view, optionally restricted to an allowlisted type. */

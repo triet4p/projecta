@@ -1,9 +1,9 @@
 FROM eclipse-temurin:21-jre-jammy
 
-ARG JENA_VERSION=6.1.0
+ARG JENA_VERSION=6.2.0
 WORKDIR /opt
 
-COPY --from=ghcr.io/astral-sh/uv:0.11.11 /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.12.1 /uv /uvx /bin/
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends wget ca-certificates && \

@@ -64,14 +64,16 @@ class CandidateConfirmationServiceTest {
                         ResourceFactory.createProperty("https://w3id.org/projecta/ontology/candidateStatus"),
                         ResourceFactory.createResource("https://w3id.org/projecta/ontology/validated"));
 
-        assertThrows(IllegalArgumentException.class, () -> confirmationService(dataset, router)
-                .confirm(
-                        project,
-                        candidate,
-                        "https://w3id.org/projecta/data/project/ecommerce-checkout/requirement/r1",
-                        "https://w3id.org/projecta/data/project/ecommerce-checkout/person/le",
-                        "Address confirmation",
-                        null));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> confirmationService(dataset, router)
+                        .confirm(
+                                project,
+                                candidate,
+                                "https://w3id.org/projecta/data/project/ecommerce-checkout/requirement/r1",
+                                "https://w3id.org/projecta/data/project/ecommerce-checkout/person/le",
+                                "Address confirmation",
+                                null));
 
         assertEquals(
                 0,

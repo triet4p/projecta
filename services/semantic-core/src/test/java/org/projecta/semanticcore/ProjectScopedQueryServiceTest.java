@@ -23,8 +23,9 @@ class ProjectScopedQueryServiceTest {
 
         assertEquals(1, items.size());
         assertEquals("address-confirmation", items.getFirst().id());
-        assertThrows(IllegalArgumentException.class, () -> fixture.service()
-                .currentKnowledgeItems(fixture.project(), Optional.of("Candidate")));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> fixture.service().currentKnowledgeItems(fixture.project(), Optional.of("Candidate")));
     }
 
     @Test
@@ -55,8 +56,9 @@ class ProjectScopedQueryServiceTest {
                         RDF.type,
                         ResourceFactory.createResource(PROJECTA + "KnowledgeItem"));
 
-        assertThrows(ProjectScopedQueryService.ResourceNotFoundException.class, () -> fixture.service()
-                .evidence(fixture.project(), "missing-item"));
+        assertThrows(
+                ProjectScopedQueryService.ResourceNotFoundException.class,
+                () -> fixture.service().evidence(fixture.project(), "missing-item"));
     }
 
     private static Fixture fixture() {

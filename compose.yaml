@@ -12,8 +12,8 @@ services:
     build:
       context: ./infra/docker/fuseki
       args:
-        JENA_VERSION: "6.1.0"
-    image: projecta-jena:6.1.0
+        JENA_VERSION: "6.2.0"
+    image: projecta-jena:6.2.0
     working_dir: /data
     volumes:
       - ./ontology:/data:ro
@@ -27,8 +27,8 @@ services:
     build:
       context: ./infra/docker/fuseki
       args:
-        JENA_VERSION: "6.1.0"
-    image: projecta-jena:6.1.0
+        JENA_VERSION: "6.2.0"
+    image: projecta-jena:6.2.0
     working_dir: /data
     volumes:
       - ./ontology:/data:ro
@@ -45,8 +45,8 @@ services:
     build:
       context: ./infra/docker/fuseki
       args:
-        JENA_VERSION: "6.1.0"
-    image: projecta-fuseki:6.1.0
+        JENA_VERSION: "6.2.0"
+    image: projecta-fuseki:6.2.0
     command:
       - ./fuseki-server
       - --config
@@ -62,7 +62,7 @@ services:
       start_period: 10s
 
   fuseki-bootstrap:
-    image: projecta-fuseki:6.1.0
+    image: projecta-fuseki:6.2.0
     depends_on:
       fuseki:
         condition: service_healthy

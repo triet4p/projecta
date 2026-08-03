@@ -22,15 +22,12 @@ class CandidateValidationServiceTest {
         RDFParser.fromString("@prefix ex: <https://example.test/> . <" + CANDIDATE + "> a ex:Candidate .", Lang.TURTLE)
                 .parse(candidateGraph);
         var shapes = ModelFactory.createDefaultModel();
-        RDFParser.fromString(
-                        """
+        RDFParser.fromString("""
                 @prefix ex: <https://example.test/> .
                 @prefix sh: <http://www.w3.org/ns/shacl#> .
                 ex:CandidateShape a sh:NodeShape ; sh:targetClass ex:Candidate ;
                   sh:property [ sh:path ex:label ; sh:minCount 1 ; sh:message "candidate label is required" ] .
-                """,
-                        Lang.TURTLE)
-                .parse(shapes);
+                """, Lang.TURTLE).parse(shapes);
 
         var result = new CandidateValidationService(dataset, router, shapes).validate(new ProjectId(PROJECT));
 

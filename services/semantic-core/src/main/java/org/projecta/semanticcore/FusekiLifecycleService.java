@@ -57,8 +57,7 @@ public final class FusekiLifecycleService {
         var activity = item + "/activity/confirm-" + UUID.randomUUID();
         var statement = item + "/statement/valid-from";
         var now = OffsetDateTime.now().toString();
-        var update =
-                """
+        var update = """
                 DELETE { GRAPH <%s> { <%s> <https://w3id.org/projecta/ontology/candidateStatus> ?status } }
                 INSERT {
                   GRAPH <%s> { <%s> a <https://w3id.org/projecta/ontology/KnowledgeItem>, <https://w3id.org/projecta/ontology/Requirement> ; <http://www.w3.org/2000/01/rdf-schema#label> %s ; <http://www.w3.org/ns/prov#wasDerivedFrom> <%s> ; <http://www.w3.org/ns/prov#wasAttributedTo> <%s> ; <https://w3id.org/projecta/ontology/belongsToProject> <https://w3id.org/projecta/data/project/%s> ; <https://w3id.org/projecta/ontology/validFrom> \"%s\"^^<http://www.w3.org/2001/XMLSchema#date> . }
@@ -67,49 +66,48 @@ public final class FusekiLifecycleService {
                   %s
                 }
                 WHERE { GRAPH <%s> { <%s> a <https://w3id.org/projecta/ontology/Candidate> ; <https://w3id.org/projecta/ontology/candidateStatus> ?status ; <http://www.w3.org/ns/prov#wasDerivedFrom> ?source ; <http://www.w3.org/ns/prov#wasGeneratedBy> ?generator ; <http://www.w3.org/ns/prov#generatedAtTime> ?generatedAt ; <https://w3id.org/projecta/ontology/generator> ?generatorName ; <https://w3id.org/projecta/ontology/proposedOntologyVersion> ?version ; <https://w3id.org/projecta/ontology/belongsToProject> <https://w3id.org/projecta/data/project/%s> . FILTER(?status IN (<https://w3id.org/projecta/ontology/validated>, <https://w3id.org/projecta/ontology/pending-review>)) FILTER EXISTS { GRAPH <%s> { ?source <https://w3id.org/projecta/ontology/hasItemType> <https://w3id.org/projecta/ontology/requirement> . } } } %s }
-                """
-                        .formatted(
-                                router.route(project, GraphRole.CANDIDATES),
-                                candidate,
-                                router.route(project, GraphRole.ASSERTED),
-                                item,
-                                literal(label),
-                                candidate,
-                                reviewerIri(project, reviewerId),
-                                project.value(),
-                                validFrom,
-                                router.route(project, GraphRole.PROVENANCE),
-                                activity,
-                                candidate,
-                                item,
-                                reviewerIri(project, reviewerId),
-                                now,
-                                statement,
-                                item,
-                                validFrom,
-                                router.route(project, GraphRole.CANDIDATES),
-                                candidate,
-                                keyRecord == null
-                                        ? ""
-                                        : "GRAPH <" + router.route(project, GraphRole.PROVENANCE) + "> { <"
-                                                + keyRecord
-                                                + "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "
-                                                + literal(requestFingerprint)
-                                                + " ; <http://www.w3.org/2000/01/rdf-schema#label> \"confirmation-idempotency\" ; <http://www.w3.org/2000/01/rdf-schema#comment> "
-                                                + literal(attemptToken)
-                                                + " ; <" + PROV + "generated> <" + item + ">"
-                                                + " . }",
-                                router.route(project, GraphRole.CANDIDATES),
-                                candidate,
-                                project.value(),
-                                router.route(project, GraphRole.SOURCES),
-                                keyRecord == null
-                                        ? ""
-                                        : "FILTER NOT EXISTS { GRAPH <"
-                                                + router.route(project, GraphRole.PROVENANCE)
-                                                + "> { <"
-                                                + keyRecord
-                                                + "> ?p ?o } }");
+                """.formatted(
+                        router.route(project, GraphRole.CANDIDATES),
+                        candidate,
+                        router.route(project, GraphRole.ASSERTED),
+                        item,
+                        literal(label),
+                        candidate,
+                        reviewerIri(project, reviewerId),
+                        project.value(),
+                        validFrom,
+                        router.route(project, GraphRole.PROVENANCE),
+                        activity,
+                        candidate,
+                        item,
+                        reviewerIri(project, reviewerId),
+                        now,
+                        statement,
+                        item,
+                        validFrom,
+                        router.route(project, GraphRole.CANDIDATES),
+                        candidate,
+                        keyRecord == null
+                                ? ""
+                                : "GRAPH <" + router.route(project, GraphRole.PROVENANCE) + "> { <"
+                                        + keyRecord
+                                        + "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "
+                                        + literal(requestFingerprint)
+                                        + " ; <http://www.w3.org/2000/01/rdf-schema#label> \"confirmation-idempotency\" ; <http://www.w3.org/2000/01/rdf-schema#comment> "
+                                        + literal(attemptToken)
+                                        + " ; <" + PROV + "generated> <" + item + ">"
+                                        + " . }",
+                        router.route(project, GraphRole.CANDIDATES),
+                        candidate,
+                        project.value(),
+                        router.route(project, GraphRole.SOURCES),
+                        keyRecord == null
+                                ? ""
+                                : "FILTER NOT EXISTS { GRAPH <"
+                                        + router.route(project, GraphRole.PROVENANCE)
+                                        + "> { <"
+                                        + keyRecord
+                                        + "> ?p ?o } }");
         gateway.update(update);
         if (keyRecord != null
                 && !gateway.ask("ASK { GRAPH <" + router.route(project, GraphRole.PROVENANCE) + "> { <" + keyRecord
@@ -202,34 +200,32 @@ public final class FusekiLifecycleService {
         var activity = candidate + "/activity/" + OpaqueIds.random("reject-");
         var attemptToken = UUID.randomUUID().toString();
         var now = OffsetDateTime.now().toString();
-        var update =
-                """
+        var update = """
                 DELETE { GRAPH <%s> { <%s> <https://w3id.org/projecta/ontology/candidateStatus> ?status } }
                 INSERT {
                   GRAPH <%s> { <%s> <https://w3id.org/projecta/ontology/candidateStatus> <https://w3id.org/projecta/ontology/rejected> ; <https://w3id.org/projecta/ontology/rejectionReason> %s . }
                   GRAPH <%s> { <%s> a <http://www.w3.org/ns/prov#Activity> ; <http://www.w3.org/ns/prov#used> <%s> ; <http://www.w3.org/ns/prov#wasAssociatedWith> <%s> ; <https://w3id.org/projecta/ontology/reviewDecision> <https://w3id.org/projecta/ontology/rejected> ; <https://w3id.org/projecta/ontology/rejectionReason> %s ; <http://www.w3.org/ns/prov#endedAtTime> \"%s\"^^<http://www.w3.org/2001/XMLSchema#dateTime> . <%s> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> %s ; <http://www.w3.org/2000/01/rdf-schema#label> \"rejection-idempotency\" ; <http://www.w3.org/2000/01/rdf-schema#comment> %s . }
                 }
                 WHERE { GRAPH <%s> { <%s> a <https://w3id.org/projecta/ontology/Candidate> ; <https://w3id.org/projecta/ontology/candidateStatus> ?status . FILTER(?status IN (<https://w3id.org/projecta/ontology/validated>, <https://w3id.org/projecta/ontology/pending-review>)) } FILTER NOT EXISTS { GRAPH <%s> { <%s> ?p ?o } } }
-                """
-                        .formatted(
-                                router.route(project, GraphRole.CANDIDATES),
-                                candidate,
-                                router.route(project, GraphRole.CANDIDATES),
-                                candidate,
-                                literal(reason),
-                                router.route(project, GraphRole.PROVENANCE),
-                                activity,
-                                candidate,
-                                reviewerIri(project, reviewerId),
-                                literal(reason),
-                                now,
-                                keyRecord,
-                                literal(fingerprint),
-                                literal(attemptToken) + " ; <" + PROV + "generated> <" + activity + ">",
-                                router.route(project, GraphRole.CANDIDATES),
-                                candidate,
-                                router.route(project, GraphRole.PROVENANCE),
-                                keyRecord);
+                """.formatted(
+                        router.route(project, GraphRole.CANDIDATES),
+                        candidate,
+                        router.route(project, GraphRole.CANDIDATES),
+                        candidate,
+                        literal(reason),
+                        router.route(project, GraphRole.PROVENANCE),
+                        activity,
+                        candidate,
+                        reviewerIri(project, reviewerId),
+                        literal(reason),
+                        now,
+                        keyRecord,
+                        literal(fingerprint),
+                        literal(attemptToken) + " ; <" + PROV + "generated> <" + activity + ">",
+                        router.route(project, GraphRole.CANDIDATES),
+                        candidate,
+                        router.route(project, GraphRole.PROVENANCE),
+                        keyRecord);
         gateway.update(update);
         if (!gateway.ask("ASK { GRAPH <" + router.route(project, GraphRole.PROVENANCE) + "> { <" + keyRecord
                 + "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> " + literal(fingerprint) + " } }")) {

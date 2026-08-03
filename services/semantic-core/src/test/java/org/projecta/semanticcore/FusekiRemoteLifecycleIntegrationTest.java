@@ -89,8 +89,7 @@ class FusekiRemoteLifecycleIntegrationTest {
         var project = new ProjectId(PROJECT);
         var gateway = new FusekiGateway(HttpClient.newHttpClient(), URI.create(endpoint));
         var candidate = "https://w3id.org/projecta/data/project/" + PROJECT + "/candidate/remote-candidate";
-        gateway.update(
-                """
+        gateway.update("""
                 INSERT DATA { GRAPH <%s> {
                   <https://w3id.org/projecta/data/project/%s> a <https://w3id.org/projecta/ontology/Project> .
                   <%s> a <https://w3id.org/projecta/ontology/Candidate> ;
@@ -106,16 +105,15 @@ class FusekiRemoteLifecycleIntegrationTest {
                     a <https://w3id.org/projecta/ontology/NoteItem> ;
                     <https://w3id.org/projecta/ontology/hasItemType> <https://w3id.org/projecta/ontology/requirement> .
                 } }
-                """
-                        .formatted(
-                                router.route(project, GraphRole.CANDIDATES),
-                                PROJECT,
-                                candidate,
-                                PROJECT,
-                                PROJECT,
-                                PROJECT,
-                                router.route(project, GraphRole.SOURCES),
-                                PROJECT));
+                """.formatted(
+                        router.route(project, GraphRole.CANDIDATES),
+                        PROJECT,
+                        candidate,
+                        PROJECT,
+                        PROJECT,
+                        PROJECT,
+                        router.route(project, GraphRole.SOURCES),
+                        PROJECT));
         seedLegacyV02Source(gateway, router, project, "1");
 
         var validation = new RemoteCandidateValidationService(gateway, router, Path.of("/ontology/shapes"));
@@ -315,23 +313,21 @@ class FusekiRemoteLifecycleIntegrationTest {
             String version,
             boolean legacySource) {
         var candidate = "https://w3id.org/projecta/data/project/" + PROJECT + "/candidate/" + id;
-        gateway.update(
-                """
+        gateway.update("""
                 INSERT DATA { GRAPH <%s> { <https://w3id.org/projecta/data/project/%s> a <https://w3id.org/projecta/ontology/Project> . <%s> a <https://w3id.org/projecta/ontology/Candidate> ; <https://w3id.org/projecta/ontology/candidateStatus> <https://w3id.org/projecta/ontology/validated> ; <http://www.w3.org/ns/prov#wasDerivedFrom> <https://w3id.org/projecta/data/project/%s/note-item/source-%s> ; <http://www.w3.org/ns/prov#wasGeneratedBy> <https://w3id.org/projecta/data/project/%s/activity/extract-%s> ; <http://www.w3.org/ns/prov#generatedAtTime> "2026-07-29T10:00:00Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ; <https://w3id.org/projecta/ontology/generator> "test-generator" ; <https://w3id.org/projecta/ontology/proposedOntologyVersion> "%s" ; <https://w3id.org/projecta/ontology/belongsToProject> <https://w3id.org/projecta/data/project/%s> . } GRAPH <%s> { <https://w3id.org/projecta/data/project/%s/note-item/source-%s> <https://w3id.org/projecta/ontology/hasItemType> <https://w3id.org/projecta/ontology/requirement> . } }
-                """
-                        .formatted(
-                                router.route(project, GraphRole.CANDIDATES),
-                                PROJECT,
-                                candidate,
-                                PROJECT,
-                                id,
-                                PROJECT,
-                                id,
-                                version,
-                                PROJECT,
-                                router.route(project, GraphRole.SOURCES),
-                                PROJECT,
-                                id));
+                """.formatted(
+                        router.route(project, GraphRole.CANDIDATES),
+                        PROJECT,
+                        candidate,
+                        PROJECT,
+                        id,
+                        PROJECT,
+                        id,
+                        version,
+                        PROJECT,
+                        router.route(project, GraphRole.SOURCES),
+                        PROJECT,
+                        id));
         if (legacySource) {
             seedLegacyV02Source(gateway, router, project, id);
         } else {
@@ -340,8 +336,7 @@ class FusekiRemoteLifecycleIntegrationTest {
     }
 
     private static void seedSource(FusekiGateway gateway, GraphIriRouter router, ProjectId project, String id) {
-        gateway.update(
-                """
+        gateway.update("""
                 INSERT DATA { GRAPH <%s> {
                   <https://w3id.org/projecta/data/project/%s> a <https://w3id.org/projecta/ontology/Project> .
                   <https://w3id.org/projecta/data/project/%s/person/le> a <https://w3id.org/projecta/ontology/Person> .
@@ -367,25 +362,23 @@ class FusekiRemoteLifecycleIntegrationTest {
                     <https://w3id.org/projecta/ontology/evidenceEndOffset>
                       "1"^^<http://www.w3.org/2001/XMLSchema#positiveInteger> .
                 } }
-                """
-                        .formatted(
-                                router.route(project, GraphRole.SOURCES),
-                                PROJECT,
-                                PROJECT,
-                                PROJECT,
-                                id,
-                                PROJECT,
-                                PROJECT,
-                                PROJECT,
-                                id,
-                                PROJECT,
-                                id));
+                """.formatted(
+                        router.route(project, GraphRole.SOURCES),
+                        PROJECT,
+                        PROJECT,
+                        PROJECT,
+                        id,
+                        PROJECT,
+                        PROJECT,
+                        PROJECT,
+                        id,
+                        PROJECT,
+                        id));
     }
 
     private static void seedLegacyV02Source(
             FusekiGateway gateway, GraphIriRouter router, ProjectId project, String id) {
-        gateway.update(
-                """
+        gateway.update("""
                 INSERT DATA { GRAPH <%s> {
                   <https://w3id.org/projecta/data/project/%s> a <https://w3id.org/projecta/ontology/Project> .
                   <https://w3id.org/projecta/data/project/%s/person/le> a <https://w3id.org/projecta/ontology/Person> .
@@ -406,19 +399,18 @@ class FusekiRemoteLifecycleIntegrationTest {
                       <https://w3id.org/projecta/ontology/requirement> ;
                     <https://w3id.org/projecta/ontology/contentText> "Legacy requirement" .
                 } }
-                """
-                        .formatted(
-                                router.route(project, GraphRole.SOURCES),
-                                PROJECT,
-                                PROJECT,
-                                PROJECT,
-                                id,
-                                PROJECT,
-                                PROJECT,
-                                PROJECT,
-                                id,
-                                PROJECT,
-                                id));
+                """.formatted(
+                        router.route(project, GraphRole.SOURCES),
+                        PROJECT,
+                        PROJECT,
+                        PROJECT,
+                        id,
+                        PROJECT,
+                        PROJECT,
+                        PROJECT,
+                        id,
+                        PROJECT,
+                        id));
     }
 
     private static FusekiLifecycleService lifecycle(FusekiGateway gateway, GraphIriRouter router) {

@@ -34,8 +34,7 @@ class LlmCandidateIngestionServiceTest {
 
     @Test
     void parsesReplayNoteFromStandardsCompliantSparqlJson() {
-        var response =
-                """
+        var response = """
                 {
                   "head" : { "vars" : [ "note" ] },
                   "results" : {
