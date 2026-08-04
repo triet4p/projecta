@@ -1,0 +1,11 @@
+{
+  "version": "s6.v1",
+  "cases": [
+    {"id":"current-001","question":"What are the current requirements?","intent":"current-requirements","expectedCount":2},
+    {"id":"history-001","question":"What changed in requirement req-address?","intent":"requirement-history","requirementId":"req-address","expectedCount":2},
+    {"id":"blocker-001","question":"What is blocking checkout?","intent":"unresolved-blockers","expectedCount":1},
+    {"id":"empty-001","question":"Are there any unresolved blockers?","intent":"unresolved-blockers","expectedCount":0},
+    {"id":"ambiguous-001","question":"Tell me everything about the project","intent":"ambiguous","expectedCount":0},
+    {"id":"cross-project-001","question":"What blocks project payroll?","intent":"cross-project","expectedCount":0}
+  ]
+}

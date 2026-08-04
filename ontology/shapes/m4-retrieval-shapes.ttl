@@ -1,0 +1,18 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+projecta:M4DerivedShape a sh:NodeShape ;
+  sh:targetClass projecta:UnresolvedBlocker, projecta:DeliveryRisk, projecta:ImpactReview ;
+  sh:property [ sh:path projecta:belongsToProject ; sh:minCount 1 ; sh:maxCount 1 ; sh:message "An M4 derived fact must belong to exactly one project." ] ;
+  sh:property [ sh:path projecta:derivedFromAssertion ; sh:minCount 2 ; sh:message "An M4 derived fact must retain at least two asserted inputs." ] ;
+  sh:property [ sh:path projecta:aboutTask ; sh:minCount 1 ; sh:maxCount 1 ; sh:message "An M4 derived fact must identify its task." ] ;
+  sh:property [ sh:path projecta:ruleIdentifier ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ; sh:message "An M4 derived fact must identify its rule." ] ;
+  sh:property [ sh:path projecta:ruleVersion ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ; sh:message "An M4 derived fact must identify its rule version." ] ;
+  sh:property [ sh:path projecta:sourceRevision ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ; sh:message "An M4 derived fact must identify its asserted source revision." ] .
+
+projecta:M4InferenceSnapshotShape a sh:NodeShape ;
+  sh:targetClass projecta:InferenceSnapshot ;
+  sh:property [ sh:path projecta:belongsToProject ; sh:minCount 1 ; sh:maxCount 1 ; sh:message "An M4 inference snapshot must belong to exactly one project." ] ;
+  sh:property [ sh:path projecta:sourceRevision ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ; sh:message "An M4 inference snapshot must identify exactly one asserted source revision." ] ;
+  sh:property [ sh:path projecta:ruleVersion ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ; sh:message "An M4 inference snapshot must identify its rule-set version." ] .

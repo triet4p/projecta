@@ -173,3 +173,17 @@ image that assumes a system Python binary after only `uv python install`.
 **Root cause:** The test seeds its candidate with `INSERT DATA` (no delete) and assumes a fresh dataset. The `projecta_fuseki-data` volume persists across `docker compose` runs, so a previous run's confirmation left a second `candidateStatus asserted` on the same candidate; the SHACL `maxCount 1` constraint then rejects the duplicate. Runs that reuse the volume fail; runs after `docker compose --profile system-test down -v` pass.
 **Fix / workaround:** Reset test state with `docker compose --profile system-test down -v` before re-running the system suite, or seed candidates idempotently (delete-then-insert). Diagnose by querying the candidate's statements in Fuseki (`SELECT ?p ?o WHERE { GRAPH <.../candidates/> { <candidate> ?p ?o } }`) and checking for duplicate `candidateStatus` values.
 **Watch out for:** Any `mvn verify`/Compose system-test failure that reproduces the same SHACL violation on a reused volume but passes after `down -v` is a data-staleness issue, not a code or dependency regression. The API and Semantic Core system tests run in parallel against the same Fuseki, so avoid shared fixed candidate IDs between suites.
+
+## [2026-08-04] Fuseki M4 updates need bound timestamps and graph-aware evidence joins
+
+**Symptom:** The M4 rebuild endpoint first returned a safe 503 because Fuseki rejected `NOW()` in an INSERT template; after that was fixed, inferred blockers either materialized without evidence or were absent from retrieval.
+**Root cause:** SPARQL Update expressions must be bound in the WHERE clause before insertion, template namespace formatting can silently produce a different IRI, and inferred `derivedFromAssertion` triples live in the inferred graph rather than the asserted graph.
+**Fix / workaround:** Bind `NOW()` as `?time`, use explicit update delimiters, validate formatted IRIs in generated queries, and join inferred derivations from the inferred graph to asserted provenance before resolving candidate/source evidence.
+**Watch out for:** Any new inference rule that uses generated timestamps, formatted namespace constants, or derived assertions must be exercised against a real Fuseki graph; mock gateway tests alone will not detect these graph-role and parser errors.
+
+## [2026-08-04] Row-derived freshness misses empty and same-count inference drift
+
+**Symptom:** M4 freshness could report an empty response as current and could miss asserted changes when the graph retained the same triple count and maximum timestamp.
+**Root cause:** Freshness was inferred from returned derived rows, while the source revision used aggregate metadata rather than the asserted graph's actual RDF content.
+**Fix / workaround:** Store a project-level inference snapshot marker and compare its source revision with a SHA-256 digest of sorted asserted RDF term tuples. Measure before and after retrieval to mark concurrent source changes partial and stale.
+**Watch out for:** Never make snapshot health depend on result cardinality. Hashes over RDF with blank nodes require canonicalization; the current M4 asserted contract avoids blank nodes, so add a normalization algorithm before expanding that contract.

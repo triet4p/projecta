@@ -1,0 +1,23 @@
+{
+  "version": "s6.replay.v1",
+  "current-requirements": {
+    "items": [
+      {"id":"req-new","type":"Requirement","label":"Confirm saved address","status":"asserted","citation":{"id":"cite-req-new","sourceId":"source-req-new","evidenceText":"Confirm saved address","startOffset":0,"endOffset":21}},
+      {"id":"req-tax","type":"Requirement","label":"Calculate tax","status":"asserted","citation":{"id":"cite-req-tax","sourceId":"source-req-tax","evidenceText":"Calculate tax","startOffset":0,"endOffset":13}}
+    ],
+    "meta":{"projectionVersion":"m4.v1","sourceRevision":"replay-r1","asOf":"2026-08-04T00:00:00Z","partial":false,"stale":false}
+  },
+  "requirement-history": {
+    "items": [
+      {"id":"req-old","type":"Requirement","label":"Use saved address","status":"asserted","citation":{"id":"cite-req-old","sourceId":"source-req-old","evidenceText":"Use saved address","startOffset":0,"endOffset":17}},
+      {"id":"req-new","type":"Requirement","label":"Confirm saved address","status":"asserted","citation":{"id":"cite-req-new","sourceId":"source-req-new","evidenceText":"Confirm saved address","startOffset":0,"endOffset":21}}
+    ],
+    "meta":{"projectionVersion":"m4.v1","sourceRevision":"replay-r1","asOf":"2026-08-04T00:00:00Z","partial":false,"stale":false}
+  },
+  "unresolved-blockers": {
+    "items": [
+      {"id":"blocker-q-address-tax-api","type":"UnresolvedBlocker","label":"Confirm address before payment","status":"inferred","citation":{"id":"cite-q-address","sourceId":"source-q-address","evidenceText":"Confirm address before payment","startOffset":0,"endOffset":31},"derivation":{"ruleId":"m4.unresolved-dependency","ruleVersion":"1","inputIds":["q-address","tax-api"]}}
+    ],
+    "meta":{"projectionVersion":"m4.v1","sourceRevision":"replay-r1","asOf":"2026-08-04T00:00:00Z","partial":false,"stale":false}
+  }
+}

@@ -18,10 +18,10 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 - [x] **M2 — Manual Quick Note Slice (Sprint 4):** Typed note → deterministic
   candidate → human review → assertion/evidence qua API tối thiểu; giữ inference
   boundary nhưng chưa materialize rule chưa được duyệt.
-- [x] **M3 — LLM Extraction and Evaluation (Sprint 5):** Core implementation,
-  ontology checks, and canonical system-test execution hoàn tất; clean Compose
-  validation passed 2026-08-03. Release còn blocked bởi corrected live-quality rerun.
-- [ ] **M4 — Retrieval and Coordination (Sprint 6):** Project-scoped queries, requirement history, blockers và evidence-backed answers.
+- [x] **M3 — LLM Extraction and Evaluation (Sprint 5):** Released 2026-08-03;
+  corrected live-quality gate passed twice consecutively after implementation,
+  ontology and clean canonical Compose validation completed.
+- [x] **M4 — Retrieval and Coordination (Sprint 6):** Project-scoped queries, requirement history, blockers và evidence-backed answers.
 - [ ] **M5 — Connector and Production Evolution (Sprint 7+):** Mock/manual framework, connector thật đầu tiên, security và operational hardening.
 
 ## Completed Sprints
@@ -34,16 +34,21 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   2026-07-30; Fuseki-backed runtime and M1 human-approved.*
 - [Sprint 4 — Manual Quick Note Slice](sprint-plans/sprint-4.md) — *Completed
   2026-08-01; M2 and ontology v0.3.0 human-approved and released.*
+- [Sprint 5 — LLM Extraction and Evaluation](sprint-plans/sprint-5.md) —
+  *Completed 2026-08-03; M3 and ontology v0.4.0 released after deterministic
+  gates and two consecutive corrected live-quality passes.*
+- [Sprint 6 — Retrieval and Coordination](sprint-plans/sprint-6.md) — *Completed
+  2026-08-04; governed v0.5 inference snapshots, content-addressed Fuseki-backed
+  retrieval/inference, grounded API answers, evaluation, and clean Compose
+  acceptance passed.*
 
 ## Active Sprints
 
-- [Sprint 5 — LLM Extraction and Evaluation](sprint-plans/sprint-5.md) —
-  *Implementation and deterministic release gates complete 2026-08-03; M3/v0.4
-  approved, with only the corrected live-quality rerun pending.*
+None.
 
 ## Planned Sprints
 
-- **Sprint 6:** Semantic retrieval, rules, projections và grounded response.
+- **Sprint 7+:** Connector evolution, security and operational hardening.
 
 ## Backlog / Future Work
 

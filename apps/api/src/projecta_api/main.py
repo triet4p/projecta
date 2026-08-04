@@ -9,6 +9,8 @@ from projecta_api.extraction.service import ExtractionOrchestrator
 from projecta_api.llm.gateway import LLMGateway, NormalizedGatewayError
 from projecta_api.llm.openai_responses import OpenAIResponsesGateway
 from projecta_api.llm.resilience import ResilientGateway
+from projecta_api.retrieval.errors import RetrievalError
+from projecta_api.retrieval.service import RetrievalService
 from projecta_api.routes import create_router
 from projecta_api.semantic_core import (
     HttpSemanticCoreClient,
@@ -41,6 +43,7 @@ def create_app(
     extraction = ExtractionOrchestrator(
         resilient_gateway, client, actual_settings.llm_model, timeout_seconds=60.0
     )
+    retrieval = RetrievalService(client)
     app = FastAPI(title="Projecta Application API", version="0.1.0")
     app.state.settings = actual_settings
 
@@ -83,6 +86,10 @@ def create_app(
             "The extraction operation could not be completed safely.",
         )
 
+    @app.exception_handler(RetrievalError)
+    async def retrieval_problem(request: Request, error: RetrievalError) -> JSONResponse:
+        return _problem(request, 400, error.code.value.upper(), "Retrieval request failed", error.detail)
+
     @app.exception_handler(HTTPException)
     async def http_problem(request: Request, error: HTTPException) -> JSONResponse:
         """Keep framework validation errors inside the API's finite problem surface."""
@@ -114,7 +121,7 @@ def create_app(
         )
 
     app.add_api_route("/health/live", live, methods=["GET"])
-    app.include_router(create_router(client, extraction))
+    app.include_router(create_router(client, extraction, retrieval))
     return app
 
 

@@ -1,0 +1,26 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+projecta:m4-retrieval-v0.5 a owl:Ontology ;
+    owl:versionIRI <https://w3id.org/projecta/ontology/v/0.5.0> ;
+    rdfs:label "Projecta M4 retrieval extension" .
+
+projecta:WorkStatus a owl:Class ; rdfs:subClassOf projecta:Status .
+projecta:InferenceRule a owl:Class ; rdfs:subClassOf projecta:Entity .
+projecta:InferenceSnapshot a owl:Class ; rdfs:subClassOf projecta:Entity .
+projecta:UnresolvedBlocker a owl:Class ; rdfs:subClassOf projecta:Entity .
+projecta:DeliveryRisk a owl:Class ; rdfs:subClassOf projecta:Entity .
+projecta:ImpactReview a owl:Class ; rdfs:subClassOf projecta:Entity .
+projecta:Open a projecta:WorkStatus ; rdfs:label "Open" .
+projecta:Blocked a projecta:WorkStatus ; rdfs:label "Blocked" .
+projecta:hasWorkStatus a owl:ObjectProperty ; rdfs:domain projecta:Entity ; rdfs:range projecta:WorkStatus .
+projecta:aboutTask a owl:ObjectProperty ; rdfs:domain projecta:Entity ; rdfs:range projecta:Task .
+projecta:derivedFromAssertion a owl:ObjectProperty ; rdfs:domain projecta:Entity ; rdfs:range projecta:KnowledgeItem .
+projecta:ruleIdentifier a owl:DatatypeProperty ; rdfs:range <http://www.w3.org/2001/XMLSchema#string> .
+projecta:ruleVersion a owl:DatatypeProperty ; rdfs:range <http://www.w3.org/2001/XMLSchema#string> .
+projecta:sourceRevision a owl:DatatypeProperty ;
+    rdfs:domain projecta:Entity ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Stable content revision of the asserted project graph used to materialize an inference snapshot." .

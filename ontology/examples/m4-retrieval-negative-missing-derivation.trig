@@ -1,0 +1,11 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout/inferred/> {
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/inferred/bad>
+    a projecta:UnresolvedBlocker ; rdfs:label "bad" ;
+    projecta:aboutTask <https://w3id.org/projecta/data/project/ecommerce-checkout/task/tax-api> ;
+    projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> ;
+    projecta:ruleIdentifier "m4.unresolved-dependency" ; projecta:ruleVersion "1" ;
+    projecta:sourceRevision "fixture-r1" .
+}

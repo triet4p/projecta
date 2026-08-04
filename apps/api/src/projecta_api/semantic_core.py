@@ -89,11 +89,20 @@ class HttpSemanticCoreClient:
                 base_url=self._base_url, timeout=10.0, transport=self._transport
             ) as client:
                 response = await client.request(method, path, json=body, headers=headers)
-            payload: object = response.json()
-        except (httpx.HTTPError, ValueError) as error:
+        except httpx.HTTPError as error:
             raise SemanticCoreProblem(503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core is temporarily unavailable") from error
         if response.is_error:
+            try:
+                payload: object = response.json()
+            except ValueError:
+                payload = {}
             raise _problem(response.status_code, payload)
+        if not response.content:
+            return {"_projecta_http_status": response.status_code}
+        try:
+            payload = response.json()
+        except ValueError as error:
+            raise SemanticCoreProblem(503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core returned invalid JSON") from error
         return {**_mapping(payload), "_projecta_http_status": response.status_code}
 
     async def entity_link_context(

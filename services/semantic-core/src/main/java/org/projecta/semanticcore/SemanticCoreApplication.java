@@ -28,6 +28,7 @@ public final class SemanticCoreApplication {
         var capture = new QuickNoteCaptureService(gateway, router, validation::validateCapture);
         var extraction = new LlmCandidateIngestionService(gateway, router, validation);
         var queries = new FusekiQueryService(gateway, router, validation);
+        var m4 = new M4SemanticService(gateway, router, new M4QueryTemplateRegistry());
         var application = Javalin.create(config -> {
             config.routes.exception(RuntimeException.class, (exception, context) -> writeProblem(context, exception));
             config.routes
@@ -138,6 +139,29 @@ public final class SemanticCoreApplication {
                                 "items",
                                 queries.current(trusted.projectId(), context.queryParam("type"))));
                     })
+                    .get("/v1/retrieval/current-requirements", context -> {
+                        var trusted = trustedContext(context);
+                        int limit = boundedLimit(context.queryParam("limit"));
+                        context.json(m4.retrieve(trusted.projectId(), "current-requirements", Map.of("limit", limit)));
+                    })
+                    .get("/v1/retrieval/requirement-history", context -> {
+                        var trusted = trustedContext(context);
+                        var requirementId = context.queryParam("requirementId");
+                        int limit = boundedLimit(context.queryParam("limit"));
+                        context.json(m4.retrieve(
+                                trusted.projectId(),
+                                "requirement-history",
+                                Map.of("limit", limit, "requirementId", requirementId == null ? "" : requirementId)));
+                    })
+                    .get("/v1/retrieval/unresolved-blockers", context -> {
+                        var trusted = trustedContext(context);
+                        int limit = boundedLimit(context.queryParam("limit"));
+                        context.json(m4.retrieve(trusted.projectId(), "unresolved-blockers", Map.of("limit", limit)));
+                    })
+                    .post("/v1/inference/rebuild", context -> {
+                        var trusted = trustedContext(context);
+                        context.json(m4.rebuildInference(trusted.projectId()));
+                    })
                     .get("/v1/entities/link-context", context -> {
                         var trusted = trustedContext(context);
                         var rawLimit = context.queryParam("limit");
@@ -210,4 +234,14 @@ public final class SemanticCoreApplication {
     private record Assertion(String type, String label, String validFrom) {}
 
     private record RejectionRequest(String reason) {}
+
+    private static int boundedLimit(String raw) {
+        try {
+            int limit = raw == null ? 50 : Integer.parseInt(raw);
+            if (limit < 1 || limit > 100) throw new IllegalArgumentException("query limit must be between 1 and 100");
+            return limit;
+        } catch (NumberFormatException exception) {
+            throw new IllegalArgumentException("query limit must be an integer", exception);
+        }
+    }
 }

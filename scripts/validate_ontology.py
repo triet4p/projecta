@@ -51,6 +51,7 @@ V02_ONTOLOGY_FILES = ONTOLOGY_FILES + (
 )
 V03_ONTOLOGY_FILES = V02_ONTOLOGY_FILES + (ONTOLOGY_DIR / "evidence.ttl",)
 V04_ONTOLOGY_FILES = V03_ONTOLOGY_FILES + (ONTOLOGY_DIR / "llm-extraction-v04.ttl",)
+V05_ONTOLOGY_FILES = V04_ONTOLOGY_FILES + (ONTOLOGY_DIR / "m4-retrieval.ttl",)
 V02_SYNTAX_FILES = V02_ONTOLOGY_FILES + (
     EXAMPLES_DIR / "lifecycle-demo.trig",
     EXAMPLES_DIR / "benchmark-assertion-node.trig",
@@ -78,6 +79,22 @@ V04_SYNTAX_FILES = V04_ONTOLOGY_FILES + (
     EXAMPLES_DIR / "shacl-negative-llm-extraction-cross-project.trig",
     SHAPES_DIR / "llm-extraction-draft-shapes.ttl",
 )
+V05_SYNTAX_FILES = V05_ONTOLOGY_FILES + (
+    ONTOLOGY_DIR / "rules" / "m4-rules.ttl",
+    SHAPES_DIR / "m4-retrieval-shapes.ttl",
+    EXAMPLES_DIR / "m4-retrieval-demo.trig",
+    EXAMPLES_DIR / "m4-retrieval-negative-missing-derivation.trig",
+)
+
+M4_EXPECTED_ROWS = {
+    "CQ-M4-CURRENT-001": 1,
+    "CQ-M4-HISTORY-001": 2,
+    "CQ-M4-BLOCKER-001": 1,
+    "CQ-M4-RULE-001": 2,
+    "CQ-M4-EVIDENCE-001": 3,
+    "CQ-M4-SNAPSHOT-001": 1,
+}
+M4_EXPECTED_ASK = {"CQ-M4-ISOLATION-001": False}
 
 M2_EXPECTED_ROWS = {
     "CQ-M2-SRC-001": 1,
@@ -735,6 +752,30 @@ def main() -> int:
             "A NoteItem evidence range must be in-bounds, non-empty, and equal its contentText substring.",
         )
     )
+
+    # ── v0.5 M4 retrieval and inference contract ────────────────────
+    checks.extend(validate_syntax(V05_SYNTAX_FILES, "v0.5"))
+    m4_graph = merge_dataset(V05_ONTOLOGY_FILES + (EXAMPLES_DIR / "m4-retrieval-demo.trig",))
+    m4_dataset = _dataset_from_files(V05_ONTOLOGY_FILES + (EXAMPLES_DIR / "m4-retrieval-demo.trig",))
+    checks.extend(
+        validate_competency_queries(
+            m4_graph,
+            CQ_DIR / "m4-queries.rq",
+            M4_EXPECTED_ROWS,
+            M4_EXPECTED_ASK,
+            "v0.5",
+            dataset=m4_dataset,
+        )
+    )
+    checks.extend(validate_shacl_positive(
+        (EXAMPLES_DIR / "m4-retrieval-demo.trig",),
+        (SHAPES_DIR / "m4-retrieval-shapes.ttl",),
+    ))
+    checks.append(validate_single_shacl_negative(
+        EXAMPLES_DIR / "m4-retrieval-negative-missing-derivation.trig",
+        (SHAPES_DIR / "m4-retrieval-shapes.ttl",),
+        "An M4 derived fact must retain at least two asserted inputs.",
+    ))
 
     # ── Report ──────────────────────────────────────────────────────
     for check in checks:

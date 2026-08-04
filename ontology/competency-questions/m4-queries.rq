@@ -1,0 +1,49 @@
+PREFIX projecta: <https://w3id.org/projecta/ontology/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+
+# --- CQ-M4-CURRENT-001 ---
+SELECT ?item ?label WHERE {
+  GRAPH <https://w3id.org/projecta/data/project/ecommerce-checkout/asserted/> {
+    ?item a projecta:Requirement ; <http://www.w3.org/2000/01/rdf-schema#label> ?label ; projecta:validFrom ?from .
+    FILTER NOT EXISTS { ?item projecta:validTo ?to . }
+  }
+}
+
+# --- CQ-M4-HISTORY-001 ---
+SELECT ?item WHERE {
+  GRAPH <https://w3id.org/projecta/data/project/ecommerce-checkout/asserted/> {
+    ?item a projecta:Requirement .
+    FILTER(?item = <https://w3id.org/projecta/data/project/ecommerce-checkout/requirement/req-new> ||
+      EXISTS { ?item (projecta:supersededBy|^projecta:supersededBy)* <https://w3id.org/projecta/data/project/ecommerce-checkout/requirement/req-new> })
+  }
+}
+
+# --- CQ-M4-BLOCKER-001 ---
+SELECT ?item WHERE {
+  GRAPH <https://w3id.org/projecta/data/project/ecommerce-checkout/inferred/> { ?item a projecta:UnresolvedBlocker . }
+}
+
+# --- CQ-M4-RULE-001 ---
+SELECT ?item ?rule WHERE {
+  GRAPH <https://w3id.org/projecta/data/project/ecommerce-checkout/inferred/> {
+    ?item projecta:ruleIdentifier ?rule ; projecta:derivedFromAssertion ?input .
+  }
+}
+
+# --- CQ-M4-EVIDENCE-001 ---
+SELECT ?source WHERE {
+  GRAPH <https://w3id.org/projecta/data/project/ecommerce-checkout/asserted/> { ?item prov:wasDerivedFrom ?candidate . }
+  GRAPH <https://w3id.org/projecta/data/project/ecommerce-checkout/candidates/> { ?candidate prov:wasDerivedFrom ?source . }
+}
+
+# --- CQ-M4-ISOLATION-001 ---
+ASK {
+  GRAPH <https://w3id.org/projecta/data/project/payroll/asserted/> { ?s ?p ?o . }
+}
+
+# --- CQ-M4-SNAPSHOT-001 ---
+SELECT ?revision WHERE {
+  GRAPH <https://w3id.org/projecta/data/project/ecommerce-checkout/inferred/> {
+    ?snapshot a projecta:InferenceSnapshot ; projecta:sourceRevision ?revision .
+  }
+}

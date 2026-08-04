@@ -1,0 +1,13 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix rule: <https://w3id.org/projecta/rules/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+rule:unresolved-dependency-v1 a projecta:InferenceRule ;
+  projecta:ruleIdentifier "m4.unresolved-dependency" ; projecta:ruleVersion "1" ;
+  rdfs:comment "An Open Question that blocks a Task yields an unresolved blocker." .
+rule:delivery-risk-v1 a projecta:InferenceRule ;
+  projecta:ruleIdentifier "m4.delivery-risk" ; projecta:ruleVersion "1" ;
+  rdfs:comment "A Blocked Task implementing a Requirement yields delivery risk." .
+rule:impact-review-v1 a projecta:InferenceRule ;
+  projecta:ruleIdentifier "m4.impact-review" ; projecta:ruleVersion "1" ;
+  rdfs:comment "A task implementing a superseded requirement needs impact review." .

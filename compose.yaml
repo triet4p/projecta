@@ -150,6 +150,28 @@ services:
       - ./ontology:/ontology:ro
     restart: "no"
 
+  m4-fixture-loader:
+    profiles: ["system-test"]
+    image: projecta-fuseki:6.2.0
+    depends_on:
+      fuseki-bootstrap:
+        condition: service_completed_successfully
+    working_dir: /data
+    volumes:
+      - ./ontology:/data:ro
+      - ./scripts:/scripts:ro
+    entrypoint:
+      - uv
+      - run
+      - --offline
+      - --with
+      - rdflib==7.6.0
+      - python
+      - /scripts/load_m4_fixture.py
+    environment:
+      FUSEKI_DATASET_URL: http://fuseki:3030/projecta
+    restart: "no"
+
   api-runtime-test:
     profiles: ["system-test"]
     build:
@@ -160,6 +182,8 @@ services:
     depends_on:
       semantic-core-runtime-test:
         condition: service_healthy
+      m4-fixture-loader:
+        condition: service_completed_successfully
     environment:
       PROJECTA_API_SEMANTIC_CORE_URL: http://semantic-core-runtime-test:8080
       PROJECTA_API_TRUSTED_CONTEXT_SECRET: ${PROJECTA_API_TRUSTED_CONTEXT_SECRET:?PROJECTA_API_TRUSTED_CONTEXT_SECRET must be set}

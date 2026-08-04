@@ -1,0 +1,48 @@
+@prefix projecta: <https://w3id.org/projecta/ontology/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout/asserted/> {
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/requirement/req-old>
+    a projecta:KnowledgeItem, projecta:Requirement ; rdfs:label "Use saved address" ;
+    projecta:validFrom "2026-08-01"^^xsd:date ; projecta:validTo "2026-08-03"^^xsd:date ;
+    projecta:supersededBy <https://w3id.org/projecta/data/project/ecommerce-checkout/requirement/req-new> ;
+    prov:wasDerivedFrom <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/req-old> .
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/requirement/req-new>
+    a projecta:KnowledgeItem, projecta:Requirement ; rdfs:label "Confirm saved address" ;
+    projecta:validFrom "2026-08-03"^^xsd:date ;
+    prov:wasDerivedFrom <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/req-new> .
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/question/q-address>
+    a projecta:Question ; rdfs:label "Confirm address before payment" ; projecta:hasWorkStatus projecta:Open ;
+    projecta:blocks <https://w3id.org/projecta/data/project/ecommerce-checkout/task/tax-api> ;
+    prov:wasDerivedFrom <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/q-address> .
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/task/tax-api>
+    a projecta:Task ; rdfs:label "Implement tax API" ; projecta:hasWorkStatus projecta:Blocked ; projecta:implements <https://w3id.org/projecta/data/project/ecommerce-checkout/requirement/req-old> .
+}
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout/inferred/> {
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/inferred/snapshot-m4-v1>
+    a projecta:InferenceSnapshot ;
+    projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> ;
+    projecta:sourceRevision "fixture-r1" ; projecta:ruleVersion "m4.v1" .
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/inferred/unresolved-blocker-q-address-tax-api>
+    a projecta:UnresolvedBlocker ; rdfs:label "Confirm address before payment" ;
+    projecta:aboutTask <https://w3id.org/projecta/data/project/ecommerce-checkout/task/tax-api> ;
+    projecta:derivedFromAssertion <https://w3id.org/projecta/data/project/ecommerce-checkout/question/q-address>, <https://w3id.org/projecta/data/project/ecommerce-checkout/task/tax-api> ;
+    projecta:belongsToProject <https://w3id.org/projecta/data/project/ecommerce-checkout> ;
+    projecta:ruleIdentifier "m4.unresolved-dependency" ; projecta:ruleVersion "1" ;
+    projecta:sourceRevision "fixture-r1" .
+}
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout/candidates/> {
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/req-old> prov:wasDerivedFrom <https://w3id.org/projecta/data/project/ecommerce-checkout/source/req-old> .
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/req-new> prov:wasDerivedFrom <https://w3id.org/projecta/data/project/ecommerce-checkout/source/req-new> .
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/q-address> prov:wasDerivedFrom <https://w3id.org/projecta/data/project/ecommerce-checkout/source/q-address> .
+}
+
+<https://w3id.org/projecta/data/project/ecommerce-checkout/sources/> {
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/source/req-old> projecta:contentText "Use saved address" ; projecta:evidenceStartOffset 0 ; projecta:evidenceEndOffset 17 .
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/source/req-new> projecta:contentText "Confirm saved address" ; projecta:evidenceStartOffset 0 ; projecta:evidenceEndOffset 21 .
+  <https://w3id.org/projecta/data/project/ecommerce-checkout/source/q-address> projecta:contentText "Confirm address before payment" ; projecta:evidenceStartOffset 0 ; projecta:evidenceEndOffset 31 .
+}

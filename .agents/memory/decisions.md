@@ -177,3 +177,10 @@ remain outside the released scope.
 **Alternatives considered:** Keep `m3.prompt.v1` and record an explicit quality acceptance decision for over-extraction; add normalization-level link filtering for relation endpoints; retry all normalization failures or relax fail-closed evidence validation.
 **Reason:** The corrected live gate exposed real over-extraction, span, and abstention failures that thin guidance caused; prompt fixes and an evidence-only retry restored every threshold to `1.0` while keeping safety classes (`hallucinated_link`, cross-project) fail-closed. Accepting the old behavior or filtering at normalization would mask model quality instead of fixing it.
 **Consequences:** The live quality gate now requires two consecutive passing runs because single-run model output is noisy; any prompt change must be revalidated against the full `s5.v1` dataset; the product path still fails closed on invalid evidence without retry. The evaluation runner may spend bounded extra provider calls on evidence noise.
+
+## [2026-08-04] Separate deterministic M4 snapshots from rebuild execution time
+
+**Decision:** Represent each project's M4 materialization with a governed `InferenceSnapshot` marker containing the content-derived asserted `sourceRevision` and rule version. Keep rebuild execution time only in the operational response, and expose a separate content-derived `materializationRevision` for inferred and provenance graphs.
+**Alternatives considered:** Infer freshness from returned rows, use triple counts and maximum timestamps as the source revision, or persist the current rebuild timestamp on deterministic derivation activities.
+**Reason:** Empty result sets still need freshness semantics, count/time heuristics miss same-count mutations, and execution timestamps make identical rebuilds produce different graph content.
+**Consequences:** Retrieval can detect stale or missing materializations even with zero result rows, repeated rebuilds are content-idempotent, and any future asserted blank-node support must introduce canonical RDF normalization before those nodes participate in the digest.

@@ -3,6 +3,7 @@
 from typing import Annotated, Protocol, cast
 
 from fastapi import APIRouter, Depends, Header, Query, Response
+from pydantic import BaseModel, ConfigDict, Field
 
 from projecta_api.context import TrustedRequestContext, trusted_context
 from projecta_api.models import (
@@ -12,19 +13,46 @@ from projecta_api.models import (
     ExtractionRequest,
     RejectionRequest,
 )
+from projecta_api.retrieval.service import RetrievalService
 from projecta_api.semantic_core import SemanticCoreClient
 
 Context = Annotated[TrustedRequestContext, Depends(trusted_context)]
 Key = Annotated[str, Header(alias="Idempotency-Key", min_length=1, max_length=128)]
 
 
+class ProjectContextQuestion(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    question: str = Field(min_length=1)
+    limit: int = Field(default=50, ge=1, le=100)
+
+
 class ExtractionService(Protocol):
     async def extract(self, context: TrustedRequestContext, key: str, request: ExtractionRequest) -> object: ...
 
 
-def create_router(client: SemanticCoreClient, extraction: ExtractionService | None = None) -> APIRouter:
+def create_router(
+    client: SemanticCoreClient,
+    extraction: ExtractionService | None = None,
+    retrieval: RetrievalService | None = None,
+) -> APIRouter:
     """Create routes bound to one finite Semantic Core client."""
     router = APIRouter()
+
+    @router.post("/v1/project-context/answers")
+    async def project_context_answer(
+        payload: ProjectContextQuestion, context: Context, response: Response
+    ) -> object:
+        if retrieval is None:
+            raise ValueError("question is required")
+        answer = await retrieval.answer(context, payload.question, payload.limit)
+        response.headers["X-Request-Id"] = context.request_id
+        return answer.model_dump(mode="json", by_alias=True)
+
+    @router.post("/v1/project-context/inference/rebuild")
+    async def rebuild_project_context(context: Context, response: Response) -> object:
+        result = await client.request(context, "POST", "/v1/inference/rebuild")
+        response.headers["X-Request-Id"] = context.request_id
+        return result
 
     @router.post("/v1/quick-notes/extractions")
     async def extract(
