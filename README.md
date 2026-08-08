@@ -5,9 +5,11 @@ Ontology-driven project intelligence for BrSE and project coordination workflows
 ## Status
 
 Projecta has completed M1 (the executable semantic foundation), M2 (the
-Manual Quick Note slice), and M3 (the LLM extraction slice). Ontology v0.1,
-v0.2, v0.3, and the additive v0.4 candidate vocabulary are approved
-repository-local releases.
+Manual Quick Note slice), M3 (the LLM extraction slice), and M4 (project-scoped
+retrieval and coordination). Sprint 7 adds the first usable React web
+experience and user-managed runtime configuration. Ontology v0.1, v0.2, v0.3,
+and the additive v0.4 candidate vocabulary are approved repository-local
+releases.
 
 The current working vertical slice is:
 
@@ -23,14 +25,84 @@ The current working vertical slice is:
   not create asserted items; no model output is ever asserted automatically.
 - Capture, extraction, and review retries are idempotent, with transaction
   rollback, project isolation, and restart persistence covered by tests.
+- A same-origin Compose web boundary serves the React SPA and proxies only the
+  public Application API and health routes; the browser does not call Semantic
+  Core or Fuseki directly.
+- The local experience supports encrypted, redacted LLM profile management,
+  connection checks, credential rotation/removal, typed evidence capture,
+  candidate review, current Requirements, evidence/history inspection, and
+  grounded project Q&A.
 
-The canonical Sprint 5 suite passed 119/119 ontology checks, Semantic Core
-35/35 tests, 51/51 API end-to-end tests, a clean offline replay evaluation
-(all metrics `1.0`), and the live provider quality gate twice consecutively.
+Sprint 7 source validation and browser acceptance pass on the local stack;
+S7-47/M5 product and security acceptance remains a human review gate.
 Authentication/authorization, connectors, public deployment, pagination, and
-edit/delete workflows remain out of scope. See the [project plan](docs/PLAN.md)
-and [Sprint 5 review packet](docs/sprint-plans/sprint-5/review-packet.md) for
-the current delivery evidence.
+general edit/delete workflows remain out of scope. See the [project plan](docs/PLAN.md),
+[Sprint 7 review packet](docs/sprint-plans/sprint-7/review-packet.md), and
+[local experience runbook](docs/runbooks/sprint-7-local-experience.md) for
+delivery evidence and operating boundaries.
+
+## Try the current app
+
+The supported local experience is a disposable Compose deployment. It does
+not require `PROJECTA_LLM_*` variables on first start; configure the provider
+from **Settings** after the web app opens.
+
+From PowerShell, set the two deployment-owned secrets and start the web
+profile:
+
+```powershell
+$env:PROJECTA_API_TRUSTED_CONTEXT_SECRET = (New-Guid).Guid
+$env:PROJECTA_API_SECRET_STORE_MASTER_KEY = uv run --project apps/api python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+docker compose -f compose.yaml -f compose.dev.yaml --profile web up --build
+```
+
+Open <http://localhost:3000>. The main journey is:
+
+1. **Settings** — enter a compatible provider URL, model, and credential;
+   save the profile, test the connection, or rotate/remove the credential.
+   The credential field is cleared after submission and the browser receives
+   only redacted profile metadata.
+2. **Capture** — select an exact span from a note and create typed evidence
+   without configuring an LLM.
+3. **Review** — validate the candidate against SHACL, then confirm it as a
+   `Requirement` or reject it. Confirmation is always an explicit human action.
+4. **Knowledge** — inspect current Requirements, open their evidence, and load
+   candidate history using the opaque candidate ID shown in the active workflow.
+5. **Q&A** — ask a bounded project question and receive a grounded answer with
+   citations, derivation, or a safe abstention when the graph lacks support.
+6. **Diagnostics** — inspect local API/Semantic Core readiness and experience
+   mode without exposing deployment secrets or graph internals.
+
+Quick Note extraction is also available from **Extract** after a compatible LLM
+profile is configured. If the provider is unavailable, the connection status
+is shown safely and extraction fails closed; typed capture remains available for
+the evidence and review journey.
+
+Stop the local app with:
+
+```powershell
+docker compose -f compose.yaml -f compose.dev.yaml --profile web down
+```
+
+For a disposable reset that also removes the local operational volumes, use
+`down --volumes --remove-orphans` only when the data is no longer needed.
+
+## Current validation commands
+
+Run the source-level gates from the repository root; the script enters each
+project directory explicitly:
+
+```powershell
+pwsh -File scripts/run_sprint7_validation.ps1
+```
+
+Run real browser acceptance against an isolated Compose project. The script
+builds the stack, tests before and after an API/web restart, and cleans its
+containers, network, and volumes:
+
+```powershell
+pwsh -File scripts/run_sprint7_acceptance.ps1
+```
 
 ## Vision
 
@@ -69,7 +141,7 @@ Do not duplicate their instructions in other contributor documents.
 
 Theo dõi roadmap và sprint đang hoạt động tại [Project Plan](docs/PLAN.md).
 
-The implemented M3 slice is:
+The implemented M3/M4 and Sprint 7 slice is:
 
 ```text
 Quick Note
@@ -78,11 +150,14 @@ Quick Note
 → SHACL validation
 → Human confirmation or rejection
 → Asserted RDF and provenance
-→ Project-scoped reads
+→ Project-scoped reads and grounded Q&A
+→ React web experience over the Application API
+→ Encrypted operational settings and redacted browser responses
 ```
 
-Inference remains a preserved boundary, not a materialized output, until a
-future milestone has an approved competency question and rule.
+Inference and ontology evolution remain governed boundaries; S7 exposes the
+released project-context retrieval and evidence contracts without exposing raw
+graph IRIs to the browser.
 
 The target stack and repository layout are documented in `06-Tech-Stack.md`. Local and early-production deployment use the Compose-first approach in `08-Deployment-Choice.md`.
 
@@ -93,8 +168,8 @@ docker compose run --build --rm ontology-test
 docker compose -f compose.yaml -f compose.dev.yaml config
 ```
 
-Run the full Sprint 5 system suite (API tests, replay evaluation, and the
-Compose E2E chain) with:
+Historical Sprint 5 gates (API tests, replay evaluation, and the Compose E2E
+chain) can still be run with:
 
 ```text
 pwsh -File scripts/run_sprint5.ps1
