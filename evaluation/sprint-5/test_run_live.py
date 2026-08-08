@@ -13,10 +13,12 @@ ROOT = Path(__file__).parents[2]
 sys.path.insert(0, str(ROOT / "apps" / "api" / "src"))
 sys.path.insert(0, str(Path(__file__).parent))
 
-import run_live  # noqa: E402
-
-from projecta_api.extraction.contracts import ExtractionResponse  # noqa: E402
-from projecta_api.llm.gateway import GatewayResponse, NormalizedGatewayError  # noqa: E402
+import run_live
+from projecta_api.extraction.contracts import ExtractionResponse
+from projecta_api.llm.gateway import (
+    GatewayResponse,
+    NormalizedGatewayError,
+)
 
 
 @pytest.mark.skipif(

@@ -9,7 +9,6 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-
 ONTOLOGY_GRAPH = "https://w3id.org/projecta/data/ontology/dev/"
 MODULES = ("core.ttl", "communication.ttl", "provenance.ttl", "temporal.ttl", "evidence.ttl", "llm-extraction-v04.ttl", "m4-retrieval.ttl", "rules/m4-rules.ttl")
 

@@ -13,8 +13,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parents[2] / "apps" / "api" / "src"))
 
 from metrics_runner import evaluate
-from pydantic import ValidationError
-
 from projecta_api.config import Settings
 from projecta_api.extraction.normalize import normalize_extraction
 from projecta_api.extraction.prompt import build_extraction_prompt
@@ -22,6 +20,7 @@ from projecta_api.extraction.service import _response_schema
 from projecta_api.llm.gateway import GatewayRequest, NormalizedGatewayError
 from projecta_api.llm.openai_responses import OpenAIResponsesGateway
 from projecta_api.llm.resilience import ResilientGateway
+from pydantic import ValidationError
 
 
 async def run() -> int:
