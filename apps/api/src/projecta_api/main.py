@@ -5,6 +5,17 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 from projecta_api.config import Settings
+from projecta_api.configuration.audit import ConfigurationAudit
+from projecta_api.configuration.connection import OpenAIConnectionChecker
+from projecta_api.configuration.environment import EnvironmentRuntimeConfigurationProvider
+from projecta_api.configuration.errors import ConfigurationProblem
+from projecta_api.configuration.models import LLMConfigurationSnapshot
+from projecta_api.configuration.ports import RuntimeConfigurationProvider
+from projecta_api.configuration.runtime import OperationalRuntimeConfigurationProvider
+from projecta_api.configuration.secret_store import ApplicationEncryptedSecretStore
+from projecta_api.configuration.service import LLMConfigurationService
+from projecta_api.configuration.storage import LLMProfileRepository, OperationalDatabase
+from projecta_api.context import LocalExperienceContextMiddleware
 from projecta_api.extraction.service import ExtractionOrchestrator
 from projecta_api.llm.gateway import LLMGateway, NormalizedGatewayError
 from projecta_api.llm.openai_responses import OpenAIResponsesGateway
@@ -28,24 +39,55 @@ def create_app(
     settings: Settings | None = None,
     semantic_client: SemanticCoreClient | None = None,
     gateway: LLMGateway | None = None,
+    runtime_configuration: RuntimeConfigurationProvider | None = None,
 ) -> FastAPI:
     """Create the application without performing network I/O."""
     actual_settings = settings or Settings()  # pyright: ignore[reportCallIssue]
     client = semantic_client or HttpSemanticCoreClient(str(actual_settings.semantic_core_url))
-    resilient_gateway = ResilientGateway(
-        gateway
-        or OpenAIResponsesGateway(
-            base_url=str(actual_settings.llm_base_url),
-            api_key=actual_settings.llm_api_key.get_secret_value(),
-        ),
-        max_retries=2,
-    )
-    extraction = ExtractionOrchestrator(
-        resilient_gateway, client, actual_settings.llm_model, timeout_seconds=60.0
-    )
+    database = OperationalDatabase(actual_settings.operational_database_path)
+    secret_store = ApplicationEncryptedSecretStore(database, actual_settings.secret_store_master_key)
+    profile_repository = LLMProfileRepository(database)
+    configuration_audit = ConfigurationAudit(database)
+    configuration: RuntimeConfigurationProvider
+    if runtime_configuration is not None:
+        configuration = runtime_configuration
+    elif actual_settings.runtime_mode == "experience":
+        configuration = OperationalRuntimeConfigurationProvider(profile_repository, secret_store)
+    else:
+        configuration = EnvironmentRuntimeConfigurationProvider(actual_settings)
+    if gateway is None:
+        def gateway_factory(snapshot: LLMConfigurationSnapshot) -> LLMGateway:
+            return ResilientGateway(
+                OpenAIResponsesGateway(
+                    base_url=snapshot.base_url,
+                    api_key=snapshot.api_key.get_secret_value(),
+                ),
+                max_retries=2,
+            )
+
+        extraction = ExtractionOrchestrator(
+            None,
+            client,
+            None,
+            timeout_seconds=60.0,
+            configuration_provider=configuration,
+            gateway_factory=gateway_factory,
+        )
+    else:
+        extraction = ExtractionOrchestrator(
+            ResilientGateway(gateway, max_retries=2),
+            client,
+            actual_settings.llm_model,
+            timeout_seconds=60.0,
+        )
     retrieval = RetrievalService(client)
     app = FastAPI(title="Projecta Application API", version="0.1.0")
     app.state.settings = actual_settings
+    app.state.runtime_configuration = configuration
+    app.state.profile_repository = profile_repository
+    app.state.secret_store = secret_store
+    app.state.configuration_audit = configuration_audit
+    app.add_middleware(LocalExperienceContextMiddleware)
 
     @app.exception_handler(SemanticCoreProblem)
     async def semantic_problem(request: Request, error: SemanticCoreProblem) -> JSONResponse:
@@ -90,6 +132,10 @@ def create_app(
     async def retrieval_problem(request: Request, error: RetrievalError) -> JSONResponse:
         return _problem(request, 400, error.code.value.upper(), "Retrieval request failed", error.detail)
 
+    @app.exception_handler(ConfigurationProblem)
+    async def configuration_problem(request: Request, error: ConfigurationProblem) -> JSONResponse:
+        return _problem(request, error.status_code, error.code, "Runtime configuration request failed", error.detail)
+
     @app.exception_handler(HTTPException)
     async def http_problem(request: Request, error: HTTPException) -> JSONResponse:
         """Keep framework validation errors inside the API's finite problem surface."""
@@ -121,7 +167,35 @@ def create_app(
         )
 
     app.add_api_route("/health/live", live, methods=["GET"])
-    app.include_router(create_router(client, extraction, retrieval))
+
+    async def ready() -> JSONResponse:
+        checker = getattr(client, "readiness", None)
+        if checker is None:
+            return JSONResponse({"status": "ready", "semanticCore": "injected"})
+        if await checker():
+            return JSONResponse({"status": "ready", "semanticCore": "ready"})
+        return JSONResponse(
+            status_code=503,
+            content={"status": "not-ready", "semanticCore": "unavailable"},
+        )
+
+    app.add_api_route("/health/ready", ready, methods=["GET"])
+    app.include_router(
+        create_router(
+            client,
+            extraction,
+            retrieval,
+            configuration_service=LLMConfigurationService(
+                profile_repository,
+                secret_store,
+                configuration_audit,
+                runtime_mode=actual_settings.runtime_mode,
+            ),
+            runtime_configuration=configuration,
+            connection_checker=OpenAIConnectionChecker(),
+            configuration_audit=configuration_audit,
+        )
+    )
     return app
 
 

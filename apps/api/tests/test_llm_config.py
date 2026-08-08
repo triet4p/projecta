@@ -17,14 +17,12 @@ def test_llm_configuration_is_explicit_and_secret_is_redacted() -> None:
     assert "secret-value" not in repr(settings)
 
 
-def test_llm_configuration_is_required(monkeypatch) -> None:
-    from pydantic import ValidationError
-
+def test_llm_configuration_can_be_absent_before_first_run(monkeypatch) -> None:
     for name in ("PROJECTA_LLM_TYPE", "PROJECTA_LLM_BASE_URL", "PROJECTA_LLM_API_KEY", "PROJECTA_LLM_MODEL"):
         monkeypatch.delenv(name, raising=False)
-    try:
-        Settings(_env_file=None)
-    except ValidationError as error:
-        assert {item["loc"][0] for item in error.errors()} >= {"PROJECTA_LLM_TYPE", "PROJECTA_LLM_BASE_URL", "PROJECTA_LLM_API_KEY", "PROJECTA_LLM_MODEL"}
-    else:
-        raise AssertionError("missing LLM configuration must fail closed")
+    settings = Settings(_env_file=None)
+
+    assert settings.llm_type is None
+    assert settings.llm_base_url is None
+    assert settings.llm_api_key.get_secret_value() == ""
+    assert settings.llm_model == ""

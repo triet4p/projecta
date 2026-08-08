@@ -44,6 +44,10 @@ class SemanticCoreClient(Protocol):
         self, context: TrustedRequestContext, key: str, body: object
     ) -> object: ...
 
+    async def readiness(self) -> bool:
+        """Return whether Semantic Core reports its Fuseki dependency ready."""
+        ...
+
 
 class HttpSemanticCoreClient:
     """Private HTTP adapter that forwards only trusted metadata and typed bodies."""
@@ -133,6 +137,17 @@ class HttpSemanticCoreClient:
     ) -> object:
         """Persist a normalized M3 batch through the finite Core operation."""
         return await self.request(context, "POST", "/v1/quick-notes/extractions", body, key)
+
+    async def readiness(self) -> bool:
+        """Check the private readiness endpoint without forwarding browser context."""
+        try:
+            async with httpx.AsyncClient(
+                base_url=self._base_url, timeout=3.0, transport=self._transport
+            ) as client:
+                response = await client.get("/health/ready")
+        except httpx.HTTPError:
+            return False
+        return response.status_code == 200
 
 
 def _mapping(value: object) -> Mapping[str, object]:

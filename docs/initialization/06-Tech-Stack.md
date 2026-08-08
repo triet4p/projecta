@@ -185,24 +185,34 @@ Connector mapping không chứa ontology reasoning.
 
 | Thành phần | Công nghệ |
 |---|---|
-| Web app | React + TypeScript |
-| Framework | Next.js |
+| Web app | React + TypeScript static SPA |
+| Build/dev tool | Vite |
 | UI components | shadcn/ui hoặc component system nội bộ |
-| Graph visualization | Cytoscape.js hoặc React Flow |
+| API client | Generated TypeScript client from versioned Application API snapshot |
 | Data fetching | TanStack Query |
 | Forms | React Hook Form + Zod |
-| Auth | OIDC-compatible client |
+| Auth/context | Server-established experience context; OIDC-compatible client deferred |
 
-Các màn hình chính:
+Sprint 7 uses the web app as the canonical interaction surface. The static
+assets are served through the Compose web boundary and call only the FastAPI
+Application API over the documented same-origin route. The browser never calls
+Semantic Core or Fuseki directly. Tauri is reserved for a future thin desktop
+wrapper that reuses this client and calls the same server API; it does not
+package Python, Java, Fuseki, or operational storage.
 
-- Project dashboard.
-- Quick Note.
-- Candidate review.
-- Entity detail.
-- Relation/evidence view.
-- Search/Q&A.
-- Connector settings.
-- Audit/provenance inspector.
+Sprint 7 screens:
+
+- Application shell and local-experience status.
+- LLM settings and connection check.
+- Quick Note extraction and manual typed capture.
+- Candidate validation/review with Requirement-only confirmation.
+- Knowledge, history, and evidence views.
+- Bounded grounded project Q&A.
+- Experience diagnostics, limited to local-mode operations.
+
+Project dashboard, connector settings, graph visualization, full audit
+inspector, and OIDC authentication remain future capabilities unless a later
+sprint adds their contracts.
 
 ---
 

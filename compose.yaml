@@ -109,12 +109,43 @@ services:
     environment:
       PROJECTA_API_SEMANTIC_CORE_URL: http://semantic-core:8080
       PROJECTA_API_TRUSTED_CONTEXT_SECRET: ${PROJECTA_API_TRUSTED_CONTEXT_SECRET:?PROJECTA_API_TRUSTED_CONTEXT_SECRET must be set}
-      PROJECTA_LLM_TYPE: ${PROJECTA_LLM_TYPE:?PROJECTA_LLM_TYPE must be set}
-      PROJECTA_LLM_BASE_URL: ${PROJECTA_LLM_BASE_URL:?PROJECTA_LLM_BASE_URL must be set}
-      PROJECTA_LLM_API_KEY: ${PROJECTA_LLM_API_KEY:?PROJECTA_LLM_API_KEY must be set}
-      PROJECTA_LLM_MODEL: ${PROJECTA_LLM_MODEL:?PROJECTA_LLM_MODEL must be set}
+      PROJECTA_API_RUNTIME_MODE: ${PROJECTA_API_RUNTIME_MODE:-headless}
+      PROJECTA_API_OPERATIONAL_DATABASE_PATH: /var/lib/projecta/operational.db
+      PROJECTA_API_SECRET_STORE_MASTER_KEY: ${PROJECTA_API_SECRET_STORE_MASTER_KEY:?PROJECTA_API_SECRET_STORE_MASTER_KEY must be set}
+      PROJECTA_API_EXPERIENCE_PROJECT_ID: ${PROJECTA_API_EXPERIENCE_PROJECT_ID:-local-project}
+      PROJECTA_API_EXPERIENCE_ACTOR_ID: ${PROJECTA_API_EXPERIENCE_ACTOR_ID:-local-user}
+      PROJECTA_LLM_TYPE: ${PROJECTA_LLM_TYPE:-}
+      PROJECTA_LLM_BASE_URL: ${PROJECTA_LLM_BASE_URL:-}
+      PROJECTA_LLM_API_KEY: ${PROJECTA_LLM_API_KEY:-}
+      PROJECTA_LLM_MODEL: ${PROJECTA_LLM_MODEL:-}
+    volumes:
+      - projecta-api-operational:/var/lib/projecta
     expose:
       - "8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "from urllib.request import urlopen; assert urlopen('http://127.0.0.1:8000/health/live').status == 200"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  web:
+    profiles: ["web"]
+    build:
+      context: ./apps/web
+      target: runtime
+    image: projecta-web:local
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "${PROJECTA_WEB_PORT:-3000}:8080"
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/health/live"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
 
   semantic-core-system-test:
     profiles: ["system-test"]
@@ -223,3 +254,4 @@ services:
 volumes:
   jena-data:
   fuseki-data:
+  projecta-api-operational:

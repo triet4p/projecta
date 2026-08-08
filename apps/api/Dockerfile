@@ -23,6 +23,7 @@ CMD ["uv", "run", "pytest", "-q"]
 FROM python:3.12-slim AS runtime
 WORKDIR /app
 RUN groupadd --system projecta && useradd --system --gid projecta --home-dir /app projecta
+RUN mkdir -p /var/lib/projecta && chown -R projecta:projecta /var/lib/projecta
 COPY --from=builder --chown=projecta:projecta /app/.venv /app/.venv
 COPY --from=builder --chown=projecta:projecta /app/src /app/src
 ENV PATH="/app/.venv/bin:${PATH}" \

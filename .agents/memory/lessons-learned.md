@@ -187,3 +187,10 @@ image that assumes a system Python binary after only `uv python install`.
 **Root cause:** Freshness was inferred from returned derived rows, while the source revision used aggregate metadata rather than the asserted graph's actual RDF content.
 **Fix / workaround:** Store a project-level inference snapshot marker and compare its source revision with a SHA-256 digest of sorted asserted RDF term tuples. Measure before and after retrieval to mark concurrent source changes partial and stale.
 **Watch out for:** Never make snapshot health depend on result cardinality. Hashes over RDF with blank nodes require canonicalization; the current M4 asserted contract avoids blank nodes, so add a normalization algorithm before expanding that contract.
+
+## [2026-08-09] Runtime gate working directories and health UI state are separate boundaries
+
+**Symptom:** The root Sprint 7 validation script could not spawn Ruff, and the Settings screen showed an `unhealthy` connection notice while its health badge remained `unknown` until reload.
+**Root cause:** The API gates inherited the repository-root environment instead of `apps/api`, while `SettingsScreen` only stored the connection result in the notice and did not merge it into the local profile state.
+**Fix / workaround:** Run Ruff, Pyright, and Pytest from the API project directory with checked native exit codes; after a successful connection check, merge status, credential state, and check timestamp into the profile state. Assert the same response status in mocked and real browser journeys.
+**Watch out for:** Real provider checks can take longer than mocked checks; real E2E should wait for the response and assert the badge against its returned status rather than hard-code a network-dependent outcome.

@@ -22,7 +22,13 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   corrected live-quality gate passed twice consecutively after implementation,
   ontology and clean canonical Compose validation completed.
 - [x] **M4 — Retrieval and Coordination (Sprint 6):** Project-scoped queries, requirement history, blockers và evidence-backed answers.
-- [ ] **M5 — Connector and Production Evolution (Sprint 7+):** Mock/manual framework, connector thật đầu tiên, security và operational hardening.
+- [~] **M5 — Product Experience and Runtime Configuration (Sprint 7):**
+  Containerized React web experience cho Quick Note, candidate review,
+  evidence-backed retrieval và user-managed LLM configuration qua secret
+  boundary được review.
+- [ ] **M6 — Connector and Production Evolution (Sprint 8+):** Mock/manual
+  framework, connector thật đầu tiên, authentication/authorization, security và
+  operational hardening.
 
 ## Completed Sprints
 
@@ -44,11 +50,14 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 
 ## Active Sprints
 
-None.
+- [Sprint 7 — Web Experience and User-Managed Runtime Configuration](sprint-plans/sprint-7.md)
+  — *Implementation in progress; S7-15–S7-27 complete, workflow screens and
+  S7-36–S7-46 complete; S7-47 human product/security approval remains.*
 
 ## Planned Sprints
 
-- **Sprint 7+:** Connector evolution, security and operational hardening.
+- **Sprint 8+:** Connector evolution, authentication/authorization, security và
+  operational hardening.
 
 ## Backlog / Future Work
 
@@ -56,3 +65,6 @@ None.
 - Authentication, RBAC/ABAC và tenant administration.
 - Managed storage, backup/restore drills và production observability.
 - Search engine hoặc event broker khi PostgreSQL-based baseline không còn đáp ứng.
+- Tauri desktop companion, native keyring, tray/global shortcut và offline draft
+  chỉ khi có requirement native hoặc local-first cụ thể; desktop không đóng gói
+  lại backend Compose mặc định.

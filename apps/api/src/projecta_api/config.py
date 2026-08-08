@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_prefix="PROJECTA_API_",
         env_file=_projecta_env_file(),
+        env_ignore_empty=True,
         extra="ignore",
     )
 
@@ -29,7 +30,16 @@ class Settings(BaseSettings):
     # Empty means the application can still expose liveness, but every
     # project-scoped request must fail closed until deployment configures it.
     trusted_context_secret: str = ""
-    llm_type: Literal["openai-response", "openai"] = Field(validation_alias="PROJECTA_LLM_TYPE")
-    llm_base_url: AnyHttpUrl = Field(validation_alias="PROJECTA_LLM_BASE_URL")
-    llm_api_key: SecretStr = Field(validation_alias="PROJECTA_LLM_API_KEY")
-    llm_model: str = Field(min_length=1, validation_alias="PROJECTA_LLM_MODEL")
+    # Experience mode starts with no provider profile. Headless and production
+    # callers fail closed at operation time through the environment adapter.
+    llm_type: Literal["openai-response", "openai"] | None = Field(
+        default=None, validation_alias="PROJECTA_LLM_TYPE"
+    )
+    llm_base_url: AnyHttpUrl | None = Field(default=None, validation_alias="PROJECTA_LLM_BASE_URL")
+    llm_api_key: SecretStr = Field(default=SecretStr(""), validation_alias="PROJECTA_LLM_API_KEY")
+    llm_model: str = Field(default="", validation_alias="PROJECTA_LLM_MODEL")
+    runtime_mode: Literal["headless", "experience", "production"] = "headless"
+    operational_database_path: str = ":memory:"
+    secret_store_master_key: SecretStr | None = None
+    experience_project_id: str = "local-project"
+    experience_actor_id: str = "local-user"

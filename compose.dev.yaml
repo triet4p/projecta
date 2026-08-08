@@ -24,3 +24,8 @@ services:
       - ./apps/api/src:/app/src
     environment:
       PROJECTA_API_SEMANTIC_CORE_URL: http://semantic-core:8080
+      PROJECTA_API_RUNTIME_MODE: ${PROJECTA_API_RUNTIME_MODE:-experience}
+
+  web:
+    ports:
+      - "3000:8080"

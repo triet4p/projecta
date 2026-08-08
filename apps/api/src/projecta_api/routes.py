@@ -1,10 +1,20 @@
 """HTTP routes for typed capture, review, and finite read operations."""
 
+from datetime import UTC, datetime
 from typing import Annotated, Protocol, cast
 
 from fastapi import APIRouter, Depends, Header, Query, Response
 from pydantic import BaseModel, ConfigDict, Field
 
+from projecta_api.configuration.audit import ConfigurationAudit
+from projecta_api.configuration.connection import ProviderConnectionChecker
+from projecta_api.configuration.errors import ConfigurationProblem
+from projecta_api.configuration.models import (
+    LLMProfileRemove,
+    LLMProfileWrite,
+)
+from projecta_api.configuration.ports import RuntimeConfigurationProvider
+from projecta_api.configuration.service import LLMConfigurationService
 from projecta_api.context import TrustedRequestContext, trusted_context
 from projecta_api.models import (
     CaptureRequest,
@@ -12,6 +22,11 @@ from projecta_api.models import (
     ConfirmationRequest,
     ExtractionRequest,
     RejectionRequest,
+)
+from projecta_api.projections import (
+    project_candidate_history,
+    project_current_knowledge,
+    project_evidence,
 )
 from projecta_api.retrieval.service import RetrievalService
 from projecta_api.semantic_core import SemanticCoreClient
@@ -26,6 +41,12 @@ class ProjectContextQuestion(BaseModel):
     limit: int = Field(default=50, ge=1, le=100)
 
 
+class ConnectionCheckRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    timeout_seconds: float = Field(default=10.0, gt=0, le=15, alias="timeoutSeconds")
+
+
 class ExtractionService(Protocol):
     async def extract(self, context: TrustedRequestContext, key: str, request: ExtractionRequest) -> object: ...
 
@@ -34,6 +55,10 @@ def create_router(
     client: SemanticCoreClient,
     extraction: ExtractionService | None = None,
     retrieval: RetrievalService | None = None,
+    configuration_service: LLMConfigurationService | None = None,
+    runtime_configuration: RuntimeConfigurationProvider | None = None,
+    connection_checker: ProviderConnectionChecker | None = None,
+    configuration_audit: ConfigurationAudit | None = None,
 ) -> APIRouter:
     """Create routes bound to one finite Semantic Core client."""
     router = APIRouter()
@@ -53,6 +78,81 @@ def create_router(
         result = await client.request(context, "POST", "/v1/inference/rebuild")
         response.headers["X-Request-Id"] = context.request_id
         return result
+
+    @router.get("/v1/settings/llm")
+    async def read_llm_profile(context: Context, response: Response) -> object:
+        if configuration_service is None:
+            raise ConfigurationProblem("CONFIGURATION_DISABLED", "Runtime configuration is unavailable.", status_code=403)
+        profile = configuration_service.read(context)
+        response.headers["X-Request-Id"] = context.request_id
+        return {"requestId": context.request_id, "profile": profile.model_dump(mode="json", by_alias=True) if profile else None}
+
+    @router.put("/v1/settings/llm")
+    async def write_llm_profile(
+        payload: LLMProfileWrite, context: Context, response: Response
+    ) -> object:
+        if configuration_service is None:
+            raise ConfigurationProblem("CONFIGURATION_DISABLED", "Runtime configuration is unavailable.", status_code=403)
+        profile = configuration_service.save(context, payload)
+        response.headers["X-Request-Id"] = context.request_id
+        return {"requestId": context.request_id, "profile": profile.model_dump(mode="json", by_alias=True)}
+
+    @router.post("/v1/settings/llm/rotate")
+    async def rotate_llm_credential(
+        payload: LLMProfileWrite, context: Context, response: Response
+    ) -> object:
+        if configuration_service is None:
+            raise ConfigurationProblem("CONFIGURATION_DISABLED", "Runtime configuration is unavailable.", status_code=403)
+        profile = configuration_service.rotate(context, payload)
+        response.headers["X-Request-Id"] = context.request_id
+        return {"requestId": context.request_id, "profile": profile.model_dump(mode="json", by_alias=True)}
+
+    @router.delete("/v1/settings/llm")
+    async def remove_llm_profile(
+        payload: LLMProfileRemove, context: Context, response: Response
+    ) -> object:
+        if configuration_service is None:
+            raise ConfigurationProblem("CONFIGURATION_DISABLED", "Runtime configuration is unavailable.", status_code=403)
+        profile = configuration_service.remove(context, payload)
+        response.headers["X-Request-Id"] = context.request_id
+        return {"requestId": context.request_id, "profile": profile.model_dump(mode="json", by_alias=True) if profile else None}
+
+    @router.post("/v1/settings/llm/connection-check")
+    async def check_llm_connection(
+        payload: ConnectionCheckRequest, context: Context, response: Response
+    ) -> object:
+        if runtime_configuration is None or connection_checker is None:
+            raise ConfigurationProblem("CONFIGURATION_DISABLED", "Runtime configuration is unavailable.", status_code=403)
+        started = datetime.now(UTC)
+        try:
+            snapshot = runtime_configuration.resolve_llm(context)
+        except Exception as error:
+            from projecta_api.llm.gateway import NormalizedGatewayError
+
+            if isinstance(error, NormalizedGatewayError):
+                raise ConfigurationProblem(
+                    "CONFIGURATION_UNAVAILABLE",
+                    "The active LLM profile is unavailable.",
+                    status_code=503,
+                ) from error
+            raise
+        result = await connection_checker.check(snapshot, payload.timeout_seconds)
+        if configuration_service is not None:
+            configuration_service.record_connection_check(context, snapshot.revision, result)
+        if configuration_audit is not None:
+            configuration_audit.record(
+                scope=context.project_id,
+                actor_id=context.actor_id,
+                request_id=context.request_id,
+                operation="test",
+                outcome=result.status,
+                provider_type=snapshot.provider_type,
+                base_url=snapshot.base_url,
+                revision_before=int(snapshot.revision) if snapshot.revision.isdigit() else None,
+                latency_ms=int((datetime.now(UTC) - started).total_seconds() * 1000),
+            )
+        response.headers["X-Request-Id"] = context.request_id
+        return {"requestId": context.request_id, **result.model_dump(mode="json", by_alias=True)}
 
     @router.post("/v1/quick-notes/extractions")
     async def extract(
@@ -125,6 +225,7 @@ def create_router(
         suffix = "" if type is None else f"?type={type}"
         result = await client.request(context, "GET", f"/v1/knowledge-items/current{suffix}")
         result = _preserve_core_status(response, result)
+        result = project_current_knowledge(result)
         response.headers["X-Request-Id"] = context.request_id
         return result
 
@@ -132,6 +233,7 @@ def create_router(
     async def history(candidate_id: str, context: Context, response: Response) -> object:
         result = await client.request(context, "GET", f"/v1/candidates/{candidate_id}/history")
         result = _preserve_core_status(response, result)
+        result = project_candidate_history(result, candidate_id)
         response.headers["X-Request-Id"] = context.request_id
         return result
 
@@ -149,6 +251,7 @@ def create_router(
     async def evidence(item_id: str, context: Context, response: Response) -> object:
         result = await client.request(context, "GET", f"/v1/knowledge-items/{item_id}/evidence")
         result = _preserve_core_status(response, result)
+        result = project_evidence(result, item_id)
         response.headers["X-Request-Id"] = context.request_id
         return result
 

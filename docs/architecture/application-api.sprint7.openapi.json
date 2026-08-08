@@ -1,0 +1,185 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Projecta Application API — Sprint 7 Frontend Contract",
+    "version": "s7.0",
+    "description": "Deterministic frontend-facing snapshot of the released M2-M4 Application API plus the approved Sprint 7 redacted LLM settings boundary. The browser calls this boundary only; Semantic Core, Fuseki, trusted headers, graph IRIs, and provider payloads are excluded."
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Same-origin web boundary"
+    }
+  ],
+  "tags": [
+    {"name": "Health"},
+    {"name": "Quick Notes"},
+    {"name": "Candidate Review"},
+    {"name": "Knowledge"},
+    {"name": "Project Context"}
+  ],
+  "paths": {
+    "/v1/settings/llm": {
+      "get": {"tags": ["Settings"], "operationId": "readLlmProfile", "responses": {"200": {"description": "Redacted active profile", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/SettingsProfileResponse"}}}}, "401": {"$ref": "#/components/responses/Problem"}, "403": {"$ref": "#/components/responses/Problem"}, "503": {"$ref": "#/components/responses/Problem"}}},
+      "put": {"tags": ["Settings"], "operationId": "writeLlmProfile", "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/LLMProfileWrite"}}}}, "responses": {"200": {"description": "Redacted saved profile", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/SettingsProfileResponse"}}}}, "400": {"$ref": "#/components/responses/Problem"}, "401": {"$ref": "#/components/responses/Problem"}, "409": {"$ref": "#/components/responses/Problem"}, "503": {"$ref": "#/components/responses/Problem"}}},
+      "delete": {"tags": ["Settings"], "operationId": "removeLlmProfile", "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/LLMProfileRemove"}}}}, "responses": {"200": {"description": "Profile removed", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/SettingsProfileResponse"}}}}, "401": {"$ref": "#/components/responses/Problem"}, "409": {"$ref": "#/components/responses/Problem"}}}
+    },
+    "/v1/settings/llm/rotate": {
+      "post": {"tags": ["Settings"], "operationId": "rotateLlmCredential", "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/LLMProfileWrite"}}}}, "responses": {"200": {"description": "Redacted rotated profile", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/SettingsProfileResponse"}}}}, "400": {"$ref": "#/components/responses/Problem"}, "401": {"$ref": "#/components/responses/Problem"}, "409": {"$ref": "#/components/responses/Problem"}, "503": {"$ref": "#/components/responses/Problem"}}}
+    },
+    "/v1/settings/llm/connection-check": {
+      "post": {"tags": ["Settings"], "operationId": "checkLlmConnection", "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ConnectionCheckRequest"}}}}, "responses": {"200": {"description": "Sanitized connection result", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ConnectionCheckResponse"}}}}, "401": {"$ref": "#/components/responses/Problem"}, "503": {"$ref": "#/components/responses/Problem"}}}
+    },
+    "/health/live": {
+      "get": {
+        "tags": ["Health"],
+        "operationId": "getLiveness",
+        "responses": {"200": {"description": "Process is live", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/LiveResponse"}}}}}
+      }
+    },
+    "/health/ready": {
+      "get": {
+        "tags": ["Health"],
+        "operationId": "getReadiness",
+        "responses": {"200": {"description": "Dependencies are ready", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ReadyResponse"}}}}, "503": {"$ref": "#/components/responses/Problem"}}
+      }
+    },
+    "/v1/quick-notes/extractions": {
+      "post": {
+        "tags": ["Quick Notes"],
+        "operationId": "extractQuickNote",
+        "parameters": [{"$ref": "#/components/parameters/IdempotencyKey"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ExtractionRequest"}}}},
+        "responses": {"200": {"description": "Idempotent replay", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ExtractionResult"}}}}, "201": {"description": "Extraction persisted", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ExtractionResult"}}}}, "400": {"$ref": "#/components/responses/Problem"}, "401": {"$ref": "#/components/responses/Problem"}, "409": {"$ref": "#/components/responses/Problem"}, "503": {"$ref": "#/components/responses/Problem"}}
+      }
+    },
+    "/v1/quick-notes": {
+      "post": {
+        "tags": ["Quick Notes"],
+        "operationId": "captureQuickNote",
+        "parameters": [{"$ref": "#/components/parameters/IdempotencyKey"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/CaptureRequest"}}}},
+        "responses": {"200": {"description": "Idempotent replay", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/CaptureResponse"}}}}, "201": {"description": "Capture persisted", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/CaptureResponse"}}}}, "400": {"$ref": "#/components/responses/Problem"}, "401": {"$ref": "#/components/responses/Problem"}, "409": {"$ref": "#/components/responses/Problem"}, "503": {"$ref": "#/components/responses/Problem"}}
+      }
+    },
+    "/v1/candidates/{candidateId}/validations": {
+      "post": {
+        "tags": ["Candidate Review"],
+        "operationId": "validateCandidate",
+        "parameters": [{"$ref": "#/components/parameters/CandidateId"}],
+        "responses": {"200": {"description": "Validation result", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ValidationResult"}}}}, "400": {"$ref": "#/components/responses/Problem"}, "401": {"$ref": "#/components/responses/Problem"}, "404": {"$ref": "#/components/responses/Problem"}, "422": {"$ref": "#/components/responses/Problem"}, "503": {"$ref": "#/components/responses/Problem"}}
+      }
+    },
+    "/v1/candidates/{candidateId}/confirmations": {
+      "post": {
+        "tags": ["Candidate Review"],
+        "operationId": "confirmCandidate",
+        "parameters": [{"$ref": "#/components/parameters/CandidateId"}, {"$ref": "#/components/parameters/IdempotencyKey"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ConfirmationRequest"}}}},
+        "responses": {"200": {"description": "Idempotent replay", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/DecisionResponse"}}}}, "201": {"description": "Requirement confirmed", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/DecisionResponse"}}}}, "400": {"$ref": "#/components/responses/Problem"}, "401": {"$ref": "#/components/responses/Problem"}, "404": {"$ref": "#/components/responses/Problem"}, "409": {"$ref": "#/components/responses/Problem"}, "422": {"$ref": "#/components/responses/Problem"}, "503": {"$ref": "#/components/responses/Problem"}}
+      }
+    },
+    "/v1/candidates/{candidateId}/rejections": {
+      "post": {
+        "tags": ["Candidate Review"],
+        "operationId": "rejectCandidate",
+        "parameters": [{"$ref": "#/components/parameters/CandidateId"}, {"$ref": "#/components/parameters/IdempotencyKey"}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/RejectionRequest"}}}},
+        "responses": {"200": {"description": "Idempotent replay", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/DecisionResponse"}}}}, "201": {"description": "Candidate rejected", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/DecisionResponse"}}}}, "400": {"$ref": "#/components/responses/Problem"}, "401": {"$ref": "#/components/responses/Problem"}, "404": {"$ref": "#/components/responses/Problem"}, "409": {"$ref": "#/components/responses/Problem"}, "503": {"$ref": "#/components/responses/Problem"}}
+      }
+    },
+    "/v1/knowledge-items/current": {
+      "get": {
+        "tags": ["Knowledge"],
+        "operationId": "listCurrentKnowledge",
+        "parameters": [{"name": "type", "in": "query", "required": false, "schema": {"type": "string", "enum": ["Requirement"]}}],
+        "responses": {"200": {"description": "Current project knowledge with opaque IDs", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/KnowledgeItemsResponse"}}}}, "400": {"$ref": "#/components/responses/Problem"}, "401": {"$ref": "#/components/responses/Problem"}, "503": {"$ref": "#/components/responses/Problem"}}
+      }
+    },
+    "/v1/candidates/{candidateId}/history": {
+      "get": {
+        "tags": ["Candidate Review"],
+        "operationId": "getCandidateHistory",
+        "parameters": [{"$ref": "#/components/parameters/CandidateId"}],
+        "responses": {"200": {"description": "Candidate lifecycle history with opaque IDs", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/CandidateHistoryResponse"}}}}, "401": {"$ref": "#/components/responses/Problem"}, "404": {"$ref": "#/components/responses/Problem"}, "503": {"$ref": "#/components/responses/Problem"}}
+      }
+    },
+    "/v1/knowledge-items/{itemId}/evidence": {
+      "get": {
+        "tags": ["Knowledge"],
+        "operationId": "getKnowledgeEvidence",
+        "parameters": [{"$ref": "#/components/parameters/ItemId"}],
+        "responses": {"200": {"description": "Bounded evidence chain with opaque IDs", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/EvidenceResponse"}}}}, "401": {"$ref": "#/components/responses/Problem"}, "404": {"$ref": "#/components/responses/Problem"}, "503": {"$ref": "#/components/responses/Problem"}}
+      }
+    },
+    "/v1/project-context/answers": {
+      "post": {
+        "tags": ["Project Context"],
+        "operationId": "answerProjectContextQuestion",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ProjectContextQuestion"}}}},
+        "responses": {"200": {"description": "Grounded answer", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Answer"}}}}, "400": {"$ref": "#/components/responses/Problem"}, "401": {"$ref": "#/components/responses/Problem"}, "503": {"$ref": "#/components/responses/Problem"}}
+      }
+    },
+    "/v1/project-context/inference/rebuild": {
+      "post": {
+        "tags": ["Project Context"],
+        "operationId": "rebuildProjectInference",
+        "description": "Local-experience diagnostics only. Production exposure is disabled by the approved S7-07 boundary.",
+        "responses": {"200": {"description": "Deterministic inference rebuild", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/InferenceRebuildResponse"}}}}, "401": {"$ref": "#/components/responses/Problem"}, "503": {"$ref": "#/components/responses/Problem"}}
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "IdempotencyKey": {"name": "Idempotency-Key", "in": "header", "required": true, "schema": {"type": "string", "minLength": 1, "maxLength": 128}},
+      "CandidateId": {"name": "candidateId", "in": "path", "required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"}},
+      "ItemId": {"name": "itemId", "in": "path", "required": true, "schema": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"}}
+    },
+    "responses": {
+      "Problem": {"description": "Sanitized RFC 7807 problem", "content": {"application/problem+json": {"schema": {"$ref": "#/components/schemas/Problem"}}}}
+    },
+    "schemas": {
+      "LLMProfile": {"type": "object", "required": ["profileId", "providerType", "baseUrl", "model", "active", "revision", "credentialConfigured", "health"], "properties": {"profileId": {"type": "string"}, "providerType": {"type": "string", "enum": ["openai-response", "openai"]}, "baseUrl": {"type": "string", "format": "uri"}, "model": {"type": "string"}, "active": {"type": "boolean"}, "revision": {"type": "integer"}, "credentialConfigured": {"type": "boolean"}, "health": {"type": "string", "enum": ["unknown", "healthy", "unhealthy", "unavailable"]}, "lastCheckedAt": {"type": ["string", "null"]}, "createdAt": {"type": ["string", "null"]}, "updatedAt": {"type": ["string", "null"]}}, "additionalProperties": false},
+      "LLMProfileWrite": {"type": "object", "required": ["providerType", "baseUrl", "model"], "properties": {"providerType": {"type": "string", "enum": ["openai-response", "openai"]}, "baseUrl": {"type": "string", "format": "uri"}, "model": {"type": "string", "minLength": 1}, "credential": {"type": "string", "writeOnly": true}, "expectedRevision": {"type": "integer", "minimum": 1}}, "additionalProperties": false},
+      "LLMProfileRemove": {"type": "object", "required": ["confirm"], "properties": {"expectedRevision": {"type": "integer", "minimum": 1}, "confirm": {"type": "boolean", "const": true}}, "additionalProperties": false},
+      "SettingsProfileResponse": {"type": "object", "required": ["requestId", "profile"], "properties": {"requestId": {"type": "string"}, "profile": {"anyOf": [{"$ref": "#/components/schemas/LLMProfile"}, {"type": "null"}]}}, "additionalProperties": false},
+      "ConnectionCheckRequest": {"type": "object", "properties": {"timeoutSeconds": {"type": "number", "exclusiveMinimum": 0, "maximum": 15, "default": 10}}, "additionalProperties": false},
+      "ConnectionCheckResponse": {"type": "object", "required": ["requestId", "status", "credentialConfigured", "detail", "checkedAt"], "properties": {"requestId": {"type": "string"}, "status": {"type": "string", "enum": ["healthy", "unhealthy", "unavailable"]}, "credentialConfigured": {"type": "boolean"}, "detail": {"type": "string"}, "checkedAt": {"type": "string", "format": "date-time"}}, "additionalProperties": false},
+      "LiveResponse": {"type": "object", "required": ["status"], "properties": {"status": {"type": "string", "const": "live"}}},
+      "ReadyResponse": {"type": "object", "required": ["status", "semanticCore"], "properties": {"status": {"type": "string", "enum": ["ready", "not-ready"]}, "semanticCore": {"type": "string", "enum": ["ready", "unavailable", "injected"]}}, "additionalProperties": false},
+      "Problem": {"type": "object", "required": ["type", "title", "status", "code", "detail", "requestId"], "properties": {"type": {"type": "string", "format": "uri"}, "title": {"type": "string"}, "status": {"type": "integer"}, "code": {"type": "string"}, "detail": {"type": "string"}, "requestId": {"type": "string"}}, "additionalProperties": false},
+      "ExtractionRequest": {"type": "object", "required": ["rawText"], "properties": {"rawText": {"type": "string", "minLength": 1}, "extractionVersion": {"type": "string", "const": "m3.v1", "default": "m3.v1"}}, "additionalProperties": false},
+      "TypedSegment": {"type": "object", "required": ["type", "startOffset", "endOffset", "text"], "properties": {"type": {"type": "string", "enum": ["requirement", "decision", "question", "task", "risk", "assumption", "constraint", "progress-update", "research-need"]}, "startOffset": {"type": "integer", "minimum": 0}, "endOffset": {"type": "integer", "exclusiveMinimum": 0}, "text": {"type": "string", "minLength": 1}}, "additionalProperties": false},
+      "CaptureRequest": {"type": "object", "required": ["rawText", "segments"], "properties": {"rawText": {"type": "string", "minLength": 1}, "segments": {"type": "array", "minItems": 1, "items": {"$ref": "#/components/schemas/TypedSegment"}}}, "additionalProperties": false, "description": "Segments are ordered, non-overlapping, exact Unicode-code-point ranges after line-ending normalization."},
+      "Note": {"type": "object", "required": ["id"], "properties": {"id": {"type": "string"}, "recordedAt": {"type": "string", "format": "date-time"}}, "additionalProperties": false},
+      "Candidate": {"type": "object", "required": ["id", "status"], "properties": {"id": {"type": "string"}, "sourceItemId": {"type": "string"}, "status": {"type": "string", "enum": ["extracted", "validated", "pending-review", "confirmed", "rejected", "asserted"]}}, "additionalProperties": false},
+      "CaptureResponse": {"type": "object", "required": ["requestId", "note", "candidates"], "properties": {"requestId": {"type": "string"}, "note": {"$ref": "#/components/schemas/Note"}, "candidates": {"type": "array", "items": {"$ref": "#/components/schemas/Candidate"}}}, "additionalProperties": false},
+      "EvidenceSpan": {"type": "object", "required": ["startOffset", "endOffset", "text"], "properties": {"startOffset": {"type": "integer", "minimum": 0}, "endOffset": {"type": "integer", "exclusiveMinimum": 0}, "text": {"type": "string"}}, "additionalProperties": false},
+      "ExtractedEntity": {"type": "object", "required": ["type", "label", "evidence", "confidence"], "properties": {"type": {"type": "string"}, "label": {"type": "string"}, "evidence": {"$ref": "#/components/schemas/EvidenceSpan"}, "confidence": {"type": "number"}}, "additionalProperties": false},
+      "ExtractedRelation": {"type": "object", "required": ["predicate", "sourceEntityId", "targetEntityId", "evidence", "confidence"], "properties": {"predicate": {"type": "string"}, "sourceEntityId": {"type": "string"}, "targetEntityId": {"type": "string"}, "evidence": {"$ref": "#/components/schemas/EvidenceSpan"}, "confidence": {"type": "number"}}, "additionalProperties": false},
+      "ExtractedLink": {"type": "object", "required": ["mention", "targetEntityId", "evidence", "confidence"], "properties": {"mention": {"type": "string"}, "targetEntityId": {"type": "string"}, "evidence": {"$ref": "#/components/schemas/EvidenceSpan"}, "confidence": {"type": "number"}}, "additionalProperties": false},
+      "ExtractionResult": {"type": "object", "required": ["requestId", "note", "candidates"], "properties": {"requestId": {"type": "string"}, "note": {"$ref": "#/components/schemas/Note"}, "candidates": {"type": "array", "items": {"$ref": "#/components/schemas/Candidate"}}, "entities": {"type": "array", "items": {"$ref": "#/components/schemas/ExtractedEntity"}}, "relations": {"type": "array", "items": {"$ref": "#/components/schemas/ExtractedRelation"}}, "links": {"type": "array", "items": {"$ref": "#/components/schemas/ExtractedLink"}}, "abstentionReason": {"type": ["string", "null"]}}, "additionalProperties": false},
+      "ConfirmationRequest": {"type": "object", "required": ["assertion"], "properties": {"assertion": {"type": "object", "required": ["type", "label", "validFrom"], "properties": {"type": {"type": "string", "const": "Requirement"}, "label": {"type": "string", "minLength": 1, "maxLength": 4096}, "validFrom": {"type": "string", "format": "date"}}, "additionalProperties": false}}, "additionalProperties": false},
+      "RejectionRequest": {"type": "object", "required": ["reason"], "properties": {"reason": {"type": "string", "minLength": 1, "maxLength": 4096}}, "additionalProperties": false},
+      "ValidationResult": {"type": "object", "required": ["requestId", "candidateId", "conforms", "violations", "validatedAt"], "properties": {"requestId": {"type": "string"}, "candidateId": {"type": "string"}, "conforms": {"type": "boolean"}, "violations": {"type": "array", "items": {"type": "object"}}, "validatedAt": {"type": "string", "format": "date-time"}}, "additionalProperties": false},
+      "DecisionResponse": {"type": "object", "required": ["requestId", "candidateId", "decision"], "properties": {"requestId": {"type": "string"}, "candidateId": {"type": "string"}, "decision": {"type": "string", "enum": ["confirmed", "rejected"]}, "assertedItemId": {"type": "string"}, "reason": {"type": "string"}}, "additionalProperties": false},
+      "KnowledgeItem": {"type": "object", "required": ["id", "label", "type"], "properties": {"id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,62}$"}, "label": {"type": "string"}, "type": {"type": "string", "const": "Requirement"}, "validFrom": {"type": ["string", "null"], "format": "date"}}, "additionalProperties": false},
+      "KnowledgeItemsResponse": {"type": "object", "required": ["requestId", "items"], "properties": {"requestId": {"type": "string"}, "items": {"type": "array", "items": {"$ref": "#/components/schemas/KnowledgeItem"}}}, "additionalProperties": false},
+      "CandidateHistoryActivity": {"type": "object", "required": ["id"], "properties": {"id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,62}$"}, "decision": {"type": ["string", "null"]}, "reviewerId": {"type": ["string", "null"]}, "endedAt": {"type": ["string", "null"], "format": "date-time"}}, "additionalProperties": false},
+      "CandidateHistoryResponse": {"type": "object", "required": ["requestId", "candidateId", "items"], "properties": {"requestId": {"type": "string"}, "candidateId": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,62}$"}, "items": {"type": "array", "items": {"$ref": "#/components/schemas/CandidateHistoryActivity"}}}, "additionalProperties": false},
+      "EvidenceRecord": {"type": "object", "properties": {"candidateId": {"type": ["string", "null"]}, "sourceId": {"type": ["string", "null"]}, "noteId": {"type": ["string", "null"]}, "authorId": {"type": ["string", "null"]}, "reviewerId": {"type": ["string", "null"]}, "evidenceText": {"type": ["string", "null"]}, "startOffset": {"type": ["integer", "null"], "minimum": 0}, "endOffset": {"type": ["integer", "null"], "minimum": 1}}, "additionalProperties": false},
+      "EvidenceResponse": {"type": "object", "required": ["requestId", "itemId", "items"], "properties": {"requestId": {"type": "string"}, "itemId": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,62}$"}, "items": {"type": "array", "items": {"$ref": "#/components/schemas/EvidenceRecord"}}}, "additionalProperties": false},
+      "ProjectContextQuestion": {"type": "object", "required": ["question"], "properties": {"question": {"type": "string", "minLength": 1}, "limit": {"type": "integer", "minimum": 1, "maximum": 100, "default": 50}}, "additionalProperties": false},
+      "Answer": {"type": "object", "required": ["answerVersion", "query", "text", "facts", "citations", "meta", "complete", "abstained", "warnings"], "properties": {"answerVersion": {"type": "string", "const": "m4.v1"}, "query": {"type": "object"}, "text": {"type": "string"}, "facts": {"type": "array", "items": {"type": "object"}}, "citations": {"type": "array", "items": {"type": "object"}}, "meta": {"type": "object"}, "complete": {"type": "boolean"}, "abstained": {"type": "boolean"}, "warnings": {"type": "array", "items": {"type": "string"}}}, "additionalProperties": false},
+      "InferenceRebuildResponse": {"type": "object", "required": ["sourceRevision", "materializationRevision", "materializedRuleIds"], "properties": {"sourceRevision": {"type": "string"}, "materializationRevision": {"type": "string"}, "materializedRuleIds": {"type": "array", "items": {"type": "string"}}}, "additionalProperties": false}
+    }
+  },
+  "x-projecta-contract": {
+    "version": "s7.0",
+    "source": "released M2-M4 Application API",
+    "excludedInternalRoutes": ["/v1/entities/link-context"],
+    "excludedUnimplementedRoutes": ["candidate list/detail", "readiness/diagnostics aggregation"],
+    "trustedContext": "server-established; never browser-selected",
+    "confirmationCapability": "Requirement only"
+  }
+}

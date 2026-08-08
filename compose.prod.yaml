@@ -39,3 +39,15 @@ services:
         limits:
           cpus: "0.5"
           memory: 256M
+
+  web:
+    build: !reset null
+    image: ${WEB_IMAGE:?WEB_IMAGE must be an immutable CI image reference}
+    restart: unless-stopped
+    logging:
+      driver: local
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 128M

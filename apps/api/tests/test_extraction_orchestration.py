@@ -49,7 +49,14 @@ async def test_orchestrator_reads_context_normalizes_and_persists_only_through_c
         ExtractionRequest(rawText="No clear owner."),
     )
 
-    assert result == {"note": {"id": "note-1"}, "candidates": []}
+    assert result == {
+        "note": {"id": "note-1"},
+        "candidates": [],
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstentionReason": "ambiguous",
+    }
     assert isinstance(semantic.body, dict)
     assert semantic.body["abstentionReason"] if "abstentionReason" in semantic.body else True
 

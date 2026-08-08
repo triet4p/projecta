@@ -16,7 +16,7 @@ Tài liệu này chốt deployment baseline cho Projecta. Quyết định áp d�
 
 Projecta là một hệ thống polyglot và có nhiều stateful dependency:
 
-- Next.js/TypeScript frontend.
+- React/TypeScript static SPA frontend served through the Compose web boundary.
 - Python/FastAPI application và workflow services.
 - Java hoặc Kotlin Semantic Core.
 - Apache Jena Fuseki/TDB2.

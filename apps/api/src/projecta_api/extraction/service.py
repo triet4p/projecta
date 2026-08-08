@@ -1,9 +1,12 @@
 """M3 application orchestration from untyped note to Core ingestion."""
 
 import logging
+from collections.abc import Callable
 from time import monotonic
-from typing import Protocol
+from typing import Protocol, cast
 
+from projecta_api.configuration.models import LLMConfigurationSnapshot
+from projecta_api.configuration.ports import RuntimeConfigurationProvider
 from projecta_api.context import TrustedRequestContext
 from projecta_api.extraction.contracts import EXTRACTION_SCHEMA_VERSION, ExtractionResponse
 from projecta_api.extraction.normalize import normalize_extraction
@@ -21,16 +24,33 @@ class ExtractionPersistence(Protocol):
 class ExtractionOrchestrator:
     """Keep gateway, normalization, project read, and semantic mutation ordered."""
 
-    def __init__(self, gateway: LLMGateway, semantic: ExtractionPersistence, model_id: str | None, logger: logging.Logger | None = None, timeout_seconds: float = 60.0) -> None:
+    def __init__(
+        self,
+        gateway: LLMGateway | None,
+        semantic: ExtractionPersistence,
+        model_id: str | None,
+        logger: logging.Logger | None = None,
+        timeout_seconds: float = 60.0,
+        configuration_provider: RuntimeConfigurationProvider | None = None,
+        gateway_factory: Callable[[LLMConfigurationSnapshot], LLMGateway] | None = None,
+    ) -> None:
         self._gateway = gateway
         self._semantic = semantic
         self._model_id = model_id
         self._logger = logger or logging.getLogger(__name__)
         self._timeout_seconds = timeout_seconds
+        self._configuration_provider = configuration_provider
+        self._gateway_factory = gateway_factory
 
     async def extract(self, context: TrustedRequestContext, key: str, request: ExtractionRequest) -> object:
         started = monotonic()
-        if not self._model_id:
+        operation_gateway = self._gateway
+        model_id = self._model_id
+        if self._configuration_provider is not None and self._gateway_factory is not None:
+            snapshot = self._configuration_provider.resolve_llm(context)
+            operation_gateway = self._gateway_factory(snapshot)
+            model_id = snapshot.model
+        if operation_gateway is None or not model_id:
             from projecta_api.llm.gateway import NormalizedGatewayError
 
             raise NormalizedGatewayError("configuration_invalid", "LLM model is not configured", retryable=False)
@@ -42,10 +62,10 @@ class ExtractionOrchestrator:
             bounded,
         )
         try:
-            gateway_result = await self._gateway.extract(
+            gateway_result = await operation_gateway.extract(
                 GatewayRequest(
                     schemaVersion=EXTRACTION_SCHEMA_VERSION,
-                    modelId=self._model_id,
+                    modelId=model_id,
                     systemPrompt=system,
                     userPrompt=user,
                     responseSchema=_response_schema(),
@@ -55,6 +75,7 @@ class ExtractionOrchestrator:
             normalized = normalize_extraction(request.raw_text, gateway_result.extraction, bounded)
             body = _ingestion_body(request.raw_text, normalized)
             result = await self._semantic.ingest_extraction(context, key, body)
+            result = _with_extraction_details(result, normalized)
             usage = gateway_result.usage
             emit_extraction_event(self._logger, ExtractionTelemetryEvent(
                 event="extraction.completed", requestId=context.request_id, provider="deepseek-responses",
@@ -68,7 +89,7 @@ class ExtractionOrchestrator:
             error_class = getattr(exc, "error_class", "normalization_invalid")
             emit_extraction_event(self._logger, ExtractionTelemetryEvent(
                 event="extraction.failed", requestId=context.request_id, provider="deepseek-responses",
-                modelVersion=self._model_id or "unconfigured", promptVersion=PROMPT_VERSION,
+                modelVersion=model_id or "unconfigured", promptVersion=PROMPT_VERSION,
                 schemaVersion=EXTRACTION_SCHEMA_VERSION, latencyMs=int((monotonic() - started) * 1000),
                 errorClass=str(error_class),
             ))
@@ -104,6 +125,24 @@ def _response_schema() -> dict[str, object]:
         "required": ["entities", "relations", "links", "abstentionReason"],
         "additionalProperties": False,
     }
+
+
+def _with_extraction_details(result: object, response: ExtractionResponse) -> object:
+    """Expose normalized M3 details alongside opaque lifecycle identifiers."""
+    if not isinstance(result, dict):
+        return result
+    raw_result = cast(dict[object, object], result)
+    public_result: dict[str, object] = {str(key): value for key, value in raw_result.items()}
+    normalized = response.model_dump(mode="json", by_alias=True)
+    public_result.update(
+        {
+            "entities": normalized["entities"],
+            "relations": normalized["relations"],
+            "links": normalized["links"],
+            "abstentionReason": normalized.get("abstentionReason"),
+        }
+    )
+    return public_result
 
 
 def _ingestion_body(raw_text: str, response: ExtractionResponse) -> dict[str, object]:
