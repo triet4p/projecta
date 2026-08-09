@@ -32,6 +32,7 @@ class CaptureRequest(BaseModel):
     """Capture input after canonical line-ending normalization."""
 
     model_config = ConfigDict(extra="forbid")
+    title: str = Field(default="Quick Note", min_length=1, max_length=512)
     raw_text: str = Field(min_length=1, alias="rawText")
     segments: list[TypedSegment] = Field(min_length=1)
 
@@ -103,6 +104,7 @@ class ConfirmationRequest(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
     assertion: RequirementAssertion
+    correction_revision: int = Field(default=0, ge=0, alias="correctionRevision")
 
 
 class RejectionRequest(BaseModel):

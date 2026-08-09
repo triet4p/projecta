@@ -15,6 +15,7 @@ from projecta_api.configuration.service import LLMConfigurationService
 from projecta_api.configuration.storage import LLMProfileRepository, OperationalDatabase
 from projecta_api.context import TrustedRequestContext
 from projecta_api.main import create_app
+from projecta_api.project_workspace import catalog_revision, opaque_project_handle
 
 
 def test_application_secret_store_encrypts_and_resolves_opaque_references() -> None:
@@ -191,8 +192,8 @@ async def test_experience_context_and_settings_boundary_is_server_owned() -> Non
     settings = Settings(
         trusted_context_secret="server-context",
         runtime_mode="experience",
-        experience_project_id="fixed-project",
         experience_actor_id="fixed-actor",
+        experience_project_catalog="fixed-project",
         secret_store_master_key=key,
         PROJECTA_LLM_TYPE="openai-response",
         PROJECTA_LLM_BASE_URL="https://provider.example",
@@ -200,6 +201,12 @@ async def test_experience_context_and_settings_boundary_is_server_owned() -> Non
         PROJECTA_LLM_MODEL="bootstrap-model",
     )
     app = create_app(settings=settings)
+    app.state.project_selection_repository.replace(
+        "fixed-actor",
+        opaque_project_handle("fixed-project"),
+        "fixed-project",
+        catalog_revision(("fixed-project",)),
+    )
     headers = {
         "X-Projecta-Project-Id": "browser-selected-project",
         "X-Projecta-Actor-Id": "browser-selected-actor",

@@ -6,7 +6,7 @@ from typing import Protocol, cast
 import httpx
 from pydantic import ValidationError
 
-from projecta_api.context import TrustedRequestContext
+from projecta_api.context import TrustedActorContext, TrustedRequestContext
 from projecta_api.models import CaptureRequest, CaptureResponse
 
 
@@ -48,6 +48,10 @@ class SemanticCoreClient(Protocol):
         """Return whether Semantic Core reports its Fuseki dependency ready."""
         ...
 
+    async def project_catalog(
+        self, context: TrustedActorContext, project_ids: list[str], limit: int = 100
+    ) -> object: ...
+
 
 class HttpSemanticCoreClient:
     """Private HTTP adapter that forwards only trusted metadata and typed bodies."""
@@ -64,15 +68,25 @@ class HttpSemanticCoreClient:
             async with httpx.AsyncClient(
                 base_url=self._base_url, timeout=10.0, transport=self._transport
             ) as client:
-                response = await client.post("/v1/quick-notes/captures", json=request.model_dump(by_alias=True), headers=headers)
+                response = await client.post(
+                    "/v1/quick-notes/captures",
+                    json=request.model_dump(by_alias=True),
+                    headers=headers,
+                )
             payload: object = response.json()
         except (httpx.HTTPError, ValueError) as error:
-            raise SemanticCoreProblem(503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core is temporarily unavailable") from error
+            raise SemanticCoreProblem(
+                503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core is temporarily unavailable"
+            ) from error
         if response.is_error:
             raise _problem(response.status_code, payload)
         try:
             return CaptureResponse.model_validate(
-                {"requestId": context.request_id, "replayed": response.status_code == 200, **_mapping(payload)}
+                {
+                    "requestId": context.request_id,
+                    "replayed": response.status_code == 200,
+                    **_mapping(payload),
+                }
             )
         except (ValidationError, SemanticCoreProblem) as error:
             raise SemanticCoreProblem(
@@ -94,7 +108,9 @@ class HttpSemanticCoreClient:
             ) as client:
                 response = await client.request(method, path, json=body, headers=headers)
         except httpx.HTTPError as error:
-            raise SemanticCoreProblem(503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core is temporarily unavailable") from error
+            raise SemanticCoreProblem(
+                503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core is temporarily unavailable"
+            ) from error
         if response.is_error:
             try:
                 payload: object = response.json()
@@ -106,7 +122,9 @@ class HttpSemanticCoreClient:
         try:
             payload = response.json()
         except ValueError as error:
-            raise SemanticCoreProblem(503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core returned invalid JSON") from error
+            raise SemanticCoreProblem(
+                503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core returned invalid JSON"
+            ) from error
         return {**_mapping(payload), "_projecta_http_status": response.status_code}
 
     async def entity_link_context(
@@ -117,18 +135,30 @@ class HttpSemanticCoreClient:
             raise ValueError("entity link context limit must be between 1 and 100")
         payload = await self.request(context, "GET", f"/v1/entities/link-context?limit={limit}")
         if not isinstance(payload, dict):
-            raise SemanticCoreProblem(503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core returned invalid link context")
+            raise SemanticCoreProblem(
+                503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core returned invalid link context"
+            )
         typed_payload = cast(dict[str, object], payload)
         if not isinstance(typed_payload.get("entities"), list):
-            raise SemanticCoreProblem(503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core returned invalid link context")
+            raise SemanticCoreProblem(
+                503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core returned invalid link context"
+            )
         result: list[dict[str, str]] = []
         items = cast(list[object], typed_payload["entities"])
         for item in items:
             if not isinstance(item, dict):
-                raise SemanticCoreProblem(503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core returned invalid link context")
+                raise SemanticCoreProblem(
+                    503,
+                    "SEMANTIC_CONTRACT_UNAVAILABLE",
+                    "Semantic Core returned invalid link context",
+                )
             typed_item = cast(dict[str, object], item)
             if not all(isinstance(typed_item.get(key), str) for key in ("id", "type", "label")):
-                raise SemanticCoreProblem(503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core returned invalid link context")
+                raise SemanticCoreProblem(
+                    503,
+                    "SEMANTIC_CONTRACT_UNAVAILABLE",
+                    "Semantic Core returned invalid link context",
+                )
             result.append({key: str(typed_item[key]) for key in ("id", "type", "label")})
         return result
 
@@ -149,6 +179,28 @@ class HttpSemanticCoreClient:
             return False
         return response.status_code == 200
 
+    async def project_catalog(
+        self, context: TrustedActorContext, project_ids: list[str], limit: int = 100
+    ) -> object:
+        """Read only the finite server-owned project allowlist from Semantic Core."""
+        if not project_ids or len(project_ids) > 100:
+            return {"projects": [], "catalogRevision": "catalog-r-empty"}
+        headers = _actor_headers(context)
+        headers["X-Projecta-Visible-Projects"] = ",".join(project_ids)
+        try:
+            async with httpx.AsyncClient(
+                base_url=self._base_url, timeout=10.0, transport=self._transport
+            ) as client:
+                response = await client.get(f"/v1/projects/catalog?limit={limit}", headers=headers)
+                payload: object = response.json()
+        except (httpx.HTTPError, ValueError) as error:
+            raise SemanticCoreProblem(
+                503, "PROJECT_CATALOG_UNAVAILABLE", "Project catalog is temporarily unavailable"
+            ) from error
+        if response.is_error:
+            raise _problem(response.status_code, payload)
+        return {**_mapping(payload), "_projecta_http_status": response.status_code}
+
 
 def _mapping(value: object) -> Mapping[str, object]:
     """Narrow unknown JSON before it enters typed schemas."""
@@ -166,10 +218,20 @@ def _headers(context: TrustedRequestContext, key: str | None = None) -> dict[str
         "X-Projecta-Project-Id": context.project_id,
         "X-Projecta-Actor-Id": context.actor_id,
         "X-Request-Id": context.request_id,
+        "X-Operation-Id": context.operation_id,
     }
     if key is not None:
         headers["Idempotency-Key"] = key
     return headers
+
+
+def _actor_headers(context: TrustedActorContext) -> dict[str, str]:
+    """Build private headers for operations that do not have an active project."""
+    return {
+        "X-Projecta-Actor-Id": context.actor_id,
+        "X-Request-Id": context.request_id,
+        "X-Operation-Id": context.operation_id,
+    }
 
 
 def _problem(status_code: int, payload: object) -> SemanticCoreProblem:

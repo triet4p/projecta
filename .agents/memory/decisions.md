@@ -212,3 +212,17 @@ remain outside the released scope.
 **Alternatives considered:** Adopt a Vault-compatible service in the Sprint 7 Compose slice, use a host OS keyring, or defer secret-store selection until after persistence implementation.
 **Reason:** Application-encrypted storage has the shortest path through the current server-owned Compose topology and supports dynamic settings writes without adding a stateful service or workstation-specific dependency. The provider-neutral port preserves a later migration path while keeping the browser boundary unchanged.
 **Consequences:** S7-15 and S7-16 may implement only the approved local baseline after defining master-key custody, bootstrap, backup/recovery, rotation, concurrency, and bounded plaintext lifetime. The deployment-owned master key must never be stored in the application datastore, browser, Git, or RDF. No Vault service or OS-specific keyring dependency is part of the canonical Sprint 7 topology.
+
+## [2026-08-10] Keep graph and knowledge navigation finite and opaque
+
+**Decision:** Expose project graph, knowledge, and candidate workflows only through bounded typed projections with revision-bound opaque handles; never expose RDF identifiers, graph names, SPARQL, or arbitrary path traversal to the browser.
+**Alternatives considered:** Let the browser navigate raw resource IDs through existing lifecycle routes, expose a general-purpose graph/RDF browser, or maintain separate unbounded graph and knowledge read models.
+**Reason:** Project isolation, truthful stale-state handling, and an accessible UI require one finite server-authorized projection that preserves labels and independent lifecycle/provenance/evidence states without turning storage identifiers into browser capabilities.
+**Consequences:** New graph and ID-free knowledge routes must validate allowlisted types, relations, limits, revisions, and project scope; the UI must retain handles only as internal selection state and use the same projection for the visual graph and companion table. Reversing this boundary requires explicit architecture/security approval.
+
+## [2026-08-10] Approve structured Note source semantics without new vocabulary
+
+**Decision:** Implement structured Note drafts by reusing released `Note`, `NoteItem`, controlled item types, project/author, evidence, provenance, candidate lifecycle, and temporal terms; keep durable item order, assignment/requester, deadline/effective date, generic status, and Note revision out of the ontology.
+**Alternatives considered:** Add `itemOrder`, `assignedTo`, `deadline`/`dueAt`, generic Note status, or revision terms immediately; store the composer draft as an untyped raw Note; or defer the structured Note implementation entirely.
+**Reason:** The approved competency questions establish that the current product needs auditable source evidence and projections, while the deferred concepts lack independently committed identity, lifecycle, temporal, project, and provenance semantics. Evidence offsets already provide deterministic textual order without claiming editorial order.
+**Consequences:** Application workflow fields such as `draftStatus` and `sourceMetadata` remain operational and cannot be promoted to RDF facts. Semantic writes must load and validate the released ontology/shapes at the named-graph boundary, preserve raw/segment backward compatibility, and fail closed on invalid project, author, time, evidence, or provenance data. Future semantic additions require a new human-reviewed proposal and migration path.

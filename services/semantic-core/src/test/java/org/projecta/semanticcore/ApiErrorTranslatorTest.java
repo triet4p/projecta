@@ -44,5 +44,15 @@ class ApiErrorTranslatorTest {
                 translator
                         .translate("req-05", new RuntimeException("Fuseki URL"))
                         .code());
+        assertEquals(
+                "PERSISTENCE_UNAVAILABLE",
+                translator
+                        .translate("req-06", new IllegalStateException("semantic store request failed"))
+                        .code());
+        assertEquals(
+                "QUERY_FAILED",
+                translator
+                        .translate("req-07", new IllegalStateException("semantic store response was invalid"))
+                        .code());
     }
 }

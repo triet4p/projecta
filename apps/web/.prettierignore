@@ -1,0 +1,4 @@
+.pytest_cache/
+playwright-report/
+test-results/
+dist/

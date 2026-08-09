@@ -1,4 +1,4 @@
-/** Generated from docs/architecture/application-api.sprint7.openapi.json. */
+/** Generated from docs/architecture/application-api.sprint7.openapi.json (Sprint 8 contract). */
 
 export type EntityType =
   | "requirement"
@@ -88,8 +88,111 @@ export interface TypedSegment {
 }
 
 export interface CaptureRequest {
+  title?: string;
   rawText: string;
   segments: TypedSegment[];
+}
+
+export interface StructuredNoteItemDraft {
+  itemType: EntityType;
+  content: string;
+}
+
+export type NoteDraftStatus = "draft" | "ready" | "committed" | "abstained";
+
+export interface StructuredNoteDraftInput {
+  title: string;
+  items: StructuredNoteItemDraft[];
+  draftStatus?: NoteDraftStatus;
+  sourceMetadata?: {
+    kind: "manual" | "text-import" | "connector";
+    label?: string;
+    reference?: string;
+  };
+}
+
+export interface StructuredNoteItemProjection extends StructuredNoteItemDraft {
+  startOffset: number;
+  endOffset: number;
+}
+
+export interface StructuredNoteDraftResponse {
+  requestId: string;
+  draftHandle: string;
+  revision: number;
+  title: string;
+  items: StructuredNoteItemProjection[];
+  rawText: string;
+  draftStatus: NoteDraftStatus;
+  sourceMetadata?: StructuredNoteDraftInput["sourceMetadata"] | null;
+  committedNoteHandle?: string | null;
+}
+
+export interface StructuredNoteListItem {
+  handle: string;
+  title: string;
+  author?: string | null;
+  recordedAt?: string | null;
+  itemTypeSummary: EntityType[];
+  candidateState?: string | null;
+  evidenceCoverage?: number | null;
+}
+
+export interface StructuredNoteListResponse {
+  requestId: string;
+  drafts: StructuredNoteDraftResponse[];
+  committed: StructuredNoteListItem[];
+}
+
+export interface StructuredNoteImportResponse {
+  requestId: string;
+  status: "proposed" | "abstained";
+  title?: string | null;
+  proposals: StructuredNoteItemDraft[];
+  relations: Array<{ relation: string; sourceIndex: number; targetIndex: number }>;
+  abstentionReason?: string | null;
+}
+
+export interface StructuredNoteDetail {
+  noteHandle: string;
+  title: string;
+  rawText: string;
+  author: string;
+  recordedAt: string;
+  items: StructuredNoteItemProjection[];
+  evidenceCoverage: number;
+  candidateState: string;
+}
+
+export interface StructuredCandidateEditRequest {
+  entityType?: string;
+  label?: string;
+  relation?: string;
+  entityLink?: string;
+  date?: string;
+  assignment?: string;
+  expectedRevision?: number;
+}
+
+export interface CandidateEditOption {
+  handle: string;
+  label: string;
+  type: string;
+}
+
+export interface CandidateEditOptionsResponse {
+  requestId: string;
+  entityLinks: CandidateEditOption[];
+  assignments: CandidateEditOption[];
+}
+
+export interface StructuredCandidateEditResponse {
+  requestId: string;
+  candidateHandle: string;
+  editHandle: string;
+  revision: number;
+  corrections: StructuredCandidateEditRequest;
+  provenance: { actor: string; requestId: string; recordedAt: string };
 }
 
 export interface Note {
@@ -158,6 +261,7 @@ export interface ConfirmationRequest {
     label: string;
     validFrom: string;
   };
+  correctionRevision?: number;
 }
 
 export interface RejectionRequest {
@@ -170,6 +274,9 @@ export interface ValidationResult {
   conforms: boolean;
   violations: Record<string, unknown>[];
   validatedAt: string;
+  correctionRevision?: number;
+  correctionsValidated?: boolean;
+  corrections?: StructuredCandidateEditRequest;
 }
 
 export interface DecisionResponse {
@@ -245,7 +352,261 @@ export interface InferenceRebuildResponse {
   materializedRuleIds: string[];
 }
 
+export interface ProjectCounts {
+  requirements: number;
+  tasks: number;
+  questions: number;
+  risks: number;
+  notes: number;
+  candidates: number;
+}
+
+export interface ProjectFreshness {
+  state: "current" | "stale" | "unavailable";
+  revision?: string | null;
+}
+
+export interface ProjectCatalogItem {
+  handle: string;
+  name: string;
+  summary?: string | null;
+  status: "active" | "paused" | "archived";
+  counts: ProjectCounts;
+  lastActivityAt?: string | null;
+  health: "fresh" | "attention" | "unavailable";
+  freshness: ProjectFreshness;
+}
+
+export interface ProjectCatalogResponse {
+  requestId: string;
+  catalogRevision: string;
+  projects: ProjectCatalogItem[];
+  nextCursor?: string | null;
+}
+
+export interface ProjectReadResponse {
+  requestId: string;
+  project: ProjectCatalogItem;
+}
+
+export interface ProjectSelectionRequest {
+  handle: string;
+  catalogRevision: string;
+}
+
+export interface ProjectSelectionResponse {
+  requestId: string;
+  selectionRevision: string;
+  project: ProjectCatalogItem;
+}
+
+export interface ProjectOverviewResponse extends ProjectCatalogItem {
+  requestId: string;
+  currentRequirements: Record<string, string>[];
+  openQuestions: Record<string, string>[];
+  tasks: Record<string, string>[];
+  blockers: Record<string, string>[];
+  risks: Record<string, string>[];
+  recentNotes: Record<string, string>[];
+  pendingCandidates: Record<string, string>[];
+  evidenceCoverage: Record<string, number>;
+}
+
+export type GraphNodeType =
+  | "Project"
+  | "Note"
+  | "NoteItem"
+  | "Requirement"
+  | "Decision"
+  | "Question"
+  | "Task"
+  | "Risk"
+  | "Assumption"
+  | "Constraint"
+  | "ProgressClaim"
+  | "ResearchFinding"
+  | "Person"
+  | "Candidate"
+  | "SourceArtifact";
+export type GraphRelationType =
+  | "implements"
+  | "blocks"
+  | "dependsOn"
+  | "supports"
+  | "answers"
+  | "resolves"
+  | "constrainedBy"
+  | "supersedes"
+  | "derivedFrom"
+  | "hasNoteItem"
+  | "belongsToProject"
+  | "evidenceFor"
+  | "provenanceFor";
+export type GraphVerificationState = "candidate" | "asserted" | "inferred" | "unverified";
+export type GraphLifecycleState =
+  | "current"
+  | "pending-review"
+  | "confirmed"
+  | "rejected"
+  | "superseded"
+  | "retracted"
+  | "stale";
+export type GraphProvenanceState =
+  | "source-backed"
+  | "human-confirmed"
+  | "rule-derived"
+  | "candidate-proposed";
+
+export interface GraphNode {
+  handle: string;
+  label: string;
+  semanticType: GraphNodeType;
+  lifecycleState: GraphLifecycleState;
+  verificationState: GraphVerificationState;
+  provenanceState: GraphProvenanceState;
+  direction?: "source-to-target" | "target-to-source";
+  evidenceCount: number;
+  projectScope: "selected";
+  dates: { validFrom?: string | null; validTo?: string | null; recordedAt?: string | null };
+  availableActions: string[];
+}
+export interface GraphEdge {
+  handle: string;
+  sourceHandle: string;
+  targetHandle: string;
+  relationType: GraphRelationType;
+  direction: "source-to-target" | "target-to-source";
+  verificationState: GraphVerificationState;
+  provenanceState: GraphProvenanceState;
+  evidenceCount: number;
+}
+export interface GraphProjectionResponse {
+  projectionVersion: "s8.graph.v1";
+  requestId: string;
+  projectHandle: string;
+  sourceRevision: string;
+  materializationRevision: string;
+  asOf: string;
+  stale: boolean;
+  partial: boolean;
+  nodes: GraphNode[];
+  edges: GraphEdge[];
+  page: {
+    nodeLimit: number;
+    edgeLimit: number;
+    hasMore: boolean;
+    continuation?: string | null;
+    expansionAvailable: boolean;
+  };
+  filters: {
+    semanticTypes: string[];
+    verificationStates: GraphVerificationState[];
+    lifecycleStates: GraphLifecycleState[];
+    provenanceStates: GraphProvenanceState[];
+    relationTypes: GraphRelationType[];
+    evidence: "any" | "with-evidence" | "without-evidence";
+  };
+}
+export interface GraphNodeDetail extends GraphNode {
+  requestId?: string;
+  projectHandle?: string;
+  projectLabel: string;
+  summary?: string | null;
+  sourceSummary?: string | null;
+  freshness: "available" | "unavailable" | "stale";
+  relations: {
+    relationType: GraphRelationType;
+    direction: "source-to-target" | "target-to-source";
+    peerHandle: string;
+    peerLabel: string;
+  }[];
+  evidence: string[];
+  lifecycle: string[];
+}
+export interface GraphEvidenceResponse {
+  projectionVersion: "s8.graph.v1";
+  requestId: string;
+  projectHandle: string;
+  nodeHandle: string;
+  stale: boolean;
+  items: Record<string, string | number | null>[];
+}
+export interface GraphLifecycleResponse {
+  projectionVersion: "s8.graph.v1";
+  requestId: string;
+  projectHandle: string;
+  nodeHandle: string;
+  stale: boolean;
+  items: Record<string, string | null>[];
+}
+export interface CandidateQueueItem {
+  handle: string;
+  label: string;
+  sourceExcerpt?: string | null;
+  proposedType: string;
+  proposedRelations: string[];
+  validationState: string;
+  confidence?: number | null;
+  age?: string | null;
+  lifecycleState: GraphLifecycleState;
+  evidenceCount: number;
+}
+export interface CandidateQueueResponse {
+  requestId: string;
+  projectHandle: string;
+  sourceRevision: string;
+  stale: boolean;
+  candidates: CandidateQueueItem[];
+  hasMore: boolean;
+}
+export interface KnowledgeCollectionItem {
+  handle: string;
+  label: string;
+  semanticType: GraphNodeType;
+  lifecycleState: GraphLifecycleState;
+  verificationState: GraphVerificationState;
+  provenanceState: GraphProvenanceState;
+  validFrom?: string | null;
+  evidenceCount: number;
+}
+export interface KnowledgeCollectionResponse {
+  requestId: string;
+  projectHandle: string;
+  sourceRevision: string;
+  stale: boolean;
+  items: KnowledgeCollectionItem[];
+  hasMore: boolean;
+}
+
 export interface Paths {
+  "/v1/projects": { get: { response: ProjectCatalogResponse } };
+  "/v1/projects/{handle}": { get: { response: ProjectReadResponse } };
+  "/v1/projects/selection": {
+    post: { body: ProjectSelectionRequest; response: ProjectSelectionResponse };
+  };
+  "/v1/projects/{handle}/overview": { get: { response: ProjectOverviewResponse } };
+  "/v1/projects/{handle}/graph": { get: { response: GraphProjectionResponse } };
+  "/v1/projects/{handle}/graph/neighborhood/{nodeHandle}": {
+    get: { response: GraphProjectionResponse };
+  };
+  "/v1/projects/{handle}/graph/nodes/{nodeHandle}": { get: { response: GraphNodeDetail } };
+  "/v1/projects/{handle}/graph/nodes/{nodeHandle}/evidence": {
+    get: { response: GraphEvidenceResponse };
+  };
+  "/v1/projects/{handle}/graph/nodes/{nodeHandle}/lifecycle": {
+    get: { response: GraphLifecycleResponse };
+  };
+  "/v1/projects/{handle}/candidates": { get: { response: CandidateQueueResponse } };
+  "/v1/projects/{handle}/candidates/{candidateHandle}/validations": {
+    post: { response: ValidationResult };
+  };
+  "/v1/projects/{handle}/candidates/{candidateHandle}/confirmations": {
+    post: { body: ConfirmationRequest; response: DecisionResponse };
+  };
+  "/v1/projects/{handle}/candidates/{candidateHandle}/rejections": {
+    post: { body: RejectionRequest; response: DecisionResponse };
+  };
+  "/v1/projects/{handle}/knowledge": { get: { response: KnowledgeCollectionResponse } };
   "/v1/settings/llm": {
     get: { response: SettingsProfileResponse };
     put: { body: LLMProfileWrite; response: SettingsProfileResponse };

@@ -26,9 +26,13 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   Containerized React web experience cho Quick Note, candidate review,
   evidence-backed retrieval và user-managed LLM configuration qua secret
   boundary được review.
-- [ ] **M6 — Connector and Production Evolution (Sprint 8+):** Mock/manual
-  framework, connector thật đầu tiên, authentication/authorization, security và
-  operational hardening.
+- [ ] **M6 — Truthful Multi-Project Graph Experience (Sprint 8):** Fail-explicit
+  runtime diagnostics, polished light/dark data-workspace UI, project
+  catalog/navigation, finite graph projection và structured Note Composer không
+  yêu cầu người dùng nhập opaque ID.
+- [ ] **M7 — Connector and Production Evolution (Sprint 9+):** Mock/manual
+  connector framework, connector thật đầu tiên, authentication/authorization,
+  security và production hardening.
 
 ## Completed Sprints
 
@@ -53,11 +57,15 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 - [Sprint 7 — Web Experience and User-Managed Runtime Configuration](sprint-plans/sprint-7.md)
   — *Implementation in progress; S7-15–S7-27 complete, workflow screens and
   S7-36–S7-46 complete; S7-47 human product/security approval remains.*
+- [Sprint 8 — Truthful Multi-Project Graph and Structured Notes](sprint-plans/sprint-8.md)
+  — *G1 architecture/security/semantic approval recorded on 2026-08-09;
+  implementation authorized from S8-12 under the approved boundaries.*
 
 ## Planned Sprints
 
-- **Sprint 8+:** Connector evolution, authentication/authorization, security và
-  operational hardening.
+- **Sprint 9+:** Connector evolution, authentication/authorization, security và
+  production hardening after the Sprint 8 interaction and truthfulness boundary
+  is accepted.
 
 ## Backlog / Future Work
 

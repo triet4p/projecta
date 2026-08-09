@@ -6,6 +6,17 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+### Added
+
+- Added the repository-local `build-databricks-ui` skill with offline light and
+  dark theme specifications, reusable React/CSS assets, page recipes, and a UI
+  contract checker for dense data-workspace interfaces.
+- Added the server-owned multi-project catalog, opaque project selection, and
+  scoped project overview with explicit stale-selection recovery.
+- Added a dense workspace shell, searchable Projects screen, active-project
+  header, and project overview collections with loading, empty, and error
+  states.
+
 ### Fixed
 
 - Kept same-origin Quick Note extraction requests open across the API's bounded

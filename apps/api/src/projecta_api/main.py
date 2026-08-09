@@ -16,10 +16,12 @@ from projecta_api.configuration.secret_store import ApplicationEncryptedSecretSt
 from projecta_api.configuration.service import LLMConfigurationService
 from projecta_api.configuration.storage import LLMProfileRepository, OperationalDatabase
 from projecta_api.context import LocalExperienceContextMiddleware
+from projecta_api.correlation import resolve_correlation
 from projecta_api.extraction.service import ExtractionOrchestrator
 from projecta_api.llm.gateway import LLMGateway, NormalizedGatewayError
 from projecta_api.llm.openai_responses import OpenAIResponsesGateway
 from projecta_api.llm.resilience import ResilientGateway
+from projecta_api.project_workspace_store import ProjectSelectionRepository
 from projecta_api.retrieval.errors import RetrievalError
 from projecta_api.retrieval.service import RetrievalService
 from projecta_api.routes import create_router
@@ -28,6 +30,9 @@ from projecta_api.semantic_core import (
     SemanticCoreClient,
     SemanticCoreProblem,
 )
+from projecta_api.startup import validate_startup
+from projecta_api.structured_candidate_store import StructuredCandidateEditStore
+from projecta_api.structured_note_store import StructuredNoteDraftStore
 
 
 async def live() -> dict[str, str]:
@@ -43,10 +48,16 @@ def create_app(
 ) -> FastAPI:
     """Create the application without performing network I/O."""
     actual_settings = settings or Settings()  # pyright: ignore[reportCallIssue]
+    startup_problems = validate_startup(actual_settings)
     client = semantic_client or HttpSemanticCoreClient(str(actual_settings.semantic_core_url))
     database = OperationalDatabase(actual_settings.operational_database_path)
-    secret_store = ApplicationEncryptedSecretStore(database, actual_settings.secret_store_master_key)
+    secret_store = ApplicationEncryptedSecretStore(
+        database, actual_settings.secret_store_master_key
+    )
     profile_repository = LLMProfileRepository(database)
+    project_selection_repository = ProjectSelectionRepository(database)
+    structured_note_draft_store = StructuredNoteDraftStore(database)
+    structured_candidate_edit_store = StructuredCandidateEditStore(database)
     configuration_audit = ConfigurationAudit(database)
     configuration: RuntimeConfigurationProvider
     if runtime_configuration is not None:
@@ -56,13 +67,16 @@ def create_app(
     else:
         configuration = EnvironmentRuntimeConfigurationProvider(actual_settings)
     if gateway is None:
+
         def gateway_factory(snapshot: LLMConfigurationSnapshot) -> LLMGateway:
             return ResilientGateway(
                 OpenAIResponsesGateway(
                     base_url=snapshot.base_url,
                     api_key=snapshot.api_key.get_secret_value(),
                 ),
-                max_retries=2,
+                mode="interactive-single-attempt",
+                max_retries=0,
+                provider=snapshot.provider_type,
             )
 
         extraction = ExtractionOrchestrator(
@@ -75,7 +89,9 @@ def create_app(
         )
     else:
         extraction = ExtractionOrchestrator(
-            ResilientGateway(gateway, max_retries=2),
+            ResilientGateway(
+                gateway, mode="interactive-single-attempt", max_retries=0, provider="injected"
+            ),
             client,
             actual_settings.llm_model,
             timeout_seconds=60.0,
@@ -83,16 +99,22 @@ def create_app(
     retrieval = RetrievalService(client)
     app = FastAPI(title="Projecta Application API", version="0.1.0")
     app.state.settings = actual_settings
+    app.state.startup_problems = startup_problems
     app.state.runtime_configuration = configuration
     app.state.profile_repository = profile_repository
     app.state.secret_store = secret_store
     app.state.configuration_audit = configuration_audit
+    app.state.project_selection_repository = project_selection_repository
+    app.state.structured_note_draft_store = structured_note_draft_store
+    app.state.structured_candidate_edit_store = structured_candidate_edit_store
     app.add_middleware(LocalExperienceContextMiddleware)
 
     @app.exception_handler(SemanticCoreProblem)
     async def semantic_problem(request: Request, error: SemanticCoreProblem) -> JSONResponse:
         """Map downstream details to the public problem contract."""
-        status_code = error.status_code if error.status_code in {400, 404, 409, 422, 503} else 503
+        status_code = (
+            error.status_code if error.status_code in {400, 403, 404, 409, 422, 503} else 503
+        )
         code = (
             error.code
             if error.code
@@ -103,6 +125,15 @@ def create_app(
                 "INVALID_LIFECYCLE_STATE",
                 "DECISION_CONFLICT",
                 "IDEMPOTENCY_KEY_REUSED",
+                "PROJECT_CATALOG_UNAVAILABLE",
+                "PROJECT_NOT_FOUND",
+                "PROJECT_FORBIDDEN",
+                "PROJECT_SELECTION_STALE",
+                "PROJECT_SELECTION_REQUIRED",
+                "NOTE_DRAFT_CONFLICT",
+                "CANDIDATE_EDIT_CONFLICT",
+                "INVALID_PROJECT_HANDLE",
+                "INVALID_NAVIGATION_HANDLE",
             }
             else "SEMANTIC_CONTRACT_UNAVAILABLE"
         )
@@ -113,28 +144,57 @@ def create_app(
             "INVALID_LIFECYCLE_STATE": "The requested transition is not allowed.",
             "DECISION_CONFLICT": "A conflicting terminal decision already exists.",
             "IDEMPOTENCY_KEY_REUSED": "The idempotency key belongs to a different request.",
+            "PROJECT_CATALOG_UNAVAILABLE": "The authorized project catalog is temporarily unavailable.",
+            "PROJECT_NOT_FOUND": "The project is not visible in the authorized catalog.",
+            "PROJECT_FORBIDDEN": "The project is not available to this actor.",
+            "PROJECT_SELECTION_STALE": "The active project selection is stale and must be revalidated.",
+            "PROJECT_SELECTION_REQUIRED": "Select an authorized project before using this workspace.",
+            "NOTE_DRAFT_CONFLICT": "The Note draft revision is stale or already committed.",
+            "CANDIDATE_EDIT_CONFLICT": "The candidate edit revision is stale.",
+            "INVALID_PROJECT_HANDLE": "The project handle is invalid.",
+            "INVALID_NAVIGATION_HANDLE": "The navigation handle is invalid.",
             "SEMANTIC_CONTRACT_UNAVAILABLE": "The semantic service is temporarily unavailable.",
         }[code]
         return _problem(request, status_code, code, "Semantic Core request failed", detail)
 
     @app.exception_handler(NormalizedGatewayError)
     async def gateway_problem(request: Request, error: NormalizedGatewayError) -> JSONResponse:
-        """Map provider-neutral extraction failures without exposing provider details."""
+        """Map each normalized provider class to one finite safe public problem."""
+        status_code, code, title, detail = _gateway_problem(error.error_class)
         return _problem(
             request,
-            503,
-            "SEMANTIC_CONTRACT_UNAVAILABLE",
-            "Extraction request failed",
-            "The extraction operation could not be completed safely.",
+            status_code,
+            code,
+            title,
+            detail,
         )
 
     @app.exception_handler(RetrievalError)
     async def retrieval_problem(request: Request, error: RetrievalError) -> JSONResponse:
-        return _problem(request, 400, error.code.value.upper(), "Retrieval request failed", error.detail)
+        return _problem(
+            request, 400, error.code.value.upper(), "Retrieval request failed", error.detail
+        )
 
     @app.exception_handler(ConfigurationProblem)
     async def configuration_problem(request: Request, error: ConfigurationProblem) -> JSONResponse:
-        return _problem(request, error.status_code, error.code, "Runtime configuration request failed", error.detail)
+        return _problem(
+            request,
+            error.status_code,
+            error.code,
+            "Runtime configuration request failed",
+            error.detail,
+        )
+
+    @app.exception_handler(Exception)
+    async def unexpected_problem(request: Request, _: Exception) -> JSONResponse:
+        """Keep an application crash inside one correlated, sanitized terminal error."""
+        return _problem(
+            request,
+            500,
+            "INTERNAL_ERROR",
+            "Internal error",
+            "The operation failed safely.",
+        )
 
     @app.exception_handler(HTTPException)
     async def http_problem(request: Request, error: HTTPException) -> JSONResponse:
@@ -146,6 +206,24 @@ def create_app(
                 "PROJECT_CONTEXT_REQUIRED",
                 "Project context required",
                 "A trusted project context is required.",
+            )
+        if error.status_code == 409:
+            return _problem(
+                request,
+                409,
+                "PROJECT_SELECTION_REQUIRED"
+                if "required" in str(error.detail)
+                else "PROJECT_SELECTION_STALE",
+                "Project selection is not current",
+                "Select an authorized project before using this workspace.",
+            )
+        if error.status_code == 503:
+            return _problem(
+                request,
+                503,
+                "PROJECT_CATALOG_UNAVAILABLE",
+                "Project catalog unavailable",
+                "The authorized project catalog is temporarily unavailable.",
             )
         return _problem(
             request,
@@ -169,9 +247,25 @@ def create_app(
     app.add_api_route("/health/live", live, methods=["GET"])
 
     async def ready() -> JSONResponse:
+        if app.state.startup_problems:
+            return JSONResponse(
+                status_code=503,
+                content={
+                    "status": "not-ready",
+                    "reasonCode": "CONFIGURATION_INVALID",
+                    "problems": [problem.code for problem in app.state.startup_problems],
+                },
+            )
         checker = getattr(client, "readiness", None)
         if checker is None:
-            return JSONResponse({"status": "ready", "semanticCore": "injected"})
+            return JSONResponse(
+                status_code=503,
+                content={
+                    "status": "not-ready",
+                    "semanticCore": "unavailable",
+                    "reasonCode": "SEMANTIC_CORE_CONFIGURATION_INVALID",
+                },
+            )
         if await checker():
             return JSONResponse({"status": "ready", "semanticCore": "ready"})
         return JSONResponse(
@@ -204,7 +298,11 @@ app = create_app()
 
 def _problem(request: Request, status: int, code: str, title: str, detail: str) -> JSONResponse:
     """Create one sanitized RFC 7807-shaped public error response."""
-    request_id = request.headers.get("X-Request-Id", "unknown")
+    correlation = resolve_correlation(
+        request.headers.get("X-Request-Id"), request.headers.get("X-Operation-Id")
+    )
+    request_id = correlation.request_id
+    operation_id = correlation.operation_id
     return JSONResponse(
         status_code=status,
         content={
@@ -215,6 +313,66 @@ def _problem(request: Request, status: int, code: str, title: str, detail: str) 
             "detail": detail,
             "requestId": request_id,
         },
-        headers={"X-Request-Id": request_id},
+        headers={"X-Request-Id": request_id, "X-Operation-Id": operation_id},
         media_type="application/problem+json",
     )
+
+
+def _gateway_problem(error_class: str) -> tuple[int, str, str, str]:
+    """Return the approved public mapping without serializing provider detail."""
+
+    if error_class == "timeout":
+        return (
+            504,
+            "PROVIDER_TIMEOUT",
+            "Provider timeout",
+            "The configured provider did not respond before the deadline.",
+        )
+    if error_class == "rate_limit":
+        return (
+            429,
+            "PROVIDER_RATE_LIMITED",
+            "Provider rate limited",
+            "The configured provider rate limited this operation.",
+        )
+    if error_class in {"provider_failure"}:
+        return (
+            503,
+            "PROVIDER_UNAVAILABLE",
+            "Provider unavailable",
+            "The configured provider could not complete the operation.",
+        )
+    if error_class in {"schema_invalid", "empty_malformed", "unsafe_output"}:
+        return (
+            502,
+            "PROVIDER_RESPONSE_INVALID",
+            "Provider response invalid",
+            "The provider response did not satisfy the published contract.",
+        )
+    if error_class in {"refusal", "policy_rejection"}:
+        return (
+            502,
+            "PROVIDER_REFUSED",
+            "Provider refused request",
+            "The configured provider refused the operation.",
+        )
+    if error_class in {
+        "invalid_evidence",
+        "hallucinated_link",
+        "cross_project_link",
+        "normalization_invalid",
+    }:
+        return (
+            422,
+            "CANDIDATE_INVALID",
+            "Candidate invalid",
+            "The provider result failed semantic evidence validation.",
+        )
+    if error_class == "configuration_invalid":
+        return (
+            503,
+            "CONFIGURATION_INVALID",
+            "Runtime configuration invalid",
+            "The provider configuration is unavailable or invalid.",
+        )
+    return 500, "INTERNAL_ERROR", "Extraction failed", "The extraction operation failed safely."

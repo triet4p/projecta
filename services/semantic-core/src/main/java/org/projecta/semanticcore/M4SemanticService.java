@@ -267,7 +267,7 @@ public final class M4SemanticService {
             var item = itemMap.computeIfAbsent(id, ignored -> new LinkedHashMap<>());
             item.put("id", id);
             item.put("type", queryId.equals("unresolved-blockers") ? "UnresolvedBlocker" : "Requirement");
-            item.put("label", row.getOrDefault("label", ""));
+            item.put("label", required(row, "label"));
             item.put("status", queryId.equals("unresolved-blockers") ? "inferred" : "asserted");
             if (row.containsKey("validFrom")) item.put("asOf", row.get("validFrom"));
             if (row.containsKey("ruleIdentifier")) {
@@ -283,27 +283,31 @@ public final class M4SemanticService {
                                 "ruleId",
                                 row.get("ruleIdentifier"),
                                 "ruleVersion",
-                                row.getOrDefault("ruleVersion", "1"),
+                                required(row, "ruleVersion"),
                                 "inputIds",
                                 inputs.stream().distinct().toList()));
             }
-            if (row.containsKey("source")
-                    && row.containsKey("sourceText")
-                    && row.containsKey("startOffset")
-                    && row.containsKey("endOffset")) {
-                String citationId =
-                        "evidence-" + sha256(id + "|" + row.get("source")).substring(0, 54);
+            boolean hasAnyEvidenceField = row.containsKey("source")
+                    || row.containsKey("sourceText")
+                    || row.containsKey("startOffset")
+                    || row.containsKey("endOffset");
+            if (hasAnyEvidenceField) {
+                String source = required(row, "source");
+                String sourceText = required(row, "sourceText");
+                String startOffset = required(row, "startOffset");
+                String endOffset = required(row, "endOffset");
+                String citationId = "evidence-" + sha256(id + "|" + source).substring(0, 54);
                 var citation = Map.<String, Object>of(
                         "id",
                         citationId,
                         "sourceId",
-                        opaque(row.get("source")),
+                        opaque(source),
                         "evidenceText",
-                        row.get("sourceText"),
+                        sourceText,
                         "startOffset",
-                        Integer.parseInt(row.get("startOffset")),
+                        Integer.parseInt(startOffset),
                         "endOffset",
-                        Integer.parseInt(row.get("endOffset")));
+                        Integer.parseInt(endOffset));
                 var citationIds = new ArrayList<String>();
                 if (item.get("citationIds") instanceof List<?> oldIds)
                     oldIds.forEach(value -> citationIds.add(String.valueOf(value)));
@@ -413,8 +417,18 @@ public final class M4SemanticService {
     }
 
     private String opaque(String iri) {
-        if (iri == null) return "id-unknown";
+        if (iri == null || iri.isBlank()) {
+            throw new IllegalStateException("semantic store response omitted a required IRI");
+        }
         return "id-" + sha256(iri).substring(0, 56);
+    }
+
+    private String required(Map<String, String> row, String field) {
+        String value = row.get(field);
+        if (value == null || value.isBlank()) {
+            throw new IllegalStateException("semantic store response omitted required field: " + field);
+        }
+        return value;
     }
 
     private String sha256(String value) {

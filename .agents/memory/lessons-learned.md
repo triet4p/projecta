@@ -219,3 +219,45 @@ downstream overhead, and enforce a minimum 181-second proxy budget with
 or an upstream proxy/load-balancer timeout must preserve an outer timeout larger
 than the complete bounded operation budget so API problem responses are not
 replaced by infrastructure-generated HTML errors.
+
+## [2026-08-09] Evidence projection renamed a live M2 field
+
+**Symptom:** The real Compose M2 HTTP acceptance failed with `KeyError: sourceText` after the evidence endpoint returned only `evidenceText`.
+**Root cause:** The API projection normalized the Semantic Core `sourceText` field to the newer `evidenceText` name without preserving the existing M2 acceptance contract.
+**Fix / workaround:** Preserve both aliases in the public evidence item, sourcing either name from the downstream row, and cover both fields in projection tests.
+**Watch out for:** Projection changes cross versioned HTTP contracts; run the real M2 lifecycle after renaming or consolidating a field.
+
+## [2026-08-10] Graph filter query was mistaken for an evidence endpoint
+
+**Symptom:** The deterministic browser Graph journey received a client-side
+`API collection response is malformed` error even though the mocked Graph
+projection contained valid `nodes`, `edges`, and `stale` fields.
+**Root cause:** The response validator searched the complete URL for the
+substring `evidence`; the valid Graph query parameter `evidence=any` therefore
+matched the separate `/evidence` endpoint collection rule.
+**Fix / workaround:** Match endpoint path segments (`/evidence` and `/current`)
+instead of unqualified substrings, and keep a client regression test that calls
+`getProjectGraph` with its default evidence filter.
+**Watch out for:** Validators that inspect URLs must distinguish route segments
+from query keys; add a regression whenever a new filter shares a route-word.
+
+## [2026-08-10] Healthy containers can still hide a broken first domain read
+
+**Symptom:** Clean-volume Compose reported healthy API, Semantic Core, Fuseki,
+and web containers, but the production Projects screen returned a correlated
+409. The acceptance script also initially failed on Windows PowerShell before
+startup and later caught an internal graph IRI in bootstrap logs.
+**Root cause:** Readiness still validated the removed single-project experience
+setting instead of the server-owned catalog contract; clean Fuseki had no
+explicit project fixture; the script used a newer .NET-only random API; and the
+bootstrap success message printed its internal graph IRI. Health and narrow
+mocked browser checks did not exercise this combined boundary.
+**Fix / workaround:** Validate the explicit catalog plus server-owned actor,
+seed named projects only through an acceptance-only fixture, generate random
+bytes through the portable `RandomNumberGenerator.Create().GetBytes()` API,
+redact bootstrap destinations, and run the first real catalog/selection/Graph
+journey after restart before claiming clean-volume success.
+**Watch out for:** Container health is necessary but not sufficient. Every
+release acceptance should execute at least one real domain read through the
+production proxy and inspect correlated logs, including on the supported host
+shell.

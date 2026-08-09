@@ -51,14 +51,19 @@ class OpenAIResponsesGateway:
             raise NormalizedGatewayError("provider_failure", "provider connection failed", retryable=True) from error
         except APIStatusError as error:
             retryable = error.status_code in {408, 409, 429} or error.status_code >= 500
-            error_class = "rate_limit" if error.status_code == 429 else "provider_failure"
+            if error.status_code == 429:
+                error_class = "rate_limit"
+            elif error.status_code in {400, 403}:
+                error_class = "refusal"
+            else:
+                error_class = "provider_failure"
             raise NormalizedGatewayError(error_class, "provider returned an unsuccessful response", retryable=retryable) from error
         except OpenAIError as error:
             raise NormalizedGatewayError("provider_failure", "provider request failed", retryable=False) from error
 
         output_text = getattr(response, "output_text", None)
         if not isinstance(output_text, str) or not output_text:
-            raise NormalizedGatewayError("schema_invalid", "provider returned no structured output", retryable=False)
+            raise NormalizedGatewayError("empty_malformed", "provider returned no structured output", retryable=False)
         try:
             payload = json.loads(output_text)
             usage = _usage(getattr(response, "usage", None))
@@ -72,9 +77,7 @@ class OpenAIResponsesGateway:
                 }
             )
         except (TypeError, ValueError) as error:
-            # A malformed generation can be transient; the outer bounded
-            # resilience policy may make one or two fresh attempts.
-            raise NormalizedGatewayError("schema_invalid", "provider output did not match m3.v1", retryable=True) from error
+            raise NormalizedGatewayError("schema_invalid", "provider output did not match m3.v1", retryable=False) from error
         return GatewayResponse(extraction=extraction, usage=usage)
 
 

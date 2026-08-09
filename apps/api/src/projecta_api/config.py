@@ -41,5 +41,6 @@ class Settings(BaseSettings):
     runtime_mode: Literal["headless", "experience", "production"] = "headless"
     operational_database_path: str = ":memory:"
     secret_store_master_key: SecretStr | None = None
-    experience_project_id: str = "local-project"
-    experience_actor_id: str = "local-user"
+    experience_actor_id: str | None = None
+    # Comma-separated server-owned allowlist. Empty means catalog operations fail closed.
+    experience_project_catalog: str = ""

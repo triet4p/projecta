@@ -70,9 +70,7 @@ export function ExtractionScreen({
         )}
         {result && (
           <div className="result-stack">
-            <p className="metadata">
-              Request {result.requestId} · note {result.note.id}
-            </p>
+            <p className="metadata">Request {result.requestId} · extracted note ready for review</p>
             {result.candidates.map((candidate) => (
               <button
                 className="candidate-chip"
@@ -80,7 +78,7 @@ export function ExtractionScreen({
                 onClick={() => onCandidate(candidate.id)}
                 type="button"
               >
-                Review candidate {candidate.id} · {candidate.status}
+                Open review queue · {candidate.status}
               </button>
             ))}
             {result.entities?.map((entity, index) => (
@@ -93,14 +91,14 @@ export function ExtractionScreen({
             {result.relations?.map((relation, index) => (
               <EvidenceRow
                 key={`relation-${index}`}
-                label={`${relation.predicate}: ${relation.sourceEntityId} → ${relation.targetEntityId}`}
+                label={`Proposed ${relation.predicate} relation`}
                 evidence={relation.evidence}
               />
             ))}
             {result.links?.map((link, index) => (
               <EvidenceRow
                 key={`link-${index}`}
-                label={`Link: ${link.mention} → ${link.targetEntityId}`}
+                label={`Proposed link: ${link.mention}`}
                 evidence={link.evidence}
               />
             ))}

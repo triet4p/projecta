@@ -108,4 +108,6 @@ class ExtractionResponse(ContractModel):
     def validate_abstention(self) -> "ExtractionResponse":
         if self.abstention_reason and (self.entities or self.relations or self.links):
             raise ValueError("abstention cannot be combined with extraction candidates")
+        if not self.abstention_reason and not (self.entities or self.relations or self.links):
+            raise ValueError("an empty extraction requires an abstention reason")
         return self

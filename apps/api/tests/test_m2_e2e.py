@@ -93,7 +93,7 @@ async def test_manual_quick_note_lifecycle_over_real_http() -> None:
         assert evidence.status_code == 200 and evidence.json()["items"], evidence.text
         chain = evidence.json()["items"][0]
         assert chain["sourceText"] == "Confirm address."
-        assert chain["startOffset"] == "0"
-        assert chain["endOffset"] == "16"
+        assert chain["startOffset"] == 0
+        assert chain["endOffset"] == 16
         history = await client.get(f"/v1/candidates/{risk_id}/history", headers=headers)
         assert history.status_code == 200 and history.json()["items"], history.text

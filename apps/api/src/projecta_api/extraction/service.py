@@ -8,7 +8,11 @@ from typing import Protocol, cast
 from projecta_api.configuration.models import LLMConfigurationSnapshot
 from projecta_api.configuration.ports import RuntimeConfigurationProvider
 from projecta_api.context import TrustedRequestContext
-from projecta_api.extraction.contracts import EXTRACTION_SCHEMA_VERSION, ExtractionResponse
+from projecta_api.extraction.contracts import (
+    EXTRACTION_SCHEMA_VERSION,
+    ExtractionResponse,
+    UsageMetadata,
+)
 from projecta_api.extraction.normalize import normalize_extraction
 from projecta_api.extraction.prompt import PROMPT_VERSION, build_extraction_prompt
 from projecta_api.extraction.telemetry import ExtractionTelemetryEvent, emit_extraction_event
@@ -42,14 +46,48 @@ class ExtractionOrchestrator:
         self._configuration_provider = configuration_provider
         self._gateway_factory = gateway_factory
 
-    async def extract(self, context: TrustedRequestContext, key: str, request: ExtractionRequest) -> object:
+    async def propose(
+        self, context: TrustedRequestContext, request: ExtractionRequest
+    ) -> ExtractionResponse:
+        """Return normalized proposals without writing source or candidate graphs."""
+
         started = monotonic()
+        model_id = self._model_id or "unconfigured"
+        try:
+            normalized, usage, model_id = await self._normalize(context, request)
+            self._emit_completed(context, normalized, usage, started)
+            return normalized
+        except Exception as exc:
+            self._emit_failed(context, model_id, exc, started)
+            raise
+
+    async def extract(
+        self, context: TrustedRequestContext, key: str, request: ExtractionRequest
+    ) -> object:
+        started = monotonic()
+        model_id = self._model_id or "unconfigured"
+        try:
+            normalized, usage, model_id = await self._normalize(context, request)
+            body = _ingestion_body(request.raw_text, normalized)
+            result = await self._semantic.ingest_extraction(context, key, body)
+            result = _with_extraction_details(result, normalized)
+            self._emit_completed(context, normalized, usage, started)
+            return result
+        except Exception as exc:
+            self._emit_failed(context, model_id, exc, started)
+            raise
+
+    async def _normalize(
+        self, context: TrustedRequestContext, request: ExtractionRequest
+    ) -> tuple[ExtractionResponse, UsageMetadata | None, str]:
         operation_gateway = self._gateway
         model_id = self._model_id
+        profile_revision = "injected"
         if self._configuration_provider is not None and self._gateway_factory is not None:
             snapshot = self._configuration_provider.resolve_llm(context)
             operation_gateway = self._gateway_factory(snapshot)
             model_id = snapshot.model
+            profile_revision = snapshot.revision
         if operation_gateway is None or not model_id:
             from projecta_api.llm.gateway import NormalizedGatewayError
 
@@ -61,39 +99,68 @@ class ExtractionOrchestrator:
             ["implements", "blocks", "dependsOn", "supports", "answers", "resolves", "constrainedBy"],
             bounded,
         )
-        try:
-            gateway_result = await operation_gateway.extract(
-                GatewayRequest(
-                    schemaVersion=EXTRACTION_SCHEMA_VERSION,
-                    modelId=model_id,
-                    systemPrompt=system,
-                    userPrompt=user,
-                    responseSchema=_response_schema(),
-                    timeoutSeconds=self._timeout_seconds,
-                )
+        gateway_result = await operation_gateway.extract(
+            GatewayRequest(
+                schemaVersion=EXTRACTION_SCHEMA_VERSION,
+                modelId=model_id,
+                systemPrompt=system,
+                userPrompt=user,
+                responseSchema=_response_schema(),
+                timeoutSeconds=self._timeout_seconds,
+                requestId=context.request_id,
+                operationId=context.operation_id,
+                profileRevision=profile_revision,
             )
-            normalized = normalize_extraction(request.raw_text, gateway_result.extraction, bounded)
-            body = _ingestion_body(request.raw_text, normalized)
-            result = await self._semantic.ingest_extraction(context, key, body)
-            result = _with_extraction_details(result, normalized)
-            usage = gateway_result.usage
-            emit_extraction_event(self._logger, ExtractionTelemetryEvent(
-                event="extraction.completed", requestId=context.request_id, provider="deepseek-responses",
-                modelVersion=normalized.model_version, promptVersion=PROMPT_VERSION,
-                schemaVersion=normalized.schema_version, latencyMs=int((monotonic() - started) * 1000),
-                inputTokens=usage.input_tokens if usage else None, outputTokens=usage.output_tokens if usage else None,
-                entityCount=len(normalized.entities), relationCount=len(normalized.relations), linkCount=len(normalized.links),
-            ))
-            return result
-        except Exception as exc:
-            error_class = getattr(exc, "error_class", "normalization_invalid")
-            emit_extraction_event(self._logger, ExtractionTelemetryEvent(
-                event="extraction.failed", requestId=context.request_id, provider="deepseek-responses",
-                modelVersion=model_id or "unconfigured", promptVersion=PROMPT_VERSION,
-                schemaVersion=EXTRACTION_SCHEMA_VERSION, latencyMs=int((monotonic() - started) * 1000),
+        )
+        normalized = normalize_extraction(request.raw_text, gateway_result.extraction, bounded)
+        return normalized, gateway_result.usage, model_id
+
+    def _emit_completed(
+        self,
+        context: TrustedRequestContext,
+        normalized: ExtractionResponse,
+        usage: UsageMetadata | None,
+        started: float,
+    ) -> None:
+        emit_extraction_event(
+            self._logger,
+            ExtractionTelemetryEvent(
+                event="extraction.completed",
+                requestId=context.request_id,
+                provider="deepseek-responses",
+                modelVersion=normalized.model_version,
+                promptVersion=PROMPT_VERSION,
+                schemaVersion=normalized.schema_version,
+                latencyMs=int((monotonic() - started) * 1000),
+                inputTokens=usage.input_tokens if usage else None,
+                outputTokens=usage.output_tokens if usage else None,
+                entityCount=len(normalized.entities),
+                relationCount=len(normalized.relations),
+                linkCount=len(normalized.links),
+            ),
+        )
+
+    def _emit_failed(
+        self,
+        context: TrustedRequestContext,
+        model_id: str,
+        error: Exception,
+        started: float,
+    ) -> None:
+        error_class = getattr(error, "error_class", "normalization_invalid")
+        emit_extraction_event(
+            self._logger,
+            ExtractionTelemetryEvent(
+                event="extraction.failed",
+                requestId=context.request_id,
+                provider="deepseek-responses",
+                modelVersion=model_id,
+                promptVersion=PROMPT_VERSION,
+                schemaVersion=EXTRACTION_SCHEMA_VERSION,
+                latencyMs=int((monotonic() - started) * 1000),
                 errorClass=str(error_class),
-            ))
-            raise
+            ),
+        )
 
 
 def _response_schema() -> dict[str, object]:

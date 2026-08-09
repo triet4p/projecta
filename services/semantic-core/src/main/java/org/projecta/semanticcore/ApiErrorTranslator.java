@@ -5,6 +5,15 @@ public final class ApiErrorTranslator {
     private static final String BASE = "https://w3id.org/projecta/problems/";
 
     public ApiProblem translate(String requestId, RuntimeException exception) {
+        var message = exception.getMessage() == null ? "" : exception.getMessage();
+        if (exception instanceof io.javalin.http.BadRequestResponse) {
+            return problem(
+                    requestId,
+                    400,
+                    "INVALID_REQUEST",
+                    "Invalid request",
+                    "The request does not meet the published contract.");
+        }
         if (exception instanceof CandidateNotFoundException) {
             return problem(
                     requestId,
@@ -38,7 +47,7 @@ public final class ApiErrorTranslator {
                     "The resource is not visible in this project.");
         }
         if (exception instanceof IllegalArgumentException) {
-            if (exception.getMessage().contains("released SHACL shapes")) {
+            if (message.contains("released SHACL shapes")) {
                 return problem(
                         requestId,
                         422,
@@ -46,20 +55,26 @@ public final class ApiErrorTranslator {
                         "Candidate does not conform",
                         "The candidate violates released v0.2 shapes.");
             }
-            var code =
-                    exception.getMessage().contains("idempotency key") ? "IDEMPOTENCY_KEY_REUSED" : "INVALID_REQUEST";
+            var code = message.contains("idempotency key") ? "IDEMPOTENCY_KEY_REUSED" : "INVALID_REQUEST";
             var status = code.equals("IDEMPOTENCY_KEY_REUSED") ? 409 : 400;
             return problem(
                     requestId, status, code, "Invalid request", "The request does not meet the published contract.");
         }
         if (exception instanceof IllegalStateException) {
-            if (exception.getMessage().contains("semantic store")
-                    || exception.getMessage().contains("released candidate SHACL")) {
+            if (message.contains("semantic store response")) {
+                return problem(
+                        requestId,
+                        502,
+                        "QUERY_FAILED",
+                        "Query failed",
+                        "The semantic service returned an invalid query result.");
+            }
+            if (message.contains("semantic store") || message.contains("released candidate SHACL")) {
                 return problem(
                         requestId,
                         503,
-                        "SERVICE_UNAVAILABLE",
-                        "Service unavailable",
+                        "PERSISTENCE_UNAVAILABLE",
+                        "Persistence unavailable",
                         "The semantic store or released validation artifacts are unavailable.");
             }
             return problem(

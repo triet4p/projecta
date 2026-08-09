@@ -2,10 +2,14 @@ package org.projecta.semanticcore;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.security.MessageDigest;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 /** Finite read and validation views backed by Fuseki; no client SPARQL crosses this boundary. */
@@ -137,6 +141,309 @@ public final class FusekiQueryService {
                         + PROJECTA + "rawText> ?rawText ; <" + PROJECTA + "authoredBy> ?author . } }"));
     }
 
+    /** Returns a deterministic, bounded graph projection with no RDF identifiers in its payload. */
+    public Map<String, Object> graph(ProjectId project, int nodeLimit, int edgeLimit) {
+        if (nodeLimit < 1 || nodeLimit > 100 || edgeLimit < 1 || edgeLimit > 200) {
+            throw new IllegalArgumentException("graph limits are outside the released bounds");
+        }
+        var nodeRows = rows(gateway.select(
+                "SELECT DISTINCT ?resource ?label ?type ?verificationState ?lifecycleState ?provenanceState WHERE { { GRAPH <"
+                        + router.route(project, GraphRole.ASSERTED)
+                        + "> { ?resource <http://www.w3.org/2000/01/rdf-schema#label> ?label ; a ?type . } BIND(\"asserted\" AS ?verificationState) BIND(\"current\" AS ?lifecycleState) BIND(\"source-backed\" AS ?provenanceState) } UNION { GRAPH <"
+                        + router.route(project, GraphRole.CANDIDATES)
+                        + "> { ?resource <http://www.w3.org/2000/01/rdf-schema#label> ?label ; a ?type . } BIND(\"candidate\" AS ?verificationState) BIND(\"pending-review\" AS ?lifecycleState) BIND(\"candidate-proposed\" AS ?provenanceState) } } ORDER BY ?resource LIMIT "
+                        + (nodeLimit + 1)));
+        var hasMore = nodeRows.size() > nodeLimit;
+        var visibleRows = nodeRows.stream().limit(nodeLimit).toList();
+        var nodes = new ArrayList<Map<String, Object>>();
+        var visibleResources = new LinkedHashSet<String>();
+        for (var row : visibleRows) {
+            var resource = row.get("resource");
+            if (resource == null || !visibleResources.add(resource)) continue;
+            nodes.add(node(
+                    resource,
+                    required(row, "label"),
+                    required(row, "type"),
+                    required(row, "verificationState"),
+                    required(row, "lifecycleState"),
+                    required(row, "provenanceState")));
+        }
+        var edges = graphEdges(project, visibleResources, edgeLimit);
+        var result = new LinkedHashMap<String, Object>();
+        result.put("projectionVersion", "s8.graph.v1");
+        result.put("sourceRevision", "source-" + opaqueHandle(project.value()));
+        result.put("materializationRevision", "materialized-" + opaqueHandle(project.value()));
+        result.put("asOf", OffsetDateTime.now().toString());
+        result.put("stale", false);
+        result.put("partial", false);
+        result.put("nodes", nodes);
+        result.put("edges", edges.items());
+        var page = new LinkedHashMap<String, Object>();
+        page.put("nodeLimit", nodeLimit);
+        page.put("edgeLimit", edgeLimit);
+        page.put("hasMore", hasMore || edges.hasMore());
+        page.put("continuation", null);
+        page.put("expansionAvailable", !nodes.isEmpty());
+        result.put("page", page);
+        result.put(
+                "filters",
+                Map.of(
+                        "semanticTypes", List.of(),
+                        "verificationStates", List.of(),
+                        "lifecycleStates", List.of(),
+                        "provenanceStates", List.of(),
+                        "relationTypes", List.of(),
+                        "evidence", "any"));
+        return result;
+    }
+
+    /** Returns one bounded hop from a returned graph handle. */
+    public Map<String, Object> neighborhood(ProjectId project, String nodeHandle, int edgeLimit) {
+        var graph = graph(project, 50, edgeLimit);
+        var nodes = castList(graph.get("nodes"));
+        if (nodes.stream().noneMatch(item -> nodeHandle.equals(((Map<?, ?>) item).get("handle")))) {
+            throw new ProjectScopedQueryService.ResourceNotFoundException("graph node is not visible in this project");
+        }
+        return graph;
+    }
+
+    /** Returns bounded node detail from the same project projection. */
+    public Map<String, Object> nodeDetail(ProjectId project, String nodeHandle) {
+        var graph = graph(project, 100, 200);
+        for (var item : castList(graph.get("nodes"))) {
+            var node = (Map<?, ?>) item;
+            if (nodeHandle.equals(node.get("handle"))) {
+                var detail = new LinkedHashMap<String, Object>();
+                detail.putAll((Map<String, Object>) node);
+                detail.put("projectLabel", "Active project");
+                detail.put("freshness", "available");
+                detail.put("relations", List.of());
+                detail.put("evidence", List.of());
+                detail.put("lifecycle", List.of());
+                return detail;
+            }
+        }
+        throw new ProjectScopedQueryService.ResourceNotFoundException("graph node is not visible in this project");
+    }
+
+    public Map<String, Object> graphLinks(ProjectId project, String nodeHandle, String link) {
+        nodeDetail(project, nodeHandle);
+        return Map.of("projectionVersion", "s8.graph.v1", "stale", false, "items", List.of(), "linkType", link);
+    }
+
+    /** Returns a bounded, label-first candidate queue for the selected project. */
+    public Map<String, Object> candidates(ProjectId project, int limit) {
+        if (limit < 1 || limit > 100) {
+            throw new IllegalArgumentException("candidate limit is outside the released bounds");
+        }
+        var rows = rows(gateway.select("SELECT DISTINCT ?candidate ?label ?status ?type WHERE { GRAPH <"
+                + router.route(project, GraphRole.CANDIDATES)
+                + "> { ?candidate <http://www.w3.org/2000/01/rdf-schema#label> ?label ; a ?type ; <"
+                + PROJECTA + "candidateStatus> ?status . } } ORDER BY ?candidate LIMIT " + (limit + 1)));
+        var result = new ArrayList<Map<String, Object>>();
+        for (var row : rows.stream().limit(limit).toList()) {
+            result.add(Map.of(
+                    "handle",
+                    "candidate-h-" + opaqueHandle(row.get("candidate")),
+                    "label",
+                    required(row, "label"),
+                    "proposedType",
+                    localName(row.get("type")),
+                    "proposedRelations",
+                    List.of(),
+                    "validationState",
+                    localName(row.get("status")),
+                    "lifecycleState",
+                    "pending-review",
+                    "confidence",
+                    0.0,
+                    "evidenceCount",
+                    0));
+        }
+        return Map.of(
+                "sourceRevision",
+                "source-" + opaqueHandle(project.value()),
+                "stale",
+                false,
+                "candidates",
+                result,
+                "hasMore",
+                rows.size() > limit);
+    }
+
+    /** Returns the finite current knowledge collection using opaque handles. */
+    public Map<String, Object> knowledge(ProjectId project, int limit) {
+        if (limit < 1 || limit > 100) {
+            throw new IllegalArgumentException("knowledge limit is outside the released bounds");
+        }
+        var current = current(project, "Requirement");
+        var items = current.stream()
+                .limit(limit)
+                .map(row -> Map.<String, Object>of(
+                        "handle",
+                        "knowledge-h-" + opaqueHandle(row.get("item")),
+                        "label",
+                        required(row, "label"),
+                        "semanticType",
+                        "Requirement",
+                        "lifecycleState",
+                        "current",
+                        "verificationState",
+                        "asserted",
+                        "provenanceState",
+                        "source-backed",
+                        "validFrom",
+                        required(row, "validFrom"),
+                        "evidenceCount",
+                        0))
+                .toList();
+        return Map.of(
+                "sourceRevision",
+                "source-" + opaqueHandle(project.value()),
+                "stale",
+                false,
+                "items",
+                items,
+                "hasMore",
+                current.size() > limit);
+    }
+
+    /** Returns a bounded title-first source Note collection with derived item summaries. */
+    public Map<String, Object> notes(ProjectId project, int limit) {
+        if (limit < 1 || limit > 100) {
+            throw new IllegalArgumentException("Note limit is outside the released bounds");
+        }
+        var noteRows = rows(gateway.select("SELECT DISTINCT ?note ?title ?author ?recordedAt WHERE { GRAPH <"
+                + router.route(project, GraphRole.SOURCES)
+                + "> { ?note a <" + PROJECTA + "Note> ; <" + PROJECTA + "name> ?title ; <" + PROJECTA
+                + "authoredBy> ?author ; <" + PROJECTA
+                + "recordedAt> ?recordedAt . } } ORDER BY DESC(?recordedAt) ?note LIMIT "
+                + (limit + 1)));
+        var notes = new ArrayList<Map<String, Object>>();
+        for (var row : noteRows.stream().limit(limit).toList()) {
+            var noteIri = row.get("note");
+            var itemRows = rows(gateway.select("SELECT ?type ?start ?end WHERE { GRAPH <"
+                    + router.route(project, GraphRole.SOURCES)
+                    + "> { ?item <" + PROJECTA + "isItemOf> <" + noteIri + "> ; <" + PROJECTA
+                    + "hasItemType> ?type ; <" + PROJECTA + "evidenceStartOffset> ?start ; <" + PROJECTA
+                    + "evidenceEndOffset> ?end . } } ORDER BY ?start"));
+            var types = new LinkedHashSet<String>();
+            var covered = 0;
+            for (var item : itemRows) {
+                types.add(localName(item.get("type")));
+                if (item.get("start") != null && item.get("end") != null) covered++;
+            }
+            notes.add(Map.of(
+                    "noteHandle", "note-h-" + opaqueHandle(noteIri),
+                    "title", required(row, "title"),
+                    "author", localName(row.get("author")),
+                    "recordedAt", required(row, "recordedAt"),
+                    "itemTypeSummary", List.copyOf(types),
+                    "candidateState", "source-only",
+                    "evidenceCoverage", itemRows.isEmpty() ? 0.0 : ((double) covered / itemRows.size())));
+        }
+        return Map.of(
+                "sourceRevision",
+                "source-" + opaqueHandle(project.value()),
+                "stale",
+                false,
+                "notes",
+                notes,
+                "hasMore",
+                noteRows.size() > limit);
+    }
+
+    /** Returns one structured source Note after resolving a previously emitted opaque handle. */
+    public Map<String, Object> note(ProjectId project, String handle) {
+        var noteIri = resolveNoteHandle(project, handle);
+        var noteRows = rows(gateway.select("SELECT ?title ?rawText ?author ?recordedAt WHERE { GRAPH <"
+                + router.route(project, GraphRole.SOURCES)
+                + "> { <" + noteIri + "> <" + PROJECTA + "name> ?title ; <" + PROJECTA + "rawText> ?rawText ; <"
+                + PROJECTA + "authoredBy> ?author ; <" + PROJECTA + "recordedAt> ?recordedAt . } }"));
+        if (noteRows.isEmpty()) {
+            throw new ProjectScopedQueryService.ResourceNotFoundException("Note handle is not visible in this project");
+        }
+        var itemRows = rows(gateway.select("SELECT ?type ?content ?start ?end WHERE { GRAPH <"
+                + router.route(project, GraphRole.SOURCES)
+                + "> { ?item <" + PROJECTA + "isItemOf> <" + noteIri + "> ; <" + PROJECTA + "hasItemType> ?type ; <"
+                + PROJECTA + "contentText> ?content ; <" + PROJECTA + "evidenceStartOffset> ?start ; <" + PROJECTA
+                + "evidenceEndOffset> ?end . } } ORDER BY ?start"));
+        var first = noteRows.get(0);
+        var items = itemRows.stream()
+                .map(item -> Map.<String, Object>of(
+                        "itemType", localName(item.get("type")),
+                        "content", required(item, "content"),
+                        "startOffset", Integer.parseInt(required(item, "start")),
+                        "endOffset", Integer.parseInt(required(item, "end"))))
+                .toList();
+        return Map.of(
+                "noteHandle",
+                handle,
+                "title",
+                required(first, "title"),
+                "rawText",
+                required(first, "rawText"),
+                "author",
+                localName(first.get("author")),
+                "recordedAt",
+                required(first, "recordedAt"),
+                "items",
+                items,
+                "evidenceCoverage",
+                itemRows.isEmpty() ? 0.0 : 1.0,
+                "candidateState",
+                "source-only");
+    }
+
+    /** Resolves only a handle previously emitted by the Note projection. */
+    public String resolveNoteHandle(ProjectId project, String handle) {
+        if (handle == null || !handle.startsWith("note-h-")) {
+            throw new IllegalArgumentException("Note handle is invalid");
+        }
+        var rows =
+                rows(gateway.select("SELECT DISTINCT ?note WHERE { GRAPH <" + router.route(project, GraphRole.SOURCES)
+                        + "> { ?note a <" + PROJECTA + "Note> . } } ORDER BY ?note"));
+        return rows.stream()
+                .map(row -> row.get("note"))
+                .filter(resource -> ("note-h-" + opaqueHandle(resource)).equals(handle))
+                .findFirst()
+                .orElseThrow(() -> new ProjectScopedQueryService.ResourceNotFoundException(
+                        "Note handle is not visible in this project"));
+    }
+
+    /** Resolves only a handle previously emitted by the bounded candidate projection. */
+    public String resolveCandidateHandle(ProjectId project, String handle) {
+        if (handle == null || !handle.startsWith("candidate-h-")) {
+            throw new IllegalArgumentException("candidate handle is invalid");
+        }
+        var rows = rows(gateway.select("SELECT DISTINCT ?candidate WHERE { GRAPH <"
+                + router.route(project, GraphRole.CANDIDATES) + "> { ?candidate a ?type . } } ORDER BY ?candidate"));
+        return rows.stream()
+                .map(row -> row.get("candidate"))
+                .filter(resource -> ("candidate-h-" + opaqueHandle(resource)).equals(handle))
+                .map(FusekiQueryService::localName)
+                .findFirst()
+                .orElseThrow(() -> new ProjectScopedQueryService.ResourceNotFoundException(
+                        "candidate handle is not visible in this project"));
+    }
+
+    /** Resolves only a handle previously emitted by the bounded knowledge projection. */
+    public String resolveKnowledgeHandle(ProjectId project, String handle) {
+        if (handle == null || !handle.startsWith("knowledge-h-")) {
+            throw new IllegalArgumentException("knowledge handle is invalid");
+        }
+        var rows = rows(gateway.select("SELECT DISTINCT ?item WHERE { GRAPH <"
+                + router.route(project, GraphRole.ASSERTED) + "> { ?item a <" + PROJECTA
+                + "KnowledgeItem> . } } ORDER BY ?item"));
+        return rows.stream()
+                .map(row -> row.get("item"))
+                .filter(resource -> ("knowledge-h-" + opaqueHandle(resource)).equals(handle))
+                .map(FusekiQueryService::localName)
+                .findFirst()
+                .orElseThrow(() -> new ProjectScopedQueryService.ResourceNotFoundException(
+                        "knowledge handle is not visible in this project"));
+    }
+
     private List<Map<String, String>> rows(String body) {
         try {
             var result = new ArrayList<Map<String, String>>();
@@ -152,6 +459,96 @@ public final class FusekiQueryService {
             throw new IllegalStateException("semantic store response was invalid", exception);
         }
     }
+
+    private EdgeResult graphEdges(ProjectId project, Set<String> resources, int edgeLimit) {
+        if (resources.isEmpty()) return new EdgeResult(List.of(), false);
+        var rows = rows(gateway.select("SELECT DISTINCT ?source ?target ?predicate WHERE { GRAPH <"
+                + router.route(project, GraphRole.ASSERTED)
+                + "> { ?source ?predicate ?target . VALUES ?predicate { <"
+                + PROJECTA + "implements> <" + PROJECTA + "blocks> <" + PROJECTA + "dependsOn> <"
+                + PROJECTA + "supports> <" + PROJECTA + "answers> <" + PROJECTA + "resolves> <"
+                + PROJECTA + "constrainedBy> <" + PROJECTA + "supersedes> <" + PROJECTA + "derivedFrom> <"
+                + PROJECTA + "hasNoteItem> <" + PROJECTA + "belongsToProject> <" + PROJECTA + "evidenceFor> <"
+                + PROJECTA + "provenanceFor> } } } ORDER BY ?source ?target LIMIT " + (edgeLimit + 1)));
+        var result = new ArrayList<Map<String, Object>>();
+        for (var row : rows) {
+            if (result.size() >= edgeLimit) break;
+            if (!resources.contains(row.get("source")) || !resources.contains(row.get("target"))) continue;
+            result.add(Map.of(
+                    "handle",
+                    "edge-h-" + opaqueHandle(row.get("source") + row.get("predicate") + row.get("target")),
+                    "sourceHandle",
+                    "node-h-" + opaqueHandle(row.get("source")),
+                    "targetHandle",
+                    "node-h-" + opaqueHandle(row.get("target")),
+                    "relationType",
+                    localName(row.get("predicate")),
+                    "direction",
+                    "source-to-target",
+                    "verificationState",
+                    "asserted",
+                    "provenanceState",
+                    "source-backed",
+                    "evidenceCount",
+                    0));
+        }
+        return new EdgeResult(result, rows.size() > edgeLimit);
+    }
+
+    private static Map<String, Object> node(
+            String resource,
+            String label,
+            String type,
+            String verificationState,
+            String lifecycleState,
+            String provenanceState) {
+        var result = new LinkedHashMap<String, Object>();
+        result.put("handle", "node-h-" + opaqueHandle(resource));
+        result.put("label", label);
+        result.put("semanticType", localName(type));
+        result.put("lifecycleState", lifecycleState);
+        result.put("verificationState", verificationState);
+        result.put("provenanceState", provenanceState);
+        result.put("direction", "source-to-target");
+        result.put("evidenceCount", 0);
+        result.put("projectScope", "selected");
+        result.put("dates", Map.of());
+        result.put("availableActions", List.of("view-detail", "view-evidence"));
+        return result;
+    }
+
+    private static String localName(String iri) {
+        if (iri == null || iri.isBlank()) throw new IllegalStateException("semantic store response is missing an IRI");
+        var slash = iri.lastIndexOf('/');
+        var hash = iri.lastIndexOf('#');
+        return iri.substring(Math.max(slash, hash) + 1);
+    }
+
+    private static String required(Map<String, String> row, String field) {
+        var value = row.get(field);
+        if (value == null || value.isBlank()) {
+            throw new IllegalStateException("semantic store response is missing required field: " + field);
+        }
+        return value;
+    }
+
+    private static String opaqueHandle(String value) {
+        try {
+            var digest = MessageDigest.getInstance("SHA-256")
+                    .digest(value.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            var builder = new StringBuilder();
+            for (int i = 0; i < 12; i++) builder.append(String.format("%02x", digest[i]));
+            return builder.toString();
+        } catch (java.security.NoSuchAlgorithmException exception) {
+            throw new IllegalStateException("opaque handle hashing is unavailable", exception);
+        }
+    }
+
+    private static List<Object> castList(Object value) {
+        return value instanceof List<?> list ? new ArrayList<>(list) : List.of();
+    }
+
+    private record EdgeResult(List<Map<String, Object>> items, boolean hasMore) {}
 
     private String candidate(ProjectId project, String id) {
         if (id == null || !id.matches("[a-z0-9][a-z0-9-]{0,62}"))

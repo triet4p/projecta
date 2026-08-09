@@ -2,145 +2,166 @@ import { useEffect, useState } from "react";
 
 import type { ProjectaApiClient } from "../api/client";
 import type {
-  CandidateHistoryResponse,
-  EvidenceResponse,
-  KnowledgeItemsResponse,
+  GraphEvidenceResponse,
+  GraphLifecycleResponse,
+  GraphNodeDetail,
+  KnowledgeCollectionResponse,
 } from "../api/generated";
-import { Card, ErrorMessage, StateMessage } from "../ui";
+import { Card, ErrorMessage, StateMessage, StatusBadge } from "../ui";
 
-export function KnowledgeScreen({ api }: { api: ProjectaApiClient }) {
-  const [current, setCurrent] = useState<KnowledgeItemsResponse | null>(null);
-  const [history, setHistory] = useState<CandidateHistoryResponse | null>(null);
-  const [evidence, setEvidence] = useState<EvidenceResponse | null>(null);
-  const [candidateId, setCandidateId] = useState("");
-  const [itemId, setItemId] = useState("");
-  const [loading, setLoading] = useState(false);
+export function KnowledgeScreen({
+  api,
+  projectHandle,
+}: {
+  api: ProjectaApiClient;
+  projectHandle: string;
+}) {
+  const [collection, setCollection] = useState<KnowledgeCollectionResponse | null>(null);
+  const [selectedHandle, setSelectedHandle] = useState<string | null>(null);
+  const [detail, setDetail] = useState<GraphNodeDetail | null>(null);
+  const [evidence, setEvidence] = useState<GraphEvidenceResponse | null>(null);
+  const [lifecycle, setLifecycle] = useState<GraphLifecycleResponse | null>(null);
+  const [busy, setBusy] = useState(false);
   const [error, setError] = useState<unknown>(null);
 
-  const loadCurrent = async () => {
-    setLoading(true);
+  const load = async () => {
+    setBusy(true);
     setError(null);
     try {
-      setCurrent(await api.listCurrentKnowledge());
+      setCollection(await api.listKnowledgeCollection(projectHandle));
     } catch (nextError) {
       setError(nextError);
     } finally {
-      setLoading(false);
+      setBusy(false);
     }
   };
-
   useEffect(() => {
-    void loadCurrent();
-  }, []);
+    void load();
+  }, [projectHandle]);
 
-  const loadHistory = async () => {
-    if (!candidateId.trim()) return;
+  const select = async (handle: string) => {
+    setSelectedHandle(handle);
+    setBusy(true);
     setError(null);
     try {
-      setHistory(await api.getCandidateHistory(candidateId.trim()));
+      const [nextDetail, nextEvidence, nextLifecycle] = await Promise.all([
+        api.getGraphNodeDetail(projectHandle, handle),
+        api.getGraphEvidence(projectHandle, handle),
+        api.getGraphLifecycle(projectHandle, handle),
+      ]);
+      setDetail(nextDetail);
+      setEvidence(nextEvidence);
+      setLifecycle(nextLifecycle);
     } catch (nextError) {
       setError(nextError);
-    }
-  };
-
-  const loadEvidence = async (requestedItemId = itemId) => {
-    if (!requestedItemId.trim()) return;
-    setItemId(requestedItemId);
-    setError(null);
-    try {
-      setEvidence(await api.getEvidence(requestedItemId.trim()));
-    } catch (nextError) {
-      setError(nextError);
+    } finally {
+      setBusy(false);
     }
   };
 
   return (
-    <div className="screen-grid">
+    <div className="screen-grid two-column">
       {error !== null && <ErrorMessage error={error} />}
       <Card>
         <div className="section-heading">
           <div>
-            <p className="eyebrow">Knowledge</p>
-            <h2>Current Requirements</h2>
+            <p className="eyebrow">Knowledge collection</p>
+            <h2>Current project items</h2>
           </div>
-          <button
-            className="secondary"
-            disabled={loading}
-            onClick={() => void loadCurrent()}
-            type="button"
-          >
-            {loading ? "Refreshing…" : "Refresh"}
+          <button className="secondary" disabled={busy} onClick={() => void load()} type="button">
+            {busy ? "Refreshing…" : "Refresh"}
           </button>
         </div>
-        {!current && <StateMessage kind="loading">Loading current project knowledge…</StateMessage>}
-        {current && current.items.length === 0 && (
-          <StateMessage kind="empty">No current Requirement items are available.</StateMessage>
+        {collection?.stale && (
+          <StateMessage kind="empty">
+            Knowledge is stale; refresh before relying on this view.
+          </StateMessage>
         )}
-        {current?.items.map((item, index) => (
-          <div className="knowledge-item" key={String(item.id ?? index)}>
-            <strong>{item.label}</strong>
-            <span>{item.type}</span>
-            <small>Opaque ID: {item.id}</small>
-            <button className="secondary" onClick={() => void loadEvidence(item.id)} type="button">
-              View evidence
+        {!collection && error === null && (
+          <StateMessage kind="loading">Loading labeled knowledge…</StateMessage>
+        )}
+        {collection?.items.length === 0 && (
+          <StateMessage kind="empty">No current knowledge items are available.</StateMessage>
+        )}
+        <div className="knowledge-list">
+          {collection?.items.map((item) => (
+            <button
+              className={
+                selectedHandle === item.handle ? "knowledge-item selected" : "knowledge-item"
+              }
+              key={item.handle}
+              onClick={() => void select(item.handle)}
+              type="button"
+            >
+              <strong>{item.label}</strong>
+              <span>
+                {item.semanticType} · {item.lifecycleState}
+              </span>
+              <small>
+                {item.evidenceCount} evidence records · {item.provenanceState}
+              </small>
             </button>
-          </div>
-        ))}
+          ))}
+        </div>
       </Card>
-      <div className="screen-grid two-column">
-        <Card>
-          <p className="eyebrow">Candidate lifecycle</p>
-          <h2>History by opaque ID</h2>
-          <label className="stacked-label">
-            Candidate ID
-            <input value={candidateId} onChange={(event) => setCandidateId(event.target.value)} />
-          </label>
-          <button disabled={!candidateId.trim()} onClick={() => void loadHistory()} type="button">
-            Load history
-          </button>
-          {history ? (
-            <div className="result-stack">
-              <p className="metadata">Candidate {history.candidateId}</p>
-              {history.items.map((activity) => (
-                <div className="knowledge-item" key={activity.id}>
-                  <strong>{activity.decision ?? "Lifecycle activity"}</strong>
-                  <span>Activity {activity.id}</span>
-                  <small>Reviewer {activity.reviewerId ?? "unavailable"}</small>
-                </div>
-              ))}
+      <Card>
+        {!detail ? (
+          <>
+            <p className="eyebrow">Knowledge detail</p>
+            <h2>Select an item</h2>
+            <StateMessage kind="empty">
+              Browse the returned collection to open detail, evidence, and lifecycle history.
+            </StateMessage>
+          </>
+        ) : (
+          <>
+            <div className="section-heading">
+              <div>
+                <p className="eyebrow">Labeled detail</p>
+                <h2>{detail.label}</h2>
+              </div>
+              <StatusBadge status={detail.lifecycleState} />
             </div>
-          ) : (
-            <StateMessage kind="empty">No candidate history loaded.</StateMessage>
-          )}
-        </Card>
-        <Card>
-          <p className="eyebrow">Evidence and provenance</p>
-          <h2>Evidence by opaque ID</h2>
-          <label className="stacked-label">
-            Knowledge item ID
-            <input value={itemId} onChange={(event) => setItemId(event.target.value)} />
-          </label>
-          <button disabled={!itemId.trim()} onClick={() => void loadEvidence()} type="button">
-            Load evidence
-          </button>
-          {evidence ? (
-            <div className="result-stack">
-              <p className="metadata">Item {evidence.itemId}</p>
-              {evidence.items.map((record, index) => (
-                <div className="evidence-row" key={`${record.sourceId ?? "source"}-${index}`}>
-                  <strong>{record.evidenceText ?? "Evidence span"}</strong>
-                  <span>Source {record.sourceId ?? "unavailable"}</span>
-                  <small>
-                    code points {record.startOffset ?? "?"}–{record.endOffset ?? "?"}
-                  </small>
-                </div>
-              ))}
+            <div className="detail-grid">
+              <span>
+                Type<strong>{detail.semanticType}</strong>
+              </span>
+              <span>
+                Verification<strong>{detail.verificationState}</strong>
+              </span>
+              <span>
+                Provenance<strong>{detail.provenanceState}</strong>
+              </span>
+              <span>
+                Project<strong>{detail.projectLabel}</strong>
+              </span>
             </div>
-          ) : (
-            <StateMessage kind="empty">No evidence loaded.</StateMessage>
-          )}
-        </Card>
-      </div>
+            <h3>Evidence</h3>
+            {evidence?.items.length ? (
+              evidence.items.map((item, index) => (
+                <div className="evidence-row" key={index}>
+                  <strong>
+                    {String(item.evidenceText ?? item.sourceText ?? "Evidence record")}
+                  </strong>
+                </div>
+              ))
+            ) : (
+              <StateMessage kind="empty">No evidence is available for this item.</StateMessage>
+            )}
+            <h3>Lifecycle history</h3>
+            {lifecycle?.items.length ? (
+              lifecycle.items.map((item, index) => (
+                <div className="knowledge-item" key={index}>
+                  <strong>{item.decision ?? "Lifecycle event"}</strong>
+                  <small>{item.endedAt ?? "Time unavailable"}</small>
+                </div>
+              ))
+            ) : (
+              <StateMessage kind="empty">No lifecycle history is available.</StateMessage>
+            )}
+          </>
+        )}
+      </Card>
     </div>
   );
 }

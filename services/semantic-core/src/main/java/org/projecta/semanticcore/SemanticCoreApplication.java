@@ -4,8 +4,11 @@ import io.javalin.Javalin;
 import java.net.http.HttpClient;
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Semantic Core composition root.
@@ -15,6 +18,8 @@ import java.util.Map;
  * health endpoints.
  */
 public final class SemanticCoreApplication {
+    private static final Logger LOGGER = Logger.getLogger(SemanticCoreApplication.class.getName());
+
     private SemanticCoreApplication() {}
 
     /** Starts the HTTP boundary after composing the Fuseki-backed runtime dependencies. */
@@ -29,7 +34,12 @@ public final class SemanticCoreApplication {
         var extraction = new LlmCandidateIngestionService(gateway, router, validation);
         var queries = new FusekiQueryService(gateway, router, validation);
         var m4 = new M4SemanticService(gateway, router, new M4QueryTemplateRegistry());
+        var workspace = new ProjectWorkspaceQueryService(gateway, router);
         var application = Javalin.create(config -> {
+            config.routes.before(context ->
+                    gateway.setCorrelation(context.header("X-Request-Id"), context.header("X-Operation-Id")));
+            config.routes.before(OperationEventLogger::started);
+            config.routes.after(OperationEventLogger::completed);
             config.routes.exception(RuntimeException.class, (exception, context) -> writeProblem(context, exception));
             config.routes
                     .get("/health/live", context -> context.status(200).json(new HealthResponse("live")))
@@ -39,6 +49,185 @@ public final class SemanticCoreApplication {
                         } else {
                             context.status(503).json(new HealthResponse("not-ready"));
                         }
+                    })
+                    .get("/v1/projects/catalog", context -> {
+                        trustedActorContext(context);
+                        var rawProjects = context.header("X-Projecta-Visible-Projects");
+                        if (rawProjects == null || rawProjects.isBlank()) {
+                            throw new IllegalArgumentException("visible project catalog is not configured");
+                        }
+                        var projects = Arrays.stream(rawProjects.split(",", -1))
+                                .map(String::trim)
+                                .filter(value -> !value.isBlank())
+                                .map(ProjectId::new)
+                                .distinct()
+                                .toList();
+                        var limit = boundedLimit(context.queryParam("limit"));
+                        var result = workspace.catalog(projects, limit);
+                        context.json(Map.of(
+                                "requestId", requestId(context),
+                                "catalogRevision", result.catalogRevision(),
+                                "projects", result.projects()));
+                    })
+                    .get("/v1/projects/{projectId}/overview", context -> {
+                        var trusted = trustedContext(context);
+                        var requested = new ProjectId(context.pathParam("projectId"));
+                        if (!requested.equals(trusted.projectId())) {
+                            throw new io.javalin.http.NotFoundResponse(
+                                    "project is not visible in the trusted project context");
+                        }
+                        var result = workspace.overview(requested, boundedLimit(context.queryParam("limit")));
+                        context.json(Map.of(
+                                "requestId", requestId(context),
+                                "project", result.project(),
+                                "currentRequirements", result.currentRequirements(),
+                                "openQuestions", result.openQuestions(),
+                                "tasks", result.tasks(),
+                                "blockers", result.blockers(),
+                                "risks", result.risks(),
+                                "recentNotes", result.recentNotes(),
+                                "pendingCandidates", result.pendingCandidates(),
+                                "evidenceCoverage", result.evidenceCoverage()));
+                    })
+                    .get("/v1/projects/{projectId}/notes", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        context.json(queries.notes(
+                                trusted.projectId(), boundedGraphLimit(context.queryParam("limit"), 1, 100, 50)));
+                    })
+                    .get("/v1/projects/{projectId}/notes/{noteHandle}", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        context.json(queries.note(trusted.projectId(), context.pathParam("noteHandle")));
+                    })
+                    .get("/v1/projects/{projectId}/graph", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        validateGraphFilters(context);
+                        context.json(queries.graph(
+                                trusted.projectId(),
+                                boundedGraphLimit(context.queryParam("nodeLimit"), 1, 100, 50),
+                                boundedGraphLimit(context.queryParam("edgeLimit"), 1, 200, 100)));
+                    })
+                    .get("/v1/projects/{projectId}/graph/neighborhood/{nodeHandle}", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        context.json(queries.neighborhood(
+                                trusted.projectId(),
+                                context.pathParam("nodeHandle"),
+                                boundedGraphLimit(context.queryParam("edgeLimit"), 1, 100, 100)));
+                    })
+                    .get("/v1/projects/{projectId}/graph/nodes/{nodeHandle}", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        context.json(queries.nodeDetail(trusted.projectId(), context.pathParam("nodeHandle")));
+                    })
+                    .get("/v1/projects/{projectId}/graph/nodes/{nodeHandle}/evidence", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        context.json(
+                                queries.graphLinks(trusted.projectId(), context.pathParam("nodeHandle"), "evidence"));
+                    })
+                    .get("/v1/projects/{projectId}/graph/nodes/{nodeHandle}/lifecycle", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        context.json(
+                                queries.graphLinks(trusted.projectId(), context.pathParam("nodeHandle"), "lifecycle"));
+                    })
+                    .get("/v1/projects/{projectId}/candidates", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        context.json(queries.candidates(
+                                trusted.projectId(), boundedGraphLimit(context.queryParam("limit"), 1, 100, 50)));
+                    })
+                    .get("/v1/projects/{projectId}/knowledge", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        context.json(queries.knowledge(
+                                trusted.projectId(), boundedGraphLimit(context.queryParam("limit"), 1, 100, 50)));
+                    })
+                    .get("/v1/projects/{projectId}/knowledge/{itemHandle}", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        var itemId =
+                                queries.resolveKnowledgeHandle(trusted.projectId(), context.pathParam("itemHandle"));
+                        var item = queries.current(trusted.projectId(), "Requirement").stream()
+                                .filter(row -> itemId.equals(opaqueIdentifier(row.get("item"))))
+                                .findFirst()
+                                .orElseThrow(() -> new ProjectScopedQueryService.ResourceNotFoundException(
+                                        "knowledge handle is not visible in this project"));
+                        context.json(item);
+                    })
+                    .get("/v1/projects/{projectId}/knowledge/{itemHandle}/evidence", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        var itemId =
+                                queries.resolveKnowledgeHandle(trusted.projectId(), context.pathParam("itemHandle"));
+                        context.json(Map.of("items", queries.evidence(trusted.projectId(), itemId)));
+                    })
+                    .post("/v1/projects/{projectId}/candidates/{candidateHandle}/validations", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        var candidateId = queries.resolveCandidateHandle(
+                                trusted.projectId(), context.pathParam("candidateHandle"));
+                        var result =
+                                queries.validateAndMarkValidated(trusted.projectId(), candidateId, trusted.actorId());
+                        if (!result.conforms()) throw new CandidateInvalidException(result);
+                        context.json(Map.of(
+                                "requestId", requestId(context),
+                                "candidateId", candidateId,
+                                "conforms", true,
+                                "violations", result.violations(),
+                                "validatedAt", java.time.OffsetDateTime.now().toString()));
+                    })
+                    .post("/v1/projects/{projectId}/candidates/{candidateHandle}/confirmations", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        var key = context.header("Idempotency-Key");
+                        var body = context.bodyAsClass(ConfirmationRequest.class);
+                        if (body.assertion() == null
+                                || !"Requirement".equals(body.assertion().type())) {
+                            throw new IllegalArgumentException("assertion type is not allowlisted");
+                        }
+                        var candidateId = queries.resolveCandidateHandle(
+                                trusted.projectId(), context.pathParam("candidateHandle"));
+                        var decision = lifecycle.confirmDecision(
+                                trusted.projectId(),
+                                candidateId,
+                                trusted.actorId(),
+                                key,
+                                body.assertion().label(),
+                                LocalDate.parse(body.assertion().validFrom()));
+                        context.status(decision.replayed() ? 200 : 201)
+                                .json(Map.of(
+                                        "requestId",
+                                        requestId(context),
+                                        "candidateId",
+                                        candidateId,
+                                        "decision",
+                                        "confirmed",
+                                        "assertedItemId",
+                                        opaqueIdentifier(decision.itemIri())));
+                    })
+                    .post("/v1/projects/{projectId}/candidates/{candidateHandle}/rejections", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        var key = context.header("Idempotency-Key");
+                        var body = context.bodyAsClass(RejectionRequest.class);
+                        var candidateId = queries.resolveCandidateHandle(
+                                trusted.projectId(), context.pathParam("candidateHandle"));
+                        var result = lifecycle.reject(
+                                trusted.projectId(), candidateId, trusted.actorId(), key, body.reason());
+                        context.status(result.replayed() ? 200 : 201)
+                                .json(Map.of(
+                                        "requestId",
+                                        requestId(context),
+                                        "candidateId",
+                                        candidateId,
+                                        "decision",
+                                        "rejected",
+                                        "reason",
+                                        result.reason()));
                     })
                     .post("/v1/quick-notes/captures", context -> {
                         var trusted = trustedContext(context);
@@ -201,6 +390,10 @@ public final class SemanticCoreApplication {
         return context.header("X-Request-Id") == null ? "unknown" : context.header("X-Request-Id");
     }
 
+    private static String operationId(io.javalin.http.Context context) {
+        return context.header("X-Operation-Id") == null ? "op-unknown" : context.header("X-Operation-Id");
+    }
+
     private static String opaqueIdentifier(String iri) {
         return iri.substring(iri.lastIndexOf('/') + 1);
     }
@@ -214,19 +407,39 @@ public final class SemanticCoreApplication {
         body.put("code", problem.code());
         body.put("detail", problem.detail());
         body.put("requestId", problem.requestId());
+        body.put("operationId", operationId(context));
+        context.header("X-Request-Id", problem.requestId());
+        context.header("X-Operation-Id", operationId(context));
         if (exception instanceof CandidateInvalidException invalid) {
             body.put("violations", invalid.result().violations());
         }
+        var outcome = problem.status() >= 500 ? "failed" : "rejected";
+        OperationEventLogger.failed(context, problem.status(), outcome, problem.code());
+        LOGGER.log(
+                Level.WARNING,
+                "projecta.semantic_core event=operation.failed requestId={0} operationId={1} status={2} code={3} outcome={4}",
+                new Object[] {problem.requestId(), operationId(context), problem.status(), problem.code(), outcome});
         context.status(problem.status()).json(body).contentType("application/problem+json");
     }
 
     private static TrustedProjectContext trustedContext(io.javalin.http.Context context) {
         try {
             return TrustedProjectContext.fromPrivateHeadersOrEnvironment(
-                    context.header("X-Projecta-Project-Id"), context.header("X-Projecta-Actor-Id"), System.getenv());
+                    context.header("X-Projecta-Project-Id"),
+                    context.header("X-Projecta-Actor-Id"),
+                    context.header("X-Operation-Id"),
+                    System.getenv());
         } catch (IllegalStateException exception) {
             throw new io.javalin.http.UnauthorizedResponse("trusted project context is required");
         }
+    }
+
+    private static TrustedActorContext trustedActorContext(io.javalin.http.Context context) {
+        var actor = context.header("X-Projecta-Actor-Id");
+        if (actor == null || actor.isBlank()) {
+            throw new io.javalin.http.UnauthorizedResponse("trusted actor context is required");
+        }
+        return new TrustedActorContext(actor, operationId(context));
     }
 
     private record ConfirmationRequest(Assertion assertion) {}
@@ -242,6 +455,87 @@ public final class SemanticCoreApplication {
             return limit;
         } catch (NumberFormatException exception) {
             throw new IllegalArgumentException("query limit must be an integer", exception);
+        }
+    }
+
+    private static int boundedGraphLimit(String raw, int minimum, int maximum, int fallback) {
+        try {
+            int limit = raw == null ? fallback : Integer.parseInt(raw);
+            if (limit < minimum || limit > maximum) {
+                throw new IllegalArgumentException("graph limit is outside the released bounds");
+            }
+            return limit;
+        } catch (NumberFormatException exception) {
+            throw new IllegalArgumentException("graph limit must be an integer", exception);
+        }
+    }
+
+    private static void requireProjectPath(io.javalin.http.Context context, TrustedProjectContext trusted) {
+        if (!trusted.projectId().value().equals(context.pathParam("projectId"))) {
+            throw new io.javalin.http.NotFoundResponse("project is not visible in the trusted project context");
+        }
+    }
+
+    private static void validateGraphFilters(io.javalin.http.Context context) {
+        allowlistedCsv(
+                context.queryParam("semanticTypes"),
+                java.util.Set.of(
+                        "Project",
+                        "Note",
+                        "NoteItem",
+                        "Requirement",
+                        "Decision",
+                        "Question",
+                        "Task",
+                        "Risk",
+                        "Assumption",
+                        "Constraint",
+                        "ProgressClaim",
+                        "ResearchFinding",
+                        "Person",
+                        "Candidate",
+                        "SourceArtifact"));
+        allowlistedCsv(
+                context.queryParam("relationTypes"),
+                java.util.Set.of(
+                        "implements",
+                        "blocks",
+                        "dependsOn",
+                        "supports",
+                        "answers",
+                        "resolves",
+                        "constrainedBy",
+                        "supersedes",
+                        "derivedFrom",
+                        "hasNoteItem",
+                        "belongsToProject",
+                        "evidenceFor",
+                        "provenanceFor"));
+        allowlistedCsv(
+                context.queryParam("verificationStates"),
+                java.util.Set.of("candidate", "asserted", "inferred", "unverified"));
+        allowlistedCsv(
+                context.queryParam("lifecycleStates"),
+                java.util.Set.of(
+                        "current", "pending-review", "confirmed", "rejected", "superseded", "retracted", "stale"));
+        allowlistedCsv(
+                context.queryParam("provenanceStates"),
+                java.util.Set.of("source-backed", "human-confirmed", "rule-derived", "candidate-proposed"));
+        var evidence = context.queryParam("evidence");
+        if (evidence != null
+                && !java.util.Set.of("any", "with-evidence", "without-evidence").contains(evidence)) {
+            throw new IllegalArgumentException("graph evidence filter is not allowlisted");
+        }
+        var revision = context.queryParam("projectionRevision");
+        if (revision != null && !revision.matches("[a-zA-Z0-9._-]{1,128}")) {
+            throw new IllegalArgumentException("graph projection revision is invalid");
+        }
+    }
+
+    private static void allowlistedCsv(String raw, java.util.Set<String> allowed) {
+        if (raw == null || raw.isBlank()) return;
+        for (var value : raw.split(",", -1)) {
+            if (!allowed.contains(value)) throw new IllegalArgumentException("graph filter is not allowlisted");
         }
     }
 }

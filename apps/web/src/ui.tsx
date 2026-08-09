@@ -6,6 +6,50 @@ export function Card({ children, className = "" }: { children: ReactNode; classN
   return <section className={`card ${className}`}>{children}</section>;
 }
 
+export function Toolbar({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return <div className={`toolbar ${className}`}>{children}</div>;
+}
+
+export function Breadcrumbs({ children }: { children: ReactNode }) {
+  return (
+    <nav aria-label="Breadcrumb" className="metadata">
+      {children}
+    </nav>
+  );
+}
+
+export function EmptyState({
+  title,
+  children,
+  action,
+}: {
+  title: string;
+  children: ReactNode;
+  action?: ReactNode;
+}) {
+  return (
+    <div className="state-message empty">
+      <strong>{title}</strong>
+      <div>{children}</div>
+      {action}
+    </div>
+  );
+}
+
+export function Skeleton({ count = 3 }: { count?: number }) {
+  return (
+    <div aria-label="Loading" aria-live="polite" className="result-stack" role="status">
+      {Array.from({ length: count }, (_, index) => (
+        <div className="skeleton" key={index} />
+      ))}
+    </div>
+  );
+}
+
+export function StatusBadge({ status, label = status }: { status: string; label?: string }) {
+  return <span className={`status-badge ${status}`}>{label}</span>;
+}
+
 export function StateMessage({
   kind,
   children,

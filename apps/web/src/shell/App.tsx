@@ -1,35 +1,27 @@
 import { type ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 
 import { ProjectaApiClient } from "../api/client";
-import type { LiveResponse, ReadyResponse } from "../api/generated";
-import { CaptureScreen } from "../screens/CaptureScreen";
+import type { LiveResponse, ProjectCatalogItem, ReadyResponse } from "../api/generated";
 import { DiagnosticsScreen } from "../screens/DiagnosticsScreen";
-import { ExtractionScreen } from "../screens/ExtractionScreen";
-import { KnowledgeScreen } from "../screens/KnowledgeScreen";
+import { NotesScreen } from "../screens/NotesScreen";
+import { GraphScreen } from "../screens/GraphScreen";
+import { ProjectOverviewScreen } from "../screens/ProjectOverviewScreen";
+import { ProjectsScreen } from "../screens/ProjectsScreen";
 import { QuestionScreen } from "../screens/QuestionScreen";
 import { ReviewScreen } from "../screens/ReviewScreen";
 import { SettingsScreen } from "../screens/SettingsScreen";
-import { ErrorMessage, StateMessage } from "../ui";
-
-const navigation = [
-  "Overview",
-  "Extract",
-  "Capture",
-  "Review",
-  "Knowledge",
-  "Q&A",
-  "Settings",
-  "Diagnostics",
-] as const;
-type Screen = (typeof navigation)[number];
+import { WorkspaceHeader } from "./WorkspaceHeader";
+import { navigationGroups, type Screen } from "./navigation";
+import { EmptyState, ErrorMessage } from "../ui";
 
 export function App(): ReactElement {
   const api = useMemo(() => new ProjectaApiClient(), []);
-  const [active, setActive] = useState<Screen>("Overview");
+  const [active, setActive] = useState<Screen>("Projects");
+  const [activeProject, setActiveProject] = useState<ProjectCatalogItem | null>(null);
+  const [selectionRevision, setSelectionRevision] = useState("");
   const [health, setHealth] = useState<LiveResponse | null>(null);
   const [readiness, setReadiness] = useState<ReadyResponse | null>(null);
   const [healthError, setHealthError] = useState<unknown>(null);
-  const [candidateId, setCandidateId] = useState("");
 
   const loadHealth = useCallback(async () => {
     try {
@@ -50,21 +42,50 @@ export function App(): ReactElement {
     void loadHealth();
   }, [loadHealth]);
 
-  const openReview = (id: string) => {
-    setCandidateId(id);
-    setActive("Review");
+  const changeProject = () => {
+    setActiveProject(null);
+    setSelectionRevision("");
+    setActive("Projects");
+  };
+  const selectProject = (project: ProjectCatalogItem, revision: string) => {
+    setActiveProject(project);
+    setSelectionRevision(revision);
+    setActive("Project Overview");
   };
 
   const screen = (() => {
     switch (active) {
-      case "Extract":
-        return <ExtractionScreen api={api} onCandidate={openReview} />;
-      case "Capture":
-        return <CaptureScreen api={api} onCandidate={openReview} />;
-      case "Review":
-        return <ReviewScreen api={api} initialCandidateId={candidateId} />;
-      case "Knowledge":
-        return <KnowledgeScreen api={api} />;
+      case "Projects":
+        return <ProjectsScreen api={api} onSelected={selectProject} />;
+      case "Project Overview":
+        return activeProject ? (
+          <ProjectOverviewScreen
+            api={api}
+            onChangeProject={changeProject}
+            onNavigate={setActive}
+            project={activeProject}
+          />
+        ) : (
+          <ProjectsScreen api={api} onSelected={selectProject} />
+        );
+      case "Notes":
+        return activeProject ? (
+          <NotesScreen api={api} projectHandle={activeProject.handle} />
+        ) : (
+          <ProjectsScreen api={api} onSelected={selectProject} />
+        );
+      case "Graph":
+        return activeProject ? (
+          <GraphScreen api={api} projectHandle={activeProject.handle} />
+        ) : (
+          <ProjectsScreen api={api} onSelected={selectProject} />
+        );
+      case "Review Queue":
+        return activeProject ? (
+          <ReviewScreen api={api} projectHandle={activeProject.handle} />
+        ) : (
+          <ProjectsScreen api={api} onSelected={selectProject} />
+        );
       case "Q&A":
         return <QuestionScreen api={api} />;
       case "Settings":
@@ -78,17 +99,10 @@ export function App(): ReactElement {
             onHealth={loadHealth}
           />
         );
-      default:
-        return (
-          <Overview
-            health={health}
-            healthError={healthError}
-            onRetry={loadHealth}
-            onNavigate={setActive}
-          />
-        );
     }
   })();
+
+  const scopedScreen = active !== "Projects" && activeProject !== null;
 
   return (
     <div className="app-shell">
@@ -96,12 +110,17 @@ export function App(): ReactElement {
         Skip to main content
       </a>
       <header className="topbar">
-        <div>
-          <p className="eyebrow">Project intelligence</p>
+        <div className="topbar-brand">
           <h1>Projecta</h1>
+          {activeProject && (
+            <div className="topbar-context">
+              <span>Project workspace</span>
+              <strong>{activeProject.name}</strong>
+            </div>
+          )}
         </div>
         <div className="topbar-status">
-          <span className="experience-badge">Local experience</span>
+          <span className="experience-badge">Server-owned context</span>
           <span className={health ? "health-pill healthy" : "health-pill unavailable"}>
             API {health ? "live" : "offline"}
           </span>
@@ -109,80 +128,56 @@ export function App(): ReactElement {
       </header>
       <div className="workspace">
         <nav aria-label="Primary navigation" className="sidebar">
-          {navigation.map((item) => (
-            <button
-              aria-current={active === item ? "page" : undefined}
-              className={active === item ? "nav-item active" : "nav-item"}
-              key={item}
-              onClick={() => setActive(item)}
-              type="button"
-            >
-              {item}
-            </button>
+          <button
+            className="sidebar-new"
+            onClick={() => {
+              setActive("Notes");
+            }}
+            type="button"
+          >
+            <span>+ New Note</span>
+          </button>
+          {navigationGroups.map((group) => (
+            <div className="sidebar-group" key={group.label}>
+              <div className="sidebar-label">{group.label}</div>
+              {group.items.map((item) => (
+                <button
+                  aria-current={active === item ? "page" : undefined}
+                  className={active === item ? "nav-item active" : "nav-item"}
+                  data-nav-short={item.slice(0, 1)}
+                  key={item}
+                  onClick={() => setActive(item)}
+                  type="button"
+                >
+                  <span className="nav-label">{item}</span>
+                </button>
+              ))}
+            </div>
           ))}
         </nav>
         <main className="main-content" id="main-content" tabIndex={-1}>
-          {screen}
-        </main>
-      </div>
-    </div>
-  );
-}
-
-function Overview({
-  health,
-  healthError,
-  onRetry,
-  onNavigate,
-}: {
-  health: LiveResponse | null;
-  healthError: unknown;
-  onRetry: () => Promise<void>;
-  onNavigate: (screen: Screen) => void;
-}): ReactElement {
-  return (
-    <div className="screen-grid">
-      <section aria-live="polite" className="hero-card">
-        <p className="eyebrow">Local project workspace</p>
-        <h2>Turn project notes into grounded knowledge.</h2>
-        <p>
-          Capture exact evidence, extract candidate knowledge, review Requirement assertions, and
-          ask bounded questions through the same-origin Application API.
-        </p>
-        <div className="overview-actions">
-          <button onClick={() => onNavigate("Extract")} type="button">
-            Start with extraction
-          </button>
-          <span className="metadata">
-            Browser context is server-owned; graph and provider internals stay hidden.
-          </span>
-        </div>
-      </section>
-      <div className="screen-grid two-column">
-        <section className="card">
-          <p className="eyebrow">Runtime</p>
-          <h3>{health ? "Application API is live" : "Application API unavailable"}</h3>
-          {health ? (
-            <StateMessage kind="success">
-              The local experience can call the typed API boundary.
-            </StateMessage>
-          ) : (
-            <>
-              {healthError !== null && <ErrorMessage error={healthError} />}
-              <button className="secondary" onClick={() => void onRetry()} type="button">
-                Retry liveness
-              </button>
-            </>
+          {scopedScreen && activeProject && (
+            <WorkspaceHeader
+              onChangeProject={changeProject}
+              project={activeProject}
+              selectionRevision={selectionRevision}
+            />
           )}
-        </section>
-        <section className="card">
-          <p className="eyebrow">Safety boundary</p>
-          <h3>Server-owned experience</h3>
-          <p className="muted">
-            Trusted project context, LLM credentials, Semantic Core, Fuseki, graph IRIs, and
-            arbitrary queries are not browser capabilities.
-          </p>
-        </section>
+          {!activeProject && active !== "Projects" && (
+            <EmptyState
+              title="Project selection required"
+              action={
+                <button onClick={() => setActive("Projects")} type="button">
+                  Open Projects
+                </button>
+              }
+            >
+              Choose a project before opening a scoped workspace.
+            </EmptyState>
+          )}
+          {activeProject || active === "Projects" ? screen : null}
+          {healthError !== null && active === "Diagnostics" && <ErrorMessage error={healthError} />}
+        </main>
       </div>
     </div>
   );

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build Databricks-style UI"
+  short_description: "Build dense, polished data-workspace interfaces"
+  default_prompt: "Use $build-databricks-ui to redesign this React interface as a polished data workspace."

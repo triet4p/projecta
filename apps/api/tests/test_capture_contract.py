@@ -75,6 +75,7 @@ async def test_link_context_read_is_project_scoped_and_bounded() -> None:
 
     assert response.status_code == 200
     assert response.headers["X-Request-Id"] == "req-01"
+    assert response.headers["X-Operation-Id"]
     assert response.json() == {
         "requestId": "req-01",
         "entities": [

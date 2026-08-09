@@ -31,7 +31,7 @@ const operationIds = Object.values(snapshot.paths)
 const generatedIds = operationIds
   .map((operationId) => `  ${JSON.stringify(operationId)},`)
   .join("\n");
-const output = `/** Generated from docs/architecture/application-api.sprint7.openapi.json. */\nexport const apiContractVersion = ${JSON.stringify(snapshot.info.version)} as const;\nexport const generatedOperationIds = [\n${generatedIds}\n] as const;\n`;
+const output = `/** Generated from docs/architecture/application-api.sprint7.openapi.json (Sprint 8 contract). */\nexport const apiContractVersion = ${JSON.stringify(snapshot.info.version)} as const;\nexport const generatedOperationIds = [\n${generatedIds}\n] as const;\n`;
 
 if (process.argv.includes("--check")) {
   const current = await readFile(outputPath, "utf8").catch(() => "");

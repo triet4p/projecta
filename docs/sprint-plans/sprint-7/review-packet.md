@@ -1,9 +1,17 @@
-# Sprint 7 review packet — pending human approval
+# Sprint 7 review packet — human approval recorded
 
-Status: `READY_FOR_HUMAN_REVIEW`
+Status: `APPROVED`
 Scope: S7-36 through S7-46
-Decision gate: S7-47 remains pending. This packet is evidence for review, not
-product or security acceptance.
+Decision gate: S7-47 / G0 is approved by explicit human confirmation on
+2026-08-09. This approval records the product/security acceptance decision; the
+validation limitations below remain visible and are not converted into passing
+evidence.
+
+## Approval record
+
+- Decision: `APPROVE G0`
+- Scope: Sprint 7 product and security acceptance boundary
+- Approval source: explicit user confirmation in the Codex task
 
 ## Delivered boundary
 
@@ -55,7 +63,8 @@ Compose config checks passed.
 
 ## Known limitations and risks
 
-- S7-47 product/security acceptance has not happened.
+- S7-47 product/security acceptance is approved; the evidence limitations below
+  remain open risks for follow-up.
 - Browser-facing knowledge, history, and evidence responses now use allowlisted
   opaque projections; RDF IRIs and raw provider-shaped payloads are not part of
   the public UI contract.
@@ -69,12 +78,11 @@ Compose config checks passed.
 - The production profile requires immutable `WEB_IMAGE`, `API_IMAGE`, and
   Semantic Core image references; no deployment secret manager integration is
   introduced in this sprint.
-- A clean real-Compose Playwright run, plus human inspection of the trust and
-  secret boundary, must be attached by the approver before M5 is marked
-  complete.
+- A clean real-Compose Playwright run and human inspection of the trust and
+  secret boundary remain attached evidence requirements for the final M5 record;
+  their pending status does not change the recorded G0 approval.
 
-## Approval request
+## Approval outcome
 
-Human reviewer should run the documented critical journey, inspect the secret
-boundary and generated contract, and either approve M5 or return a concrete
-revision request. Until then, S7-47 and M5 remain incomplete.
+The human reviewer explicitly approved G0. M5 completion still requires the
+remaining evidence to be attached and any unresolved limitations to be tracked.

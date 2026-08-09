@@ -28,6 +28,7 @@ build-backend = "hatchling.build"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
+markers = ["local_contract: repository-source contract checks excluded from container runtime suites"]
 
 [tool.ruff]
 line-length = 100

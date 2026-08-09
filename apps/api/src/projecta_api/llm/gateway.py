@@ -16,6 +16,9 @@ GatewayErrorClass = Literal[
     "provider_failure",
     "configuration_invalid",
     "schema_invalid",
+    "empty_malformed",
+    "refusal",
+    "policy_rejection",
     "invalid_evidence",
     "hallucinated_link",
     "cross_project_link",
@@ -34,6 +37,9 @@ class GatewayRequest(BaseModel):
     user_prompt: str = Field(min_length=1, max_length=200_000, alias="userPrompt")
     response_schema: Mapping[str, object] = Field(alias="responseSchema")
     timeout_seconds: float = Field(gt=0, le=120, default=10.0, alias="timeoutSeconds")
+    request_id: str = Field(default="request-unknown", max_length=128, alias="requestId")
+    operation_id: str = Field(default="operation-unknown", max_length=128, alias="operationId")
+    profile_revision: str = Field(default="unknown", max_length=128, alias="profileRevision")
 
 
 class GatewayResponse(BaseModel):

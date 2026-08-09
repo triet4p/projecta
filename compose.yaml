@@ -78,6 +78,7 @@ services:
       - /scripts/bootstrap_fuseki.py
     environment:
       FUSEKI_DATASET_URL: http://fuseki:3030/projecta
+      PROJECTA_BOOTSTRAP_ACCEPTANCE_PROJECTS: ${PROJECTA_BOOTSTRAP_ACCEPTANCE_PROJECTS:-}
     restart: "no"
 
   semantic-core:
@@ -97,6 +98,7 @@ services:
       interval: 5s
       timeout: 3s
       retries: 12
+      start_period: 10s
 
   api:
     build:
@@ -112,8 +114,8 @@ services:
       PROJECTA_API_RUNTIME_MODE: ${PROJECTA_API_RUNTIME_MODE:-headless}
       PROJECTA_API_OPERATIONAL_DATABASE_PATH: /var/lib/projecta/operational.db
       PROJECTA_API_SECRET_STORE_MASTER_KEY: ${PROJECTA_API_SECRET_STORE_MASTER_KEY:?PROJECTA_API_SECRET_STORE_MASTER_KEY must be set}
-      PROJECTA_API_EXPERIENCE_PROJECT_ID: ${PROJECTA_API_EXPERIENCE_PROJECT_ID:-local-project}
-      PROJECTA_API_EXPERIENCE_ACTOR_ID: ${PROJECTA_API_EXPERIENCE_ACTOR_ID:-local-user}
+      PROJECTA_API_EXPERIENCE_ACTOR_ID: ${PROJECTA_API_EXPERIENCE_ACTOR_ID:-}
+      PROJECTA_API_EXPERIENCE_PROJECT_CATALOG: ${PROJECTA_API_EXPERIENCE_PROJECT_CATALOG:-}
       PROJECTA_LLM_TYPE: ${PROJECTA_LLM_TYPE:-}
       PROJECTA_LLM_BASE_URL: ${PROJECTA_LLM_BASE_URL:-}
       PROJECTA_LLM_API_KEY: ${PROJECTA_LLM_API_KEY:-}
@@ -123,10 +125,11 @@ services:
     expose:
       - "8000"
     healthcheck:
-      test: ["CMD", "python", "-c", "from urllib.request import urlopen; assert urlopen('http://127.0.0.1:8000/health/live').status == 200"]
+      test: ["CMD", "python", "-c", "from urllib.request import urlopen; assert urlopen('http://127.0.0.1:8000/health/ready').status == 200"]
       interval: 5s
       timeout: 3s
       retries: 12
+      start_period: 15s
 
   web:
     profiles: ["web"]
@@ -226,10 +229,11 @@ services:
     volumes:
       - ./evaluation:/evaluation:ro
     healthcheck:
-      test: ["CMD", "python", "-c", "from urllib.request import urlopen; assert urlopen('http://127.0.0.1:8000/health/live').status == 200"]
+      test: ["CMD", "python", "-c", "from urllib.request import urlopen; assert urlopen('http://127.0.0.1:8000/health/ready').status == 200"]
       interval: 5s
       timeout: 3s
       retries: 12
+      start_period: 15s
     restart: "no"
 
   api-system-test:
@@ -238,7 +242,7 @@ services:
       context: ./apps/api
       target: test
     image: projecta-api:system-test
-    command: ["uv", "run", "pytest", "-q"]
+    command: ["uv", "run", "pytest", "-q", "-m", "not local_contract"]
     depends_on:
       api-runtime-test:
         condition: service_healthy

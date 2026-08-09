@@ -2,6 +2,7 @@ import type {
   Answer,
   CaptureRequest,
   CaptureResponse,
+  CandidateEditOptionsResponse,
   ConnectionCheckRequest,
   ConnectionCheckResponse,
   ConfirmationRequest,
@@ -10,17 +11,35 @@ import type {
   ExtractionResult,
   InferenceRebuildResponse,
   CandidateHistoryResponse,
+  CandidateQueueResponse,
   EvidenceResponse,
+  GraphEvidenceResponse,
+  GraphLifecycleResponse,
+  GraphNodeDetail,
+  GraphProjectionResponse,
+  KnowledgeCollectionResponse,
   KnowledgeItemsResponse,
   LLMProfileRemove,
   LLMProfileWrite,
   LiveResponse,
   Problem,
   ProjectContextQuestion,
+  ProjectCatalogResponse,
+  ProjectOverviewResponse,
+  ProjectReadResponse,
+  ProjectSelectionRequest,
+  ProjectSelectionResponse,
   ReadyResponse,
   RejectionRequest,
   ValidationResult,
   SettingsProfileResponse,
+  StructuredCandidateEditRequest,
+  StructuredCandidateEditResponse,
+  StructuredNoteDetail,
+  StructuredNoteDraftInput,
+  StructuredNoteDraftResponse,
+  StructuredNoteImportResponse,
+  StructuredNoteListResponse,
 } from "./generated";
 
 export class ApiError extends Error {
@@ -42,6 +61,148 @@ export class ProjectaApiClient {
 
   async getReadiness(): Promise<ReadyResponse> {
     return this.request<ReadyResponse>("/health/ready", { method: "GET" });
+  }
+
+  async listProjects(limit = 50): Promise<ProjectCatalogResponse> {
+    return this.request<ProjectCatalogResponse>(`/v1/projects?limit=${limit}`, { method: "GET" });
+  }
+
+  async readProject(handle: string): Promise<ProjectReadResponse> {
+    return this.request<ProjectReadResponse>(`/v1/projects/${encodeURIComponent(handle)}`, {
+      method: "GET",
+    });
+  }
+
+  async selectProject(payload: ProjectSelectionRequest): Promise<ProjectSelectionResponse> {
+    return this.request<ProjectSelectionResponse>("/v1/projects/selection", {
+      method: "POST",
+      body: payload,
+    });
+  }
+
+  async getProjectOverview(handle: string): Promise<ProjectOverviewResponse> {
+    return this.request<ProjectOverviewResponse>(
+      `/v1/projects/${encodeURIComponent(handle)}/overview`,
+      { method: "GET" },
+    );
+  }
+
+  async getProjectGraph(
+    handle: string,
+    filters: {
+      nodeLimit?: number;
+      edgeLimit?: number;
+      semanticTypes?: string[];
+      verificationStates?: string[];
+      lifecycleStates?: string[];
+      provenanceStates?: string[];
+      relationTypes?: string[];
+      evidence?: "any" | "with-evidence" | "without-evidence";
+      projectionRevision?: string;
+    } = {},
+    signal?: AbortSignal,
+  ): Promise<GraphProjectionResponse> {
+    const query = new URLSearchParams();
+    query.set("nodeLimit", String(filters.nodeLimit ?? 50));
+    query.set("edgeLimit", String(filters.edgeLimit ?? 100));
+    for (const key of [
+      "semanticTypes",
+      "verificationStates",
+      "lifecycleStates",
+      "provenanceStates",
+      "relationTypes",
+    ] as const) {
+      if (filters[key]?.length) query.set(key, filters[key]!.join(","));
+    }
+    if (filters.evidence) query.set("evidence", filters.evidence);
+    if (filters.projectionRevision) query.set("projectionRevision", filters.projectionRevision);
+    return this.request<GraphProjectionResponse>(
+      `/v1/projects/${encodeURIComponent(handle)}/graph?${query.toString()}`,
+      { method: "GET", signal },
+    );
+  }
+
+  async expandGraphNode(
+    handle: string,
+    nodeHandle: string,
+    projectionRevision?: string,
+  ): Promise<GraphProjectionResponse> {
+    const query = projectionRevision
+      ? `?projectionRevision=${encodeURIComponent(projectionRevision)}`
+      : "";
+    return this.request<GraphProjectionResponse>(
+      `/v1/projects/${encodeURIComponent(handle)}/graph/neighborhood/${encodeURIComponent(nodeHandle)}${query}`,
+      { method: "GET" },
+    );
+  }
+
+  async getGraphNodeDetail(handle: string, nodeHandle: string): Promise<GraphNodeDetail> {
+    return this.request<GraphNodeDetail>(
+      `/v1/projects/${encodeURIComponent(handle)}/graph/nodes/${encodeURIComponent(nodeHandle)}`,
+      { method: "GET" },
+    );
+  }
+
+  async getGraphEvidence(handle: string, nodeHandle: string): Promise<GraphEvidenceResponse> {
+    return this.request<GraphEvidenceResponse>(
+      `/v1/projects/${encodeURIComponent(handle)}/graph/nodes/${encodeURIComponent(nodeHandle)}/evidence`,
+      { method: "GET" },
+    );
+  }
+
+  async getGraphLifecycle(handle: string, nodeHandle: string): Promise<GraphLifecycleResponse> {
+    return this.request<GraphLifecycleResponse>(
+      `/v1/projects/${encodeURIComponent(handle)}/graph/nodes/${encodeURIComponent(nodeHandle)}/lifecycle`,
+      { method: "GET" },
+    );
+  }
+
+  async listCandidateQueue(handle: string, limit = 50): Promise<CandidateQueueResponse> {
+    return this.request<CandidateQueueResponse>(
+      `/v1/projects/${encodeURIComponent(handle)}/candidates?status=pending-review&limit=${limit}`,
+      { method: "GET" },
+    );
+  }
+
+  async validateSelectedCandidate(
+    projectHandle: string,
+    candidateHandle: string,
+  ): Promise<ValidationResult> {
+    return this.request<ValidationResult>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/candidates/${encodeURIComponent(candidateHandle)}/validations`,
+      { method: "POST" },
+    );
+  }
+
+  async confirmSelectedCandidate(
+    projectHandle: string,
+    candidateHandle: string,
+    payload: ConfirmationRequest,
+    idempotencyKey: string,
+  ): Promise<DecisionResponse> {
+    return this.request<DecisionResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/candidates/${encodeURIComponent(candidateHandle)}/confirmations`,
+      { method: "POST", body: payload, idempotencyKey },
+    );
+  }
+
+  async rejectSelectedCandidate(
+    projectHandle: string,
+    candidateHandle: string,
+    payload: RejectionRequest,
+    idempotencyKey: string,
+  ): Promise<DecisionResponse> {
+    return this.request<DecisionResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/candidates/${encodeURIComponent(candidateHandle)}/rejections`,
+      { method: "POST", body: payload, idempotencyKey },
+    );
+  }
+
+  async listKnowledgeCollection(handle: string, limit = 50): Promise<KnowledgeCollectionResponse> {
+    return this.request<KnowledgeCollectionResponse>(
+      `/v1/projects/${encodeURIComponent(handle)}/knowledge?type=Requirement&limit=${limit}`,
+      { method: "GET" },
+    );
   }
 
   async readLlmProfile(): Promise<SettingsProfileResponse> {
@@ -98,6 +259,89 @@ export class ProjectaApiClient {
       body: payload,
       idempotencyKey,
     });
+  }
+
+  async createNoteDraft(
+    projectHandle: string,
+    payload: StructuredNoteDraftInput,
+    idempotencyKey: string,
+  ): Promise<StructuredNoteDraftResponse> {
+    return this.request<StructuredNoteDraftResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/notes/drafts`,
+      { method: "POST", body: payload, idempotencyKey },
+    );
+  }
+
+  async updateNoteDraft(
+    projectHandle: string,
+    draftHandle: string,
+    payload: StructuredNoteDraftInput,
+    revision: number,
+  ): Promise<StructuredNoteDraftResponse> {
+    return this.request<StructuredNoteDraftResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/notes/drafts/${encodeURIComponent(draftHandle)}`,
+      { method: "PUT", body: payload, headers: { "If-Match": String(revision) } },
+    );
+  }
+
+  async commitNoteDraft(
+    projectHandle: string,
+    draftHandle: string,
+    idempotencyKey: string,
+  ): Promise<StructuredNoteDraftResponse> {
+    return this.request<StructuredNoteDraftResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/notes/drafts/${encodeURIComponent(draftHandle)}/commit`,
+      { method: "POST", idempotencyKey },
+    );
+  }
+
+  async listStructuredNotes(
+    projectHandle: string,
+    limit = 50,
+  ): Promise<StructuredNoteListResponse> {
+    return this.request<StructuredNoteListResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/notes?limit=${limit}`,
+      { method: "GET" },
+    );
+  }
+
+  async readStructuredNote(
+    projectHandle: string,
+    noteHandle: string,
+  ): Promise<StructuredNoteDetail> {
+    return this.request<StructuredNoteDetail>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/notes/${encodeURIComponent(noteHandle)}`,
+      { method: "GET" },
+    );
+  }
+
+  async importNoteText(
+    projectHandle: string,
+    rawText: string,
+    title?: string,
+  ): Promise<StructuredNoteImportResponse> {
+    return this.request<StructuredNoteImportResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/notes/import`,
+      { method: "POST", body: { rawText, ...(title ? { title } : {}) } },
+    );
+  }
+
+  async editStructuredCandidate(
+    projectHandle: string,
+    candidateHandle: string,
+    payload: StructuredCandidateEditRequest,
+  ): Promise<StructuredCandidateEditResponse> {
+    return this.request<StructuredCandidateEditResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/candidates/${encodeURIComponent(candidateHandle)}/edits`,
+      { method: "POST", body: payload },
+    );
+  }
+
+  async getCandidateEditOptions(projectHandle: string): Promise<CandidateEditOptionsResponse> {
+    return this.request<CandidateEditOptionsResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/candidate-edit-options`,
+      { method: "GET" },
+    );
   }
 
   async validateCandidate(candidateId: string): Promise<ValidationResult> {
@@ -178,9 +422,11 @@ export class ProjectaApiClient {
 
   private async request<T>(path: string, options: RequestOptions): Promise<T> {
     const requestId = crypto.randomUUID();
+    const operationId = crypto.randomUUID();
     const headers = new Headers(options.headers);
     headers.set("Accept", "application/json");
     headers.set("X-Request-Id", requestId);
+    headers.set("X-Operation-Id", operationId);
     if (options.body !== undefined) headers.set("Content-Type", "application/json");
     if (options.idempotencyKey !== undefined)
       headers.set("Idempotency-Key", options.idempotencyKey);
@@ -188,13 +434,29 @@ export class ProjectaApiClient {
       method: options.method,
       headers,
       body: options.body === undefined ? undefined : JSON.stringify(options.body),
+      signal: options.signal,
     });
-    const body: unknown = await response.json().catch(() => ({}));
-    if (!response.ok) {
-      throw new ApiError(
-        normalizeProblem(body, response.status, response.headers.get("X-Request-Id") ?? requestId),
-      );
+    const responseRequestId = response.headers.get("X-Request-Id");
+    if (!responseRequestId) {
+      throw contractError(requestId, "The API response did not include a request ID.");
     }
+    const contentType = response.headers.get("content-type") ?? "";
+    if (
+      !contentType.includes("application/json") &&
+      !contentType.includes("application/problem+json")
+    ) {
+      throw contractError(responseRequestId, "The API response content type is invalid.");
+    }
+    let body: unknown;
+    try {
+      body = await response.json();
+    } catch {
+      throw contractError(responseRequestId, "The API response was not valid JSON.");
+    }
+    if (!response.ok) {
+      throw new ApiError(normalizeProblem(body, response.status, responseRequestId));
+    }
+    validateSuccess(path, body, responseRequestId);
     return body as T;
   }
 }
@@ -204,18 +466,119 @@ interface RequestOptions {
   body?: unknown;
   headers?: HeadersInit;
   idempotencyKey?: string;
+  signal?: AbortSignal;
 }
 
 function normalizeProblem(body: unknown, status: number, requestId: string): Problem {
-  if (typeof body === "object" && body !== null && "code" in body && "detail" in body) {
+  if (
+    typeof body === "object" &&
+    body !== null &&
+    "type" in body &&
+    "title" in body &&
+    "status" in body &&
+    "code" in body &&
+    "detail" in body &&
+    "requestId" in body &&
+    typeof body.type === "string" &&
+    typeof body.title === "string" &&
+    body.status === status &&
+    typeof body.code === "string" &&
+    typeof body.detail === "string" &&
+    body.requestId === requestId
+  ) {
     return body as Problem;
   }
-  return {
-    type: "about:blank",
-    title: "Request failed",
-    status,
-    code: "HTTP_ERROR",
-    detail: "The Application API returned an unexpected error.",
+  throw contractError(
     requestId,
-  };
+    "The API error response did not match the published problem contract.",
+  );
+}
+
+function validateSuccess(path: string, body: unknown, requestId: string): void {
+  if (typeof body !== "object" || body === null || Array.isArray(body)) {
+    throw contractError(requestId, "The API success body is malformed.");
+  }
+  const value = body as Record<string, unknown>;
+  if (path === "/health/live") {
+    if (value.status !== "live")
+      throw contractError(requestId, "The liveness response is malformed.");
+    return;
+  }
+  if (path === "/health/ready") {
+    if (!(["ready", "not-ready"] as unknown[]).includes(value.status)) {
+      throw contractError(requestId, "The readiness response is malformed.");
+    }
+    return;
+  }
+  if (value.requestId !== requestId) {
+    throw contractError(requestId, "The API success response correlation is invalid.");
+  }
+  if (path === "/v1/projects/" || path.startsWith("/v1/projects?") || path === "/v1/projects") {
+    if (!Array.isArray(value.projects) || typeof value.catalogRevision !== "string") {
+      throw contractError(requestId, "The project catalog response is malformed.");
+    }
+  }
+  if (path.includes("/overview")) {
+    if (typeof value.handle !== "string" || !Array.isArray(value.currentRequirements)) {
+      throw contractError(requestId, "The project overview response is malformed.");
+    }
+  }
+  if (path === "/v1/projects/selection") {
+    if (typeof value.selectionRevision !== "string" || typeof value.project !== "object") {
+      throw contractError(requestId, "The project selection response is malformed.");
+    }
+  }
+  if (path.includes("/graph")) {
+    if (path.includes("/evidence") || path.includes("/lifecycle")) {
+      if (!Array.isArray(value.items))
+        throw contractError(requestId, "The graph link response is malformed.");
+    } else if (path.includes("/nodes/") && !path.includes("neighborhood")) {
+      if (typeof value.handle !== "string" || !Array.isArray(value.relations)) {
+        throw contractError(requestId, "The graph detail response is malformed.");
+      }
+    } else if (
+      !Array.isArray(value.nodes) ||
+      !Array.isArray(value.edges) ||
+      typeof value.stale !== "boolean"
+    ) {
+      throw contractError(requestId, "The graph projection response is malformed.");
+    }
+  }
+  if (
+    path.includes("/candidates?") &&
+    (!Array.isArray(value.candidates) || typeof value.stale !== "boolean")
+  ) {
+    throw contractError(requestId, "The candidate queue response is malformed.");
+  }
+  if (
+    path.includes("/knowledge?") &&
+    (!Array.isArray(value.items) || typeof value.stale !== "boolean")
+  ) {
+    throw contractError(requestId, "The knowledge collection response is malformed.");
+  }
+  const arrayRoutes = ["/v1/knowledge-items/current", "/v1/candidates/", "/v1/knowledge-items/"];
+  if (
+    (arrayRoutes.some((prefix) => path.startsWith(prefix)) && path.includes("history")) ||
+    path.includes("/evidence") ||
+    path.includes("/current")
+  ) {
+    if (!Array.isArray(value.items))
+      throw contractError(requestId, "The API collection response is malformed.");
+  }
+  if (path.includes("quick-notes")) {
+    if (typeof value.note !== "object" || !Array.isArray(value.candidates)) {
+      throw contractError(requestId, "The API note response is malformed.");
+    }
+  }
+}
+
+function contractError(requestId: string, detail: string): ApiError {
+  return new ApiError({
+    type: "https://w3id.org/projecta/problems/client-response-invalid",
+    title: "Client response contract invalid",
+    status: 502,
+    code: "CLIENT_RESPONSE_INVALID",
+    detail,
+    requestId,
+  });
 }

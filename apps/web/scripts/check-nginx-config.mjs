@@ -10,16 +10,23 @@ assert.ok(apiLocation, "nginx.conf must define the /v1/ API proxy location");
 
 const readTimeout = timeoutSeconds(apiLocation, "proxy_read_timeout");
 const sendTimeout = timeoutSeconds(apiLocation, "proxy_send_timeout");
-const minimumProxyBudgetSeconds = 181;
+const minimumProxyBudgetSeconds = 61;
 
 assert.ok(
   readTimeout >= minimumProxyBudgetSeconds,
-  `proxy_read_timeout must cover three 60-second provider attempts and retry overhead; received ${readTimeout}s`,
+  `proxy_read_timeout must cover the single bounded provider attempt; received ${readTimeout}s`,
 );
 assert.ok(
   sendTimeout >= minimumProxyBudgetSeconds,
   `proxy_send_timeout must cover the bounded extraction operation; received ${sendTimeout}s`,
 );
+
+assert.match(configuration, /log_format\s+projecta_json/);
+assert.match(configuration, /access_log\s+\/dev\/stdout\s+projecta_json/);
+assert.match(configuration, /error_log\s+\/dev\/stderr\s+warn/);
+assert.match(configuration, /"requestId"/);
+assert.match(configuration, /"operationId"/);
+assert.doesNotMatch(configuration, /\$request"/);
 
 console.log(`Nginx API proxy timeout budget verified: read=${readTimeout}s send=${sendTimeout}s`);
 

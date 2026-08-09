@@ -46,6 +46,22 @@ class QuickNoteCaptureServiceTest {
         assertTrue(gateway.updateCalled);
     }
 
+    @Test
+    void writesApprovedStructuredNoteTitleWithoutChangingLegacyCaptureDefaults() {
+        var gateway = new RecordingGateway();
+        var service = new QuickNoteCaptureService(
+                gateway, new GraphIriRouter(), (project, sources, candidates, provenance) -> {
+                    assertTrue(sources.contains("name> \"Structured title\""));
+                    return new CandidateValidationResult(true, List.of());
+                });
+        var request = new QuickNoteCaptureService.CaptureRequest(
+                "Structured title", "A", List.of(new QuickNoteCaptureService.Segment("task", 0, 1, "A")));
+
+        service.capture(new ProjectId("ecommerce-checkout"), "le", "capture-structured-title", request);
+
+        assertTrue(gateway.updateCalled);
+    }
+
     private static final class RecordingGateway extends FusekiGateway {
         private boolean updateCalled;
 

@@ -59,6 +59,7 @@ def project_evidence(payload: object, item_id: str) -> dict[str, object]:
                 "authorId": _opaque_id(row.get("authorId", row.get("author"))),
                 "reviewerId": _opaque_id(row.get("reviewerId", row.get("reviewer"))),
                 "evidenceText": _string(row.get("evidenceText", row.get("sourceText"))),
+                "sourceText": _string(row.get("sourceText", row.get("evidenceText"))),
                 "startOffset": _integer(row.get("startOffset")),
                 "endOffset": _integer(row.get("endOffset")),
             }

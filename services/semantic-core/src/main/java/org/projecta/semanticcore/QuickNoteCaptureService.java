@@ -46,8 +46,11 @@ public final class QuickNoteCaptureService {
     public CaptureResult capture(ProjectId project, String actor, String key, CaptureRequest request) {
         requireId(actor, "actor ID");
         requireKey(key);
-        if (request == null || request.rawText() == null) {
+        if (request == null || request.rawText() == null || request.title() == null) {
             throw new IllegalArgumentException("capture request is invalid");
+        }
+        if (request.title().isBlank() || request.title().length() > 512) {
+            throw new IllegalArgumentException("capture title is invalid");
         }
 
         var normalized = request.rawText().replace("\r\n", "\n").replace("\r", "\n");
@@ -64,7 +67,8 @@ public final class QuickNoteCaptureService {
         var attemptToken = UUID.randomUUID().toString();
         var now = OffsetDateTime.now().toString();
 
-        var sources = sourceTriples(project, actor, note, projectIri, normalized, request.segments(), now);
+        var sources =
+                sourceTriples(project, actor, note, projectIri, request.title(), normalized, request.segments(), now);
         var candidates = candidateTriples(project, noteId, projectIri, request.segments(), now);
         var provenance = provenanceTriples(
                 project, actor, noteId, projectIri, record, fingerprint, attemptToken, now, request.segments());
@@ -111,12 +115,13 @@ public final class QuickNoteCaptureService {
             String actor,
             String note,
             String projectIri,
+            String title,
             String rawText,
             List<Segment> segments,
             String now) {
         var triples = new StringBuilder("<" + projectIri + "> a <" + ONTOLOGY + "Project> . <" + projectIri
                 + "/person/" + actor + "> a <" + ONTOLOGY + "Person> . <" + note + "> a <" + ONTOLOGY
-                + "Note> ; <" + ONTOLOGY + "name> " + literal("Quick Note") + " ; <" + ONTOLOGY + "rawText> "
+                + "Note> ; <" + ONTOLOGY + "name> " + literal(title) + " ; <" + ONTOLOGY + "rawText> "
                 + literal(rawText)
                 + " ; <" + ONTOLOGY + "belongsToProject> <" + projectIri + "> ; <" + ONTOLOGY
                 + "authoredBy> <" + projectIri + "/person/" + actor + "> ; <" + ONTOLOGY + "recordedAt> "
@@ -345,7 +350,11 @@ public final class QuickNoteCaptureService {
 
     public record Segment(String type, int startOffset, int endOffset, String text) {}
 
-    public record CaptureRequest(String rawText, List<Segment> segments) {}
+    public record CaptureRequest(String title, String rawText, List<Segment> segments) {
+        public CaptureRequest(String rawText, List<Segment> segments) {
+            this("Quick Note", rawText, segments);
+        }
+    }
 
     public record CandidateResult(String id, String sourceItemId, String status) {}
 

@@ -89,6 +89,7 @@ def test_history_and_evidence_allowlist_only_opaque_ids_and_spans() -> None:
             "authorId": "alice",
             "reviewerId": "le",
             "evidenceText": "Confirm the address.",
+            "sourceText": "Confirm the address.",
             "startOffset": 0,
             "endOffset": 7,
         }

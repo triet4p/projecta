@@ -145,7 +145,7 @@ export function CaptureScreen({
       </Card>
       <Card>
         <p className="eyebrow">Result</p>
-        <h2>Candidate IDs</h2>
+        <h2>Reviewable candidates</h2>
         {!result && (
           <StateMessage kind="empty">
             Your captured note and candidates will appear here.
@@ -153,9 +153,7 @@ export function CaptureScreen({
         )}
         {result && (
           <div className="result-stack">
-            <p className="metadata">
-              Request {result.requestId} · note {result.note.id}
-            </p>
+            <p className="metadata">Request {result.requestId} · captured note ready for review</p>
             {result.candidates.map((candidate) => (
               <button
                 className="candidate-chip"
@@ -163,7 +161,7 @@ export function CaptureScreen({
                 onClick={() => onCandidate(candidate.id)}
                 type="button"
               >
-                Review {candidate.id} · {candidate.status}
+                Open review queue · {candidate.status}
               </button>
             ))}
           </div>

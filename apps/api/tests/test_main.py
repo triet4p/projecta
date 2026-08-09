@@ -24,6 +24,8 @@ async def test_live_health_returns_live() -> None:
 
     assert response.status_code == 200
     assert response.json() == {"status": "live"}
+    assert response.headers["X-Request-Id"]
+    assert response.headers["X-Operation-Id"]
 
 
 async def test_invalid_provider_evidence_is_not_reported_as_invalid_caller_input() -> None:
@@ -100,5 +102,49 @@ async def test_invalid_provider_evidence_is_not_reported_as_invalid_caller_input
             json=ExtractionRequest(rawText="source text").model_dump(mode="json", by_alias=True),
         )
 
+    assert response.status_code == 422
+    assert response.json()["code"] == "CANDIDATE_INVALID"
+    assert "wrong" not in response.text
+
+
+async def test_readiness_fails_closed_for_missing_deployment_configuration() -> None:
+    settings = Settings(_env_file=None)
+    transport = ASGITransport(app=create_app(settings=settings))
+
+    async with AsyncClient(transport=transport, base_url="http://testserver") as client:
+        response = await client.get("/health/ready")
+
     assert response.status_code == 503
-    assert response.json()["code"] == "SEMANTIC_CONTRACT_UNAVAILABLE"
+    assert response.json()["status"] == "not-ready"
+    assert response.json()["reasonCode"] == "CONFIGURATION_INVALID"
+    assert "TRUSTED_CONTEXT_CONFIGURATION_MISSING" in response.json()["problems"]
+
+
+async def test_readiness_does_not_synthesize_ready_for_injected_client_without_probe() -> None:
+    class InjectedClient:
+        async def capture(self, *args: object, **kwargs: object) -> object:
+            raise AssertionError
+
+        async def request(self, *args: object, **kwargs: object) -> object:
+            raise AssertionError
+
+        async def entity_link_context(self, *args: object, **kwargs: object) -> list[dict[str, str]]:
+            return []
+
+        async def ingest_extraction(self, *args: object, **kwargs: object) -> object:
+            raise AssertionError
+
+    settings = Settings(
+        trusted_context_secret="test-secret",
+        PROJECTA_LLM_TYPE="openai-response",
+        PROJECTA_LLM_BASE_URL="https://provider.example",
+        PROJECTA_LLM_API_KEY="test-key",
+        PROJECTA_LLM_MODEL="test-model",
+    )
+    transport = ASGITransport(app=create_app(settings=settings, semantic_client=InjectedClient()))
+
+    async with AsyncClient(transport=transport, base_url="http://testserver") as client:
+        response = await client.get("/health/ready")
+
+    assert response.status_code == 503
+    assert response.json()["reasonCode"] == "SEMANTIC_CORE_CONFIGURATION_INVALID"
