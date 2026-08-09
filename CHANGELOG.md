@@ -6,6 +6,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+### Fixed
+
+- Kept same-origin Quick Note extraction requests open across the API's bounded
+  provider retries so the UI receives the final result or sanitized API error
+  instead of an Nginx `504 Gateway Timeout` after 60 seconds.
+
 ## [0.3.0] - 2026-08-01
 
 ### Added

@@ -201,3 +201,21 @@ image that assumes a system Python binary after only `uv python install`.
 **Root cause:** Commands were grouped by task name rather than by the project boundary that owns their configuration. The Python toolchain resolves `pyproject.toml`, `uv.lock`, pytest configuration, and installed tools from `apps/api`; the web toolchain resolves `package.json`, lockfile, and scripts from `apps/web`; Compose and repository scripts belong at the repository root.
 **Fix / workaround:** Maintain an explicit command-to-directory matrix: run `uv sync`, `uv run ruff`, `uv run pyright`, and `uv run pytest` from `apps/api`; run `npm ci` and web npm scripts from `apps/web`; run `docker compose`, cross-project PowerShell scripts, and repository-wide checks from the repo root. Mirror the same `working-directory` declarations in CI and use checked exit-code wrappers for native commands.
 **Watch out for:** A command may work locally because of an activated environment or cached tool, while CI fails at project discovery. Before changing dependencies, verify the command's owning `pyproject.toml`/`package.json` and its working directory in both local scripts and workflow YAML.
+
+## [2026-08-09] Same-length provider and reverse-proxy timeouts produce premature 504s
+
+**Symptom:** Quick Note extraction returned an Nginx `504 Gateway Timeout` after
+60 seconds while the API liveness endpoint remained healthy and the extraction
+POST had no completed API access-log entry.
+**Root cause:** Each provider attempt had a 60-second timeout and the API allowed
+two bounded retries, but the same-origin Nginx proxy retained its default
+60-second read timeout. The proxy closed the browser request while the API was
+still completing or retrying the first provider attempt.
+**Fix / workaround:** Set `proxy_read_timeout` and `proxy_send_timeout` to 210
+seconds in the `/v1/` location, covering three 60-second attempts plus retry and
+downstream overhead, and enforce a minimum 181-second proxy budget with
+`npm run check:nginx-config`.
+**Watch out for:** Any change to provider attempt timeout, retry count, backoff,
+or an upstream proxy/load-balancer timeout must preserve an outer timeout larger
+than the complete bounded operation budget so API problem responses are not
+replaced by infrastructure-generated HTML errors.

@@ -184,6 +184,9 @@ Status legend: [ ] pending / [~] in progress / [x] done
 - [x] **S7-46 — Prepare the Sprint 7 review packet:** Tổng hợp architecture/security
   approvals, API/UI matrix, screenshots, test evidence, secret-leak evidence,
   known limitations và unresolved risks.
+- [x] **S7-46A — Align the web extraction timeout budget:** Giữ same-origin API
+  proxy mở qua bounded provider retry budget, thêm regression gate và bảo đảm UI
+  nhận result hoặc sanitized Application API problem thay vì Nginx 504 ở giây 60.
 - [ ] **S7-47 — Approve or revise M5:** Human chạy acceptance journey, review secret
   boundary và UI truthfulness; chỉ mark Sprint 7/M5 complete sau explicit product
   và security acceptance.
@@ -253,7 +256,7 @@ docs/sprint-plans/sprint-7/review-packet.md
 docs/use-cases/web-experience.md
 docs/sprint-plans/sprint-7/artifacts/task_S7-15_summary.md through task_S7-27_summary.md
 docs/sprint-plans/sprint-7/artifacts/task_S7-28_summary.md through task_S7-35_summary.md
-docs/sprint-plans/sprint-7/artifacts/task_S7-36_summary.md through task_S7-46_summary.md
+docs/sprint-plans/sprint-7/artifacts/task_S7-36_summary.md through task_S7-46A_summary.md
 apps/web/Dockerfile
 apps/web/nginx.conf
 apps/web/playwright.config.ts

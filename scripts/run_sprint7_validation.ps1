@@ -28,6 +28,7 @@ try {
     Invoke-CheckedCommand npm @("--prefix", "apps/web", "run", "typecheck")
     Invoke-CheckedCommand npm @("--prefix", "apps/web", "run", "lint")
     Invoke-CheckedCommand npm @("--prefix", "apps/web", "run", "test")
+    Invoke-CheckedCommand npm @("--prefix", "apps/web", "run", "check:nginx-config")
     Invoke-CheckedCommand npm @("--prefix", "apps/web", "run", "check:api-drift")
     Invoke-CheckedCommand npm @("--prefix", "apps/web", "run", "build")
     Write-Host "Configured Sprint 7 API and frontend validation commands completed."
