@@ -48,7 +48,7 @@ Status legend: [ ] pending / [~] in progress / [x] done
 - [x] **S9-16 — Automate SemVer tag releases:** Accept only `vA.B.C` tags, run
   all release gates, and publish GitHub Release notes from the matching
   changelog section.
-- [~] **S9-17 — Publish and verify v0.4.0:** Commit and push the release contract,
+- [x] **S9-17 — Publish and verify v0.4.0:** Commit and push the release contract,
   create the annotated tag, then verify the GitHub Actions run and public
   GitHub Release.
 
@@ -79,3 +79,6 @@ Status legend: [ ] pending / [~] in progress / [x] done
   journey `129 passed, 2 deselected`; Semantic Core `49 passed`; ontology
   `140/140`; the legacy confirmation route now forwards only the allowlisted
   Semantic Core assertion contract.
+- Publication: annotated tag `v0.4.0` resolves to release commit `0b36a3e`;
+  GitHub Actions run `31364894282` completed successfully and published the
+  public, non-prerelease GitHub Release on 2026-08-10.
