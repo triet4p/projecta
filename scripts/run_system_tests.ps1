@@ -7,6 +7,9 @@ $exitCode = 0
 $hadTrustedContextSecret = Test-Path Env:PROJECTA_API_TRUSTED_CONTEXT_SECRET
 $previousTrustedContextSecret = $env:PROJECTA_API_TRUSTED_CONTEXT_SECRET
 $runnerManagedSecret = $false
+$hadMasterKey = Test-Path Env:PROJECTA_API_SECRET_STORE_MASTER_KEY
+$previousMasterKey = $env:PROJECTA_API_SECRET_STORE_MASTER_KEY
+$runnerManagedMasterKey = $false
 $llmEnvironment = @{
     PROJECTA_LLM_TYPE = 'openai-response'
     PROJECTA_LLM_BASE_URL = 'https://system-test.invalid'
@@ -70,6 +73,18 @@ try {
         $runnerManagedSecret = $true
     }
 
+    if ([string]::IsNullOrWhiteSpace($env:PROJECTA_API_SECRET_STORE_MASTER_KEY)) {
+        $masterKeyBytes = New-Object byte[] 32
+        $masterKeyGenerator = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+        try {
+            $masterKeyGenerator.GetBytes($masterKeyBytes)
+        } finally {
+            $masterKeyGenerator.Dispose()
+        }
+        $env:PROJECTA_API_SECRET_STORE_MASTER_KEY = [Convert]::ToBase64String($masterKeyBytes).Replace('+', '-').Replace('/', '_')
+        $runnerManagedMasterKey = $true
+    }
+
     & docker compose @composeArgs --profile tools run --build --rm ontology-test
     if ($LASTEXITCODE -ne 0) { $exitCode = $LASTEXITCODE }
 
@@ -84,6 +99,13 @@ try {
     }
 }
 finally {
+    if ($exitCode -ne 0) {
+        Write-Error "System test failed with exit code $exitCode. Capturing service logs before cleanup." -ErrorAction Continue
+        & docker compose @composeArgs logs --no-color --tail 500 api-runtime-test semantic-core-runtime-test fuseki
+    }
+    & docker compose @composeArgs down --volumes --remove-orphans
+    if ($exitCode -eq 0 -and $LASTEXITCODE -ne 0) { $exitCode = $LASTEXITCODE }
+
     foreach ($entry in $previousLlmEnvironment.GetEnumerator()) {
         $path = "Env:$($entry.Key)"
         if ($entry.Value.Exists) {
@@ -99,8 +121,13 @@ finally {
             Remove-Item Env:PROJECTA_API_TRUSTED_CONTEXT_SECRET -ErrorAction SilentlyContinue
         }
     }
-    & docker compose @composeArgs down --volumes --remove-orphans
-    if ($exitCode -eq 0 -and $LASTEXITCODE -ne 0) { $exitCode = $LASTEXITCODE }
+    if ($runnerManagedMasterKey) {
+        if ($hadMasterKey) {
+            $env:PROJECTA_API_SECRET_STORE_MASTER_KEY = $previousMasterKey
+        } else {
+            Remove-Item Env:PROJECTA_API_SECRET_STORE_MASTER_KEY -ErrorAction SilentlyContinue
+        }
+    }
 }
 
 exit $exitCode

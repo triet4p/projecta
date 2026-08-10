@@ -126,6 +126,49 @@ async def test_capture_validates_exact_offsets_and_returns_opaque_ids() -> None:
     assert response.json()["candidates"][0]["id"] == "cand-01"
 
 
+async def test_legacy_confirmation_forwards_only_the_semantic_assertion_contract() -> None:
+    """API-only correction metadata must not leak into the finite Core payload."""
+
+    class RecordingCore(FakeSemanticCoreClient):
+        def __init__(self) -> None:
+            self.body: object | None = None
+
+        async def request(
+            self,
+            context: TrustedRequestContext,
+            method: str,
+            path: str,
+            body: object | None = None,
+            key: str | None = None,
+        ) -> object:
+            self.body = body
+            return {
+                "requestId": context.request_id,
+                "candidateId": "cand-01",
+                "decision": "confirmed",
+                "assertedItemId": "req-01",
+                "_projecta_http_status": 201,
+            }
+
+    core = RecordingCore()
+    app = create_app(_make_settings("test-secret"), core)
+    headers = app_headers() | {"Idempotency-Key": "confirm-01"}
+    body = {
+        "assertion": {
+            "type": "Requirement",
+            "label": "Confirm address",
+            "validFrom": "2026-07-31",
+        }
+    }
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        response = await client.post(
+            "/v1/candidates/cand-01/confirmations", headers=headers, json=body
+        )
+
+    assert response.status_code == 201
+    assert core.body == {"assertion": body["assertion"]}
+
+
 async def test_capture_rejects_mismatched_evidence_before_downstream_call() -> None:
     """An evidence range that does not reproduce segment text is invalid input."""
     app = create_app(_make_settings("test-secret"), FakeSemanticCoreClient())

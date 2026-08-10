@@ -233,3 +233,20 @@ remain outside the released scope.
 **Alternatives considered:** Continue using DeepSeek's undocumented `/responses` compatibility behavior, leave thinking enabled and only raise timeouts, or use DeepSeek beta strict tool calls as the extraction transport.
 **Reason:** A raw production-profile probe proved that `/responses` ignored `thinking.type=disabled`, spending 2,316 reasoning tokens for 61 final tokens, while DeepSeek's V4 documentation defines the thinking toggle and JSON output on Chat Completions. The beta tool-call route would add a beta endpoint and tool semantics that extraction does not need.
 **Consequences:** The provider-neutral gateway and local Pydantic validation remain unchanged, but DeepSeek structured output is JSON-valid rather than provider-enforced JSON-Schema-valid and therefore must fail closed on any schema mismatch, empty content, or token-limit truncation. SDK retries stay disabled and endpoint-specific behavior must remain isolated in the adapter.
+
+## [2026-08-10] Publish product releases only from exact SemVer tags
+
+**Decision:** Publish Projecta GitHub Releases only from annotated tags matching
+`vA.B.C`, after all component manifests, the dated changelog section, and the
+complete deterministic release gate agree with the tag version.
+**Alternatives considered:** Create releases manually from `main`, accept loose
+`v*` tags without validating their shape, generate notes only from commit
+messages, or publish before the Compose system journey completes.
+**Reason:** Projecta has independent API, web, Semantic Core, ontology, and
+Compose boundaries; a branch commit alone does not prove they identify or pass
+as the same product release. Changelog-authored notes also preserve the
+user-facing meaning that conventional commit subjects do not capture.
+**Consequences:** A release tag is immutable publication intent. The tag commit
+must retain a fresh Unreleased changelog section, declare one matching product
+version across component manifests, and pass API, web, Semantic Core, repository
+contract, ontology, and Compose system jobs before GitHub publication.

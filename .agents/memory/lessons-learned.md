@@ -335,3 +335,37 @@ metadata before strict domain validation. Reproduce the real adapter shape in
 both projection and HTTP route tests, then exercise every returned node handle.
 **Watch out for:** Private status/correlation metadata must be consumed at the
 transport boundary and never passed wholesale into `extra="forbid"` models.
+
+## [2026-08-10] Compose interpolation can fail before a test service starts
+
+**Symptom:** The clean system-test runner exited before creating any container
+because Compose required `PROJECTA_API_SECRET_STORE_MASTER_KEY`, even though the
+selected ontology test service did not consume that setting directly.
+**Root cause:** Compose interpolates required variables across the complete
+model before applying the selected profile/service. The runner generated only
+the trusted-context secret, and it also restored required variables before its
+final `compose down` command.
+**Fix / workaround:** Generate a process-scoped valid Fernet master key alongside
+the trusted-context secret, keep both variables set through Compose cleanup,
+then restore their exact prior environment state in `finally`.
+**Watch out for:** Every Compose acceptance script must satisfy all required
+model interpolation variables before its first Compose command and preserve
+them until the last cleanup command, including on failure paths.
+
+## [2026-08-10] API-only defaults can break a strict downstream payload
+
+**Symptom:** The real HTTP confirmation journey expected a finite `409`, but the
+API returned `503 SEMANTIC_CONTRACT_UNAVAILABLE` while Semantic Core logged only
+the operation start.
+**Root cause:** Pydantic materialized the API-only default
+`correctionRevision: 0`, and the legacy route forwarded the complete public
+request model to Semantic Core. Its strict Java request record accepted only
+`assertion`, so Javalin emitted a plain 500 response that the API correctly
+rejected as an invalid downstream contract.
+**Fix / workaround:** Build the private Semantic Core payload explicitly from
+the allowlisted `assertion` field and add a regression that asserts the exact
+forwarded body. Preserve failure-time Compose logs before cleanup so a transport
+normalization error can be traced to its originating boundary.
+**Watch out for:** Never forward a complete public DTO across a private service
+boundary when it contains defaults, UI metadata, or fields owned by another
+layer. Construct and test the downstream DTO field by field.

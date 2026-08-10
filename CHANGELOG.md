@@ -6,8 +6,16 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-08-10
+
 ### Added
 
+- Added governed LLM extraction with exact evidence spans, abstention,
+  candidate provenance, deterministic evaluation, and human review.
+- Added project-scoped retrieval, blockers, requirement history, evidence-backed
+  answers, and deterministic inference materialization.
+- Added the React workspace and user-managed provider configuration with
+  application-encrypted local secret storage and redacted diagnostics.
 - Added the repository-local `build-databricks-ui` skill with offline light and
   dark theme specifications, reusable React/CSS assets, page recipes, and a UI
   contract checker for dense data-workspace interfaces.
@@ -16,9 +24,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Added a dense workspace shell, searchable Projects screen, active-project
   header, and project overview collections with loading, empty, and error
   states.
+- Added structured Note composition, assisted import, browsing, correction,
+  Graph exploration, Review Queue, and accessible companion tables.
+- Added tag-driven GitHub releases that validate `vA.B.C`, component versions,
+  release notes, and the complete release gate before publication.
 
 ### Fixed
 
+- Prevented API-only confirmation correction metadata from leaking into the
+  Semantic Core payload and surfacing as a misleading `503`.
 - Made Assisted Import execute exactly one bounded provider request with hidden
   SDK retries disabled, an absolute deadline, finite output, truthful token
   telemetry, and DeepSeek thinking disabled through its documented contract.
@@ -26,6 +40,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   sanitized timeout errors instead of mismatched success headers or HTML 504s.
 - Restored existing structured Notes and manual candidates in Graph and Review
   Queue, including node-detail selection, without rewriting persisted RDF.
+
+### Security
+
+- Updated Playwright, Vite, and Vitest to patched releases and added a high
+  severity dependency-audit gate to tag-driven publication.
 
 ## [0.3.0] - 2026-08-01
 

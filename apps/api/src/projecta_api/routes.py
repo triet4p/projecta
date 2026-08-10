@@ -953,7 +953,7 @@ def create_router(
             context,
             "POST",
             f"/v1/candidates/{candidate_id}/confirmations",
-            payload.model_dump(mode="json", by_alias=True),
+            {"assertion": payload.assertion.model_dump(mode="json", by_alias=True)},
             idempotency_key,
         )
         result = _preserve_core_status(response, result)

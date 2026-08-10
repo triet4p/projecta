@@ -1,0 +1,135 @@
+name: Projecta release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Test release contract
+        run: python -m unittest discover -s scripts/tests -p "test_*.py"
+      - name: Validate tag, versions, and changelog
+        run: python scripts/check_release_contract.py --tag "$GITHUB_REF_NAME"
+
+  api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.8.17"
+      - run: uv sync --locked --all-groups
+        working-directory: apps/api
+      - run: uv run ruff check .
+        working-directory: apps/api
+      - run: uv run pyright
+        working-directory: apps/api
+      - run: uv run pytest -q
+        working-directory: apps/api
+
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.8.17"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - run: uv sync --locked --all-groups
+        working-directory: apps/api
+      - run: npm ci
+        working-directory: apps/web
+      - run: npm audit --audit-level=high
+        working-directory: apps/web
+      - run: npm run check:api-drift
+        working-directory: apps/web
+      - run: npm run typecheck
+        working-directory: apps/web
+      - run: npm run lint
+        working-directory: apps/web
+      - run: npm test
+        working-directory: apps/web
+      - run: npm run check:nginx-config
+        working-directory: apps/web
+      - run: npm run build
+        working-directory: apps/web
+
+  semantic-core:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - run: mvn --batch-mode verify
+        working-directory: services/semantic-core
+
+  repository-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify UI contract
+        run: node .agents/skills/build-databricks-ui/scripts/check-ui-contract.mjs apps/web/src/styles.css
+      - name: Reject implicit behavior
+        shell: pwsh
+        run: ./scripts/check_sprint8_implicit_behaviors.ps1
+      - name: Verify Compose health contract
+        shell: pwsh
+        run: ./scripts/check_sprint8_health_contract.ps1
+      - name: Verify repository whitespace
+        run: git diff --check
+
+  system:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run ontology and Compose system tests
+        shell: pwsh
+        run: ./scripts/run_system_tests.ps1
+
+  publish:
+    needs: [release-contract, api, web, semantic-core, repository-contracts, system]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Render release notes
+        run: python scripts/check_release_contract.py --tag "$GITHUB_REF_NAME" --notes-output release-notes.md
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release edit "$GITHUB_REF_NAME" --title "Projecta ${GITHUB_REF_NAME#v}" --notes-file release-notes.md
+          else
+            gh release create "$GITHUB_REF_NAME" --verify-tag --title "Projecta ${GITHUB_REF_NAME#v}" --notes-file release-notes.md
+          fi

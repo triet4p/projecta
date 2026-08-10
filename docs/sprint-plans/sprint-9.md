@@ -43,6 +43,14 @@ Status legend: [ ] pending / [~] in progress / [x] done
 - [x] **S9-14 — Restore node-detail selection:** Reproduce the correlated
   node-click failure, align detail projection with every released Graph node
   shape, and verify Note, NoteItem, and candidate selections end to end.
+- [x] **S9-15 — Cut the Projecta 0.4.0 version:** Align component manifests,
+  freeze the user-facing changelog section, and retain a fresh Unreleased area.
+- [x] **S9-16 — Automate SemVer tag releases:** Accept only `vA.B.C` tags, run
+  all release gates, and publish GitHub Release notes from the matching
+  changelog section.
+- [~] **S9-17 — Publish and verify v0.4.0:** Commit and push the release contract,
+  create the annotated tag, then verify the GitHub Actions run and public
+  GitHub Release.
 
 ## Notes / Blockers
 
@@ -67,3 +75,7 @@ Status legend: [ ] pending / [~] in progress / [x] done
 - Node-detail recovery: all 7 existing Graph nodes return HTTP 200 through the
   public API after private Semantic Core transport metadata is removed before
   strict domain validation. API validation is now `127 passed, 3 skipped`.
+- Release validation: API `128 passed, 3 skipped`; clean-volume Compose API
+  journey `129 passed, 2 deselected`; Semantic Core `49 passed`; ontology
+  `140/140`; the legacy confirmation route now forwards only the allowlisted
+  Semantic Core assertion contract.

@@ -97,7 +97,7 @@ def create_app(
             timeout_seconds=90.0,
         )
     retrieval = RetrievalService(client)
-    app = FastAPI(title="Projecta Application API", version="0.1.0")
+    app = FastAPI(title="Projecta Application API", version="0.4.0")
     app.state.settings = actual_settings
     app.state.startup_problems = startup_problems
     app.state.runtime_configuration = configuration
