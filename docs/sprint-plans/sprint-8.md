@@ -2,12 +2,13 @@
 
 ## Status
 
-**Implementation authorized after G1 approval — S8-12 onward.**
+**Completed — M6 approved on 2026-08-10.**
 
 The Sprint 8 architecture/security/semantic packet received explicit human
 approval for S8-11/G1 on 2026-08-09. This authorizes implementation under the
-approved boundaries; it does not release ontology changes or authorize
-unreviewed semantic additions.
+approved boundaries. S8-69/M6 received explicit human acceptance on 2026-08-10;
+this completion does not release ontology changes or authorize unreviewed
+semantic additions.
 
 ## Sprint Goal
 
@@ -388,7 +389,7 @@ Status legend: [ ] pending / [~] in progress / [x] done
       ontology status, API/UI matrix, screenshots, graph limits, migration evidence,
       failure-injection logs, secret-leak evidence, validation results, and unresolved
       risks.
-- [ ] **S8-69 — Approve or revise M6:** Human completes the acceptance journeys and
+- [x] **S8-69 — Approve or revise M6:** Human completes the acceptance journeys and
       explicitly approves product truthfulness, project isolation, graph semantics,
       structured Note meaning, error behavior, and release readiness before Sprint 8
       or any ontology version is marked complete.

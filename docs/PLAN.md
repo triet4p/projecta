@@ -26,7 +26,7 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   Containerized React web experience cho Quick Note, candidate review,
   evidence-backed retrieval và user-managed LLM configuration qua secret
   boundary được review.
-- [ ] **M6 — Truthful Multi-Project Graph Experience (Sprint 8):** Fail-explicit
+- [x] **M6 — Truthful Multi-Project Graph Experience (Sprint 8):** Fail-explicit
   runtime diagnostics, polished light/dark data-workspace UI, project
   catalog/navigation, finite graph projection và structured Note Composer không
   yêu cầu người dùng nhập opaque ID.
@@ -51,21 +51,22 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   2026-08-04; governed v0.5 inference snapshots, content-addressed Fuseki-backed
   retrieval/inference, grounded API answers, evaluation, and clean Compose
   acceptance passed.*
+- [Sprint 8 — Truthful Multi-Project Graph and Structured Notes](sprint-plans/sprint-8.md)
+  — *Completed 2026-08-10; M6 human-approved after fail-explicit, project
+  isolation, bounded Graph, structured Note, full regression, clean Compose,
+  and production UI acceptance evidence.*
 
 ## Active Sprints
 
 - [Sprint 7 — Web Experience and User-Managed Runtime Configuration](sprint-plans/sprint-7.md)
   — *Implementation in progress; S7-15–S7-27 complete, workflow screens and
   S7-36–S7-46 complete; S7-47 human product/security approval remains.*
-- [Sprint 8 — Truthful Multi-Project Graph and Structured Notes](sprint-plans/sprint-8.md)
-  — *G1 architecture/security/semantic approval recorded on 2026-08-09;
-  implementation authorized from S8-12 under the approved boundaries.*
 
 ## Planned Sprints
 
 - **Sprint 9+:** Connector evolution, authentication/authorization, security và
-  production hardening after the Sprint 8 interaction and truthfulness boundary
-  is accepted.
+  production hardening after the accepted Sprint 8 interaction and truthfulness
+  boundary.
 
 ## Backlog / Future Work
 

@@ -1,18 +1,17 @@
 # Sprint 8 Architecture, Security, and Semantic Review Packet
 
-**Status:** `READY_FOR_HUMAN_ACCEPTANCE`
+**Status:** `HUMAN_APPROVED`
 
-**Gate:** S8-69 / M6 — explicit human acceptance remains required before Sprint
-8 is marked complete.
+**Gate:** S8-69 / M6 — approved by explicit human acceptance on 2026-08-10.
 
 **Prepared:** 2026-08-10
 
-**Human approval recorded:** 2026-08-09 — user approved S8-11/G1 for
-implementation under the exact boundaries and checklist below.
+**Human approvals recorded:** 2026-08-09 — S8-11/G1 implementation boundary;
+2026-08-10 — S8-69/M6 product and release-readiness acceptance.
 
-This packet consolidates S8-01 through S8-68. The earlier G1/S8-11 approval is
-preserved as implementation authority for its exact boundaries; this packet is
-not itself M6 approval, a release, deployment, ontology approval,
+This packet consolidates S8-01 through S8-69. The earlier G1/S8-11 approval is
+preserved as implementation authority for its exact boundaries, and the later
+S8-69 approval closes M6. It is not a deployment, ontology release,
 authentication claim, or permission to mutate shared data.
 
 ## Decision summary
@@ -246,18 +245,18 @@ overview hierarchy and companion empty states.
 
 ## S8-69 human acceptance checklist
 
-- [ ] Execute or review the clean-volume production web-image journey and
+- [x] Execute or review the clean-volume production web-image journey and
   correlated logs.
-- [ ] Approve product truthfulness: empty, stale, abstained, unavailable, and
+- [x] Approve product truthfulness: empty, stale, abstained, unavailable, and
   error states remain distinguishable.
-- [ ] Approve project isolation and server-owned selection behavior.
-- [ ] Approve bounded graph semantics, graph/table parity, evidence, lifecycle,
+- [x] Approve project isolation and server-owned selection behavior.
+- [x] Approve bounded graph semantics, graph/table parity, evidence, lifecycle,
   provenance, and freshness distinctions.
-- [ ] Approve structured Note meaning, source-evidence preservation, and
+- [x] Approve structured Note meaning, source-evidence preservation, and
   candidate/review separation.
-- [ ] Approve finite error behavior, correlation, retry/recovery policy, and
+- [x] Approve finite error behavior, correlation, retry/recovery policy, and
   absence of prohibited fallbacks.
-- [ ] Approve release readiness for Sprint 8/M6.
+- [x] Approve release readiness for Sprint 8/M6.
 
-Until every item above is checked by a human, S8-69 remains pending and no
-Sprint 8 or ontology version is marked complete.
+Every S8-69 item above was accepted by the human reviewer on 2026-08-10.
+Sprint 8 and M6 are complete. No ontology version is released by this approval.
