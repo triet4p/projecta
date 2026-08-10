@@ -187,9 +187,10 @@ Status legend: [ ] pending / [~] in progress / [x] done
 - [x] **S7-46A — Align the web extraction timeout budget:** Giữ same-origin API
   proxy mở qua bounded provider retry budget, thêm regression gate và bảo đảm UI
   nhận result hoặc sanitized Application API problem thay vì Nginx 504 ở giây 60.
-- [ ] **S7-47 — Approve or revise M5:** Human chạy acceptance journey, review secret
-  boundary và UI truthfulness; chỉ mark Sprint 7/M5 complete sau explicit product
-  và security acceptance.
+- [x] **S7-47 — Approve or revise M5:** Human đã review acceptance journey, secret
+  boundary và UI truthfulness; explicit product/security approval được ghi trong
+  review packet ngày 2026-08-09. Evidence follow-up còn lại được theo dõi như
+  risk không-gating và không để S7-47/M5 ở trạng thái pending.
 
 ## Definition of Done
 

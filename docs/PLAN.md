@@ -22,10 +22,11 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   corrected live-quality gate passed twice consecutively after implementation,
   ontology and clean canonical Compose validation completed.
 - [x] **M4 — Retrieval and Coordination (Sprint 6):** Project-scoped queries, requirement history, blockers và evidence-backed answers.
-- [~] **M5 — Product Experience and Runtime Configuration (Sprint 7):**
+- [x] **M5 — Product Experience and Runtime Configuration (Sprint 7):**
   Containerized React web experience cho Quick Note, candidate review,
   evidence-backed retrieval và user-managed LLM configuration qua secret
-  boundary được review.
+  boundary được review và human-approved ngày 2026-08-09; evidence follow-up
+  còn lại được ghi nhận trong review packet như risk không-gating.
 - [x] **M6 — Truthful Multi-Project Graph Experience (Sprint 8):** Fail-explicit
   runtime diagnostics, polished light/dark data-workspace UI, project
   catalog/navigation, finite graph projection và structured Note Composer không
@@ -51,6 +52,9 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   2026-08-04; governed v0.5 inference snapshots, content-addressed Fuseki-backed
   retrieval/inference, grounded API answers, evaluation, and clean Compose
   acceptance passed.*
+- [Sprint 7 — Web Experience and User-Managed Runtime Configuration](sprint-plans/sprint-7.md)
+  — *Completed 2026-08-09; M5 product/security acceptance approved, with
+  remaining evidence follow-up tracked in the review packet.*
 - [Sprint 8 — Truthful Multi-Project Graph and Structured Notes](sprint-plans/sprint-8.md)
   — *Completed 2026-08-10; M6 human-approved after fail-explicit, project
   isolation, bounded Graph, structured Note, full regression, clean Compose,
@@ -62,15 +66,13 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 
 ## Active Sprints
 
-- [Sprint 7 — Web Experience and User-Managed Runtime Configuration](sprint-plans/sprint-7.md)
-  — *Implementation in progress; S7-15–S7-27 complete, workflow screens and
-  S7-36–S7-46 complete; S7-47 human product/security approval remains.*
+- No active sprint. M1–M6 are complete; M7 / Sprint 10+ remains planned.
 
 ## Planned Sprints
 
-- **Sprint 10+:** Connector evolution, authentication/authorization, security và
-  production hardening after the accepted Sprint 8 interaction and truthfulness
-  boundary.
+- **M7 / Sprint 10+:** Connector evolution, authentication/authorization,
+  security và production hardening after the accepted M5/M6 interaction and
+  truthfulness boundaries.
 
 ## Backlog / Future Work
 

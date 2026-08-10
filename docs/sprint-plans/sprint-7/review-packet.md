@@ -1,11 +1,14 @@
 # Sprint 7 review packet — human approval recorded
 
 Status: `APPROVED`
-Scope: S7-36 through S7-46
+Scope: S7-36 through S7-47 (including the G0 approval gate)
 Decision gate: S7-47 / G0 is approved by explicit human confirmation on
 2026-08-09. This approval records the product/security acceptance decision; the
-validation limitations below remain visible and are not converted into passing
-evidence.
+remaining validation limitations below stay visible as follow-up risks and are
+not converted into passing evidence.
+
+Milestone status: M5 complete by explicit approval; follow-up evidence does not
+reopen S7-47 or block the next milestone.
 
 ## Approval record
 
@@ -26,7 +29,7 @@ time.
 
 | Area | Evidence | Status |
 | --- | --- | --- |
-| Accessibility | Skip link, main landmark focus, semantic nav/buttons, labeled fields, live state/error announcements, narrow CSS layout | Implemented; browser runner evidence pending |
+| Accessibility | Skip link, main landmark focus, semantic nav/buttons, labeled fields, live state/error announcements, narrow CSS layout | Implemented; deterministic browser coverage passed; manual inspection follow-up |
 | Web image/Compose | `apps/web/Dockerfile`, `nginx.conf`, `web` profile, API/web health checks, production immutable image override | Production web image build and merged config passed; local-image real-stack acceptance passed before and after API/web restart |
 | Backend settings | `test_interactive_configuration.py`, runtime/environment adapter tests | Implemented and locally validated; first-run LLM bootstrap is optional, connection health persists, removal requires `confirm: true` |
 | Frontend unit state | `form-state.test.ts`, `workflows.test.ts`, `client.test.ts` | Implemented and locally validated |
@@ -34,8 +37,8 @@ time.
 | Browser E2E | `apps/web/tests/e2e/sprint7.spec.ts`, `playwright.config.ts`, deterministic route fixtures | Passed: 4 tests across desktop and narrow Chromium projects |
 | Real-stack browser E2E | `apps/web/tests/e2e/sprint7.real.spec.ts`, `playwright.real.config.ts` | Passed: 1 test before restart and 1 test after restart on local Compose images |
 | Clean Compose | `scripts/run_sprint7_acceptance.ps1`, `playwright.real.config.ts` | Services healthy; isolated containers/network cleaned after acceptance |
-| Secret leak regression | DOM/storage assertion in E2E plus `scripts/check_secret_leaks.ps1` | Configured; scan requires supplied test secret |
-| Compatibility/image | `scripts/run_sprint7_validation.ps1` plus production web Dockerfile/Compose override | Source checks run; Docker-dependent checks pending |
+| Secret leak regression | DOM/storage assertion in E2E plus `scripts/check_secret_leaks.ps1` | E2E assertions passed; credentialed scan follow-up requires a supplied test secret |
+| Compatibility/image | `scripts/run_sprint7_validation.ps1` plus production web Dockerfile/Compose override | Source checks, production web image build and merged Compose config passed |
 | Operations | local and operator runbooks | Complete |
 
 ## Validation evidence
@@ -64,7 +67,7 @@ Compose config checks passed.
 ## Known limitations and risks
 
 - S7-47 product/security acceptance is approved; the evidence limitations below
-  remain open risks for follow-up.
+  remain open follow-up risks and are not a pending M5 gate.
 - Browser-facing knowledge, history, and evidence responses now use allowlisted
   opaque projections; RDF IRIs and raw provider-shaped payloads are not part of
   the public UI contract.
@@ -78,11 +81,13 @@ Compose config checks passed.
 - The production profile requires immutable `WEB_IMAGE`, `API_IMAGE`, and
   Semantic Core image references; no deployment secret manager integration is
   introduced in this sprint.
-- A clean real-Compose Playwright run and human inspection of the trust and
-  secret boundary remain attached evidence requirements for the final M5 record;
-  their pending status does not change the recorded G0 approval.
+- The clean real-Compose Playwright runs and human trust/secret-boundary review
+  are recorded above. Manual accessibility inspection and the credentialed
+  secret-leak scan remain follow-up evidence items; they do not change the
+  recorded G0 approval.
 
 ## Approval outcome
 
-The human reviewer explicitly approved G0. M5 completion still requires the
-remaining evidence to be attached and any unresolved limitations to be tracked.
+The human reviewer explicitly approved G0 on 2026-08-09. S7-47 and M5 are
+complete; the remaining evidence items and unresolved limitations are tracked as
+follow-up risks without a production-ready claim.

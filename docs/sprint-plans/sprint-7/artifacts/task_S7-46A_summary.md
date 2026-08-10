@@ -38,4 +38,4 @@ seconds.
 
 - The API retains its existing three-attempt, 60-second-per-attempt bounded
   provider policy; this task changes only the outer web proxy budget.
-- S7-47 remains pending explicit human product and security acceptance.
+- At task completion, S7-47 remained pending explicit human product and security acceptance; the later approval is recorded in the review packet.

@@ -487,7 +487,7 @@ names or authorization to implement semantic changes.
 
 ## Notes / Blockers
 
-- Sprint 7 S7-47 remains a separate human acceptance gate. Sprint 8 audits and
+- Sprint 7 S7-47 was separately approved on 2026-08-09. Sprint 8 audits and
   proposals may start, but released Sprint 7 behavior must not be silently rewritten
   without compatibility evidence.
 - Multi-project selection without a production authentication provider is limited
