@@ -146,13 +146,7 @@ public final class FusekiQueryService {
         if (nodeLimit < 1 || nodeLimit > 100 || edgeLimit < 1 || edgeLimit > 200) {
             throw new IllegalArgumentException("graph limits are outside the released bounds");
         }
-        var nodeRows = rows(gateway.select(
-                "SELECT DISTINCT ?resource ?label ?type ?verificationState ?lifecycleState ?provenanceState WHERE { { GRAPH <"
-                        + router.route(project, GraphRole.ASSERTED)
-                        + "> { ?resource <http://www.w3.org/2000/01/rdf-schema#label> ?label ; a ?type . } BIND(\"asserted\" AS ?verificationState) BIND(\"current\" AS ?lifecycleState) BIND(\"source-backed\" AS ?provenanceState) } UNION { GRAPH <"
-                        + router.route(project, GraphRole.CANDIDATES)
-                        + "> { ?resource <http://www.w3.org/2000/01/rdf-schema#label> ?label ; a ?type . } BIND(\"candidate\" AS ?verificationState) BIND(\"pending-review\" AS ?lifecycleState) BIND(\"candidate-proposed\" AS ?provenanceState) } } ORDER BY ?resource LIMIT "
-                        + (nodeLimit + 1)));
+        var nodeRows = rows(gateway.select(graphNodeQuery(project, nodeLimit + 1)));
         var hasMore = nodeRows.size() > nodeLimit;
         var visibleRows = nodeRows.stream().limit(nodeLimit).toList();
         var nodes = new ArrayList<Map<String, Object>>();
@@ -236,10 +230,7 @@ public final class FusekiQueryService {
         if (limit < 1 || limit > 100) {
             throw new IllegalArgumentException("candidate limit is outside the released bounds");
         }
-        var rows = rows(gateway.select("SELECT DISTINCT ?candidate ?label ?status ?type WHERE { GRAPH <"
-                + router.route(project, GraphRole.CANDIDATES)
-                + "> { ?candidate <http://www.w3.org/2000/01/rdf-schema#label> ?label ; a ?type ; <"
-                + PROJECTA + "candidateStatus> ?status . } } ORDER BY ?candidate LIMIT " + (limit + 1)));
+        var rows = rows(gateway.select(manualAndEntityCandidateQuery(project, limit + 1)));
         var result = new ArrayList<Map<String, Object>>();
         for (var row : rows.stream().limit(limit).toList()) {
             result.add(Map.of(
@@ -462,14 +453,7 @@ public final class FusekiQueryService {
 
     private EdgeResult graphEdges(ProjectId project, Set<String> resources, int edgeLimit) {
         if (resources.isEmpty()) return new EdgeResult(List.of(), false);
-        var rows = rows(gateway.select("SELECT DISTINCT ?source ?target ?predicate WHERE { GRAPH <"
-                + router.route(project, GraphRole.ASSERTED)
-                + "> { ?source ?predicate ?target . VALUES ?predicate { <"
-                + PROJECTA + "implements> <" + PROJECTA + "blocks> <" + PROJECTA + "dependsOn> <"
-                + PROJECTA + "supports> <" + PROJECTA + "answers> <" + PROJECTA + "resolves> <"
-                + PROJECTA + "constrainedBy> <" + PROJECTA + "supersedes> <" + PROJECTA + "derivedFrom> <"
-                + PROJECTA + "hasNoteItem> <" + PROJECTA + "belongsToProject> <" + PROJECTA + "evidenceFor> <"
-                + PROJECTA + "provenanceFor> } } } ORDER BY ?source ?target LIMIT " + (edgeLimit + 1)));
+        var rows = rows(gateway.select(graphEdgeQuery(project, edgeLimit + 1)));
         var result = new ArrayList<Map<String, Object>>();
         for (var row : rows) {
             if (result.size() >= edgeLimit) break;
@@ -486,13 +470,197 @@ public final class FusekiQueryService {
                     "direction",
                     "source-to-target",
                     "verificationState",
-                    "asserted",
+                    required(row, "verificationState"),
                     "provenanceState",
-                    "source-backed",
+                    required(row, "provenanceState"),
                     "evidenceCount",
                     0));
         }
         return new EdgeResult(result, rows.size() > edgeLimit);
+    }
+
+    private String graphNodeQuery(ProjectId project, int limit) {
+        return """
+                SELECT DISTINCT ?resource ?label ?type ?verificationState ?lifecycleState ?provenanceState WHERE {
+                  { GRAPH <%s> {
+                      ?resource <http://www.w3.org/2000/01/rdf-schema#label> ?label ; a ?type .
+                    }
+                    BIND("asserted" AS ?verificationState)
+                    BIND("current" AS ?lifecycleState)
+                    BIND("source-backed" AS ?provenanceState)
+                  }
+                  UNION
+                  { GRAPH <%s> {
+                      ?resource a <%sNote> ; <%sname> ?label .
+                    }
+                    BIND(<%sNote> AS ?type)
+                    BIND("unverified" AS ?verificationState)
+                    BIND("current" AS ?lifecycleState)
+                    BIND("source-backed" AS ?provenanceState)
+                  }
+                  UNION
+                  { GRAPH <%s> {
+                      ?resource a <%sNoteItem> ; <%scontentText> ?label .
+                    }
+                    BIND(<%sNoteItem> AS ?type)
+                    BIND("unverified" AS ?verificationState)
+                    BIND("current" AS ?lifecycleState)
+                    BIND("source-backed" AS ?provenanceState)
+                  }
+                  UNION
+                  { %s
+                    BIND(?candidate AS ?resource)
+                    BIND("candidate" AS ?verificationState)
+                    BIND("pending-review" AS ?lifecycleState)
+                    BIND("candidate-proposed" AS ?provenanceState)
+                  }
+                }
+                ORDER BY ?resource
+                LIMIT %d
+                """.formatted(
+                        router.route(project, GraphRole.ASSERTED),
+                        router.route(project, GraphRole.SOURCES),
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        router.route(project, GraphRole.SOURCES),
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        manualAndEntityCandidatePattern(project),
+                        limit);
+    }
+
+    private String manualAndEntityCandidateQuery(ProjectId project, int limit) {
+        return """
+                SELECT DISTINCT ?candidate ?label ?status ?type WHERE {
+                  %s
+                }
+                ORDER BY ?candidate
+                LIMIT %d
+                """.formatted(manualAndEntityCandidatePattern(project), limit);
+    }
+
+    private String manualAndEntityCandidatePattern(ProjectId project) {
+        return """
+                { GRAPH <%s> {
+                    ?candidate a <%sCandidate> ;
+                      <%scandidateStatus> ?status ;
+                      <%sgenerator> "manual-quick-note-v0.3.0" ;
+                      <http://www.w3.org/ns/prov#wasDerivedFrom> ?source .
+                  }
+                  GRAPH <%s> {
+                    ?source <%scontentText> ?label ; <%shasItemType> ?itemType .
+                  }
+                  VALUES (?itemType ?type) {
+                    (<%srequirement> <%sRequirement>)
+                    (<%sdecision> <%sDecision>)
+                    (<%squestion> <%sQuestion>)
+                    (<%stask> <%sTask>)
+                    (<%srisk> <%sRisk>)
+                    (<%sassumption> <%sAssumption>)
+                    (<%sconstraint> <%sConstraint>)
+                    (<%sprogress-update> <%sProgressClaim>)
+                    (<%sresearch-need> <%sResearchFinding>)
+                  }
+                }
+                UNION
+                { GRAPH <%s> {
+                    ?candidate a <%sEntityCandidate> ;
+                      <%scandidateStatus> ?status ;
+                      <%sproposedLabel> ?label ;
+                      <%sproposedClass> ?type .
+                  }
+                }
+                """.formatted(
+                        router.route(project, GraphRole.CANDIDATES),
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        router.route(project, GraphRole.SOURCES),
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        router.route(project, GraphRole.CANDIDATES),
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA);
+    }
+
+    private String graphEdgeQuery(ProjectId project, int limit) {
+        return """
+                SELECT DISTINCT ?source ?target ?predicate ?verificationState ?provenanceState WHERE {
+                  { GRAPH <%s> {
+                      ?source ?predicate ?target .
+                      VALUES ?predicate {
+                        <%simplements> <%sblocks> <%sdependsOn> <%ssupports>
+                        <%sanswers> <%sresolves> <%sconstrainedBy> <%ssupersedes>
+                        <%sderivedFrom> <%sbelongsToProject> <%sevidenceFor> <%sprovenanceFor>
+                      }
+                    }
+                    BIND("asserted" AS ?verificationState)
+                    BIND("source-backed" AS ?provenanceState)
+                  }
+                  UNION
+                  { GRAPH <%s> { ?source <%shasNoteItem> ?target . }
+                    BIND(<%shasNoteItem> AS ?predicate)
+                    BIND("unverified" AS ?verificationState)
+                    BIND("source-backed" AS ?provenanceState)
+                  }
+                  UNION
+                  { GRAPH <%s> {
+                      ?source a <%sCandidate> ;
+                        <http://www.w3.org/ns/prov#wasDerivedFrom> ?target .
+                    }
+                    BIND(<%sderivedFrom> AS ?predicate)
+                    BIND("candidate" AS ?verificationState)
+                    BIND("candidate-proposed" AS ?provenanceState)
+                  }
+                }
+                ORDER BY ?source ?target
+                LIMIT %d
+                """.formatted(
+                        router.route(project, GraphRole.ASSERTED),
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        router.route(project, GraphRole.SOURCES),
+                        PROJECTA,
+                        PROJECTA,
+                        router.route(project, GraphRole.CANDIDATES),
+                        PROJECTA,
+                        PROJECTA,
+                        limit);
     }
 
     private static Map<String, Object> node(

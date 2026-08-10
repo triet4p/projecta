@@ -83,7 +83,7 @@ def create_app(
             None,
             client,
             None,
-            timeout_seconds=60.0,
+            timeout_seconds=90.0,
             configuration_provider=configuration,
             gateway_factory=gateway_factory,
         )
@@ -94,7 +94,7 @@ def create_app(
             ),
             client,
             actual_settings.llm_model,
-            timeout_seconds=60.0,
+            timeout_seconds=90.0,
         )
     retrieval = RetrievalService(client)
     app = FastAPI(title="Projecta Application API", version="0.1.0")

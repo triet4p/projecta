@@ -14,7 +14,7 @@ class OpenAIResponsesAnswerGateway:
     """OpenAI-compatible Responses adapter for opt-in wording evaluation only."""
 
     def __init__(self, *, base_url: str, api_key: str) -> None:
-        self._client = AsyncOpenAI(api_key=api_key, base_url=base_url)
+        self._client = AsyncOpenAI(api_key=api_key, base_url=base_url, max_retries=0)
 
     async def answer(self, question: str, verified_context: str, model: str) -> str:
         response = await self._client.responses.create(
@@ -25,7 +25,12 @@ class OpenAIResponsesAnswerGateway:
                 "format": {
                     "type": "json_schema",
                     "name": "m4_live_answer",
-                    "schema": {"type": "object", "properties": {"text": {"type": "string"}}, "required": ["text"], "additionalProperties": False},
+                    "schema": {
+                        "type": "object",
+                        "properties": {"text": {"type": "string"}},
+                        "required": ["text"],
+                        "additionalProperties": False,
+                    },
                     "strict": True,
                 }
             },

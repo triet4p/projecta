@@ -261,3 +261,77 @@ journey after restart before claiming clean-volume success.
 release acceptance should execute at least one real domain read through the
 production proxy and inspect correlated logs, including on the supported host
 shell.
+## [2026-08-10] A declared single attempt can still contain SDK retries
+
+**Symptom:** One Assisted Import stayed open until the 70-second proxy timeout,
+the provider dashboard charged three identical input payloads, output tokens
+were several times larger than input, and the browser received an HTML 504
+without the API correlation header.
+
+**Root cause:** OpenAI Python SDK 2.52.0 defaults to two retries, so Projecta's
+one-attempt resilience policy actually produced one initial request plus two
+hidden retries. The 60-second SDK timeout was slightly shorter than DeepSeek's
+65-second thinking response, and DeepSeek V4's undocumented `/responses`
+compatibility ignored `thinking.type=disabled`. Nginx also generated a request
+ID for logging but forwarded the possibly empty client header to the API.
+
+**Fix:** Set `max_retries=0` on every production SDK client and enforce one
+outer `asyncio.timeout` deadline. Route `deepseek-*` through the documented Chat
+Completions JSON contract with thinking disabled and a finite output cap. Make
+Assisted Import request only entities, have the server derive evidence offsets
+from exact text plus an explicit occurrence, and forward Nginx's canonical
+request/operation IDs. Keep the proxy budget just outside the API deadline and
+return correlated problem JSON for 504s.
+
+**Prevention:** AST-test every production `AsyncOpenAI` constructor for
+`max_retries=0`; test deadline cancellation, token-limit truncation, reasoning
+usage, proposal-only schema, deterministic evidence derivation, Nginx syntax,
+and correlation-header forwarding. A provider dashboard showing N identical
+cache/input counts is evidence of N outbound calls, not one unusually large
+call.
+
+## [2026-08-10] Proxy response correlation can diverge from server-owned context
+
+**Symptom:** The Projects catalog returned HTTP 200 with valid JSON, but the UI
+rejected it with `The API success response correlation is invalid`.
+**Root cause:** Experience middleware intentionally replaced the browser's
+correlation hint with a server-owned `experience-*` ID in the response body and
+upstream header. Nginx then hid that upstream header and replaced it with the
+browser ingress ID, so the header and body disagreed.
+**Fix / workaround:** Preserve the upstream `X-Request-Id` on every API-authored
+response. Add an ingress correlation header only inside the named Nginx location
+that authors proxy-timeout problem responses.
+**Watch out for:** Never apply `proxy_hide_header X-Request-Id` or a location-wide
+`add_header X-Request-Id` when an upstream service owns canonical correlation.
+Test the actual response header against the JSON `requestId`, not merely that
+both values exist independently.
+
+## [2026-08-10] Persisted RDF can disappear behind a mismatched read projection
+
+**Symptom:** A committed structured Note appeared in Notes and catalog counts
+reported three candidates, but Graph and Review Queue were both empty.
+**Root cause:** The writer stored Note labels as `name`, NoteItem labels as
+`contentText`, and manual candidate type/label through the source NoteItem. The
+read projection queried only asserted/candidate graphs and required every
+candidate to have its own `rdfs:label` and semantic RDF type.
+**Fix / workaround:** Project Note and NoteItem explicitly from the source graph,
+join manual candidates to their canonical source items, and map the released
+NoteItem type vocabulary to semantic candidate types. Keep the stored RDF
+unchanged and make the projection accept both manual and LLM candidate shapes.
+**Watch out for:** Persistence tests must exercise writer-to-reader compatibility
+against a real Fuseki dataset. Entity counts and isolated writer tests cannot
+prove that Graph or Review Queue can actually render the stored shape.
+
+## [2026-08-10] Transport metadata broke strict node-detail validation
+
+**Symptom:** Graph rendered correctly, but selecting any node returned HTTP 500
+and the UI displayed `The operation failed safely` with a correlation ID.
+**Root cause:** The private Semantic Core HTTP adapter appended
+`_projecta_http_status` to successful payloads. The node-detail projection spread
+the complete payload into `GraphNodeDetail`, whose Pydantic contract correctly
+forbids extra fields, so the internal transport field caused validation failure.
+**Fix / workaround:** Copy the node payload and remove the reserved transport
+metadata before strict domain validation. Reproduce the real adapter shape in
+both projection and HTTP route tests, then exercise every returned node handle.
+**Watch out for:** Private status/correlation metadata must be consumed at the
+transport boundary and never passed wholesale into `extra="forbid"` models.

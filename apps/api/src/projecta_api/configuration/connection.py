@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 from datetime import UTC, datetime
 from typing import Protocol
 
@@ -29,9 +30,11 @@ class OpenAIConnectionChecker:
             api_key=snapshot.api_key.get_secret_value(),
             base_url=snapshot.base_url,
             timeout=timeout_seconds,
+            max_retries=0,
         )
         try:
-            await client.models.list()
+            async with asyncio.timeout(timeout_seconds):
+                await client.models.list()
         except (APITimeoutError, TimeoutError):
             return ConnectionCheckResult(
                 status="unavailable",

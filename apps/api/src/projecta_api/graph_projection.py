@@ -352,7 +352,8 @@ def project_graph_page(
 
 def project_node_detail(payload: object, request_id: str, project_handle: str) -> GraphNodeDetail:
     outer = mapping(payload)
-    raw = mapping(outer["node"]) if "node" in outer else outer
+    raw = dict(mapping(outer["node"])) if "node" in outer else dict(outer)
+    raw.pop("_projecta_http_status", None)
     row = {
         **raw,
         "handle": _handle(raw, "handle", "node"),

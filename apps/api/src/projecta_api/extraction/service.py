@@ -21,8 +21,12 @@ from projecta_api.models import ExtractionRequest
 
 
 class ExtractionPersistence(Protocol):
-    async def entity_link_context(self, context: TrustedRequestContext, limit: int = 50) -> list[dict[str, str]]: ...
-    async def ingest_extraction(self, context: TrustedRequestContext, key: str, body: object) -> object: ...
+    async def entity_link_context(
+        self, context: TrustedRequestContext, limit: int = 50
+    ) -> list[dict[str, str]]: ...
+    async def ingest_extraction(
+        self, context: TrustedRequestContext, key: str, body: object
+    ) -> object: ...
 
 
 class ExtractionOrchestrator:
@@ -54,7 +58,9 @@ class ExtractionOrchestrator:
         started = monotonic()
         model_id = self._model_id or "unconfigured"
         try:
-            normalized, usage, model_id = await self._normalize(context, request)
+            normalized, usage, model_id = await self._normalize(
+                context, request, proposal_only=True
+            )
             self._emit_completed(context, normalized, usage, started)
             return normalized
         except Exception as exc:
@@ -78,7 +84,11 @@ class ExtractionOrchestrator:
             raise
 
     async def _normalize(
-        self, context: TrustedRequestContext, request: ExtractionRequest
+        self,
+        context: TrustedRequestContext,
+        request: ExtractionRequest,
+        *,
+        proposal_only: bool = False,
     ) -> tuple[ExtractionResponse, UsageMetadata | None, str]:
         operation_gateway = self._gateway
         model_id = self._model_id
@@ -91,22 +101,57 @@ class ExtractionOrchestrator:
         if operation_gateway is None or not model_id:
             from projecta_api.llm.gateway import NormalizedGatewayError
 
-            raise NormalizedGatewayError("configuration_invalid", "LLM model is not configured", retryable=False)
-        bounded = await self._semantic.entity_link_context(context)
+            raise NormalizedGatewayError(
+                "configuration_invalid", "LLM model is not configured", retryable=False
+            )
+        bounded = [] if proposal_only else await self._semantic.entity_link_context(context)
         system, user = build_extraction_prompt(
             request.raw_text,
-            ["Requirement", "Decision", "Question", "Task", "Risk", "Assumption", "Constraint", "ProgressClaim", "ResearchFinding"],
-            ["implements", "blocks", "dependsOn", "supports", "answers", "resolves", "constrainedBy"],
+            [
+                "Requirement",
+                "Decision",
+                "Question",
+                "Task",
+                "Risk",
+                "Assumption",
+                "Constraint",
+                "ProgressClaim",
+                "ResearchFinding",
+            ],
+            (
+                []
+                if proposal_only
+                else [
+                    "implements",
+                    "blocks",
+                    "dependsOn",
+                    "supports",
+                    "answers",
+                    "resolves",
+                    "constrainedBy",
+                ]
+            ),
             bounded,
         )
+        if proposal_only:
+            user += (
+                "\nAssisted import mode: return only entity proposals and an "
+                "abstention reason. Relations and links are not representable "
+                "in the Note composer and must not be emitted. For each evidence "
+                "object, quote exact source text and return its one-based occurrence "
+                "number in the whole note. The server derives offsets; do not return "
+                "startOffset or endOffset."
+            )
         gateway_result = await operation_gateway.extract(
             GatewayRequest(
                 schemaVersion=EXTRACTION_SCHEMA_VERSION,
                 modelId=model_id,
                 systemPrompt=system,
                 userPrompt=user,
-                responseSchema=_response_schema(),
+                responseSchema=_response_schema(proposal_only=proposal_only),
+                sourceText=request.raw_text if proposal_only else None,
                 timeoutSeconds=self._timeout_seconds,
+                maxOutputTokens=4_096,
                 requestId=context.request_id,
                 operationId=context.operation_id,
                 profileRevision=profile_revision,
@@ -134,6 +179,7 @@ class ExtractionOrchestrator:
                 latencyMs=int((monotonic() - started) * 1000),
                 inputTokens=usage.input_tokens if usage else None,
                 outputTokens=usage.output_tokens if usage else None,
+                reasoningTokens=usage.reasoning_tokens if usage else None,
                 entityCount=len(normalized.entities),
                 relationCount=len(normalized.relations),
                 linkCount=len(normalized.links),
@@ -163,33 +209,104 @@ class ExtractionOrchestrator:
         )
 
 
-def _response_schema() -> dict[str, object]:
+def _response_schema(*, proposal_only: bool = False) -> dict[str, object]:
     """Return a DeepSeek-compatible strict schema with every object field required."""
+    evidence_properties: dict[str, object]
+    evidence_required: list[str]
+    if proposal_only:
+        evidence_properties = {
+            "text": {"type": "string"},
+            "occurrence": {"type": "integer", "minimum": 1},
+        }
+        evidence_required = ["text", "occurrence"]
+    else:
+        evidence_properties = {
+            "startOffset": {"type": "integer"},
+            "endOffset": {"type": "integer"},
+            "text": {"type": "string"},
+        }
+        evidence_required = ["startOffset", "endOffset", "text"]
     evidence = {
         "type": "object",
-        "properties": {"startOffset": {"type": "integer"}, "endOffset": {"type": "integer"}, "text": {"type": "string"}},
-        "required": ["startOffset", "endOffset", "text"],
+        "properties": evidence_properties,
+        "required": evidence_required,
         "additionalProperties": False,
     }
     entity = {
         "type": "object",
-        "properties": {"type": {"type": "string", "enum": ["Requirement", "Decision", "Question", "Task", "Risk", "Assumption", "Constraint", "ProgressClaim", "ResearchFinding"]}, "label": {"type": "string"}, "evidence": evidence, "confidence": {"type": "number"}},
-        "required": ["type", "label", "evidence", "confidence"], "additionalProperties": False,
+        "properties": {
+            "type": {
+                "type": "string",
+                "enum": [
+                    "Requirement",
+                    "Decision",
+                    "Question",
+                    "Task",
+                    "Risk",
+                    "Assumption",
+                    "Constraint",
+                    "ProgressClaim",
+                    "ResearchFinding",
+                ],
+            },
+            "label": {"type": "string"},
+            "evidence": evidence,
+            "confidence": {"type": "number"},
+        },
+        "required": ["type", "label", "evidence", "confidence"],
+        "additionalProperties": False,
     }
     relation = {
         "type": "object",
-        "properties": {"predicate": {"type": "string", "enum": ["implements", "blocks", "dependsOn", "supports", "answers", "resolves", "constrainedBy"]}, "sourceEntityId": {"type": "string"}, "targetEntityId": {"type": "string"}, "evidence": evidence, "confidence": {"type": "number"}},
-        "required": ["predicate", "sourceEntityId", "targetEntityId", "evidence", "confidence"], "additionalProperties": False,
+        "properties": {
+            "predicate": {
+                "type": "string",
+                "enum": [
+                    "implements",
+                    "blocks",
+                    "dependsOn",
+                    "supports",
+                    "answers",
+                    "resolves",
+                    "constrainedBy",
+                ],
+            },
+            "sourceEntityId": {"type": "string"},
+            "targetEntityId": {"type": "string"},
+            "evidence": evidence,
+            "confidence": {"type": "number"},
+        },
+        "required": ["predicate", "sourceEntityId", "targetEntityId", "evidence", "confidence"],
+        "additionalProperties": False,
     }
     link = {
         "type": "object",
-        "properties": {"mention": {"type": "string"}, "targetEntityId": {"type": "string"}, "evidence": evidence, "confidence": {"type": "number"}},
-        "required": ["mention", "targetEntityId", "evidence", "confidence"], "additionalProperties": False,
+        "properties": {
+            "mention": {"type": "string"},
+            "targetEntityId": {"type": "string"},
+            "evidence": evidence,
+            "confidence": {"type": "number"},
+        },
+        "required": ["mention", "targetEntityId", "evidence", "confidence"],
+        "additionalProperties": False,
     }
+    properties: dict[str, object] = {
+        "entities": {"type": "array", "items": entity},
+        "abstentionReason": {"type": ["string", "null"]},
+    }
+    required = ["entities", "abstentionReason"]
+    if not proposal_only:
+        properties.update(
+            {
+                "relations": {"type": "array", "items": relation},
+                "links": {"type": "array", "items": link},
+            }
+        )
+        required = ["entities", "relations", "links", "abstentionReason"]
     return {
         "type": "object",
-        "properties": {"entities": {"type": "array", "items": entity}, "relations": {"type": "array", "items": relation}, "links": {"type": "array", "items": link}, "abstentionReason": {"type": ["string", "null"]}},
-        "required": ["entities", "relations", "links", "abstentionReason"],
+        "properties": properties,
+        "required": required,
         "additionalProperties": False,
     }
 
@@ -226,11 +343,25 @@ def _ingestion_body(raw_text: str, response: ExtractionResponse) -> dict[str, ob
         for item in data["entities"]
     ]
     relations = [
-        {"predicate": item["predicate"], "sourceEntityId": item["sourceEntityId"], "targetEntityId": item["targetEntityId"], "text": item["evidence"]["text"], "startOffset": item["evidence"]["startOffset"], "endOffset": item["evidence"]["endOffset"], "confidence": float(item["confidence"])}
+        {
+            "predicate": item["predicate"],
+            "sourceEntityId": item["sourceEntityId"],
+            "targetEntityId": item["targetEntityId"],
+            "text": item["evidence"]["text"],
+            "startOffset": item["evidence"]["startOffset"],
+            "endOffset": item["evidence"]["endOffset"],
+            "confidence": float(item["confidence"]),
+        }
         for item in data["relations"]
     ]
     links = [
-        {"mention": item["mention"], "targetEntityId": item["targetEntityId"], "startOffset": item["evidence"]["startOffset"], "endOffset": item["evidence"]["endOffset"], "confidence": float(item["confidence"])}
+        {
+            "mention": item["mention"],
+            "targetEntityId": item["targetEntityId"],
+            "startOffset": item["evidence"]["startOffset"],
+            "endOffset": item["evidence"]["endOffset"],
+            "confidence": float(item["confidence"]),
+        }
         for item in data["links"]
     ]
     return {

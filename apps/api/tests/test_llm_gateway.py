@@ -34,6 +34,20 @@ def test_gateway_request_has_bounded_timeout() -> None:
         )
 
 
+def test_gateway_request_has_bounded_output_budget() -> None:
+    with pytest.raises(ValidationError):
+        GatewayRequest.model_validate(
+            {
+                "schemaVersion": "m3.v1",
+                "modelId": "replay",
+                "systemPrompt": "system",
+                "userPrompt": "user",
+                "responseSchema": {"type": "object"},
+                "maxOutputTokens": 16_385,
+            }
+        )
+
+
 def test_normalized_gateway_error_exposes_only_safe_fields() -> None:
     error = NormalizedGatewayError("rate_limit", "provider request rate limited", retryable=True)
 

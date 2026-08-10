@@ -23,12 +23,18 @@ class ProviderAttemptEvent(BaseModel):
     latency_ms: int | None = Field(default=None, ge=0, alias="latencyMs")
     error_class: str | None = Field(default=None, max_length=64, alias="errorClass")
     retryable: bool = False
-    terminal_outcome: Literal["success", "failed"] | None = Field(default=None, alias="terminalOutcome")
+    terminal_outcome: Literal["success", "failed"] | None = Field(
+        default=None, alias="terminalOutcome"
+    )
     input_tokens: int | None = Field(default=None, ge=0, alias="inputTokens")
     output_tokens: int | None = Field(default=None, ge=0, alias="outputTokens")
+    reasoning_tokens: int | None = Field(default=None, ge=0, alias="reasoningTokens")
 
 
 def emit_provider_attempt_event(logger: logging.Logger, event: ProviderAttemptEvent) -> None:
     """Emit only the validated allowlist as structured logger metadata."""
 
-    logger.info("projecta.provider_attempt", extra={"projecta_provider_attempt": event.model_dump(mode="json", by_alias=True)})
+    logger.info(
+        "projecta.provider_attempt",
+        extra={"projecta_provider_attempt": event.model_dump(mode="json", by_alias=True)},
+    )

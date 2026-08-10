@@ -1,5 +1,6 @@
 """Provider adapter tests using a mocked OpenAI-compatible client boundary."""
 
+import asyncio
 from types import SimpleNamespace
 
 import pytest
@@ -18,6 +19,17 @@ def _request() -> GatewayRequest:
     )
 
 
+def _proposal_request() -> GatewayRequest:
+    return GatewayRequest(
+        schemaVersion="m3.v1",
+        modelId="deepseek-v4-flash",
+        systemPrompt="system",
+        userPrompt="user",
+        responseSchema={"type": "object", "properties": {}, "additionalProperties": False},
+        sourceText="same phrase then same phrase",
+    )
+
+
 def test_adapter_fails_closed_without_credential() -> None:
     with pytest.raises(NormalizedGatewayError) as caught:
         OpenAIResponsesGateway(base_url="https://api.deepseek.com", api_key="")
@@ -25,22 +37,148 @@ def test_adapter_fails_closed_without_credential() -> None:
     assert caught.value.error_class == "configuration_invalid"
 
 
+def test_adapter_disables_sdk_retries() -> None:
+    gateway = OpenAIResponsesGateway(base_url="https://api.deepseek.com", api_key="test-key")
+
+    assert gateway._client.max_retries == 0  # type: ignore[attr-defined]
+
+
 @pytest.mark.asyncio
 async def test_adapter_normalizes_structured_output(monkeypatch: pytest.MonkeyPatch) -> None:
     gateway = OpenAIResponsesGateway(base_url="https://api.deepseek.com", api_key="test-key")
 
-    class FakeResponses:
+    class FakeCompletions:
         async def create(self, **kwargs: object) -> object:
             assert "store" not in kwargs
-            assert kwargs["text"]["format"]["type"] == "json_schema"  # type: ignore[index]
+            assert kwargs["response_format"] == {"type": "json_object"}
+            assert kwargs["max_tokens"] == 4096
+            assert kwargs["extra_body"] == {"thinking": {"type": "disabled"}}
+            assert "Exact JSON Schema to satisfy" in kwargs["messages"][0]["content"]  # type: ignore[index]
             return SimpleNamespace(
-                output_text='{"entities": [], "relations": [], "links": [], "abstentionReason": "empty"}',
-                usage=SimpleNamespace(input_tokens=3, output_tokens=4, total_tokens=7),
+                choices=[
+                    SimpleNamespace(
+                        finish_reason="stop",
+                        message=SimpleNamespace(
+                            content='{"entities": [], "relations": [], "links": [], "abstentionReason": "empty"}'
+                        ),
+                    )
+                ],
+                usage=SimpleNamespace(
+                    prompt_tokens=3,
+                    completion_tokens=4,
+                    total_tokens=7,
+                    completion_tokens_details=SimpleNamespace(reasoning_tokens=0),
+                ),
             )
 
-    gateway._client.responses = FakeResponses()  # type: ignore[attr-defined]
+    gateway._client.chat.completions = FakeCompletions()  # type: ignore[attr-defined]
     result = await gateway.extract(_request())
 
     assert result.extraction.abstention_reason == "empty"
     assert result.usage is not None
     assert result.usage.total_tokens == 7
+    assert result.usage.reasoning_tokens == 0
+
+
+@pytest.mark.asyncio
+async def test_adapter_enforces_absolute_deadline() -> None:
+    gateway = OpenAIResponsesGateway(base_url="https://api.deepseek.com", api_key="test-key")
+
+    class SlowCompletions:
+        async def create(self, **kwargs: object) -> object:
+            await asyncio.sleep(0.05)
+            raise AssertionError("absolute deadline did not cancel the provider call")
+
+    gateway._client.chat.completions = SlowCompletions()  # type: ignore[attr-defined]
+    request = _request().model_copy(update={"timeout_seconds": 0.01})
+
+    with pytest.raises(NormalizedGatewayError) as caught:
+        await gateway.extract(request)
+
+    assert caught.value.error_class == "timeout"
+    assert caught.value.retryable is True
+
+
+@pytest.mark.asyncio
+async def test_adapter_fails_explicitly_when_output_hits_token_limit() -> None:
+    gateway = OpenAIResponsesGateway(base_url="https://api.deepseek.com", api_key="test-key")
+
+    class TruncatedCompletions:
+        async def create(self, **kwargs: object) -> object:
+            return SimpleNamespace(
+                choices=[
+                    SimpleNamespace(
+                        finish_reason="length",
+                        message=SimpleNamespace(content='{"entities": ['),
+                    )
+                ],
+                usage=None,
+            )
+
+    gateway._client.chat.completions = TruncatedCompletions()  # type: ignore[attr-defined]
+
+    with pytest.raises(NormalizedGatewayError) as caught:
+        await gateway.extract(_request())
+
+    assert caught.value.error_class == "empty_malformed"
+    assert caught.value.retryable is False
+
+
+@pytest.mark.asyncio
+async def test_adapter_derives_assisted_import_offsets_from_explicit_occurrence() -> None:
+    gateway = OpenAIResponsesGateway(base_url="https://api.deepseek.com", api_key="test-key")
+
+    class ProposalCompletions:
+        async def create(self, **kwargs: object) -> object:
+            return SimpleNamespace(
+                choices=[
+                    SimpleNamespace(
+                        finish_reason="stop",
+                        message=SimpleNamespace(
+                            content=(
+                                '{"entities":[{"type":"Requirement","label":"same phrase",'
+                                '"evidence":{"text":"same phrase","occurrence":2},'
+                                '"confidence":0.9}],"abstentionReason":null}'
+                            )
+                        ),
+                    )
+                ],
+                usage=None,
+            )
+
+    gateway._client.chat.completions = ProposalCompletions()  # type: ignore[attr-defined]
+    result = await gateway.extract(_proposal_request())
+
+    assert result.extraction.entities[0].evidence.start_offset == 17
+    assert result.extraction.entities[0].evidence.end_offset == 28
+
+
+@pytest.mark.asyncio
+async def test_adapter_rejects_missing_assisted_import_occurrence() -> None:
+    gateway = OpenAIResponsesGateway(base_url="https://api.deepseek.com", api_key="test-key")
+
+    class MissingOccurrenceCompletions:
+        async def create(self, **kwargs: object) -> object:
+            return SimpleNamespace(
+                choices=[
+                    SimpleNamespace(
+                        finish_reason="stop",
+                        message=SimpleNamespace(
+                            content=(
+                                '{"entities":[{"type":"Requirement","label":"not present",'
+                                '"evidence":{"text":"not present","occurrence":1},'
+                                '"confidence":0.9}],"abstentionReason":null}'
+                            )
+                        ),
+                    )
+                ],
+                usage=None,
+            )
+
+    gateway._client.chat.completions = MissingOccurrenceCompletions()  # type: ignore[attr-defined]
+
+    with pytest.raises(NormalizedGatewayError) as caught:
+        await gateway.extract(_proposal_request())
+
+    assert caught.value.error_class == "invalid_evidence"
+    assert caught.value.retryable is False

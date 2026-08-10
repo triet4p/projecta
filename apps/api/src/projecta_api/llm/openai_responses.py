@@ -1,7 +1,8 @@
 """OpenAI-compatible Responses API adapter, including DeepSeek routing."""
 
+import asyncio
 import json
-from typing import Any
+from typing import Any, cast
 
 from openai import (
     APIConnectionError,
@@ -22,33 +23,32 @@ class OpenAIResponsesGateway:
     def __init__(self, *, base_url: str, api_key: str) -> None:
         if not api_key:
             raise NormalizedGatewayError(
-                "configuration_invalid", "live provider credential is not configured", retryable=False
+                "configuration_invalid",
+                "live provider credential is not configured",
+                retryable=False,
             )
-        self._client = AsyncOpenAI(api_key=api_key, base_url=base_url)
+        self._client = AsyncOpenAI(api_key=api_key, base_url=base_url, max_retries=0)
 
     async def extract(self, request: GatewayRequest) -> GatewayResponse:
         """Call strict structured output and normalize response/error details."""
         try:
-            response: Any = await self._client.responses.create(
-                model=request.model_id,
-                instructions=request.system_prompt,
-                input=request.user_prompt,
-                text={
-                    "format": {
-                        "type": "json_schema",
-                        "name": "projecta_extraction",
-                        "schema": dict(request.response_schema),
-                        "strict": True,
-                    }
-                },
-                timeout=request.timeout_seconds,
-            )
-        except APITimeoutError as error:
-            raise NormalizedGatewayError("timeout", "provider request timed out", retryable=True) from error
+            async with asyncio.timeout(request.timeout_seconds):
+                if request.model_id.startswith("deepseek-"):
+                    response, output_text = await self._extract_deepseek_chat(request)
+                else:
+                    response, output_text = await self._extract_responses(request)
+        except (APITimeoutError, TimeoutError) as error:
+            raise NormalizedGatewayError(
+                "timeout", "provider request timed out", retryable=True
+            ) from error
         except RateLimitError as error:
-            raise NormalizedGatewayError("rate_limit", "provider request was rate limited", retryable=True) from error
+            raise NormalizedGatewayError(
+                "rate_limit", "provider request was rate limited", retryable=True
+            ) from error
         except APIConnectionError as error:
-            raise NormalizedGatewayError("provider_failure", "provider connection failed", retryable=True) from error
+            raise NormalizedGatewayError(
+                "provider_failure", "provider connection failed", retryable=True
+            ) from error
         except APIStatusError as error:
             retryable = error.status_code in {408, 409, 429} or error.status_code >= 500
             if error.status_code == 429:
@@ -57,15 +57,22 @@ class OpenAIResponsesGateway:
                 error_class = "refusal"
             else:
                 error_class = "provider_failure"
-            raise NormalizedGatewayError(error_class, "provider returned an unsuccessful response", retryable=retryable) from error
+            raise NormalizedGatewayError(
+                error_class, "provider returned an unsuccessful response", retryable=retryable
+            ) from error
         except OpenAIError as error:
-            raise NormalizedGatewayError("provider_failure", "provider request failed", retryable=False) from error
+            raise NormalizedGatewayError(
+                "provider_failure", "provider request failed", retryable=False
+            ) from error
 
-        output_text = getattr(response, "output_text", None)
         if not isinstance(output_text, str) or not output_text:
-            raise NormalizedGatewayError("empty_malformed", "provider returned no structured output", retryable=False)
+            raise NormalizedGatewayError(
+                "empty_malformed", "provider returned no structured output", retryable=False
+            )
         try:
             payload = json.loads(output_text)
+            if request.source_text is not None:
+                payload = _materialize_entity_evidence(payload, request.source_text)
             usage = _usage(getattr(response, "usage", None))
             extraction = ExtractionResponse.model_validate(
                 {
@@ -77,16 +84,119 @@ class OpenAIResponsesGateway:
                 }
             )
         except (TypeError, ValueError) as error:
-            raise NormalizedGatewayError("schema_invalid", "provider output did not match m3.v1", retryable=False) from error
+            raise NormalizedGatewayError(
+                "schema_invalid", "provider output did not match m3.v1", retryable=False
+            ) from error
         return GatewayResponse(extraction=extraction, usage=usage)
+
+    async def _extract_deepseek_chat(self, request: GatewayRequest) -> tuple[Any, str | None]:
+        """Use DeepSeek's documented V4 interface with thinking explicitly disabled."""
+        schema_json = json.dumps(
+            request.response_schema,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        response: Any = await self._client.chat.completions.create(
+            model=request.model_id,
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        f"{request.system_prompt}\nExact JSON Schema to satisfy:\n{schema_json}"
+                    ),
+                },
+                {"role": "user", "content": request.user_prompt},
+            ],
+            response_format={"type": "json_object"},
+            max_tokens=request.max_output_tokens,
+            extra_body={"thinking": {"type": "disabled"}},
+            timeout=request.timeout_seconds,
+        )
+        choices = getattr(response, "choices", None)
+        if not choices:
+            return response, None
+        choice = choices[0]
+        if getattr(choice, "finish_reason", None) == "length":
+            raise NormalizedGatewayError(
+                "empty_malformed",
+                "provider output exceeded the configured token limit",
+                retryable=False,
+            )
+        message = getattr(choice, "message", None)
+        return response, getattr(message, "content", None)
+
+    async def _extract_responses(self, request: GatewayRequest) -> tuple[Any, str | None]:
+        """Use strict Responses JSON Schema output for compatible providers."""
+        response: Any = await self._client.responses.create(
+            model=request.model_id,
+            instructions=request.system_prompt,
+            input=request.user_prompt,
+            text={
+                "format": {
+                    "type": "json_schema",
+                    "name": "projecta_extraction",
+                    "schema": dict(request.response_schema),
+                    "strict": True,
+                }
+            },
+            max_output_tokens=request.max_output_tokens,
+            timeout=request.timeout_seconds,
+        )
+        return response, getattr(response, "output_text", None)
 
 
 def _usage(value: Any) -> UsageMetadata | None:
     """Copy only numeric usage counters from an SDK response object."""
     if value is None:
         return None
+    output_details = getattr(value, "output_tokens_details", None)
+    if output_details is None:
+        output_details = getattr(value, "completion_tokens_details", None)
     return UsageMetadata(
-        inputTokens=getattr(value, "input_tokens", None),
-        outputTokens=getattr(value, "output_tokens", None),
+        inputTokens=getattr(value, "input_tokens", None) or getattr(value, "prompt_tokens", None),
+        outputTokens=getattr(value, "output_tokens", None)
+        or getattr(value, "completion_tokens", None),
         totalTokens=getattr(value, "total_tokens", None),
+        reasoningTokens=getattr(output_details, "reasoning_tokens", None),
     )
+
+
+def _materialize_entity_evidence(payload: Any, source_text: str) -> Any:
+    """Derive exact offsets from an explicit quote and one-based occurrence."""
+    if not isinstance(payload, dict):
+        return payload
+    typed_payload = cast(dict[str, Any], payload)
+    entities = typed_payload.get("entities")
+    if not isinstance(entities, list):
+        return typed_payload
+    for raw_entity in cast(list[Any], entities):
+        if not isinstance(raw_entity, dict):
+            continue
+        entity = cast(dict[str, Any], raw_entity)
+        raw_evidence = entity.get("evidence")
+        if not isinstance(raw_evidence, dict):
+            continue
+        evidence = cast(dict[str, Any], raw_evidence)
+        text = evidence.get("text")
+        occurrence = evidence.get("occurrence")
+        if not isinstance(text, str) or not text or not isinstance(occurrence, int):
+            continue
+        starts: list[int] = []
+        cursor = 0
+        while True:
+            start = source_text.find(text, cursor)
+            if start < 0:
+                break
+            starts.append(start)
+            cursor = start + 1
+        if occurrence < 1 or occurrence > len(starts):
+            raise NormalizedGatewayError(
+                "invalid_evidence",
+                "provider evidence occurrence does not exist in source text",
+                retryable=False,
+            )
+        start = starts[occurrence - 1]
+        evidence.clear()
+        evidence.update({"startOffset": start, "endOffset": start + len(text), "text": text})
+    return typed_payload

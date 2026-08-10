@@ -90,6 +90,7 @@ class UsageMetadata(ContractModel):
     input_tokens: int | None = Field(default=None, ge=0, alias="inputTokens")
     output_tokens: int | None = Field(default=None, ge=0, alias="outputTokens")
     total_tokens: int | None = Field(default=None, ge=0, alias="totalTokens")
+    reasoning_tokens: int | None = Field(default=None, ge=0, alias="reasoningTokens")
 
 
 class ExtractionResponse(ContractModel):
@@ -101,7 +102,9 @@ class ExtractionResponse(ContractModel):
     entities: list[EntityCandidateOutput] = Field(default_factory=list[EntityCandidateOutput])
     relations: list[RelationCandidateOutput] = Field(default_factory=list[RelationCandidateOutput])
     links: list[EntityLinkCandidateOutput] = Field(default_factory=list[EntityLinkCandidateOutput])
-    abstention_reason: str | None = Field(default=None, min_length=1, max_length=1024, alias="abstentionReason")
+    abstention_reason: str | None = Field(
+        default=None, min_length=1, max_length=1024, alias="abstentionReason"
+    )
     usage: UsageMetadata | None = None
 
     @model_validator(mode="after")

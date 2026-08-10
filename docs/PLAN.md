@@ -30,7 +30,7 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   runtime diagnostics, polished light/dark data-workspace UI, project
   catalog/navigation, finite graph projection và structured Note Composer không
   yêu cầu người dùng nhập opaque ID.
-- [ ] **M7 — Connector and Production Evolution (Sprint 9+):** Mock/manual
+- [ ] **M7 — Connector and Production Evolution (Sprint 10+):** Mock/manual
   connector framework, connector thật đầu tiên, authentication/authorization,
   security và production hardening.
 
@@ -55,6 +55,10 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   — *Completed 2026-08-10; M6 human-approved after fail-explicit, project
   isolation, bounded Graph, structured Note, full regression, clean Compose,
   and production UI acceptance evidence.*
+- [Sprint 9 — Provider Runtime Truthfulness](sprint-plans/sprint-9.md) —
+  *Completed 2026-08-10; provider calls are single-attempt and bounded,
+  correlation is preserved, and existing structured Notes project into Graph
+  and Review Queue without rewriting stored RDF.*
 
 ## Active Sprints
 
@@ -64,7 +68,7 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 
 ## Planned Sprints
 
-- **Sprint 9+:** Connector evolution, authentication/authorization, security và
+- **Sprint 10+:** Connector evolution, authentication/authorization, security và
   production hardening after the accepted Sprint 8 interaction and truthfulness
   boundary.
 

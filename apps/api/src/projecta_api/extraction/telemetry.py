@@ -20,6 +20,7 @@ class ExtractionTelemetryEvent(BaseModel):
     latency_ms: int = Field(ge=0, alias="latencyMs")
     input_tokens: int | None = Field(default=None, ge=0, alias="inputTokens")
     output_tokens: int | None = Field(default=None, ge=0, alias="outputTokens")
+    reasoning_tokens: int | None = Field(default=None, ge=0, alias="reasoningTokens")
     entity_count: int = Field(default=0, ge=0, alias="entityCount")
     relation_count: int = Field(default=0, ge=0, alias="relationCount")
     link_count: int = Field(default=0, ge=0, alias="linkCount")
@@ -28,4 +29,7 @@ class ExtractionTelemetryEvent(BaseModel):
 
 def emit_extraction_event(logger: logging.Logger, event: ExtractionTelemetryEvent) -> None:
     """Emit only the allowlisted event object; callers never pass raw payloads."""
-    logger.info("projecta.extraction", extra={"projecta_extraction": event.model_dump(mode="json", by_alias=True)})
+    logger.info(
+        "projecta.extraction",
+        extra={"projecta_extraction": event.model_dump(mode="json", by_alias=True)},
+    )

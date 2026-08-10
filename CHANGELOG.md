@@ -19,9 +19,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Fixed
 
-- Kept same-origin Quick Note extraction requests open across the API's bounded
-  provider retries so the UI receives the final result or sanitized API error
-  instead of an Nginx `504 Gateway Timeout` after 60 seconds.
+- Made Assisted Import execute exactly one bounded provider request with hidden
+  SDK retries disabled, an absolute deadline, finite output, truthful token
+  telemetry, and DeepSeek thinking disabled through its documented contract.
+- Preserved server-owned correlation IDs through Nginx and returned correlated,
+  sanitized timeout errors instead of mismatched success headers or HTML 504s.
+- Restored existing structured Notes and manual candidates in Graph and Review
+  Queue, including node-detail selection, without rewriting persisted RDF.
 
 ## [0.3.0] - 2026-08-01
 

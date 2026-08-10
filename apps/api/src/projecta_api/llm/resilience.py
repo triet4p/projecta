@@ -90,6 +90,7 @@ class ResilientGateway:
                         terminalOutcome="success",
                         inputTokens=usage.input_tokens if usage else None,
                         outputTokens=usage.output_tokens if usage else None,
+                        reasoningTokens=usage.reasoning_tokens if usage else None,
                     ),
                 )
                 return result
@@ -129,4 +130,7 @@ class ResilientGateway:
             return False
         if self._mode == "live-quality-evaluation":
             return error.error_class == "invalid_evidence"
-        return self._mode in {"health-probe", "operator-recovery"} and error.error_class in _BOUNDED_RETRY_CLASSES
+        return (
+            self._mode in {"health-probe", "operator-recovery"}
+            and error.error_class in _BOUNDED_RETRY_CLASSES
+        )

@@ -3,7 +3,7 @@ from httpx import ASGITransport, AsyncClient
 
 from projecta_api.config import Settings
 from projecta_api.context import TrustedActorContext, TrustedRequestContext
-from projecta_api.graph_projection import project_graph_page
+from projecta_api.graph_projection import project_graph_page, project_node_detail
 from projecta_api.main import create_app
 from projecta_api.project_workspace import catalog_revision, opaque_project_handle
 
@@ -44,6 +44,7 @@ class GraphCore:
     ) -> object:
         if "/graph/nodes/" in path:
             return {
+                "_projecta_http_status": 200,
                 "handle": "node-h-1234567890abcdef",
                 "label": "Tax API timeout is 15%",
                 "semanticType": "Risk",
@@ -226,6 +227,35 @@ def test_graph_projection_keeps_cycles_bounded_and_repeatable() -> None:
     second = project_graph_page(payload, "req-1", "project-h-abcdef1234567890", 1, 1)
     assert first.model_dump(mode="json") == second.model_dump(mode="json")
     assert len(first.nodes) == len(first.edges) == 1
+
+
+def test_node_detail_drops_private_transport_status() -> None:
+    detail = project_node_detail(
+        {
+            "_projecta_http_status": 200,
+            "handle": "node-h-1234567890abcdef",
+            "label": "Meeting 10/08",
+            "semanticType": "Note",
+            "lifecycleState": "current",
+            "verificationState": "unverified",
+            "provenanceState": "source-backed",
+            "evidenceCount": 0,
+            "projectScope": "selected",
+            "dates": {},
+            "availableActions": ["view-detail"],
+            "projectLabel": "Alpha",
+            "freshness": "available",
+            "relations": [],
+            "evidence": [],
+            "lifecycle": [],
+        },
+        "experience-request",
+        "project-h-abcdef1234567890",
+    )
+
+    assert detail.semantic_type == "Note"
+    assert detail.request_id == "experience-request"
+    assert "_projecta_http_status" not in detail.model_dump(mode="json", by_alias=True)
 
 
 def test_graph_projection_fails_when_semantic_state_is_missing() -> None:
