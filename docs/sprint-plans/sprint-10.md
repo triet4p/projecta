@@ -1,6 +1,6 @@
 # Sprint 10 Plan — Governed Connector Foundation and v0.5.0
 
-Status: `RELEASE_PREFLIGHT`
+Status: `RELEASE_REMEDIATION`
 
 Target product release: `v0.5.0`
 
@@ -405,19 +405,19 @@ Status legend: [ ] pending / [~] in progress / [x] done
 - [x] **S10-71 — Verify the v0.5.0 release contract:** Pass release-contract unit
   tests and `check_release_contract.py --tag v0.5.0`; reject any manifest,
   changelog, tag-shape, or rendered-notes mismatch.
-- [~] **S10-72 — Re-run the immutable release preflight:** On the exact proposed
+- [x] **S10-72 — Re-run the immutable release preflight:** On the exact proposed
   release commit, pass every matrix gate again with no source change afterward;
   record commit SHA, image identifiers, totals, and artifact digests.
-- [ ] **S10-73 — Approve G3 release authorization:** Human explicitly authorizes
+- [x] **S10-73 — Approve G3 release authorization:** Human explicitly authorizes
   publication of the exact validated commit as `v0.5.0`; automated green status,
   prior sprint approval, or approval of a different SHA is insufficient.
-- [ ] **S10-74 — Commit and push the release contract:** Create the reviewed
+- [x] **S10-74 — Commit and push the release contract:** Create the reviewed
   release commit, push it, verify the remote SHA matches the approved SHA, and
   make no post-approval code or generated-artifact change.
-- [ ] **S10-75 — Create and push annotated tag v0.5.0:** Tag only the G3-approved
+- [x] **S10-75 — Create and push annotated tag v0.5.0:** Tag only the G3-approved
   commit, verify annotation and target locally, push the single exact tag, and do
   not move or recreate it after publication begins.
-- [ ] **S10-76 — Verify tag-triggered release gates:** Follow every required
+- [~] **S10-76 — Verify tag-triggered release gates:** Follow every required
   GitHub Actions job to terminal success; any cancelled, skipped-required,
   neutral, timed-out, or failed job blocks publication and keeps Sprint 10 open.
 - [ ] **S10-77 — Verify the public v0.5.0 release:** Confirm the release is public,
@@ -426,6 +426,24 @@ Status legend: [ ] pending / [~] in progress / [x] done
 - [ ] **S10-78 — Close Sprint 10 without closing M7:** Attach publication evidence,
   mark Sprint 10 complete, update the global plan, and retain M7 in progress for
   production authentication, secret management, and the first real connector.
+
+### First tag attempt and remediation
+
+- G3 authorized commit `dd1fcccca18647238bf37731fde6c5a7e8fc7726`
+  specifically as `v0.5.0` on 2026-08-11.
+- Remote `main` and the annotated `v0.5.0` tag were verified at that commit; the
+  tag object is `01638a4ec676d75610e03ac6dc6b6023f0a67fde`.
+- Tag workflow run `31463795588` completed with `system` and
+  `sprint10-recovery` failures. Every other required validation, acceptance,
+  security, format, API, web, Semantic Core, repository, and release-contract
+  job succeeded; `publish` was correctly skipped.
+- Root causes were a legacy system runner missing the new required connector
+  PostgreSQL Compose variables, repository-source tests evaluating a host-only
+  path during container collection, and recovery port parsing assuming a single
+  Docker binding. Remediation is locally validated and awaits a new immutable
+  candidate plus fresh release authorization.
+- The published tag has not been moved or recreated. Sprint 10 remains open
+  until a corrected tag workflow and public release both succeed.
 
 ## Mandatory Release Matrix
 

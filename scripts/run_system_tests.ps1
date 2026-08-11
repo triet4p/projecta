@@ -10,6 +10,12 @@ $runnerManagedSecret = $false
 $hadMasterKey = Test-Path Env:PROJECTA_API_SECRET_STORE_MASTER_KEY
 $previousMasterKey = $env:PROJECTA_API_SECRET_STORE_MASTER_KEY
 $runnerManagedMasterKey = $false
+$connectorEnvironment = @{
+    PROJECTA_CONNECTOR_POSTGRES_USER = 'connector_system_test'
+    PROJECTA_CONNECTOR_POSTGRES_PASSWORD = "system-test-$systemTestProject"
+    PROJECTA_CONNECTOR_POSTGRES_DB = 'projecta_system_test'
+}
+$previousConnectorEnvironment = @{}
 $llmEnvironment = @{
     PROJECTA_LLM_TYPE = 'openai-response'
     PROJECTA_LLM_BASE_URL = 'https://system-test.invalid'
@@ -17,6 +23,16 @@ $llmEnvironment = @{
     PROJECTA_LLM_MODEL = 'replay:basic-requirement-001'
 }
 $previousLlmEnvironment = @{}
+
+foreach ($entry in $connectorEnvironment.GetEnumerator()) {
+    $path = "Env:$($entry.Key)"
+    $exists = Test-Path $path
+    $previousConnectorEnvironment[$entry.Key] = @{
+        Exists = $exists
+        Value = if ($exists) { (Get-Item $path).Value } else { $null }
+    }
+    Set-Item -Path $path -Value $entry.Value
+}
 
 foreach ($entry in $llmEnvironment.GetEnumerator()) {
     $path = "Env:$($entry.Key)"
@@ -107,6 +123,14 @@ finally {
     if ($exitCode -eq 0 -and $LASTEXITCODE -ne 0) { $exitCode = $LASTEXITCODE }
 
     foreach ($entry in $previousLlmEnvironment.GetEnumerator()) {
+        $path = "Env:$($entry.Key)"
+        if ($entry.Value.Exists) {
+            Set-Item -Path $path -Value $entry.Value.Value
+        } else {
+            Remove-Item $path -ErrorAction SilentlyContinue
+        }
+    }
+    foreach ($entry in $previousConnectorEnvironment.GetEnumerator()) {
         $path = "Env:$($entry.Key)"
         if ($entry.Value.Exists) {
             Set-Item -Path $path -Value $entry.Value.Value

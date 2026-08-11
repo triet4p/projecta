@@ -4,9 +4,15 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from projecta_api.operational.schema import Base
 
-ROOT = Path(__file__).resolve().parents[3]
+pytestmark = pytest.mark.local_contract
+
+
+def _repo_root() -> Path:
+    return Path(__file__).resolve().parents[3]
 
 
 def test_connector_schema_has_project_scoped_tables_and_no_raw_payload_columns() -> None:
@@ -27,9 +33,10 @@ def test_connector_schema_has_project_scoped_tables_and_no_raw_payload_columns()
 
 
 def test_migration_is_forward_only_at_the_application_entrypoint() -> None:
-    runner = (ROOT / "apps" / "api" / "src" / "projecta_api" / "operational" / "migrate.py").read_text()
+    root = _repo_root()
+    runner = (root / "apps" / "api" / "src" / "projecta_api" / "operational" / "migrate.py").read_text()
     assert 'choices=("upgrade",)' in runner
     assert "command.upgrade" in runner
     assert "downgrade" in runner
-    env = (ROOT / "apps" / "api" / "alembic" / "env.py").read_text()
+    env = (root / "apps" / "api" / "alembic" / "env.py").read_text()
     assert "pg_advisory_lock" in env

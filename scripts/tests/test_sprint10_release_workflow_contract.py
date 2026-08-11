@@ -37,6 +37,17 @@ class Sprint10ReleaseWorkflowContractTests(unittest.TestCase):
         self.assertIn("run_sprint10_acceptance.ps1", sprint10)
         self.assertIn("run_sprint10_recovery.ps1", sprint10)
 
+    def test_legacy_system_runner_satisfies_connector_compose_interpolation(self) -> None:
+        runner = (ROOT / "scripts/run_system_tests.ps1").read_text(encoding="utf-8")
+        for variable in (
+            "PROJECTA_CONNECTOR_POSTGRES_USER",
+            "PROJECTA_CONNECTOR_POSTGRES_PASSWORD",
+            "PROJECTA_CONNECTOR_POSTGRES_DB",
+        ):
+            self.assertIn(variable, runner)
+        self.assertIn("previousConnectorEnvironment", runner)
+        self.assertIn("docker compose", runner)
+
 
 if __name__ == "__main__":
     unittest.main()

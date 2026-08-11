@@ -440,3 +440,45 @@ test.
 **Watch out for:** An immutable preflight must verify the worktree again after
 all gates. Passing tests are insufficient when test runners can rewrite tracked
 snapshots, generated clients, lockfiles, or evidence artifacts.
+
+## [2026-08-11] Legacy Compose runners must track new required variables
+
+**Symptom:** The tag-triggered `system` job failed before creating a container,
+even though the Sprint 10 validation, acceptance, and recovery runners passed
+locally and the dedicated validation/acceptance workflow jobs passed.
+**Root cause:** Sprint 10 made the connector PostgreSQL user, password, and
+database required across the Compose model. The older `run_system_tests.ps1`
+runner still generated only trusted-context and master-key values, so Compose
+failed during whole-model interpolation.
+**Fix / workaround:** Give every Compose entry point an isolated connector
+database environment before its first Compose command, retain it through
+cleanup, restore the caller's exact prior values, and enforce those variable
+names in the release-workflow contract suite.
+**Watch out for:** Adding a required Compose interpolation variable is a
+cross-runner contract change. Audit every script and CI job that parses the
+model, including older profiles that do not directly start the new service.
+
+## [2026-08-11] Local-contract tests must be collection-safe in runtime images
+
+**Symptom:** A container suite excluded repository-source tests with
+`-m "not local_contract"`, but pytest still failed while importing those tests.
+**Root cause:** Pytest imports modules before marker selection, and two modules
+computed a repository parent path at module scope that did not exist under the
+image's shallow `/app` layout.
+**Fix / workaround:** Mark repository-source checks as `local_contract` and
+defer repository-root discovery until the test function executes.
+**Watch out for:** A deselected test can still break collection through module
+imports, constants, decorators, fixtures, or other module-scope evaluation.
+
+## [2026-08-11] Docker published ports may have multiple bindings
+
+**Symptom:** The recovery drill passed with Docker Desktop but failed on a Linux
+CI runner with `Cannot index into a null array` after PostgreSQL became ready.
+**Root cause:** `docker port` returned separate IPv4 and IPv6 mappings. In
+PowerShell, regex matching a string array filters the array but does not populate
+the scalar `$Matches` table used by the runner.
+**Fix / workaround:** Capture mappings as an array, join them, use
+`[regex]::Match`, validate `Success`, and read the named capture group from the
+match object.
+**Watch out for:** Treat Docker CLI output as multi-line on every platform;
+never couple parsing to PowerShell's scalar-only `$Matches` side effect.

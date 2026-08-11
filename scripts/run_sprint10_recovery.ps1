@@ -98,9 +98,11 @@ function Wait-Postgres([string]$Name) {
 }
 
 function Get-HostPort([string]$Name) {
-    $mapping = docker port $Name 5432/tcp
-    if ($LASTEXITCODE -ne 0 -or $mapping -notmatch ":(?<port>\d+)") { throw "Could not resolve the temporary PostgreSQL port." }
-    return [int]$Matches["port"]
+    $mapping = @(docker port $Name 5432/tcp)
+    if ($LASTEXITCODE -ne 0) { throw "Could not resolve the temporary PostgreSQL port." }
+    $match = [regex]::Match(($mapping -join "`n"), ':(?<port>\d+)(?:\r?$)')
+    if (-not $match.Success) { throw "Could not resolve the temporary PostgreSQL port." }
+    return [int]$match.Groups["port"].Value
 }
 
 function Write-Evidence([string]$Status) {

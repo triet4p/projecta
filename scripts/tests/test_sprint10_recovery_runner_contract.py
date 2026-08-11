@@ -25,6 +25,11 @@ class Sprint10RecoveryRunnerContractTests(unittest.TestCase):
         self.assertIn("--confirm-isolated", self.source)
         self.assertIn("connector-backup.v1", self.source)
 
+    def test_host_port_parsing_handles_multiple_docker_bindings(self) -> None:
+        self.assertIn('$mapping = @(docker port $Name 5432/tcp)', self.source)
+        self.assertIn('$mapping -join "`n"', self.source)
+        self.assertIn('$match.Groups["port"].Value', self.source)
+
 
 if __name__ == "__main__":
     unittest.main()
