@@ -1,8 +1,8 @@
-# Sprint 10 Plan — Governed Connector Foundation and v0.5.0
+# Sprint 10 Plan — Governed Connector Foundation and v0.5.1 Recovery
 
-Status: `RELEASE_REMEDIATION`
+Status: `RELEASE_PREFLIGHT`
 
-Target product release: `v0.5.0`
+Target product release: `v0.5.1`
 
 Milestone: M7 increment 1 — Connector and Production Evolution
 
@@ -20,18 +20,18 @@ durable operational data; failures are finite and explicit; no connector input
 becomes asserted knowledge without the existing human-review boundary.
 
 The sprint ends only after the exact-tag release workflow publishes product
-`v0.5.0`. A green local run is necessary but not sufficient: architecture,
+`v0.5.1`. A green local run is necessary but not sufficient: architecture,
 security, semantic, product, release-contract, clean-Compose, and tag-triggered
 GitHub gates are all mandatory.
 
 ## Release Meaning
 
-Product `v0.5.0` proves the connector framework with a deterministic JSON/Mock
+Product `v0.5.1` proves the connector framework with a deterministic JSON/Mock
 adapter. It does not claim a production Teams/Outlook/Jira connector, public
 internet readiness, a production identity provider, tenant administration,
 outbound action authorization, or production secret-manager integration.
 
-Product `v0.5.0` is not automatically an ontology release. The default semantic
+Product `v0.5.1` is not automatically an ontology release. The default semantic
 path reuses released Note, NoteItem, evidence, provenance, project isolation,
 candidate, and assertion semantics. Any new ontology term requires the complete
 `$projecta-evolve-ontology` workflow and explicit human semantic approval before
@@ -133,10 +133,10 @@ current-state and use-case audit
 → typed API and Connections UI
 → focused, failure-injection, recovery, and full regression gates
 → G2 product/security/semantic acceptance
-→ v0.5.0 version and changelog freeze
+→ v0.5.1 recovery version and changelog freeze
 → clean release preflight
 → G3 explicit release authorization
-→ annotated tag v0.5.0
+→ annotated tag v0.5.1
 → tag-triggered CI and public release verification
 ```
 
@@ -362,7 +362,7 @@ Status legend: [ ] pending / [~] in progress / [x] done
   backup/restore, reset, diagnostics, production-disabled boundaries, and safe
   escalation without claiming real-connector readiness.
 
-### H. Validation, review, and v0.5.0 publication
+### H. Validation, review, and release publication
 
 - [x] **S10-61 — Create the Sprint 10 validation runner:** Compose all configured
   API, web, Semantic Core, ontology, migration, connector, contract, security,
@@ -417,15 +417,34 @@ Status legend: [ ] pending / [~] in progress / [x] done
 - [x] **S10-75 — Create and push annotated tag v0.5.0:** Tag only the G3-approved
   commit, verify annotation and target locally, push the single exact tag, and do
   not move or recreate it after publication begins.
-- [~] **S10-76 — Verify tag-triggered release gates:** Follow every required
-  GitHub Actions job to terminal success; any cancelled, skipped-required,
-  neutral, timed-out, or failed job blocks publication and keeps Sprint 10 open.
-- [ ] **S10-77 — Verify the public v0.5.0 release:** Confirm the release is public,
-  non-draft, non-prerelease, points to the immutable annotated tag, and contains
-  only the matching changelog section.
-- [ ] **S10-78 — Close Sprint 10 without closing M7:** Attach publication evidence,
-  mark Sprint 10 complete, update the global plan, and retain M7 in progress for
-  production authentication, secret management, and the first real connector.
+- [x] **S10-76 — Verify and block the failed v0.5.0 tag attempt:** Follow every
+  required GitHub Actions job to a terminal result, confirm failed required jobs
+  block `publish`, preserve the immutable failed tag, and record root causes.
+- [x] **S10-77 — Approve v0.5.1 recovery:** Human explicitly selects `v0.5.1`
+  instead of moving or recreating the failed `v0.5.0` tag.
+- [x] **S10-78 — Align the v0.5.1 release contract:** Update every product
+  manifest and runtime version, add a dated `0.5.1` changelog section, update
+  release-contract expectations, and retain the historical `0.5.0` entry.
+- [x] **S10-79 — Validate the v0.5.1 release contract:** Pass release-contract
+  unit tests and `check_release_contract.py --tag v0.5.1`; reject any manifest,
+  changelog, tag-shape, or rendered-notes mismatch.
+- [~] **S10-80 — Run the immutable v0.5.1 preflight:** Commit the recovery
+  candidate, run every mandatory matrix gate on that exact SHA with no source
+  change afterward, and verify a clean worktree and complete cleanup.
+- [ ] **S10-81 — Approve fresh G3 for v0.5.1:** Human explicitly authorizes the
+  exact immutable recovery commit; the prior G3 for `dd1fcccca18647238bf37731fde6c5a7e8fc7726`
+  does not authorize a different SHA or tag.
+- [ ] **S10-82 — Push and tag the approved v0.5.1 candidate:** Push the exact G3
+  SHA to `main`, verify remote equality, create one annotated `v0.5.1` tag, and
+  push only that tag without moving `v0.5.0`.
+- [ ] **S10-83 — Verify the public v0.5.1 release:** Follow every required tag
+  job to success, then confirm the GitHub Release is public, non-draft,
+  non-prerelease, points to the immutable annotated tag, and contains only the
+  matching changelog section.
+- [ ] **S10-84 — Close Sprint 10 without closing M7:** Attach publication
+  evidence, mark Sprint 10 complete, update the global plan, and retain M7 in
+  progress for production authentication, secret management, and the first real
+  connector.
 
 ### First tag attempt and remediation
 
@@ -440,8 +459,8 @@ Status legend: [ ] pending / [~] in progress / [x] done
 - Root causes were a legacy system runner missing the new required connector
   PostgreSQL Compose variables, repository-source tests evaluating a host-only
   path during container collection, and recovery port parsing assuming a single
-  Docker binding. Remediation is locally validated and awaits a new immutable
-  candidate plus fresh release authorization.
+  Docker binding. Human recovery approval selected `v0.5.1`; remediation now
+  awaits a new immutable candidate and exact-SHA G3 authorization.
 - The published tag has not been moved or recreated. Sprint 10 remains open
   until a corrected tag workflow and public release both succeed.
 
@@ -454,7 +473,7 @@ the review packet and may not increase without explicit approval.
 
 | Gate | Required evidence before G3 and tag creation |
 | --- | --- |
-| Release contract | `python -m unittest discover -s scripts/tests -p "test_*.py"` and `python scripts/check_release_contract.py --tag v0.5.0` pass; all component manifests and dated changelog agree. |
+| Release contract | `python -m unittest discover -s scripts/tests -p "test_*.py"` and `python scripts/check_release_contract.py --tag v0.5.1` pass; all component manifests and dated changelog agree. |
 | API | Locked dependency sync, Ruff, strict Pyright, full Pytest, connector focused/integration tests, migration tests, authorization tests, and failure injection pass. |
 | Web | `npm ci`, high-severity audit, Prettier check, API drift, typecheck, lint, Vitest, Nginx contract, production build, deterministic Playwright, and real-stack connector journey pass. |
 | Semantic Core | `mvn --batch-mode verify` passes, including project isolation, source/provenance lifecycle, rollback, replay, and Graph/Review Queue projection regressions. |
@@ -465,7 +484,7 @@ the review packet and may not increase without explicit approval.
 | Recovery | Isolated backup/restore completes and the post-restore replay proves no duplicate source, candidate, assertion, run outcome, or cursor advancement. |
 | Security | Threat-model negative tests, authorization/isolation matrix, dependency audit, seeded-secret scan, payload/ID leak scan, bounded-input tests, and safe-error assertions pass. |
 | Human acceptance | G1 and G2 are recorded; G3 explicitly names the exact release commit approved for tag publication. |
-| Tag workflow | Required release-contract, API, web, Semantic Core, repository-contract, connector-system, recovery, and publish jobs all finish successfully for annotated tag `v0.5.0`. |
+| Tag workflow | Required release-contract, API, web, Semantic Core, repository-contract, connector-system, recovery, and publish jobs all finish successfully for annotated tag `v0.5.1`. |
 
 ## Definition of Done
 
@@ -485,7 +504,7 @@ the review packet and may not increase without explicit approval.
   evidence.
 - G1, G2, and G3 approvals are recorded with exact scope; G3 identifies the
   immutable release commit.
-- The annotated `v0.5.0` tag points to that commit, every tag-triggered required
+- The annotated `v0.5.1` tag points to that commit, every tag-triggered required
   job succeeds, and the public GitHub Release is verified.
 - `docs/PLAN.md` marks Sprint 10 complete while M7 remains in progress for the
   first real connector and production identity/secret boundaries.
@@ -508,9 +527,9 @@ the review packet and may not increase without explicit approval.
 - Do not create connector-specific Requirement/Task classes, merge external
   identities by display name, or add ontology terms for installation, cursor,
   retry, dead-letter, UI, or job state.
-- Do not publish `v0.5.0` manually from `main`, from a lightweight/moving tag,
-  with mismatched manifests, with incomplete release notes, or while any required
-  gate is non-successful.
+- Do not move or recreate the failed `v0.5.0` tag. Do not publish `v0.5.1`
+  manually from `main`, from a lightweight/moving tag, with mismatched manifests,
+  with incomplete release notes, or while any required gate is non-successful.
 
 ## Expected Artifacts
 

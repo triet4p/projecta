@@ -6,6 +6,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-08-11
+
+### Fixed
+
+- Fixed tag-driven release validation so connector PostgreSQL configuration,
+  repository contract collection, and cross-platform recovery checks complete
+  consistently before publication.
+
 ## [0.5.0] - 2026-08-11
 
 ### Added

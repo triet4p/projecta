@@ -66,11 +66,11 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 
 ## Active Sprints
 
-- [Sprint 10 — Governed Connector Foundation and v0.5.0](sprint-plans/sprint-10.md)
-  — *G2 approved; implementation, clean-checkout validation, clean-Compose
-  acceptance, and isolated recovery pass. Product version `0.5.0`, the dated
-  changelog section, and release contract are aligned; immutable release
-  preflight is in progress. G3, tagging, and publication remain gated.*
+- [Sprint 10 — Governed Connector Foundation and v0.5.1 Recovery](sprint-plans/sprint-10.md)
+  — *G2 approved; the initial immutable `v0.5.0` tag attempt was correctly
+  blocked by required CI gates and remains unchanged. Human recovery approval
+  selected `v0.5.1`; manifests, changelog, remediation gates, fresh immutable
+  preflight, exact-SHA G3, tagging, and publication are being completed.*
 
 ## Planned Sprints
 
