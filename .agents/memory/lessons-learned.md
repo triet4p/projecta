@@ -424,3 +424,19 @@ Review Queue in clean Compose.
 **Watch out for:** Writer tests and Graph visibility do not prove candidate
 reviewability. Every new source kind must be exercised through the actual shared
 candidate query and browser queue.
+
+## [2026-08-11] Browser gates must not rewrite tracked evidence
+
+**Symptom:** Every functional and security gate passed, but the exact release
+commit ended with a dirty worktree because a deterministic Playwright test
+overwrote a Sprint 8 screenshot under `docs/`.
+**Root cause:** The test used a repository-relative tracked evidence path for a
+runtime screenshot, so normal validation mutated source state even though the
+test itself passed.
+**Fix / workaround:** Write runtime screenshots through
+`testInfo.outputPath(...)`, which stays under Playwright's ignored
+`test-results` directory, and enforce the boundary with a release-contract
+test.
+**Watch out for:** An immutable preflight must verify the worktree again after
+all gates. Passing tests are insufficient when test runners can rewrite tracked
+snapshots, generated clients, lockfiles, or evidence artifacts.

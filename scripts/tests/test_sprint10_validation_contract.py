@@ -36,6 +36,13 @@ class Sprint10ValidationContractTests(unittest.TestCase):
         self.assertNotRegex(self.source, r"\[switch\]\$Skip")
         self.assertIn("exit 1", self.source)
 
+    def test_browser_artifacts_cannot_mutate_tracked_release_evidence(self) -> None:
+        browser_source = (ROOT / "apps/web/tests/e2e/sprint8.spec.ts").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("testInfo.outputPath(screenshotName)", browser_source)
+        self.assertNotIn("docs/sprint-plans/sprint-8/evidence", browser_source)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -235,7 +235,7 @@ test("project selection, Note lifecycle, graph, review, and Q&A stay ID-free", a
       ? "s8-project-overview-narrow.png"
       : "s8-project-overview-desktop.png";
   await page.screenshot({
-    path: `../../docs/sprint-plans/sprint-8/evidence/${screenshotName}`,
+    path: testInfo.outputPath(screenshotName),
     fullPage: true,
   });
 
