@@ -11,6 +11,7 @@ describe("Sprint 8 information architecture", () => {
       "Graph",
       "Review Queue",
       "Q&A",
+      "Connections",
       "Settings",
       "Diagnostics",
     ]);

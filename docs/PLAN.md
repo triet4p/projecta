@@ -31,7 +31,7 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   runtime diagnostics, polished light/dark data-workspace UI, project
   catalog/navigation, finite graph projection và structured Note Composer không
   yêu cầu người dùng nhập opaque ID.
-- [ ] **M7 — Connector and Production Evolution (Sprint 10+):** Mock/manual
+- [~] **M7 — Connector and Production Evolution (Sprint 10+):** Mock/manual
   connector framework, connector thật đầu tiên, authentication/authorization,
   security và production hardening.
 
@@ -66,13 +66,18 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 
 ## Active Sprints
 
-- No active sprint. M1–M6 are complete; M7 / Sprint 10+ remains planned.
+- [Sprint 10 — Governed Connector Foundation and v0.5.0](sprint-plans/sprint-10.md)
+  — *G2 approved; implementation, clean-checkout validation, clean-Compose
+  acceptance, and isolated recovery pass. Product version `0.5.0`, the dated
+  changelog section, and release contract are aligned; immutable release
+  preflight is in progress. G3, tagging, and publication remain gated.*
 
 ## Planned Sprints
 
-- **M7 / Sprint 10+:** Connector evolution, authentication/authorization,
-  security và production hardening after the accepted M5/M6 interaction and
-  truthfulness boundaries.
+- **Sprint 11+:** First production connector, production authentication and
+  authorization, server-side secret-manager integration, outbound actions, and
+  broader production hardening after the Sprint 10 connector contract is
+  accepted.
 
 ## Backlog / Future Work
 

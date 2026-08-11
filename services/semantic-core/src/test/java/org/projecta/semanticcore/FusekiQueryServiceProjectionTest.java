@@ -50,6 +50,7 @@ class FusekiQueryServiceProjectionTest {
         assertEquals("extracted", candidates.getFirst().get("validationState"));
         assertTrue(gateway.queries.getFirst().contains("contentText"));
         assertTrue(gateway.queries.getFirst().contains("hasItemType"));
+        assertTrue(gateway.queries.getFirst().contains("connector-json-mock-v1"));
     }
 
     @SuppressWarnings("unchecked")

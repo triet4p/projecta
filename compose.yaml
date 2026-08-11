@@ -51,6 +51,7 @@ services:
       - ./fuseki-server
       - --config
       - /config/fuseki-config.ttl
+      - --quiet
     volumes:
       - fuseki-data:/var/lib/fuseki
       - ./infra/docker/fuseki/config/fuseki-config.ttl:/config/fuseki-config.ttl:ro
@@ -100,6 +101,41 @@ services:
       retries: 12
       start_period: 10s
 
+  connector-postgres:
+    image: postgres:16.4-alpine
+    environment:
+      POSTGRES_USER: ${PROJECTA_CONNECTOR_POSTGRES_USER:?PROJECTA_CONNECTOR_POSTGRES_USER must be set}
+      POSTGRES_PASSWORD: ${PROJECTA_CONNECTOR_POSTGRES_PASSWORD:?PROJECTA_CONNECTOR_POSTGRES_PASSWORD must be set}
+      POSTGRES_DB: ${PROJECTA_CONNECTOR_POSTGRES_DB:?PROJECTA_CONNECTOR_POSTGRES_DB must be set}
+    volumes:
+      - projecta-connector-postgres:/var/lib/postgresql/data
+    expose:
+      - "5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\" -q"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 10s
+
+  connector-migrate:
+    build:
+      context: ./apps/api
+      target: runtime
+    image: projecta-api:local
+    depends_on:
+      connector-postgres:
+        condition: service_healthy
+    command: ["python", "-m", "projecta_api.operational.migrate", "upgrade"]
+    environment:
+      PROJECTA_CONNECTOR_DATABASE_HOST: connector-postgres
+      PROJECTA_CONNECTOR_DATABASE_PORT: "5432"
+      PROJECTA_CONNECTOR_DATABASE_NAME: ${PROJECTA_CONNECTOR_POSTGRES_DB:?PROJECTA_CONNECTOR_POSTGRES_DB must be set}
+      PROJECTA_CONNECTOR_DATABASE_USER: ${PROJECTA_CONNECTOR_POSTGRES_USER:?PROJECTA_CONNECTOR_POSTGRES_USER must be set}
+      PROJECTA_CONNECTOR_DATABASE_PASSWORD: ${PROJECTA_CONNECTOR_POSTGRES_PASSWORD:?PROJECTA_CONNECTOR_POSTGRES_PASSWORD must be set}
+      PROJECTA_EVIDENCE_ROOT: /var/lib/projecta/evidence
+    restart: "no"
+
   api:
     build:
       context: ./apps/api
@@ -108,11 +144,22 @@ services:
     depends_on:
       semantic-core:
         condition: service_healthy
+      connector-postgres:
+        condition: service_healthy
+      connector-migrate:
+        condition: service_completed_successfully
     environment:
       PROJECTA_API_SEMANTIC_CORE_URL: http://semantic-core:8080
       PROJECTA_API_TRUSTED_CONTEXT_SECRET: ${PROJECTA_API_TRUSTED_CONTEXT_SECRET:?PROJECTA_API_TRUSTED_CONTEXT_SECRET must be set}
       PROJECTA_API_RUNTIME_MODE: ${PROJECTA_API_RUNTIME_MODE:-headless}
+      PROJECTA_CONNECTOR_LOCAL_ADMIN_ENABLED: ${PROJECTA_CONNECTOR_LOCAL_ADMIN_ENABLED:-false}
       PROJECTA_API_OPERATIONAL_DATABASE_PATH: /var/lib/projecta/operational.db
+      PROJECTA_CONNECTOR_DATABASE_HOST: connector-postgres
+      PROJECTA_CONNECTOR_DATABASE_PORT: "5432"
+      PROJECTA_CONNECTOR_DATABASE_NAME: ${PROJECTA_CONNECTOR_POSTGRES_DB:?PROJECTA_CONNECTOR_POSTGRES_DB must be set}
+      PROJECTA_CONNECTOR_DATABASE_USER: ${PROJECTA_CONNECTOR_POSTGRES_USER:?PROJECTA_CONNECTOR_POSTGRES_USER must be set}
+      PROJECTA_CONNECTOR_DATABASE_PASSWORD: ${PROJECTA_CONNECTOR_POSTGRES_PASSWORD:?PROJECTA_CONNECTOR_POSTGRES_PASSWORD must be set}
+      PROJECTA_EVIDENCE_ROOT: /var/lib/projecta/evidence
       PROJECTA_API_SECRET_STORE_MASTER_KEY: ${PROJECTA_API_SECRET_STORE_MASTER_KEY:?PROJECTA_API_SECRET_STORE_MASTER_KEY must be set}
       PROJECTA_API_EXPERIENCE_ACTOR_ID: ${PROJECTA_API_EXPERIENCE_ACTOR_ID:-}
       PROJECTA_API_EXPERIENCE_PROJECT_CATALOG: ${PROJECTA_API_EXPERIENCE_PROJECT_CATALOG:-}
@@ -122,6 +169,7 @@ services:
       PROJECTA_LLM_MODEL: ${PROJECTA_LLM_MODEL:-}
     volumes:
       - projecta-api-operational:/var/lib/projecta
+      - projecta-evidence:/var/lib/projecta/evidence
     expose:
       - "8000"
     healthcheck:
@@ -214,6 +262,8 @@ services:
     image: projecta-api:runtime-test
     command: ["uv", "run", "uvicorn", "system_app:app", "--app-dir", "/app/tests", "--host", "0.0.0.0", "--port", "8000"]
     depends_on:
+      connector-postgres:
+        condition: service_healthy
       semantic-core-runtime-test:
         condition: service_healthy
       m4-fixture-loader:
@@ -221,6 +271,11 @@ services:
     environment:
       PROJECTA_API_SEMANTIC_CORE_URL: http://semantic-core-runtime-test:8080
       PROJECTA_API_TRUSTED_CONTEXT_SECRET: ${PROJECTA_API_TRUSTED_CONTEXT_SECRET:?PROJECTA_API_TRUSTED_CONTEXT_SECRET must be set}
+      PROJECTA_CONNECTOR_DATABASE_HOST: connector-postgres
+      PROJECTA_CONNECTOR_DATABASE_PORT: "5432"
+      PROJECTA_CONNECTOR_DATABASE_NAME: ${PROJECTA_CONNECTOR_POSTGRES_DB:?PROJECTA_CONNECTOR_POSTGRES_DB must be set}
+      PROJECTA_CONNECTOR_DATABASE_USER: ${PROJECTA_CONNECTOR_POSTGRES_USER:?PROJECTA_CONNECTOR_POSTGRES_USER must be set}
+      PROJECTA_CONNECTOR_DATABASE_PASSWORD: ${PROJECTA_CONNECTOR_POSTGRES_PASSWORD:?PROJECTA_CONNECTOR_POSTGRES_PASSWORD must be set}
       PROJECTA_LLM_TYPE: openai-response
       PROJECTA_LLM_BASE_URL: https://system-test.invalid
       PROJECTA_LLM_API_KEY: system-test-not-a-secret
@@ -255,7 +310,28 @@ services:
       - ./evaluation:/evaluation:ro
     restart: "no"
 
+  connector-operational-test:
+    profiles: ["system-test"]
+    build:
+      context: ./apps/api
+      target: test
+    image: projecta-api:connector-operational-test
+    depends_on:
+      connector-migrate:
+        condition: service_completed_successfully
+    command: ["uv", "run", "pytest", "-q", "tests/test_connector_postgres_integration.py"]
+    environment:
+      PROJECTA_CONNECTOR_INTEGRATION: "1"
+      PROJECTA_CONNECTOR_DATABASE_HOST: connector-postgres
+      PROJECTA_CONNECTOR_DATABASE_PORT: "5432"
+      PROJECTA_CONNECTOR_DATABASE_NAME: ${PROJECTA_CONNECTOR_POSTGRES_DB:?PROJECTA_CONNECTOR_POSTGRES_DB must be set}
+      PROJECTA_CONNECTOR_DATABASE_USER: ${PROJECTA_CONNECTOR_POSTGRES_USER:?PROJECTA_CONNECTOR_POSTGRES_USER must be set}
+      PROJECTA_CONNECTOR_DATABASE_PASSWORD: ${PROJECTA_CONNECTOR_POSTGRES_PASSWORD:?PROJECTA_CONNECTOR_POSTGRES_PASSWORD must be set}
+    restart: "no"
+
 volumes:
   jena-data:
   fuseki-data:
   projecta-api-operational:
+  projecta-connector-postgres:
+  projecta-evidence:

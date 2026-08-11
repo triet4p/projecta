@@ -6,6 +6,34 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-08-11
+
+### Added
+
+- Added the governed JSON/Mock inbound connector with project-scoped
+  installation, explicit sync/retry, safe run status, and a Connections screen.
+- Added PostgreSQL connector operations, content-addressed evidence storage,
+  deterministic migrations, backup/restore tooling, and recovery verification.
+
+### Changed
+
+- Reused the released Note, NoteItem, candidate, evidence, provenance, Graph,
+  and Review Queue lifecycle for imported sources without an ontology change.
+
+### Fixed
+
+- Scoped connector fixtures and event identities to their authorized project
+  and installation, made canonical replay hashes independent of evidence
+  locators, and preserved truthful run counts across restart.
+- Prevented public captures from claiming server-owned connector provenance and
+  required policy checks for connector catalog and read operations.
+
+### Security
+
+- Added bounded event/evidence validation, opaque public handles, explicit
+  local-only connector administration, sanitized failure/audit telemetry, and
+  secret/payload/RDF leak gates.
+
 ## [0.4.0] - 2026-08-10
 
 ### Added

@@ -2,7 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
   testDir: "./tests/e2e",
-  testMatch: "sprint7.real.spec.ts",
+  testMatch: ["sprint7.real.spec.ts", "sprint10.real.spec.ts", "sprint10.restart.real.spec.ts"],
   fullyParallel: false,
   forbidOnly: true,
   retries: 0,

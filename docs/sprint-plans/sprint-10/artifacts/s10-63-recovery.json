@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "s10.recovery.v1",
+  "status": "passed",
+  "sourceContainer": "projecta-s10-recovery-source-2e0b8ad1be9c",
+  "restoreContainer": "projecta-s10-recovery-restore-2e0b8ad1be9c",
+  "backupVersion": "connector-backup.v1",
+  "failure": null,
+  "results": [
+    {
+      "name": "Start isolated source PostgreSQL",
+      "startedAt": "2026-08-11T05:34:37.6341754Z",
+      "finishedAt": "2026-08-11T05:34:38.1738681Z",
+      "exitCode": 0,
+      "output": [
+        "6f81a28ec45993cef02485e6649092011c4cc438fe31ccde8919b9357fb19446"
+      ]
+    },
+    {
+      "name": "Apply connector migrations",
+      "startedAt": "2026-08-11T05:34:40.5967242Z",
+      "finishedAt": "2026-08-11T05:34:45.7477841Z",
+      "exitCode": 0,
+      "output": [
+        "INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.",
+        "INFO  [alembic.runtime.migration] Will assume transactional DDL.",
+        "INFO  [alembic.runtime.migration] Running upgrade  -> 0001_connector_operational, Create connector operational state tables.",
+        "INFO  [alembic.runtime.migration] Running upgrade 0001_connector_operational -> 0002_sync_run_revision, Add optimistic revision to sync runs.",
+        "INFO  [alembic.runtime.migration] Running upgrade 0002_sync_run_revision -> 0003_installation_revision, Add optimistic revision to connector installations.",
+        "INFO  [alembic.runtime.migration] Running upgrade 0003_installation_revision -> 0004_scoped_event_identity, Scope event identity and persist truthful run summaries."
+      ]
+    },
+    {
+      "name": "Seed source installation/run/cursor/evidence",
+      "startedAt": "2026-08-11T05:34:45.7525970Z",
+      "finishedAt": "2026-08-11T05:34:46.7247363Z",
+      "exitCode": 0,
+      "output": [
+        "{\"claimOutcome\": \"new\", \"cursorCheckpoint\": \"cursor-1\", \"cursorRevision\": 1, \"evidenceReference\": \"ev_2nstbbAz9kxzZeYMf1bdHU\", \"installationRevision\": 1, \"runOutcome\": \"accepted\"}"
+      ]
+    },
+    {
+      "name": "Create PostgreSQL/evidence backup",
+      "startedAt": "2026-08-11T05:34:46.7349856Z",
+      "finishedAt": "2026-08-11T05:34:48.5146979Z",
+      "exitCode": 0,
+      "output": [
+        "C:\\Users\\admin\\AppData\\Local\\Temp\\projecta-s10-recovery-2e0b8ad1be9c\\backup\\backup\\manifest.json"
+      ]
+    },
+    {
+      "name": "Teardown source stack",
+      "startedAt": "2026-08-11T05:34:48.5167000Z",
+      "finishedAt": "2026-08-11T05:34:49.3800520Z",
+      "exitCode": 0,
+      "output": [
+        "projecta-s10-recovery-source-2e0b8ad1be9c"
+      ]
+    },
+    {
+      "name": "Start isolated clean restore PostgreSQL",
+      "startedAt": "2026-08-11T05:34:49.3816562Z",
+      "finishedAt": "2026-08-11T05:34:50.1155053Z",
+      "exitCode": 0,
+      "output": [
+        "757dd38cb1fa7fb72b07998677177a5fa24ebfa77f299ab1d8973d83dfe0151a"
+      ]
+    },
+    {
+      "name": "Restore backup into isolated target",
+      "startedAt": "2026-08-11T05:34:52.4239590Z",
+      "finishedAt": "2026-08-11T05:34:54.2910696Z",
+      "exitCode": 0,
+      "output": [
+        "restored evidence objects: 1"
+      ]
+    },
+    {
+      "name": "Verify restored state and replay",
+      "startedAt": "2026-08-11T05:34:54.2943519Z",
+      "finishedAt": "2026-08-11T05:34:55.3669950Z",
+      "exitCode": 0,
+      "output": [
+        "{\"cursorCheckpoint\": \"cursor-1\", \"cursorRevision\": 1, \"evidenceBytes\": 32, \"evidenceReference\": \"ev_2nstbbAz9kxzZeYMf1bdHU\", \"evidenceSha256\": \"3553524900c71a1a4a0a53c5ba564fb8ecc9984b4b64891b27c913bac15df51b\", \"installationRevision\": 1, \"replayOutcome\": \"replayed\", \"runOutcome\": \"accepted\", \"runRows\": 1}"
+      ]
+    }
+  ]
+}

@@ -12,6 +12,11 @@ import type {
   InferenceRebuildResponse,
   CandidateHistoryResponse,
   CandidateQueueResponse,
+  ConnectorCatalogResponse,
+  ConnectorInstallation,
+  ConnectorInstallationListResponse,
+  ConnectorRun,
+  ConnectorRunListResponse,
   EvidenceResponse,
   GraphEvidenceResponse,
   GraphLifecycleResponse,
@@ -65,6 +70,87 @@ export class ProjectaApiClient {
 
   async listProjects(limit = 50): Promise<ProjectCatalogResponse> {
     return this.request<ProjectCatalogResponse>(`/v1/projects?limit=${limit}`, { method: "GET" });
+  }
+
+  async getConnectorCatalog(): Promise<ConnectorCatalogResponse> {
+    return this.request<ConnectorCatalogResponse>("/v1/connectors/catalog", { method: "GET" });
+  }
+
+  async listConnectorInstallations(
+    projectHandle: string,
+    limit = 50,
+    offset = 0,
+  ): Promise<ConnectorInstallationListResponse> {
+    return this.request<ConnectorInstallationListResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/connectors/installations?limit=${limit}&offset=${offset}`,
+      { method: "GET" },
+    );
+  }
+
+  async createConnectorInstallation(
+    projectHandle: string,
+    payload: { fixtureReference: string; capabilities: string[] },
+  ): Promise<ConnectorInstallation> {
+    return this.request<ConnectorInstallation>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/connectors/installations`,
+      { method: "POST", body: payload },
+    );
+  }
+
+  async setConnectorInstallationEnabled(
+    projectHandle: string,
+    installationHandle: string,
+    enabled: boolean,
+    expectedRevision: number,
+  ): Promise<ConnectorInstallation> {
+    return this.request<ConnectorInstallation>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/connectors/installations/${encodeURIComponent(installationHandle)}/${enabled ? "enable" : "disable"}`,
+      { method: "POST", body: { expectedInstallationRevision: expectedRevision } },
+    );
+  }
+
+  async runConnector(
+    projectHandle: string,
+    installationHandle: string,
+    expectedInstallationRevision: number,
+    idempotencyKey: string,
+  ): Promise<ConnectorRun> {
+    return this.request<ConnectorRun>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/connectors/installations/${encodeURIComponent(installationHandle)}/runs`,
+      {
+        method: "POST",
+        body: { expectedInstallationRevision },
+        idempotencyKey,
+      },
+    );
+  }
+
+  async listConnectorRuns(
+    projectHandle: string,
+    installationHandle: string,
+    limit = 50,
+  ): Promise<ConnectorRunListResponse> {
+    return this.request<ConnectorRunListResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/connectors/installations/${encodeURIComponent(installationHandle)}/runs?limit=${limit}`,
+      { method: "GET" },
+    );
+  }
+
+  async retryConnectorRun(
+    projectHandle: string,
+    installationHandle: string,
+    runHandle: string,
+    expectedInstallationRevision: number,
+    expectedRunRevision: number,
+  ): Promise<ConnectorRun> {
+    return this.request<ConnectorRun>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/connectors/installations/${encodeURIComponent(installationHandle)}/runs/${encodeURIComponent(runHandle)}/retry`,
+      {
+        method: "POST",
+        body: { expectedInstallationRevision, expectedRunRevision },
+        idempotencyKey: crypto.randomUUID(),
+      },
+    );
   }
 
   async readProject(handle: string): Promise<ProjectReadResponse> {

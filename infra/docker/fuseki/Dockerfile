@@ -34,6 +34,7 @@ ENV PATH="/opt/jena/bin:/opt/fuseki:${PATH}"
 ENV FUSEKI_BASE=/var/lib/fuseki
 
 WORKDIR /opt/fuseki
+COPY log4j2.properties /opt/fuseki/log4j2.properties
 RUN mkdir -p /var/lib/fuseki
 EXPOSE 3030
 CMD ["./fuseki-server"]

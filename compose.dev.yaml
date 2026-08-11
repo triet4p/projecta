@@ -5,6 +5,11 @@
 # See: docs/initialization/08-Deployment-Choice.md §5
 
 services:
+  connector-postgres:
+    restart: unless-stopped
+    logging:
+      driver: local
+
   jena:
     ports:
       - "3030:3030"

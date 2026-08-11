@@ -10,6 +10,8 @@ ENV UV_COMPILE_BYTECODE=1 \
 COPY pyproject.toml uv.lock README.md ./
 RUN uv sync --locked --no-install-project --no-dev
 COPY src ./src
+COPY alembic.ini ./alembic.ini
+COPY alembic ./alembic
 RUN uv sync --locked --no-dev
 
 FROM builder AS development
@@ -23,9 +25,11 @@ CMD ["uv", "run", "pytest", "-q"]
 FROM python:3.12-slim AS runtime
 WORKDIR /app
 RUN groupadd --system projecta && useradd --system --gid projecta --home-dir /app projecta
-RUN mkdir -p /var/lib/projecta && chown -R projecta:projecta /var/lib/projecta
+RUN mkdir -p /var/lib/projecta/evidence && chown -R projecta:projecta /var/lib/projecta
 COPY --from=builder --chown=projecta:projecta /app/.venv /app/.venv
 COPY --from=builder --chown=projecta:projecta /app/src /app/src
+COPY --from=builder --chown=projecta:projecta /app/alembic.ini /app/alembic.ini
+COPY --from=builder --chown=projecta:projecta /app/alembic /app/alembic
 ENV PATH="/app/.venv/bin:${PATH}" \
     PYTHONPATH=/app/src \
     PYTHONDONTWRITEBYTECODE=1

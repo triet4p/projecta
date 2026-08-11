@@ -17,6 +17,7 @@ from projecta_api.configuration.models import (
 )
 from projecta_api.configuration.ports import RuntimeConfigurationProvider
 from projecta_api.configuration.service import LLMConfigurationService
+from projecta_api.connectors.public_api import ConnectorRuntime, add_connector_routes
 from projecta_api.context import (
     TrustedActorContext,
     TrustedRequestContext,
@@ -131,6 +132,7 @@ def create_router(
     runtime_configuration: RuntimeConfigurationProvider | None = None,
     connection_checker: ProviderConnectionChecker | None = None,
     configuration_audit: ConfigurationAudit | None = None,
+    connector_runtime: ConnectorRuntime | None = None,
 ) -> APIRouter:
     """Create routes bound to one finite Semantic Core client."""
     router = APIRouter()
@@ -1014,6 +1016,7 @@ def create_router(
         response.headers["X-Request-Id"] = context.request_id
         return result
 
+    add_connector_routes(router, connector_runtime)
     return router
 
 

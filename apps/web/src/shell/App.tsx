@@ -3,6 +3,7 @@ import { type ReactElement, useCallback, useEffect, useMemo, useState } from "re
 import { ProjectaApiClient } from "../api/client";
 import type { LiveResponse, ProjectCatalogItem, ReadyResponse } from "../api/generated";
 import { DiagnosticsScreen } from "../screens/DiagnosticsScreen";
+import { ConnectionsScreen } from "../screens/ConnectionsScreen";
 import { NotesScreen } from "../screens/NotesScreen";
 import { GraphScreen } from "../screens/GraphScreen";
 import { ProjectOverviewScreen } from "../screens/ProjectOverviewScreen";
@@ -90,6 +91,12 @@ export function App(): ReactElement {
         return <QuestionScreen api={api} />;
       case "Settings":
         return <SettingsScreen api={api} />;
+      case "Connections":
+        return activeProject ? (
+          <ConnectionsScreen api={api} projectHandle={activeProject.handle} />
+        ) : (
+          <ProjectsScreen api={api} onSelected={selectProject} />
+        );
       case "Diagnostics":
         return (
           <DiagnosticsScreen

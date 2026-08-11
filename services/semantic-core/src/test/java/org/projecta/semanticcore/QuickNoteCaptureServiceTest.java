@@ -62,6 +62,30 @@ class QuickNoteCaptureServiceTest {
         assertTrue(gateway.updateCalled);
     }
 
+    @Test
+    void connectorCaptureKeepsCandidatesReviewableAndSourceBacked() {
+        var gateway = new RecordingGateway();
+        var service = new QuickNoteCaptureService(
+                gateway, new GraphIriRouter(), (project, sources, candidates, provenance) -> {
+                    assertTrue(candidates.contains("connector-json-mock-v1"));
+                    assertTrue(candidates.contains("wasDerivedFrom"));
+                    assertTrue(provenance.contains("wasAssociatedWith"));
+                    assertFalse(candidates.contains("asserted"));
+                    assertFalse(candidates.contains("inferred"));
+                    return new CandidateValidationResult(true, List.of());
+                });
+        var request = new QuickNoteCaptureService.CaptureRequest(
+                "Imported source",
+                "A",
+                List.of(new QuickNoteCaptureService.Segment("task", 0, 1, "A")),
+                "connector",
+                "sha256:" + "a".repeat(64));
+
+        service.capture(new ProjectId("ecommerce-checkout"), "le", "capture-connector", request);
+
+        assertTrue(gateway.updateCalled);
+    }
+
     private static final class RecordingGateway extends FusekiGateway {
         private boolean updateCalled;
 

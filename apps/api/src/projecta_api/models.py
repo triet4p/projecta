@@ -29,7 +29,7 @@ class TypedSegment(BaseModel):
 
 
 class CaptureRequest(BaseModel):
-    """Capture input after canonical line-ending normalization."""
+    """Public manual capture input after canonical line-ending normalization."""
 
     model_config = ConfigDict(extra="forbid")
     title: str = Field(default="Quick Note", min_length=1, max_length=512)
@@ -51,6 +51,19 @@ class CaptureRequest(BaseModel):
             previous_end = segment.end_offset
         self.raw_text = normalized
         return self
+
+
+class SemanticCaptureRequest(CaptureRequest):
+    """Private server-authored capture metadata sent only to Semantic Core."""
+
+    source_kind: Literal["manual", "text-import", "connector"] = Field(
+        default="manual", alias="sourceKind"
+    )
+    source_content_hash: str | None = Field(
+        default=None,
+        alias="sourceContentHash",
+        pattern=r"^sha256:[0-9a-f]{64}$",
+    )
 
 
 class ExtractionRequest(BaseModel):

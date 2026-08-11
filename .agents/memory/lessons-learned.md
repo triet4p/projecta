@@ -369,3 +369,58 @@ normalization error can be traced to its originating boundary.
 **Watch out for:** Never forward a complete public DTO across a private service
 boundary when it contains defaults, UI metadata, or fields owned by another
 layer. Construct and test the downstream DTO field by field.
+
+## [2026-08-10] Connector migration history can contain a column already in the base revision
+
+**Symptom:** A clean isolated Compose migration failed with `DuplicateColumn`
+when the revision migration added `connector_sync_runs.revision`.
+**Root cause:** The initial migration already contained the column while the
+follow-up migration still assumed a legacy initial schema without it.
+**Fix / workaround:** Make the follow-up migration inspect the live table and
+add/drop the column only when the requested shape is actually absent/present,
+so both fresh and legacy migration histories converge safely.
+**Watch out for:** When a model change lands before migration history is
+finalized, run `upgrade head` on a clean database and on the existing local
+volume; do not assume the revision script's stated prior shape matches the
+checked-in initial migration.
+
+## [2026-08-11] PowerShell native stderr can abort passing gates
+
+**Symptom:** Sprint validation and recovery runners stopped on passing Python/Alembic/docker commands whose normal progress was written to stderr; recovery cleanup also surfaced a missing-container error after an earlier gate stopped.
+**Root cause:** PowerShell's `$ErrorActionPreference=Stop` promoted captured native stderr records to terminating errors before the runner evaluated the native exit code, and cleanup assumed every later container had been created.
+**Fix / workaround:** Temporarily capture native gates with `ErrorActionPreference=Continue` and `$PSNativeCommandUseErrorActionPreference=$false`, decide success only from `$LASTEXITCODE`, and make cleanup tolerant of absent containers.
+**Watch out for:** Any PowerShell gate that uses `2>&1` around Python, Docker, or migration tools must isolate stream handling while preserving explicit exit-code checks.
+
+## [2026-08-11] Fuseki HTTP request logs can expose RDF graph IRIs
+
+**Symptom:** Clean-Compose functional journeys passed, but the safe-log gate found an ontology IRI in Fuseki output.
+**Root cause:** Fuseki's `org.apache.jena.fuseki.Fuseki` INFO logger emitted request URLs, including the graph query parameter used by ontology bootstrap.
+**Fix / workaround:** Added an image-local `log4j2.properties` configuration that keeps root INFO logging, sets the Fuseki HTTP logger to WARN, disables the NCSA request logger, and retained a Compose contract test for the configuration.
+**Watch out for:** Request URLs and query parameters are payload-bearing at RDF boundaries; do not rely on `--quiet` alone or remove ontology/fixture tokens from the denylist.
+
+## [2026-08-11] A global event primary key breaks project-scoped idempotency
+
+**Symptom:** The deterministic fixture reused `evt-001` per installation, but a
+second project could conflict with or replay the first project's event.
+**Root cause:** The inbox contract defined event identity as project,
+installation, and event ID, while the PostgreSQL primary key and conflict target
+used only `event_id`.
+**Fix / workaround:** Use the composite identity `(project_id,
+installation_id, event_id)` consistently in the primary key, foreign keys,
+repository conflict target, completion predicates, and concurrency tests.
+**Watch out for:** A project predicate on reads does not make an identifier
+project-scoped when uniqueness is still enforced globally at write time.
+
+## [2026-08-11] Source projection filters can silently hide connector candidates
+
+**Symptom:** A real connector import appeared in Graph as a Note and NoteItem,
+but Review Queue reported no pending candidates.
+**Root cause:** Capture correctly wrote connector candidates with generator
+`connector-json-mock-v1`, while the shared candidate projection selected only
+generator `manual-quick-note-v0.3.0`.
+**Fix / workaround:** Keep the existing source-item projection and explicitly
+allow both governed generator values; verify the real import through Graph and
+Review Queue in clean Compose.
+**Watch out for:** Writer tests and Graph visibility do not prove candidate
+reviewability. Every new source kind must be exercised through the actual shared
+candidate query and browser queue.

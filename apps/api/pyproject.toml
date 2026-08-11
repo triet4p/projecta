@@ -1,15 +1,19 @@
 [project]
 name = "projecta-api"
-version = "0.4.0"
+version = "0.5.0"
 description = "Projecta application API"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 dependencies = [
+    "alembic>=1.16,<2",
+    "asyncpg>=0.30,<1",
     "cryptography>=44,<47",
     "fastapi>=0.141,<1",
     "httpx>=0.28,<1",
     "openai>=2.0,<3",
+    "psycopg[binary]>=3.2,<4",
     "pydantic-settings>=2.14,<3",
+    "sqlalchemy>=2.0,<3",
     "uvicorn>=0.52,<1",
 ]
 
@@ -28,7 +32,10 @@ build-backend = "hatchling.build"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
-markers = ["local_contract: repository-source contract checks excluded from container runtime suites"]
+markers = [
+    "local_contract: repository-source contract checks excluded from container runtime suites",
+    "postgres_integration: tests requiring the Compose PostgreSQL connector dependency",
+]
 
 [tool.ruff]
 line-length = 100

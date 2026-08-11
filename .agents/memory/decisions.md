@@ -250,3 +250,16 @@ user-facing meaning that conventional commit subjects do not capture.
 must retain a fresh Unreleased changelog section, declare one matching product
 version across component manifests, and pass API, web, Semantic Core, repository
 contract, ontology, and Compose system jobs before GitHub publication.
+## [2026-08-10] Run the first connector inside the Application API process
+
+**Decision:** Run the first Sprint 10 JSON/Mock connector runtime inside the existing Application API process behind provider-neutral connector ports.
+**Alternatives considered:** Extract the connector into a separate deployable runtime immediately, or add an unimplemented service scaffold before the connector kernel exists.
+**Reason:** The approved vertical slice already has a server-owned FastAPI boundary and Compose topology; in-process execution keeps the first implementation reviewable and avoids duplicating authorization, project context, and typed API seams while still isolating provider behavior and state behind ports.
+**Consequences:** Connector code must remain provider-neutral and bounded, while PostgreSQL operational state and evidence storage remain explicit external boundaries. Extracting the runtime later requires preserving these ports and a new deployment/operational decision; this approval does not authorize production authentication, real external connectors, or ontology changes.
+
+## [2026-08-11] Reuse released semantics for the Sprint 10 connector
+
+**Decision:** Treat the G1-approved Sprint 10 JSON/Mock connector as source/evidence ingestion that reuses released Note, NoteItem, candidate, lifecycle, project-isolation, and PROV-O semantics without adding ontology vocabulary.
+**Alternatives considered:** Add connector, external-resource, external-identity, cursor, retry, or dead-letter terms now; keep imported content as opaque application JSON; or bypass the existing candidate review lifecycle with direct assertions.
+**Reason:** The approved competency questions are answered by the released source/evidence/provenance lifecycle, while installation, event, cursor, retry, and dead-letter concepts are operational state owned by PostgreSQL and the evidence boundary. New vocabulary would commit durable domain meaning without a required semantic question and direct assertion would violate the human-review boundary.
+**Consequences:** Sprint 10 may release without an ontology version change, connector operational state must remain outside RDF, actor hints cannot merge identities automatically, and any future graph-queryable external resource or connector identity requires a new governed proposal and explicit human approval.

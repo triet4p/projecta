@@ -29,6 +29,54 @@ export interface Problem {
   requestId: string;
 }
 
+export interface ConnectorCatalogItem {
+  connectorType: "json-mock";
+  contractVersion: "connector-contract.v1";
+  displayName: string;
+  capabilities: string[];
+  limits: Record<string, number>;
+}
+
+export interface ConnectorCatalogResponse {
+  requestId: string;
+  items: ConnectorCatalogItem[];
+}
+
+export interface ConnectorInstallation {
+  requestId: string;
+  handle: string;
+  connectorType: "json-mock";
+  capabilities: string[];
+  enabled: boolean;
+  revision: number;
+  secretConfigured: boolean;
+  fixtureConfigured: boolean;
+}
+
+export interface ConnectorInstallationListResponse {
+  requestId: string;
+  items: ConnectorInstallation[];
+  nextOffset: number | null;
+}
+
+export interface ConnectorRun {
+  requestId: string;
+  handle: string;
+  state: "running" | "succeeded" | "empty" | "replayed" | "failed" | "cancelled" | "unavailable";
+  eventCount: number;
+  replayCount: number;
+  failureCode: string | null;
+  deadLetterAvailable: boolean;
+  revision: number;
+  startedAt: string;
+  terminalAt: string | null;
+}
+
+export interface ConnectorRunListResponse {
+  requestId: string;
+  items: ConnectorRun[];
+}
+
 export type LlmHealth = "unknown" | "healthy" | "unhealthy" | "unavailable";
 
 export interface LLMProfile {

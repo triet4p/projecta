@@ -546,8 +546,9 @@ public final class FusekiQueryService {
                 { GRAPH <%s> {
                     ?candidate a <%sCandidate> ;
                       <%scandidateStatus> ?status ;
-                      <%sgenerator> "manual-quick-note-v0.3.0" ;
+                      <%sgenerator> ?generator ;
                       <http://www.w3.org/ns/prov#wasDerivedFrom> ?source .
+                    FILTER(?generator IN ("manual-quick-note-v0.3.0", "connector-json-mock-v1"))
                   }
                   GRAPH <%s> {
                     ?source <%scontentText> ?label ; <%shasItemType> ?itemType .

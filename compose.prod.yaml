@@ -6,6 +6,21 @@
 # See: docs/initialization/08-Deployment-Choice.md §5
 
 services:
+  connector-postgres:
+    image: ${CONNECTOR_POSTGRES_IMAGE:?CONNECTOR_POSTGRES_IMAGE must be an immutable image reference}
+    restart: unless-stopped
+    logging:
+      driver: local
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+
+  connector-migrate:
+    build: !reset null
+    image: ${API_IMAGE:?API_IMAGE must be an immutable CI image reference}
+
   fuseki:
     restart: unless-stopped
     logging:

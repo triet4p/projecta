@@ -92,6 +92,24 @@ async def test_capture_requires_trusted_context() -> None:
     assert response.status_code == 401
 
 
+async def test_public_capture_cannot_claim_server_owned_connector_provenance() -> None:
+    app = create_app(_make_settings("test-secret"), FakeSemanticCoreClient())
+    headers = app_headers() | {"Idempotency-Key": "capture-source-authority"}
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        response = await client.post(
+            "/v1/quick-notes",
+            headers=headers,
+            json={
+                "rawText": "A",
+                "segments": [{"type": "task", "startOffset": 0, "endOffset": 1, "text": "A"}],
+                "sourceKind": "connector",
+                "sourceContentHash": "sha256:" + "a" * 64,
+            },
+        )
+
+    assert response.status_code == 400
+
+
 async def test_capture_rejects_context_when_deployment_secret_is_missing() -> None:
     """Missing deployment configuration cannot become an unauthenticated scope selector."""
     app = create_app(_make_settings(""), FakeSemanticCoreClient())

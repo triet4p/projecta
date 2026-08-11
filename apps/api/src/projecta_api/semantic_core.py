@@ -7,7 +7,9 @@ import httpx
 from pydantic import ValidationError
 
 from projecta_api.context import TrustedActorContext, TrustedRequestContext
-from projecta_api.models import CaptureRequest, CaptureResponse
+from projecta_api.models import CaptureRequest, CaptureResponse, SemanticCaptureRequest
+
+SemanticCapture = CaptureRequest | SemanticCaptureRequest
 
 
 class SemanticCoreProblem(Exception):
@@ -24,7 +26,7 @@ class SemanticCoreClient(Protocol):
     """Finite operations available to the application service."""
 
     async def capture(
-        self, context: TrustedRequestContext, key: str, request: CaptureRequest
+        self, context: TrustedRequestContext, key: str, request: SemanticCapture
     ) -> CaptureResponse: ...
 
     async def request(
@@ -61,7 +63,7 @@ class HttpSemanticCoreClient:
         self._transport = transport
 
     async def capture(
-        self, context: TrustedRequestContext, key: str, request: CaptureRequest
+        self, context: TrustedRequestContext, key: str, request: SemanticCapture
     ) -> CaptureResponse:
         headers = _headers(context, key)
         try:

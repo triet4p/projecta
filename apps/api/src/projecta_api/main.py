@@ -15,12 +15,26 @@ from projecta_api.configuration.runtime import OperationalRuntimeConfigurationPr
 from projecta_api.configuration.secret_store import ApplicationEncryptedSecretStore
 from projecta_api.configuration.service import LLMConfigurationService
 from projecta_api.configuration.storage import LLMProfileRepository, OperationalDatabase
+from projecta_api.connectors.authorization import (
+    ConnectorAuthorizationError,
+    ConnectorPolicy,
+    LocalConnectorPrincipalAdapter,
+)
+from projecta_api.connectors.installation_service import ConnectorInstallationService
+from projecta_api.connectors.json_mock import JsonMockAdapter, JsonMockFixture
+from projecta_api.connectors.orchestration import ConnectorSyncOrchestrator, SourceCommitter
+from projecta_api.connectors.public_api import ConnectorPublicProblem, ConnectorRuntime
+from projecta_api.connectors.registry import ConnectorRegistry
+from projecta_api.connectors.secrets import ConnectorSecretPolicy
 from projecta_api.context import LocalExperienceContextMiddleware
 from projecta_api.correlation import resolve_correlation
+from projecta_api.evidence.local import LocalEvidenceStore
 from projecta_api.extraction.service import ExtractionOrchestrator
 from projecta_api.llm.gateway import LLMGateway, NormalizedGatewayError
 from projecta_api.llm.openai_responses import OpenAIResponsesGateway
 from projecta_api.llm.resilience import ResilientGateway
+from projecta_api.operational.database import ConnectorDatabase
+from projecta_api.operational.repository import PostgresConnectorRepository
 from projecta_api.project_workspace_store import ProjectSelectionRepository
 from projecta_api.retrieval.errors import RetrievalError
 from projecta_api.retrieval.service import RetrievalService
@@ -45,6 +59,7 @@ def create_app(
     semantic_client: SemanticCoreClient | None = None,
     gateway: LLMGateway | None = None,
     runtime_configuration: RuntimeConfigurationProvider | None = None,
+    connector_runtime: ConnectorRuntime | None = None,
 ) -> FastAPI:
     """Create the application without performing network I/O."""
     actual_settings = settings or Settings()  # pyright: ignore[reportCallIssue]
@@ -59,6 +74,7 @@ def create_app(
     structured_note_draft_store = StructuredNoteDraftStore(database)
     structured_candidate_edit_store = StructuredCandidateEditStore(database)
     configuration_audit = ConfigurationAudit(database)
+    composed_connector_runtime = connector_runtime or _build_connector_runtime(actual_settings, client, secret_store)
     configuration: RuntimeConfigurationProvider
     if runtime_configuration is not None:
         configuration = runtime_configuration
@@ -97,7 +113,7 @@ def create_app(
             timeout_seconds=90.0,
         )
     retrieval = RetrievalService(client)
-    app = FastAPI(title="Projecta Application API", version="0.4.0")
+    app = FastAPI(title="Projecta Application API", version="0.5.0")
     app.state.settings = actual_settings
     app.state.startup_problems = startup_problems
     app.state.runtime_configuration = configuration
@@ -107,6 +123,7 @@ def create_app(
     app.state.project_selection_repository = project_selection_repository
     app.state.structured_note_draft_store = structured_note_draft_store
     app.state.structured_candidate_edit_store = structured_candidate_edit_store
+    app.state.connector_runtime = composed_connector_runtime
     app.add_middleware(LocalExperienceContextMiddleware)
 
     @app.exception_handler(SemanticCoreProblem)
@@ -184,6 +201,25 @@ def create_app(
             "Runtime configuration request failed",
             error.detail,
         )
+
+    @app.exception_handler(ConnectorPublicProblem)
+    async def connector_problem(request: Request, error: ConnectorPublicProblem) -> JSONResponse:
+        detail = {
+            "CONNECTOR_CONFIGURATION_UNAVAILABLE": "Connector services are temporarily unavailable.",
+            "CONNECTOR_FORBIDDEN": "The connector operation is not available to this actor.",
+            "CONNECTOR_NOT_FOUND": "The connector resource is not visible in this project.",
+            "CONNECTOR_INVALID": "The connector request does not meet the published contract.",
+            "CONNECTOR_STALE": "The connector revision is stale and must be revalidated.",
+            "CONNECTOR_CONFLICT": "The connector operation conflicts with current state.",
+            "CONNECTOR_DISABLED": "The connector installation is disabled.",
+            "CONNECTOR_FAILED": "The connector operation failed safely.",
+        }[error.code]
+        return _problem(request, error.status_code, error.code, "Connector request failed", detail)
+
+    @app.exception_handler(ConnectorAuthorizationError)
+    async def connector_authorization_problem(request: Request, error: ConnectorAuthorizationError) -> JSONResponse:
+        code = "CONNECTOR_FORBIDDEN" if error.status_code in {401, 403} else "CONNECTOR_NOT_FOUND"
+        return _problem(request, error.status_code, code, "Connector authorization failed", "The connector operation is not available to this actor.")
 
     @app.exception_handler(Exception)
     async def unexpected_problem(request: Request, _: Exception) -> JSONResponse:
@@ -288,12 +324,74 @@ def create_app(
             runtime_configuration=configuration,
             connection_checker=OpenAIConnectionChecker(),
             configuration_audit=configuration_audit,
+            connector_runtime=composed_connector_runtime,
         )
     )
     return app
 
 
-app = create_app()
+class _UnavailableSourceCommitter(SourceCommitter):
+    async def commit_source(self, event: object, evidence: object) -> None:
+        raise RuntimeError("connector semantic source is unavailable")
+
+
+def _build_connector_runtime(
+    settings: Settings, client: SemanticCoreClient, secret_store: object
+) -> ConnectorRuntime | None:
+    """Compose the connector boundary only when deployment supplied its complete config."""
+    if settings.runtime_mode != "experience":
+        return None
+    try:
+        database = ConnectorDatabase(settings)
+        repository = PostgresConnectorRepository(database)
+        registry = ConnectorRegistry()
+        registry.register(JsonMockAdapter(_default_fixture(settings)))
+        principal = LocalConnectorPrincipalAdapter(settings)
+        policy = ConnectorPolicy(principal, repository, repository)
+        installation_service = ConnectorInstallationService(
+            repository, policy, registry, ConnectorSecretPolicy(secret_store)  # type: ignore[arg-type]
+        )
+        evidence = LocalEvidenceStore(settings.evidence_root)
+        orchestrator = ConnectorSyncOrchestrator(
+            repository, policy, registry, evidence, _UnavailableSourceCommitter()
+        )
+        return ConnectorRuntime(
+            repository,
+            registry,
+            installation_service,
+            orchestrator,
+            policy,
+            evidence,
+            client,
+        )
+    except (ValueError, ConnectorAuthorizationError, OSError):
+        return None
+
+
+def _default_fixture(settings: Settings) -> JsonMockFixture:
+    projects = [value.strip() for value in settings.experience_project_catalog.split(",") if value.strip()]
+    if not projects:
+        projects = ["project-a"]
+    return JsonMockFixture.model_validate(
+        {
+            "fixtureVersion": "json-mock.v1",
+            "connectorType": "json-mock",
+            "resources": [
+                {
+                    "externalReference": f"fixture://{project}/message-001",
+                    "occurredAt": "2026-08-10T00:00:00Z",
+                    "eventType": "source.created",
+                    "actorHint": "json-mock-user",
+                    "contentType": "application/json",
+                    "content": {
+                        "title": "JSON Mock import",
+                        "items": [{"type": "task", "text": "Review imported source"}],
+                    },
+                }
+                for project in projects
+            ],
+        }
+    )
 
 
 def _problem(request: Request, status: int, code: str, title: str, detail: str) -> JSONResponse:
@@ -376,3 +474,6 @@ def _gateway_problem(error_class: str) -> tuple[int, str, str, str]:
             "The provider configuration is unavailable or invalid.",
         )
     return 500, "INTERNAL_ERROR", "Extraction failed", "The extraction operation failed safely."
+
+
+app = create_app()

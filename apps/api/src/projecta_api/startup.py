@@ -52,6 +52,8 @@ def validate_startup(settings: Settings) -> tuple[StartupProblem, ...]:
         # the local experience adapter must not be silently selected.
         if settings.experience_actor_id or settings.experience_project_catalog:
             problems.append(StartupProblem("EXPERIENCE_CONTEXT_DISABLED_IN_PRODUCTION"))
+        if settings.connector_local_admin_enabled:
+            problems.append(StartupProblem("CONNECTOR_LOCAL_AUTH_DISABLED_IN_PRODUCTION"))
     elif not _provider_configuration_is_complete(settings):
         problems.append(StartupProblem("LLM_CONFIGURATION_MISSING"))
 

@@ -110,8 +110,112 @@ jobs:
         shell: pwsh
         run: ./scripts/run_system_tests.ps1
 
+  sprint10-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.8.17"
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: Install web dependencies
+        run: npm ci
+        working-directory: apps/web
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+        working-directory: apps/web
+      - name: Run complete Sprint 10 validation
+        shell: pwsh
+        run: ./scripts/run_sprint10_validation.ps1
+
+  sprint10-acceptance:
+    needs: [sprint10-validation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.8.17"
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - name: Install web dependencies
+        run: npm ci
+        working-directory: apps/web
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+        working-directory: apps/web
+      - name: Run clean Compose acceptance
+        shell: pwsh
+        run: ./scripts/run_sprint10_acceptance.ps1
+
+  sprint10-recovery:
+    needs: [sprint10-validation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.8.17"
+      - name: Run isolated recovery
+        shell: pwsh
+        run: ./scripts/run_sprint10_recovery.ps1
+
+  sprint10-frontend-format:
+    needs: [sprint10-validation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - run: npm ci
+        working-directory: apps/web
+      - run: npm run format:check
+        working-directory: apps/web
+
+  sprint10-connector-security:
+    needs: [sprint10-validation]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.8.17"
+      - name: Run connector repository and security contracts
+        shell: pwsh
+        run: |
+          python -m unittest discover -s scripts/tests -p "test_*.py"
+          python scripts/check_sprint10_repository_contract.py
+          ./scripts/check_secret_leaks.ps1 -Secret "sprint10-security-marker-${{ github.run_id }}"
+
   publish:
-    needs: [release-contract, api, web, semantic-core, repository-contracts, system]
+    needs: [release-contract, api, web, semantic-core, repository-contracts, system, sprint10-validation, sprint10-acceptance, sprint10-recovery, sprint10-frontend-format, sprint10-connector-security]
     runs-on: ubuntu-latest
     permissions:
       contents: write

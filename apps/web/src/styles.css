@@ -192,6 +192,27 @@ a {
   display: flex;
   gap: 8px;
 }
+.button-row.compact {
+  gap: 6px;
+}
+.connector-install-form {
+  align-items: end;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: minmax(180px, 1fr) auto;
+  margin-top: 18px;
+  max-width: 720px;
+}
+.connector-install-form label,
+.connector-install-form .metadata {
+  grid-column: 1 / -1;
+}
+.connector-table-wrap {
+  overflow-x: auto;
+}
+.connector-table-wrap table {
+  min-width: 680px;
+}
 .topbar-status {
   flex-wrap: wrap;
   justify-content: flex-end;

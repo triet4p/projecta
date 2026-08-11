@@ -52,12 +52,20 @@ public final class QuickNoteCaptureService {
         if (request.title().isBlank() || request.title().length() > 512) {
             throw new IllegalArgumentException("capture title is invalid");
         }
+        var sourceKind = request.sourceKind() == null ? "manual" : request.sourceKind();
+        if (!Set.of("manual", "text-import", "connector").contains(sourceKind)) {
+            throw new IllegalArgumentException("capture source kind is invalid");
+        }
+        if (request.sourceContentHash() != null && !request.sourceContentHash().matches("sha256:[0-9a-f]{64}")) {
+            throw new IllegalArgumentException("capture source hash is invalid");
+        }
 
         var normalized = request.rawText().replace("\r\n", "\n").replace("\r", "\n");
         validate(normalized, request.segments());
 
         var noteId = OpaqueIds.random("note-");
-        var fingerprint = normalized + "|" + request.segments();
+        var fingerprint = normalized + "|" + request.segments() + "|" + sourceKind + "|"
+                + (request.sourceContentHash() == null ? "" : request.sourceContentHash());
         var projectIri = BASE + project.value();
         var record = BASE + project.value() + "/capture-idempotency/" + OpaqueIds.idempotencyDigest(key);
         var note = BASE + project.value() + "/note/" + noteId;
@@ -69,7 +77,7 @@ public final class QuickNoteCaptureService {
 
         var sources =
                 sourceTriples(project, actor, note, projectIri, request.title(), normalized, request.segments(), now);
-        var candidates = candidateTriples(project, noteId, projectIri, request.segments(), now);
+        var candidates = candidateTriples(project, noteId, projectIri, request.segments(), now, sourceKind);
         var provenance = provenanceTriples(
                 project, actor, noteId, projectIri, record, fingerprint, attemptToken, now, request.segments());
         var validationResult = validator.validate(project, sources, candidates, provenance);
@@ -166,7 +174,12 @@ public final class QuickNoteCaptureService {
     }
 
     private static String candidateTriples(
-            ProjectId project, String noteId, String projectIri, List<Segment> segments, String now) {
+            ProjectId project,
+            String noteId,
+            String projectIri,
+            List<Segment> segments,
+            String now,
+            String sourceKind) {
         var triples = new StringBuilder("<" + projectIri + "> a <" + ONTOLOGY + "Project> . ");
         for (var index = 0; index < segments.size(); index++) {
             var candidate = candidate(project, noteId, index + 1);
@@ -182,7 +195,9 @@ public final class QuickNoteCaptureService {
                     .append(ONTOLOGY)
                     .append("extracted> ; <")
                     .append(ONTOLOGY)
-                    .append("generator> \"manual-quick-note-v0.3.0\" ; <")
+                    .append("generator> \"")
+                    .append("connector".equals(sourceKind) ? "connector-json-mock-v1" : "manual-quick-note-v0.3.0")
+                    .append("\" ; <")
                     .append(ONTOLOGY)
                     .append("proposedOntologyVersion> \"0.3.0\" ; <")
                     .append(ONTOLOGY)
@@ -350,9 +365,14 @@ public final class QuickNoteCaptureService {
 
     public record Segment(String type, int startOffset, int endOffset, String text) {}
 
-    public record CaptureRequest(String title, String rawText, List<Segment> segments) {
+    public record CaptureRequest(
+            String title, String rawText, List<Segment> segments, String sourceKind, String sourceContentHash) {
+        public CaptureRequest(String title, String rawText, List<Segment> segments) {
+            this(title, rawText, segments, "manual", null);
+        }
+
         public CaptureRequest(String rawText, List<Segment> segments) {
-            this("Quick Note", rawText, segments);
+            this("Quick Note", rawText, segments, "manual", null);
         }
     }
 
