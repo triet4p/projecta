@@ -1,6 +1,6 @@
 # Sprint 10 Plan — Governed Connector Foundation and v0.5.1 Recovery
 
-Status: `RELEASE_PREFLIGHT`
+Status: `COMPLETE`
 
 Target product release: `v0.5.1`
 
@@ -428,20 +428,20 @@ Status legend: [ ] pending / [~] in progress / [x] done
 - [x] **S10-79 — Validate the v0.5.1 release contract:** Pass release-contract
   unit tests and `check_release_contract.py --tag v0.5.1`; reject any manifest,
   changelog, tag-shape, or rendered-notes mismatch.
-- [~] **S10-80 — Run the immutable v0.5.1 preflight:** Commit the recovery
+- [x] **S10-80 — Run the immutable v0.5.1 preflight:** Commit the recovery
   candidate, run every mandatory matrix gate on that exact SHA with no source
   change afterward, and verify a clean worktree and complete cleanup.
-- [ ] **S10-81 — Approve fresh G3 for v0.5.1:** Human explicitly authorizes the
+- [x] **S10-81 — Approve fresh G3 for v0.5.1:** Human explicitly authorizes the
   exact immutable recovery commit; the prior G3 for `dd1fcccca18647238bf37731fde6c5a7e8fc7726`
   does not authorize a different SHA or tag.
-- [ ] **S10-82 — Push and tag the approved v0.5.1 candidate:** Push the exact G3
+- [x] **S10-82 — Push and tag the approved v0.5.1 candidate:** Push the exact G3
   SHA to `main`, verify remote equality, create one annotated `v0.5.1` tag, and
   push only that tag without moving `v0.5.0`.
-- [ ] **S10-83 — Verify the public v0.5.1 release:** Follow every required tag
+- [x] **S10-83 — Verify the public v0.5.1 release:** Follow every required tag
   job to success, then confirm the GitHub Release is public, non-draft,
   non-prerelease, points to the immutable annotated tag, and contains only the
   matching changelog section.
-- [ ] **S10-84 — Close Sprint 10 without closing M7:** Attach publication
+- [x] **S10-84 — Close Sprint 10 without closing M7:** Attach publication
   evidence, mark Sprint 10 complete, update the global plan, and retain M7 in
   progress for production authentication, secret management, and the first real
   connector.
@@ -461,8 +461,26 @@ Status legend: [ ] pending / [~] in progress / [x] done
   path during container collection, and recovery port parsing assuming a single
   Docker binding. Human recovery approval selected `v0.5.1`; remediation now
   awaits a new immutable candidate and exact-SHA G3 authorization.
-- The published tag has not been moved or recreated. Sprint 10 remains open
-  until a corrected tag workflow and public release both succeed.
+- The published tag was not moved or recreated. At that point Sprint 10 remained
+  open pending a corrected tag workflow and public recovery release.
+
+### Successful v0.5.1 recovery release
+
+- G3 authorized exact commit `d5ff40d7c64966e03ae266ceeb39d7092899d9fb`
+  as `v0.5.1` on 2026-08-11.
+- Remote `main` and annotated tag object
+  `7ad8517b41424344e4d00eef77a1cc8962dab622` were verified; the tag peels to
+  the exact G3 commit while `v0.5.0` remains unchanged at `dd1fcccca18647238bf37731fde6c5a7e8fc7726`.
+- Release workflow run `31467464801` passed all required jobs. Its first API
+  attempt hit an evidenced PyPI wheel-download timeout after three transport
+  retries; the same locked sync had already passed in the web job, so only
+  failed jobs were rerun on the unchanged SHA. Attempt 2 passed API and
+  `publish` without a source or tag change.
+- Public release: `https://github.com/triet4p/projecta/releases/tag/v0.5.1`,
+  published 2026-08-11, non-draft and non-prerelease, with only the matching
+  `0.5.1` changelog section.
+- Detailed immutable preflight hashes, job evidence, and closure state are in
+  `docs/sprint-plans/sprint-10/release-record.md`.
 
 ## Mandatory Release Matrix
 

@@ -63,14 +63,17 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   *Completed 2026-08-10; provider calls are single-attempt and bounded,
   correlation is preserved, and existing structured Notes project into Graph
   and Review Queue without rewriting stored RDF.*
+- [Sprint 10 — Governed Connector Foundation and v0.5.1 Recovery](sprint-plans/sprint-10.md)
+  — *Completed 2026-08-11; the governed JSON/Mock connector foundation,
+  PostgreSQL/evidence recovery, project isolation, clean-Compose acceptance,
+  immutable release gates, and public `v0.5.1` recovery release passed. The
+  failed `v0.5.0` tag remains unchanged as historical evidence.*
 
 ## Active Sprints
 
-- [Sprint 10 — Governed Connector Foundation and v0.5.1 Recovery](sprint-plans/sprint-10.md)
-  — *G2 approved; the initial immutable `v0.5.0` tag attempt was correctly
-  blocked by required CI gates and remains unchanged. Human recovery approval
-  selected `v0.5.1`; manifests, changelog, remediation gates, fresh immutable
-  preflight, exact-SHA G3, tagging, and publication are being completed.*
+No active sprint. M7 remains in progress for the first production connector,
+production identity/authorization, server-side secret management, and broader
+production hardening.
 
 ## Planned Sprints
 
