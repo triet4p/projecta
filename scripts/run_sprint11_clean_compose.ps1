@@ -101,6 +101,19 @@ try {
     $status = "passed"
 } catch {
     $failure = $_.Exception.Message
+    if ($started) {
+        $diagnosticStarted = [DateTime]::UtcNow
+        $diagnostic = @(& docker compose -p $project -f (Join-Path $root "compose.yaml") -f (Join-Path $root "compose.prod.yaml") logs --no-color --tail 80 api 2>&1 | ForEach-Object {
+            ([string]$_) -replace '(?i)(token|secret|password|private[_-]?key)\s*[=:]\s*[^\s,;]+', '$1=<redacted>'
+        })
+        $results.Add([pscustomobject]@{
+            name = "Failure diagnostics: API logs"
+            exitCode = 0
+            startedAt = $diagnosticStarted.ToString("o")
+            finishedAt = [DateTime]::UtcNow.ToString("o")
+            output = @($diagnostic | Select-Object -Last 80)
+        })
+    }
     Write-Error $failure
 } finally {
     if ($started) { docker compose -p $project -f (Join-Path $root "compose.yaml") -f (Join-Path $root "compose.prod.yaml") down --volumes --remove-orphans | Out-Host }
