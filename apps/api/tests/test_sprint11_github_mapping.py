@@ -58,7 +58,11 @@ def _comment(**overrides: object) -> dict[str, object]:
 
 
 def _fixture_root() -> Path:
-    repository_fixture_root = Path(__file__).parents[3] / "evaluation/sprint-11/github-public-issues"
+    try:
+        repository_root = Path(__file__).parents[3]
+    except IndexError:
+        repository_root = Path("/")
+    repository_fixture_root = repository_root / "evaluation/sprint-11/github-public-issues"
     if repository_fixture_root.exists():
         return repository_fixture_root
     mounted_fixture_root = Path("/evaluation/sprint-11/github-public-issues")
