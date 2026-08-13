@@ -62,6 +62,28 @@ class Settings(BaseSettings):
     connector_local_admin_enabled: bool = Field(
         default=False, validation_alias="PROJECTA_CONNECTOR_LOCAL_ADMIN_ENABLED"
     )
+    # Production OIDC is intentionally explicit. No provider or local adapter
+    # is selected implicitly when these values are absent.
+    oidc_issuer_url: AnyHttpUrl | None = Field(default=None, validation_alias="PROJECTA_API_OIDC_ISSUER_URL")
+    oidc_client_id: str = Field(default="", validation_alias="PROJECTA_API_OIDC_CLIENT_ID")
+    oidc_redirect_uri: AnyHttpUrl | None = Field(default=None, validation_alias="PROJECTA_API_OIDC_REDIRECT_URI")
+    oidc_audience: str = Field(default="", validation_alias="PROJECTA_API_OIDC_AUDIENCE")
+    oidc_ca_file: Path | None = Field(default=None, validation_alias="PROJECTA_API_OIDC_CA_FILE")
+    session_max_age_seconds: int = Field(default=28_800, ge=300, le=86_400, validation_alias="PROJECTA_API_SESSION_MAX_AGE_SECONDS")
+    session_cookie_name: str = Field(default="__Host-projecta_session", validation_alias="PROJECTA_API_SESSION_COOKIE_NAME")
+    csrf_cookie_name: str = Field(default="projecta_csrf", validation_alias="PROJECTA_API_CSRF_COOKIE_NAME")
+    session_cookie_secure: bool = Field(default=True, validation_alias="PROJECTA_API_SESSION_COOKIE_SECURE")
+    identity_database_url: str | None = Field(default=None, validation_alias="PROJECTA_API_IDENTITY_DATABASE_URL")
+    openbao_url: AnyHttpUrl | None = Field(default=None, validation_alias="PROJECTA_API_OPENBAO_URL")
+    openbao_role_id_file: Path = Field(default=Path("/run/secrets/openbao-role-id"), validation_alias="PROJECTA_API_OPENBAO_ROLE_ID_FILE")
+    openbao_secret_id_file: Path = Field(default=Path("/run/secrets/openbao-secret-id"), validation_alias="PROJECTA_API_OPENBAO_SECRET_ID_FILE")
+    openbao_ca_file: Path = Field(default=Path("/etc/projecta/openbao/ca.crt"), validation_alias="PROJECTA_API_OPENBAO_CA_FILE")
+
+    def identity_sync_database_url(self) -> str:
+        """Resolve the Projecta-owned identity state database credentials."""
+        if self.identity_database_url:
+            return self.identity_database_url
+        return self.connector_sync_database_url()
 
     def connector_sync_database_url(self) -> str:
         """Return the connector DB URL without requiring secrets in Compose URLs."""

@@ -10,10 +10,12 @@ import { ProjectOverviewScreen } from "../screens/ProjectOverviewScreen";
 import { ProjectsScreen } from "../screens/ProjectsScreen";
 import { QuestionScreen } from "../screens/QuestionScreen";
 import { ReviewScreen } from "../screens/ReviewScreen";
+import { KnowledgeScreen } from "../screens/KnowledgeScreen";
 import { SettingsScreen } from "../screens/SettingsScreen";
 import { WorkspaceHeader } from "./WorkspaceHeader";
 import { navigationGroups, type Screen } from "./navigation";
 import { EmptyState, ErrorMessage } from "../ui";
+import { AuthShell } from "./AuthShell";
 
 export function App(): ReactElement {
   const api = useMemo(() => new ProjectaApiClient(), []);
@@ -87,13 +89,23 @@ export function App(): ReactElement {
         ) : (
           <ProjectsScreen api={api} onSelected={selectProject} />
         );
+      case "Knowledge":
+        return activeProject ? (
+          <KnowledgeScreen api={api} projectHandle={activeProject.handle} />
+        ) : (
+          <ProjectsScreen api={api} onSelected={selectProject} />
+        );
       case "Q&A":
         return <QuestionScreen api={api} />;
       case "Settings":
         return <SettingsScreen api={api} />;
       case "Connections":
         return activeProject ? (
-          <ConnectionsScreen api={api} projectHandle={activeProject.handle} />
+          <ConnectionsScreen
+            api={api}
+            onNavigate={setActive}
+            projectHandle={activeProject.handle}
+          />
         ) : (
           <ProjectsScreen api={api} onSelected={selectProject} />
         );
@@ -112,80 +124,84 @@ export function App(): ReactElement {
   const scopedScreen = active !== "Projects" && activeProject !== null;
 
   return (
-    <div className="app-shell">
-      <a className="skip-link" href="#main-content">
-        Skip to main content
-      </a>
-      <header className="topbar">
-        <div className="topbar-brand">
-          <h1>Projecta</h1>
-          {activeProject && (
-            <div className="topbar-context">
-              <span>Project workspace</span>
-              <strong>{activeProject.name}</strong>
-            </div>
-          )}
-        </div>
-        <div className="topbar-status">
-          <span className="experience-badge">Server-owned context</span>
-          <span className={health ? "health-pill healthy" : "health-pill unavailable"}>
-            API {health ? "live" : "offline"}
-          </span>
-        </div>
-      </header>
-      <div className="workspace">
-        <nav aria-label="Primary navigation" className="sidebar">
-          <button
-            className="sidebar-new"
-            onClick={() => {
-              setActive("Notes");
-            }}
-            type="button"
-          >
-            <span>+ New Note</span>
-          </button>
-          {navigationGroups.map((group) => (
-            <div className="sidebar-group" key={group.label}>
-              <div className="sidebar-label">{group.label}</div>
-              {group.items.map((item) => (
-                <button
-                  aria-current={active === item ? "page" : undefined}
-                  className={active === item ? "nav-item active" : "nav-item"}
-                  data-nav-short={item.slice(0, 1)}
-                  key={item}
-                  onClick={() => setActive(item)}
-                  type="button"
-                >
-                  <span className="nav-label">{item}</span>
-                </button>
-              ))}
-            </div>
-          ))}
-        </nav>
-        <main className="main-content" id="main-content" tabIndex={-1}>
-          {scopedScreen && activeProject && (
-            <WorkspaceHeader
-              onChangeProject={changeProject}
-              project={activeProject}
-              selectionRevision={selectionRevision}
-            />
-          )}
-          {!activeProject && active !== "Projects" && (
-            <EmptyState
-              title="Project selection required"
-              action={
-                <button onClick={() => setActive("Projects")} type="button">
-                  Open Projects
-                </button>
-              }
+    <AuthShell api={api}>
+      <div className="app-shell">
+        <a className="skip-link" href="#main-content">
+          Skip to main content
+        </a>
+        <header className="topbar">
+          <div className="topbar-brand">
+            <h1>Projecta</h1>
+            {activeProject && (
+              <div className="topbar-context">
+                <span>Project workspace</span>
+                <strong>{activeProject.name}</strong>
+              </div>
+            )}
+          </div>
+          <div className="topbar-status">
+            <span className="experience-badge">Server-owned context</span>
+            <span className={health ? "health-pill healthy" : "health-pill unavailable"}>
+              API {health ? "live" : "offline"}
+            </span>
+          </div>
+        </header>
+        <div className="workspace">
+          <nav aria-label="Primary navigation" className="sidebar">
+            <button
+              className="sidebar-new"
+              onClick={() => {
+                setActive("Notes");
+              }}
+              type="button"
             >
-              Choose a project before opening a scoped workspace.
-            </EmptyState>
-          )}
-          {activeProject || active === "Projects" ? screen : null}
-          {healthError !== null && active === "Diagnostics" && <ErrorMessage error={healthError} />}
-        </main>
+              <span>+ New Note</span>
+            </button>
+            {navigationGroups.map((group) => (
+              <div className="sidebar-group" key={group.label}>
+                <div className="sidebar-label">{group.label}</div>
+                {group.items.map((item) => (
+                  <button
+                    aria-current={active === item ? "page" : undefined}
+                    className={active === item ? "nav-item active" : "nav-item"}
+                    data-nav-short={item.slice(0, 1)}
+                    key={item}
+                    onClick={() => setActive(item)}
+                    type="button"
+                  >
+                    <span className="nav-label">{item}</span>
+                  </button>
+                ))}
+              </div>
+            ))}
+          </nav>
+          <main className="main-content" id="main-content" tabIndex={-1}>
+            {scopedScreen && activeProject && (
+              <WorkspaceHeader
+                onChangeProject={changeProject}
+                project={activeProject}
+                selectionRevision={selectionRevision}
+              />
+            )}
+            {!activeProject && active !== "Projects" && (
+              <EmptyState
+                title="Project selection required"
+                action={
+                  <button onClick={() => setActive("Projects")} type="button">
+                    Open Projects
+                  </button>
+                }
+              >
+                Choose a project before opening a scoped workspace.
+              </EmptyState>
+            )}
+            {activeProject || active === "Projects" ? screen : null}
+            {healthError !== null && active === "Diagnostics" && (
+              <ErrorMessage error={healthError} />
+            )}
+          </main>
+        </div>
       </div>
-    </div>
+    </AuthShell>
   );
 }

@@ -116,7 +116,7 @@ def restore_backup(backup: Path, isolated_root: Path, database_url: str, databas
     manifest = json.loads((backup / "manifest.json").read_text(encoding="utf-8"))
     if manifest.get("backupVersion") != BACKUP_VERSION:
         raise ValueError("backup version is unsupported")
-    if isolated_root.resolve() == backup.resolve() or isolated_root.resolve() in backup.resolve().parents:
+    if isolated_root.resolve() == backup.resolve() or backup.resolve() in isolated_root.resolve().parents:
         raise ValueError("isolated restore target is unsafe")
     isolated_root.mkdir(parents=True, exist_ok=True)
     archive = backup / str(manifest["evidenceArchive"])

@@ -23,7 +23,9 @@ def test_connector_schema_has_project_scoped_tables_and_no_raw_payload_columns()
         "connector_sync_attempts",
         "connector_cursors",
         "connector_dead_letters",
-        "connector_audit_records",
+            "connector_audit_records",
+            "teams_setup_handles",
+            "github_public_issues_setup_handles",
     }
     assert expected == set(Base.metadata.tables)
     for table in Base.metadata.tables.values():

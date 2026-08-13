@@ -6,6 +6,67 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+No unreleased changes.
+
+## [0.6.0] - 2026-08-14
+
+### Added
+
+- Added the credential-free, read-only GitHub Public Issues connector for one
+  exact public repository, including opaque setup handles, bounded pagination,
+  issue/comment mapping, replay-safe cursors, and Connections workflows.
+
+### Changed
+
+- Marked GitHub Public Issues as the live connector and Microsoft Teams as
+  experimental/deferred; Teams remains covered by deterministic regression tests
+  and is not a release gate.
+- Reused the existing connector orchestration, evidence, candidate, review
+  queue, and semantic lifecycle without changing the ontology version.
+
+### Security
+
+- Fixed the provider boundary to `api.github.com`, disabled redirects and hidden
+  retries, enforced cumulative response/event/deadline limits, and bound setup
+  handles to actor, project, installation, and revision.
+- Preserved OpenBao as the platform secret boundary; the GitHub connector stores
+  no provider token or work-tenant credential.
+
+### Operations
+
+- Use the release's Compose and recovery runbooks with digest-pinned images,
+  clean volumes, manual OpenBao unseal, and post-restore workload re-authentication.
+- The accepted G2 waiver covers one anonymous GitHub quota-limited live
+  edit/replay rerun only; deterministic provenance and tamper contracts remain
+  mandatory.
+
+### Upgrade
+
+- Stop the existing Compose stack, apply the checked-in migrations, update all
+  component images/manifests to `0.6.0`, and run the release validation and
+  recovery gates before starting the production profile.
+- Existing v0.5.1 connector, evidence, candidate, and semantic data remains
+  compatible; no ontology migration is required for this release.
+
+### Rollback
+
+- Roll back by stopping the `0.6.0` stack, restoring the previously approved
+  v0.5.1 images and configuration, and restoring the coordinated operational
+  state bundle only when the operator has a verified backup.
+- Do not move the `v0.6.0` tag; publish a separately approved maintenance tag if
+  a corrected rollback release is required.
+
+### Limitations
+
+- GitHub support is limited to public, read-only issues and issue comments in
+  one exact repository; pull requests, private/authenticated access, webhooks,
+  outbound actions, and continuous synchronization are out of scope.
+- GitHub availability and anonymous API capacity are external limits. The
+  release makes no capacity or availability guarantee.
+- Teams live acceptance is deferred; it is not a production-ready connector in
+  `v0.6.0`. High availability, broad tenant administration, and managed-service
+  dependencies remain future work.
+
 ## [0.5.1] - 2026-08-11
 
 ### Fixed

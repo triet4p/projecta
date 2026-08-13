@@ -150,6 +150,36 @@ a {
   background: var(--dws-canvas);
   min-height: 100vh;
 }
+.auth-gate {
+  align-items: center;
+  display: grid;
+  min-height: 100vh;
+  padding: 24px;
+  place-items: center;
+}
+.auth-gate .card {
+  max-width: 480px;
+  width: 100%;
+}
+.auth-button {
+  background: var(--dws-primary);
+  border: 1px solid var(--dws-primary);
+  border-radius: 4px;
+  color: white;
+  display: inline-block;
+  padding: 8px 12px;
+  text-decoration: none;
+}
+.auth-session-bar {
+  align-items: center;
+  background: var(--dws-surface-subtle);
+  border-bottom: 1px solid var(--dws-border);
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  min-height: 40px;
+  padding: 4px 16px;
+}
 .topbar {
   align-items: center;
   background: var(--dws-surface-subtle);
@@ -202,6 +232,18 @@ a {
   grid-template-columns: minmax(180px, 1fr) auto;
   margin-top: 18px;
   max-width: 720px;
+}
+.connector-install-form h3 {
+  margin: 0;
+}
+.connector-install-form input {
+  min-width: 0;
+}
+.connector-install-form .muted {
+  margin: 0;
+}
+.connector-install-form button {
+  justify-self: start;
 }
 .connector-install-form label,
 .connector-install-form .metadata {

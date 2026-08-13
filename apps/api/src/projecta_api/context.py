@@ -51,7 +51,11 @@ async def trusted_context(
     """Read context injected by a trusted adapter and reject direct anonymous calls."""
     expected = request.app.state.settings.trusted_context_secret
     if request.app.state.settings.runtime_mode == "production":
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "trusted project context is required")
+        try:
+            return request.app.state.identity_service.context_for_request(request)
+        except Exception as error:
+            status_code = getattr(error, "status_code", status.HTTP_401_UNAUTHORIZED)
+            raise HTTPException(status_code, "authenticated project context is required") from error
     if request.app.state.settings.runtime_mode == "experience" and not project_id:
         raise HTTPException(status.HTTP_409_CONFLICT, "project selection is required")
     valid = all(value and value.strip() for value in (project_id, actor_id, request_id))
@@ -98,7 +102,11 @@ async def trusted_actor_context(
     """Read server-established actor context for catalog and selection operations."""
     expected = request.app.state.settings.trusted_context_secret
     if request.app.state.settings.runtime_mode == "production":
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "trusted actor context is required")
+        try:
+            return request.app.state.identity_service.actor_context_for_request(request)
+        except Exception as error:
+            status_code = getattr(error, "status_code", status.HTTP_401_UNAUTHORIZED)
+            raise HTTPException(status_code, "authenticated actor context is required") from error
     valid = all(value and value.strip() for value in (actor_id, request_id))
     valid = valid and bool(expected and expected.strip() and context_secret)
     valid = valid and compare_digest(context_secret or "", expected or "")
@@ -150,6 +158,17 @@ class LocalExperienceContextMiddleware(BaseHTTPMiddleware):
                     headers[b"x-projecta-selection-revision"] = selection.catalog_revision.encode(
                         "utf-8"
                     )
+        elif settings.runtime_mode == "production":
+            # Production identity is derived from the session cookie. Browser
+            # headers must never reach context dependencies or connector code.
+            for name in (
+                b"x-projecta-project-id",
+                b"x-projecta-actor-id",
+                b"x-projecta-context-secret",
+                b"x-projecta-selection-handle",
+                b"x-projecta-selection-revision",
+            ):
+                headers.pop(name, None)
         request.scope["headers"] = list(headers.items())
         response = await call_next(request)
         response.headers["X-Request-Id"] = correlation.request_id

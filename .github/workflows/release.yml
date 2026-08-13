@@ -99,6 +99,10 @@ jobs:
       - name: Verify Compose health contract
         shell: pwsh
         run: ./scripts/check_sprint8_health_contract.ps1
+      - name: Verify Sprint 11 repository boundary
+        run: python scripts/check_sprint11_repository_contract.py
+      - name: Verify Sprint 11 sanitized live evidence
+        run: python scripts/check_sprint11_github_live_evidence.py
       - name: Verify repository whitespace
         run: git diff --check
 
@@ -214,8 +218,98 @@ jobs:
           python scripts/check_sprint10_repository_contract.py
           ./scripts/check_secret_leaks.ps1 -Secret "sprint10-security-marker-${{ github.run_id }}"
 
+  # Sprint 11 remains deterministic in CI. The G2 quota waiver does not add a
+  # live-provider job and does not weaken the checked-in public-provider tests.
+  sprint11-deterministic:
+    needs: [release-contract, api, web, semantic-core, repository-contracts]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.8.17"
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: Run deterministic Sprint 11 validation
+        shell: pwsh
+        run: ./scripts/run_sprint11_validation.ps1 -SkipComposeConfig -EvidencePath "$env:RUNNER_TEMP/s11-validation.json"
+
+  sprint11-acceptance:
+    needs: [sprint11-deterministic]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.8.17"
+      - name: Verify clean Compose identity and secret boundary
+        shell: pwsh
+        run: |
+          $hash = "0000000000000000000000000000000000000000000000000000000000000000"
+          $env:CONNECTOR_POSTGRES_IMAGE = "postgres:16.4-alpine@$('sha256:' + $hash)"
+          $env:KEYCLOAK_IMAGE = "quay.io/keycloak/keycloak:26.7.0@$('sha256:' + $hash)"
+          $env:OPENBAO_IMAGE = "ghcr.io/openbao/openbao:2.6.1@$('sha256:' + $hash)"
+          $env:EDGE_IMAGE = "nginx:1.29-alpine@$('sha256:' + $hash)"
+          $env:API_IMAGE = "projecta-api:ci@$('sha256:' + $hash)"
+          $env:WEB_IMAGE = "projecta-web:ci@$('sha256:' + $hash)"
+          $env:SEMANTIC_CORE_IMAGE = "projecta-semantic-core:ci@$('sha256:' + $hash)"
+          $env:PROJECTA_CONNECTOR_POSTGRES_USER = "validation"
+          $env:PROJECTA_CONNECTOR_POSTGRES_PASSWORD = "validation-only"
+          $env:PROJECTA_CONNECTOR_POSTGRES_DB = "projecta"
+          $env:PROJECTA_KEYCLOAK_POSTGRES_DB = "keycloak"
+          $env:PROJECTA_KEYCLOAK_POSTGRES_USER = "keycloak"
+          $env:PROJECTA_KEYCLOAK_POSTGRES_PASSWORD = "validation-only"
+          $env:KEYCLOAK_BOOTSTRAP_ADMIN_USERNAME = "operator"
+          $env:KEYCLOAK_BOOTSTRAP_ADMIN_PASSWORD = "validation-only"
+          $env:PROJECTA_API_TRUSTED_CONTEXT_SECRET = "s11-ci-trusted-context"
+          $env:PROJECTA_API_SECRET_STORE_MASTER_KEY = "s11-ci-secret-store"
+          ./scripts/run_sprint11_clean_compose.ps1 -ConfigOnly -EvidencePath "$env:RUNNER_TEMP/s11-clean-compose.json"
+      - name: Run deterministic identity, OpenBao, Teams regression, and GitHub contracts
+        run: >-
+          uv run --project apps/api pytest -q
+          apps/api/tests/test_sprint11_identity.py
+          apps/api/tests/test_sprint11_openbao.py
+          apps/api/tests/test_sprint11_teams_setup.py
+          apps/api/tests/test_sprint11_github_mapping.py
+          apps/api/tests/test_sprint11_github_setup.py
+          apps/api/tests/test_sprint11_github_transport.py
+
+  sprint11-recovery:
+    needs: [sprint11-acceptance]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.8.17"
+      - name: Verify recovery and rollback contracts
+        run: >-
+          uv run --project apps/api pytest -q
+          scripts/tests/test_sprint11_phase_f_contract.py
+          apps/api/tests/test_sprint11_openbao.py
+          apps/api/tests/test_connector_operational_contract.py
+      - name: Verify sanitized carried recovery evidence
+        run: python scripts/check_sprint11_repository_contract.py
+
   publish:
-    needs: [release-contract, api, web, semantic-core, repository-contracts, system, sprint10-validation, sprint10-acceptance, sprint10-recovery, sprint10-frontend-format, sprint10-connector-security]
+    needs: [release-contract, api, web, semantic-core, repository-contracts, system, sprint10-validation, sprint10-acceptance, sprint10-recovery, sprint10-frontend-format, sprint10-connector-security, sprint11-deterministic, sprint11-acceptance, sprint11-recovery]
     runs-on: ubuntu-latest
     permissions:
       contents: write

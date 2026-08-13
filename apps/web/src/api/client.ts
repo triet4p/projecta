@@ -57,6 +57,14 @@ export class ApiError extends Error {
   }
 }
 
+export interface AuthSession {
+  requestId: string;
+  authenticated: boolean;
+  actorId?: string;
+  expiresAt?: string;
+  projects?: Array<{ projectId: string; roles: string[]; revision: number }>;
+}
+
 export class ProjectaApiClient {
   constructor(private readonly baseUrl = "") {}
 
@@ -66,6 +74,14 @@ export class ProjectaApiClient {
 
   async getReadiness(): Promise<ReadyResponse> {
     return this.request<ReadyResponse>("/health/ready", { method: "GET" });
+  }
+
+  async getAuthSession(): Promise<AuthSession> {
+    return this.request<AuthSession>("/v1/auth/session", { method: "GET" });
+  }
+
+  async logout(): Promise<AuthSession> {
+    return this.request<AuthSession>("/auth/logout", { method: "POST" });
   }
 
   async listProjects(limit = 50): Promise<ProjectCatalogResponse> {
@@ -89,11 +105,35 @@ export class ProjectaApiClient {
 
   async createConnectorInstallation(
     projectHandle: string,
-    payload: { fixtureReference: string; capabilities: string[] },
+    payload:
+      | { connectorType?: "json-mock"; fixtureReference: string; capabilities: string[] }
+      | { connectorType: "teams"; teamsSetupHandle: string; capabilities: string[] }
+      | {
+          connectorType: "github-public-issues";
+          githubSetupHandle: string;
+          capabilities: string[];
+        },
   ): Promise<ConnectorInstallation> {
     return this.request<ConnectorInstallation>(
       `/v1/projects/${encodeURIComponent(projectHandle)}/connectors/installations`,
       { method: "POST", body: payload },
+    );
+  }
+
+  async updateConnectorInstallation(
+    projectHandle: string,
+    installationHandle: string,
+    payload: {
+      expectedRevision: number;
+      fixtureReference?: string;
+      teamsSetupHandle?: string;
+      githubSetupHandle?: string;
+      capabilities?: string[];
+    },
+  ): Promise<ConnectorInstallation> {
+    return this.request<ConnectorInstallation>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/connectors/installations/${encodeURIComponent(installationHandle)}`,
+      { method: "PUT", body: payload },
     );
   }
 
@@ -516,11 +556,20 @@ export class ProjectaApiClient {
     if (options.body !== undefined) headers.set("Content-Type", "application/json");
     if (options.idempotencyKey !== undefined)
       headers.set("Idempotency-Key", options.idempotencyKey);
+    if (options.method !== "GET" && typeof document !== "undefined") {
+      const csrf = document.cookie
+        .split(";")
+        .map((item) => item.trim())
+        .find((item) => item.startsWith("projecta_csrf="))
+        ?.slice("projecta_csrf=".length);
+      if (csrf) headers.set("X-CSRF-Token", decodeURIComponent(csrf));
+    }
     const response = await fetch(`${this.baseUrl}${path}`, {
       method: options.method,
       headers,
       body: options.body === undefined ? undefined : JSON.stringify(options.body),
       signal: options.signal,
+      credentials: "same-origin",
     });
     const responseRequestId = response.headers.get("X-Request-Id");
     if (!responseRequestId) {

@@ -1,0 +1,11 @@
+{
+  "value": [
+    {
+      "id": "root-1",
+      "createdDateTime": "2026-08-12T11:00:00Z",
+      "lastModifiedDateTime": "2026-08-12T11:00:00Z",
+      "from": {"user": {"id": "user-1", "displayName": "Reviewer"}},
+      "body": {"contentType": "html", "content": "<p>Hello <b>Teams</b></p>"}
+    }
+  ]
+}

@@ -9,7 +9,9 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 - Mỗi term/rule mới phải phục vụ competency question hoặc governance requirement.
 - Mỗi semantic change đi qua `$projecta-evolve-ontology` và human approval.
 - Ưu tiên đường chạy end-to-end nhỏ hơn infrastructure breadth.
-- Manual/Mock connector đi trước Teams; deterministic candidate fixture đi trước LLM.
+- Manual/Mock connector đi trước provider thật; GitHub Public Issues
+  credential-free đi trước connector cần tenant/consent; deterministic fixture
+  đi trước live-provider acceptance.
 - Không thêm Kafka, OpenSearch, Kubernetes hoặc full observability trước khi volume/SLO yêu cầu.
 
 ## Milestones
@@ -71,21 +73,29 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 
 ## Active Sprints
 
-No active sprint. M7 remains in progress for the first production connector,
-production identity/authorization, server-side secret management, and broader
-production hardening.
+- [Sprint 11 — Free Production-Shaped Trust Boundary and GitHub Public Issues Ingestion](sprint-plans/sprint-11.md)
+  — *G1 approved with revisions on 2026-08-12; OIDC, Teams lifecycle, OpenBao,
+  strict typing, deterministic validation, clean Compose, and stateful recovery
+  are green. The 2026-08-13 G1 amendment makes credential-free GitHub Public
+  Issues the v0.6.0 live connector and defers Teams live acceptance. Amendment
+  implementation is complete. G2 was approved with an explicit residual-risk
+  waiver for the quota-limited live edit/replay rerun; baseline r9 and
+  deterministic provenance contracts are accepted. Version alignment,
+  release-contract freeze, immutable preflight, G3, and publication remain open.*
 
 ## Planned Sprints
 
-- **Sprint 11+:** First production connector, production authentication and
-  authorization, server-side secret-manager integration, outbound actions, and
-  broader production hardening after the Sprint 10 connector contract is
-  accepted.
+- **Sprint 12+:** Governed outbound actions, continuous synchronization,
+  additional production connectors, broader tenant administration, managed
+  adapter options, high availability, and measured production hardening after
+  the Sprint 11 trust boundary is accepted.
 
 ## Backlog / Future Work
 
-- Teams/Outlook/Jira connectors.
-- Authentication, RBAC/ABAC và tenant administration.
+- Teams live tenant acceptance, Outlook/Jira, authenticated GitHub, and later
+  connectors; GitHub Public Issues is the Sprint 11 read-only release target.
+- Broader RBAC/ABAC and tenant administration beyond Sprint 11's minimal
+  server-owned project membership and finite capabilities.
 - Managed storage, backup/restore drills và production observability.
 - Search engine hoặc event broker khi PostgreSQL-based baseline không còn đáp ứng.
 - Tauri desktop companion, native keyring, tray/global shortcut và offline draft

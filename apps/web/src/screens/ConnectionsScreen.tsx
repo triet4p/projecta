@@ -8,18 +8,23 @@ import type {
 } from "../api/generated";
 import { connectorRunLabel, connectionsLoadState } from "../connections-state";
 import { Card, ErrorMessage, StateMessage, StatusBadge, operationKey } from "../ui";
+import type { Screen } from "../shell/navigation";
 
 export function ConnectionsScreen({
   api,
   projectHandle,
+  onNavigate,
 }: {
   api: ProjectaApiClient;
   projectHandle: string;
+  onNavigate?: (screen: Screen) => void;
 }) {
   const [catalog, setCatalog] = useState<ConnectorCatalogResponse | null>(null);
   const [installations, setInstallations] = useState<ConnectorInstallation[]>([]);
   const [runs, setRuns] = useState<Record<string, ConnectorRun[]>>({});
   const [fixtureReference, setFixtureReference] = useState("fixture://project-a");
+  const [teamsSetupHandle, setTeamsSetupHandle] = useState("");
+  const [githubSetupHandle, setGithubSetupHandle] = useState("");
   const [loading, setLoading] = useState(true);
   const [busyHandle, setBusyHandle] = useState<string | null>(null);
   const [error, setError] = useState<unknown>(null);
@@ -64,17 +69,59 @@ export function ConnectionsScreen({
   const jsonMockInstalled = installations.some(
     (installation) => installation.connectorType === "json-mock",
   );
+  const teams = useMemo(
+    () => catalog?.items.find((item) => item.connectorType === "teams"),
+    [catalog],
+  );
+  const teamsInstalled = installations.some(
+    (installation) => installation.connectorType === "teams",
+  );
+  const github = useMemo(
+    () => catalog?.items.find((item) => item.connectorType === "github-public-issues"),
+    [catalog],
+  );
+  const githubInstalled = installations.some(
+    (installation) => installation.connectorType === "github-public-issues",
+  );
 
-  const install = async () => {
-    if (!window.confirm("Install this JSON/Mock connector for the selected project?")) return;
+  const install = async (connector: "json-mock" | "teams" | "github-public-issues") => {
+    if (connector === "teams" && teamsSetupHandle.trim().length < 10) {
+      setError(new Error("Enter the operator-provided setup handle."));
+      return;
+    }
+    if (connector === "github-public-issues" && githubSetupHandle.trim().length < 10) {
+      setError(new Error("Enter the operator-provided GitHub repository setup handle."));
+      return;
+    }
+    if (
+      !window.confirm(
+        `Install this ${connector === "teams" ? "Teams" : connector === "github-public-issues" ? "GitHub Public Issues" : "JSON/Mock"} connector for the selected project?`,
+      )
+    )
+      return;
     setBusyHandle("new");
     setError(null);
     setNotice("");
     try {
-      await api.createConnectorInstallation(projectHandle, {
-        fixtureReference,
-        capabilities: ["inbound-import"],
-      });
+      if (connector === "teams") {
+        await api.createConnectorInstallation(projectHandle, {
+          connectorType: "teams",
+          teamsSetupHandle: teamsSetupHandle.trim(),
+          capabilities: ["inbound-import"],
+        });
+      } else if (connector === "github-public-issues") {
+        await api.createConnectorInstallation(projectHandle, {
+          connectorType: "github-public-issues",
+          githubSetupHandle: githubSetupHandle.trim(),
+          capabilities: ["inbound-import"],
+        });
+      } else {
+        await api.createConnectorInstallation(projectHandle, {
+          connectorType: "json-mock",
+          fixtureReference,
+          capabilities: ["inbound-import"],
+        });
+      }
       setNotice("Connector installation created disabled. Enable it when ready.");
       await load();
     } catch (nextError) {
@@ -122,7 +169,15 @@ export function ConnectionsScreen({
         ...current,
         [installation.handle]: [result, ...(current[installation.handle] ?? [])],
       }));
-      setNotice(`Sync completed with state: ${connectorRunLabel(result)}.`);
+      const label = connectorRunLabel(result);
+      setNotice(`Sync completed with state: ${label}.`);
+      if (
+        result.state === "succeeded" ||
+        result.state === "truncated" ||
+        result.state === "empty"
+      ) {
+        setNotice(`${label}. Imported material is available in Review Queue and Knowledge.`);
+      }
     } catch (nextError) {
       setError(nextError);
     } finally {
@@ -165,8 +220,8 @@ export function ConnectionsScreen({
           <span className="metadata">Scope: selected project</span>
         </div>
         <p className="muted">
-          JSON/Mock is the only enabled connector in this release. Real connectors remain disabled
-          until their own review and authorization boundary exists.
+          GitHub Public Issues is the live credential-free connector for this release. Teams remains
+          available for regression coverage but is marked experimental/deferred.
         </p>
         {error !== null && <ErrorMessage error={error} />}
         {notice && <StateMessage kind="success">{notice}</StateMessage>}
@@ -178,6 +233,14 @@ export function ConnectionsScreen({
         )}
         {state === "not-found" && (
           <StateMessage kind="error">This project connection is no longer available.</StateMessage>
+        )}
+        {state === "stale" && (
+          <StateMessage kind="error">
+            This view is stale after another change. Reload before retrying the action.
+            <button className="secondary" onClick={() => void load()} type="button">
+              Reload connections
+            </button>
+          </StateMessage>
         )}
         {state === "unavailable" && (
           <StateMessage kind="error">
@@ -201,8 +264,76 @@ export function ConnectionsScreen({
             <span className="metadata" id="fixture-help">
               Use a server-approved fixture:// reference. Credentials are never entered here.
             </span>
-            <button disabled={busyHandle !== null} onClick={() => void install()} type="button">
+            <button
+              disabled={busyHandle !== null}
+              onClick={() => void install("json-mock")}
+              type="button"
+            >
               Install JSON/Mock
+            </button>
+          </div>
+        )}
+        {teams && !teamsInstalled && (
+          <div className="connector-install-form" aria-describedby="teams-consent-guidance">
+            <h3>Teams read-only channel · experimental/deferred</h3>
+            <p className="muted">{teams.consentGuidance}</p>
+            <label htmlFor="teams-setup-handle">Operator setup handle</label>
+            <input
+              id="teams-setup-handle"
+              value={teamsSetupHandle}
+              onChange={(event) => setTeamsSetupHandle(event.target.value)}
+              placeholder="setup_…"
+              autoComplete="off"
+              aria-describedby="teams-setup-help"
+            />
+            <span className="metadata" id="teams-setup-help">
+              This opaque handle is issued by an operator. Do not enter tenant, team, channel, or
+              credential values here.
+            </span>
+            <button
+              disabled={busyHandle !== null}
+              onClick={() => void install("teams")}
+              type="button"
+            >
+              Install Teams
+            </button>
+          </div>
+        )}
+        {github && !githubInstalled && (
+          <div className="connector-install-form" aria-describedby="github-consent-guidance">
+            <h3>GitHub Public Issues · live</h3>
+            <p className="muted" id="github-consent-guidance">
+              {github.consentGuidance}
+            </p>
+            <label htmlFor="github-setup-handle">Public repository setup handle</label>
+            <input
+              id="github-setup-handle"
+              value={githubSetupHandle}
+              onChange={(event) => setGithubSetupHandle(event.target.value)}
+              placeholder="setup_…"
+              autoComplete="off"
+              aria-describedby="github-setup-help"
+            />
+            <span className="metadata" id="github-setup-help">
+              Use the short-lived operator handle for one exact public repository. Do not enter a
+              token or URL.
+            </span>
+            <button
+              disabled={busyHandle !== null}
+              onClick={() => void install("github-public-issues")}
+              type="button"
+            >
+              Install GitHub Public Issues
+            </button>
+          </div>
+        )}
+        {notice.includes("Review Queue") && onNavigate && (
+          <div className="button-row" aria-label="Imported content destinations">
+            <button className="secondary" onClick={() => onNavigate("Review Queue")} type="button">
+              Open Review Queue
+            </button>
+            <button className="secondary" onClick={() => onNavigate("Knowledge")} type="button">
+              Open Knowledge
             </button>
           </div>
         )}
@@ -234,7 +365,12 @@ export function ConnectionsScreen({
                   const disabled = busyHandle !== null;
                   return (
                     <tr key={installation.handle}>
-                      <th scope="row">{installation.connectorType}</th>
+                      <th scope="row">
+                        {installation.connectorType}
+                        {installation.connectorType === "teams" && (
+                          <span className="metadata"> · experimental/deferred</span>
+                        )}
+                      </th>
                       <td>
                         <StatusBadge
                           status={installation.enabled ? "healthy" : "disabled"}

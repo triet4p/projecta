@@ -1,6 +1,6 @@
 export const navigationGroups = [
   { label: "Workspace", items: ["Projects", "Project Overview"] },
-  { label: "Work", items: ["Notes", "Graph", "Review Queue", "Q&A"] },
+  { label: "Work", items: ["Notes", "Graph", "Review Queue", "Knowledge", "Q&A"] },
   { label: "System", items: ["Connections", "Settings", "Diagnostics"] },
 ] as const;
 

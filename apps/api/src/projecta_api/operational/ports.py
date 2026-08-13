@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Literal, Protocol
 
-Outcome = Literal["accepted", "replayed", "failed", "cancelled", "conflict", "in_progress"]
+Outcome = Literal["accepted", "replayed", "failed", "cancelled", "truncated", "conflict", "in_progress"]
 
 
 @dataclass(frozen=True, slots=True)

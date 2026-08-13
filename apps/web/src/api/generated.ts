@@ -30,11 +30,13 @@ export interface Problem {
 }
 
 export interface ConnectorCatalogItem {
-  connectorType: "json-mock";
+  connectorType: "json-mock" | "teams" | "github-public-issues";
   contractVersion: "connector-contract.v1";
   displayName: string;
   capabilities: string[];
   limits: Record<string, number>;
+  setupMode: "fixture" | "operator-setup";
+  consentGuidance: string;
 }
 
 export interface ConnectorCatalogResponse {
@@ -45,12 +47,14 @@ export interface ConnectorCatalogResponse {
 export interface ConnectorInstallation {
   requestId: string;
   handle: string;
-  connectorType: "json-mock";
+  connectorType: "json-mock" | "teams" | "github-public-issues";
   capabilities: string[];
   enabled: boolean;
   revision: number;
   secretConfigured: boolean;
   fixtureConfigured: boolean;
+  setupStatus: "ready" | "setup-required" | "unavailable";
+  consentGuidance: string;
 }
 
 export interface ConnectorInstallationListResponse {
@@ -62,7 +66,15 @@ export interface ConnectorInstallationListResponse {
 export interface ConnectorRun {
   requestId: string;
   handle: string;
-  state: "running" | "succeeded" | "empty" | "replayed" | "failed" | "cancelled" | "unavailable";
+  state:
+    | "running"
+    | "succeeded"
+    | "empty"
+    | "replayed"
+    | "failed"
+    | "cancelled"
+    | "truncated"
+    | "unavailable";
   eventCount: number;
   replayCount: number;
   failureCode: string | null;
@@ -70,6 +82,8 @@ export interface ConnectorRun {
   revision: number;
   startedAt: string;
   terminalAt: string | null;
+  cursorBeforeDigest?: string | null;
+  cursorAfterDigest?: string | null;
 }
 
 export interface ConnectorRunListResponse {

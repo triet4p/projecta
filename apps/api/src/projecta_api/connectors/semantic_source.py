@@ -9,16 +9,24 @@ from projecta_api.connectors.orchestration import SourceCommitter
 from projecta_api.connectors.source_mapping import map_event_to_capture
 from projecta_api.context import TrustedRequestContext
 from projecta_api.evidence.ports import EvidenceGetRequest, EvidenceReceipt, EvidenceStore
+from projecta_api.operational.audit import SecurityAuditSink, emit_safe
 from projecta_api.semantic_core import SemanticCoreClient
 
 
 class ConnectorSemanticSourceCommitter(SourceCommitter):
     """Reuse the released capture operation; no direct RDF or assertion write."""
 
-    def __init__(self, client: SemanticCoreClient, evidence: EvidenceStore, context: TrustedRequestContext) -> None:
+    def __init__(
+        self,
+        client: SemanticCoreClient,
+        evidence: EvidenceStore,
+        context: TrustedRequestContext,
+        audit_sink: SecurityAuditSink | None = None,
+    ) -> None:
         self._client = client
         self._evidence = evidence
         self._context = context
+        self._audit_sink = audit_sink
 
     async def commit_source(self, event: CanonicalEvent, evidence: EvidenceReceipt) -> None:
         metadata, stream = await self._evidence.get(
@@ -29,6 +37,14 @@ class ConnectorSemanticSourceCommitter(SourceCommitter):
         capture = map_event_to_capture(event, content, actor_id=self._context.actor_id)
         key = f"connector-{event.event_id}-{event.canonical_body_hash[7:23]}"
         await self._client.capture(self._context, key, capture)
+        emit_safe(
+            self._audit_sink,
+            category="candidate",
+            action="candidate.capture",
+            outcome="committed",
+            correlation_id=self._context.operation_id,
+            project_id=self._context.project_id,
+        )
 
 
 async def _read_bounded(stream: AsyncIterator[bytes], expected_size: int) -> bytes:

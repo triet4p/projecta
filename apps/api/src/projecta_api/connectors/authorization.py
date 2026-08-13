@@ -23,6 +23,12 @@ ConnectorAction = Literal[
     "dead-letter.read",
     "sync.retry",
 ]
+
+
+class _IdentityRoleResolver(Protocol):
+    def roles_for_actor(
+        self, actor_id: str, project_id: str | None = None
+    ) -> tuple[tuple[str, ...], tuple[str, ...]]: ...
 ConnectorRole = Literal["connector-admin", "connector-reader"]
 ConnectorCapability = Literal[
     "catalog.read",
@@ -37,7 +43,7 @@ ConnectorCapability = Literal[
     "sync.retry",
     "inbound-import",
 ]
-AuthSource = Literal["local-experience", "test", "future-reviewed-provider"]
+AuthSource = Literal["local-experience", "test", "oidc-session", "future-reviewed-provider"]
 
 ALL_ACTIONS = frozenset(
     {
@@ -53,8 +59,12 @@ ALL_ACTIONS = frozenset(
         "sync.retry",
     }
 )
-ALLOWLISTED_CONNECTORS = frozenset({"json-mock"})
-CONNECTOR_CAPABILITIES = {"json-mock": frozenset({"inbound-import"})}
+ALLOWLISTED_CONNECTORS = frozenset({"json-mock", "teams", "github-public-issues"})
+CONNECTOR_CAPABILITIES = {
+    "json-mock": frozenset({"inbound-import"}),
+    "teams": frozenset({"inbound-import"}),
+    "github-public-issues": frozenset({"inbound-import"}),
+}
 
 
 class ConnectorAuthorizationError(RuntimeError):
@@ -274,6 +284,45 @@ class DeterministicTestPrincipalAdapter:
     async def project_membership(
         self, principal: ConnectorPrincipal, project_id: str
     ) -> ProjectMembershipDecision:
+        return ProjectMembershipDecision(project_id in principal.allowed_projects)
+
+
+class ProductionConnectorPrincipalAdapter:
+    """Resolve connector authority from the validated Projecta session only."""
+
+    def __init__(self, identity_service: object) -> None:
+        self._identity_service = identity_service
+
+    async def resolve(self, request: ConnectorAuthorizationRequest) -> ConnectorPrincipal:
+        context = request.actor_context
+        if context is None or not context.actor_id:
+            raise ConnectorAuthorizationError("AUTH_PRINCIPAL_REQUIRED")
+        try:
+            resolver = cast(_IdentityRoleResolver, self._identity_service)
+            allowed, roles = resolver.roles_for_actor(context.actor_id, request.project_id)
+        except Exception as error:
+            raise ConnectorAuthorizationError("AUTH_CONFIGURATION_INVALID") from error
+        if request.project_id and request.project_id not in allowed:
+            raise ConnectorAuthorizationError("PROJECT_FORBIDDEN")
+        capabilities: tuple[ConnectorCapability, ...] = (
+            "catalog.read", "installation.read", "sync.read", "dead-letter.read"
+        )
+        connector_roles: tuple[ConnectorRole, ...] = ("connector-reader",)
+        if "connector-admin" in roles:
+            capabilities += ("installation.create", "installation.update", "installation.enable", "installation.disable", "sync.run", "sync.retry", "inbound-import")
+            connector_roles = ("connector-admin", "connector-reader")
+        return ConnectorPrincipal(
+            principal_id=f"oidc:{context.actor_id}",
+            actor_id=context.actor_id,
+            allowed_projects=allowed,
+            roles=connector_roles,
+            capabilities=capabilities,
+            auth_source="oidc-session",
+            request_id=context.request_id,
+            operation_id=context.operation_id,
+        )
+
+    async def project_membership(self, principal: ConnectorPrincipal, project_id: str) -> ProjectMembershipDecision:
         return ProjectMembershipDecision(project_id in principal.allowed_projects)
 
 

@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1101,
+    "number": 7,
+    "title": "Synthetic release gate",
+    "body": "Fabricated issue body only.",
+    "state": "open",
+    "labels": [{"name": "synthetic"}],
+    "created_at": "2026-08-13T01:00:00Z",
+    "updated_at": "2026-08-13T01:00:00Z",
+    "repository_url": "https://api.github.com/repos/example-owner/example-repo",
+    "user": {"id": 901, "login": "synthetic-user"}
+  },
+  {
+    "id": 1102,
+    "number": 8,
+    "title": "Synthetic pull request shape",
+    "body": "This item is excluded by the pull_request marker.",
+    "state": "open",
+    "labels": [],
+    "created_at": "2026-08-13T01:01:00Z",
+    "updated_at": "2026-08-13T01:01:00Z",
+    "repository_url": "https://api.github.com/repos/example-owner/example-repo",
+    "pull_request": {"url": "https://api.github.com/repos/example-owner/example-repo/pulls/8"},
+    "user": {"id": 902, "login": "synthetic-user"}
+  }
+]

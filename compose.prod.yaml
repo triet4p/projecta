@@ -7,8 +7,12 @@
 
 services:
   connector-postgres:
+    networks: [private]
     image: ${CONNECTOR_POSTGRES_IMAGE:?CONNECTOR_POSTGRES_IMAGE must be an immutable image reference}
     restart: unless-stopped
+    healthcheck:
+      start_period: 30s
+      retries: 24
     logging:
       driver: local
     deploy:
@@ -16,12 +20,91 @@ services:
         limits:
           cpus: "0.5"
           memory: 512M
+    environment:
+      PROJECTA_KEYCLOAK_POSTGRES_DB: ${PROJECTA_KEYCLOAK_POSTGRES_DB:?PROJECTA_KEYCLOAK_POSTGRES_DB must be set}
+      PROJECTA_KEYCLOAK_POSTGRES_USER: ${PROJECTA_KEYCLOAK_POSTGRES_USER:?PROJECTA_KEYCLOAK_POSTGRES_USER must be set}
+      PROJECTA_KEYCLOAK_POSTGRES_PASSWORD: ${PROJECTA_KEYCLOAK_POSTGRES_PASSWORD:?PROJECTA_KEYCLOAK_POSTGRES_PASSWORD must be set}
+
+  keycloak:
+    networks: [private, edge]
+    profiles: !reset []
+    build: !reset null
+    image: ${KEYCLOAK_IMAGE:?KEYCLOAK_IMAGE must be an immutable 26.7.0 digest reference}
+    restart: unless-stopped
+    command: ["start", "--optimized", "--import-realm"]
+    read_only: true
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://connector-postgres/${PROJECTA_KEYCLOAK_POSTGRES_DB:?PROJECTA_KEYCLOAK_POSTGRES_DB must be set}
+      KC_DB_USERNAME: ${PROJECTA_KEYCLOAK_POSTGRES_USER:?PROJECTA_KEYCLOAK_POSTGRES_USER must be set}
+      KC_DB_PASSWORD: ${PROJECTA_KEYCLOAK_POSTGRES_PASSWORD:?PROJECTA_KEYCLOAK_POSTGRES_PASSWORD must be set}
+      KC_HTTP_ENABLED: "false"
+      KC_HTTPS_CERTIFICATE_FILE: /etc/keycloak/tls/tls.crt
+      KC_HTTPS_CERTIFICATE_KEY_FILE: /etc/keycloak/tls/tls.key
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_BOOTSTRAP_ADMIN_USERNAME:?bootstrap credential must be injected}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_BOOTSTRAP_ADMIN_PASSWORD:?bootstrap credential must be injected}
+    volumes:
+      - ./infra/keycloak/tls:/etc/keycloak/tls:ro
+    expose:
+      - "8443"
+      - "9000"
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+
+  openbao:
+    networks: [private]
+    profiles: !reset []
+    build: !reset null
+    image: ${OPENBAO_IMAGE:?OPENBAO_IMAGE must be an immutable 2.6.1 digest reference}
+    restart: unless-stopped
+    environment:
+      BAO_API_ADDR: https://openbao:8200
+      BAO_CACERT: /openbao/tls/ca.crt
+    secrets:
+      - openbao-role-id
+      - openbao-secret-id
+    volumes:
+      - openbao-data:/openbao/file
+      - ./infra/openbao/config.hcl:/openbao/config.hcl:ro
+      - ./infra/openbao/tls:/openbao/tls:ro
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+
+  edge:
+    networks:
+      edge:
+        aliases: [auth.example.com, projecta.example.com]
+    image: ${EDGE_IMAGE:?EDGE_IMAGE must be an immutable reverse-proxy image reference}
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_started
+      keycloak:
+        condition: service_healthy
+    ports:
+      - "443:443"
+    volumes:
+      - ./infra/docker/reverse-proxy/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./infra/edge/tls:/etc/nginx/tls:ro
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 128M
 
   connector-migrate:
+    networks: [private]
     build: !reset null
     image: ${API_IMAGE:?API_IMAGE must be an immutable CI image reference}
 
   fuseki:
+    networks: [private]
     restart: unless-stopped
     logging:
       driver: local
@@ -32,6 +115,7 @@ services:
           memory: 1536M
 
   semantic-core:
+    networks: [private]
     build: !reset null
     image: ${SEMANTIC_CORE_IMAGE:?SEMANTIC_CORE_IMAGE must be an immutable CI image reference}
     restart: unless-stopped
@@ -43,7 +127,34 @@ services:
           cpus: "0.5"
           memory: 512M
 
+  fuseki-bootstrap:
+    networks: [private]
+
   api:
+    networks: [private, edge]
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      openbao:
+        condition: service_healthy
+    environment:
+      PROJECTA_API_RUNTIME_MODE: production
+      PROJECTA_API_OIDC_ISSUER_URL: https://auth.example.com/realms/projecta
+      PROJECTA_API_OIDC_CLIENT_ID: projecta-web
+      PROJECTA_API_OIDC_REDIRECT_URI: https://projecta.example.com/auth/callback
+      PROJECTA_API_OIDC_AUDIENCE: projecta-web
+      PROJECTA_API_OIDC_CA_FILE: /etc/projecta/oidc/ca.crt
+      PROJECTA_API_SESSION_COOKIE_SECURE: "true"
+      PROJECTA_API_OPENBAO_URL: https://openbao:8200
+      PROJECTA_API_OPENBAO_ROLE_ID_FILE: /run/secrets/openbao-role-id
+      PROJECTA_API_OPENBAO_SECRET_ID_FILE: /run/secrets/openbao-secret-id
+      PROJECTA_API_OPENBAO_CA_FILE: /etc/projecta/openbao/ca.crt
+    secrets:
+      - openbao-role-id
+      - openbao-secret-id
+    volumes:
+      - ./infra/openbao/tls/ca.crt:/etc/projecta/openbao/ca.crt:ro
+      - ./infra/edge/tls/auth.crt:/etc/projecta/oidc/ca.crt:ro
     build: !reset null
     image: ${API_IMAGE:?API_IMAGE must be an immutable CI image reference}
     restart: unless-stopped
@@ -56,13 +167,29 @@ services:
           memory: 256M
 
   web:
+    networks: [edge]
+    profiles: !reset []
+    depends_on: !reset []
     build: !reset null
     image: ${WEB_IMAGE:?WEB_IMAGE must be an immutable CI image reference}
     restart: unless-stopped
     logging:
       driver: local
+    ports: !reset []
     deploy:
       resources:
         limits:
           cpus: "0.25"
           memory: 128M
+
+secrets:
+  openbao-role-id:
+    file: ${PROJECTA_OPENBAO_ROLE_ID_FILE:?PROJECTA_OPENBAO_ROLE_ID_FILE must point to an untracked restricted file}
+  openbao-secret-id:
+    file: ${PROJECTA_OPENBAO_SECRET_ID_FILE:?PROJECTA_OPENBAO_SECRET_ID_FILE must point to an untracked restricted file}
+
+networks:
+  edge:
+    internal: false
+  private:
+    internal: true

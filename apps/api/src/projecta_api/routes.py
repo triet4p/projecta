@@ -46,6 +46,7 @@ from projecta_api.graph_projection import (
     required,
     required_list,
 )
+from projecta_api.identity.policy import require_capability
 from projecta_api.models import (
     CaptureRequest,
     CaptureResponse,
@@ -437,6 +438,7 @@ def create_router(
         request: Request,
         response: Response,
     ) -> object:
+        require_capability(request, context, "candidate.review")
         _require_selected_project_handle(request, handle)
         _validate_handle(candidate_handle, ("candidate", "node"))
         try:
@@ -671,6 +673,7 @@ def create_router(
         request: Request,
         response: Response,
     ) -> object:
+        require_capability(request, context, "candidate.validate")
         _require_selected_project_handle(request, handle)
         _validate_handle(candidate_handle, ("candidate", "node"))
         result = await client.request(
@@ -705,6 +708,7 @@ def create_router(
         idempotency_key: Key,
         response: Response,
     ) -> object:
+        require_capability(request, context, "candidate.review")
         _require_selected_project_handle(request, handle)
         _validate_handle(candidate_handle, ("candidate", "node"))
         edit = request.app.state.structured_candidate_edit_store.latest(
@@ -736,6 +740,7 @@ def create_router(
         idempotency_key: Key,
         response: Response,
     ) -> object:
+        require_capability(request, context, "candidate.review")
         _require_selected_project_handle(request, handle)
         _validate_handle(candidate_handle, ("candidate", "node"))
         result = await client.request(

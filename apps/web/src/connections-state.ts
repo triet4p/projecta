@@ -7,7 +7,8 @@ export type ConnectionsLoadState =
   | "empty"
   | "unavailable"
   | "forbidden"
-  | "not-found";
+  | "not-found"
+  | "stale";
 
 export function connectionsLoadState(
   loading: boolean,
@@ -19,6 +20,7 @@ export function connectionsLoadState(
     const code = (error as ApiError)?.problem?.code;
     if (code === "CONNECTOR_FORBIDDEN") return "forbidden";
     if (code === "CONNECTOR_NOT_FOUND") return "not-found";
+    if (code === "CONNECTOR_STALE" || code === "CONNECTOR_CONFLICT") return "stale";
     return "unavailable";
   }
   return hasInstallations ? "ready" : "empty";
@@ -35,7 +37,18 @@ export function connectorRunLabel(run: ConnectorRun): string {
     case "replayed":
       return "Replayed";
     case "failed":
-      return run.failureCode ? `Failed (${run.failureCode})` : "Failed";
+      switch (run.failureCode) {
+        case "ADAPTER_CREDENTIAL_INVALID":
+          return "Credential needs attention";
+        case "ADAPTER_PERMISSION_DENIED":
+          return "Permission needs attention";
+        case "ADAPTER_RATE_LIMITED":
+          return "Rate limited; try later";
+        default:
+          return run.failureCode ? `Failed (${run.failureCode})` : "Failed";
+      }
+    case "truncated":
+      return "Completed with limits";
     case "cancelled":
       return "Cancelled";
     default:

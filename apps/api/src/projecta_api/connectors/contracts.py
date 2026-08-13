@@ -9,7 +9,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-ConnectorType = Literal["json-mock"]
+ConnectorType = Literal["json-mock", "teams", "github-public-issues"]
 ContentType = Literal["application/json", "text/plain"]
 ConnectorCapability = Literal[
     "inbound-import",
@@ -29,6 +29,7 @@ SyncOutcome = Literal[
     "malformed-output",
     "unavailable",
     "rate-limited",
+    "truncated",
     "failed",
 ]
 TerminalEventOutcome = Literal["accepted", "replayed", "failed", "cancelled"]
@@ -46,6 +47,9 @@ ErrorCode = Literal[
     "ADAPTER_DEADLINE_EXCEEDED",
     "ADAPTER_UNAVAILABLE",
     "ADAPTER_RATE_LIMITED",
+    "ADAPTER_CREDENTIAL_INVALID",
+    "ADAPTER_PERMISSION_DENIED",
+    "ADAPTER_PROVIDER_NOT_FOUND",
     "ADAPTER_FAILED",
     "EVENT_BODY_CONFLICT",
     "EVENT_IDEMPOTENCY_CONFLICT",
@@ -113,6 +117,7 @@ class InstallationConfig(BaseModel):
     declared_capabilities: tuple[ConnectorCapability, ...] = Field(
         alias="declaredCapabilities", min_length=1, max_length=4
     )
+    provider_config: dict[str, object] | None = Field(default=None, alias="providerConfig")
 
     @field_validator("fixture_reference")
     @classmethod
@@ -252,6 +257,8 @@ class PullEventsCommand(BaseModel):
     correlation_id: str = Field(alias="correlationId", min_length=1, max_length=128)
     operation_id: str = Field(alias="operationId", min_length=1, max_length=128)
     capability: Literal["inbound-import"]
+    installation_revision: int = Field(default=1, alias="installationRevision", ge=1)
+    provider_config: dict[str, object] | None = Field(default=None, alias="providerConfig")
 
     _validate_scope = field_validator("installation_id", "project_id")(_safe_id)
 
@@ -278,6 +285,7 @@ class PullEventsResult(BaseModel):
     next_cursor: OpaqueCursor | None = Field(default=None, alias="nextCursor")
     source_bytes: int = Field(alias="sourceBytes", ge=0, le=10 * 1024 * 1024)
     outcome: SyncOutcome
+    failure_code: ErrorCode | None = Field(default=None, alias="failureCode")
 
 
 class RetryLineage(BaseModel):

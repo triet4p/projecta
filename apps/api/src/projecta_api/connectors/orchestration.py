@@ -41,6 +41,7 @@ from projecta_api.evidence.ports import (
     EvidenceReceipt,
     EvidenceStore,
 )
+from projecta_api.operational.audit import SecurityAuditSink, emit_safe
 from projecta_api.operational.errors import IdempotencyConflict, RevisionConflict
 from projecta_api.operational.ports import ConnectorOperationalRepository, SyncRunRecord
 
@@ -87,6 +88,7 @@ class ConnectorSyncOrchestrator:
         limits: ConnectorLimits | None = None,
         budget: ConnectorExecutionBudget | None = None,
         telemetry: ConnectorTelemetrySink | None = None,
+        audit_sink: SecurityAuditSink | None = None,
     ) -> None:
         self._logger = logging.getLogger("projecta.connector.kernel")
         self._repository = repository
@@ -97,6 +99,7 @@ class ConnectorSyncOrchestrator:
         self._limits = limits or ConnectorLimits()
         self._budget = budget or ConnectorExecutionBudget()
         self._telemetry = telemetry
+        self._audit_sink = audit_sink
 
     async def run(
         self,
@@ -165,6 +168,8 @@ class ConnectorSyncOrchestrator:
                 type(error).__name__,
             )
             raise
+        raw_provider_config = installation.capability_snapshot.get("providerConfig")
+        provider_config = cast(dict[str, object], raw_provider_config) if isinstance(raw_provider_config, dict) else None
         pull_command = PullEventsCommand(
             installationId=command.installation_id,
             projectId=command.project_id,
@@ -178,6 +183,8 @@ class ConnectorSyncOrchestrator:
             correlationId=context.request_id,
             operationId=context.operation_id,
             capability=command.capability,
+            installationRevision=installation.revision,
+            providerConfig=provider_config,
         )
         try:
             remaining = _remaining_seconds(command.deadline)
@@ -200,9 +207,18 @@ class ConnectorSyncOrchestrator:
             return await self._terminal_failure(
                 command, run, "ADAPTER_FAILED", "adapter failed", "failed", error
             )
-        if pull.outcome not in {"succeeded", "empty"}:
+        if pull.outcome in {"unavailable", "rate-limited", "deadline-exceeded", "malformed-output", "cancelled"}:
             return await self._terminal_failure(
-                command, run, "ADAPTER_OUTPUT_INVALID", pull.outcome, pull.outcome, None
+                command,
+                run,
+                pull.failure_code or _pull_failure_code(pull.outcome),
+                "adapter returned a bounded provider failure",
+                pull.outcome,
+                None,
+            )
+        if pull.outcome not in {"succeeded", "empty", "truncated"}:
+            return await self._terminal_failure(
+                command, run, "ADAPTER_OUTPUT_INVALID", "adapter output was not accepted", "failed", None
             )
         if (
             len(pull.events) > self._limits.max_events
@@ -217,9 +233,10 @@ class ConnectorSyncOrchestrator:
             run,
             installation.connector_type,
             pull.events,
-            pull.next_cursor.value if pull.next_cursor else None,
+            pull.next_cursor.value if pull.next_cursor and pull.outcome != "truncated" else None,
             cursor.revision if cursor else 0,
             source_committer or self._source,
+            pull_outcome=pull.outcome,
         )
 
     async def retry(
@@ -264,6 +281,8 @@ class ConnectorSyncOrchestrator:
         next_cursor: str | None,
         cursor_revision: int,
         source_committer: SourceCommitter,
+        *,
+        pull_outcome: SyncOutcome = "succeeded",
     ) -> SyncResult:
         pending: list[tuple[CanonicalEvent, EvidenceReceipt]] = []
         replay_count = 0
@@ -425,16 +444,24 @@ class ConnectorSyncOrchestrator:
                     replay_count=replay_count,
                 )
         outcome: SyncOutcome = (
-            "replayed"
-            if candidates and replay_count == len(candidates)
-            else ("empty" if not candidates else "succeeded")
+            "truncated"
+            if pull_outcome == "truncated"
+            else (
+                "replayed"
+                if candidates and replay_count == len(candidates)
+                else ("empty" if not candidates else "succeeded")
+            )
         )
         await asyncio.to_thread(
             self._repository.finish_run,
             project_id=command.project_id,
             installation_id=command.installation_id,
             run_id=run.run_id,
-            outcome="replayed" if outcome == "replayed" else "accepted",
+            outcome=(
+                "truncated"
+                if outcome == "truncated"
+                else ("replayed" if outcome == "replayed" else "accepted")
+            ),
             event_count=candidate_count,
             replay_count=replay_count,
         )
@@ -555,7 +582,9 @@ class ConnectorSyncOrchestrator:
             deadLetterId=dead_letter_id,
             failureCode=safe.code,
         )
-        self._emit_terminal(command, "json-mock", result, run.started_at)
+        installation = self._repository.get_installation(command.project_id, command.installation_id)
+        connector_type = installation.connector_type if installation is not None else "unknown"
+        self._emit_terminal(command, connector_type, result, run.started_at)
         await self._audit(
             command.project_id,
             command.installation_id,
@@ -569,6 +598,7 @@ class ConnectorSyncOrchestrator:
 
     def _emit_start(self, command: SyncCommand, connector_type: str) -> None:
         if self._telemetry is None:
+            emit_safe(self._audit_sink, category="connector", action="connector.run", outcome="started", correlation_id=command.idempotency_key, project_id=command.project_id)
             return
         self._telemetry.emit(
             ConnectorTelemetryEvent(
@@ -585,11 +615,13 @@ class ConnectorSyncOrchestrator:
                 recorded_at=now_utc(),
             )
         )
+        emit_safe(self._audit_sink, category="connector", action="connector.run", outcome="started", correlation_id=command.idempotency_key, project_id=command.project_id)
 
     def _emit_terminal(
         self, command: SyncCommand, connector_type: str, result: SyncResult, started_at: datetime
     ) -> None:
         if self._telemetry is None:
+            emit_safe(self._audit_sink, category="connector", action="connector.run", outcome=("succeeded" if result.outcome in {"succeeded", "empty", "replayed", "truncated"} else "failed"), correlation_id=command.idempotency_key, project_id=command.project_id)
             return
         duration = max(0, int((now_utc() - started_at).total_seconds() * 1000))
         self._telemetry.emit(
@@ -607,6 +639,7 @@ class ConnectorSyncOrchestrator:
                 recorded_at=now_utc(),
             )
         )
+        emit_safe(self._audit_sink, category="connector", action="connector.run", outcome=("succeeded" if result.outcome in {"succeeded", "empty", "replayed", "truncated"} else "failed"), correlation_id=command.idempotency_key, project_id=command.project_id)
 
     async def _audit(
         self,
@@ -637,6 +670,8 @@ class ConnectorSyncOrchestrator:
 _ERROR_CODES = frozenset(
     {
         "ADAPTER_FAILED",
+        "ADAPTER_OUTPUT_INVALID",
+        "ADAPTER_CANCELLED",
         "ADAPTER_DEADLINE_EXCEEDED",
         "ADAPTER_LIMIT_EXCEEDED",
         "EVENT_OUTPUT_INVALID",
@@ -645,12 +680,27 @@ _ERROR_CODES = frozenset(
         "CURSOR_COMMIT_CONFLICT",
         "EVIDENCE_WRITE_FAILED",
         "SOURCE_COMMIT_FAILED",
+        "ADAPTER_CREDENTIAL_INVALID",
+        "ADAPTER_PERMISSION_DENIED",
+        "ADAPTER_PROVIDER_NOT_FOUND",
+        "ADAPTER_UNAVAILABLE",
+        "ADAPTER_RATE_LIMITED",
     }
 )
 
 
 def _remaining_seconds(deadline: datetime) -> float:
     return (deadline.astimezone(UTC) - datetime.now(UTC)).total_seconds()
+
+
+def _pull_failure_code(outcome: SyncOutcome) -> str:
+    return {
+        "unavailable": "ADAPTER_UNAVAILABLE",
+        "rate-limited": "ADAPTER_RATE_LIMITED",
+        "deadline-exceeded": "ADAPTER_DEADLINE_EXCEEDED",
+        "malformed-output": "ADAPTER_OUTPUT_INVALID",
+        "cancelled": "ADAPTER_CANCELLED",
+    }.get(outcome, "ADAPTER_FAILED")
 
 
 def _fixture_reference(capability_snapshot: dict[str, object]) -> str:

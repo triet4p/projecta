@@ -263,3 +263,109 @@ contract, ontology, and Compose system jobs before GitHub publication.
 **Alternatives considered:** Add connector, external-resource, external-identity, cursor, retry, or dead-letter terms now; keep imported content as opaque application JSON; or bypass the existing candidate review lifecycle with direct assertions.
 **Reason:** The approved competency questions are answered by the released source/evidence/provenance lifecycle, while installation, event, cursor, retry, and dead-letter concepts are operational state owned by PostgreSQL and the evidence boundary. New vocabulary would commit durable domain meaning without a required semantic question and direct assertion would violate the human-review boundary.
 **Consequences:** Sprint 10 may release without an ontology version change, connector operational state must remain outside RDF, actor hints cannot merge identities automatically, and any future graph-queryable external resource or connector identity requires a new governed proposal and explicit human approval.
+
+## [2026-08-12] Approve Sprint 11 trust boundary with revisions
+
+**Decision:** Approve Sprint 11 G1 with revisions: use Keycloak `26.7.0` in production mode with an official digest-pinned image and an isolated database/user inside the existing PostgreSQL boundary; use OpenBao `2.6.1` with digest pinning, single-node integrated Raft, internal TLS, Shamir 3-share/2-threshold manual unseal, short-lived AppRole workload authentication, and private management surfaces; use certificate-based app-only Teams access with `ChannelMessage.Read.Group` resource-specific consent for exactly one tenant/team/channel per installation; keep Projecta as the authority for sessions, memberships, exact project/installation authorization, and invalidate all Projecta sessions after cold restore; approve `NO_ONTOLOGY_CHANGE_REQUIRED`.
+**Alternatives considered:** Approve the original proposals without revisions; use Entra-backed Projecta login; keep the local experience context for production; use the application-encrypted store, Compose secrets, SOPS plus `age`, or Azure Key Vault as the runtime secret manager; use delegated Teams login, refresh tokens, or the broader `ChannelMessage.Read.All` permission; attempt to restore browser sessions after cold recovery; add Teams-specific ontology vocabulary.
+**Reason:** The revised baseline preserves the no-subscription and Compose-first constraints while making the trust boundaries explicit. OIDC protocol endpoints needed for login/discovery/JWKS are distinct from Keycloak administration, health, and metrics, which remain private. OpenBao provides a service-level custody boundary, but Projecta must retain exact project/installation authorization because per-installation OpenBao policy would add unnecessary Sprint 11 complexity unless separately implemented and tested. Certificate-based app-only access avoids browser/provider session coupling, resource-specific consent keeps Teams scope narrow, and session invalidation after restore avoids trusting potentially inconsistent browser authority. The existing released source/evidence/candidate/provenance lifecycle answers the Teams competency questions without new ontology terms.
+**Consequences:** S11-15 onward must use the approved image tags and record immutable digests, enforce the revised public/private edge split, use one existing PostgreSQL service with isolated Keycloak ownership, measure 2 GiB/2 CPU for Keycloak and 512 MiB/0.5 CPU for OpenBao with at least 20% full-stack memory headroom, and preserve the bounded Teams limits of 100 events, 10 MiB/run, 1 MiB/event, 30 seconds, `$top=50`, 10 replies/root, and 50 replies total. Membership roles are additive and seeded by an idempotent operator CLI/file workflow without admin UI. Cold restore requires OpenBao unseal, workload re-authentication, and Projecta user login again. The accepted single-instance/manual-unseal trade-off is early-production only; no HA or unattended restart claim is allowed. Reversing these choices requires explicit new human instruction and a new decision.
+
+## [2026-08-13] Resolve the fixed OIDC issuer through the TLS edge
+
+**Decision:** The API resolves `https://auth.example.com/realms/projecta`
+through the shared TLS edge on the service network; it must not bypass the
+public protocol surface by calling Keycloak directly on port 8443.
+**Alternatives considered:** Give Keycloak the `auth.example.com` network alias,
+use a separate internal issuer URL, or weaken startup readiness until the edge
+becomes available.
+**Reason:** OIDC validates one exact issuer and Sprint 11 explicitly separates
+public discovery/JWKS/login endpoints from private Keycloak management. Direct
+aliasing maps the issuer's implicit port 443 to Keycloak 8443 incorrectly and
+creates divergent internal/public trust paths. Starting the static web image
+independently lets the edge start early enough for API discovery without
+weakening API readiness.
+**Consequences:** The edge owns the `auth.example.com` alias and issuer CA;
+Keycloak remains reachable privately for proxying but not as the API's issuer
+endpoint. Production web startup cannot depend on API health, while user-facing
+traffic and release acceptance still require API/web/edge health separately.
+
+## [2026-08-13] Release v0.6.0 with GitHub Public Issues and defer live Teams
+
+**Decision:** Replace the Sprint 11 live Teams release gate with a
+credential-free, read-only GitHub Public Issues connector bound to one exact
+synthetic public repository. Keep the implemented Teams adapter and its
+deterministic regression coverage, but label it experimental/deferred and make
+no production-ready Teams claim in v0.6.0. Preserve all approved Keycloak,
+OpenBao, session, membership, authorization, recovery, evidence, and ontology
+boundaries.
+**Alternatives considered:** Use the currently signed-in work Microsoft tenant;
+create a personal Microsoft 365 developer tenant; release only deterministic
+Teams fixtures; omit a real provider from v0.6.0; or choose an authenticated
+GitHub/private-repository connector immediately.
+**Reason:** The work tenant is not an authorized disposable test boundary and a
+free personal Microsoft sandbox is not available. Public GitHub issues and
+comments can exercise a real bounded HTTP, pagination, rate-limit, hostile-input,
+cursor, replay, evidence, and isolation path with fabricated data and without a
+subscription, license, tenant consent, or provider credential. This is a
+narrower claim than Teams and avoids converting lack of authorization into a
+security exception.
+**Consequences:** Sprint 11 receives a separate G1 amendment and twenty atomic
+implementation/acceptance tasks. The connector must use the fixed GitHub API
+origin, accept only one validated owner/repository binding, exclude pull
+requests, make no writes, perform no hidden retry, preserve the existing
+100-event/10-MiB/1-MiB/30-second limits, and produce only sanitized live
+evidence. S11-67 remains intentionally incomplete but no longer blocks G2/G3.
+Restoring Teams as a live release claim requires a new human authorization for
+a disposable tenant, application, consent, channel, data handling, and teardown.
+Reversing the connector choice requires explicit new instruction and a new
+decision.
+
+## [2026-08-13] Human-approved ontology reuse for GitHub Public Issues
+
+**Decision:** Retain `NO_ONTOLOGY_CHANGE_REQUIRED` for the exact GitHub Public
+Issues issue/comment import scope. Reuse the existing source, evidence,
+candidate, provenance, actor-hint, and project-isolation boundaries; keep
+connector installation, provider IDs, cursor, pagination, replay, and rate
+state operational rather than RDF domain truth. The project owner explicitly
+approved this semantic outcome on 2026-08-13.
+**Alternatives considered:** Add provider-shaped `GitHubIssue`/`GitHubComment`
+classes or properties; add an `ExternalResource` module; or postpone the
+semantic outcome until release approval.
+**Reason:** The competency questions are answered by released Projecta
+boundaries, and provider-shaped ontology terms would introduce identity,
+lifecycle, temporal, and migration commitments without a new domain question.
+Human semantic approval is complete, while G2 product/security/release
+approval remains a separate pending gate.
+**Consequences:** No ontology Turtle, SHACL, rule, version, migration, or
+runtime RDF artifact is added for this connector. Any future requirement for
+durable external-resource identity must reopen the ontology governance flow.
+
+## [2026-08-13] Use authenticated gh only for disposable live-acceptance operations
+
+**Decision:** Permit the owner-authorized `gh` CLI session for creating, seeding,
+editing, reading, archiving, and deleting the disposable public GitHub repository
+used by Sprint 11 live acceptance, while keeping the Projecta GitHub connector
+credential-free and read-only.
+**Alternatives considered:** Use anonymous `api.github.com` for all operator
+actions; add a provider token to the Projecta connector; or use a work tenant or
+private repository for live acceptance.
+**Reason:** The secondary `triet4p` account is an authorized disposable boundary
+and avoids the anonymous GitHub API rate limit during test-data lifecycle and
+control-plane inspection. Passing that credential into Projecta would violate the
+approved connector threat boundary, so `gh` is restricted to operator-side
+repository control and evidence collection; runtime import must still exercise
+the fixed-host, no-token connector contract.
+**Consequences:** Live-acceptance commands must verify the active `gh` account,
+use synthetic data only, bind to one exact public repository, and never persist
+tokens or raw provider payloads in runtime state or artifacts. The repository is
+archived or deleted after evidence capture. G2 remains pending until the
+authenticated operator journey and the credential-free runtime import are both
+proven by regenerated, provenance-bound evidence.
+
+## [2026-08-14] Approve Sprint 11 G2 with a narrow GitHub quota waiver
+
+**Decision:** Approve Sprint 11 G2 for the bounded, credential-free GitHub Public Issues release slice using the passing r9 baseline live evidence and deterministic edit/replay provenance contracts, while waiving another anonymous-quota-consuming live edit/replay attempt.
+**Alternatives considered:** Wait for anonymous GitHub quota reset and repeat the complete live journey; use an authenticated provider token in the Projecta runtime; or keep G2 blocked indefinitely on external free-tier capacity.
+**Reason:** The r9 baseline already proves real credential-free import, pull-request exclusion, exact candidate/evidence continuity, replay, and project isolation, while the final validator and regression contracts cover edit/replay digests, cursor chains, timestamps, snapshots, tamper rejection, and safe quota failure. Spending more anonymous quota would add limited release confidence and using a runtime token would violate the approved connector boundary.
+**Consequences:** The failed edit/replay journey remains a truthful diagnostic artifact and is not relabeled as passing. v0.6.0 may claim only bounded public read-only ingestion, not GitHub capacity, availability, continuous synchronization, private repositories, or authenticated access. Release preparation may proceed, but immutable preflight, G3 exact-commit approval, tagging, and publication remain separate pending gates.

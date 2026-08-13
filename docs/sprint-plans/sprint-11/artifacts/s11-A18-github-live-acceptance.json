@@ -1,0 +1,161 @@
+{
+  "schemaVersion": "sprint11.github-public-issues-live.v2",
+  "status": "passed",
+  "generatedBy": "scripts/run_sprint11_github_public_issues_acceptance.ps1",
+  "startedAt": "2026-08-13T16:47:25.3772315Z",
+  "finishedAt": "2026-08-13T16:47:31.0629018Z",
+  "failure": null,
+  "repositoryHash": "b4df380685e88fb819cf41e798adf715a82b166539a831c05ee4178653ecf597",
+  "credentialsPersisted": false,
+  "rawProviderPayload": false,
+  "projectHandlePersisted": false,
+  "providerSnapshot": {
+    "observedAt": "2026-08-13T16:47:26.8283245Z",
+    "issueCount": 2,
+    "commentCount": 2,
+    "providerCommentCount": 3,
+    "excludedPullRequestCommentCount": 1,
+    "pullRequestCount": 1,
+    "expectedEventCount": 4,
+    "recordCount": 4,
+    "recordDigest": "9e20970a75b6939d12b3f9136100212b639861c88ce0ee24ae88f1c749ed0309",
+    "snapshotDigest": "77a7cde76ad024157fb523b3244d3c2c5280d4fcc5736da6d46bb06fa944af01"
+  },
+  "installationDigest": "8d99b4fc66f45e29a02161cd34d3ffe1875ee42821c5d6a0f6a57966688981ac",
+  "baselineRun": {
+    "state": "succeeded",
+    "eventCount": 4,
+    "runDigest": "db19e6d5df9c95a1b9196409833017cefa728710c183c87bf8e018fdb0e68e1b",
+    "cursorBeforeDigest": null,
+    "cursorAfterDigest": "sha256:521f85eb1f8577a277caff78181ce24acf2849e661891ce704e57e67f3a57031",
+    "startedAt": "2026-08-13T16:47:27.628206Z",
+    "terminalAt": "2026-08-13T16:47:30.611238Z",
+    "provenanceDigest": "cef01802dec866aebbf7f38cb6b643591e77e027385e8616f3ace76eb67f801c"
+  },
+  "replayRun": {
+    "state": "replayed",
+    "eventCount": 4,
+    "runDigest": "db19e6d5df9c95a1b9196409833017cefa728710c183c87bf8e018fdb0e68e1b",
+    "cursorBeforeDigest": "sha256:521f85eb1f8577a277caff78181ce24acf2849e661891ce704e57e67f3a57031",
+    "cursorAfterDigest": "sha256:521f85eb1f8577a277caff78181ce24acf2849e661891ce704e57e67f3a57031",
+    "startedAt": "2026-08-13T16:47:27.628206Z",
+    "terminalAt": "2026-08-13T16:47:30.611238Z",
+    "replayOfRunDigest": "db19e6d5df9c95a1b9196409833017cefa728710c183c87bf8e018fdb0e68e1b",
+    "replayOfEventCount": 4,
+    "replayOfCursorBeforeDigest": null,
+    "replayOfCursorAfterDigest": "sha256:521f85eb1f8577a277caff78181ce24acf2849e661891ce704e57e67f3a57031",
+    "provenanceDigest": "7ec317d15d9719c3c03408e3f704a078613df20f0e5a3a4251d45fd2ed4183f1"
+  },
+  "continuity": {
+    "preRunCandidateCount": 0,
+    "postRunCandidateCount": 4,
+    "candidateDeltaCount": 4,
+    "candidateRemovedCount": 0,
+    "preRunCandidateSetDigest": "c45527b160954a0dc64c7ebf772de00c5e5d9fed0ec956c9eb5152212087ba89",
+    "postRunCandidateSetDigest": "a37a372f67b6ce66c43ac56139c081dcb3840d4757f094c06a85b17ea15ef971",
+    "candidateDeltaDigest": "a37a372f67b6ce66c43ac56139c081dcb3840d4757f094c06a85b17ea15ef971",
+    "preRunCandidateGraphCount": 0,
+    "postRunCandidateGraphCount": 4,
+    "candidateGraphDeltaCount": 4,
+    "candidateGraphRemovedCount": 0,
+    "preRunCandidateGraphSetDigest": "c45527b160954a0dc64c7ebf772de00c5e5d9fed0ec956c9eb5152212087ba89",
+    "postRunCandidateGraphSetDigest": "7e406d188ba39287a1e562c6422c9c790731a8daefd4f8e70d7e873025390cba",
+    "candidateGraphDeltaDigest": "7e406d188ba39287a1e562c6422c9c790731a8daefd4f8e70d7e873025390cba",
+    "preRunEvidenceNodeCount": 0,
+    "postRunEvidenceNodeCount": 8,
+    "evidenceNodeDeltaCount": 8,
+    "evidenceNodeRemovedCount": 0,
+    "preRunEvidenceSetDigest": "c45527b160954a0dc64c7ebf772de00c5e5d9fed0ec956c9eb5152212087ba89",
+    "postRunEvidenceSetDigest": "eef236d614fcb0fc380ddc2b4eb93c370d18c2ab348946fc93ba604cc6adc561",
+    "evidenceDeltaDigest": "eef236d614fcb0fc380ddc2b4eb93c370d18c2ab348946fc93ba604cc6adc561",
+    "preRunSourceRevisionDigest": "fa95abb054e1cf5bc6ae8fe79999c7640c2e8b0dc2e5a3a60f73354365120325",
+    "postRunSourceRevisionDigest": "fa95abb054e1cf5bc6ae8fe79999c7640c2e8b0dc2e5a3a60f73354365120325",
+    "runEventCount": 4
+  },
+  "pullRequestExclusion": {
+    "providerIssueCount": 2,
+    "providerCommentCount": 3,
+    "excludedPullRequestCommentCount": 1,
+    "providerPullRequestCount": 1,
+    "importedEventCount": 4
+  },
+  "projectIsolation": {
+    "forgedProjectStatus": 404
+  },
+  "steps": [
+    {
+      "name": "input-validated",
+      "at": "2026-08-13T16:47:25.4029473Z",
+      "credentialProvided": false,
+      "repositoryHash": "b4df380685e88fb819cf41e798adf715a82b166539a831c05ee4178653ecf597"
+    },
+    {
+      "name": "provider-snapshot",
+      "at": "2026-08-13T16:47:26.8358594Z",
+      "commentCount": 2,
+      "providerCommentCount": 3,
+      "snapshotDigest": "77a7cde76ad024157fb523b3244d3c2c5280d4fcc5736da6d46bb06fa944af01",
+      "issueCount": 2,
+      "expectedEventCount": 4,
+      "pullRequestCount": 1,
+      "excludedPullRequestCommentCount": 1
+    },
+    {
+      "name": "project-selected",
+      "at": "2026-08-13T16:47:27.3510784Z",
+      "catalogRevision": "catalog-r-5b698ceab708bbebb216fc9260727fe0bce38105",
+      "selectionEstablished": true
+    },
+    {
+      "name": "create",
+      "at": "2026-08-13T16:47:27.4381550Z",
+      "revision": 1,
+      "installationDigest": "8d99b4fc66f45e29a02161cd34d3ffe1875ee42821c5d6a0f6a57966688981ac",
+      "setupStatus": "ready"
+    },
+    {
+      "name": "enable",
+      "at": "2026-08-13T16:47:27.4751622Z",
+      "enabled": true,
+      "revision": 2
+    },
+    {
+      "name": "run",
+      "at": "2026-08-13T16:47:30.6477383Z",
+      "eventCount": 4,
+      "runDigest": "db19e6d5df9c95a1b9196409833017cefa728710c183c87bf8e018fdb0e68e1b",
+      "cursorAfterDigest": "sha256:521f85eb1f8577a277caff78181ce24acf2849e661891ce704e57e67f3a57031",
+      "replayCount": 0,
+      "failureCode": null,
+      "cursorBeforeDigest": null,
+      "state": "succeeded"
+    },
+    {
+      "name": "evidence-candidate-continuity",
+      "at": "2026-08-13T16:47:30.9248264Z",
+      "candidateDeltaCount": 4,
+      "candidateGraphDeltaCount": 4,
+      "evidenceNodeDeltaCount": 8,
+      "candidateSourceRevisionDigest": "fa95abb054e1cf5bc6ae8fe79999c7640c2e8b0dc2e5a3a60f73354365120325"
+    },
+    {
+      "name": "replay",
+      "at": "2026-08-13T16:47:30.9643261Z",
+      "replayCount": 0,
+      "runDigest": "db19e6d5df9c95a1b9196409833017cefa728710c183c87bf8e018fdb0e68e1b",
+      "state": "replayed",
+      "eventCount": 4
+    },
+    {
+      "name": "project-isolation",
+      "at": "2026-08-13T16:47:31.0132353Z",
+      "forgedProjectStatus": 404
+    },
+    {
+      "name": "disable",
+      "at": "2026-08-13T16:47:31.0447349Z",
+      "enabled": false,
+      "revision": 3
+    }
+  ]
+}

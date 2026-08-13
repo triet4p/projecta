@@ -2,6 +2,7 @@
 export const apiContractVersion = "s8.0" as const;
 export const generatedOperationIds = [
   "answerProjectContextQuestion",
+  "callback_auth_callback_get",
   "candidate_edit_options_v1_projects__handle__candidate_edit_options_get",
   "captureQuickNote",
   "catalog_v1_connectors_catalog_get",
@@ -35,6 +36,8 @@ export const generatedOperationIds = [
   "listStructuredNotes",
   "list_installations_v1_projects__project_handle__connectors_installations_get",
   "list_runs_v1_projects__project_handle__connectors_installations__installation_handle__runs_get",
+  "login_auth_login_get",
+  "logout_auth_logout_post",
   "readLlmProfile",
   "readNoteDraft",
   "readProject",
@@ -49,6 +52,7 @@ export const generatedOperationIds = [
   "rotateLlmCredential",
   "run_sync_v1_projects__project_handle__connectors_installations__installation_handle__runs_post",
   "selectProject",
+  "session_v1_auth_session_get",
   "updateNoteDraft",
   "update_installation_v1_projects__project_handle__connectors_installations__installation_handle__put",
   "validateCandidate",

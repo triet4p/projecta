@@ -10,11 +10,11 @@ from __future__ import annotations
 import logging
 from datetime import UTC, datetime, timedelta
 from hashlib import sha256
-from typing import Annotated, cast
+from typing import Annotated, Literal, cast
 from uuid import uuid4
 
 from fastapi import APIRouter, Depends, Header, Query, Request, Response
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from projecta_api.connectors.authorization import (
     ConnectorAuthorizationError,
@@ -43,6 +43,7 @@ from projecta_api.context import (
     trusted_context,
 )
 from projecta_api.evidence.ports import EvidenceStore
+from projecta_api.operational.audit import SecurityAuditSink
 from projecta_api.operational.errors import IdempotencyConflict, RevisionConflict
 from projecta_api.operational.ports import (
     ConnectorOperationalRepository,
@@ -81,11 +82,13 @@ class ConnectorPublicProblem(RuntimeError):
 
 class ConnectorCatalogItem(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
-    connector_type: str = Field(alias="connectorType")
+    connector_type: Literal["json-mock", "teams", "github-public-issues"] = Field(alias="connectorType")
     contract_version: str = Field(alias="contractVersion")
     display_name: str = Field(alias="displayName")
     capabilities: tuple[str, ...]
     limits: dict[str, int]
+    setup_mode: Literal["fixture", "operator-setup"] = Field(alias="setupMode")
+    consent_guidance: str = Field(alias="consentGuidance", max_length=512)
 
 
 class ConnectorCatalogResponse(BaseModel):
@@ -96,8 +99,21 @@ class ConnectorCatalogResponse(BaseModel):
 
 class InstallationCreateRequest(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
-    fixture_reference: str = Field(alias="fixtureReference", min_length=1, max_length=512)
+    connector_type: Literal["json-mock", "teams", "github-public-issues"] = Field(default="json-mock", alias="connectorType")
+    fixture_reference: str | None = Field(default=None, alias="fixtureReference", max_length=512)
+    teams_setup_handle: str | None = Field(default=None, alias="teamsSetupHandle", min_length=10, max_length=128)
+    github_setup_handle: str | None = Field(default=None, alias="githubSetupHandle", min_length=10, max_length=128)
     capabilities: tuple[ConnectorCapability, ...] = ("inbound-import",)
+
+    @model_validator(mode="after")
+    def validate_setup(self) -> InstallationCreateRequest:
+        if self.connector_type == "json-mock" and not self.fixture_reference:
+            raise ValueError("fixtureReference is required for json-mock")
+        if self.connector_type == "teams" and self.teams_setup_handle is None:
+            raise ValueError("teamsSetupHandle is required for Teams")
+        if self.connector_type == "github-public-issues" and self.github_setup_handle is None:
+            raise ValueError("githubSetupHandle is required for GitHub Public Issues")
+        return self
 
 
 class InstallationUpdateRequest(BaseModel):
@@ -105,18 +121,22 @@ class InstallationUpdateRequest(BaseModel):
     fixture_reference: str | None = Field(default=None, alias="fixtureReference", max_length=512)
     capabilities: tuple[ConnectorCapability, ...] | None = None
     expected_revision: int = Field(alias="expectedRevision", ge=1)
+    teams_setup_handle: str | None = Field(default=None, alias="teamsSetupHandle", min_length=10, max_length=128)
+    github_setup_handle: str | None = Field(default=None, alias="githubSetupHandle", min_length=10, max_length=128)
 
 
 class InstallationStateResponse(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
     request_id: str = Field(alias="requestId")
     handle: str
-    connector_type: str = Field(alias="connectorType")
+    connector_type: Literal["json-mock", "teams", "github-public-issues"] = Field(alias="connectorType")
     capabilities: tuple[str, ...]
     enabled: bool
     revision: int
     secret_configured: bool = Field(alias="secretConfigured")
     fixture_configured: bool = Field(alias="fixtureConfigured")
+    setup_status: Literal["ready", "setup-required", "unavailable"] = Field(alias="setupStatus")
+    consent_guidance: str = Field(alias="consentGuidance", max_length=512)
 
 
 class InstallationListResponse(BaseModel):
@@ -138,6 +158,8 @@ class RunResponse(BaseModel):
     revision: int
     started_at: datetime = Field(alias="startedAt")
     terminal_at: datetime | None = Field(alias="terminalAt", default=None)
+    cursor_before_digest: str | None = Field(alias="cursorBeforeDigest", default=None)
+    cursor_after_digest: str | None = Field(alias="cursorAfterDigest", default=None)
 
 
 class RunListResponse(BaseModel):
@@ -169,6 +191,7 @@ class ConnectorRuntime:
         policy: ConnectorPolicy,
         evidence: EvidenceStore,
         semantic_client: SemanticCoreClient,
+        audit_sink: SecurityAuditSink | None = None,
     ) -> None:
         self.repository = repository
         self.registry = registry
@@ -177,6 +200,7 @@ class ConnectorRuntime:
         self.policy = policy
         self.evidence = evidence
         self.semantic_client = semantic_client
+        self.audit_sink = audit_sink
 
 
 def add_connector_routes(router: APIRouter, runtime: ConnectorRuntime | None) -> None:
@@ -259,8 +283,10 @@ def add_connector_routes(router: APIRouter, runtime: ConnectorRuntime | None) ->
                 InstallationMutation(
                     installationId=installation_id,
                     projectId=context.project_id,
-                    connectorType="json-mock",
-                    fixtureReference=payload.fixture_reference,
+                    connectorType=payload.connector_type,
+                    fixtureReference=payload.fixture_reference or "fixture://teams",
+                    teamsSetupHandle=payload.teams_setup_handle,
+                    githubSetupHandle=payload.github_setup_handle,
                     capabilities=payload.capabilities,
                 ),
             )
@@ -367,13 +393,22 @@ def add_connector_routes(router: APIRouter, runtime: ConnectorRuntime | None) ->
         current = require_runtime()
         record = _find_installation(current, request, project_handle, installation_handle, context)
         key = idempotency_key or f"ui-sync-{uuid4().hex}"
+        cursor_before = _read_cursor(current.repository, context.project_id, record.installation_id)
         result = await _run(current, context, record, payload.expected_installation_revision, key)
         response.headers["X-Request-Id"] = context.request_id
         response.status_code = 200 if result.outcome == "replayed" else 202
         run = current.repository.get_run(context.project_id, record.installation_id, result.run_id)
         if run is None:
             raise ConnectorPublicProblem("CONNECTOR_FAILED")
-        return _result_response(context.request_id, run, result)
+        return _result_response(
+            context.request_id,
+            run,
+            result,
+            cursor_before_digest=_cursor_digest(cursor_before),
+            cursor_after_digest=_cursor_digest(
+                _read_cursor(current.repository, context.project_id, record.installation_id)
+            ),
+        )
 
     @router.get(
         "/v1/projects/{project_handle}/connectors/installations/{installation_handle}/runs",
@@ -467,7 +502,7 @@ def add_connector_routes(router: APIRouter, runtime: ConnectorRuntime | None) ->
         )
         try:
             result = await current.orchestrator.retry(
-                _actor(context), command, source_committer=ConnectorSemanticSourceCommitter(current.semantic_client, current.evidence, context)
+                _actor(context), command, source_committer=ConnectorSemanticSourceCommitter(current.semantic_client, current.evidence, context, current.audit_sink)
             )
         except Exception as error:  # noqa: BLE001
             raise _map_error(error) from error
@@ -479,12 +514,22 @@ def add_connector_routes(router: APIRouter, runtime: ConnectorRuntime | None) ->
 
 
 def _catalog_item(descriptor: ConnectorDescriptor) -> ConnectorCatalogItem:
+    teams = descriptor.connector_type == "teams"
+    github = descriptor.connector_type == "github-public-issues"
     return ConnectorCatalogItem(
         connectorType=descriptor.connector_type,
         contractVersion=descriptor.contract_version,
         displayName=descriptor.display_name,
         capabilities=descriptor.capabilities,
         limits=descriptor.limits.model_dump(mode="json"),
+        setupMode="operator-setup" if teams or github else "fixture",
+        consentGuidance=(
+            "Requires one operator-controlled tenant/team/channel setup and ChannelMessage.Read.Group resource-specific consent."
+            if teams
+            else "Binds one exact public GitHub repository through a short-lived operator setup handle; no token or provider URL is entered here."
+            if github
+            else "Uses a server-approved replay fixture; no provider credential is entered here."
+        ),
     )
 
 
@@ -507,12 +552,28 @@ def _snapshot_response(request_id: str, record: InstallationRecord) -> Installat
     return InstallationStateResponse(
         requestId=request_id,
         handle=connector_handle(record.project_id, record.installation_id),
-        connectorType=record.connector_type,
+        connectorType=cast(Literal["json-mock", "teams", "github-public-issues"], record.connector_type),
         capabilities=safe_capabilities,
         enabled=record.enabled,
         revision=record.revision,
         secretConfigured=record.secret_reference is not None,
-        fixtureConfigured=isinstance(record.capability_snapshot.get("fixtureReference"), str),
+        fixtureConfigured=(
+            record.connector_type == "json-mock"
+            and isinstance(record.capability_snapshot.get("fixtureReference"), str)
+        ),
+        setupStatus=(
+            "ready"
+            if record.secret_reference is not None
+            or record.connector_type in {"json-mock", "github-public-issues"}
+            else "setup-required"
+        ),
+        consentGuidance=(
+            "Teams uses operator-controlled tenant/team/channel setup and approved resource-specific consent."
+            if record.connector_type == "teams"
+            else "GitHub Public Issues binds one exact public repository through an operator setup handle; no token is stored."
+            if record.connector_type == "github-public-issues"
+            else "Server-approved fixture connector."
+        ),
     )
 
 
@@ -531,7 +592,14 @@ def _run_response(request_id: str, run: SyncRunRecord) -> RunResponse:
     )
 
 
-def _result_response(request_id: str, run: SyncRunRecord, result: SyncResult) -> RunResponse:
+def _result_response(
+    request_id: str,
+    run: SyncRunRecord,
+    result: SyncResult,
+    *,
+    cursor_before_digest: str | None = None,
+    cursor_after_digest: str | None = None,
+) -> RunResponse:
     return RunResponse(
         requestId=request_id,
         handle=run_handle(run.project_id, run.installation_id, run.run_id),
@@ -543,7 +611,23 @@ def _result_response(request_id: str, run: SyncRunRecord, result: SyncResult) ->
         revision=run.revision,
         startedAt=run.started_at,
         terminalAt=run.terminal_at,
+        cursorBeforeDigest=cursor_before_digest,
+        cursorAfterDigest=cursor_after_digest,
     )
+
+
+def _cursor_digest(cursor: object) -> str | None:
+    checkpoint = getattr(cursor, "checkpoint", None)
+    if not isinstance(checkpoint, str) or not checkpoint:
+        return None
+    return "sha256:" + sha256(checkpoint.encode("utf-8")).hexdigest()
+
+
+def _read_cursor(repository: object, project_id: str, installation_id: str) -> object | None:
+    getter = getattr(repository, "get_cursor", None)
+    if not callable(getter):
+        return None
+    return getter(project_id, installation_id)
 
 
 _SAFE_FAILURE_CODES = frozenset(
@@ -552,6 +636,8 @@ _SAFE_FAILURE_CODES = frozenset(
         "ADAPTER_LIMIT_EXCEEDED", "EVENT_OUTPUT_INVALID", "EVENT_BODY_CONFLICT",
         "EVENT_IDEMPOTENCY_CONFLICT",
         "SOURCE_COMMIT_FAILED", "CURSOR_COMMIT_CONFLICT", "EVIDENCE_WRITE_FAILED",
+        "ADAPTER_CREDENTIAL_INVALID", "ADAPTER_PERMISSION_DENIED", "ADAPTER_PROVIDER_NOT_FOUND",
+        "ADAPTER_UNAVAILABLE", "ADAPTER_RATE_LIMITED",
     }
 )
 
@@ -562,6 +648,7 @@ def _state(status: str, outcome: str | None) -> str:
         "succeeded": "succeeded", "accepted": "succeeded", "empty": "empty",
         "replayed": "replayed", "failed": "failed", "cancelled": "cancelled",
         "running": "running", "in_progress": "running",
+        "truncated": "truncated",
     }.get(value, "unavailable")
 
 
@@ -598,7 +685,7 @@ async def _run(current: ConnectorRuntime, context: TrustedRequestContext, record
     try:
         return await current.orchestrator.run(
             _actor(context), command,
-            source_committer=ConnectorSemanticSourceCommitter(current.semantic_client, current.evidence, context),
+            source_committer=ConnectorSemanticSourceCommitter(current.semantic_client, current.evidence, context, current.audit_sink),
         )
     except Exception as error:  # noqa: BLE001
         _LOGGER.error(
@@ -616,10 +703,9 @@ async def _run(current: ConnectorRuntime, context: TrustedRequestContext, record
 
 
 def _require_project(request: Request, project_handle: str, context: TrustedRequestContext) -> None:
-    if (
-        request.headers.get("X-Projecta-Selection-Handle") != project_handle
-        or project_handle != opaque_project_handle(context.project_id)
-    ):
+    if project_handle != opaque_project_handle(context.project_id):
+        raise ConnectorPublicProblem("CONNECTOR_NOT_FOUND")
+    if request.app.state.settings.runtime_mode != "production" and request.headers.get("X-Projecta-Selection-Handle") != project_handle:
         raise ConnectorPublicProblem("CONNECTOR_NOT_FOUND")
     if not context.project_id:
         raise ConnectorPublicProblem("CONNECTOR_FORBIDDEN")
@@ -664,5 +750,7 @@ def _map_error(error: Exception) -> ConnectorPublicProblem:
     if isinstance(error, KeyError):
         return ConnectorPublicProblem("CONNECTOR_NOT_FOUND")
     if isinstance(error, ValueError):
+        if str(error) == "ADAPTER_CONFIGURATION_UNAVAILABLE":
+            return ConnectorPublicProblem("CONNECTOR_CONFIGURATION_UNAVAILABLE")
         return ConnectorPublicProblem("CONNECTOR_INVALID")
     return ConnectorPublicProblem("CONNECTOR_FAILED")

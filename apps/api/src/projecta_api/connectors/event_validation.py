@@ -10,6 +10,7 @@ from typing import cast
 
 from projecta_api.connectors.contracts import (
     CanonicalEvent,
+    ConnectorType,
     EvidenceMetadata,
     RawEventCandidate,
     sha256_digest,
@@ -43,7 +44,7 @@ def validate_and_canonicalize(
     max_future_skew: timedelta = timedelta(minutes=15),
 ) -> CanonicalEvent:
     """Bind adapter output to server scope and recompute both contract hashes."""
-    if connector_type != "json-mock" or candidate.event_id == "":
+    if connector_type not in {"json-mock", "teams", "github-public-issues"} or candidate.event_id == "":
         raise CanonicalEventValidationError("EVENT_FIELD_INVALID", "connectorType")
     if candidate.external_reference.startswith(("/", "\\")) or ".." in candidate.external_reference:
         raise CanonicalEventValidationError("EVENT_REFERENCE_INVALID", "externalReference")
@@ -94,7 +95,7 @@ def validate_and_canonicalize(
     return CanonicalEvent(
         schemaVersion="canonical-event.v1",
         eventId=candidate.event_id,
-        connectorType=connector_type,
+        connectorType=cast(ConnectorType, connector_type),
         eventType=candidate.event_type,
         projectScope=project_id,
         installationScope=installation_id,

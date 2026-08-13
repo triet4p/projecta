@@ -2,6 +2,10 @@
 .env
 .env.*
 !.env.example
+.secrets/
+infra/openbao/tls/
+infra/keycloak/tls/
+infra/edge/tls/
 
 # Python
 .venv/

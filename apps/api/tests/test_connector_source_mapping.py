@@ -31,6 +31,25 @@ def _event(content: bytes):
     )
 
 
+def _github_event(content: bytes):
+    candidate = RawEventCandidate(
+        eventId="evt-github-001",
+        eventType="source.updated",
+        externalReference="github://issue/abc123",
+        occurredAt=datetime(2026, 8, 10, tzinfo=UTC),
+        contentType="application/json",
+        contentBytes=content,
+    )
+    return validate_and_canonicalize(
+        candidate,
+        project_id="project-a",
+        installation_id="install-github",
+        connector_type="github-public-issues",
+        evidence_reference="ev_" + "b" * 22,
+        now=datetime(2026, 8, 10, tzinfo=UTC),
+    )
+
+
 def test_mapping_preserves_connector_source_kind_hash_and_exact_offsets() -> None:
     content = b'{"title":"Imported","items":[{"type":"requirement","text":"Ship it"},{"type":"risk","text":"Needs review"}]}'
     request = map_event_to_capture(_event(content), content, actor_id="actor-a")
@@ -42,6 +61,15 @@ def test_mapping_preserves_connector_source_kind_hash_and_exact_offsets() -> Non
         (0, 7, "Ship it"),
         (8, 20, "Needs review"),
     ]
+
+
+def test_github_issue_mapping_reuses_connector_capture_boundary() -> None:
+    content = b'{"body":"Review the release gate","kind":"issue","number":7,"state":"open","title":"Release gate"}'
+    request = map_event_to_capture(_github_event(content), content, actor_id="actor-a")
+
+    assert request.title == "GitHub issue: Release gate"
+    assert request.raw_text == "Release gate\nReview the release gate"
+    assert request.segments[0].type == "task"
 
 
 @pytest.mark.parametrize(

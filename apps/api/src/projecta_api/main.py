@@ -3,6 +3,7 @@
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from sqlalchemy import create_engine
 
 from projecta_api.config import Settings
 from projecta_api.configuration.audit import ConfigurationAudit
@@ -10,7 +11,7 @@ from projecta_api.configuration.connection import OpenAIConnectionChecker
 from projecta_api.configuration.environment import EnvironmentRuntimeConfigurationProvider
 from projecta_api.configuration.errors import ConfigurationProblem
 from projecta_api.configuration.models import LLMConfigurationSnapshot
-from projecta_api.configuration.ports import RuntimeConfigurationProvider
+from projecta_api.configuration.ports import RuntimeConfigurationProvider, VersionedSecretStore
 from projecta_api.configuration.runtime import OperationalRuntimeConfigurationProvider
 from projecta_api.configuration.secret_store import ApplicationEncryptedSecretStore
 from projecta_api.configuration.service import LLMConfigurationService
@@ -19,6 +20,11 @@ from projecta_api.connectors.authorization import (
     ConnectorAuthorizationError,
     ConnectorPolicy,
     LocalConnectorPrincipalAdapter,
+    ProductionConnectorPrincipalAdapter,
+)
+from projecta_api.connectors.github_public_issues import GitHubPublicIssuesAdapter
+from projecta_api.connectors.github_public_issues_setup import (
+    PostgresGitHubPublicIssuesSetupRegistry,
 )
 from projecta_api.connectors.installation_service import ConnectorInstallationService
 from projecta_api.connectors.json_mock import JsonMockAdapter, JsonMockFixture
@@ -26,19 +32,30 @@ from projecta_api.connectors.orchestration import ConnectorSyncOrchestrator, Sou
 from projecta_api.connectors.public_api import ConnectorPublicProblem, ConnectorRuntime
 from projecta_api.connectors.registry import ConnectorRegistry
 from projecta_api.connectors.secrets import ConnectorSecretPolicy
+from projecta_api.connectors.teams import HttpTeamsGraphTransport, TeamsAdapter
+from projecta_api.connectors.teams_auth import HttpCertificateTokenExchange, TeamsCredentialProvider
+from projecta_api.connectors.teams_setup import PostgresTeamsSetupRegistry
 from projecta_api.context import LocalExperienceContextMiddleware
 from projecta_api.correlation import resolve_correlation
 from projecta_api.evidence.local import LocalEvidenceStore
 from projecta_api.extraction.service import ExtractionOrchestrator
+from projecta_api.identity.middleware import CsrfMiddleware
+from projecta_api.identity.oidc import IdentityError, IdentityService
+from projecta_api.identity.readiness import oidc_ready
+from projecta_api.identity.repository import InMemoryIdentityRepository, PostgresIdentityRepository
+from projecta_api.identity.routes import add_identity_routes, map_identity_error
 from projecta_api.llm.gateway import LLMGateway, NormalizedGatewayError
 from projecta_api.llm.openai_responses import OpenAIResponsesGateway
 from projecta_api.llm.resilience import ResilientGateway
+from projecta_api.operational.audit import InMemorySecurityAuditSink, SecurityAuditSink
 from projecta_api.operational.database import ConnectorDatabase
 from projecta_api.operational.repository import PostgresConnectorRepository
 from projecta_api.project_workspace_store import ProjectSelectionRepository
 from projecta_api.retrieval.errors import RetrievalError
 from projecta_api.retrieval.service import RetrievalService
 from projecta_api.routes import create_router
+from projecta_api.secrets.approle import FileAppRoleTokenProvider, HttpAppRoleLogin
+from projecta_api.secrets.openbao import OpenBaoHttpTransport, OpenBaoSecretStore
 from projecta_api.semantic_core import (
     HttpSemanticCoreClient,
     SemanticCoreClient,
@@ -60,21 +77,52 @@ def create_app(
     gateway: LLMGateway | None = None,
     runtime_configuration: RuntimeConfigurationProvider | None = None,
     connector_runtime: ConnectorRuntime | None = None,
+    identity_repository: object | None = None,
 ) -> FastAPI:
     """Create the application without performing network I/O."""
     actual_settings = settings or Settings()  # pyright: ignore[reportCallIssue]
+    security_audit = InMemorySecurityAuditSink()
     startup_problems = validate_startup(actual_settings)
     client = semantic_client or HttpSemanticCoreClient(str(actual_settings.semantic_core_url))
     database = OperationalDatabase(actual_settings.operational_database_path)
     secret_store = ApplicationEncryptedSecretStore(
         database, actual_settings.secret_store_master_key
     )
+    connector_secret_store: object = secret_store
+    if actual_settings.runtime_mode == "production" and actual_settings.openbao_url:
+        login = HttpAppRoleLogin(
+            str(actual_settings.openbao_url),
+            verify=str(actual_settings.openbao_ca_file),
+        )
+        token_provider = FileAppRoleTokenProvider(
+            actual_settings.openbao_role_id_file,
+            actual_settings.openbao_secret_id_file,
+            login,
+        )
+        connector_secret_store = OpenBaoSecretStore(
+            OpenBaoHttpTransport(
+                str(actual_settings.openbao_url),
+                token_provider,
+                verify=str(actual_settings.openbao_ca_file),
+            )
+        )
     profile_repository = LLMProfileRepository(database)
     project_selection_repository = ProjectSelectionRepository(database)
+    identity_repository_value: object
+    if identity_repository is not None:
+        identity_repository_value = identity_repository
+    elif actual_settings.runtime_mode == "production" and not startup_problems:
+        identity_repository_value = PostgresIdentityRepository(
+            create_engine(actual_settings.identity_sync_database_url(), pool_pre_ping=True, hide_parameters=True),
+            audit_sink=security_audit,
+        )
+    else:
+        identity_repository_value = InMemoryIdentityRepository()
+    identity_service = IdentityService(actual_settings, identity_repository_value, audit_sink=security_audit)  # type: ignore[arg-type]
     structured_note_draft_store = StructuredNoteDraftStore(database)
     structured_candidate_edit_store = StructuredCandidateEditStore(database)
     configuration_audit = ConfigurationAudit(database)
-    composed_connector_runtime = connector_runtime or _build_connector_runtime(actual_settings, client, secret_store)
+    composed_connector_runtime = connector_runtime or _build_connector_runtime(actual_settings, client, connector_secret_store, identity_service, security_audit)
     configuration: RuntimeConfigurationProvider
     if runtime_configuration is not None:
         configuration = runtime_configuration
@@ -113,18 +161,23 @@ def create_app(
             timeout_seconds=90.0,
         )
     retrieval = RetrievalService(client)
-    app = FastAPI(title="Projecta Application API", version="0.5.1")
+    app = FastAPI(title="Projecta Application API", version="0.6.0")
     app.state.settings = actual_settings
     app.state.startup_problems = startup_problems
     app.state.runtime_configuration = configuration
     app.state.profile_repository = profile_repository
     app.state.secret_store = secret_store
+    app.state.connector_secret_store = connector_secret_store
     app.state.configuration_audit = configuration_audit
     app.state.project_selection_repository = project_selection_repository
+    app.state.identity_repository = identity_repository_value
+    app.state.identity_service = identity_service
+    app.state.security_audit_sink = security_audit
     app.state.structured_note_draft_store = structured_note_draft_store
     app.state.structured_candidate_edit_store = structured_candidate_edit_store
     app.state.connector_runtime = composed_connector_runtime
     app.add_middleware(LocalExperienceContextMiddleware)
+    app.add_middleware(CsrfMiddleware)
 
     @app.exception_handler(SemanticCoreProblem)
     async def semantic_problem(request: Request, error: SemanticCoreProblem) -> JSONResponse:
@@ -221,6 +274,11 @@ def create_app(
         code = "CONNECTOR_FORBIDDEN" if error.status_code in {401, 403} else "CONNECTOR_NOT_FOUND"
         return _problem(request, error.status_code, code, "Connector authorization failed", "The connector operation is not available to this actor.")
 
+    @app.exception_handler(IdentityError)
+    async def identity_problem(request: Request, error: IdentityError) -> JSONResponse:
+        status_code, code, detail = map_identity_error(error)
+        return _problem(request, status_code, code, "Authentication failed", detail)
+
     @app.exception_handler(Exception)
     async def unexpected_problem(request: Request, _: Exception) -> JSONResponse:
         """Keep an application crash inside one correlated, sanitized terminal error."""
@@ -303,13 +361,29 @@ def create_app(
                 },
             )
         if await checker():
-            return JSONResponse({"status": "ready", "semanticCore": "ready"})
+            if not await oidc_ready(actual_settings):
+                return JSONResponse(status_code=503, content={"status": "not-ready", "semanticCore": "ready", "oidc": "unavailable", "reasonCode": "OIDC_PROVIDER_UNAVAILABLE"})
+            if isinstance(app.state.connector_secret_store, OpenBaoSecretStore):
+                secret_status = app.state.connector_secret_store.readiness()
+                app.state.secret_manager_status = secret_status
+                if secret_status != "ready":
+                    return JSONResponse(
+                        status_code=503,
+                        content={
+                            "status": "not-ready",
+                            "semanticCore": "ready",
+                            "oidc": "ready",
+                            "reasonCode": "SECRET_MANAGER_UNAVAILABLE",
+                        },
+                    )
+            return JSONResponse({"status": "ready", "semanticCore": "ready", "oidc": "ready"})
         return JSONResponse(
             status_code=503,
             content={"status": "not-ready", "semanticCore": "unavailable"},
         )
 
     app.add_api_route("/health/ready", ready, methods=["GET"])
+    add_identity_routes(app.router)
     app.include_router(
         create_router(
             client,
@@ -336,24 +410,43 @@ class _UnavailableSourceCommitter(SourceCommitter):
 
 
 def _build_connector_runtime(
-    settings: Settings, client: SemanticCoreClient, secret_store: object
+    settings: Settings,
+    client: SemanticCoreClient,
+    secret_store: object,
+    identity_service: IdentityService,
+    audit_sink: SecurityAuditSink | None = None,
 ) -> ConnectorRuntime | None:
     """Compose the connector boundary only when deployment supplied its complete config."""
-    if settings.runtime_mode != "experience":
+    if settings.runtime_mode not in {"experience", "production"}:
+        return None
+    if settings.runtime_mode == "production" and not isinstance(secret_store, OpenBaoSecretStore):
         return None
     try:
         database = ConnectorDatabase(settings)
         repository = PostgresConnectorRepository(database)
         registry = ConnectorRegistry()
         registry.register(JsonMockAdapter(_default_fixture(settings)))
-        principal = LocalConnectorPrincipalAdapter(settings)
+        registry.register(GitHubPublicIssuesAdapter())
+        if isinstance(secret_store, VersionedSecretStore):
+            registry.register(
+                TeamsAdapter(
+                    TeamsCredentialProvider(secret_store, HttpCertificateTokenExchange()),
+                    HttpTeamsGraphTransport(),
+                )
+            )
+        principal = LocalConnectorPrincipalAdapter(settings) if settings.runtime_mode == "experience" else ProductionConnectorPrincipalAdapter(identity_service)
         policy = ConnectorPolicy(principal, repository, repository)
         installation_service = ConnectorInstallationService(
-            repository, policy, registry, ConnectorSecretPolicy(secret_store)  # type: ignore[arg-type]
+            repository,
+            policy,
+            registry,
+            ConnectorSecretPolicy(secret_store, audit_sink),  # type: ignore[arg-type]
+            PostgresTeamsSetupRegistry(database),
+            PostgresGitHubPublicIssuesSetupRegistry(database),
         )
         evidence = LocalEvidenceStore(settings.evidence_root)
         orchestrator = ConnectorSyncOrchestrator(
-            repository, policy, registry, evidence, _UnavailableSourceCommitter()
+            repository, policy, registry, evidence, _UnavailableSourceCommitter(), audit_sink=audit_sink
         )
         return ConnectorRuntime(
             repository,
@@ -363,6 +456,7 @@ def _build_connector_runtime(
             policy,
             evidence,
             client,
+            audit_sink,
         )
     except (ValueError, ConnectorAuthorizationError, OSError):
         return None

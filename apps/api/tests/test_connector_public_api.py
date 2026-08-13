@@ -6,12 +6,18 @@ import pytest
 from httpx import ASGITransport, AsyncClient
 
 from projecta_api.config import Settings
-from projecta_api.connectors.authorization import ConnectorPolicy, DeterministicTestPrincipalAdapter
+from projecta_api.connectors.authorization import (
+    ConnectorAuthorizationError,
+    ConnectorAuthorizationRequest,
+    ConnectorPolicy,
+    DeterministicTestPrincipalAdapter,
+)
 from projecta_api.connectors.contracts import InstallationSnapshot
 from projecta_api.connectors.json_mock import JsonMockAdapter, JsonMockFixture
 from projecta_api.connectors.orchestration import SyncResult
 from projecta_api.connectors.public_api import ConnectorRuntime, connector_handle
 from projecta_api.connectors.registry import ConnectorRegistry
+from projecta_api.context import TrustedActorContext
 from projecta_api.main import create_app
 from projecta_api.operational.ports import InstallationRecord, SyncRunRecord
 from projecta_api.project_workspace import opaque_project_handle
@@ -79,7 +85,7 @@ class SemanticClient:
         raise AssertionError("public projection test must not bypass the orchestrator")
 
 
-def _runtime() -> ConnectorRuntime:
+def _runtime(*, admin: bool = True) -> ConnectorRuntime:
     fixture = JsonMockFixture.model_validate(
         {
             "fixtureVersion": "json-mock.v1",
@@ -100,7 +106,7 @@ def _runtime() -> ConnectorRuntime:
     repository = Repository()
     policy = ConnectorPolicy(
         DeterministicTestPrincipalAdapter(
-            actor_id="actor-a", allowed_projects=("project-a",)
+            actor_id="actor-a", allowed_projects=("project-a",), admin=admin
         ),
         repository,
         repository,
@@ -185,3 +191,25 @@ async def test_wrong_project_selection_does_not_leak_installation_existence() ->
     assert response.status_code == 404
     assert "install-a" not in response.text
     assert "project-a" not in response.text
+
+
+@pytest.mark.asyncio
+async def test_connector_reader_cannot_install_github_public_issues() -> None:
+    repository = Repository()
+    policy = ConnectorPolicy(
+        DeterministicTestPrincipalAdapter(
+            actor_id="actor-a", allowed_projects=("project-a",), admin=False
+        ),
+        repository,
+        repository,
+    )
+
+    with pytest.raises(ConnectorAuthorizationError, match="PROJECT_FORBIDDEN"):
+        await policy.authorize(
+            ConnectorAuthorizationRequest(
+                action="installation.create",
+                actor_context=TrustedActorContext("actor-a", "req-auth", "op-auth"),
+                project_id="project-a",
+                connector_type="github-public-issues",
+            )
+        )

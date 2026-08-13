@@ -107,12 +107,75 @@ services:
       POSTGRES_USER: ${PROJECTA_CONNECTOR_POSTGRES_USER:?PROJECTA_CONNECTOR_POSTGRES_USER must be set}
       POSTGRES_PASSWORD: ${PROJECTA_CONNECTOR_POSTGRES_PASSWORD:?PROJECTA_CONNECTOR_POSTGRES_PASSWORD must be set}
       POSTGRES_DB: ${PROJECTA_CONNECTOR_POSTGRES_DB:?PROJECTA_CONNECTOR_POSTGRES_DB must be set}
+      PROJECTA_KEYCLOAK_POSTGRES_DB: ${PROJECTA_KEYCLOAK_POSTGRES_DB:-keycloak}
+      PROJECTA_KEYCLOAK_POSTGRES_USER: ${PROJECTA_KEYCLOAK_POSTGRES_USER:-keycloak}
+      PROJECTA_KEYCLOAK_POSTGRES_PASSWORD: ${PROJECTA_KEYCLOAK_POSTGRES_PASSWORD:-local-only-not-production}
     volumes:
       - projecta-connector-postgres:/var/lib/postgresql/data
+      - ./infra/postgres/20-keycloak-database.sh:/docker-entrypoint-initdb.d/20-keycloak-database.sh:ro
     expose:
       - "5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\" -q"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 10s
+
+  keycloak:
+    profiles: ["identity"]
+    build:
+      context: ./infra/docker/keycloak
+    image: projecta-keycloak:26.7.0
+    depends_on:
+      connector-postgres:
+        condition: service_healthy
+    command: ["start", "--optimized", "--import-realm"]
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://connector-postgres/${PROJECTA_KEYCLOAK_POSTGRES_DB:-keycloak}
+      KC_DB_USERNAME: ${PROJECTA_KEYCLOAK_POSTGRES_USER:-keycloak}
+      KC_DB_PASSWORD: ${PROJECTA_KEYCLOAK_POSTGRES_PASSWORD:-local-only-not-production}
+      KC_HOSTNAME: ${PROJECTA_OIDC_HOSTNAME:-auth.example.com}
+      KC_HOSTNAME_STRICT: "true"
+      KC_PROXY_HEADERS: xforwarded
+      KC_HTTP_ENABLED: "true"
+      KC_HEALTH_ENABLED: "true"
+      KC_METRICS_ENABLED: "true"
+    volumes:
+      - ./infra/keycloak/realm.template.json:/opt/keycloak/data/import/projecta-realm.json:ro
+    expose:
+      - "8080"
+      - "9000"
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /opt/keycloak/data/tmp
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/127.0.0.1/9000'"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 30s
+
+  openbao:
+    profiles: ["secrets"]
+    build:
+      context: ./infra/docker/openbao
+    image: projecta-openbao:2.6.1
+    command: ["server", "-config=/openbao/config.hcl"]
+    volumes:
+      - openbao-data:/openbao/file
+      - ./infra/openbao/config.hcl:/openbao/config.hcl:ro
+      - ./infra/openbao/tls:/openbao/tls:ro
+    expose:
+      - "8200"
+      - "8201"
+    read_only: true
+    tmpfs:
+      - /tmp
+    healthcheck:
+      test: ["CMD-SHELL", "bao status -address=https://openbao:8200 -ca-cert=/openbao/tls/ca.crt >/dev/null 2>&1; code=$$?; test $$code -eq 0 -o $$code -eq 2"]
       interval: 5s
       timeout: 3s
       retries: 12
@@ -335,3 +398,4 @@ volumes:
   projecta-api-operational:
   projecta-connector-postgres:
   projecta-evidence:
+  openbao-data:

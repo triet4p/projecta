@@ -10,6 +10,7 @@ describe("Sprint 8 information architecture", () => {
       "Notes",
       "Graph",
       "Review Queue",
+      "Knowledge",
       "Q&A",
       "Connections",
       "Settings",
@@ -19,6 +20,6 @@ describe("Sprint 8 information architecture", () => {
 
   it("does not expose identifiers or legacy shortcut screens", () => {
     const labels = navigationGroups.flatMap((group) => group.items);
-    expect(labels.join(" ")).not.toMatch(/Capture|Extract|Knowledge|candidate-|proj-/i);
+    expect(labels.join(" ")).not.toMatch(/Capture|Extract|candidate-|proj-/i);
   });
 });

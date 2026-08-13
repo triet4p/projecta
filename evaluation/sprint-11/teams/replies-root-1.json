@@ -1,0 +1,11 @@
+{
+  "value": [
+    {
+      "id": "reply-1",
+      "createdDateTime": "2026-08-12T11:01:00Z",
+      "lastModifiedDateTime": "2026-08-12T11:02:00Z",
+      "from": {"user": {"id": "user-2", "displayName": "Responder"}},
+      "body": {"contentType": "html", "content": "<div>Reply</div>"}
+    }
+  ]
+}

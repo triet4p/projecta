@@ -55,6 +55,44 @@ class ConnectorInstallation(Base):
     updated_at: Mapped[datetime] = mapped_column(Timestamp, nullable=False)
 
 
+class TeamsSetupHandle(Base):
+    __tablename__ = "teams_setup_handles"
+    __table_args__ = (Index("ix_teams_setup_project_expiry", "project_id", "expires_at"),)
+
+    setup_hash: Mapped[str] = mapped_column(String(64), primary_key=True)
+    project_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    actor_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    installation_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    expected_revision: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+    provider_config: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(Timestamp, nullable=False)
+    consumed_at: Mapped[datetime | None] = mapped_column(Timestamp)
+    created_at: Mapped[datetime] = mapped_column(Timestamp, nullable=False)
+
+
+class GitHubPublicIssuesSetupHandle(Base):
+    __tablename__ = "github_public_issues_setup_handles"
+    __table_args__ = (
+        Index("ix_github_public_issues_setup_project_expiry", "project_id", "expires_at"),
+        Index(
+            "ix_github_public_issues_setup_actor_revision",
+            "project_id",
+            "actor_id",
+            "expected_revision",
+        ),
+    )
+
+    setup_hash: Mapped[str] = mapped_column(String(64), primary_key=True)
+    project_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    actor_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    installation_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    expected_revision: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+    provider_config: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(Timestamp, nullable=False)
+    consumed_at: Mapped[datetime | None] = mapped_column(Timestamp)
+    created_at: Mapped[datetime] = mapped_column(Timestamp, nullable=False)
+
+
 class ConnectorEventInbox(Base):
     __tablename__ = "connector_event_inbox"
     __table_args__ = (

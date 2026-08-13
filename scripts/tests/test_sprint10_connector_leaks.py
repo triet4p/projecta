@@ -22,7 +22,14 @@ class Sprint10ConnectorLeakTests(unittest.TestCase):
             ROOT / "apps" / "web" / "tests" / "e2e" / "sprint10.spec.ts",
             ROOT / "docs" / "sprint-plans" / "sprint-10" / "artifacts",
         )
-        forbidden = ("super-secret", "password=", "Authorization: Bearer", "private-store")
+        forbidden = (
+            "super-secret",
+            "password=",
+            "Authorization: Bearer",
+            "private-store",
+            "ghp_synthetic_secret",
+            "github-token-synthetic",
+        )
         paths = [roots[1]] if roots[1].is_file() else []
         for root in (roots[0], roots[2]):
             paths.extend(root.rglob("*.ts" if root == roots[0] else "*.md"))

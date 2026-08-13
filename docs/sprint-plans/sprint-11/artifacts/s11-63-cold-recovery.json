@@ -1,0 +1,223 @@
+{
+  "schemaVersion": "sprint11.cold-recovery.v2",
+  "status": "passed",
+  "startedFromCleanTargets": true,
+  "sourceDestroyedBeforeRestore": true,
+  "manualUnsealWithOriginalShares": true,
+  "sessionsInvalidated": true,
+  "workloadReauthenticated": true,
+  "idempotentReplayVerified": true,
+  "keycloakRuntimeExportVerified": true,
+  "failure": null,
+  "gates": [
+    {
+      "name": "Create isolated recovery network",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:33:03.1888527Z",
+      "finishedAt": "2026-08-13T03:33:03.9653781Z",
+      "output": "ee925e609da58b6d1ec80954f6afc350a90e2c1225698e9b0383f825d0cbb084"
+    },
+    {
+      "name": "Start source PostgreSQL",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:33:04.1009801Z",
+      "finishedAt": "2026-08-13T03:33:06.4193254Z",
+      "output": "71362e4138f33de36804818f6df104a840b3ac708f1bf78acc6696d23f7c773a"
+    },
+    {
+      "name": "Create Projecta recovery database",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:33:17.5562130Z",
+      "finishedAt": "2026-08-13T03:33:18.4645722Z",
+      "output": null
+    },
+    {
+      "name": "Apply current migrations",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:33:18.8631479Z",
+      "finishedAt": "2026-08-13T03:33:25.6210140Z",
+      "output": [
+        "INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.",
+        "INFO  [alembic.runtime.migration] Will assume transactional DDL.",
+        "INFO  [alembic.runtime.migration] Running upgrade  -> 0001_connector_operational, Create connector operational state tables.",
+        "INFO  [alembic.runtime.migration] Running upgrade 0001_connector_operational -> 0002_sync_run_revision, Add optimistic revision to sync runs.",
+        "INFO  [alembic.runtime.migration] Running upgrade 0002_sync_run_revision -> 0003_installation_revision, Add optimistic revision to connector installations.",
+        "INFO  [alembic.runtime.migration] Running upgrade 0003_installation_revision -> 0004_scoped_event_identity, Scope event identity and persist truthful run summaries.",
+        "INFO  [alembic.runtime.migration] Running upgrade 0004_scoped_event_identity -> 0005_identity_sessions, Add Projecta-owned OIDC session, login-state, and membership tables.",
+        "INFO  [alembic.runtime.migration] Running upgrade 0005_identity_sessions -> 0006_teams_setup_handles, Add single-use Teams operator setup handles."
+      ]
+    },
+    {
+      "name": "Seed operational replay and evidence state",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:33:25.6882573Z",
+      "finishedAt": "2026-08-13T03:33:28.2690186Z",
+      "output": "{\"claimOutcome\": \"new\", \"cursorCheckpoint\": \"cursor-1\", \"cursorRevision\": 1, \"evidenceReference\": \"ev_2nstbbAz9kxzZeYMf1bdHU\", \"installationRevision\": 1, \"runOutcome\": \"accepted\"}"
+    },
+    {
+      "name": "Seed active Projecta session",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:33:28.2721476Z",
+      "finishedAt": "2026-08-13T03:33:28.4083877Z",
+      "output": "INSERT 0 1"
+    },
+    {
+      "name": "Start source Keycloak runtime",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:33:28.4094990Z",
+      "finishedAt": "2026-08-13T03:33:29.0001102Z",
+      "output": "8f458a20925d2ffe0a080dc01ddc7b196fde24993b809943a1a816441b8aa0ed"
+    },
+    {
+      "name": "Stop source Keycloak before export",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:34:04.7796479Z",
+      "finishedAt": "2026-08-13T03:34:07.1948004Z",
+      "output": "projecta-s11-recovery-47a992b56042-kc-source"
+    },
+    {
+      "name": "Create runtime Keycloak realm export",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:34:07.1959251Z",
+      "finishedAt": "2026-08-13T03:34:23.3327302Z",
+      "output": [
+        "2026-08-13 03:34:14,678 INFO  [org.infinispan.CONTAINER] (main) ISPN000974: Virtual threads support: enabled",
+        "2026-08-13 03:34:16,033 INFO  [org.hibernate.orm.jdbc.batch] (JPA Startup Thread) HHH100501: Automatic JDBC statement batching enabled (maximum batch size 32)",
+        "2026-08-13 03:34:16,201 WARN  [org.keycloak.common.Profile] (main) Deprecated features identity-brokering-api:v1, twitter-broker:v1 enabled by default. Check the upgrading guide for steps to use later versions if available.",
+        "2026-08-13 03:34:17,085 INFO  [org.keycloak.quarkus.runtime.storage.database.jpa.DatabaseIndexChecker] (db-index-checker) Running database index checker",
+        "2026-08-13 03:34:18,936 INFO  [org.infinispan.CONTAINER] (main) ISPN000556: Starting user marshaller 'org.infinispan.commons.marshall.ImmutableProtoStreamMarshaller'",
+        "2026-08-13 03:34:19,608 INFO  [org.keycloak.connections.infinispan.DefaultInfinispanConnectionProviderFactory] (main) Node name: node_461207, Site name: null, Cluster name: ISPN",
+        "2026-08-13 03:34:19,619 INFO  [org.keycloak.models.workflow.WorkflowsEventListenerFactory] (main) Workflow runner task scheduled: next execution at 15:34:19, then every PT12H",
+        "2026-08-13 03:34:20,106 INFO  [org.keycloak.services] (main) KC-SERVICES0034: Export of realm 'projecta' requested.",
+        "2026-08-13 03:34:20,107 INFO  [org.keycloak.exportimport.singlefile.SingleFileExportProvider] (main) Exporting realm 'projecta' into file /export/keycloak-export.json",
+        "2026-08-13 03:34:21,623 INFO  [org.keycloak.services] (main) KC-SERVICES0035: Export finished successfully",
+        "2026-08-13 03:34:21,666 INFO  [org.keycloak.services.resources.KeycloakApplication] (main) Bootstrap completed in 5.462000 seconds",
+        "2026-08-13 03:34:21,785 INFO  [io.quarkus] (main) Keycloak 26.7.0 on JVM (powered by Quarkus 3.33.2.1) started in 13.871s. Listening on: . Management interface listening on http://0.0.0.0:9000.",
+        "2026-08-13 03:34:21,786 INFO  [io.quarkus] (main) Profile nonserver activated. ",
+        "2026-08-13 03:34:21,786 INFO  [io.quarkus] (main) Installed features: [agroal, cdi, hibernate-orm, jdbc-postgresql, keycloak, micrometer, narayana-jta, opentelemetry, rest, rest-jackson, smallrye-context-propagation, smallrye-health, vertx]",
+        "2026-08-13 03:34:22,826 INFO  [com.arjuna.ats.jbossatx] (main) ARJUNA032014: Stopping transaction recovery manager",
+        "2026-08-13 03:34:22,846 INFO  [io.quarkus] (main) Keycloak stopped in 1.051s"
+      ]
+    },
+    {
+      "name": "Start and initialize source OpenBao",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:34:23.3359755Z",
+      "finishedAt": "2026-08-13T03:34:23.9690596Z",
+      "output": "4dc87c37c5dbfaa21335cac8a76fcbf15ee4001584b73bb1be7441e5e5696004"
+    },
+    {
+      "name": "Seed OpenBao policy, AppRole, and secret",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:34:34.3696685Z",
+      "finishedAt": "2026-08-13T03:34:35.3927552Z",
+      "output": "<operator-sensitive output redacted>"
+    },
+    {
+      "name": "Create OpenBao Raft snapshot",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:34:35.3932153Z",
+      "finishedAt": "2026-08-13T03:34:35.5814167Z",
+      "output": "<operator-sensitive output redacted>"
+    },
+    {
+      "name": "Copy and encrypt OpenBao snapshot",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:34:35.5818762Z",
+      "finishedAt": "2026-08-13T03:34:35.6795845Z",
+      "output": "<operator-sensitive output redacted>"
+    },
+    {
+      "name": "Create coordinated PostgreSQL dump",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:34:35.6844224Z",
+      "finishedAt": "2026-08-13T03:34:36.2602398Z",
+      "output": "<operator-sensitive output redacted>"
+    },
+    {
+      "name": "Create coordinated state bundle",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:34:36.2606014Z",
+      "finishedAt": "2026-08-13T03:34:36.6219813Z",
+      "output": "C:\\Users\\admin\\AppData\\Local\\Temp\\projecta-s11-recovery-47a992b56042\\bundle\\manifest.json"
+    },
+    {
+      "name": "Destroy complete source state",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:34:36.6227372Z",
+      "finishedAt": "2026-08-13T03:34:37.6914711Z",
+      "output": [
+        "projecta-s11-recovery-47a992b56042-kc-source",
+        "projecta-s11-recovery-47a992b56042-bao-source",
+        "projecta-s11-recovery-47a992b56042-pg-source",
+        "projecta-s11-recovery-47a992b56042-bao-source-data"
+      ]
+    },
+    {
+      "name": "Restore bundle into isolated target",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:34:37.6971766Z",
+      "finishedAt": "2026-08-13T03:34:38.1479463Z",
+      "output": "C:\\Users\\admin\\AppData\\Local\\Temp\\projecta-s11-recovery-47a992b56042\\restored-bundle\\restore-contract.json"
+    },
+    {
+      "name": "Start clean restore PostgreSQL",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:34:38.1496656Z",
+      "finishedAt": "2026-08-13T03:34:38.8013319Z",
+      "output": "38a38a66fc192de4cd2c88ad9e8befec6536e90180a015bfe33d32ba4d095a4c"
+    },
+    {
+      "name": "Restore complete PostgreSQL state",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:34:41.1872857Z",
+      "finishedAt": "2026-08-13T03:34:47.7386091Z",
+      "output": "<operator-sensitive output redacted>"
+    },
+    {
+      "name": "Invalidate all restored Projecta sessions",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:34:47.8064427Z",
+      "finishedAt": "2026-08-13T03:34:48.0591311Z",
+      "output": [
+        "UPDATE 1",
+        "True"
+      ]
+    },
+    {
+      "name": "Verify restored evidence and idempotent replay",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:34:48.0599487Z",
+      "finishedAt": "2026-08-13T03:34:49.6783697Z",
+      "output": "{\"cursorCheckpoint\": \"cursor-1\", \"cursorRevision\": 1, \"evidenceBytes\": 32, \"evidenceReference\": \"ev_2nstbbAz9kxzZeYMf1bdHU\", \"evidenceSha256\": \"3553524900c71a1a4a0a53c5ba564fb8ecc9984b4b64891b27c913bac15df51b\", \"installationRevision\": 1, \"replayOutcome\": \"replayed\", \"runOutcome\": \"accepted\", \"runRows\": 1}"
+    },
+    {
+      "name": "Start Keycloak from restored database",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:34:49.6793491Z",
+      "finishedAt": "2026-08-13T03:34:50.3880534Z",
+      "output": "73729ce83eda92d74e50d8c7f146834e3583c263cb19d362fe838c665be277a2"
+    },
+    {
+      "name": "Start clean restore OpenBao",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:35:03.8418666Z",
+      "finishedAt": "2026-08-13T03:35:04.4589531Z",
+      "output": "b8e46298bd11eff15588734f60fbfa45fb696b49be1e916a5321db6272f4e334"
+    },
+    {
+      "name": "Decrypt and restore OpenBao Raft snapshot",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:35:14.4188893Z",
+      "finishedAt": "2026-08-13T03:35:14.7356320Z",
+      "output": "<operator-sensitive output redacted>"
+    },
+    {
+      "name": "Re-establish workload AppRole authentication",
+      "exitCode": 0,
+      "startedAt": "2026-08-13T03:35:20.5987360Z",
+      "finishedAt": "2026-08-13T03:35:21.8087821Z",
+      "output": "<operator-sensitive output redacted>"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Projecta Application API \u2014 Sprint 8 Frontend Contract",
+    "title": "Projecta Application API — Sprint 8 Frontend Contract",
     "version": "s8.0",
     "description": "Redacted browser-facing Application API contract for Sprint 8. The snapshot exposes only finite project, graph, candidate, Note, Q&A, health, and configuration boundary contracts."
   },
@@ -31,7 +31,9 @@
   "paths": {
     "/v1/settings/llm": {
       "get": {
-        "tags": ["Settings"],
+        "tags": [
+          "Settings"
+        ],
         "operationId": "readLlmProfile",
         "responses": {
           "200": {
@@ -56,7 +58,9 @@
         }
       },
       "put": {
-        "tags": ["Settings"],
+        "tags": [
+          "Settings"
+        ],
         "operationId": "writeLlmProfile",
         "requestBody": {
           "required": true,
@@ -94,7 +98,9 @@
         }
       },
       "delete": {
-        "tags": ["Settings"],
+        "tags": [
+          "Settings"
+        ],
         "operationId": "removeLlmProfile",
         "requestBody": {
           "required": true,
@@ -128,7 +134,9 @@
     },
     "/v1/settings/llm/rotate": {
       "post": {
-        "tags": ["Settings"],
+        "tags": [
+          "Settings"
+        ],
         "operationId": "rotateLlmCredential",
         "requestBody": {
           "required": true,
@@ -168,7 +176,9 @@
     },
     "/v1/settings/llm/connection-check": {
       "post": {
-        "tags": ["Settings"],
+        "tags": [
+          "Settings"
+        ],
         "operationId": "checkLlmConnection",
         "requestBody": {
           "required": true,
@@ -202,7 +212,9 @@
     },
     "/health/live": {
       "get": {
-        "tags": ["Health"],
+        "tags": [
+          "Health"
+        ],
         "operationId": "getLiveness",
         "responses": {
           "200": {
@@ -220,7 +232,9 @@
     },
     "/health/ready": {
       "get": {
-        "tags": ["Health"],
+        "tags": [
+          "Health"
+        ],
         "operationId": "getReadiness",
         "responses": {
           "200": {
@@ -241,7 +255,9 @@
     },
     "/v1/projects": {
       "get": {
-        "tags": ["Projects"],
+        "tags": [
+          "Projects"
+        ],
         "operationId": "listProjects",
         "parameters": [
           {
@@ -278,7 +294,9 @@
     },
     "/v1/projects/{handle}": {
       "get": {
-        "tags": ["Projects"],
+        "tags": [
+          "Projects"
+        ],
         "operationId": "readProject",
         "parameters": [
           {
@@ -317,7 +335,9 @@
     },
     "/v1/projects/selection": {
       "post": {
-        "tags": ["Projects"],
+        "tags": [
+          "Projects"
+        ],
         "operationId": "selectProject",
         "requestBody": {
           "required": true,
@@ -360,7 +380,9 @@
     },
     "/v1/projects/{handle}/overview": {
       "get": {
-        "tags": ["Projects"],
+        "tags": [
+          "Projects"
+        ],
         "operationId": "getProjectOverview",
         "parameters": [
           {
@@ -402,7 +424,9 @@
     },
     "/v1/projects/{handle}/graph": {
       "get": {
-        "tags": ["Graph"],
+        "tags": [
+          "Graph"
+        ],
         "operationId": "getProjectGraph",
         "parameters": [
           {
@@ -470,7 +494,11 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": ["any", "with-evidence", "without-evidence"],
+              "enum": [
+                "any",
+                "with-evidence",
+                "without-evidence"
+              ],
               "default": "any"
             }
           },
@@ -513,7 +541,9 @@
     },
     "/v1/projects/{handle}/graph/neighborhood/{nodeHandle}": {
       "get": {
-        "tags": ["Graph"],
+        "tags": [
+          "Graph"
+        ],
         "operationId": "expandProjectGraph",
         "parameters": [
           {
@@ -569,7 +599,9 @@
     },
     "/v1/projects/{handle}/graph/nodes/{nodeHandle}": {
       "get": {
-        "tags": ["Graph"],
+        "tags": [
+          "Graph"
+        ],
         "operationId": "getGraphNodeDetail",
         "parameters": [
           {
@@ -605,7 +637,9 @@
     },
     "/v1/projects/{handle}/graph/nodes/{nodeHandle}/evidence": {
       "get": {
-        "tags": ["Graph"],
+        "tags": [
+          "Graph"
+        ],
         "operationId": "getGraphNodeEvidence",
         "parameters": [
           {
@@ -638,7 +672,9 @@
     },
     "/v1/projects/{handle}/graph/nodes/{nodeHandle}/lifecycle": {
       "get": {
-        "tags": ["Graph"],
+        "tags": [
+          "Graph"
+        ],
         "operationId": "getGraphNodeLifecycle",
         "parameters": [
           {
@@ -671,7 +707,9 @@
     },
     "/v1/projects/{handle}/candidates": {
       "get": {
-        "tags": ["Candidate Review"],
+        "tags": [
+          "Candidate Review"
+        ],
         "operationId": "listCandidateQueue",
         "parameters": [
           {
@@ -684,7 +722,11 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": ["pending-review", "validated", "all"],
+              "enum": [
+                "pending-review",
+                "validated",
+                "all"
+              ],
               "default": "pending-review"
             }
           },
@@ -718,7 +760,9 @@
     },
     "/v1/projects/{handle}/candidates/{candidateHandle}/validations": {
       "post": {
-        "tags": ["Candidate Review"],
+        "tags": [
+          "Candidate Review"
+        ],
         "operationId": "validateSelectedCandidate",
         "parameters": [
           {
@@ -757,7 +801,9 @@
     },
     "/v1/projects/{handle}/candidates/{candidateHandle}/confirmations": {
       "post": {
-        "tags": ["Candidate Review"],
+        "tags": [
+          "Candidate Review"
+        ],
         "operationId": "confirmSelectedCandidate",
         "parameters": [
           {
@@ -819,7 +865,9 @@
     },
     "/v1/projects/{handle}/candidates/{candidateHandle}/rejections": {
       "post": {
-        "tags": ["Candidate Review"],
+        "tags": [
+          "Candidate Review"
+        ],
         "operationId": "rejectSelectedCandidate",
         "parameters": [
           {
@@ -881,7 +929,9 @@
     },
     "/v1/projects/{handle}/knowledge": {
       "get": {
-        "tags": ["Knowledge"],
+        "tags": [
+          "Knowledge"
+        ],
         "operationId": "listProjectKnowledge",
         "parameters": [
           {
@@ -894,7 +944,13 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": ["Requirement", "Decision", "Question", "Task", "Risk"],
+              "enum": [
+                "Requirement",
+                "Decision",
+                "Question",
+                "Task",
+                "Risk"
+              ],
               "default": "Requirement"
             }
           },
@@ -928,7 +984,9 @@
     },
     "/v1/projects/{handle}/knowledge/{itemHandle}": {
       "get": {
-        "tags": ["Knowledge"],
+        "tags": [
+          "Knowledge"
+        ],
         "operationId": "getProjectKnowledgeDetail",
         "parameters": [
           {
@@ -961,7 +1019,9 @@
     },
     "/v1/projects/{handle}/knowledge/{itemHandle}/evidence": {
       "get": {
-        "tags": ["Knowledge"],
+        "tags": [
+          "Knowledge"
+        ],
         "operationId": "getProjectKnowledgeEvidence",
         "parameters": [
           {
@@ -994,7 +1054,9 @@
     },
     "/v1/quick-notes/extractions": {
       "post": {
-        "tags": ["Quick Notes"],
+        "tags": [
+          "Quick Notes"
+        ],
         "operationId": "extractQuickNote",
         "parameters": [
           {
@@ -1049,7 +1111,9 @@
     },
     "/v1/quick-notes": {
       "post": {
-        "tags": ["Quick Notes"],
+        "tags": [
+          "Quick Notes"
+        ],
         "operationId": "captureQuickNote",
         "parameters": [
           {
@@ -1104,7 +1168,9 @@
     },
     "/v1/candidates/{candidateId}/validations": {
       "post": {
-        "tags": ["Candidate Review"],
+        "tags": [
+          "Candidate Review"
+        ],
         "operationId": "validateCandidate",
         "parameters": [
           {
@@ -1142,7 +1208,9 @@
     },
     "/v1/candidates/{candidateId}/confirmations": {
       "post": {
-        "tags": ["Candidate Review"],
+        "tags": [
+          "Candidate Review"
+        ],
         "operationId": "confirmCandidate",
         "parameters": [
           {
@@ -1206,7 +1274,9 @@
     },
     "/v1/candidates/{candidateId}/rejections": {
       "post": {
-        "tags": ["Candidate Review"],
+        "tags": [
+          "Candidate Review"
+        ],
         "operationId": "rejectCandidate",
         "parameters": [
           {
@@ -1267,7 +1337,9 @@
     },
     "/v1/knowledge-items/current": {
       "get": {
-        "tags": ["Knowledge"],
+        "tags": [
+          "Knowledge"
+        ],
         "operationId": "listCurrentKnowledge",
         "parameters": [
           {
@@ -1276,7 +1348,9 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["Requirement"]
+              "enum": [
+                "Requirement"
+              ]
             }
           }
         ],
@@ -1305,7 +1379,9 @@
     },
     "/v1/candidates/{candidateId}/history": {
       "get": {
-        "tags": ["Candidate Review"],
+        "tags": [
+          "Candidate Review"
+        ],
         "operationId": "getCandidateHistory",
         "parameters": [
           {
@@ -1337,7 +1413,9 @@
     },
     "/v1/knowledge-items/{itemId}/evidence": {
       "get": {
-        "tags": ["Knowledge"],
+        "tags": [
+          "Knowledge"
+        ],
         "operationId": "getKnowledgeEvidence",
         "parameters": [
           {
@@ -1369,7 +1447,9 @@
     },
     "/v1/project-context/answers": {
       "post": {
-        "tags": ["Project Context"],
+        "tags": [
+          "Project Context"
+        ],
         "operationId": "answerProjectContextQuestion",
         "requestBody": {
           "required": true,
@@ -1406,7 +1486,9 @@
     },
     "/v1/project-context/inference/rebuild": {
       "post": {
-        "tags": ["Project Context"],
+        "tags": [
+          "Project Context"
+        ],
         "operationId": "rebuildProjectInference",
         "description": "Local-experience diagnostics only. Production exposure is disabled by the approved S7-07 boundary.",
         "responses": {
@@ -3249,6 +3331,130 @@
           }
         }
       }
+    },
+    "/auth/login": {
+      "get": {
+        "summary": "Login",
+        "operationId": "login_auth_login_get",
+        "parameters": [
+          {
+            "name": "return_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "/",
+              "title": "Return To"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/callback": {
+      "get": {
+        "summary": "Callback",
+        "operationId": "callback_auth_callback_get",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Code"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "State"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/session": {
+      "get": {
+        "summary": "Session",
+        "operationId": "session_v1_auth_session_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Session V1 Auth Session Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "Logout",
+        "operationId": "logout_auth_logout_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Logout Auth Logout Post"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3313,7 +3519,10 @@
           },
           "providerType": {
             "type": "string",
-            "enum": ["openai-response", "openai"]
+            "enum": [
+              "openai-response",
+              "openai"
+            ]
           },
           "baseUrl": {
             "type": "string",
@@ -3333,27 +3542,48 @@
           },
           "health": {
             "type": "string",
-            "enum": ["unknown", "healthy", "unhealthy", "unavailable"]
+            "enum": [
+              "unknown",
+              "healthy",
+              "unhealthy",
+              "unavailable"
+            ]
           },
           "lastCheckedAt": {
-            "type": ["string", "null"]
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "createdAt": {
-            "type": ["string", "null"]
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "updatedAt": {
-            "type": ["string", "null"]
+            "type": [
+              "string",
+              "null"
+            ]
           }
         },
         "additionalProperties": false
       },
       "LLMProfileWrite": {
         "type": "object",
-        "required": ["providerType", "baseUrl", "model"],
+        "required": [
+          "providerType",
+          "baseUrl",
+          "model"
+        ],
         "properties": {
           "providerType": {
             "type": "string",
-            "enum": ["openai-response", "openai"]
+            "enum": [
+              "openai-response",
+              "openai"
+            ]
           },
           "baseUrl": {
             "type": "string",
@@ -3376,7 +3606,9 @@
       },
       "LLMProfileRemove": {
         "type": "object",
-        "required": ["confirm"],
+        "required": [
+          "confirm"
+        ],
         "properties": {
           "expectedRevision": {
             "type": "integer",
@@ -3391,7 +3623,10 @@
       },
       "SettingsProfileResponse": {
         "type": "object",
-        "required": ["requestId", "profile"],
+        "required": [
+          "requestId",
+          "profile"
+        ],
         "properties": {
           "requestId": {
             "type": "string"
@@ -3436,7 +3671,11 @@
           },
           "status": {
             "type": "string",
-            "enum": ["healthy", "unhealthy", "unavailable"]
+            "enum": [
+              "healthy",
+              "unhealthy",
+              "unavailable"
+            ]
           },
           "credentialConfigured": {
             "type": "boolean"
@@ -3453,7 +3692,9 @@
       },
       "LiveResponse": {
         "type": "object",
-        "required": ["status"],
+        "required": [
+          "status"
+        ],
         "properties": {
           "status": {
             "type": "string",
@@ -3463,22 +3704,39 @@
       },
       "ReadyResponse": {
         "type": "object",
-        "required": ["status", "semanticCore"],
+        "required": [
+          "status",
+          "semanticCore"
+        ],
         "properties": {
           "status": {
             "type": "string",
-            "enum": ["ready", "not-ready"]
+            "enum": [
+              "ready",
+              "not-ready"
+            ]
           },
           "semanticCore": {
             "type": "string",
-            "enum": ["ready", "unavailable", "injected"]
+            "enum": [
+              "ready",
+              "unavailable",
+              "injected"
+            ]
           }
         },
         "additionalProperties": false
       },
       "Problem": {
         "type": "object",
-        "required": ["type", "title", "status", "code", "detail", "requestId"],
+        "required": [
+          "type",
+          "title",
+          "status",
+          "code",
+          "detail",
+          "requestId"
+        ],
         "properties": {
           "type": {
             "type": "string",
@@ -3504,7 +3762,9 @@
       },
       "ExtractionRequest": {
         "type": "object",
-        "required": ["rawText"],
+        "required": [
+          "rawText"
+        ],
         "properties": {
           "rawText": {
             "type": "string",
@@ -3520,7 +3780,12 @@
       },
       "TypedSegment": {
         "type": "object",
-        "required": ["type", "startOffset", "endOffset", "text"],
+        "required": [
+          "type",
+          "startOffset",
+          "endOffset",
+          "text"
+        ],
         "properties": {
           "type": {
             "type": "string",
@@ -3553,7 +3818,10 @@
       },
       "CaptureRequest": {
         "type": "object",
-        "required": ["rawText", "segments"],
+        "required": [
+          "rawText",
+          "segments"
+        ],
         "properties": {
           "rawText": {
             "type": "string",
@@ -3572,7 +3840,9 @@
       },
       "Note": {
         "type": "object",
-        "required": ["id"],
+        "required": [
+          "id"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -3586,7 +3856,10 @@
       },
       "Candidate": {
         "type": "object",
-        "required": ["id", "status"],
+        "required": [
+          "id",
+          "status"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -3610,7 +3883,11 @@
       },
       "CaptureResponse": {
         "type": "object",
-        "required": ["requestId", "note", "candidates"],
+        "required": [
+          "requestId",
+          "note",
+          "candidates"
+        ],
         "properties": {
           "requestId": {
             "type": "string"
@@ -3629,7 +3906,11 @@
       },
       "EvidenceSpan": {
         "type": "object",
-        "required": ["startOffset", "endOffset", "text"],
+        "required": [
+          "startOffset",
+          "endOffset",
+          "text"
+        ],
         "properties": {
           "startOffset": {
             "type": "integer",
@@ -3647,7 +3928,12 @@
       },
       "ExtractedEntity": {
         "type": "object",
-        "required": ["type", "label", "evidence", "confidence"],
+        "required": [
+          "type",
+          "label",
+          "evidence",
+          "confidence"
+        ],
         "properties": {
           "type": {
             "type": "string"
@@ -3694,7 +3980,12 @@
       },
       "ExtractedLink": {
         "type": "object",
-        "required": ["mention", "targetEntityId", "evidence", "confidence"],
+        "required": [
+          "mention",
+          "targetEntityId",
+          "evidence",
+          "confidence"
+        ],
         "properties": {
           "mention": {
             "type": "string"
@@ -3713,7 +4004,11 @@
       },
       "ExtractionResult": {
         "type": "object",
-        "required": ["requestId", "note", "candidates"],
+        "required": [
+          "requestId",
+          "note",
+          "candidates"
+        ],
         "properties": {
           "requestId": {
             "type": "string"
@@ -3746,18 +4041,27 @@
             }
           },
           "abstentionReason": {
-            "type": ["string", "null"]
+            "type": [
+              "string",
+              "null"
+            ]
           }
         },
         "additionalProperties": false
       },
       "ConfirmationRequest": {
         "type": "object",
-        "required": ["assertion"],
+        "required": [
+          "assertion"
+        ],
         "properties": {
           "assertion": {
             "type": "object",
-            "required": ["type", "label", "validFrom"],
+            "required": [
+              "type",
+              "label",
+              "validFrom"
+            ],
             "properties": {
               "type": {
                 "type": "string",
@@ -3780,7 +4084,9 @@
       },
       "RejectionRequest": {
         "type": "object",
-        "required": ["reason"],
+        "required": [
+          "reason"
+        ],
         "properties": {
           "reason": {
             "type": "string",
@@ -3824,7 +4130,11 @@
       },
       "DecisionResponse": {
         "type": "object",
-        "required": ["requestId", "candidateId", "decision"],
+        "required": [
+          "requestId",
+          "candidateId",
+          "decision"
+        ],
         "properties": {
           "requestId": {
             "type": "string"
@@ -3834,7 +4144,10 @@
           },
           "decision": {
             "type": "string",
-            "enum": ["confirmed", "rejected"]
+            "enum": [
+              "confirmed",
+              "rejected"
+            ]
           },
           "assertedItemId": {
             "type": "string"
@@ -3847,7 +4160,11 @@
       },
       "KnowledgeItem": {
         "type": "object",
-        "required": ["id", "label", "type"],
+        "required": [
+          "id",
+          "label",
+          "type"
+        ],
         "properties": {
           "id": {
             "type": "string",
@@ -3861,7 +4178,10 @@
             "const": "Requirement"
           },
           "validFrom": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "date"
           }
         },
@@ -3869,7 +4189,10 @@
       },
       "KnowledgeItemsResponse": {
         "type": "object",
-        "required": ["requestId", "items"],
+        "required": [
+          "requestId",
+          "items"
+        ],
         "properties": {
           "requestId": {
             "type": "string"
@@ -3885,20 +4208,31 @@
       },
       "CandidateHistoryActivity": {
         "type": "object",
-        "required": ["id"],
+        "required": [
+          "id"
+        ],
         "properties": {
           "id": {
             "type": "string",
             "pattern": "^[a-z0-9][a-z0-9-]{0,62}$"
           },
           "decision": {
-            "type": ["string", "null"]
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "reviewerId": {
-            "type": ["string", "null"]
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "endedAt": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "date-time"
           }
         },
@@ -3906,7 +4240,11 @@
       },
       "CandidateHistoryResponse": {
         "type": "object",
-        "required": ["requestId", "candidateId", "items"],
+        "required": [
+          "requestId",
+          "candidateId",
+          "items"
+        ],
         "properties": {
           "requestId": {
             "type": "string"
@@ -3928,29 +4266,53 @@
         "type": "object",
         "properties": {
           "candidateId": {
-            "type": ["string", "null"]
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "sourceId": {
-            "type": ["string", "null"]
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "noteId": {
-            "type": ["string", "null"]
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "authorId": {
-            "type": ["string", "null"]
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "reviewerId": {
-            "type": ["string", "null"]
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "evidenceText": {
-            "type": ["string", "null"]
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "startOffset": {
-            "type": ["integer", "null"],
+            "type": [
+              "integer",
+              "null"
+            ],
             "minimum": 0
           },
           "endOffset": {
-            "type": ["integer", "null"],
+            "type": [
+              "integer",
+              "null"
+            ],
             "minimum": 1
           }
         },
@@ -3958,7 +4320,11 @@
       },
       "EvidenceResponse": {
         "type": "object",
-        "required": ["requestId", "itemId", "items"],
+        "required": [
+          "requestId",
+          "itemId",
+          "items"
+        ],
         "properties": {
           "requestId": {
             "type": "string"
@@ -3978,7 +4344,9 @@
       },
       "ProjectContextQuestion": {
         "type": "object",
-        "required": ["question"],
+        "required": [
+          "question"
+        ],
         "properties": {
           "question": {
             "type": "string",
@@ -4110,14 +4478,23 @@
       },
       "ProjectFreshness": {
         "type": "object",
-        "required": ["state"],
+        "required": [
+          "state"
+        ],
         "properties": {
           "state": {
             "type": "string",
-            "enum": ["current", "stale", "unavailable"]
+            "enum": [
+              "current",
+              "stale",
+              "unavailable"
+            ]
           },
           "revision": {
-            "type": ["string", "null"]
+            "type": [
+              "string",
+              "null"
+            ]
           }
         },
         "additionalProperties": false
@@ -4144,22 +4521,36 @@
             "maxLength": 160
           },
           "summary": {
-            "type": ["string", "null"]
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "status": {
             "type": "string",
-            "enum": ["active", "paused", "archived"]
+            "enum": [
+              "active",
+              "paused",
+              "archived"
+            ]
           },
           "counts": {
             "$ref": "#/components/schemas/ProjectCounts"
           },
           "lastActivityAt": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "date-time"
           },
           "health": {
             "type": "string",
-            "enum": ["fresh", "attention", "unavailable"]
+            "enum": [
+              "fresh",
+              "attention",
+              "unavailable"
+            ]
           },
           "freshness": {
             "$ref": "#/components/schemas/ProjectFreshness"
@@ -4169,7 +4560,11 @@
       },
       "ProjectCatalogResponse": {
         "type": "object",
-        "required": ["requestId", "catalogRevision", "projects"],
+        "required": [
+          "requestId",
+          "catalogRevision",
+          "projects"
+        ],
         "properties": {
           "requestId": {
             "type": "string"
@@ -4184,14 +4579,20 @@
             }
           },
           "nextCursor": {
-            "type": ["string", "null"]
+            "type": [
+              "string",
+              "null"
+            ]
           }
         },
         "additionalProperties": false
       },
       "ProjectSelectionRequest": {
         "type": "object",
-        "required": ["handle", "catalogRevision"],
+        "required": [
+          "handle",
+          "catalogRevision"
+        ],
         "properties": {
           "handle": {
             "type": "string",
@@ -4207,7 +4608,11 @@
       },
       "ProjectSelectionResponse": {
         "type": "object",
-        "required": ["requestId", "selectionRevision", "project"],
+        "required": [
+          "requestId",
+          "selectionRevision",
+          "project"
+        ],
         "properties": {
           "requestId": {
             "type": "string"
@@ -4223,7 +4628,10 @@
       },
       "ProjectReadResponse": {
         "type": "object",
-        "required": ["requestId", "project"],
+        "required": [
+          "requestId",
+          "project"
+        ],
         "properties": {
           "requestId": {
             "type": "string"
@@ -4468,7 +4876,11 @@
           }
         },
         "type": "object",
-        "required": ["id", "sourceItemId", "status"],
+        "required": [
+          "id",
+          "sourceItemId",
+          "status"
+        ],
         "title": "CandidateResponse",
         "description": "Opaque candidate identity and its source item."
       },
@@ -4492,12 +4904,20 @@
           },
           "direction": {
             "type": "string",
-            "enum": ["source-to-target", "target-to-source"],
+            "enum": [
+              "source-to-target",
+              "target-to-source"
+            ],
             "title": "Direction"
           },
           "verificationState": {
             "type": "string",
-            "enum": ["candidate", "asserted", "inferred", "unverified"],
+            "enum": [
+              "candidate",
+              "asserted",
+              "inferred",
+              "unverified"
+            ],
             "title": "Verificationstate"
           },
           "provenanceState": {
@@ -4598,7 +5018,12 @@
           "verificationStates": {
             "items": {
               "type": "string",
-              "enum": ["candidate", "asserted", "inferred", "unverified"]
+              "enum": [
+                "candidate",
+                "asserted",
+                "inferred",
+                "unverified"
+              ]
             },
             "type": "array",
             "title": "Verificationstates"
@@ -4641,7 +5066,11 @@
           },
           "evidence": {
             "type": "string",
-            "enum": ["any", "with-evidence", "without-evidence"],
+            "enum": [
+              "any",
+              "with-evidence",
+              "without-evidence"
+            ],
             "title": "Evidence",
             "default": "any"
           }
@@ -4734,7 +5163,12 @@
           },
           "verificationState": {
             "type": "string",
-            "enum": ["candidate", "asserted", "inferred", "unverified"],
+            "enum": [
+              "candidate",
+              "asserted",
+              "inferred",
+              "unverified"
+            ],
             "title": "Verificationstate"
           },
           "provenanceState": {
@@ -4751,7 +5185,10 @@
             "anyOf": [
               {
                 "type": "string",
-                "enum": ["source-to-target", "target-to-source"]
+                "enum": [
+                  "source-to-target",
+                  "target-to-source"
+                ]
               },
               {
                 "type": "null"
@@ -4825,7 +5262,12 @@
           },
           "verificationState": {
             "type": "string",
-            "enum": ["candidate", "asserted", "inferred", "unverified"],
+            "enum": [
+              "candidate",
+              "asserted",
+              "inferred",
+              "unverified"
+            ],
             "title": "Verificationstate"
           },
           "provenanceState": {
@@ -4842,7 +5284,10 @@
             "anyOf": [
               {
                 "type": "string",
-                "enum": ["source-to-target", "target-to-source"]
+                "enum": [
+                  "source-to-target",
+                  "target-to-source"
+                ]
               },
               {
                 "type": "null"
@@ -4922,7 +5367,11 @@
           },
           "freshness": {
             "type": "string",
-            "enum": ["available", "unavailable", "stale"],
+            "enum": [
+              "available",
+              "unavailable",
+              "stale"
+            ],
             "title": "Freshness"
           },
           "relations": {
@@ -4997,7 +5446,12 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["nodeLimit", "edgeLimit", "hasMore", "expansionAvailable"],
+        "required": [
+          "nodeLimit",
+          "edgeLimit",
+          "hasMore",
+          "expansionAvailable"
+        ],
         "title": "GraphPageInfo"
       },
       "GraphProjectionResponse": {
@@ -5083,7 +5537,10 @@
           },
           "direction": {
             "type": "string",
-            "enum": ["source-to-target", "target-to-source"],
+            "enum": [
+              "source-to-target",
+              "target-to-source"
+            ],
             "title": "Direction"
           },
           "peerHandle": {
@@ -5097,7 +5554,12 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["relationType", "direction", "peerHandle", "peerLabel"],
+        "required": [
+          "relationType",
+          "direction",
+          "peerHandle",
+          "peerLabel"
+        ],
         "title": "GraphRelationSummary"
       },
       "HTTPValidationError": {
@@ -5144,7 +5606,12 @@
           },
           "verificationState": {
             "type": "string",
-            "enum": ["candidate", "asserted", "inferred", "unverified"],
+            "enum": [
+              "candidate",
+              "asserted",
+              "inferred",
+              "unverified"
+            ],
             "title": "Verificationstate"
           },
           "provenanceState": {
@@ -5243,7 +5710,10 @@
           }
         },
         "type": "object",
-        "required": ["id", "recordedAt"],
+        "required": [
+          "id",
+          "recordedAt"
+        ],
         "title": "NoteResponse",
         "description": "Opaque source Note identity returned after a committed capture."
       },
@@ -5251,7 +5721,11 @@
         "properties": {
           "kind": {
             "type": "string",
-            "enum": ["manual", "text-import", "connector"],
+            "enum": [
+              "manual",
+              "text-import",
+              "connector"
+            ],
             "title": "Kind"
           },
           "label": {
@@ -5281,7 +5755,9 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["kind"],
+        "required": [
+          "kind"
+        ],
         "title": "NoteSourceMetadata",
         "description": "Optional non-semantic origin metadata for the draft workflow."
       },
@@ -5349,7 +5825,11 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["type", "label", "validFrom"],
+        "required": [
+          "type",
+          "label",
+          "validFrom"
+        ],
         "title": "RequirementAssertion",
         "description": "The only assertion shape enabled by the M2 confirmation operation."
       },
@@ -5535,7 +6015,12 @@
           },
           "draftStatus": {
             "type": "string",
-            "enum": ["draft", "ready", "committed", "abstained"],
+            "enum": [
+              "draft",
+              "ready",
+              "committed",
+              "abstained"
+            ],
             "title": "Draftstatus",
             "default": "draft"
           },
@@ -5552,7 +6037,9 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["title"],
+        "required": [
+          "title"
+        ],
         "title": "StructuredNoteDraft",
         "description": "Editable structured Note input with server-owned text derivation."
       },
@@ -5575,7 +6062,12 @@
           },
           "draftStatus": {
             "type": "string",
-            "enum": ["draft", "ready", "committed", "abstained"],
+            "enum": [
+              "draft",
+              "ready",
+              "committed",
+              "abstained"
+            ],
             "title": "Draftstatus"
           },
           "sourceMetadata": {
@@ -5649,7 +6141,9 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["rawText"],
+        "required": [
+          "rawText"
+        ],
         "title": "StructuredNoteImportRequest",
         "description": "Pasted text submitted for assisted, non-persisting import."
       },
@@ -5661,7 +6155,10 @@
           },
           "status": {
             "type": "string",
-            "enum": ["proposed", "abstained"],
+            "enum": [
+              "proposed",
+              "abstained"
+            ],
             "title": "Status"
           },
           "title": {
@@ -5702,7 +6199,11 @@
           }
         },
         "type": "object",
-        "required": ["requestId", "status", "proposals"],
+        "required": [
+          "requestId",
+          "status",
+          "proposals"
+        ],
         "title": "StructuredNoteImportResponse",
         "description": "Every proposed item or an explicit abstention; never an auto-save."
       },
@@ -5732,7 +6233,10 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["itemType", "content"],
+        "required": [
+          "itemType",
+          "content"
+        ],
         "title": "StructuredNoteItemDraft",
         "description": "One ordered, typed source item supplied by a composer or importer."
       },
@@ -5769,7 +6273,12 @@
           }
         },
         "type": "object",
-        "required": ["itemType", "content", "startOffset", "endOffset"],
+        "required": [
+          "itemType",
+          "content",
+          "startOffset",
+          "endOffset"
+        ],
         "title": "StructuredNoteItemProjection",
         "description": "Server-derived item representation with exact evidence offsets."
       },
@@ -5849,7 +6358,10 @@
           }
         },
         "type": "object",
-        "required": ["handle", "title"],
+        "required": [
+          "handle",
+          "title"
+        ],
         "title": "StructuredNoteListItem",
         "description": "Bounded human-readable Note list projection."
       },
@@ -5875,7 +6387,11 @@
           }
         },
         "type": "object",
-        "required": ["requestId", "drafts", "committed"],
+        "required": [
+          "requestId",
+          "drafts",
+          "committed"
+        ],
         "title": "StructuredNoteListResponse",
         "description": "Finite Note list response."
       },
@@ -5906,7 +6422,11 @@
           }
         },
         "type": "object",
-        "required": ["relation", "sourceIndex", "targetIndex"],
+        "required": [
+          "relation",
+          "sourceIndex",
+          "targetIndex"
+        ],
         "title": "StructuredNoteRelationProposal",
         "description": "Optional relation proposal kept separate from source Note semantics."
       },
@@ -5943,7 +6463,11 @@
           }
         },
         "type": "object",
-        "required": ["loc", "msg", "type"],
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
         "title": "ValidationError"
       },
       "CandidateEditOption": {
@@ -5967,7 +6491,11 @@
           }
         },
         "type": "object",
-        "required": ["handle", "label", "type"],
+        "required": [
+          "handle",
+          "label",
+          "type"
+        ],
         "title": "CandidateEditOption",
         "description": "One server-owned labeled correction target; the handle is never user-entered."
       },
@@ -5993,16 +6521,511 @@
           }
         },
         "type": "object",
-        "required": ["requestId", "entityLinks", "assignments"],
+        "required": [
+          "requestId",
+          "entityLinks",
+          "assignments"
+        ],
         "title": "CandidateEditOptionsResponse",
         "description": "Finite project-scoped options for candidate relationship corrections."
+      },
+      "ConnectorCatalogItem": {
+        "properties": {
+          "connectorType": {
+            "type": "string",
+            "enum": [
+              "json-mock",
+              "teams",
+              "github-public-issues"
+            ],
+            "title": "Connectortype"
+          },
+          "contractVersion": {
+            "type": "string",
+            "title": "Contractversion"
+          },
+          "displayName": {
+            "type": "string",
+            "title": "Displayname"
+          },
+          "capabilities": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Capabilities"
+          },
+          "limits": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Limits"
+          },
+          "setupMode": {
+            "type": "string",
+            "enum": [
+              "fixture",
+              "operator-setup"
+            ],
+            "title": "Setupmode"
+          },
+          "consentGuidance": {
+            "type": "string",
+            "maxLength": 512,
+            "title": "Consentguidance"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "connectorType",
+          "contractVersion",
+          "displayName",
+          "capabilities",
+          "limits",
+          "setupMode",
+          "consentGuidance"
+        ],
+        "title": "ConnectorCatalogItem"
+      },
+      "ConnectorCatalogResponse": {
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "title": "Requestid"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ConnectorCatalogItem"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "requestId",
+          "items"
+        ],
+        "title": "ConnectorCatalogResponse"
+      },
+      "InstallationCreateRequest": {
+        "properties": {
+          "connectorType": {
+            "type": "string",
+            "enum": [
+              "json-mock",
+              "teams",
+              "github-public-issues"
+            ],
+            "title": "Connectortype",
+            "default": "json-mock"
+          },
+          "fixtureReference": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 512
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fixturereference"
+          },
+          "teamsSetupHandle": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 10
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Teamssetuphandle"
+          },
+          "githubSetupHandle": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 10
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Githubsetuphandle"
+          },
+          "capabilities": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "inbound-import",
+                "resource-fetch",
+                "identity-hint",
+                "cancellation"
+              ]
+            },
+            "type": "array",
+            "title": "Capabilities",
+            "default": [
+              "inbound-import"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "InstallationCreateRequest"
+      },
+      "InstallationListResponse": {
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "title": "Requestid"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/InstallationStateResponse"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "nextOffset": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nextoffset"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "requestId",
+          "items"
+        ],
+        "title": "InstallationListResponse"
+      },
+      "InstallationStateResponse": {
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "title": "Requestid"
+          },
+          "handle": {
+            "type": "string",
+            "title": "Handle"
+          },
+          "connectorType": {
+            "type": "string",
+            "enum": [
+              "json-mock",
+              "teams",
+              "github-public-issues"
+            ],
+            "title": "Connectortype"
+          },
+          "capabilities": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Capabilities"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled"
+          },
+          "revision": {
+            "type": "integer",
+            "title": "Revision"
+          },
+          "secretConfigured": {
+            "type": "boolean",
+            "title": "Secretconfigured"
+          },
+          "fixtureConfigured": {
+            "type": "boolean",
+            "title": "Fixtureconfigured"
+          },
+          "setupStatus": {
+            "type": "string",
+            "enum": [
+              "ready",
+              "setup-required",
+              "unavailable"
+            ],
+            "title": "Setupstatus"
+          },
+          "consentGuidance": {
+            "type": "string",
+            "maxLength": 512,
+            "title": "Consentguidance"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "requestId",
+          "handle",
+          "connectorType",
+          "capabilities",
+          "enabled",
+          "revision",
+          "secretConfigured",
+          "fixtureConfigured",
+          "setupStatus",
+          "consentGuidance"
+        ],
+        "title": "InstallationStateResponse"
+      },
+      "InstallationUpdateRequest": {
+        "properties": {
+          "fixtureReference": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 512
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fixturereference"
+          },
+          "capabilities": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "inbound-import",
+                    "resource-fetch",
+                    "identity-hint",
+                    "cancellation"
+                  ]
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Capabilities"
+          },
+          "expectedRevision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expectedrevision"
+          },
+          "teamsSetupHandle": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 10
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Teamssetuphandle"
+          },
+          "githubSetupHandle": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 10
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Githubsetuphandle"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expectedRevision"
+        ],
+        "title": "InstallationUpdateRequest"
+      },
+      "RetryRequest": {
+        "properties": {
+          "expectedInstallationRevision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expectedinstallationrevision"
+          },
+          "expectedRunRevision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expectedrunrevision"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expectedInstallationRevision",
+          "expectedRunRevision"
+        ],
+        "title": "RetryRequest"
+      },
+      "RunListResponse": {
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "title": "Requestid"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/RunResponse"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "requestId",
+          "items"
+        ],
+        "title": "RunListResponse"
+      },
+      "RunResponse": {
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "title": "Requestid"
+          },
+          "handle": {
+            "type": "string",
+            "title": "Handle"
+          },
+          "state": {
+            "type": "string",
+            "title": "State"
+          },
+          "eventCount": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Eventcount"
+          },
+          "replayCount": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Replaycount"
+          },
+          "failureCode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Failurecode"
+          },
+          "deadLetterAvailable": {
+            "type": "boolean",
+            "title": "Deadletteravailable"
+          },
+          "revision": {
+            "type": "integer",
+            "title": "Revision"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Startedat"
+          },
+          "terminalAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Terminalat"
+          },
+          "cursorBeforeDigest": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cursorbeforedigest"
+          },
+          "cursorAfterDigest": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cursorafterdigest"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "requestId",
+          "handle",
+          "state",
+          "eventCount",
+          "replayCount",
+          "deadLetterAvailable",
+          "revision",
+          "startedAt"
+        ],
+        "title": "RunResponse"
+      },
+      "SyncRequest": {
+        "properties": {
+          "expectedInstallationRevision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expectedinstallationrevision"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expectedInstallationRevision"
+        ],
+        "title": "SyncRequest"
       }
     }
   },
   "x-projecta-contract": {
     "version": "s7.0",
     "source": "released M2-M4 Application API",
-    "excludedInternalRoutes": ["/v1/entities/link-context"],
+    "excludedInternalRoutes": [
+      "/v1/entities/link-context"
+    ],
     "excludedUnimplementedRoutes": [
       "candidate list/detail",
       "readiness/diagnostics aggregation"

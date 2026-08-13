@@ -28,7 +28,7 @@ class ReleaseContractTest(TestCase):
         self.assertNotIn("Previous", notes)
 
     def test_repository_manifests_match_release(self) -> None:
-        self.assertEqual(set(declared_versions(ROOT).values()), {"0.5.1"})
-        version, notes = validate_release(ROOT, "v0.5.1")
-        self.assertEqual(version, "0.5.1")
-        self.assertIn("### Fixed", notes)
+        self.assertEqual(set(declared_versions(ROOT).values()), {"0.6.0"})
+        version, notes = validate_release(ROOT, "v0.6.0")
+        self.assertEqual(version, "0.6.0")
+        self.assertIn("### Added", notes)

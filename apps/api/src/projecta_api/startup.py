@@ -26,7 +26,7 @@ def validate_startup(settings: Settings) -> tuple[StartupProblem, ...]:
     if parsed.scheme not in {"http", "https"} or not parsed.hostname:
         problems.append(StartupProblem("SEMANTIC_CORE_CONFIGURATION_INVALID"))
 
-    if not settings.trusted_context_secret.strip():
+    if settings.runtime_mode != "production" and not settings.trusted_context_secret.strip():
         problems.append(StartupProblem("TRUSTED_CONTEXT_CONFIGURATION_MISSING"))
 
     if settings.runtime_mode == "experience":
@@ -54,6 +54,15 @@ def validate_startup(settings: Settings) -> tuple[StartupProblem, ...]:
             problems.append(StartupProblem("EXPERIENCE_CONTEXT_DISABLED_IN_PRODUCTION"))
         if settings.connector_local_admin_enabled:
             problems.append(StartupProblem("CONNECTOR_LOCAL_AUTH_DISABLED_IN_PRODUCTION"))
+        if not settings.oidc_issuer_url or not settings.oidc_client_id.strip() or not settings.oidc_redirect_uri or not settings.oidc_audience.strip():
+            problems.append(StartupProblem("OIDC_CONFIGURATION_MISSING"))
+        if not settings.identity_database_url and not all(
+            (settings.connector_database_host, settings.connector_database_name,
+             settings.connector_database_user, settings.connector_database_password.get_secret_value())
+        ):
+            problems.append(StartupProblem("IDENTITY_DATABASE_CONFIGURATION_MISSING"))
+        if not settings.openbao_url:
+            problems.append(StartupProblem("OPENBAO_CONFIGURATION_MISSING"))
     elif not _provider_configuration_is_complete(settings):
         problems.append(StartupProblem("LLM_CONFIGURATION_MISSING"))
 

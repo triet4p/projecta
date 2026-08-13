@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "sprint11.github-public-issues-repository-prepared.v1",
+  "status": "accepted",
+  "repositoryHash": "abc7443609e0ef8135aacafa616d971e494b0759b07547879261047d2c1a9fb5",
+  "repositoryPublic": true,
+  "fabricatedDataOnly": true,
+  "seededIssueCount": 2,
+  "seededIssueCommentCount": 2,
+  "seededPullRequestCount": 1,
+  "issueEditPrepared": true,
+  "commentEditPrepared": true,
+  "projectaCredentialUsed": false,
+  "rawProviderPayloadRetained": false,
+  "projectaApiAvailable": true,
+  "blocker": null,
+  "nextAction": "Retain the sanitized evidence; do not restore the disposable repository.",
+  "cleanup": "Archived after acceptance evidence review."
+}

@@ -482,3 +482,104 @@ the scalar `$Matches` table used by the runner.
 match object.
 **Watch out for:** Treat Docker CLI output as multi-line on every platform;
 never couple parsing to PowerShell's scalar-only `$Matches` side effect.
+
+## [2026-08-13] Official production images need runtime-specific writable paths and commands
+
+**Symptom:** The clean production-shaped Compose run failed in sequence with OpenBao `permission denied` on `vault.db`, PostgreSQL bootstrap errors, Keycloak restart loops, and an OpenBao healthcheck that never became healthy.
+**Root cause:** The pinned OpenBao image runs as UID 100 and owns `/openbao/file`, while the override mounted a new volume at `/openbao/data`; the official CLI binary is `bao`, not `openbao`; the PostgreSQL init script omitted the configured database role for `createdb`; and the unbuilt official Keycloak image cannot first-start with an immutable root filesystem and `--optimized`.
+**Fix / workaround:** Store Raft data at `/openbao/file`, use `bao` with a TLS hostname matching the certificate, pass `--username "$POSTGRES_USER"` to `createdb`, start Keycloak without `--optimized`, and allow the official image to perform its first-start build before hardening it in a prebuilt image pipeline.
+**Watch out for:** Pinning an official digest is not equivalent to using the repository's locally built image. Validate entrypoint names, prebuilt/runtime assumptions, volume ownership, healthcheck TLS SANs, and required Compose environment roles with a disposable clean-volume run.
+
+## [2026-08-13] Long Alembic revision IDs fail only on a real migration ledger
+
+**Symptom:** Unit and static migration tests passed, but a clean PostgreSQL
+migration failed after applying the DDL with `value too long for type character
+varying(32)` while updating `alembic_version.version_num`.
+**Root cause:** The new revision ID `0005_identity_sessions_memberships` was
+longer than Alembic's default 32-character version column. SQLite/model tests
+did not exercise the PostgreSQL version-ledger update.
+**Fix / workaround:** Keep the descriptive migration filename, but use the
+bounded revision ID `0005_identity_sessions` and update the next migration's
+`down_revision`; verify from an empty PostgreSQL volume.
+**Watch out for:** Check every Alembic `revision` and `down_revision` against
+the deployed version-column width, and retain a clean real-database migration
+gate rather than relying only on schema/unit tests.
+
+## [2026-08-13] OpenBao automation can silently target the wrong API contract
+
+**Symptom:** Recovery automation initialized OpenBao but later received empty
+recovery-key or AppRole values, even though a subsequent command made the
+overall gate appear successful.
+**Root cause:** OpenBao 2.6.1 emits `unseal_keys_b64`, the RoleID endpoint ends
+in `/role-id`, and AppRole must be explicitly enabled before its role is
+written. A multi-command PowerShell gate checked only the last native exit code.
+**Fix / workaround:** Read `unseal_keys_b64`, use
+`auth/approle/role/<role>/role-id`, enable `approle`, and make every `bao`
+invocation throw immediately on a nonzero exit code.
+**Watch out for:** Never treat the final exit code of a group of operator
+commands as proof that all earlier secret-manager mutations succeeded.
+
+## [2026-08-13] PowerShell can split dotted Docker command arguments
+
+**Symptom:** A direct OpenBao container exited with `a storage backend must be
+specified` although the config bind mount existed and the command visibly used
+`-config=/openbao/config.hcl`.
+**Root cause:** PowerShell native argument passing split the dotted argument
+into `-config=/openbao/config` and `.hcl`.
+**Fix / workaround:** Build Docker invocations as a string argument array and
+call `docker @arguments`; confirm the resulting `.Config.Cmd` when debugging.
+**Watch out for:** Direct Windows PowerShell calls that pass dotted paths or
+flag-value expressions to a Linux container, especially acceptance/recovery
+runners that do not go through Compose.
+
+## [2026-08-13] pg_dumpall clean restores report unavoidable system-object errors
+
+**Symptom:** A complete PostgreSQL restore stopped before recreating application
+databases when `psql -v ON_ERROR_STOP=1` processed a `pg_dumpall --clean` file.
+**Root cause:** The dump necessarily attempts to drop the connected `postgres`
+database and current superuser, which a live restore session cannot do.
+**Fix / workaround:** Let the dump continue past those system-object errors,
+then fail closed with database-specific verification: Projecta rows/session
+state, replay/evidence integrity, and Keycloak boot from the restored database.
+**Watch out for:** Do not equate a zero-error `pg_dumpall --clean` transcript
+with correctness; verify restored consumers and state explicitly.
+
+## [2026-08-13] GitHub acceptance Compose requires a formatted project fixture and rebuilt migrations
+
+**Symptom:** The acceptance stack stopped during Fuseki bootstrap with
+`acceptance project fixture entry is invalid`, and the migration image stopped
+at revision 0006 even though the repository contained revision 0007.
+**Root cause:** `PROJECTA_BOOTSTRAP_ACCEPTANCE_PROJECTS` is parsed as
+`project-id|label` entries, and an already-built local API image does not
+automatically include newly added Alembic revisions.
+**Fix / workaround:** Use a value such as `project-a|Project A`, rebuild the
+`api` and `connector-migrate` targets, and start the disposable stack again.
+**Watch out for:** Any new migration or acceptance project must be checked
+against the Compose image build state before provisioning a setup handle.
+
+## [2026-08-13] Live journey fixtures must preserve provider numeric widths
+
+**Symptom:** The edit journey could create a synthetic issue, but its known
+comment was not merged into the bounded snapshot because GitHub comment IDs can
+exceed a 32-bit integer.
+**Root cause:** PowerShell snapshot reconciliation cast provider IDs to
+`Int32`, while GitHub returns larger numeric IDs.
+**Fix / workaround:** Compare provider IDs as `Int64` and keep the live
+snapshot sanitized to counts, hashes, and timestamps only.
+**Watch out for:** Provider numeric identifiers are untrusted external data;
+never narrow them to a platform `Int32` during pagination, deduplication, or
+evidence generation.
+
+## [2026-08-13] PowerShell REST exceptions can hide the HTTP status code
+
+**Symptom:** The live edit journey received the expected forged-project `404`,
+but its isolation field remained null and the journey failed closed.
+**Root cause:** On this PowerShell/.NET path, `Invoke-RestMethod` exposed a
+problem JSON body whose `status` was `404` while `Exception.Message` did not
+contain the numeric status.
+**Fix / workaround:** Inspect both the exception message and
+`ErrorDetails.Message`, accepting the structured `status: 404` or
+`CONNECTOR_NOT_FOUND` problem code for the isolation assertion.
+**Watch out for:** Do not derive HTTP acceptance outcomes from
+`Exception.Message` alone; preserve and validate the structured problem body,
+especially when running the same PowerShell script across Windows versions.

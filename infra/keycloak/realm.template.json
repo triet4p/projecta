@@ -1,0 +1,32 @@
+{
+  "realm": "projecta",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "resetPasswordAllowed": false,
+  "roles": {
+    "realm": [
+      {"name": "project-reader", "description": "Read an explicitly assigned project"},
+      {"name": "reviewer", "description": "Review candidates in an explicitly assigned project"},
+      {"name": "connector-admin", "description": "Manage connector installations in an explicitly assigned project"}
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "projecta-web",
+      "name": "Projecta web",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": ["https://projecta.example.com/auth/callback"],
+      "webOrigins": ["https://projecta.example.com"],
+      "attributes": {"pkce.code.challenge.method": "S256"}
+    }
+  ],
+  "users": [
+    {"username": "acceptance-user", "enabled": false, "emailVerified": false}
+  ]
+}
