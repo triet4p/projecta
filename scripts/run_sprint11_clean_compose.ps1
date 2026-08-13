@@ -88,8 +88,10 @@ try {
 
     # Production OIDC discovery is intentionally routed through the edge alias
     # (auth.example.com). Start that proxy in the same batch as the API so the
-    # API readiness probe can reach Keycloak while Compose waits for health.
-    Invoke-Compose "Start API and edge after foundations" @("up", "-d", "--wait", "semantic-core", "api", "edge") | Out-Null
+    # API readiness probe can reach Keycloak while Compose waits for health;
+    # nginx also resolves its web upstream during startup, so create web in the
+    # same batch rather than waiting for the later topology expansion.
+    Invoke-Compose "Start API, web, and edge after foundations" @("up", "-d", "--wait", "semantic-core", "api", "web", "edge") | Out-Null
     Invoke-Compose "Start complete production topology" @("up", "-d", "--wait") | Out-Null
     Invoke-Compose "Production readiness probe" @("exec", "-T", "api", "python", "-c", "from urllib.request import urlopen; assert urlopen('http://127.0.0.1:8000/health/ready').status == 200") | Out-Null
     Invoke-Compose "Deterministic identity, secret, Teams, and GitHub journeys" @("run", "--build", "--rm", "--no-deps", "connector-operational-test", "uv", "run", "pytest", "-q", "tests/test_sprint11_identity.py", "tests/test_sprint11_openbao.py", "tests/test_sprint11_teams_setup.py", "tests/test_sprint11_teams_adapter.py", "tests/test_sprint11_github_mapping.py", "tests/test_sprint11_github_setup.py", "tests/test_sprint11_github_transport.py") | Out-Null

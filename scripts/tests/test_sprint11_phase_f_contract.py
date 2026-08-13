@@ -50,7 +50,7 @@ def test_clean_compose_runner_bootstraps_and_redacts_operator_material() -> None
         "Manual unseal share 2",
         "Deterministic identity, secret, Teams, and GitHub journeys",
         "GitHub journeys",
-        "Start API and edge after foundations",
+        "Start API, web, and edge after foundations",
         "AppRole re-authentication",
         "operator-sensitive output redacted",
         "Revoke bootstrap root token",
