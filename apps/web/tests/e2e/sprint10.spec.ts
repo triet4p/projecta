@@ -29,6 +29,9 @@ async function mockConnectorApi(page: Page) {
   await page.route("**/v1/**", async (route) => {
     const request = route.request();
     const { pathname } = new URL(request.url());
+    if (pathname === "/v1/auth/session" && request.method() === "GET") {
+      return json(route, { authenticated: true, subject: "subject-h-browser" });
+    }
     if (pathname === "/v1/projects" && request.method() === "GET") {
       return json(route, { catalogRevision: "catalog-r1", projects: [project] });
     }

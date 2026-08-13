@@ -54,6 +54,9 @@ async function mockApi(page: Page, failGraph = false) {
     const request = route.request();
     const url = new URL(request.url());
     const { pathname } = url;
+    if (pathname === "/v1/auth/session" && request.method() === "GET") {
+      return json(route, { authenticated: true, subject: "subject-h-browser" });
+    }
     if (pathname === "/v1/projects" && request.method() === "GET") {
       return json(route, {
         requestId: "req-catalog",
