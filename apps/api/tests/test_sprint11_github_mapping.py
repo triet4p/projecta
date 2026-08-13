@@ -57,10 +57,18 @@ def _comment(**overrides: object) -> dict[str, object]:
     return payload
 
 
+def _fixture_root() -> Path:
+    repository_fixture_root = Path(__file__).parents[3] / "evaluation/sprint-11/github-public-issues"
+    if repository_fixture_root.exists():
+        return repository_fixture_root
+    mounted_fixture_root = Path("/evaluation/sprint-11/github-public-issues")
+    if mounted_fixture_root.exists():
+        return mounted_fixture_root
+    return repository_fixture_root
+
+
 def test_sanitized_issue_fixture_maps_and_excludes_pull_request() -> None:
-    fixture = json.loads(
-        (Path(__file__).parents[3] / "evaluation/sprint-11/github-public-issues/issues-page-1.json").read_text()
-    )
+    fixture = json.loads((_fixture_root() / "issues-page-1.json").read_text())
     config = GitHubPublicIssuesInstallationConfig(owner="example-owner", repository="example-repo")
     mapped = [
         map_github_issue(item, installation_scope="install-fixture", config=config)
@@ -205,7 +213,7 @@ def test_github_adapter_descriptor_is_finite_and_provider_neutral() -> None:
 
 @pytest.mark.asyncio
 async def test_github_adapter_maps_both_streams_and_returns_opaque_cursor() -> None:
-    fixture_root = Path(__file__).parents[3] / "evaluation/sprint-11/github-public-issues"
+    fixture_root = _fixture_root()
     issues = fixture_root.joinpath("issues-page-1.json").read_bytes()
     comments = fixture_root.joinpath("comments-page-1.json").read_bytes()
 
@@ -249,7 +257,7 @@ async def test_github_adapter_does_not_advance_cursor_on_truncation_or_malformed
         async def fetch_page(self, config, stream, **kwargs):
             return GitHubHttpPage(statusCode=200, headers={}, body=self.body)
 
-    fixture_root = Path(__file__).parents[3] / "evaluation/sprint-11/github-public-issues"
+    fixture_root = _fixture_root()
     body = fixture_root.joinpath("issues-page-1.json").read_bytes()
     config = GitHubPublicIssuesInstallationConfig(owner="example-owner", repository="example-repo")
     command = PullEventsCommand(
@@ -277,7 +285,7 @@ async def test_github_adapter_does_not_advance_cursor_on_truncation_or_malformed
 
 @pytest.mark.asyncio
 async def test_adapter_filters_committed_overlap_before_mapping_and_watermarking() -> None:
-    fixture_root = Path(__file__).parents[3] / "evaluation/sprint-11/github-public-issues"
+    fixture_root = _fixture_root()
     issues = fixture_root.joinpath("issues-page-1.json").read_bytes()
     comments = fixture_root.joinpath("comments-page-1.json").read_bytes()
 
