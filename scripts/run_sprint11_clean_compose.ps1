@@ -106,6 +106,10 @@ try {
         $diagnostic = @(& docker compose -p $project -f (Join-Path $root "compose.yaml") -f (Join-Path $root "compose.prod.yaml") logs --no-color --tail 80 api 2>&1 | ForEach-Object {
             ([string]$_) -replace '(?i)(token|secret|password|private[_-]?key)\s*[=:]\s*[^\s,;]+', '$1=<redacted>'
         })
+        $readyDiagnostic = @(& docker compose -p $project -f (Join-Path $root "compose.yaml") -f (Join-Path $root "compose.prod.yaml") exec -T api python -c "from urllib.request import urlopen; from urllib.error import HTTPError; response = None; exec('try:`n response = urlopen(\"http://127.0.0.1:8000/health/ready\")`n print(response.read().decode())`nexcept HTTPError as error:`n print(error.read().decode())')" 2>&1 | ForEach-Object {
+            ([string]$_) -replace '(?i)(token|secret|password|private[_-]?key)\s*[=:]\s*[^\s,;]+', '$1=<redacted>'
+        })
+        $diagnostic += "readinessBody=" + ($readyDiagnostic -join " ")
         $results.Add([pscustomobject]@{
             name = "Failure diagnostics: API logs"
             exitCode = 0
