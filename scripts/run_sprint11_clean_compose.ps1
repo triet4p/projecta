@@ -86,6 +86,7 @@ try {
     Set-Content -LiteralPath $roleIdFile -Value $roleId -NoNewline
     Set-Content -LiteralPath $secretIdFile -Value $secretId -NoNewline
 
+    Invoke-Compose "Start API after foundations" @("up", "-d", "--wait", "semantic-core", "api") | Out-Null
     Invoke-Compose "Start complete production topology" @("up", "-d", "--wait") | Out-Null
     Invoke-Compose "Production readiness probe" @("exec", "-T", "api", "python", "-c", "from urllib.request import urlopen; assert urlopen('http://127.0.0.1:8000/health/ready').status == 200") | Out-Null
     Invoke-Compose "Deterministic identity, secret, Teams, and GitHub journeys" @("run", "--build", "--rm", "--no-deps", "connector-operational-test", "uv", "run", "pytest", "-q", "tests/test_sprint11_identity.py", "tests/test_sprint11_openbao.py", "tests/test_sprint11_teams_setup.py", "tests/test_sprint11_teams_adapter.py", "tests/test_sprint11_github_mapping.py", "tests/test_sprint11_github_setup.py", "tests/test_sprint11_github_transport.py") | Out-Null
