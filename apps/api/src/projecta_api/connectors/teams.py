@@ -418,7 +418,7 @@ def _safe_body_text(value: object) -> str:
     try:
         parser.feed(raw)
         parser.close()
-    except Exception:
+    except (AssertionError, IndexError, TypeError, ValueError):
         return ""
     text = html.unescape(" ".join(parser.parts))
     return " ".join(text.split())

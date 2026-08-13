@@ -583,3 +583,22 @@ contain the numeric status.
 **Watch out for:** Do not derive HTTP acceptance outcomes from
 `Exception.Message` alone; preserve and validate the structured problem body,
 especially when running the same PowerShell script across Windows versions.
+
+## [2026-08-14] Release CI needs explicit test-environment and static-gate parity
+
+**Symptom:** The `v0.6.0` release workflow failed before publishing even though
+the local release validation passed: release-contract and Sprint 10 unittest
+steps could not import `pytest`, and the Sprint 8 implicit-behavior gate rejected
+an `except Exception` in Teams HTML sanitization.
+**Root cause:** Two CI paths invoked the system Python without installing the
+test dependency, while the local global environment already had `pytest`. The
+local Sprint 11 validation did not include the Sprint 8 static implicit-behavior
+check, so the broad catch was not detected before tagging.
+**Fix / workaround:** Install `pytest` in the release-contract job, run Sprint
+10 release-contract tests through the API project's locked `uv` environment,
+and catch only the parser exceptions that the sanitization boundary is intended
+to absorb.
+**Watch out for:** Any release workflow job that imports `pytest` must bootstrap
+its test environment explicitly, and every new broad exception handler must be
+checked against the Sprint 8 implicit-behavior gate before creating a release
+tag.
