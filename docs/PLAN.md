@@ -13,6 +13,8 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   credential-free đi trước connector cần tenant/consent; deterministic fixture
   đi trước live-provider acceptance.
 - Không thêm Kafka, OpenSearch, Kubernetes hoặc full observability trước khi volume/SLO yêu cầu.
+- Chất lượng business và semantic phải được chứng minh trên dataset có governance,
+  held-out evaluation và human review trước khi tiếp tục mở rộng capability.
 
 ## Milestones
 
@@ -35,10 +37,13 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   yêu cầu người dùng nhập opaque ID.
 - [~] **M7 — Connector and Production Evolution (Sprint 10+):** Mock/manual
   connector framework, connector thật đầu tiên, authentication/authorization,
-  security và production hardening. Sprint 11 and `v0.6.0` are complete, while
-  M7 remains open for Sprint 12+ outbound actions, continuous synchronization,
-  additional connectors, HA, broader tenant administration, and measured
-  production hardening.
+  security và production hardening. Sprint 11 and `v0.6.0` are complete. M7
+  remains open, but additional connector/outbound breadth is paused until the
+  Sprint 12 business-quality evidence is reviewed.
+- [ ] **M8 — Business Semantic Quality and Evaluation (Sprint 12):** Governed
+  atomic and longitudinal datasets, independent annotation, leakage-resistant
+  splits, ontology/graph/retrieval metrics, controlled optimization, sealed
+  held-out evaluation, and target-role business acceptance.
 
 ## Completed Sprints
 
@@ -81,15 +86,16 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 
 ## Active Sprints
 
-- No active Sprint 11 work remains. New implementation work moves to Sprint 12+
-  under the still-open M7 milestone.
+- [Sprint 12 — Business Semantic Quality and Evaluation](sprint-plans/sprint-12.md)
+  — *Planned; G0 business-scope approval is pending. New connector and outbound
+  breadth is deferred while Projecta establishes business and semantic quality.*
 
 ## Planned Sprints
 
-- **Sprint 12+:** Governed outbound actions, continuous synchronization,
-  additional production connectors, broader tenant administration, managed
-  adapter options, high availability, and measured production hardening after
-  the Sprint 11 trust boundary is accepted.
+- **Sprint 13+:** Selected from Sprint 12 evidence. Resume governed outbound
+  actions, continuous synchronization, additional connectors, broader tenant
+  administration, managed adapters, or HA only when the measured business
+  bottleneck justifies that work.
 
 ## Backlog / Future Work
 

@@ -369,3 +369,35 @@ proven by regenerated, provenance-bound evidence.
 **Alternatives considered:** Wait for anonymous GitHub quota reset and repeat the complete live journey; use an authenticated provider token in the Projecta runtime; or keep G2 blocked indefinitely on external free-tier capacity.
 **Reason:** The r9 baseline already proves real credential-free import, pull-request exclusion, exact candidate/evidence continuity, replay, and project isolation, while the final validator and regression contracts cover edit/replay digests, cursor chains, timestamps, snapshots, tamper rejection, and safe quota failure. Spending more anonymous quota would add limited release confidence and using a runtime token would violate the approved connector boundary.
 **Consequences:** The failed edit/replay journey remains a truthful diagnostic artifact and is not relabeled as passing. v0.6.0 may claim only bounded public read-only ingestion, not GitHub capacity, availability, continuous synchronization, private repositories, or authenticated access. Release preparation may proceed, but immutable preflight, G3 exact-commit approval, tagging, and publication remain separate pending gates.
+
+## [2026-08-14] Prove business semantic quality before resuming capability breadth
+
+**Decision:** Make Sprint 12 a governed business-semantic dataset and evaluation
+sprint, and pause new connector, continuous-synchronization, outbound-action,
+and tenant-administration breadth until its held-out business-quality gate is
+reviewed.
+**Alternatives considered:** Continue the open M7 breadth roadmap immediately;
+tune prompts and agents against the existing Sprint 5 fixtures; or build a
+larger dataset without independent annotation, leakage controls, staged gates,
+and human business acceptance.
+**Reason:** `v0.6.0` proves strong runtime, isolation, provenance, review,
+recovery, and release boundaries, but the current semantic-quality benchmark
+has only eight synthetic sentence-level cases and primarily demonstrates
+contract conformance. Tenant teams need evidence that realistic Quick Notes and
+longitudinal project situations become correct, useful, reviewable, and
+traceable knowledge with acceptable correction effort, latency, and cost.
+**Consequences:** Sprint 12 must pass business-scope, dataset-contract,
+annotation-pilot, dataset-freeze, baseline, optimization-freeze, blinded
+held-out, and closure gates. Prompt, agent, context, model, or tool optimization
+may use only the permitted development/validation splits; held-out material
+remains under human custody until the candidate is frozen. Ontology gaps must
+enter the governed ontology workflow rather than be force-fit. M7 remains open
+but its additional breadth is deferred until Sprint 12 evidence determines the
+next highest-value work.
+
+## [2026-08-14] Approve Sprint 12 G0 business scope
+
+**Decision:** Approve the Sprint 12 G0 business scope and authorize dataset-contract design for the eight ranked journeys, sixteen competency questions, bounded claims, independent annotation, privacy/provenance controls, and held-out custody model.
+**Alternatives considered:** Reject the packet, revise the journey/claim boundary before G1, or resume connector and outbound-action breadth before business-quality evidence exists.
+**Reason:** The approved scope directly measures the released v0.6.0 value chain from Quick Note through review, graph and grounded retrieval while preserving the project's human-control and isolation boundaries. It also makes the strongest future claim conditional on a named, leakage-resistant benchmark rather than implying tenant or production generalization.
+**Consequences:** S12-10 is complete and G1 dataset-contract work may begin. The eight journeys, bounded non-claims, qualified annotation requirement, privacy/provenance rules, and held-out custody are now the baseline for future Sprint 12 work; changing them requires another explicit human scope decision. This approval does not approve a dataset, ontology change, model, optimization result, release, or tenant-readiness claim.
