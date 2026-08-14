@@ -1,12 +1,14 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G5_APPROVED_WITH_LIMITATIONS_G6_PENDING`
+Status: `G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE`
 
 G0 packet: [Business Scope Review Packet](sprint-12/g0-business-scope.md)
 
 G4 packet: [Baseline Evaluation Review Packet](sprint-12/g4-baseline.md)
 
 G5 packet: [Controlled Optimization Review Packet](sprint-12/g5-optimization.md)
+
+G6 packet: [Held-out Business Evaluation Packet](sprint-12/g6-business-evaluation.md)
 
 Release target: none until G6 business-quality acceptance and G7 closure decide
 whether a product release is justified.
@@ -391,7 +393,7 @@ G3 packet: [Dataset Freeze Review Packet](sprint-12/g3-dataset-freeze.md)
 
 ### Phase G — Held-out Business Evaluation and G6
 
-- [ ] **S12-84 — Pre-register the held-out run:** Record exact candidate,
+- [x] **S12-84 — Prepare held-out run preregistration:** Record candidate,
   evaluator, metrics, thresholds, reviewer protocol, and abort conditions.
 - [ ] **S12-85 — Verify test custody and digests:** Human confirms the sealed
   bundle matches G3 and has not been exposed.
@@ -408,7 +410,7 @@ G3 packet: [Dataset Freeze Review Packet](sprint-12/g3-dataset-freeze.md)
   invoke governed ontology evolution only when competency questions require it.
 - [ ] **S12-91 — Verify held-out evidence integrity:** Recompute bundle, run,
   result, and reviewer-record digests and reject tampering or omission.
-- [ ] **S12-92 — Prepare the G6 packet:** Bind held-out semantic, business,
+- [x] **S12-92 — Prepare the draft G6 packet:** Bind held-out semantic, business,
   operational, reviewer, gap, and residual-risk evidence.
 - [ ] **S12-93 — Approve G6 business quality:** Human business and semantic
   reviewers approve the bounded claim, reject it, or require a new benchmark

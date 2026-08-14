@@ -1,6 +1,6 @@
 # Sprint 12 Annotation Guide v1
 
-**Status:** `G5_PREPARATION_BLOCKED_BASELINE_UNAVAILABLE`
+**Status:** `G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE`
 
 **Scope:** Atomic semantic gold and longitudinal scenario gold for the eight
 G0-approved journeys.

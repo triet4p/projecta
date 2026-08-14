@@ -1,6 +1,6 @@
 {
   "version": "s12.coverage.v1",
-  "status": "G5_PREPARATION_BLOCKED_BASELINE_UNAVAILABLE",
+  "status": "G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE",
   "minimums": {
     "atomicCases": 200,
     "longitudinalScenarios": 24,

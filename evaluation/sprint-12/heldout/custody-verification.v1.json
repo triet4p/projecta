@@ -1,0 +1,11 @@
+{
+  "atomicCases": 40,
+  "bundleDigest": "sha256:f08309ae9adf5f4e1df4d7a51ca88dffaa1ef935f2ce80419941feadad3243b5",
+  "failures": [
+    "custody status is not established",
+    "test payload is absent from authorized custody boundary"
+  ],
+  "payloadPresent": false,
+  "scenarios": 6,
+  "status": "CUSTODY_NOT_ESTABLISHED"
+}

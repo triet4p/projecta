@@ -2,7 +2,7 @@
 
 **Version:** `s12.evaluator.v1`
 
-**Status:** `G5_PREPARATION_BLOCKED_BASELINE_UNAVAILABLE`
+**Status:** `G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE`
 
 The harness in `scripts/sprint12_evaluator.py` is a deterministic, stdlib-only
 boundary around the frozen development/validation fixture. It validates source

@@ -1,0 +1,103 @@
+{
+  "blindedRun": {
+    "outputCount": 0,
+    "reason": "preregistration is blocked",
+    "status": "BLINDED_RUN_BLOCKED"
+  },
+  "boundedClaim": null,
+  "businessApproval": "PENDING_HUMAN_APPROVAL",
+  "businessUtility": {
+    "reason": "both blinded and manual records are required",
+    "status": "UTILITY_NOT_AVAILABLE"
+  },
+  "custody": {
+    "atomicCases": 40,
+    "bundleDigest": "sha256:f08309ae9adf5f4e1df4d7a51ca88dffaa1ef935f2ce80419941feadad3243b5",
+    "failures": [
+      "custody status is not established",
+      "test payload is absent from authorized custody boundary"
+    ],
+    "payloadPresent": false,
+    "scenarios": 6,
+    "status": "CUSTODY_NOT_ESTABLISHED"
+  },
+  "evidenceIntegrity": {
+    "blockedComponents": [
+      "preregistration",
+      "run",
+      "reviewer",
+      "manual"
+    ],
+    "componentDigests": {
+      "custody": "sha256:5b5a657d24de16d5ffc0459cfb59fda116257c5c434725edb5152d18f74206d0",
+      "manual": "sha256:75acefa1843b638679ace41c39762f973e562e6dab505dc0b1a44a5681fc3b8e",
+      "preregistration": "sha256:5b6521a77462257f76fcbcc49f2f6ad9d2823cb0de343b8c1bb652dc03262646",
+      "reviewer": "sha256:75915a47c3804854a1292fcef09ed0bb33d08100534cc21d9284fb7bedcd6776",
+      "run": "sha256:c29cabdf406797e57b558a8bc9f521b937a12ddc34102c034d2d1e214e9e3e3d"
+    },
+    "missingComponents": [],
+    "omittedCaseCount": 0,
+    "rawSensitiveDataIncluded": false,
+    "status": "EVIDENCE_BLOCKED"
+  },
+  "heldOutEvidence": false,
+  "manualBaseline": {
+    "recordCount": 0,
+    "requiredMinimum": 36,
+    "status": "MANUAL_BASELINE_INCOMPLETE"
+  },
+  "ontologyGapCount": 0,
+  "ontologyGaps": [],
+  "packetVersion": "s12.g6.packet.v1",
+  "preregistration": {
+    "abortConditions": [
+      "custody mismatch",
+      "candidate digest mismatch",
+      "hard-invariant regression",
+      "reviewer independence violation"
+    ],
+    "blockers": [
+      "no frozen candidate",
+      "test custody is not verified"
+    ],
+    "candidate": null,
+    "custodyStatus": "CUSTODY_NOT_ESTABLISHED",
+    "evaluatorDigest": "sha256:e3b25747b7b4d4271b2f043f56704dcc902fef57460cefaa902144651c355f6a",
+    "heldOutInspected": false,
+    "metrics": [
+      "acceptance",
+      "correction",
+      "review-time",
+      "usefulness",
+      "trust"
+    ],
+    "preregistrationVersion": "s12.heldout.v1",
+    "reviewerProtocol": {
+      "blindedOrder": true,
+      "independentAnnotation": true,
+      "manualBaseline": {
+        "counterbalanced": true,
+        "sameReviewers": true
+      },
+      "reviewerCount": 3,
+      "scenarioCount": 12,
+      "targetRoles": [
+        "BrSE",
+        "project-manager",
+        "semantic-reviewer"
+      ]
+    },
+    "status": "PREREGISTRATION_BLOCKED",
+    "thresholds": {
+      "businessUtility": "pre-registered",
+      "hardInvariants": "no regression"
+    }
+  },
+  "rawSensitiveDataIncluded": false,
+  "reviewerUtility": {
+    "recordCount": 0,
+    "requiredMinimum": 36,
+    "status": "REVIEW_INCOMPLETE"
+  },
+  "status": "G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE"
+}

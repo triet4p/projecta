@@ -1,6 +1,6 @@
 # Sprint 12 Metric Contract v1
 
-**Status:** `G5_PREPARATION_BLOCKED_BASELINE_UNAVAILABLE`
+**Status:** `G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE`
 
 Metrics are computed per split, journey, language, semantic slice, origin and
 threat slice before any pooled summary. Missing, malformed, abstained and

@@ -1,0 +1,12 @@
+{
+  "version": "s12.heldout-gap-taxonomy.v1",
+  "status": "G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE",
+  "categories": [
+    "released-term-missing",
+    "annotation-disagreement",
+    "out-of-scope",
+    "schema-gap",
+    "ontology-change-candidate"
+  ],
+  "governance": "ontology-change-candidate requires competency-question review and human approval; it never authorizes an automatic production ontology edit."
+}

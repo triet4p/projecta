@@ -1,6 +1,6 @@
 # Sprint 12 Data Governance and Custody Contract v1
 
-**Status:** `G5_PREPARATION_BLOCKED_BASELINE_UNAVAILABLE`
+**Status:** `G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE`
 
 ## Provenance and licensing (S12-19)
 

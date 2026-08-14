@@ -122,7 +122,7 @@ def test_phase_f_plan_stops_at_g5_approval_gate() -> None:
     packet = (ROOT / "docs/sprint-plans/sprint-12/g5-optimization.md").read_text(
         encoding="utf-8"
     )
-    assert "Status: `G5_APPROVED_WITH_LIMITATIONS_G6_PENDING`" in plan
+    assert "Status: `G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE`" in plan
     assert "[x] **S12-72" in plan
     assert "[x] **S12-82" in plan
     assert "[x] **S12-83" in plan

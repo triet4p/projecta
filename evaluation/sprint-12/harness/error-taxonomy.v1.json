@@ -1,6 +1,6 @@
 {
   "version": "s12.error-taxonomy.v1",
-  "status": "G5_PREPARATION_BLOCKED_BASELINE_UNAVAILABLE",
+  "status": "G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE",
   "categories": [
     "data",
     "annotation",

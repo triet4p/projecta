@@ -1,6 +1,6 @@
 {
   "datasetVersion": "s12.corpus.v1",
-  "status": "G5_PREPARATION_BLOCKED_BASELINE_UNAVAILABLE",
+  "status": "G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE",
   "humanEvidence": false,
   "atomicCounts": {
     "development": 120,

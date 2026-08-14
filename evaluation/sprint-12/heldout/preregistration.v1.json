@@ -1,0 +1,44 @@
+{
+  "abortConditions": [
+    "custody mismatch",
+    "candidate digest mismatch",
+    "hard-invariant regression",
+    "reviewer independence violation"
+  ],
+  "blockers": [
+    "no frozen candidate",
+    "test custody is not verified"
+  ],
+  "candidate": null,
+  "custodyStatus": "CUSTODY_NOT_ESTABLISHED",
+  "evaluatorDigest": "sha256:e3b25747b7b4d4271b2f043f56704dcc902fef57460cefaa902144651c355f6a",
+  "heldOutInspected": false,
+  "metrics": [
+    "acceptance",
+    "correction",
+    "review-time",
+    "usefulness",
+    "trust"
+  ],
+  "preregistrationVersion": "s12.heldout.v1",
+  "reviewerProtocol": {
+    "blindedOrder": true,
+    "independentAnnotation": true,
+    "manualBaseline": {
+      "counterbalanced": true,
+      "sameReviewers": true
+    },
+    "reviewerCount": 3,
+    "scenarioCount": 12,
+    "targetRoles": [
+      "BrSE",
+      "project-manager",
+      "semantic-reviewer"
+    ]
+  },
+  "status": "PREREGISTRATION_BLOCKED",
+  "thresholds": {
+    "businessUtility": "pre-registered",
+    "hardInvariants": "no regression"
+  }
+}

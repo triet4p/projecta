@@ -24,7 +24,7 @@ def read_json(path: Path) -> dict:
 
 def test_phase_d_tasks_stop_at_human_g3_gate() -> None:
     plan = PLAN.read_text(encoding="utf-8")
-    assert "Status: `G5_APPROVED_WITH_LIMITATIONS_G6_PENDING`" in plan
+    assert "Status: `G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE`" in plan
     for number in range(40, 49):
         assert f"[x] **S12-{number:02d}" in plan
     for number in (49, 50):
