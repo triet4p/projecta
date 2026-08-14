@@ -1,0 +1,25 @@
+{
+  "version": "s12.metric-contract.v1",
+  "status": "G4_APPROVED_WITH_LIMITATIONS_G5_PENDING",
+  "families": [
+    "extraction",
+    "ontology-mapping",
+    "scenario-graph",
+    "retrieval",
+    "reviewer-utility",
+    "operational"
+  ],
+  "reportRequirements": [
+    "datasetVersion",
+    "manifestDigest",
+    "configurationDigest",
+    "evaluatorVersion",
+    "caseCoverage",
+    "missingOutputCount",
+    "hardInvariants",
+    "rawSensitiveDataIncluded"
+  ],
+  "missingOutputPolicy": "fail-explicitly",
+  "pooledOnlySummaryPolicy": "forbidden",
+  "testSplitPolicy": "sealed-unless-explicitly-authorized"
+}

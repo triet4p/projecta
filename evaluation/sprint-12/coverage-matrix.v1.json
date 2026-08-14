@@ -1,6 +1,6 @@
 {
   "version": "s12.coverage.v1",
-  "status": "G3_APPROVED_G4_PREPARATION",
+  "status": "G4_APPROVED_WITH_LIMITATIONS_G5_PENDING",
   "minimums": {
     "atomicCases": 200,
     "longitudinalScenarios": 24,

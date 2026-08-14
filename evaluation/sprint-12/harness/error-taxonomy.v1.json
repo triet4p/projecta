@@ -1,0 +1,15 @@
+{
+  "version": "s12.error-taxonomy.v1",
+  "status": "G4_APPROVED_WITH_LIMITATIONS_G5_PENDING",
+  "categories": [
+    "data",
+    "annotation",
+    "ontology",
+    "prompt",
+    "context",
+    "tool",
+    "model",
+    "runtime"
+  ],
+  "classificationRule": "Every observed baseline failure receives exactly one category; unknown categories fail the evaluator."
+}

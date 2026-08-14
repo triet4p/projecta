@@ -1,0 +1,848 @@
+{
+  "baseline": {
+    "developmentAndValidationOnly": true,
+    "execution": "NOT_EXECUTED_MISSING_RUNTIME_CONFIGURATION",
+    "missingRuntimeConfiguration": [
+      "PROJECTA_LLM_TYPE",
+      "PROJECTA_LLM_BASE_URL",
+      "PROJECTA_LLM_API_KEY",
+      "PROJECTA_LLM_MODEL"
+    ],
+    "release": "v0.6.0"
+  },
+  "caseCount": 160,
+  "caseCoverage": [
+    {
+      "caseId": "s12-a-0101",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0102",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0103",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0104",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0105",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0106",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0107",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0108",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0109",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0110",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0111",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0112",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0113",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0114",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0115",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0116",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0121",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0122",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0123",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0124",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0125",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0126",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0127",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0128",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0129",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0130",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0131",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0132",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0133",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0134",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0135",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0136",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0137",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0138",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0139",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0140",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0141",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0142",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0143",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0144",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0151",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0152",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0153",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0154",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0155",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0156",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0157",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0158",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0159",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0160",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0161",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0162",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0163",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0164",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0165",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0166",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0167",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0168",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0169",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0170",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0176",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0177",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0178",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0179",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0180",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0181",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0182",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0183",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0184",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0185",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0186",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0187",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0188",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0189",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0190",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0191",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0192",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0193",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0194",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0195",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0201",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0202",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0203",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0204",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0205",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0206",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0207",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0208",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0209",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0210",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0211",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0212",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0213",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0214",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0215",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0216",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0217",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0218",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0219",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0220",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0226",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0227",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0228",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0229",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0230",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0231",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0232",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0233",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0234",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0235",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0236",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0237",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0238",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0239",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0240",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0241",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0242",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0243",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0244",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0245",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0251",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0252",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0253",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0254",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0255",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0256",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0257",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0258",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0259",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0260",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0261",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0262",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0263",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0264",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0265",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0266",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0267",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0268",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0269",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0270",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0276",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0277",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0278",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0279",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0280",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0281",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0282",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0283",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0284",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0285",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0286",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0287",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0288",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0289",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0290",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0291",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0292",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0293",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0294",
+      "split": "validation",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0295",
+      "split": "validation",
+      "status": "missing-output"
+    }
+  ],
+  "configurationDigest": "sha256:e3b25747b7b4d4271b2f043f56704dcc902fef57460cefaa902144651c355f6a",
+  "datasetVersion": "s12.corpus.atomic.v1",
+  "errorTaxonomy": {
+    "categories": [
+      "data",
+      "annotation",
+      "ontology",
+      "prompt",
+      "context",
+      "tool",
+      "model",
+      "runtime"
+    ],
+    "observations": [
+      {
+        "category": "runtime",
+        "reason": "NOT_EXECUTED_MISSING_RUNTIME_CONFIGURATION"
+      }
+    ]
+  },
+  "evaluatorVersion": "s12.evaluator.v1",
+  "hardInvariants": {
+    "status": "not-evaluated"
+  },
+  "humanEvidence": false,
+  "manifestDigest": "sha256:7c0e32242f5596f4f6a153069c2afbe5a13990fdde90840340a4408de3f4cd65",
+  "metrics": {},
+  "missingOutputCount": 160,
+  "omittedCaseCount": 0,
+  "rawSensitiveDataIncluded": false,
+  "reportVersion": "s12.evidence.v1",
+  "status": "NOT_EXECUTED_MISSING_RUNTIME_CONFIGURATION"
+}

@@ -1,8 +1,10 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G3_APPROVED_G4_PENDING`
+Status: `G4_APPROVED_WITH_LIMITATIONS_G5_PENDING`
 
 G0 packet: [Business Scope Review Packet](sprint-12/g0-business-scope.md)
+
+G4 packet: [Baseline Evaluation Review Packet](sprint-12/g4-baseline.md)
 
 Release target: none until G6 business-quality acceptance and G7 closure decide
 whether a product release is justified.
@@ -328,33 +330,34 @@ G3 packet: [Dataset Freeze Review Packet](sprint-12/g3-dataset-freeze.md)
 
 ### Phase E — Evaluation Harness, Baseline, and G4
 
-- [ ] **S12-58 — Implement the versioned dataset loader:** Reject unknown schema,
+- [x] **S12-58 — Implement the versioned dataset loader:** Reject unknown schema,
   missing provenance, invalid references, and split-policy violations.
-- [ ] **S12-59 — Implement dataset integrity checks:** Validate offsets, IDs,
+- [x] **S12-59 — Implement dataset integrity checks:** Validate offsets, IDs,
   quotas, digests, duplicates, and cross-file references deterministically.
-- [ ] **S12-60 — Implement extraction metrics:** Score types, relations, links,
+- [x] **S12-60 — Implement extraction metrics:** Score types, relations, links,
   spans, abstention, hallucination, and calibration by slice.
-- [ ] **S12-61 — Implement ontology-mapping metrics:** Score released-term
+- [x] **S12-61 — Implement ontology-mapping metrics:** Score released-term
   mapping, semantic gaps, SHACL conformance, and prohibited vocabulary output.
-- [ ] **S12-62 — Implement scenario graph metrics:** Compare graph checkpoints,
+- [x] **S12-62 — Implement scenario graph metrics:** Compare graph checkpoints,
   temporal state, contradictions, provenance, and project scope.
-- [ ] **S12-63 — Implement retrieval metrics:** Score factual correctness,
+- [x] **S12-63 — Implement retrieval metrics:** Score factual correctness,
   citations, completeness, freshness, and appropriate abstention.
-- [ ] **S12-64 — Implement reviewer utility capture:** Record disposition,
+- [x] **S12-64 — Implement reviewer utility capture:** Record disposition,
   correction class, review time, usefulness, and trust without raw sensitive data.
-- [ ] **S12-65 — Implement operational metrics:** Record latency, usage, cost,
+- [x] **S12-65 — Implement operational metrics:** Record latency, usage, cost,
   failure class, and accepted-candidate cost by configuration and slice.
-- [ ] **S12-66 — Implement the evidence report:** Emit version/digest-bound JSON
+- [x] **S12-66 — Implement the evidence report:** Emit version/digest-bound JSON
   and Markdown without hidden case omission or pooled-only summaries.
-- [ ] **S12-67 — Add evaluator self-tests:** Prove tamper, malformed gold,
+- [x] **S12-67 — Add evaluator self-tests:** Prove tamper, malformed gold,
   missing output, duplicate, leakage, and metric edge cases fail explicitly.
 - [ ] **S12-68 — Run the `v0.6.0` baseline:** Evaluate the released prompt and
   runtime configuration on development and validation without changing them.
 - [ ] **S12-69 — Classify baseline errors:** Produce a finite taxonomy covering
   data, annotation, ontology, prompt, context, tool, model, and runtime causes.
-- [ ] **S12-70 — Prepare the G4 packet:** Bind baseline configuration, results,
+- [x] **S12-70 — Prepare the draft G4 packet:** Bind baseline configuration, results,
   hard invariants, slice metrics, cost/latency, and error taxonomy.
-- [ ] **S12-71 — Approve G4 baseline:** Human accepts the measurement as truthful
+- [x] **S12-71 — Approve G4 baseline with limitations:** Human accepts the
+  measurement as truthful; runtime-backed baseline and optimization remain gated.
   before any optimization result is considered.
 
 ### Phase F — Controlled Optimization and G5
