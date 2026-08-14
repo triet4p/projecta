@@ -7,9 +7,9 @@
 Added focused negative/boundary tests covering single-use state and return-path validation, wrong issuer/audience, expired tokens, revoked sessions, production local-adapter rejection, membership-derived principal resolution, and repository/edge/browser contract markers.
 
 ## Files Modified
-* [apps/api/tests/test_sprint11_identity.py](/F:/ai-ml/projecta/apps/api/tests/test_sprint11_identity.py)
-* [scripts/tests/test_sprint11_identity_contract.py](/F:/ai-ml/projecta/scripts/tests/test_sprint11_identity_contract.py)
-* [docs/architecture/production-identity-runtime-contract.md](/F:/ai-ml/projecta/docs/architecture/production-identity-runtime-contract.md)
+* [apps/api/tests/test_sprint11_identity.py](../../../../apps/api/tests/test_sprint11_identity.py)
+* [scripts/tests/test_sprint11_identity_contract.py](../../../../scripts/tests/test_sprint11_identity_contract.py)
+* [docs/architecture/production-identity-runtime-contract.md](../../../../docs/architecture/production-identity-runtime-contract.md)
 
 ## Testing
 * **Test File:** The two files above

@@ -7,9 +7,9 @@
 Added a browser auth gate with sign-in redirect, signed-in server-state presentation, same-origin session calls, logout, and session-expired recovery. Raw claims and provider tokens are never rendered or persisted by the client.
 
 ## Files Modified
-* [apps/web/src/shell/AuthShell.tsx](/F:/ai-ml/projecta/apps/web/src/shell/AuthShell.tsx)
-* [apps/web/src/shell/App.tsx](/F:/ai-ml/projecta/apps/web/src/shell/App.tsx)
-* [apps/web/src/api/client.ts](/F:/ai-ml/projecta/apps/web/src/api/client.ts)
+* [apps/web/src/shell/AuthShell.tsx](../../../../apps/web/src/shell/AuthShell.tsx)
+* [apps/web/src/shell/App.tsx](../../../../apps/web/src/shell/App.tsx)
+* [apps/web/src/api/client.ts](../../../../apps/web/src/api/client.ts)
 
 ## Testing
 * **Test File:** Web existing suite

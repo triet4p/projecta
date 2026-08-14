@@ -7,12 +7,12 @@
 Added revisioned server-owned membership persistence, finite additive roles, safe removal, and an idempotent operator seed CLI that reads an untracked JSON file without creating admin UI.
 
 ## Files Modified
-* [apps/api/src/projecta_api/identity/repository.py](/F:/ai-ml/projecta/apps/api/src/projecta_api/identity/repository.py)
-* [scripts/seed_memberships.py](/F:/ai-ml/projecta/scripts/seed_memberships.py)
-* [docs/architecture/project-membership-runtime-contract.md](/F:/ai-ml/projecta/docs/architecture/project-membership-runtime-contract.md)
+* [apps/api/src/projecta_api/identity/repository.py](../../../../apps/api/src/projecta_api/identity/repository.py)
+* [scripts/seed_memberships.py](../../../../scripts/seed_memberships.py)
+* [docs/architecture/project-membership-runtime-contract.md](../../../../docs/architecture/project-membership-runtime-contract.md)
 
 ## Testing
-* **Test File:** [test_sprint11_identity.py](/F:/ai-ml/projecta/apps/api/tests/test_sprint11_identity.py)
+* **Test File:** [test_sprint11_identity.py](../../../../apps/api/tests/test_sprint11_identity.py)
 * **Status:** Passed
 * **Execution Command:** `uv run --project apps/api pytest -q apps/api/tests/test_sprint11_identity.py`
 
