@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G0_APPROVED_G1_PENDING`
+Status: `G1_PACKET_READY_FOR_HUMAN_APPROVAL`
 
 G0 packet: [Business Scope Review Packet](sprint-12/g0-business-scope.md)
 
@@ -217,41 +217,43 @@ Status legend: `[ ]` pending / `[~]` in progress / `[x]` done
 
 ### Phase B — Dataset Contract and G1
 
-- [ ] **S12-11 — Define the case envelope:** Specify stable IDs, source text,
+G1 packet: [Dataset Contract Review Packet](sprint-12/g1-dataset-contract.md)
+
+- [x] **S12-11 — Define the case envelope:** Specify stable IDs, source text,
   origin, language, sensitivity, license, scenario, split, and version fields.
-- [ ] **S12-12 — Define the atomic gold schema:** Specify entities, relations,
+- [x] **S12-12 — Define the atomic gold schema:** Specify entities, relations,
   links, evidence spans, abstention, ambiguity, and semantic-gap labels.
-- [ ] **S12-13 — Define the scenario gold schema:** Specify ordered events,
+- [x] **S12-13 — Define the scenario gold schema:** Specify ordered events,
   review decisions, graph checkpoints, temporal expectations, and expected
   competency-question answers.
-- [ ] **S12-14 — Define the correction taxonomy:** Separate unchanged,
+- [x] **S12-14 — Define the correction taxonomy:** Separate unchanged,
   formatting-only, minor semantic, major semantic, rejected, and missing output.
-- [ ] **S12-15 — Define the coverage matrix:** Cross priority journey, semantic
+- [x] **S12-15 — Define the coverage matrix:** Cross priority journey, semantic
   class, language, source style, ambiguity, temporal behavior, and threat slice.
-- [ ] **S12-16 — Freeze minimum quotas:** Record the approved corpus sizes,
+- [x] **S12-16 — Freeze minimum quotas:** Record the approved corpus sizes,
   language mix, scenario counts, and human/model-assisted origin limits.
-- [ ] **S12-17 — Define annotation guidance:** Write decision rules and
+- [x] **S12-17 — Define annotation guidance:** Write decision rules and
   counterexamples for spans, types, relations, links, abstention, and gaps.
-- [ ] **S12-18 — Define annotator qualifications:** Specify language and domain
+- [x] **S12-18 — Define annotator qualifications:** Specify language and domain
   competence, independence, conflicts, and adjudicator authority.
-- [ ] **S12-19 — Define provenance and licensing policy:** Require an auditable
+- [x] **S12-19 — Define provenance and licensing policy:** Require an auditable
   origin and permitted use for every case without storing sensitive payloads.
-- [ ] **S12-20 — Define privacy and retention policy:** Specify consent,
+- [x] **S12-20 — Define privacy and retention policy:** Specify consent,
   de-identification, prohibited data, review, deletion, and breach handling.
-- [ ] **S12-21 — Threat-model dataset leakage:** Cover duplicates, near
+- [x] **S12-21 — Threat-model dataset leakage:** Cover duplicates, near
   duplicates, prompt contamination, model memorization, and holdout exposure.
-- [ ] **S12-22 — Define split and custody procedure:** Specify stratification,
+- [x] **S12-22 — Define split and custody procedure:** Specify stratification,
   human custody, digest publication, unlock, invalidation, and resealing.
-- [ ] **S12-23 — Define dataset validation rules:** Specify schema, offset,
+- [x] **S12-23 — Define dataset validation rules:** Specify schema, offset,
   coverage, provenance, duplicate, split, and referential-integrity failures.
-- [ ] **S12-24 — Define metric implementations:** Freeze formulas, averaging,
+- [x] **S12-24 — Define metric implementations:** Freeze formulas, averaging,
   confidence intervals, missing-output handling, and slice aggregation.
-- [ ] **S12-25 — Pre-register quality thresholds:** Record hard, semantic,
+- [x] **S12-25 — Pre-register quality thresholds:** Record hard, semantic,
   business, and operational gate values before the full dataset is observed.
-- [ ] **S12-26 — Audit ontology reuse and gaps:** Use the governed ontology
+- [x] **S12-26 — Audit ontology reuse and gaps:** Use the governed ontology
   workflow to classify required concepts as released reuse, operational state,
   or proposed semantic change.
-- [ ] **S12-27 — Prepare the G1 packet:** Bind the complete dataset, annotation,
+- [x] **S12-27 — Prepare the G1 packet:** Bind the complete dataset, annotation,
   metrics, privacy, custody, and semantic contracts.
 - [ ] **S12-28 — Approve G1 dataset contract:** Human and semantic reviewers
   accept, revise, or reject the frozen design before authoring at scale.

@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.local/evaluation/sprint-12/scenario-case.v1.schema.json",
+  "title": "Projecta Sprint 12 Longitudinal Scenario",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["scenarioId", "schemaVersion", "journeyId", "split", "events", "checkpoints", "competencyAnswers", "sourceManifest"],
+  "properties": {
+    "scenarioId": {"type": "string", "pattern": "^s12-s-[0-9]{3}$"},
+    "schemaVersion": {"const": "s12.scenario.v1"},
+    "journeyId": {"type": "string", "enum": ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"]},
+    "split": {"type": "string", "enum": ["development", "validation", "test"]},
+    "events": {
+      "type": "array", "minItems": 5, "maxItems": 12,
+      "items": {"$ref": "#/$defs/event"}
+    },
+    "checkpoints": {
+      "type": "array", "minItems": 1,
+      "items": {"$ref": "#/$defs/checkpoint"}
+    },
+    "competencyAnswers": {
+      "type": "array", "items": {"$ref": "#/$defs/answer"}
+    },
+    "sourceManifest": {
+      "type": "array", "minItems": 1,
+      "items": {"type": "string", "pattern": "^s12-a-[0-9]{4}$"}
+    }
+  },
+  "$defs": {
+    "review": {
+      "type": "object", "additionalProperties": false,
+      "required": ["disposition", "correctionClass"],
+      "properties": {
+        "disposition": {"type": "string", "enum": ["confirmed", "rejected", "deferred", "not-applicable"]},
+        "correctionClass": {"type": "string", "enum": ["unchanged", "formatting-only", "minor-semantic", "major-semantic", "rejected", "missing-output", "not-applicable"]},
+        "rationale": {"type": "string", "maxLength": 2000}
+      }
+    },
+    "event": {
+      "type": "object", "additionalProperties": false,
+      "required": ["eventId", "sequence", "caseId", "expectedReview"],
+      "properties": {
+        "eventId": {"type": "string", "pattern": "^event-[0-9]{2}$"},
+        "sequence": {"type": "integer", "minimum": 1, "maximum": 12},
+        "caseId": {"type": "string", "pattern": "^s12-a-[0-9]{4}$"},
+        "expectedReview": {"$ref": "#/$defs/review"},
+        "expectedTemporalEffect": {"type": "string", "enum": ["none", "creates", "updates", "supersedes", "contradicts", "duplicates", "retracts"]},
+        "crossProjectCounterexample": {"type": "boolean"}
+      }
+    },
+    "checkpoint": {
+      "type": "object", "additionalProperties": false,
+      "required": ["afterSequence", "sourceIds", "candidateIds", "assertedIds", "inferredExpectations", "provenanceActivityIds"],
+      "properties": {
+        "afterSequence": {"type": "integer", "minimum": 1, "maximum": 12},
+        "sourceIds": {"type": "array", "items": {"type": "string"}},
+        "candidateIds": {"type": "array", "items": {"type": "string"}},
+        "assertedIds": {"type": "array", "items": {"type": "string"}},
+        "inferredExpectations": {"type": "array", "items": {"type": "string"}},
+        "provenanceActivityIds": {"type": "array", "items": {"type": "string"}},
+        "contradictionIds": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "answer": {
+      "type": "object", "additionalProperties": false,
+      "required": ["questionId", "status", "expectedFactIds", "expectedCitationIds", "completeness", "freshness", "abstain"],
+      "properties": {
+        "questionId": {"type": "string", "pattern": "^CQ-[0-9]{2}$"},
+        "status": {"type": "string", "enum": ["answerable", "ambiguous", "unsupported", "cross-project"]},
+        "expectedFactIds": {"type": "array", "items": {"type": "string"}},
+        "expectedCitationIds": {"type": "array", "items": {"type": "string"}},
+        "completeness": {"type": "string", "enum": ["complete", "partial", "not-applicable"]},
+        "freshness": {"type": "string", "enum": ["current", "historical", "stale", "not-applicable"]},
+        "abstain": {"type": "boolean"}
+      }
+    }
+  }
+}

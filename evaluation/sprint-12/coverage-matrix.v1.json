@@ -1,0 +1,38 @@
+{
+  "version": "s12.coverage.v1",
+  "status": "G1_PROPOSED",
+  "minimums": {
+    "atomicCases": 200,
+    "longitudinalScenarios": 24,
+    "atomicSplit": {"development": 120, "validation": 40, "test": 40},
+    "scenarioSplit": {"development": 12, "validation": 6, "test": 6},
+    "doubleAnnotatedDevelopmentFraction": 0.25,
+    "doubleAnnotatedValidationAndTest": 1.0,
+    "minimumScenariosPerJourney": 3,
+    "humanAuthoredFraction": 0.60
+  },
+  "languageMinimums": {"vi": 80, "en": 40, "ja": 20, "mixed": 20},
+  "mandatorySlices": [
+    "explicit-ambiguity-or-abstention",
+    "adversarial-or-prompt-injection",
+    "cross-project-isolation",
+    "fabricated-link",
+    "duplicate-evidence",
+    "contradiction-or-supersession",
+    "temporal-change",
+    "unicode-and-noisy-text"
+  ],
+  "journeys": [
+    {"id": "J1", "name": "structured-capture", "minimumAtomic": 20, "minimumScenarios": 3},
+    {"id": "J2", "name": "untyped-extraction", "minimumAtomic": 30, "minimumScenarios": 3},
+    {"id": "J3", "name": "candidate-review", "minimumAtomic": 25, "minimumScenarios": 3},
+    {"id": "J4", "name": "requirement-decision-change", "minimumAtomic": 25, "minimumScenarios": 3},
+    {"id": "J5", "name": "coordination-semantics", "minimumAtomic": 25, "minimumScenarios": 3},
+    {"id": "J6", "name": "grounded-questions", "minimumAtomic": 25, "minimumScenarios": 3},
+    {"id": "J7", "name": "ambiguity-hostility-isolation", "minimumAtomic": 25, "minimumScenarios": 3},
+    {"id": "J8", "name": "longitudinal-continuity", "minimumAtomic": 25, "minimumScenarios": 3}
+  ],
+  "semanticTypes": ["Requirement", "Decision", "Question", "Task", "Risk", "Assumption", "Constraint", "ProgressClaim", "ResearchFinding"],
+  "relationPredicates": ["implements", "blocks", "dependsOn", "supports", "answers", "resolves", "constrainedBy"],
+  "coverageRule": "Every journey, released type and released predicate must have positive, negative, boundary and confusable evidence where its semantics permit; unsupported concepts are explicit semantic gaps."
+}

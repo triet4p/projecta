@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.local/evaluation/sprint-12/atomic-case.v1.schema.json",
+  "title": "Projecta Sprint 12 Atomic Case",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["caseId", "schemaVersion", "journeyId", "source", "split", "gold"],
+  "properties": {
+    "caseId": {"type": "string", "pattern": "^s12-a-[0-9]{4}$"},
+    "schemaVersion": {"const": "s12.atomic.v1"},
+    "journeyId": {"type": "string", "enum": ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"]},
+    "scenarioId": {"type": ["string", "null"], "pattern": "^s12-s-[0-9]{3}$"},
+    "source": {"$ref": "#/$defs/source"},
+    "split": {"type": "string", "enum": ["development", "validation", "test"]},
+    "gold": {"$ref": "#/$defs/atomicGold"}
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rawText", "language", "origin", "sensitivity", "license", "permissionRef", "contentDigest"],
+      "properties": {
+        "rawText": {"type": "string", "minLength": 1, "maxLength": 100000},
+        "language": {"type": "string", "enum": ["vi", "en", "ja", "mixed"]},
+        "origin": {"type": "string", "enum": ["human-authored-synthetic", "model-assisted-rewritten", "authorized-deidentified", "public-licensed"]},
+        "sensitivity": {"type": "string", "enum": ["synthetic", "deidentified", "public"]},
+        "license": {"type": "string", "minLength": 1, "maxLength": 512},
+        "permissionRef": {"type": "string", "minLength": 1, "maxLength": 256},
+        "contentDigest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "authoringNote": {"type": "string", "maxLength": 2000}
+      }
+    },
+    "span": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "end", "text"],
+      "properties": {
+        "start": {"type": "integer", "minimum": 0},
+        "end": {"type": "integer", "minimum": 1},
+        "text": {"type": "string", "minLength": 1}
+      }
+    },
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "span"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^entity-[0-9]{2}$"},
+        "type": {"type": "string", "enum": ["Requirement", "Decision", "Question", "Task", "Risk", "Assumption", "Constraint", "ProgressClaim", "ResearchFinding"]},
+        "span": {"$ref": "#/$defs/span"},
+        "label": {"type": "string", "minLength": 1, "maxLength": 4096}
+      }
+    },
+    "relation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["predicate", "sourceEntityId", "targetEntityId", "span"],
+      "properties": {
+        "predicate": {"type": "string", "enum": ["implements", "blocks", "dependsOn", "supports", "answers", "resolves", "constrainedBy"]},
+        "sourceEntityId": {"type": "string", "pattern": "^entity-[0-9]{2}$"},
+        "targetEntityId": {"type": "string", "pattern": "^entity-[0-9]{2}$"},
+        "span": {"$ref": "#/$defs/span"}
+      }
+    },
+    "link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mention", "targetEntityId", "span"],
+      "properties": {
+        "mention": {"type": "string", "minLength": 1, "maxLength": 4096},
+        "targetEntityId": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"},
+        "span": {"$ref": "#/$defs/span"}
+      }
+    },
+    "abstention": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "reason"],
+      "properties": {
+        "required": {"type": "boolean"},
+        "reason": {"type": ["string", "null"], "maxLength": 1024}
+      }
+    },
+    "semanticGap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "rationale"],
+      "properties": {
+        "label": {"type": "string", "minLength": 1, "maxLength": 256},
+        "rationale": {"type": "string", "minLength": 1, "maxLength": 2000},
+        "candidateReleasedTerm": {"type": ["string", "null"], "maxLength": 256}
+      }
+    },
+    "atomicGold": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entities", "relations", "links", "abstention", "semanticGaps"],
+      "properties": {
+        "entities": {"type": "array", "items": {"$ref": "#/$defs/entity"}},
+        "relations": {"type": "array", "items": {"$ref": "#/$defs/relation"}},
+        "links": {"type": "array", "items": {"$ref": "#/$defs/link"}},
+        "abstention": {"$ref": "#/$defs/abstention"},
+        "semanticGaps": {"type": "array", "items": {"$ref": "#/$defs/semanticGap"}}
+      }
+    }
+  }
+}
