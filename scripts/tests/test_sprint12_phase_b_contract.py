@@ -12,15 +12,14 @@ EVALUATION = ROOT / "evaluation/sprint-12"
 ARTIFACTS = ROOT / "docs/sprint-plans/sprint-12/artifacts"
 
 
-def test_phase_b_tasks_are_complete_but_g1_approval_is_pending() -> None:
+def test_phase_b_tasks_and_g1_approval_are_complete() -> None:
     plan = PLAN.read_text(encoding="utf-8")
-    for number in range(11, 28):
+    for number in range(11, 29):
         assert f"[x] **S12-{number:02d}" in plan
-    assert "[ ] **S12-28" in plan
-    assert "G1_PACKET_READY_FOR_HUMAN_APPROVAL" in plan
+    assert "G1_APPROVED_G2_PENDING" in plan
 
 
-def test_g1_packet_contains_contract_sections_and_pending_approval() -> None:
+def test_g1_packet_contains_contract_sections_and_approval() -> None:
     packet = PACKET.read_text(encoding="utf-8")
     for section in [
         "Contract package (S12-11 through S12-27)",
@@ -33,8 +32,8 @@ def test_g1_packet_contains_contract_sections_and_pending_approval() -> None:
         "Approval record (S12-28)",
     ]:
         assert section in packet
-    assert "| G1 outcome | `PENDING_HUMAN_APPROVAL` |" in packet
-    assert "[ ] Project owner and semantic reviewer approve the G1 dataset contract." in packet
+    assert "| G1 outcome | `APPROVED` |" in packet
+    assert "[x] Project owner and semantic reviewer approve the G1 dataset contract." in packet
 
 
 def test_phase_b_json_contracts_are_valid_and_versioned() -> None:
@@ -49,16 +48,16 @@ def test_phase_b_json_contracts_are_valid_and_versioned() -> None:
     assert coverage["minimums"]["longitudinalScenarios"] == 24
 
 
-def test_ontology_audit_is_no_change_and_pending_semantic_review() -> None:
+def test_ontology_audit_is_approved_no_change() -> None:
     audit = AUDIT.read_text(encoding="utf-8")
-    assert "**Status:** `PENDING_HUMAN_REVIEW`" in audit
+    assert "**Status:** `HUMAN_APPROVED_PENDING_IMPLEMENTATION`" in audit
     assert "No ontology vocabulary change is proposed" in audit
     assert "Keep operational/evaluation" in audit
-    assert "[ ] Approve reuse/no-change semantic outcome." in audit
+    assert "[x] Approve reuse/no-change semantic outcome." in audit
 
 
 def test_phase_b_task_summaries_exist() -> None:
-    for number in range(11, 28):
+    for number in range(11, 29):
         summary = ARTIFACTS / f"task_S12-{number:02d}_summary.md"
         assert summary.exists(), summary
         content = summary.read_text(encoding="utf-8")

@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G1_PACKET_READY_FOR_HUMAN_APPROVAL`
+Status: `G1_APPROVED_G2_PENDING`
 
 G0 packet: [Business Scope Review Packet](sprint-12/g0-business-scope.md)
 
@@ -255,7 +255,7 @@ G1 packet: [Dataset Contract Review Packet](sprint-12/g1-dataset-contract.md)
   or proposed semantic change.
 - [x] **S12-27 — Prepare the G1 packet:** Bind the complete dataset, annotation,
   metrics, privacy, custody, and semantic contracts.
-- [ ] **S12-28 — Approve G1 dataset contract:** Human and semantic reviewers
+- [x] **S12-28 — Approve G1 dataset contract:** Human and semantic reviewers
   accept, revise, or reject the frozen design before authoring at scale.
 
 ### Phase C — Annotation Pilot and G2

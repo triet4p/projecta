@@ -1,24 +1,24 @@
 # Sprint 12 G1 Dataset Contract Review Packet
 
-**Status:** `READY_FOR_HUMAN_APPROVAL`
+**Status:** `APPROVED`
 
 **Sprint:** Sprint 12 — Business Semantic Quality and Evaluation
 
 **Gate:** G1 — Dataset Contract
 
-**Decision requested:** Project owner and semantic reviewer should approve,
-revise or reject the frozen design before scaled authoring begins.
+**Decision:** Project owner and semantic reviewer approved the frozen design
+without revisions on 2026-08-14.
 
 ## 1. Decision record
 
 | Field | Value |
 | --- | --- |
 | G0 prerequisite | Approved without revision in `g0-business-scope.md` |
-| G1 outcome | `PENDING_HUMAN_APPROVAL` |
+| G1 outcome | `APPROVED` |
 | Approval authority | Project owner plus semantic reviewer |
 | Dataset authoring | Not yet started at scale |
 | Held-out test access | Not available to the agent |
-| Ontology outcome | No ontology change proposed; audit is `PENDING_HUMAN_REVIEW` |
+| Ontology outcome | No ontology change proposed; audit is human approved |
 | Next gate | G2 — Annotation Pilot |
 
 G1 approval authorizes contract-compliant authoring and annotation. It does not
@@ -133,8 +133,10 @@ temporal and retrieval semantics as reuse. Dataset identity, split, custody,
 correction, metric and leakage fields remain evaluation/operational metadata.
 No Turtle, SHACL, rule, migration or runtime RDF artifact is changed.
 
-The semantic reviewer must explicitly approve the no-change outcome or identify
-the exact competency question that requires reopening ontology governance.
+The project owner and semantic reviewer explicitly approved the no-change
+outcome without revision. Any future held-out gold concept that cannot map to
+released semantics must still identify the exact competency question and
+reopen ontology governance.
 
 ## 8. G1 acceptance checklist
 
@@ -148,16 +150,16 @@ the exact competency question that requires reopening ontology governance.
 - [x] Deterministic validation rules and safe failure reporting are defined.
 - [x] Metric formulas, missing-output handling and reporting slices are defined.
 - [x] Thresholds are pre-registered before full corpus observation.
-- [x] Ontology reuse/no-change audit is prepared and awaits semantic review.
-- [ ] Project owner and semantic reviewer approve the G1 dataset contract.
+- [x] Ontology reuse/no-change audit is approved without revision.
+- [x] Project owner and semantic reviewer approve the G1 dataset contract.
 
 ## 9. Approval record (S12-28)
 
 | Field | Value |
 | --- | --- |
-| G1 outcome | `PENDING_HUMAN_APPROVAL` |
-| Project owner | _Awaiting review_ |
-| Semantic reviewer | _Awaiting review_ |
-| Approved revisions | _None recorded_ |
+| G1 outcome | `APPROVED` |
+| Project owner | Explicit approval recorded in Codex task on 2026-08-14 |
+| Semantic reviewer | Explicit approval recorded in Codex task on 2026-08-14 |
+| Approved revisions | None |
 | Reviewed package | This packet, schema files, coverage matrix, guide, governance, metrics and ontology audit |
 | Authorization after approval | Begin G2 pilot authoring only; no held-out access or release authorization |
