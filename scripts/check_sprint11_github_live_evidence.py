@@ -32,7 +32,8 @@ def _journey_waiver_applies(record: dict[str, Any]) -> bool:
     try:
         packet = G2_PACKET.read_text(encoding="utf-8")
         accepted = _read(ARTIFACT)
-        journey_hash = hashlib.sha256(JOURNEY.read_bytes()).hexdigest()
+        journey_bytes = JOURNEY.read_bytes().replace(b"\r\n", b"\n")
+        journey_hash = hashlib.sha256(journey_bytes).hexdigest()
     except (OSError, TypeError, ValueError, json.JSONDecodeError):
         return False
     return (
