@@ -243,6 +243,9 @@ jobs:
           distribution: temurin
           java-version: "21"
           cache: maven
+      - name: Install web dependencies
+        working-directory: apps/web
+        run: npm ci
       - name: Run deterministic Sprint 11 validation
         shell: pwsh
         run: ./scripts/run_sprint11_validation.ps1 -SkipComposeConfig -EvidencePath "$env:RUNNER_TEMP/s11-validation.json"
