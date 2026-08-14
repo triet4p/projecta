@@ -81,7 +81,9 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   implementation is complete. G2 was approved with an explicit residual-risk
   waiver for the quota-limited live edit/replay rerun; baseline r9 and
   deterministic provenance contracts are accepted. Version alignment,
-  release-contract freeze, immutable preflight, G3, and publication remain open.*
+  release-contract freeze, immutable preflight, G3, and publication completed
+  with the public non-draft `v0.6.0` release on 2026-08-14. Sprint 11 closure
+  remains open for the separately tracked M7 follow-up.*
 
 ## Planned Sprints
 

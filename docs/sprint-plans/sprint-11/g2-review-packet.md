@@ -1,13 +1,13 @@
 # Sprint 11 Amended G2 Review Packet
 
-Status: `G2_APPROVED_RELEASE_PREPARATION_PENDING`
+Status: `V0.6.0_PUBLISHED_S11_77_PENDING`
 
 G2 product/security/release approval: `APPROVED_WITH_RESIDUAL_RISK` on 2026-08-14
 Ontology semantic reuse approval: `APPROVED_BY_PROJECT_OWNER` on 2026-08-13
 
-This packet records the project owner's G2 approval and the accepted anonymous
-GitHub quota residual risk. It does not publish `v0.6.0` or grant G3
-exact-commit approval.
+This packet records the project owner's G2 approval, the accepted anonymous
+GitHub quota residual risk, and the completed `v0.6.0` publication. S11-77
+Sprint closure remains pending.
 
 ## Decision record
 
@@ -134,7 +134,7 @@ provider quota; empty or truncated baseline runs remain unacceptable.
 - Teams live acceptance is deferred and requires a separately authorized
   tenant, consent, secret custody, cleanup, and live-evidence decision.
 - v0.6.0 version/changelog freeze, immutable preflight, G3 exact-commit
-  approval, and publication remain open.
+  approval, and publication are complete; Sprint 11 closure remains open.
 
 ## Reviewer checklist and decision rule
 
@@ -161,13 +161,15 @@ credential-free public read-only ingestion.
 - Ontology semantic reuse approval: `APPROVED` by project owner on 2026-08-13
 - G2 product/security/release approval: `APPROVED_WITH_RESIDUAL_RISK` by project owner on 2026-08-14
 - Immutable `v0.6.0` preflight: `PASSED` on exact commit
-  `8c9f870d914c3b9af63c77de2a8d4592a483cfd3`; clean Compose, cold recovery,
+  `4a4fa99e010f22a69667119554580c91e2fc7b7e`; clean Compose, cold recovery,
   S11 validation, and Sprint 10 validation passed. External evidence digests:
   clean Compose `56798c27ac507cb33f9f7ce7a962eb4d8d9ef8a17c48022e6f14157468587ef7`,
   cold recovery `0cd9f8e7df22a240f2135a73216cda6aae92e655dc264fea4fc26ffc46acd974`,
   S11 validation `d2a26b1cd6861495d1344a657892b10387ac7dbc54a1469a831ad86d92d85953`,
   Sprint 10 validation `f244fadf7bb4da071778fe5ac7f39a4409d584593e43c526df96b2ab819796ba`.
 - G3 exact commit approval: `APPROVED_BY_RELEASE_AGENT` for exact commit
-  `8c9f870d914c3b9af63c77de2a8d4592a483cfd3`; annotated tag publication remains
-  gated on release CI terminal success.
-- Publication: `PENDING`
+  `4a4fa99e010f22a69667119554580c91e2fc7b7e`; annotated tag `v0.6.0` is
+  immutable and points to this commit.
+- Publication: `PASSED`; GitHub Actions run `31767397618` completed all required
+  jobs successfully and published the non-draft release at
+  https://github.com/triet4p/projecta/releases/tag/v0.6.0.

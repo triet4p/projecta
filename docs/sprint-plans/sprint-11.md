@@ -439,7 +439,7 @@ Status legend: [ ] pending / [~] in progress / [x] done
   pinned images, native exit codes, totals, and artifact digests.
 - [x] **S11-75 — Approve G3 exact-commit release authorization:** Human names the
   immutable commit approved for annotated `v0.6.0` publication.
-- [ ] **S11-76 — Publish and verify v0.6.0:** Push only the approved commit and
+- [x] **S11-76 — Publish and verify v0.6.0:** Push only the approved commit and
   annotated tag, follow every required job to terminal success, verify the
   public non-draft release and notes, and preserve failed tags unchanged.
 - [ ] **S11-77 — Close Sprint 11 and update M7:** Attach release evidence, record
