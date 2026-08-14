@@ -11,7 +11,7 @@ test("real Compose JSON/Mock import stays bounded and public-ID free", async ({ 
   await expect(page.getByRole("heading", { name: "Project A", level: 2 })).toBeVisible();
   await page.getByRole("button", { name: "Connections" }).click();
   await expect(page.getByRole("heading", { name: "Connections" })).toBeVisible();
-  await expect(page.getByText("JSON/Mock")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Install JSON/Mock" })).toBeVisible();
 
   await Promise.all([
     acceptNextDialog(page),

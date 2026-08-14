@@ -190,3 +190,23 @@ async def test_production_session_endpoint_is_server_owned_and_csrf_is_required(
         assert session.json()["identity"] == "authenticated-user"
         rejected = await client.post("/auth/logout")
         assert rejected.status_code == 403
+
+
+@pytest.mark.asyncio
+async def test_experience_session_endpoint_exposes_server_owned_context() -> None:
+    settings = Settings(
+        runtime_mode="experience",
+        trusted_context_secret="experience-only-secret",
+        experience_actor_id="acceptance-reviewer",
+        experience_project_catalog="project-a|Project A",
+    )
+    app = create_app(settings=settings, identity_repository=InMemoryIdentityRepository())
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
+        session = await client.get("/v1/auth/session")
+    assert session.status_code == 200
+    assert session.json() == {
+        "requestId": session.json()["requestId"],
+        "authenticated": True,
+        "identity": "server-owned-experience",
+        "projects": [],
+    }

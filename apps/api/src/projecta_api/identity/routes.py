@@ -50,6 +50,17 @@ def add_identity_routes(router: APIRouter) -> None:
         current = service.session(request.cookies.get(service.settings.session_cookie_name))
         request_id = getattr(request.state, "request_id", "auth-session")
         if current is None:
+            if (
+                service.settings.runtime_mode == "experience"
+                and service.settings.trusted_context_secret
+                and service.settings.experience_actor_id
+            ):
+                return {
+                    "requestId": request_id,
+                    "authenticated": True,
+                    "identity": "server-owned-experience",
+                    "projects": [],
+                }
             if service.settings.runtime_mode != "production":
                 return {"requestId": request_id, "authenticated": False}
             raise IdentityError("AUTHENTICATION_REQUIRED")

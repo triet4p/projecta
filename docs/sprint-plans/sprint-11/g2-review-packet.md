@@ -72,7 +72,7 @@ retained as a diagnostic record rather than represented as passing evidence.
 | Artifact | Purpose | SHA-256 |
 | --- | --- | --- |
 | `artifacts/s11-A18-github-live-acceptance.json` | Passing r9 baseline import, PR exclusion, exact delta, replay, isolation | `ca4883f8158be882717074dce2d398a58d53ccb58b2004e1f0adb74608a0f9d1` |
-| `artifacts/s11-A18-github-live-journey.json` | Failed quota-limited edit/replay diagnostic retained under the G2 waiver | `5cb7f5cb40a3d1ad9a4762bf0440e03eadb7b9c942f1d8d10401c077f285a0cc` |
+| `artifacts/s11-A18-github-live-journey.json` | Failed quota-limited edit/replay diagnostic retained under the G2 waiver | `24066b08617b5d786cf1f3947f9cc543214aba69f36e98ef96c40480a72d378c` |
 | `artifacts/s11-66-clean-compose.json` | Clean production-shaped Compose gate | `bffc14e403644a3285fb3eec69f15c0854c9ff5fe01a1cca31fc813ec9fe126d` |
 | `artifacts/s11-63-cold-recovery.json` | Coordinated recovery and post-restore replay | `7141ec7d2caf901bfde6ae9d0f74ff21a9db8456affa4b38e8e463d2305d582b` |
 | `artifacts/s11-65-validation-remediation.json` | Validation remediation gates | `b05a14f98920e07d42a9b184f3ae73d5c279afc8012cad24615ff48a6c587504` |

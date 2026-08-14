@@ -24,9 +24,10 @@ def main() -> int:
     github_evidence = json.loads(_text("docs/sprint-plans/sprint-11/artifacts/s11-A18-github-live-acceptance.json"))
     github_journey = json.loads(_text("docs/sprint-plans/sprint-11/artifacts/s11-A18-github-live-journey.json"))
     g2_packet = _text("docs/sprint-plans/sprint-11/g2-review-packet.md")
-    journey_digest = hashlib.sha256(
-        (ROOT / "docs/sprint-plans/sprint-11/artifacts/s11-A18-github-live-journey.json").read_bytes()
-    ).hexdigest()
+    journey_bytes = (
+        ROOT / "docs/sprint-plans/sprint-11/artifacts/s11-A18-github-live-journey.json"
+    ).read_bytes().replace(b"\r\n", b"\n")
+    journey_digest = hashlib.sha256(journey_bytes).hexdigest()
     complete_journey = (
         github_journey.get("status") == "passed"
         and all(

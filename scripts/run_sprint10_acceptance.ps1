@@ -119,6 +119,7 @@ Push-Location $root
 try {
     Set-Environment
     Invoke-Checked "Compose interpolation" { docker compose -p $ComposeProject --profile web config --quiet }
+    Invoke-Checked "Build local Fuseki bootstrap image" { docker compose -p $ComposeProject --profile web build fuseki }
     Invoke-Checked "Clean production-shaped stack startup" { docker compose -p $ComposeProject --profile web up -d --build }
     $stackStarted = $true
     Wait-Ready "http://127.0.0.1:3000/health/live" "web liveness"

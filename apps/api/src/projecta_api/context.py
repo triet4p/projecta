@@ -169,6 +169,8 @@ class LocalExperienceContextMiddleware(BaseHTTPMiddleware):
                 b"x-projecta-selection-revision",
             ):
                 headers.pop(name, None)
+        request.state.request_id = correlation.request_id
+        request.state.operation_id = correlation.operation_id
         request.scope["headers"] = list(headers.items())
         response = await call_next(request)
         response.headers["X-Request-Id"] = correlation.request_id

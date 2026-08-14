@@ -616,3 +616,22 @@ not assume a prior local digest remains valid after a test image rebuild.
 **Watch out for:** Keep image digest capture and Compose execution in the same
 validated preflight sequence, especially when `--build` creates connector test
 images from the same Docker context.
+
+## [2026-08-14] Release gates must normalize artifact bytes and build local-only images
+
+**Symptom:** Linux CI rejected the G2 journey waiver because the packet used a
+Windows CRLF file hash, and the clean acceptance runner tried to pull the
+repository-local Fuseki image from a registry. The real Compose browser journey
+also stopped at the unauthenticated shell in local experience mode.
+**Root cause:** The repository validator hashed platform-dependent bytes, the
+acceptance script relied on `up --build` to materialize an image used by a
+separate bootstrap service, and experience-mode auth sessions did not expose
+the server-owned context to the new browser auth shell.
+**Fix / workaround:** Normalize CRLF to LF before hashing the journey artifact,
+build the Fuseki image explicitly before starting the acceptance topology, and
+return an authenticated server-owned experience session only when the explicit
+experience actor and trusted context are configured.
+**Watch out for:** Release evidence digests must be computed from canonical
+bytes; every local-only Compose image used by another service needs an explicit
+build step; and experience mode must remain closed unless its server-owned
+context configuration is complete.
