@@ -2,7 +2,7 @@
 
 **Contract version:** `s12.v1`
 
-**Status:** `G1_PACKET_READY_FOR_HUMAN_APPROVAL`
+**Status:** `G2_APPROVED_G3_PENDING`
 
 This directory contains the governed contract for the Sprint 12 business
 semantic benchmark. It does not contain the held-out test cases or gold. Test

@@ -6,15 +6,16 @@
 
 ## Summary of Work
 
-Defined the calibration procedure for language/domain qualification, common
-examples, conflicts, isolated labeling and guide clarification. The procedure
-explicitly withholds pilot labels and future held-out gold from calibration.
+Prepared the calibration procedure for language/domain qualification, common
+examples, conflicts, isolated labeling and guide clarification. No qualified
+human calibration was run, so S12-32 is reopened; the procedure alone is not
+the required evidence.
 
 ## Files Modified
 
 * [calibration-protocol.v1.md](../../../../evaluation/sprint-12/pilot/calibration-protocol.v1.md) - Calibration and qualification protocol.
 * [g2-annotation-pilot.md](../g2-annotation-pilot.md) - Human evidence requirements.
-* [sprint-12.md](../../sprint-12.md) - Marked S12-32 complete.
+* [sprint-12.md](../../sprint-12.md) - Reopened S12-32 pending human calibration.
 
 ## Testing
 

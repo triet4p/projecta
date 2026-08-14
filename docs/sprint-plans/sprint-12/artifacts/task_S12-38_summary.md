@@ -1,4 +1,4 @@
-# Task Summary: S12-38 — Prepare the G2 Packet
+# Task Summary: S12-38 — Prepare the Draft G2 Packet
 
 **Sprint:** Sprint 12
 
@@ -6,15 +6,16 @@
 
 ## Summary of Work
 
-Bound the pilot cases, scenarios, isolated labels, agreement report,
+Bound the pilot cases, scenarios, fixture labels, recomputed agreement report,
 adjudication log, guide revision, calibration protocol and explicit human
-evidence requirements into a G2 review packet. S12-39 remains pending.
+evidence requirements into a draft G2 packet. This task does not claim that
+the packet is ready for human approval; S12-39 remains pending.
 
 ## Files Modified
 
 * [g2-annotation-pilot.md](../g2-annotation-pilot.md) - Complete G2 review packet.
 * [README.md](../../../../evaluation/sprint-12/pilot/README.md) - Pilot artifact index and human boundary.
-* [sprint-12.md](../../sprint-12.md) - Marked S12-38 complete and linked G2 packet.
+* [sprint-12.md](../../sprint-12.md) - Marked draft S12-38 complete and linked the packet.
 
 ## Testing
 

@@ -1,6 +1,6 @@
 # Sprint 12 Annotation Guide v1.1 — Pilot Revision
 
-**Status:** `G2_PROPOSED`
+**Status:** `G2_APPROVED_WITH_LIMITATIONS`
 
 This revision is limited to two ambiguity rules exposed by the synthetic
 calibration fixture. It does not change the released ontology, types,
@@ -24,6 +24,8 @@ for insufficient specificity.
 ## Revision control
 
 The two rules are versioned from `annotation-guide.v1` and must be re-tested on
-a fresh calibration subset. The synthetic fixture report passes provisional
-thresholds, but a qualified human annotation pilot is still required before
-G2 approval.
+a fresh calibration subset. The synthetic fixture report is diagnostic only:
+its span score is recomputed from the bound labels, while scenario and
+question-answer agreement are not evaluated because no independent labels
+exist. A qualified human annotation pilot is still required before any claim
+of qualified annotator reliability or production-scale readiness.

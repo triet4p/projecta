@@ -13,7 +13,7 @@ def test_phase_a_tasks_and_g0_approval_are_complete() -> None:
     plan = PLAN.read_text(encoding="utf-8")
     for task_id in [f"S12-{number:02d}" for number in range(1, 11)]:
         assert f"[x] **{task_id}" in plan
-    assert "G0_APPROVED_G1_PENDING" in plan
+    assert "| G0 outcome | `APPROVED` |" in (ROOT / "docs/sprint-plans/sprint-12/g0-business-scope.md").read_text(encoding="utf-8")
 
 
 def test_g0_packet_contains_required_scope_sections_and_approval() -> None:

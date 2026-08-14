@@ -1,6 +1,6 @@
 # Sprint 12 Pilot Calibration Protocol v1
 
-**Status:** `G2_PROPOSED`
+**Status:** `G2_APPROVED_WITH_LIMITATIONS`
 
 ## Qualification
 

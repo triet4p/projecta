@@ -2,7 +2,7 @@
 
 **Pilot version:** `s12.pilot.v1`
 
-**Status:** `AGENT_GENERATED_CALIBRATION_FIXTURE_PENDING_HUMAN_REVIEW`
+**Status:** `G2_APPROVED_WITH_LIMITATIONS`
 
 This directory contains a synthetic calibration fixture for testing the Phase C
 annotation workflow. It is not evidence that qualified human annotators have
@@ -23,7 +23,7 @@ achieved G2 agreement.
 - `adjudication-log.v1.json` — fixture disagreements and accepted outcomes.
 - `annotation-guide.v1.1.md` — guide revisions derived from the fixture.
 
-Before G2 approval, a data/annotation owner must replace or supplement the
-fixture with two independently produced human label sets, verify qualifications
-and conflicts, and rerun the agreement procedure without shared intermediate
-answers.
+Before claiming qualified annotator reliability or production-scale readiness,
+a data/annotation owner must replace or supplement the fixture with two
+independently produced human label sets, verify qualifications and conflicts,
+and rerun the agreement procedure without shared intermediate answers.

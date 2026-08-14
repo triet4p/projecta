@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G2_PACKET_READY_FOR_HUMAN_APPROVAL`
+Status: `G2_APPROVED_G3_PENDING`
 
 G0 packet: [Business Scope Review Packet](sprint-12/g0-business-scope.md)
 
@@ -268,21 +268,21 @@ G2 packet: [Annotation Pilot Review Packet](sprint-12/g2-annotation-pilot.md)
   longitudinal episodes with graph checkpoints and business questions.
 - [x] **S12-31 — Validate pilot source provenance:** Confirm every pilot case is
   permitted, classified, and free of prohibited content.
-- [x] **S12-32 — Calibrate annotators:** Run common examples without including
+- [ ] **S12-32 — Calibrate annotators:** Run common examples without including
   pilot or future held-out gold.
-- [x] **S12-33 — Independently annotate the pilot:** Produce two isolated label
+- [ ] **S12-33 — Independently annotate the pilot:** Produce two isolated label
   sets without shared intermediate answers.
-- [x] **S12-34 — Measure pilot agreement:** Compute type, span, relation/link,
+- [ ] **S12-34 — Measure pilot agreement:** Compute type, span, relation/link,
   abstention, graph-state, and question-answer agreement.
-- [x] **S12-35 — Adjudicate pilot disagreements:** Record the accepted outcome
+- [ ] **S12-35 — Adjudicate pilot disagreements:** Record the accepted outcome
   and reason for every material disagreement.
-- [x] **S12-36 — Revise the annotation guide:** Correct only ambiguous rules
+- [ ] **S12-36 — Revise the annotation guide:** Correct only ambiguous rules
   revealed by the pilot and version the changes.
-- [x] **S12-37 — Re-run pilot agreement:** Confirm the revised guidance meets
+- [ ] **S12-37 — Re-run pilot agreement:** Confirm the revised guidance meets
   the G2 thresholds on a fresh calibration subset.
-- [x] **S12-38 — Prepare the G2 packet:** Bind pilot cases, independent labels,
+- [x] **S12-38 — Prepare the draft G2 packet:** Bind pilot cases, fixture labels,
   metrics, adjudication, and guide versions.
-- [ ] **S12-39 — Approve G2 annotation reliability:** Human reviewers accept,
+- [x] **S12-39 — Approve G2 annotation reliability:** Human reviewers accept,
   revise, or reject scaled dataset production.
 
 ### Phase D — Corpus Construction and G3

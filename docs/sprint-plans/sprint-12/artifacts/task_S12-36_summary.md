@@ -6,15 +6,16 @@
 
 ## Summary of Work
 
-Created guide v1.1 with only the two ambiguity rules exposed by the pilot
-fixture: ResearchFinding versus ProgressClaim and vague future language that
-requires abstention. No ontology, threshold or split rule was changed.
+Prepared guide v1.1 with two ambiguity rules exposed by the pilot fixture.
+The accepted gold is now consistent with AG-01, but the guide still requires
+human review and a fresh rerun, so S12-36 is reopened. No ontology, threshold
+or split rule was changed.
 
 ## Files Modified
 
 * [annotation-guide.v1.1.md](../../../../evaluation/sprint-12/pilot/annotation-guide.v1.1.md) - Versioned guide revision.
 * [adjudication-log.v1.json](../../../../evaluation/sprint-12/pilot/adjudication-log.v1.json) - Revision rationale.
-* [sprint-12.md](../../sprint-12.md) - Marked S12-36 complete.
+* [sprint-12.md](../../sprint-12.md) - Reopened S12-36 pending review.
 
 ## Testing
 

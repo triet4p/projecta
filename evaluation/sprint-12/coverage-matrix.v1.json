@@ -1,6 +1,6 @@
 {
   "version": "s12.coverage.v1",
-  "status": "G1_PROPOSED",
+  "status": "G1_APPROVED_G2_PREPARATION",
   "minimums": {
     "atomicCases": 200,
     "longitudinalScenarios": 24,

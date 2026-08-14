@@ -1,12 +1,13 @@
 # Sprint 12 G2 Annotation Pilot Review Packet
 
-**Status:** `READY_FOR_HUMAN_APPROVAL`
+**Status:** `G2_APPROVED_G3_PENDING`
 
 **Gate:** G2 — Annotation Pilot
 
-**Decision requested:** Human annotation lead and project owner must accept,
-revise or reject the pilot reliability evidence before scaled corpus
-production.
+**Decision:** G2 is approved by the project owner for progression to G3
+preparation, with the evidence limitations below explicitly retained. Human
+annotation evidence and a fresh rerun remain required before any claim of
+qualified annotator reliability or production-scale readiness.
 
 ## 1. Decision record
 
@@ -14,15 +15,16 @@ production.
 | --- | --- |
 | G0 | Approved without revision |
 | G1 | Approved without revision |
-| G2 outcome | `PENDING_HUMAN_APPROVAL` |
+| G2 outcome | `APPROVED_WITH_LIMITATIONS` |
 | Pilot corpus | 20 atomic cases and 3 five-event synthetic episodes |
 | Fixture status | Agent-generated calibration fixture; not human evidence |
 | Human annotators | Not yet recorded |
 | Next gate if approved | G3 — Dataset Freeze |
 
-The pilot package is executable as a calibration fixture and exposes all
-required evidence shapes, disagreements and guide revisions. It does not claim
-that qualified human annotators have met the G2 agreement thresholds.
+S12-38 prepared the draft packet. The package is
+executable as a calibration fixture and exposes the required evidence shapes,
+disagreements and guide revisions; it does not claim that qualified human
+annotators have met the G2 agreement thresholds.
 
 ## 2. Pilot package
 
@@ -47,14 +49,32 @@ guide revision are exercised.
 | Metric | Fixture result | Provisional G2 target | Interpretation |
 | --- | ---: | ---: | --- |
 | Type/abstention agreement | 0.90 | 0.80 | Fixture passes; human evidence absent |
-| Span F1 | 1.00 | 0.85 | Fixture passes; human evidence absent |
+| Span F1 | 0.97297 | 0.85 | Recomputed from 18/19 spans; human evidence absent |
 | Relation/link F1 | 1.00 | 0.80 | Fixture passes; human evidence absent |
-| Scenario graph-state agreement | 0.90 | 0.80 | Fixture passes; human evidence absent |
-| Question-answer agreement | 0.90 | Report | Fixture diagnostic only |
+| Scenario graph-state agreement | N/A | 0.80 | No independent scenario labels supplied |
+| Question-answer agreement | N/A | Report | No independent competency-answer labels supplied |
+
+The report is bound to its two fixture label sets and deliberately does not
+invent scenario or question-answer agreement values. The fixture therefore
+does not pass the complete provisional gate, even though its recomputed
+type/abstention, span and relation/link dimensions are diagnostic.
+
+### Known preparation blockers
+
+- [x] Scenario fixtures include the required `sourceManifest` field and the
+  contract test validates the actual instance shape.
+- [x] The context-free `s12-a-0009` gold outcome is abstention under AG-01.
+- [ ] Qualified human calibration and independent annotation are supplied.
+- [ ] A qualified reviewer adjudicates the human disagreements.
+- [ ] A fresh subset is rerun after guide revision.
+
+These limitations are accepted as explicit residual risks for this approval;
+they do not convert synthetic fixture evidence into human evidence.
 
 ## 4. Human evidence required for G2
 
-Before approval, the annotation lead must:
+Before any claim of qualified annotator reliability or production-scale
+readiness, the annotation lead must:
 
 - identify qualified Vietnamese, English, Japanese and mixed-language
   annotators for the slices actually retained;
@@ -73,23 +93,26 @@ as the human pilot result.
 ## 5. G2 acceptance checklist
 
 - [x] Pilot atomic set has at least 20 synthetic cases.
-- [x] Pilot scenario set has at least 3 longitudinal episodes.
-- [x] Pilot provenance, licensing, sensitivity and content digests are present.
+- [x] Pilot scenario set has at least 3 longitudinal episodes with schema-valid
+  source manifests.
+- [x] Pilot provenance, licensing, sensitivity and content digests are fully
+  validated for the scenario instances.
 - [x] Calibration protocol and role separation are defined.
 - [x] Two isolated label-set fixtures exist and are intentionally non-identical.
-- [x] Agreement metrics and provisional thresholds are computed.
-- [x] Fixture disagreements have accepted outcomes and guide revisions.
-- [x] Fresh-rerun procedure is defined.
+- [ ] Human agreement metrics and provisional thresholds are computed.
+- [ ] Human disagreements have accepted outcomes and guide revisions.
+- [ ] Fresh-rerun procedure is executed on a fresh subset.
 - [ ] Qualified human annotation evidence is supplied.
-- [ ] Human reviewers approve G2 annotation reliability.
+- [x] Project owner approves G2 annotation reliability with the limitations
+  recorded above.
 
 ## 6. Approval record (S12-39)
 
 | Field | Value |
 | --- | --- |
-| G2 outcome | `PENDING_HUMAN_APPROVAL` |
-| Project owner | _Awaiting review_ |
+| G2 outcome | `APPROVED_WITH_LIMITATIONS` |
+| Project owner | Explicit approval recorded in Codex task on 2026-08-14 |
 | Annotation lead | _Awaiting qualified human evidence_ |
-| Semantic reviewer | _Awaiting review_ |
-| Approved revisions | _None recorded_ |
-| Authorization after approval | Begin scaled development-pool authoring only; held-out test remains sealed |
+| Semantic reviewer | Limitation retained; no new ontology change approved |
+| Approved revisions | Evidence limitation recorded; no contract/ontology revision |
+| Authorization after approval | Proceed to G3 preparation only; do not claim qualified human reliability or unseal held-out test |

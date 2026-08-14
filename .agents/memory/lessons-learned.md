@@ -635,3 +635,20 @@ experience actor and trusted context are configured.
 bytes; every local-only Compose image used by another service needs an explicit
 build step; and experience mode must remain closed unless its server-owned
 context configuration is complete.
+
+## [2026-08-14] Sprint gate tests must not freeze transient status strings
+
+**Symptom:** The combined Sprint 12 Phase A+B+C regression failed after later
+gate approval because Phase A and Phase B tests still asserted their earlier
+pending statuses; the Phase C packet also reported metrics that could not be
+recomputed from its label inputs.
+**Root cause:** Contract tests treated the current plan status as permanent
+evidence of an earlier approval, and the fixture report trusted hand-entered
+scenario/answer values without corresponding independent label sets.
+**Fix / workaround:** Assert durable G0/G1 approval records, allow monotonic
+later gate states, recompute span/type/relation metrics from bound labels, and
+represent unavailable scenario/answer metrics as `null` with explicit missing
+inputs. Keep synthetic fixtures and human evidence separate.
+**Watch out for:** Every gate test should distinguish durable approval evidence
+from the current overall status, and every reported metric must have a declared
+input set that the test recomputes before accepting the report.

@@ -16,7 +16,7 @@ def test_phase_b_tasks_and_g1_approval_are_complete() -> None:
     plan = PLAN.read_text(encoding="utf-8")
     for number in range(11, 29):
         assert f"[x] **S12-{number:02d}" in plan
-    assert "G1_APPROVED_G2_PENDING" in plan
+    assert "| G1 outcome | `APPROVED` |" in PACKET.read_text(encoding="utf-8")
 
 
 def test_g1_packet_contains_contract_sections_and_approval() -> None:

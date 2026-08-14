@@ -3,7 +3,7 @@
   "status": "CALIBRATION_FIXTURE_ONLY",
   "humanEvidence": false,
   "disagreements": [
-    {"caseId":"s12-a-0009","annotatorA":"ResearchFinding","annotatorB":"ProgressClaim","accepted":"ResearchFinding","rule":"A result statement is a ResearchFinding only when the text presents a supported research result; the pilot fixture labels the explicit result marker as the intended finding.","requiresGuideRevision":true},
+    {"caseId":"s12-a-0009","annotatorA":"ResearchFinding","annotatorB":"ProgressClaim","accepted":"abstain","rule":"Under AG-01, a result marker without research or source context is insufficient to distinguish ResearchFinding from ProgressClaim and must abstain.","requiresGuideRevision":true},
     {"caseId":"s12-a-0015","annotatorA":"abstain","annotatorB":"Question","accepted":"abstain","rule":"Vague future language without an actor, object or actionable question is insufficiently specific and must abstain.","requiresGuideRevision":true}
   ],
   "unresolvedDisagreements": 0,

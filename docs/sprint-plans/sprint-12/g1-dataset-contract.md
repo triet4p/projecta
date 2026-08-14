@@ -127,7 +127,7 @@ without invalidating the frozen benchmark.
 
 ## 7. Ontology and semantic review (S12-26)
 
-The audit at [sprint-12-reuse-gap-audit.md](../ontology/sprint-12-reuse-gap-audit.md)
+The audit at [sprint-12-reuse-gap-audit.md](../../ontology/sprint-12-reuse-gap-audit.md)
 classifies released source, candidate, asserted, inferred, provenance,
 temporal and retrieval semantics as reuse. Dataset identity, split, custody,
 correction, metric and leakage fields remain evaluation/operational metadata.

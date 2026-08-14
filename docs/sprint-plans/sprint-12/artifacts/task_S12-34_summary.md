@@ -6,16 +6,17 @@
 
 ## Summary of Work
 
-Produced a deterministic pilot agreement report covering type/abstention,
-evidence span, relation/link, scenario graph-state and competency-question
-agreement. The fixture passes provisional thresholds while explicitly marking
-human evidence as absent.
+Produced a deterministic fixture agreement report for type/abstention, spans
+and relation/link, with metrics recomputed from the bound labels. The span F1
+is 36/37 (0.97297); scenario graph-state and competency-question agreement
+are not evaluated because no independent labels exist. S12-34 is reopened for
+the human measurement.
 
 ## Files Modified
 
 * [agreement-report.v1.json](../../../../evaluation/sprint-12/pilot/agreement-report.v1.json) - Fixture agreement metrics and thresholds.
 * [g2-annotation-pilot.md](../g2-annotation-pilot.md) - Provisional results and interpretation.
-* [sprint-12.md](../../sprint-12.md) - Marked S12-34 complete.
+* [sprint-12.md](../../sprint-12.md) - Reopened S12-34 pending human metrics.
 
 ## Testing
 

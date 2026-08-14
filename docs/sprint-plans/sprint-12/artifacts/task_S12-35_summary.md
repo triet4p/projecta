@@ -6,15 +6,16 @@
 
 ## Summary of Work
 
-Recorded two controlled fixture disagreements, accepted outcomes and rule
-rationales: ResearchFinding versus ProgressClaim, and vague future language
-versus correct abstention. No unresolved fixture disagreement remains.
+Recorded two controlled fixture disagreements and accepted fixture outcomes.
+The context-free ResearchFinding case is now adjudicated to abstention under
+AG-01. No unresolved fixture disagreement remains, but S12-35 is reopened
+pending qualified human adjudication.
 
 ## Files Modified
 
 * [adjudication-log.v1.json](../../../../evaluation/sprint-12/pilot/adjudication-log.v1.json) - Disagreement and accepted-outcome log.
 * [g2-annotation-pilot.md](../g2-annotation-pilot.md) - Adjudication evidence.
-* [sprint-12.md](../../sprint-12.md) - Marked S12-35 complete.
+* [sprint-12.md](../../sprint-12.md) - Reopened S12-35 pending human adjudication.
 
 ## Testing
 

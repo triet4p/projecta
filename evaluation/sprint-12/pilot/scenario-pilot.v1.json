@@ -2,8 +2,72 @@
   "datasetVersion": "s12.pilot.scenario.v1",
   "status": "AGENT_GENERATED_CALIBRATION_FIXTURE",
   "scenarios": [
-    {"scenarioId":"s12-s-001","schemaVersion":"s12.scenario.v1","journeyId":"J4","split":"development","events":[{"eventId":"event-01","sequence":1,"caseId":"s12-a-0001","expectedReview":{"disposition":"confirmed","correctionClass":"unchanged"},"expectedTemporalEffect":"creates"},{"eventId":"event-02","sequence":2,"caseId":"s12-a-0002","expectedReview":{"disposition":"confirmed","correctionClass":"unchanged"},"expectedTemporalEffect":"creates"},{"eventId":"event-03","sequence":3,"caseId":"s12-a-0019","expectedReview":{"disposition":"confirmed","correctionClass":"minor-semantic","rationale":"Record the change as supersession while preserving the old requirement."},"expectedTemporalEffect":"supersedes"},{"eventId":"event-04","sequence":4,"caseId":"s12-a-0003","expectedReview":{"disposition":"deferred","correctionClass":"minor-semantic"},"expectedTemporalEffect":"updates"},{"eventId":"event-05","sequence":5,"caseId":"s12-a-0008","expectedReview":{"disposition":"confirmed","correctionClass":"unchanged"},"expectedTemporalEffect":"none"}],"checkpoints":[{"afterSequence":1,"sourceIds":["s12-a-0001"],"candidateIds":["candidate-01"],"assertedIds":[],"inferredExpectations":[],"provenanceActivityIds":["activity-01"]},{"afterSequence":3,"sourceIds":["s12-a-0001","s12-a-0002","s12-a-0019"],"candidateIds":["candidate-01","candidate-02","candidate-03"],"assertedIds":["asserted-01","asserted-02"],"inferredExpectations":["requirement-history-preserved"],"provenanceActivityIds":["activity-01","activity-02","activity-03"],"contradictionIds":[]},{"afterSequence":5,"sourceIds":["s12-a-0001","s12-a-0002","s12-a-0019","s12-a-0003","s12-a-0008"],"candidateIds":["candidate-03","candidate-04"],"assertedIds":["asserted-01","asserted-02","asserted-05"],"inferredExpectations":["requirement-history-preserved"],"provenanceActivityIds":["activity-01","activity-02","activity-03","activity-04","activity-05"],"contradictionIds":[]}],"competencyAnswers":[{"questionId":"CQ-07","status":"answerable","expectedFactIds":["asserted-01","asserted-02"],"expectedCitationIds":["s12-a-0001","s12-a-0019"],"completeness":"complete","freshness":"current","abstain":false}]},
-    {"scenarioId":"s12-s-002","schemaVersion":"s12.scenario.v1","journeyId":"J5","split":"development","events":[{"eventId":"event-01","sequence":1,"caseId":"s12-a-0004","expectedReview":{"disposition":"confirmed","correctionClass":"unchanged"},"expectedTemporalEffect":"creates"},{"eventId":"event-02","sequence":2,"caseId":"s12-a-0005","expectedReview":{"disposition":"confirmed","correctionClass":"unchanged"},"expectedTemporalEffect":"creates"},{"eventId":"event-03","sequence":3,"caseId":"s12-a-0014","expectedReview":{"disposition":"confirmed","correctionClass":"minor-semantic"},"expectedTemporalEffect":"creates"},{"eventId":"event-04","sequence":4,"caseId":"s12-a-0020","expectedReview":{"disposition":"confirmed","correctionClass":"formatting-only"},"expectedTemporalEffect":"updates"},{"eventId":"event-05","sequence":5,"caseId":"s12-a-0006","expectedReview":{"disposition":"deferred","correctionClass":"minor-semantic"},"expectedTemporalEffect":"none"}],"checkpoints":[{"afterSequence":1,"sourceIds":["s12-a-0004"],"candidateIds":["candidate-11"],"assertedIds":[],"inferredExpectations":[],"provenanceActivityIds":["activity-11"]},{"afterSequence":3,"sourceIds":["s12-a-0004","s12-a-0005","s12-a-0014"],"candidateIds":["candidate-11","candidate-12","candidate-13"],"assertedIds":["asserted-11","asserted-12"],"inferredExpectations":["risk-blocks-work"],"provenanceActivityIds":["activity-11","activity-12","activity-13"],"contradictionIds":[]},{"afterSequence":5,"sourceIds":["s12-a-0004","s12-a-0005","s12-a-0014","s12-a-0020","s12-a-0006"],"candidateIds":["candidate-13","candidate-14"],"assertedIds":["asserted-11","asserted-12","asserted-14"],"inferredExpectations":["risk-blocks-work"],"provenanceActivityIds":["activity-11","activity-12","activity-13","activity-14","activity-15"],"contradictionIds":[]}],"competencyAnswers":[{"questionId":"CQ-09","status":"answerable","expectedFactIds":["asserted-11","asserted-12","asserted-14"],"expectedCitationIds":["s12-a-0004","s12-a-0005","s12-a-0014"],"completeness":"complete","freshness":"current","abstain":false}]},
-    {"scenarioId":"s12-s-003","schemaVersion":"s12.scenario.v1","journeyId":"J7","split":"development","events":[{"eventId":"event-01","sequence":1,"caseId":"s12-a-0015","expectedReview":{"disposition":"rejected","correctionClass":"rejected"},"expectedTemporalEffect":"none"},{"eventId":"event-02","sequence":2,"caseId":"s12-a-0016","expectedReview":{"disposition":"rejected","correctionClass":"rejected"},"expectedTemporalEffect":"none"},{"eventId":"event-03","sequence":3,"caseId":"s12-a-0017","expectedReview":{"disposition":"rejected","correctionClass":"rejected"},"expectedTemporalEffect":"none","crossProjectCounterexample":true},{"eventId":"event-04","sequence":4,"caseId":"s12-a-0018","expectedReview":{"disposition":"deferred","correctionClass":"rejected"},"expectedTemporalEffect":"none"},{"eventId":"event-05","sequence":5,"caseId":"s12-a-0012","expectedReview":{"disposition":"confirmed","correctionClass":"unchanged"},"expectedTemporalEffect":"creates"}],"checkpoints":[{"afterSequence":1,"sourceIds":["s12-a-0015"],"candidateIds":[],"assertedIds":[],"inferredExpectations":[],"provenanceActivityIds":["activity-21"]},{"afterSequence":3,"sourceIds":["s12-a-0015","s12-a-0016","s12-a-0017"],"candidateIds":[],"assertedIds":[],"inferredExpectations":[],"provenanceActivityIds":["activity-21","activity-22","activity-23"],"contradictionIds":[]},{"afterSequence":5,"sourceIds":["s12-a-0015","s12-a-0016","s12-a-0017","s12-a-0018","s12-a-0012"],"candidateIds":["candidate-25"],"assertedIds":[],"inferredExpectations":[],"provenanceActivityIds":["activity-21","activity-22","activity-23","activity-24","activity-25"],"contradictionIds":[]}],"competencyAnswers":[{"questionId":"CQ-12","status":"unsupported","expectedFactIds":[],"expectedCitationIds":[],"completeness":"not-applicable","freshness":"not-applicable","abstain":true},{"questionId":"CQ-14","status":"cross-project","expectedFactIds":[],"expectedCitationIds":[],"completeness":"not-applicable","freshness":"not-applicable","abstain":true}]}
+    {
+      "scenarioId": "s12-s-001",
+      "schemaVersion": "s12.scenario.v1",
+      "journeyId": "J4",
+      "split": "development",
+      "sourceManifest": ["s12-a-0001", "s12-a-0002", "s12-a-0019", "s12-a-0003", "s12-a-0008"],
+      "events": [
+        {"eventId": "event-01", "sequence": 1, "caseId": "s12-a-0001", "expectedReview": {"disposition": "confirmed", "correctionClass": "unchanged"}, "expectedTemporalEffect": "creates"},
+        {"eventId": "event-02", "sequence": 2, "caseId": "s12-a-0002", "expectedReview": {"disposition": "confirmed", "correctionClass": "unchanged"}, "expectedTemporalEffect": "creates"},
+        {"eventId": "event-03", "sequence": 3, "caseId": "s12-a-0019", "expectedReview": {"disposition": "confirmed", "correctionClass": "minor-semantic", "rationale": "Record the change as supersession while preserving the old requirement."}, "expectedTemporalEffect": "supersedes"},
+        {"eventId": "event-04", "sequence": 4, "caseId": "s12-a-0003", "expectedReview": {"disposition": "deferred", "correctionClass": "minor-semantic"}, "expectedTemporalEffect": "updates"},
+        {"eventId": "event-05", "sequence": 5, "caseId": "s12-a-0008", "expectedReview": {"disposition": "confirmed", "correctionClass": "unchanged"}, "expectedTemporalEffect": "none"}
+      ],
+      "checkpoints": [
+        {"afterSequence": 1, "sourceIds": ["s12-a-0001"], "candidateIds": ["candidate-01"], "assertedIds": [], "inferredExpectations": [], "provenanceActivityIds": ["activity-01"]},
+        {"afterSequence": 3, "sourceIds": ["s12-a-0001", "s12-a-0002", "s12-a-0019"], "candidateIds": ["candidate-01", "candidate-02", "candidate-03"], "assertedIds": ["asserted-01", "asserted-02"], "inferredExpectations": ["requirement-history-preserved"], "provenanceActivityIds": ["activity-01", "activity-02", "activity-03"], "contradictionIds": []},
+        {"afterSequence": 5, "sourceIds": ["s12-a-0001", "s12-a-0002", "s12-a-0019", "s12-a-0003", "s12-a-0008"], "candidateIds": ["candidate-03", "candidate-04"], "assertedIds": ["asserted-01", "asserted-02", "asserted-05"], "inferredExpectations": ["requirement-history-preserved"], "provenanceActivityIds": ["activity-01", "activity-02", "activity-03", "activity-04", "activity-05"], "contradictionIds": []}
+      ],
+      "competencyAnswers": [
+        {"questionId": "CQ-07", "status": "answerable", "expectedFactIds": ["asserted-01", "asserted-02"], "expectedCitationIds": ["s12-a-0001", "s12-a-0019"], "completeness": "complete", "freshness": "current", "abstain": false}
+      ]
+    },
+    {
+      "scenarioId": "s12-s-002",
+      "schemaVersion": "s12.scenario.v1",
+      "journeyId": "J5",
+      "split": "development",
+      "sourceManifest": ["s12-a-0004", "s12-a-0005", "s12-a-0014", "s12-a-0020", "s12-a-0006"],
+      "events": [
+        {"eventId": "event-01", "sequence": 1, "caseId": "s12-a-0004", "expectedReview": {"disposition": "confirmed", "correctionClass": "unchanged"}, "expectedTemporalEffect": "creates"},
+        {"eventId": "event-02", "sequence": 2, "caseId": "s12-a-0005", "expectedReview": {"disposition": "confirmed", "correctionClass": "unchanged"}, "expectedTemporalEffect": "creates"},
+        {"eventId": "event-03", "sequence": 3, "caseId": "s12-a-0014", "expectedReview": {"disposition": "confirmed", "correctionClass": "minor-semantic"}, "expectedTemporalEffect": "creates"},
+        {"eventId": "event-04", "sequence": 4, "caseId": "s12-a-0020", "expectedReview": {"disposition": "confirmed", "correctionClass": "formatting-only"}, "expectedTemporalEffect": "updates"},
+        {"eventId": "event-05", "sequence": 5, "caseId": "s12-a-0006", "expectedReview": {"disposition": "deferred", "correctionClass": "minor-semantic"}, "expectedTemporalEffect": "none"}
+      ],
+      "checkpoints": [
+        {"afterSequence": 1, "sourceIds": ["s12-a-0004"], "candidateIds": ["candidate-11"], "assertedIds": [], "inferredExpectations": [], "provenanceActivityIds": ["activity-11"]},
+        {"afterSequence": 3, "sourceIds": ["s12-a-0004", "s12-a-0005", "s12-a-0014"], "candidateIds": ["candidate-11", "candidate-12", "candidate-13"], "assertedIds": ["asserted-11", "asserted-12"], "inferredExpectations": ["risk-blocks-work"], "provenanceActivityIds": ["activity-11", "activity-12", "activity-13"], "contradictionIds": []},
+        {"afterSequence": 5, "sourceIds": ["s12-a-0004", "s12-a-0005", "s12-a-0014", "s12-a-0020", "s12-a-0006"], "candidateIds": ["candidate-13", "candidate-14"], "assertedIds": ["asserted-11", "asserted-12", "asserted-14"], "inferredExpectations": ["risk-blocks-work"], "provenanceActivityIds": ["activity-11", "activity-12", "activity-13", "activity-14", "activity-15"], "contradictionIds": []}
+      ],
+      "competencyAnswers": [
+        {"questionId": "CQ-09", "status": "answerable", "expectedFactIds": ["asserted-11", "asserted-12", "asserted-14"], "expectedCitationIds": ["s12-a-0004", "s12-a-0005", "s12-a-0014"], "completeness": "complete", "freshness": "current", "abstain": false}
+      ]
+    },
+    {
+      "scenarioId": "s12-s-003",
+      "schemaVersion": "s12.scenario.v1",
+      "journeyId": "J7",
+      "split": "development",
+      "sourceManifest": ["s12-a-0015", "s12-a-0016", "s12-a-0017", "s12-a-0018", "s12-a-0012"],
+      "events": [
+        {"eventId": "event-01", "sequence": 1, "caseId": "s12-a-0015", "expectedReview": {"disposition": "rejected", "correctionClass": "rejected"}, "expectedTemporalEffect": "none"},
+        {"eventId": "event-02", "sequence": 2, "caseId": "s12-a-0016", "expectedReview": {"disposition": "rejected", "correctionClass": "rejected"}, "expectedTemporalEffect": "none"},
+        {"eventId": "event-03", "sequence": 3, "caseId": "s12-a-0017", "expectedReview": {"disposition": "rejected", "correctionClass": "rejected"}, "expectedTemporalEffect": "none", "crossProjectCounterexample": true},
+        {"eventId": "event-04", "sequence": 4, "caseId": "s12-a-0018", "expectedReview": {"disposition": "deferred", "correctionClass": "rejected"}, "expectedTemporalEffect": "none"},
+        {"eventId": "event-05", "sequence": 5, "caseId": "s12-a-0012", "expectedReview": {"disposition": "confirmed", "correctionClass": "unchanged"}, "expectedTemporalEffect": "creates"}
+      ],
+      "checkpoints": [
+        {"afterSequence": 1, "sourceIds": ["s12-a-0015"], "candidateIds": [], "assertedIds": [], "inferredExpectations": [], "provenanceActivityIds": ["activity-21"]},
+        {"afterSequence": 3, "sourceIds": ["s12-a-0015", "s12-a-0016", "s12-a-0017"], "candidateIds": [], "assertedIds": [], "inferredExpectations": [], "provenanceActivityIds": ["activity-21", "activity-22", "activity-23"], "contradictionIds": []},
+        {"afterSequence": 5, "sourceIds": ["s12-a-0015", "s12-a-0016", "s12-a-0017", "s12-a-0018", "s12-a-0012"], "candidateIds": ["candidate-25"], "assertedIds": [], "inferredExpectations": [], "provenanceActivityIds": ["activity-21", "activity-22", "activity-23", "activity-24", "activity-25"], "contradictionIds": []}
+      ],
+      "competencyAnswers": [
+        {"questionId": "CQ-12", "status": "unsupported", "expectedFactIds": [], "expectedCitationIds": [], "completeness": "not-applicable", "freshness": "not-applicable", "abstain": true},
+        {"questionId": "CQ-14", "status": "cross-project", "expectedFactIds": [], "expectedCitationIds": [], "completeness": "not-applicable", "freshness": "not-applicable", "abstain": true}
+      ]
+    }
   ]
 }

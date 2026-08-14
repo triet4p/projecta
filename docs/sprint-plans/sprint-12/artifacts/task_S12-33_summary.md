@@ -7,16 +7,16 @@
 ## Summary of Work
 
 Created two isolated, deliberately non-identical calibration label-set
-fixtures with explicit `humanEvidence: false` metadata. The packet preserves
-the required replacement procedure for two qualified human label sets before
-G2 approval.
+fixtures with explicit `humanEvidence: false` metadata. They are not
+independent human annotations, so S12-33 is reopened pending two qualified
+human label sets.
 
 ## Files Modified
 
 * [annotator-a.v1.json](../../../../evaluation/sprint-12/pilot/labels/annotator-a.v1.json) - Isolated fixture label set A.
 * [annotator-b.v1.json](../../../../evaluation/sprint-12/pilot/labels/annotator-b.v1.json) - Isolated fixture label set B.
 * [g2-annotation-pilot.md](../g2-annotation-pilot.md) - Human-evidence boundary.
-* [sprint-12.md](../../sprint-12.md) - Marked S12-33 complete.
+* [sprint-12.md](../../sprint-12.md) - Reopened S12-33 pending human labels.
 
 ## Testing
 

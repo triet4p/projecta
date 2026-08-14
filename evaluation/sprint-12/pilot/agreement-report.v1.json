@@ -6,11 +6,15 @@
   "cases": 20,
   "exactCaseAgreement": 0.9,
   "typeAndAbstentionAgreement": 0.9,
-  "spanF1": 1.0,
+  "spanF1": 0.972972972972973,
   "relationLinkF1": 1.0,
-  "scenarioGraphStateAgreement": 0.9,
-  "questionAnswerAgreement": 0.9,
+  "spanCounts": {"annotatorA": 18, "annotatorB": 19, "intersection": 18, "microF1Numerator": 36, "microF1Denominator": 37},
+  "scenarioGraphStateAgreement": null,
+  "scenarioGraphStateStatus": "not_evaluated_missing_independent_scenario_labels",
+  "questionAnswerAgreement": null,
+  "questionAnswerStatus": "not_evaluated_missing_independent_question_labels",
   "provisionalThresholds": {"typeAndAbstention": 0.8, "spanF1": 0.85, "relationLinkF1": 0.8, "scenarioGraphState": 0.8},
-  "fixturePassesProvisionalThresholds": true,
-  "interpretation": "The fixture exercises the evaluator and guide but cannot establish qualified human annotator reliability. G2 remains pending human evidence."
+  "fixturePassesProvisionalThresholds": false,
+  "recomputedFromInputs": true,
+  "interpretation": "The fixture metrics are recomputed from the two label sets, but scenario and question-answer dimensions have no independent label inputs. It cannot establish qualified human annotator reliability. G2 is approved only with explicit limitations; human evidence remains required for any reliability or production-scale claim."
 }
