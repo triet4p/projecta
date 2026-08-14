@@ -1,0 +1,9 @@
+{
+  "reportVersion": "s12.corpus.qa.v1",
+  "status": "HUMAN_QA_PENDING",
+  "humanEvidence": false,
+  "independentLabelsPresent": false,
+  "validationAndTestCases": 80,
+  "developmentSampleCases": 40,
+  "note": "The fixture defines the QA boundary but does not claim independent human annotation."
+}

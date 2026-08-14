@@ -1,0 +1,349 @@
+{
+  "datasetVersion": "s12.corpus.retrieval-gold.v1",
+  "status": "SYNTHETIC_FIXTURE_ONLY",
+  "humanEvidence": false,
+  "answers": [
+    {
+      "scenarioId": "s12-s-001",
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-01",
+          "status": "answerable",
+          "expectedFactIds": [
+            "asserted-01-01"
+          ],
+          "expectedCitationIds": [
+            "s12-a-0101",
+            "s12-a-0102"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-002",
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-02",
+          "status": "answerable",
+          "expectedFactIds": [
+            "asserted-02-01"
+          ],
+          "expectedCitationIds": [
+            "s12-a-0101",
+            "s12-a-0102"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-003",
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-03",
+          "status": "answerable",
+          "expectedFactIds": [
+            "asserted-03-01"
+          ],
+          "expectedCitationIds": [
+            "s12-a-0101",
+            "s12-a-0102"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-004",
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-04",
+          "status": "answerable",
+          "expectedFactIds": [
+            "asserted-04-01"
+          ],
+          "expectedCitationIds": [
+            "s12-a-0121",
+            "s12-a-0122"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-005",
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-05",
+          "status": "answerable",
+          "expectedFactIds": [
+            "asserted-05-01"
+          ],
+          "expectedCitationIds": [
+            "s12-a-0121",
+            "s12-a-0122"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-006",
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-06",
+          "status": "answerable",
+          "expectedFactIds": [
+            "asserted-06-01"
+          ],
+          "expectedCitationIds": [
+            "s12-a-0121",
+            "s12-a-0122"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-007",
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-07",
+          "status": "answerable",
+          "expectedFactIds": [
+            "asserted-07-01"
+          ],
+          "expectedCitationIds": [
+            "s12-a-0151",
+            "s12-a-0152"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-008",
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-08",
+          "status": "answerable",
+          "expectedFactIds": [
+            "asserted-08-01"
+          ],
+          "expectedCitationIds": [
+            "s12-a-0151",
+            "s12-a-0152"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-009",
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-09",
+          "status": "answerable",
+          "expectedFactIds": [
+            "asserted-09-01"
+          ],
+          "expectedCitationIds": [
+            "s12-a-0151",
+            "s12-a-0152"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-010",
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-10",
+          "status": "answerable",
+          "expectedFactIds": [
+            "asserted-10-01"
+          ],
+          "expectedCitationIds": [
+            "s12-a-0176",
+            "s12-a-0177"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-011",
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-11",
+          "status": "answerable",
+          "expectedFactIds": [
+            "asserted-11-01"
+          ],
+          "expectedCitationIds": [
+            "s12-a-0176",
+            "s12-a-0177"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-012",
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-12",
+          "status": "answerable",
+          "expectedFactIds": [
+            "asserted-12-01"
+          ],
+          "expectedCitationIds": [
+            "s12-a-0176",
+            "s12-a-0177"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-013",
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-13",
+          "status": "answerable",
+          "expectedFactIds": [
+            "asserted-13-01"
+          ],
+          "expectedCitationIds": [
+            "s12-a-0216",
+            "s12-a-0217"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-014",
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-14",
+          "status": "answerable",
+          "expectedFactIds": [
+            "asserted-14-01"
+          ],
+          "expectedCitationIds": [
+            "s12-a-0216",
+            "s12-a-0217"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-015",
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-15",
+          "status": "answerable",
+          "expectedFactIds": [
+            "asserted-15-01"
+          ],
+          "expectedCitationIds": [
+            "s12-a-0216",
+            "s12-a-0217"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-016",
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-16",
+          "status": "answerable",
+          "expectedFactIds": [
+            "asserted-16-01"
+          ],
+          "expectedCitationIds": [
+            "s12-a-0241",
+            "s12-a-0242"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-017",
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-17",
+          "status": "answerable",
+          "expectedFactIds": [
+            "asserted-17-01"
+          ],
+          "expectedCitationIds": [
+            "s12-a-0241",
+            "s12-a-0242"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-018",
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-18",
+          "status": "answerable",
+          "expectedFactIds": [
+            "asserted-18-01"
+          ],
+          "expectedCitationIds": [
+            "s12-a-0241",
+            "s12-a-0242"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        }
+      ]
+    }
+  ]
+}

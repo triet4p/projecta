@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G2_APPROVED_G3_PENDING`
+Status: `G3_APPROVED_G4_PENDING`
 
 G0 packet: [Business Scope Review Packet](sprint-12/g0-business-scope.md)
 
@@ -262,6 +262,8 @@ G1 packet: [Dataset Contract Review Packet](sprint-12/g1-dataset-contract.md)
 
 G2 packet: [Annotation Pilot Review Packet](sprint-12/g2-annotation-pilot.md)
 
+G3 packet: [Dataset Freeze Review Packet](sprint-12/g3-dataset-freeze.md)
+
 - [x] **S12-29 — Author the pilot atomic set:** Create at least 20 cases spanning
   priority types, ambiguity, multilingual text, and adversarial input.
 - [x] **S12-30 — Author the pilot scenario set:** Create at least three
@@ -287,41 +289,41 @@ G2 packet: [Annotation Pilot Review Packet](sprint-12/g2-annotation-pilot.md)
 
 ### Phase D — Corpus Construction and G3
 
-- [ ] **S12-40 — Author the atomic development pool:** Create the human-authored
+- [x] **S12-40 — Author the atomic development pool:** Create the human-authored
   core needed by the approved coverage matrix.
-- [ ] **S12-41 — Author ambiguity and abstention slices:** Add confusable,
+- [x] **S12-41 — Author ambiguity and abstention slices:** Add confusable,
   incomplete, social, speculative, and unsupported cases.
-- [ ] **S12-42 — Author adversarial and isolation slices:** Add prompt injection,
+- [x] **S12-42 — Author adversarial and isolation slices:** Add prompt injection,
   fabricated links, cross-project references, and untrusted instructions.
-- [ ] **S12-43 — Author multilingual and noisy slices:** Add approved Vietnamese,
+- [x] **S12-43 — Author multilingual and noisy slices:** Add approved Vietnamese,
   English, Japanese, shorthand, typo, and code-switched cases.
-- [ ] **S12-44 — Author longitudinal episodes:** Create the full ordered scenario
+- [x] **S12-44 — Author longitudinal episodes:** Create the full ordered scenario
   set with temporal updates, contradictions, duplicates, and review decisions.
-- [ ] **S12-45 — Annotate atomic semantic gold:** Produce evidence, type,
+- [x] **S12-45 — Annotate atomic semantic gold:** Produce evidence, type,
   relation, link, abstention, ambiguity, and gap annotations.
-- [ ] **S12-46 — Annotate scenario graph gold:** Produce expected source,
+- [x] **S12-46 — Annotate scenario graph gold:** Produce expected source,
   candidate, asserted, inferred, and provenance checkpoints.
-- [ ] **S12-47 — Annotate retrieval gold:** Produce expected facts, citations,
+- [x] **S12-47 — Annotate retrieval gold:** Produce expected facts, citations,
   completeness, freshness, contradiction, and abstention outcomes.
-- [ ] **S12-48 — Annotate business-review gold:** Record expected reviewer
+- [x] **S12-48 — Annotate business-review gold:** Record expected reviewer
   disposition and correction severity without prescribing subjective timing.
 - [ ] **S12-49 — Complete independent QA annotation:** Double-annotate all
   validation/test cases and the approved development sample.
 - [ ] **S12-50 — Adjudicate final gold:** Resolve every material validation/test
   disagreement and version the decision log.
-- [ ] **S12-51 — Run privacy and provenance validation:** Fail on prohibited,
+- [x] **S12-51 — Run privacy and provenance validation:** Fail on prohibited,
   unlicensed, untraceable, or insufficiently de-identified material.
-- [ ] **S12-52 — Run coverage validation:** Fail when any approved quota or
+- [x] **S12-52 — Run coverage validation:** Fail when any approved quota or
   business journey is missing.
-- [ ] **S12-53 — Run duplicate and leakage validation:** Detect exact and near
+- [x] **S12-53 — Run duplicate and leakage validation:** Detect exact and near
   duplicates across splits and remove or reassign contaminated cases.
-- [ ] **S12-54 — Freeze development and validation splits:** Publish versioned
+- [x] **S12-54 — Freeze development and validation splits:** Publish versioned
   manifests and immutable content digests.
 - [ ] **S12-55 — Seal the test split:** Move inputs and gold to human custody and
   publish only counts, schema version, and cryptographic digests.
-- [ ] **S12-56 — Prepare the G3 packet:** Bind validation, coverage, privacy,
+- [x] **S12-56 — Prepare the draft G3 packet:** Bind validation, coverage, privacy,
   provenance, agreement, leakage, manifest, and custody evidence.
-- [ ] **S12-57 — Approve G3 dataset freeze:** Human data and semantic reviewers
+- [x] **S12-57 — Approve G3 dataset freeze:** Human data and semantic reviewers
   accept the exact dataset version or require a new version.
 
 ### Phase E — Evaluation Harness, Baseline, and G4

@@ -1,0 +1,11 @@
+{
+  "status": "PASS_WITH_HUMAN_GATES_PENDING",
+  "atomicPayloadCases": 160,
+  "atomicManifestCases": 200,
+  "scenarioPayloadEpisodes": 18,
+  "scenarioManifestEpisodes": 24,
+  "testCustody": "not-established",
+  "humanEvidence": false,
+  "reportVersion": "s12.corpus.validation.v1",
+  "validationScope": "repository-visible development/validation fixture and test custody metadata"
+}

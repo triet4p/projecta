@@ -1,6 +1,6 @@
 # Sprint 12 Annotation Guide v1
 
-**Status:** `G1_APPROVED_G2_PREPARATION`
+**Status:** `G3_APPROVED_G4_PREPARATION`
 
 **Scope:** Atomic semantic gold and longitudinal scenario gold for the eight
 G0-approved journeys.

@@ -1,6 +1,6 @@
 # Sprint 12 Metric Contract v1
 
-**Status:** `G1_APPROVED_G2_PREPARATION`
+**Status:** `G3_APPROVED_G4_PREPARATION`
 
 Metrics are computed per split, journey, language, semantic slice, origin and
 threat slice before any pooled summary. Missing, malformed, abstained and

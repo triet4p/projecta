@@ -1,6 +1,6 @@
 # Sprint 12 Data Governance and Custody Contract v1
 
-**Status:** `G1_APPROVED_G2_PREPARATION`
+**Status:** `G3_APPROVED_G4_PREPARATION`
 
 ## Provenance and licensing (S12-19)
 

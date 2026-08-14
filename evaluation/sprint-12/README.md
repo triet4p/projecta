@@ -2,7 +2,7 @@
 
 **Contract version:** `s12.v1`
 
-**Status:** `G2_APPROVED_G3_PENDING`
+**Status:** `G3_APPROVED_G4_PREPARATION`
 
 This directory contains the governed contract for the Sprint 12 business
 semantic benchmark. It does not contain the held-out test cases or gold. Test
@@ -38,6 +38,7 @@ procedure permits one blinded run.
 
 ## Current gate
 
-The contract is ready for G1 review. S12-28 remains pending until the project
-owner and semantic reviewer approve or revise the packet at
-`docs/sprint-plans/sprint-12/g1-dataset-contract.md`.
+G0, G1, G2 and G3 are approved with the evidence limitations recorded in the
+G2 and G3 packets. G4 preparation may begin, but human QA, adjudication and
+test custody remain pending; held-out inputs/gold remain outside the
+repository.

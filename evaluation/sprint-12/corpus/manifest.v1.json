@@ -1,0 +1,21 @@
+{
+  "datasetVersion": "s12.corpus.v1",
+  "status": "G3_PREPARATION_IN_PROGRESS",
+  "humanEvidence": false,
+  "atomicCounts": {
+    "development": 120,
+    "validation": 40,
+    "test": 40,
+    "total": 200
+  },
+  "scenarioCounts": {
+    "development": 12,
+    "validation": 6,
+    "test": 6,
+    "total": 24
+  },
+  "humanAuthoredFractionByOrigin": 1.0,
+  "qualifiedHumanEvidence": false,
+  "atomicManifest": "manifests/development-validation.manifest.v1.json",
+  "testCustodyManifest": "manifests/test-custody.manifest.v1.json"
+}

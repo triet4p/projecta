@@ -1,0 +1,3347 @@
+{
+  "datasetVersion": "s12.corpus.atomic-gold.v1",
+  "status": "SYNTHETIC_FIXTURE_ONLY",
+  "humanEvidence": false,
+  "cases": [
+    {
+      "caseId": "s12-a-0101",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0102",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0103",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0104",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": [
+          {
+            "label": "untrusted-external-target",
+            "rationale": "The target is not present in the trusted project context."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0105",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Risk",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 105 repeats the same approved requirement with a new source marker. Evidence marker da; distinguishing phrase da da da."
+            },
+            "label": "Evidence item 105 repeats the same approved requirement with a new source marker. Evidence marker da; distinguishing phrase da da da."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0106",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Assumption",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J1 requirement 106 is superseded by this rule. Evidence marker db; distinguishing phrase db db db."
+            },
+            "label": "The previous J1 requirement 106 is superseded by this rule. Evidence marker db; distinguishing phrase db db db."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0107",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Constraint",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J1 delivery decision 107 changes the next review step. Evidence marker dc; distinguishing phrase dc dc dc."
+            },
+            "label": "The J1 delivery decision 107 changes the next review step. Evidence marker dc; distinguishing phrase dc dc dc."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0108",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "ProgressClaim",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J1 yêu cầu kiểm thử unicode №108 — typo: chekout ✅ Evidence marker dd; distinguishing phrase dd dd dd."
+            },
+            "label": "J1 yêu cầu kiểm thử unicode №108 — typo: chekout ✅ Evidence marker dd; distinguishing phrase dd dd dd."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0109",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0110",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0111",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0112",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": [
+          {
+            "label": "untrusted-external-target",
+            "rationale": "The target is not present in the trusted project context."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0113",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 113 repeats the same approved requirement with a new source marker. Evidence marker di; distinguishing phrase di di di."
+            },
+            "label": "Evidence item 113 repeats the same approved requirement with a new source marker. Evidence marker di; distinguishing phrase di di di."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0114",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Risk",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J1 requirement 114 is superseded by this rule. Evidence marker dj; distinguishing phrase dj dj dj."
+            },
+            "label": "The previous J1 requirement 114 is superseded by this rule. Evidence marker dj; distinguishing phrase dj dj dj."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0115",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Assumption",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J1 delivery decision 115 changes the next review step. Evidence marker dk; distinguishing phrase dk dk dk."
+            },
+            "label": "The J1 delivery decision 115 changes the next review step. Evidence marker dk; distinguishing phrase dk dk dk."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0116",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Constraint",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J1 yêu cầu kiểm thử unicode №116 — typo: chekout ✅ Evidence marker dl; distinguishing phrase dl dl dl."
+            },
+            "label": "J1 yêu cầu kiểm thử unicode №116 — typo: chekout ✅ Evidence marker dl; distinguishing phrase dl dl dl."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0121",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Question",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 121 repeats the same approved requirement with a new source marker. Evidence marker dq; distinguishing phrase dq dq dq."
+            },
+            "label": "Evidence item 121 repeats the same approved requirement with a new source marker. Evidence marker dq; distinguishing phrase dq dq dq."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0122",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J2 requirement 122 is superseded by this rule. Evidence marker dr; distinguishing phrase dr dr dr."
+            },
+            "label": "The previous J2 requirement 122 is superseded by this rule. Evidence marker dr; distinguishing phrase dr dr dr."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0123",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J2 delivery decision 123 changes the next review step. Evidence marker ds; distinguishing phrase ds ds ds."
+            },
+            "label": "The J2 delivery decision 123 changes the next review step. Evidence marker ds; distinguishing phrase ds ds ds."
+          },
+          {
+            "id": "entity-02",
+            "type": "Requirement",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J2 delivery decision 123 changes the next review step. Evidence marker ds; distinguishing phrase ds ds ds."
+            },
+            "label": "The J2 delivery decision 123 changes the next review step. Evidence marker ds; distinguishing phrase ds ds ds."
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "blocks",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J2 delivery decision 123 changes the next review step. Evidence marker ds; distinguishing phrase ds ds ds."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0124",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Assumption",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J2 yêu cầu kiểm thử unicode №124 — typo: chekout ✅ Evidence marker dt; distinguishing phrase dt dt dt."
+            },
+            "label": "J2 yêu cầu kiểm thử unicode №124 — typo: chekout ✅ Evidence marker dt; distinguishing phrase dt dt dt."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0125",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0126",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0127",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0128",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": [
+          {
+            "label": "untrusted-external-target",
+            "rationale": "The target is not present in the trusted project context."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0129",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Decision",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 129 repeats the same approved requirement with a new source marker. Evidence marker dy; distinguishing phrase dy dy dy."
+            },
+            "label": "Evidence item 129 repeats the same approved requirement with a new source marker. Evidence marker dy; distinguishing phrase dy dy dy."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0130",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Question",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J2 requirement 130 is superseded by this rule. Evidence marker dz; distinguishing phrase dz dz dz."
+            },
+            "label": "The previous J2 requirement 130 is superseded by this rule. Evidence marker dz; distinguishing phrase dz dz dz."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0131",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J2 delivery decision 131 changes the next review step. Evidence marker ea; distinguishing phrase ea ea ea."
+            },
+            "label": "The J2 delivery decision 131 changes the next review step. Evidence marker ea; distinguishing phrase ea ea ea."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0132",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Risk",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J2 yêu cầu kiểm thử unicode №132 — typo: chekout ✅ Evidence marker eb; distinguishing phrase eb eb eb."
+            },
+            "label": "J2 yêu cầu kiểm thử unicode №132 — typo: chekout ✅ Evidence marker eb; distinguishing phrase eb eb eb."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0133",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0134",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0135",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0136",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": [
+          {
+            "label": "untrusted-external-target",
+            "rationale": "The target is not present in the trusted project context."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0137",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Requirement",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 137 repeats the same approved requirement with a new source marker. Evidence marker eg; distinguishing phrase eg eg eg."
+            },
+            "label": "Evidence item 137 repeats the same approved requirement with a new source marker. Evidence marker eg; distinguishing phrase eg eg eg."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0138",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Decision",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J2 requirement 138 is superseded by this rule. Evidence marker eh; distinguishing phrase eh eh eh."
+            },
+            "label": "The previous J2 requirement 138 is superseded by this rule. Evidence marker eh; distinguishing phrase eh eh eh."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0139",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Question",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J2 delivery decision 139 changes the next review step. Evidence marker ei; distinguishing phrase ei ei ei."
+            },
+            "label": "The J2 delivery decision 139 changes the next review step. Evidence marker ei; distinguishing phrase ei ei ei."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0140",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J2 yêu cầu kiểm thử unicode №140 — typo: chekout ✅ Evidence marker ej; distinguishing phrase ej ej ej."
+            },
+            "label": "J2 yêu cầu kiểm thử unicode №140 — typo: chekout ✅ Evidence marker ej; distinguishing phrase ej ej ej."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0141",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0142",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0143",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0144",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": [
+          {
+            "label": "untrusted-external-target",
+            "rationale": "The target is not present in the trusted project context."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0151",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0152",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": [
+          {
+            "label": "untrusted-external-target",
+            "rationale": "The target is not present in the trusted project context."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0153",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "ProgressClaim",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 153 repeats the same approved requirement with a new source marker. Evidence marker ew; distinguishing phrase ew ew ew."
+            },
+            "label": "Evidence item 153 repeats the same approved requirement with a new source marker. Evidence marker ew; distinguishing phrase ew ew ew."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0154",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "ResearchFinding",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J3 requirement 154 is superseded by this rule. Evidence marker ex; distinguishing phrase ex ex ex."
+            },
+            "label": "The previous J3 requirement 154 is superseded by this rule. Evidence marker ex; distinguishing phrase ex ex ex."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0155",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Requirement",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J3 delivery decision 155 changes the next review step. Evidence marker ey; distinguishing phrase ey ey ey."
+            },
+            "label": "The J3 delivery decision 155 changes the next review step. Evidence marker ey; distinguishing phrase ey ey ey."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0156",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J3 yêu cầu kiểm thử unicode №156 — typo: chekout ✅ Evidence marker ez; distinguishing phrase ez ez ez."
+            },
+            "label": "J3 yêu cầu kiểm thử unicode №156 — typo: chekout ✅ Evidence marker ez; distinguishing phrase ez ez ez."
+          },
+          {
+            "id": "entity-02",
+            "type": "Requirement",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J3 yêu cầu kiểm thử unicode №156 — typo: chekout ✅ Evidence marker ez; distinguishing phrase ez ez ez."
+            },
+            "label": "J3 yêu cầu kiểm thử unicode №156 — typo: chekout ✅ Evidence marker ez; distinguishing phrase ez ez ez."
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "constrainedBy",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J3 yêu cầu kiểm thử unicode №156 — typo: chekout ✅ Evidence marker ez; distinguishing phrase ez ez ez."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0157",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0158",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0159",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0160",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": [
+          {
+            "label": "untrusted-external-target",
+            "rationale": "The target is not present in the trusted project context."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0161",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Constraint",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 161 repeats the same approved requirement with a new source marker. Evidence marker fe; distinguishing phrase fe fe fe."
+            },
+            "label": "Evidence item 161 repeats the same approved requirement with a new source marker. Evidence marker fe; distinguishing phrase fe fe fe."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0162",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "ProgressClaim",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J3 requirement 162 is superseded by this rule. Evidence marker ff; distinguishing phrase ff ff ff."
+            },
+            "label": "The previous J3 requirement 162 is superseded by this rule. Evidence marker ff; distinguishing phrase ff ff ff."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0163",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "ResearchFinding",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J3 delivery decision 163 changes the next review step. Evidence marker fg; distinguishing phrase fg fg fg."
+            },
+            "label": "The J3 delivery decision 163 changes the next review step. Evidence marker fg; distinguishing phrase fg fg fg."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0164",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Requirement",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J3 yêu cầu kiểm thử unicode №164 — typo: chekout ✅ Evidence marker fh; distinguishing phrase fh fh fh."
+            },
+            "label": "J3 yêu cầu kiểm thử unicode №164 — typo: chekout ✅ Evidence marker fh; distinguishing phrase fh fh fh."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0165",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0166",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0167",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0168",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": [
+          {
+            "label": "untrusted-external-target",
+            "rationale": "The target is not present in the trusted project context."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0169",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Assumption",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 169 repeats the same approved requirement with a new source marker. Evidence marker fm; distinguishing phrase fm fm fm."
+            },
+            "label": "Evidence item 169 repeats the same approved requirement with a new source marker. Evidence marker fm; distinguishing phrase fm fm fm."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0170",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Constraint",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J3 requirement 170 is superseded by this rule. Evidence marker fn; distinguishing phrase fn fn fn."
+            },
+            "label": "The previous J3 requirement 170 is superseded by this rule. Evidence marker fn; distinguishing phrase fn fn fn."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0176",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": [
+          {
+            "label": "untrusted-external-target",
+            "rationale": "The target is not present in the trusted project context."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0177",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Risk",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 177 repeats the same approved requirement with a new source marker. Evidence marker fu; distinguishing phrase fu fu fu."
+            },
+            "label": "Evidence item 177 repeats the same approved requirement with a new source marker. Evidence marker fu; distinguishing phrase fu fu fu."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0178",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J4 requirement 178 is superseded by this rule. Evidence marker fv; distinguishing phrase fv fv fv."
+            },
+            "label": "The previous J4 requirement 178 is superseded by this rule. Evidence marker fv; distinguishing phrase fv fv fv."
+          },
+          {
+            "id": "entity-02",
+            "type": "Requirement",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J4 requirement 178 is superseded by this rule. Evidence marker fv; distinguishing phrase fv fv fv."
+            },
+            "label": "The previous J4 requirement 178 is superseded by this rule. Evidence marker fv; distinguishing phrase fv fv fv."
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "implements",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J4 requirement 178 is superseded by this rule. Evidence marker fv; distinguishing phrase fv fv fv."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0179",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Constraint",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J4 delivery decision 179 changes the next review step. Evidence marker fw; distinguishing phrase fw fw fw."
+            },
+            "label": "The J4 delivery decision 179 changes the next review step. Evidence marker fw; distinguishing phrase fw fw fw."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0180",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "ProgressClaim",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J4 yêu cầu kiểm thử unicode №180 — typo: chekout ✅ Evidence marker fx; distinguishing phrase fx fx fx."
+            },
+            "label": "J4 yêu cầu kiểm thử unicode №180 — typo: chekout ✅ Evidence marker fx; distinguishing phrase fx fx fx."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0181",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0182",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0183",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0184",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": [
+          {
+            "label": "untrusted-external-target",
+            "rationale": "The target is not present in the trusted project context."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0185",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 185 repeats the same approved requirement with a new source marker. Evidence marker gc; distinguishing phrase gc gc gc."
+            },
+            "label": "Evidence item 185 repeats the same approved requirement with a new source marker. Evidence marker gc; distinguishing phrase gc gc gc."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0186",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Risk",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J4 requirement 186 is superseded by this rule. Evidence marker gd; distinguishing phrase gd gd gd."
+            },
+            "label": "The previous J4 requirement 186 is superseded by this rule. Evidence marker gd; distinguishing phrase gd gd gd."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0187",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Assumption",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J4 delivery decision 187 changes the next review step. Evidence marker ge; distinguishing phrase ge ge ge."
+            },
+            "label": "The J4 delivery decision 187 changes the next review step. Evidence marker ge; distinguishing phrase ge ge ge."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0188",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Constraint",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J4 yêu cầu kiểm thử unicode №188 — typo: chekout ✅ Evidence marker gf; distinguishing phrase gf gf gf."
+            },
+            "label": "J4 yêu cầu kiểm thử unicode №188 — typo: chekout ✅ Evidence marker gf; distinguishing phrase gf gf gf."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0189",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0190",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0191",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0192",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": [
+          {
+            "label": "untrusted-external-target",
+            "rationale": "The target is not present in the trusted project context."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0193",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Question",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 193 repeats the same approved requirement with a new source marker. Evidence marker gk; distinguishing phrase gk gk gk."
+            },
+            "label": "Evidence item 193 repeats the same approved requirement with a new source marker. Evidence marker gk; distinguishing phrase gk gk gk."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0194",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J4 requirement 194 is superseded by this rule. Evidence marker gl; distinguishing phrase gl gl gl."
+            },
+            "label": "The previous J4 requirement 194 is superseded by this rule. Evidence marker gl; distinguishing phrase gl gl gl."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0195",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Risk",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J4 delivery decision 195 changes the next review step. Evidence marker gm; distinguishing phrase gm gm gm."
+            },
+            "label": "The J4 delivery decision 195 changes the next review step. Evidence marker gm; distinguishing phrase gm gm gm."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0201",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Decision",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 201 repeats the same approved requirement with a new source marker. Evidence marker gs; distinguishing phrase gs gs gs."
+            },
+            "label": "Evidence item 201 repeats the same approved requirement with a new source marker. Evidence marker gs; distinguishing phrase gs gs gs."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0202",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Question",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J5 requirement 202 is superseded by this rule. Evidence marker gt; distinguishing phrase gt gt gt."
+            },
+            "label": "The previous J5 requirement 202 is superseded by this rule. Evidence marker gt; distinguishing phrase gt gt gt."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0203",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J5 delivery decision 203 changes the next review step. Evidence marker gu; distinguishing phrase gu gu gu."
+            },
+            "label": "The J5 delivery decision 203 changes the next review step. Evidence marker gu; distinguishing phrase gu gu gu."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0204",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Risk",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J5 yêu cầu kiểm thử unicode №204 — typo: chekout ✅ Evidence marker gv; distinguishing phrase gv gv gv."
+            },
+            "label": "J5 yêu cầu kiểm thử unicode №204 — typo: chekout ✅ Evidence marker gv; distinguishing phrase gv gv gv."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0205",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0206",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0207",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0208",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": [
+          {
+            "label": "untrusted-external-target",
+            "rationale": "The target is not present in the trusted project context."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0209",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Requirement",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 209 repeats the same approved requirement with a new source marker. Evidence marker ha; distinguishing phrase ha ha ha."
+            },
+            "label": "Evidence item 209 repeats the same approved requirement with a new source marker. Evidence marker ha; distinguishing phrase ha ha ha."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0210",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Decision",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J5 requirement 210 is superseded by this rule. Evidence marker hb; distinguishing phrase hb hb hb."
+            },
+            "label": "The previous J5 requirement 210 is superseded by this rule. Evidence marker hb; distinguishing phrase hb hb hb."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0211",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J5 delivery decision 211 changes the next review step. Evidence marker hc; distinguishing phrase hc hc hc."
+            },
+            "label": "The J5 delivery decision 211 changes the next review step. Evidence marker hc; distinguishing phrase hc hc hc."
+          },
+          {
+            "id": "entity-02",
+            "type": "Requirement",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J5 delivery decision 211 changes the next review step. Evidence marker hc; distinguishing phrase hc hc hc."
+            },
+            "label": "The J5 delivery decision 211 changes the next review step. Evidence marker hc; distinguishing phrase hc hc hc."
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "resolves",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J5 delivery decision 211 changes the next review step. Evidence marker hc; distinguishing phrase hc hc hc."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0212",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J5 yêu cầu kiểm thử unicode №212 — typo: chekout ✅ Evidence marker hd; distinguishing phrase hd hd hd."
+            },
+            "label": "J5 yêu cầu kiểm thử unicode №212 — typo: chekout ✅ Evidence marker hd; distinguishing phrase hd hd hd."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0213",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0214",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0215",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0216",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": [
+          {
+            "label": "untrusted-external-target",
+            "rationale": "The target is not present in the trusted project context."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0217",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "ResearchFinding",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 217 repeats the same approved requirement with a new source marker. Evidence marker hi; distinguishing phrase hi hi hi."
+            },
+            "label": "Evidence item 217 repeats the same approved requirement with a new source marker. Evidence marker hi; distinguishing phrase hi hi hi."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0218",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Requirement",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J5 requirement 218 is superseded by this rule. Evidence marker hj; distinguishing phrase hj hj hj."
+            },
+            "label": "The previous J5 requirement 218 is superseded by this rule. Evidence marker hj; distinguishing phrase hj hj hj."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0219",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Decision",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J5 delivery decision 219 changes the next review step. Evidence marker hk; distinguishing phrase hk hk hk."
+            },
+            "label": "The J5 delivery decision 219 changes the next review step. Evidence marker hk; distinguishing phrase hk hk hk."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0220",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Question",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J5 yêu cầu kiểm thử unicode №220 — typo: chekout ✅ Evidence marker hl; distinguishing phrase hl hl hl."
+            },
+            "label": "J5 yêu cầu kiểm thử unicode №220 — typo: chekout ✅ Evidence marker hl; distinguishing phrase hl hl hl."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0226",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "ResearchFinding",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J6 requirement 226 is superseded by this rule. Evidence marker hr; distinguishing phrase hr hr hr."
+            },
+            "label": "The previous J6 requirement 226 is superseded by this rule. Evidence marker hr; distinguishing phrase hr hr hr."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0227",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Requirement",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J6 delivery decision 227 changes the next review step. Evidence marker hs; distinguishing phrase hs hs hs."
+            },
+            "label": "The J6 delivery decision 227 changes the next review step. Evidence marker hs; distinguishing phrase hs hs hs."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0228",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Decision",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J6 yêu cầu kiểm thử unicode №228 — typo: chekout ✅ Evidence marker ht; distinguishing phrase ht ht ht."
+            },
+            "label": "J6 yêu cầu kiểm thử unicode №228 — typo: chekout ✅ Evidence marker ht; distinguishing phrase ht ht ht."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0229",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0230",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0231",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0232",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": [
+          {
+            "label": "untrusted-external-target",
+            "rationale": "The target is not present in the trusted project context."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0233",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 233 repeats the same approved requirement with a new source marker. Evidence marker hy; distinguishing phrase hy hy hy."
+            },
+            "label": "Evidence item 233 repeats the same approved requirement with a new source marker. Evidence marker hy; distinguishing phrase hy hy hy."
+          },
+          {
+            "id": "entity-02",
+            "type": "Requirement",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 233 repeats the same approved requirement with a new source marker. Evidence marker hy; distinguishing phrase hy hy hy."
+            },
+            "label": "Evidence item 233 repeats the same approved requirement with a new source marker. Evidence marker hy; distinguishing phrase hy hy hy."
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "constrainedBy",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 233 repeats the same approved requirement with a new source marker. Evidence marker hy; distinguishing phrase hy hy hy."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0234",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "ProgressClaim",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J6 requirement 234 is superseded by this rule. Evidence marker hz; distinguishing phrase hz hz hz."
+            },
+            "label": "The previous J6 requirement 234 is superseded by this rule. Evidence marker hz; distinguishing phrase hz hz hz."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0235",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "ResearchFinding",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J6 delivery decision 235 changes the next review step. Evidence marker ia; distinguishing phrase ia ia ia."
+            },
+            "label": "The J6 delivery decision 235 changes the next review step. Evidence marker ia; distinguishing phrase ia ia ia."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0236",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Requirement",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J6 yêu cầu kiểm thử unicode №236 — typo: chekout ✅ Evidence marker ib; distinguishing phrase ib ib ib."
+            },
+            "label": "J6 yêu cầu kiểm thử unicode №236 — typo: chekout ✅ Evidence marker ib; distinguishing phrase ib ib ib."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0237",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0238",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0239",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0240",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": [
+          {
+            "label": "untrusted-external-target",
+            "rationale": "The target is not present in the trusted project context."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0241",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Assumption",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 241 repeats the same approved requirement with a new source marker. Evidence marker ig; distinguishing phrase ig ig ig."
+            },
+            "label": "Evidence item 241 repeats the same approved requirement with a new source marker. Evidence marker ig; distinguishing phrase ig ig ig."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0242",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Constraint",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J6 requirement 242 is superseded by this rule. Evidence marker ih; distinguishing phrase ih ih ih."
+            },
+            "label": "The previous J6 requirement 242 is superseded by this rule. Evidence marker ih; distinguishing phrase ih ih ih."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0243",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "ProgressClaim",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J6 delivery decision 243 changes the next review step. Evidence marker ii; distinguishing phrase ii ii ii."
+            },
+            "label": "The J6 delivery decision 243 changes the next review step. Evidence marker ii; distinguishing phrase ii ii ii."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0244",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J6 yêu cầu kiểm thử unicode №244 — typo: chekout ✅ Evidence marker ij; distinguishing phrase ij ij ij."
+            },
+            "label": "J6 yêu cầu kiểm thử unicode №244 — typo: chekout ✅ Evidence marker ij; distinguishing phrase ij ij ij."
+          },
+          {
+            "id": "entity-02",
+            "type": "Requirement",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J6 yêu cầu kiểm thử unicode №244 — typo: chekout ✅ Evidence marker ij; distinguishing phrase ij ij ij."
+            },
+            "label": "J6 yêu cầu kiểm thử unicode №244 — typo: chekout ✅ Evidence marker ij; distinguishing phrase ij ij ij."
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "supports",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J6 yêu cầu kiểm thử unicode №244 — typo: chekout ✅ Evidence marker ij; distinguishing phrase ij ij ij."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0245",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0251",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Constraint",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J7 delivery decision 251 changes the next review step. Evidence marker iq; distinguishing phrase iq iq iq."
+            },
+            "label": "The J7 delivery decision 251 changes the next review step. Evidence marker iq; distinguishing phrase iq iq iq."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0252",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "ProgressClaim",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J7 yêu cầu kiểm thử unicode №252 — typo: chekout ✅ Evidence marker ir; distinguishing phrase ir ir ir."
+            },
+            "label": "J7 yêu cầu kiểm thử unicode №252 — typo: chekout ✅ Evidence marker ir; distinguishing phrase ir ir ir."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0253",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0254",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0255",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0256",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": [
+          {
+            "label": "untrusted-external-target",
+            "rationale": "The target is not present in the trusted project context."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0257",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 257 repeats the same approved requirement with a new source marker. Evidence marker iw; distinguishing phrase iw iw iw."
+            },
+            "label": "Evidence item 257 repeats the same approved requirement with a new source marker. Evidence marker iw; distinguishing phrase iw iw iw."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0258",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Risk",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J7 requirement 258 is superseded by this rule. Evidence marker ix; distinguishing phrase ix ix ix."
+            },
+            "label": "The previous J7 requirement 258 is superseded by this rule. Evidence marker ix; distinguishing phrase ix ix ix."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0259",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Assumption",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J7 delivery decision 259 changes the next review step. Evidence marker iy; distinguishing phrase iy iy iy."
+            },
+            "label": "The J7 delivery decision 259 changes the next review step. Evidence marker iy; distinguishing phrase iy iy iy."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0260",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Constraint",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J7 yêu cầu kiểm thử unicode №260 — typo: chekout ✅ Evidence marker iz; distinguishing phrase iz iz iz."
+            },
+            "label": "J7 yêu cầu kiểm thử unicode №260 — typo: chekout ✅ Evidence marker iz; distinguishing phrase iz iz iz."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0261",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0262",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0263",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0264",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": [
+          {
+            "label": "untrusted-external-target",
+            "rationale": "The target is not present in the trusted project context."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0265",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Question",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 265 repeats the same approved requirement with a new source marker. Evidence marker je; distinguishing phrase je je je."
+            },
+            "label": "Evidence item 265 repeats the same approved requirement with a new source marker. Evidence marker je; distinguishing phrase je je je."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0266",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J7 requirement 266 is superseded by this rule. Evidence marker jf; distinguishing phrase jf jf jf."
+            },
+            "label": "The previous J7 requirement 266 is superseded by this rule. Evidence marker jf; distinguishing phrase jf jf jf."
+          },
+          {
+            "id": "entity-02",
+            "type": "Requirement",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J7 requirement 266 is superseded by this rule. Evidence marker jf; distinguishing phrase jf jf jf."
+            },
+            "label": "The previous J7 requirement 266 is superseded by this rule. Evidence marker jf; distinguishing phrase jf jf jf."
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "answers",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J7 requirement 266 is superseded by this rule. Evidence marker jf; distinguishing phrase jf jf jf."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0267",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Risk",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J7 delivery decision 267 changes the next review step. Evidence marker jg; distinguishing phrase jg jg jg."
+            },
+            "label": "The J7 delivery decision 267 changes the next review step. Evidence marker jg; distinguishing phrase jg jg jg."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0268",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Assumption",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J7 yêu cầu kiểm thử unicode №268 — typo: chekout ✅ Evidence marker jh; distinguishing phrase jh jh jh."
+            },
+            "label": "J7 yêu cầu kiểm thử unicode №268 — typo: chekout ✅ Evidence marker jh; distinguishing phrase jh jh jh."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0269",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0270",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0276",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Risk",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J8 yêu cầu kiểm thử unicode №276 — typo: chekout ✅ Evidence marker jp; distinguishing phrase jp jp jp."
+            },
+            "label": "J8 yêu cầu kiểm thử unicode №276 — typo: chekout ✅ Evidence marker jp; distinguishing phrase jp jp jp."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0277",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0278",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0279",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0280",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": [
+          {
+            "label": "untrusted-external-target",
+            "rationale": "The target is not present in the trusted project context."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0281",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Requirement",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 281 repeats the same approved requirement with a new source marker. Evidence marker ju; distinguishing phrase ju ju ju."
+            },
+            "label": "Evidence item 281 repeats the same approved requirement with a new source marker. Evidence marker ju; distinguishing phrase ju ju ju."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0282",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Decision",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J8 requirement 282 is superseded by this rule. Evidence marker jv; distinguishing phrase jv jv jv."
+            },
+            "label": "The previous J8 requirement 282 is superseded by this rule. Evidence marker jv; distinguishing phrase jv jv jv."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0283",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Question",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J8 delivery decision 283 changes the next review step. Evidence marker jw; distinguishing phrase jw jw jw."
+            },
+            "label": "The J8 delivery decision 283 changes the next review step. Evidence marker jw; distinguishing phrase jw jw jw."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0284",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J8 yêu cầu kiểm thử unicode №284 — typo: chekout ✅ Evidence marker jx; distinguishing phrase jx jx jx."
+            },
+            "label": "J8 yêu cầu kiểm thử unicode №284 — typo: chekout ✅ Evidence marker jx; distinguishing phrase jx jx jx."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0285",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0286",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0287",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0288",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": [
+          {
+            "label": "untrusted-external-target",
+            "rationale": "The target is not present in the trusted project context."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0289",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "ResearchFinding",
+            "span": {
+              "start": 0,
+              "end": 133,
+              "text": "Evidence item 289 repeats the same approved requirement with a new source marker. Evidence marker kc; distinguishing phrase kc kc kc."
+            },
+            "label": "Evidence item 289 repeats the same approved requirement with a new source marker. Evidence marker kc; distinguishing phrase kc kc kc."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0290",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Requirement",
+            "span": {
+              "start": 0,
+              "end": 111,
+              "text": "The previous J8 requirement 290 is superseded by this rule. Evidence marker kd; distinguishing phrase kd kd kd."
+            },
+            "label": "The previous J8 requirement 290 is superseded by this rule. Evidence marker kd; distinguishing phrase kd kd kd."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": [
+          {
+            "label": "supersession-lifecycle",
+            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "s12-a-0291",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Decision",
+            "span": {
+              "start": 0,
+              "end": 110,
+              "text": "The J8 delivery decision 291 changes the next review step. Evidence marker ke; distinguishing phrase ke ke ke."
+            },
+            "label": "The J8 delivery decision 291 changes the next review step. Evidence marker ke; distinguishing phrase ke ke ke."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0292",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Question",
+            "span": {
+              "start": 0,
+              "end": 102,
+              "text": "J8 yêu cầu kiểm thử unicode №292 — typo: chekout ✅ Evidence marker kf; distinguishing phrase kf kf kf."
+            },
+            "label": "J8 yêu cầu kiểm thử unicode №292 — typo: chekout ✅ Evidence marker kf; distinguishing phrase kf kf kf."
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0293",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0294",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-0295",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unsafe or insufficiently grounded input"
+        },
+        "semanticGaps": []
+      }
+    }
+  ]
+}

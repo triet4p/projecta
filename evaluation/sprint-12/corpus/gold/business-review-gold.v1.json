@@ -1,0 +1,727 @@
+{
+  "datasetVersion": "s12.corpus.review-gold.v1",
+  "status": "SYNTHETIC_FIXTURE_ONLY",
+  "humanEvidence": false,
+  "reviews": [
+    {
+      "scenarioId": "s12-s-001",
+      "events": [
+        {
+          "eventId": "event-01",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-02",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-03",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-04",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-05",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-002",
+      "events": [
+        {
+          "eventId": "event-01",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-02",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-03",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-04",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-05",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-003",
+      "events": [
+        {
+          "eventId": "event-01",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-02",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-03",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-04",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-05",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-004",
+      "events": [
+        {
+          "eventId": "event-01",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-02",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-03",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-04",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-05",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-005",
+      "events": [
+        {
+          "eventId": "event-01",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-02",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-03",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-04",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-05",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-006",
+      "events": [
+        {
+          "eventId": "event-01",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-02",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-03",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-04",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-05",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-007",
+      "events": [
+        {
+          "eventId": "event-01",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-02",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-03",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-04",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-05",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-008",
+      "events": [
+        {
+          "eventId": "event-01",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-02",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-03",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-04",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-05",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-009",
+      "events": [
+        {
+          "eventId": "event-01",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-02",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-03",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-04",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-05",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-010",
+      "events": [
+        {
+          "eventId": "event-01",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-02",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-03",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-04",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-05",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-011",
+      "events": [
+        {
+          "eventId": "event-01",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-02",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-03",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-04",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-05",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-012",
+      "events": [
+        {
+          "eventId": "event-01",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-02",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-03",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-04",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-05",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-013",
+      "events": [
+        {
+          "eventId": "event-01",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-02",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-03",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-04",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-05",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-014",
+      "events": [
+        {
+          "eventId": "event-01",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-02",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-03",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-04",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-05",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-015",
+      "events": [
+        {
+          "eventId": "event-01",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-02",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-03",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-04",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-05",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-016",
+      "events": [
+        {
+          "eventId": "event-01",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-02",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-03",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-04",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-05",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-017",
+      "events": [
+        {
+          "eventId": "event-01",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-02",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-03",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-04",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-05",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic"
+          }
+        }
+      ]
+    },
+    {
+      "scenarioId": "s12-s-018",
+      "events": [
+        {
+          "eventId": "event-01",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-02",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-03",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged"
+          }
+        },
+        {
+          "eventId": "event-04",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic"
+          }
+        },
+        {
+          "eventId": "event-05",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic"
+          }
+        }
+      ]
+    }
+  ]
+}

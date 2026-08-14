@@ -1,0 +1,7 @@
+{
+  "logVersion": "s12.corpus.adjudication.v1",
+  "status": "HUMAN_ADJUDICATION_PENDING",
+  "humanEvidence": false,
+  "unresolvedDisagreements": null,
+  "note": "A qualified reviewer must adjudicate the validation/test material before G3 approval."
+}
