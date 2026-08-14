@@ -1,6 +1,6 @@
 # Sprint 11 Plan — Free Production-Shaped Trust Boundary and GitHub Public Issues Ingestion
 
-Status: `G2_APPROVED_RELEASE_PREPARATION_PENDING`
+Status: `RELEASED_AND_CLOSED`
 
 Release target: `v0.6.0` only after G1, G2, and G3 approval
 
@@ -10,7 +10,9 @@ full TLS/digest-backed clean Compose acceptance, and 25-gate stateful cold
 recovery are green. S11-67 live Teams is superseded as a release gate by the
 approved GitHub Public Issues amendment; all 20 amendment tasks are complete.
 G2 was approved with an explicit anonymous-quota residual-risk waiver on
-2026-08-14. G3 and release remain open. No release claim is made.
+2026-08-14. G3 exact-commit approval, immutable tag publication, required CI,
+and non-draft release verification all passed. Sprint 11 is released and
+closed; M7 remains open for Sprint 12+ evolution.
 
 ## Sprint Goal
 
@@ -442,11 +444,37 @@ Status legend: [ ] pending / [~] in progress / [x] done
 - [x] **S11-76 — Publish and verify v0.6.0:** Push only the approved commit and
   annotated tag, follow every required job to terminal success, verify the
   public non-draft release and notes, and preserve failed tags unchanged.
-- [ ] **S11-77 — Close Sprint 11 and update M7:** Attach release evidence, record
+- [x] **S11-77 — Close Sprint 11 and update M7:** Attach release evidence, record
   remaining single-instance/manual-unseal/public-provider and deferred Teams
   risks, and keep M7 open
   for outbound action governance, continuous sync, additional connectors, HA,
   and broader tenant administration.
+
+### S11-77 closure record
+
+- Release: [Projecta v0.6.0](https://github.com/triet4p/projecta/releases/tag/v0.6.0),
+  non-draft and publicly verified on 2026-08-14.
+- Immutable provenance: annotated tag `v0.6.0` points to exact release commit
+  `4a4fa99e010f22a69667119554580c91e2fc7b7e`; post-release documentation commit
+  `7c1d71adff545aee3e3cceded5f77e4bb18f826e` is later on `main` and is not part
+  of the release tag.
+- CI provenance: GitHub Actions run
+  [31767397618](https://github.com/triet4p/projecta/actions/runs/31767397618)
+  completed all required validation and publish jobs successfully.
+- Teardown: disposable public GitHub acceptance repositories, stopped Projecta
+  containers, Projecta images, Compose networks, Projecta volumes, and Docker
+  build cache were removed after sanitized evidence preservation. No test
+  repository or runtime container is required to reproduce this release claim.
+- Retained evidence: the checked-in G2 packet and sanitized live-journey,
+  repository-prepared, validation, clean-Compose, and cold-recovery artifacts;
+  external immutable-preflight records remain referenced by their SHA-256
+  digests in the G2 packet.
+- Residual risks retained: Keycloak/OpenBao single-instance deployment;
+  OpenBao manual unseal; GitHub public read-only ingestion and anonymous quota
+  dependence; deferred Teams live acceptance; and no HA, continuous sync, or
+  outbound actions.
+- M7 remains open. New work moves to Sprint 12+; no further changes are made
+  to the `v0.6.0` release commit or tag.
 
 ## Review Remediation Tasks
 

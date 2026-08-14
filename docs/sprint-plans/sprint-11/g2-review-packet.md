@@ -1,13 +1,13 @@
 # Sprint 11 Amended G2 Review Packet
 
-Status: `V0.6.0_PUBLISHED_S11_77_PENDING`
+Status: `V0.6.0_PUBLISHED_AND_SPRINT_11_CLOSED`
 
 G2 product/security/release approval: `APPROVED_WITH_RESIDUAL_RISK` on 2026-08-14
 Ontology semantic reuse approval: `APPROVED_BY_PROJECT_OWNER` on 2026-08-13
 
 This packet records the project owner's G2 approval, the accepted anonymous
-GitHub quota residual risk, and the completed `v0.6.0` publication. S11-77
-Sprint closure remains pending.
+GitHub quota residual risk, the completed `v0.6.0` publication, and S11-77
+Sprint closure. M7 remains open for Sprint 12+ evolution.
 
 ## Decision record
 
@@ -134,7 +134,7 @@ provider quota; empty or truncated baseline runs remain unacceptable.
 - Teams live acceptance is deferred and requires a separately authorized
   tenant, consent, secret custody, cleanup, and live-evidence decision.
 - v0.6.0 version/changelog freeze, immutable preflight, G3 exact-commit
-  approval, and publication are complete; Sprint 11 closure remains open.
+  approval, publication, and Sprint 11 closure are complete; M7 remains open.
 
 ## Reviewer checklist and decision rule
 
@@ -173,3 +173,12 @@ credential-free public read-only ingestion.
 - Publication: `PASSED`; GitHub Actions run `31767397618` completed all required
   jobs successfully and published the non-draft release at
   https://github.com/triet4p/projecta/releases/tag/v0.6.0.
+- S11-77 closure: `RELEASED_AND_CLOSED` on 2026-08-14. Disposable acceptance
+  repositories, stopped Projecta containers, Projecta images, Compose networks,
+  Projecta volumes, and Docker build cache were torn down after sanitized
+  evidence preservation. The checked-in sanitized journey, repository-prepared,
+  validation, clean-Compose, cold-recovery, and this packet remain available;
+  external preflight records remain referenced by SHA-256 digest above.
+- M7 disposition: remains open for outbound actions, continuous synchronization,
+  additional connectors, HA, broader tenant administration, and production
+  hardening. No change is made to the immutable `v0.6.0` commit or tag.

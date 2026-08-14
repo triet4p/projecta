@@ -35,7 +35,10 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   yêu cầu người dùng nhập opaque ID.
 - [~] **M7 — Connector and Production Evolution (Sprint 10+):** Mock/manual
   connector framework, connector thật đầu tiên, authentication/authorization,
-  security và production hardening.
+  security và production hardening. Sprint 11 and `v0.6.0` are complete, while
+  M7 remains open for Sprint 12+ outbound actions, continuous synchronization,
+  additional connectors, HA, broader tenant administration, and measured
+  production hardening.
 
 ## Completed Sprints
 
@@ -70,20 +73,16 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   PostgreSQL/evidence recovery, project isolation, clean-Compose acceptance,
   immutable release gates, and public `v0.5.1` recovery release passed. The
   failed `v0.5.0` tag remains unchanged as historical evidence.*
+- [Sprint 11 — Free Production-Shaped Trust Boundary and GitHub Public Issues Ingestion](sprint-plans/sprint-11.md)
+  — *Released and closed 2026-08-14 as public non-draft `v0.6.0` from exact
+  commit `4a4fa99e010f22a69667119554580c91e2fc7b7e`; CI/publish run
+  `31767397618` passed. Sanitized evidence was retained and disposable runtime
+  resources were torn down. M7 remains open.*
 
 ## Active Sprints
 
-- [Sprint 11 — Free Production-Shaped Trust Boundary and GitHub Public Issues Ingestion](sprint-plans/sprint-11.md)
-  — *G1 approved with revisions on 2026-08-12; OIDC, Teams lifecycle, OpenBao,
-  strict typing, deterministic validation, clean Compose, and stateful recovery
-  are green. The 2026-08-13 G1 amendment makes credential-free GitHub Public
-  Issues the v0.6.0 live connector and defers Teams live acceptance. Amendment
-  implementation is complete. G2 was approved with an explicit residual-risk
-  waiver for the quota-limited live edit/replay rerun; baseline r9 and
-  deterministic provenance contracts are accepted. Version alignment,
-  release-contract freeze, immutable preflight, G3, and publication completed
-  with the public non-draft `v0.6.0` release on 2026-08-14. Sprint 11 closure
-  remains open for the separately tracked M7 follow-up.*
+- No active Sprint 11 work remains. New implementation work moves to Sprint 12+
+  under the still-open M7 milestone.
 
 ## Planned Sprints
 
