@@ -1,0 +1,16 @@
+{
+  "reportVersion": "s12.pilot.agreement.v1",
+  "status": "CALIBRATION_FIXTURE_ONLY",
+  "humanEvidence": false,
+  "labelSets": ["s12.pilot.labels.a.v1", "s12.pilot.labels.b.v1"],
+  "cases": 20,
+  "exactCaseAgreement": 0.9,
+  "typeAndAbstentionAgreement": 0.9,
+  "spanF1": 1.0,
+  "relationLinkF1": 1.0,
+  "scenarioGraphStateAgreement": 0.9,
+  "questionAnswerAgreement": 0.9,
+  "provisionalThresholds": {"typeAndAbstention": 0.8, "spanF1": 0.85, "relationLinkF1": 0.8, "scenarioGraphState": 0.8},
+  "fixturePassesProvisionalThresholds": true,
+  "interpretation": "The fixture exercises the evaluator and guide but cannot establish qualified human annotator reliability. G2 remains pending human evidence."
+}

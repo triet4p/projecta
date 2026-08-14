@@ -87,9 +87,9 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 ## Active Sprints
 
 - [Sprint 12 — Business Semantic Quality and Evaluation](sprint-plans/sprint-12.md)
-  — *In progress; G0 and G1 are approved and G2 annotation-pilot work is next.
-  New connector and outbound breadth remains deferred while Projecta establishes
-  business and semantic quality.*
+  — *In progress; G0 and G1 are approved and G2 annotation-pilot approval is
+  pending. New connector and outbound breadth remains deferred while Projecta
+  establishes business and semantic quality.*
 
 ## Planned Sprints
 

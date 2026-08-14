@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G1_APPROVED_G2_PENDING`
+Status: `G2_PACKET_READY_FOR_HUMAN_APPROVAL`
 
 G0 packet: [Business Scope Review Packet](sprint-12/g0-business-scope.md)
 
@@ -260,25 +260,27 @@ G1 packet: [Dataset Contract Review Packet](sprint-12/g1-dataset-contract.md)
 
 ### Phase C — Annotation Pilot and G2
 
-- [ ] **S12-29 — Author the pilot atomic set:** Create at least 20 cases spanning
+G2 packet: [Annotation Pilot Review Packet](sprint-12/g2-annotation-pilot.md)
+
+- [x] **S12-29 — Author the pilot atomic set:** Create at least 20 cases spanning
   priority types, ambiguity, multilingual text, and adversarial input.
-- [ ] **S12-30 — Author the pilot scenario set:** Create at least three
+- [x] **S12-30 — Author the pilot scenario set:** Create at least three
   longitudinal episodes with graph checkpoints and business questions.
-- [ ] **S12-31 — Validate pilot source provenance:** Confirm every pilot case is
+- [x] **S12-31 — Validate pilot source provenance:** Confirm every pilot case is
   permitted, classified, and free of prohibited content.
-- [ ] **S12-32 — Calibrate annotators:** Run common examples without including
+- [x] **S12-32 — Calibrate annotators:** Run common examples without including
   pilot or future held-out gold.
-- [ ] **S12-33 — Independently annotate the pilot:** Produce two isolated label
+- [x] **S12-33 — Independently annotate the pilot:** Produce two isolated label
   sets without shared intermediate answers.
-- [ ] **S12-34 — Measure pilot agreement:** Compute type, span, relation/link,
+- [x] **S12-34 — Measure pilot agreement:** Compute type, span, relation/link,
   abstention, graph-state, and question-answer agreement.
-- [ ] **S12-35 — Adjudicate pilot disagreements:** Record the accepted outcome
+- [x] **S12-35 — Adjudicate pilot disagreements:** Record the accepted outcome
   and reason for every material disagreement.
-- [ ] **S12-36 — Revise the annotation guide:** Correct only ambiguous rules
+- [x] **S12-36 — Revise the annotation guide:** Correct only ambiguous rules
   revealed by the pilot and version the changes.
-- [ ] **S12-37 — Re-run pilot agreement:** Confirm the revised guidance meets
+- [x] **S12-37 — Re-run pilot agreement:** Confirm the revised guidance meets
   the G2 thresholds on a fresh calibration subset.
-- [ ] **S12-38 — Prepare the G2 packet:** Bind pilot cases, independent labels,
+- [x] **S12-38 — Prepare the G2 packet:** Bind pilot cases, independent labels,
   metrics, adjudication, and guide versions.
 - [ ] **S12-39 — Approve G2 annotation reliability:** Human reviewers accept,
   revise, or reject scaled dataset production.
