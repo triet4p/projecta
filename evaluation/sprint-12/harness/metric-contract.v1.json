@@ -1,6 +1,6 @@
 {
   "version": "s12.metric-contract.v1",
-  "status": "G4_APPROVED_WITH_LIMITATIONS_G5_PENDING",
+  "status": "G5_PREPARATION_BLOCKED_BASELINE_UNAVAILABLE",
   "families": [
     "extraction",
     "ontology-mapping",

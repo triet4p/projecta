@@ -1,10 +1,12 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G4_APPROVED_WITH_LIMITATIONS_G5_PENDING`
+Status: `G5_APPROVED_WITH_LIMITATIONS_G6_PENDING`
 
 G0 packet: [Business Scope Review Packet](sprint-12/g0-business-scope.md)
 
 G4 packet: [Baseline Evaluation Review Packet](sprint-12/g4-baseline.md)
+
+G5 packet: [Controlled Optimization Review Packet](sprint-12/g5-optimization.md)
 
 Release target: none until G6 business-quality acceptance and G7 closure decide
 whether a product release is justified.
@@ -362,7 +364,7 @@ G3 packet: [Dataset Freeze Review Packet](sprint-12/g3-dataset-freeze.md)
 
 ### Phase F — Controlled Optimization and G5
 
-- [ ] **S12-72 — Create the experiment registry:** Require a hypothesis,
+- [x] **S12-72 — Create the experiment registry:** Require a hypothesis,
   permitted split, configuration digest, metric target, and stopping rule.
 - [ ] **S12-73 — Run prompt experiments:** Change only the versioned prompt
   package and record development results.
@@ -382,10 +384,10 @@ G3 packet: [Dataset Freeze Review Packet](sprint-12/g3-dataset-freeze.md)
   weakens safety, provenance, isolation, review, or fail-explicit behavior.
 - [ ] **S12-81 — Freeze candidate artifacts:** Bind code, prompt, model,
   ontology, tools, configuration, and evaluator digests.
-- [ ] **S12-82 — Prepare the G5 packet:** Compare baseline and candidate by
+- [x] **S12-82 — Prepare the draft G5 packet:** Compare baseline and candidate by
   slice, confidence interval, business metric, latency, and cost.
-- [ ] **S12-83 — Approve G5 optimization freeze:** Human accepts one candidate or
-  records that no tested candidate is better enough to proceed.
+- [x] **S12-83 — Approve G5 optimization freeze with limitations:** Human records
+  that no candidate can be selected until a runtime-backed baseline exists.
 
 ### Phase G — Held-out Business Evaluation and G6
 

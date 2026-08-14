@@ -88,10 +88,11 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 
 - [Sprint 12 — Business Semantic Quality and Evaluation](sprint-plans/sprint-12.md)
   — *In progress; G0, G1, G2 and G3 are approved with recorded evidence
-  limitations, and G4 is approved with explicit measurement limitations. The
-  runtime-backed `v0.6.0` baseline, semantic review and optimization remain
-  gated. New connector and outbound breadth remains deferred while Projecta
-  establishes business and semantic quality.*
+  limitations, and G5 is approved with an explicit no-go limitation because
+  the runtime-backed `v0.6.0` baseline is missing. The controlled experiment
+  registry is ready, but optimization and held-out evaluation remain gated. New
+  connector and outbound breadth remains deferred while Projecta establishes
+  business and semantic quality.*
 
 ## Planned Sprints
 

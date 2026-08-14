@@ -1,6 +1,6 @@
 {
   "version": "s12.coverage.v1",
-  "status": "G4_APPROVED_WITH_LIMITATIONS_G5_PENDING",
+  "status": "G5_PREPARATION_BLOCKED_BASELINE_UNAVAILABLE",
   "minimums": {
     "atomicCases": 200,
     "longitudinalScenarios": 24,

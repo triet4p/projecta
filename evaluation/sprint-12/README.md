@@ -2,7 +2,7 @@
 
 **Contract version:** `s12.v1`
 
-**Status:** `G4_APPROVED_WITH_LIMITATIONS_G5_PENDING`
+**Status:** `G5_APPROVED_WITH_LIMITATIONS_G6_PENDING`
 
 This directory contains the governed contract for the Sprint 12 business
 semantic benchmark. It does not contain the held-out test cases or gold. Test
@@ -40,5 +40,7 @@ procedure permits one blinded run.
 
 G0, G1, G2 and G3 are approved with the evidence limitations recorded in the
 G2 and G3 packets. G4 is approved only as a truthful no-run measurement
-boundary: the runtime-backed baseline, semantic review and optimization remain
-pending; held-out inputs/gold remain outside the repository.
+boundary. G5 registry preparation is complete and approved with a no-go
+limitation: controlled optimization cannot select a candidate until the
+runtime-backed baseline and semantic review exist; held-out inputs/gold remain
+outside the repository.

@@ -40,7 +40,7 @@ def _f1(left: set, right: set) -> float:
 
 def test_phase_c_tasks_and_g2_approval_boundary_are_recorded() -> None:
     plan = PLAN.read_text(encoding="utf-8")
-    assert "Status: `G4_APPROVED_WITH_LIMITATIONS_G5_PENDING`" in plan
+    assert "Status: `G5_APPROVED_WITH_LIMITATIONS_G6_PENDING`" in plan
     assert "**Status:** `G2_APPROVED_G3_PENDING`" in PACKET.read_text(encoding="utf-8")
     assert "[x] **S12-29" in plan
     assert "[x] **S12-30" in plan

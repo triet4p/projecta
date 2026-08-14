@@ -1,0 +1,147 @@
+{
+  "evaluatorVersion": "s12.evaluator.v1",
+  "experiments": [
+    {
+      "baselineConfigurationDigest": "sha256:e3b25747b7b4d4271b2f043f56704dcc902fef57460cefaa902144651c355f6a",
+      "candidateConfigurationDigest": "sha256:1d41eb34d3293224bcebe9b386a09a3aa2aff9fb5fffcdd7eb06ab39db42f66f",
+      "changedArtifacts": [
+        "prompt"
+      ],
+      "datasetManifestDigest": "sha256:7c0e32242f5596f4f6a153069c2afbe5a13990fdde90840340a4408de3f4cd65",
+      "dimension": "prompt",
+      "experimentId": "s12-f-01",
+      "hypothesis": "A bounded prompt change improves the registered development metric without weakening hard invariants.",
+      "metricTarget": {
+        "semanticQuality": {
+          "direction": "higher",
+          "minimumDelta": 0.01
+        }
+      },
+      "permittedSplit": "development",
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract"
+      ],
+      "status": "NOT_EXECUTED_BASELINE_UNAVAILABLE",
+      "stoppingRule": "Stop after one development run or immediately on a hard-invariant regression."
+    },
+    {
+      "baselineConfigurationDigest": "sha256:e3b25747b7b4d4271b2f043f56704dcc902fef57460cefaa902144651c355f6a",
+      "candidateConfigurationDigest": "sha256:0518e267b3df53f7f1df00ca3dc8a7e13a8ad3bacde900a00f2214c2d922fdda",
+      "changedArtifacts": [
+        "context"
+      ],
+      "datasetManifestDigest": "sha256:7c0e32242f5596f4f6a153069c2afbe5a13990fdde90840340a4408de3f4cd65",
+      "dimension": "context",
+      "experimentId": "s12-f-02",
+      "hypothesis": "A bounded context change improves the registered development metric without weakening hard invariants.",
+      "metricTarget": {
+        "semanticQuality": {
+          "direction": "higher",
+          "minimumDelta": 0.01
+        }
+      },
+      "permittedSplit": "development",
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract"
+      ],
+      "status": "NOT_EXECUTED_BASELINE_UNAVAILABLE",
+      "stoppingRule": "Stop after one development run or immediately on a hard-invariant regression."
+    },
+    {
+      "baselineConfigurationDigest": "sha256:e3b25747b7b4d4271b2f043f56704dcc902fef57460cefaa902144651c355f6a",
+      "candidateConfigurationDigest": "sha256:8f72437aaeee828dcbdac809d0510143effe4d41c08fae9d638d93330ddff252",
+      "changedArtifacts": [
+        "agent-workflow"
+      ],
+      "datasetManifestDigest": "sha256:7c0e32242f5596f4f6a153069c2afbe5a13990fdde90840340a4408de3f4cd65",
+      "dimension": "agent-workflow",
+      "experimentId": "s12-f-03",
+      "hypothesis": "A bounded agent-workflow change improves the registered development metric without weakening hard invariants.",
+      "metricTarget": {
+        "semanticQuality": {
+          "direction": "higher",
+          "minimumDelta": 0.01
+        }
+      },
+      "permittedSplit": "development",
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract"
+      ],
+      "status": "NOT_EXECUTED_BASELINE_UNAVAILABLE",
+      "stoppingRule": "Stop after one development run or immediately on a hard-invariant regression."
+    },
+    {
+      "baselineConfigurationDigest": "sha256:e3b25747b7b4d4271b2f043f56704dcc902fef57460cefaa902144651c355f6a",
+      "candidateConfigurationDigest": "sha256:11f1f9a22e0c85f56e7b1affaf2d9963d3fda17a5c27e56edea30eed43148430",
+      "changedArtifacts": [
+        "tool"
+      ],
+      "datasetManifestDigest": "sha256:7c0e32242f5596f4f6a153069c2afbe5a13990fdde90840340a4408de3f4cd65",
+      "dimension": "tool",
+      "experimentId": "s12-f-04",
+      "hypothesis": "A bounded tool change improves the registered development metric without weakening hard invariants.",
+      "metricTarget": {
+        "semanticQuality": {
+          "direction": "higher",
+          "minimumDelta": 0.01
+        }
+      },
+      "permittedSplit": "development",
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract"
+      ],
+      "status": "NOT_EXECUTED_BASELINE_UNAVAILABLE",
+      "stoppingRule": "Stop after one development run or immediately on a hard-invariant regression."
+    },
+    {
+      "baselineConfigurationDigest": "sha256:e3b25747b7b4d4271b2f043f56704dcc902fef57460cefaa902144651c355f6a",
+      "candidateConfigurationDigest": "sha256:5740eea02dc6edfc9e6f54068b56449d1600ba95e288cc5857abac859fccce48",
+      "changedArtifacts": [
+        "model"
+      ],
+      "datasetManifestDigest": "sha256:7c0e32242f5596f4f6a153069c2afbe5a13990fdde90840340a4408de3f4cd65",
+      "dimension": "model",
+      "experimentId": "s12-f-05",
+      "hypothesis": "A bounded model change improves the registered development metric without weakening hard invariants.",
+      "metricTarget": {
+        "semanticQuality": {
+          "direction": "higher",
+          "minimumDelta": 0.01
+        }
+      },
+      "permittedSplit": "development",
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract"
+      ],
+      "status": "NOT_EXECUTED_BASELINE_UNAVAILABLE",
+      "stoppingRule": "Stop after one development run or immediately on a hard-invariant regression."
+    }
+  ],
+  "heldOutInspected": false,
+  "permittedSplits": [
+    "development"
+  ],
+  "registryDigest": "sha256:07bec15f8b5be6b8d73712393cb43c59ce690828f58ea1fe6b805af10c681a73",
+  "registryVersion": "s12.experiment-registry.v1",
+  "status": "G5_PREPARATION_BLOCKED_BASELINE_UNAVAILABLE"
+}
