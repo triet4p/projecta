@@ -602,3 +602,17 @@ to absorb.
 its test environment explicitly, and every new broad exception handler must be
 checked against the Sprint 8 implicit-behavior gate before creating a release
 tag.
+
+## [2026-08-14] Revalidate local immutable image references after Compose builds
+
+**Symptom:** A clean Compose rerun attempted to pull the local API image from a
+nonexistent registry even though the same image had passed an earlier run.
+**Root cause:** The Compose integration-test build refreshed the local API image
+ID, so the previously captured `projecta-api@sha256:...` reference no longer
+matched the local image available to the daemon.
+**Fix / workaround:** Inspect the current local image ID after every Compose
+build and use that exact digest reference for the next immutable preflight; do
+not assume a prior local digest remains valid after a test image rebuild.
+**Watch out for:** Keep image digest capture and Compose execution in the same
+validated preflight sequence, especially when `--build` creates connector test
+images from the same Docker context.
