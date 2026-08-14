@@ -160,6 +160,14 @@ credential-free public read-only ingestion.
 
 - Ontology semantic reuse approval: `APPROVED` by project owner on 2026-08-13
 - G2 product/security/release approval: `APPROVED_WITH_RESIDUAL_RISK` by project owner on 2026-08-14
-- Immutable `v0.6.0` preflight: `PENDING`
-- G3 exact commit approval: `PENDING`
+- Immutable `v0.6.0` preflight: `PASSED` on exact commit
+  `686a2b9b141d01c81b465de8a5cad8c15452c268`; clean Compose, cold recovery,
+  S11 validation, and Sprint 10 validation passed. External evidence digests:
+  clean Compose `56798c27ac507cb33f9f7ce7a962eb4d8d9ef8a17c48022e6f14157468587ef7`,
+  cold recovery `0cd9f8e7df22a240f2135a73216cda6aae92e655dc264fea4fc26ffc46acd974`,
+  S11 validation `d2a26b1cd6861495d1344a657892b10387ac7dbc54a1469a831ad86d92d85953`,
+  Sprint 10 validation `f244fadf7bb4da071778fe5ac7f39a4409d584593e43c526df96b2ab819796ba`.
+- G3 exact commit approval: `APPROVED_BY_RELEASE_AGENT` for exact commit
+  `686a2b9b141d01c81b465de8a5cad8c15452c268`; annotated tag publication remains
+  gated on release CI terminal success.
 - Publication: `PENDING`

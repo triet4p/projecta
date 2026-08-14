@@ -434,10 +434,10 @@ Status legend: [ ] pending / [~] in progress / [x] done
   clean-Compose identity/secret acceptance, recovery, security, repository, and
   release-contract jobs; keep live-provider access deterministic and
   credential-free in public CI.
-- [ ] **S11-74 — Run the immutable release preflight:** Execute every mandatory
+- [x] **S11-74 — Run the immutable release preflight:** Execute every mandatory
   gate on the exact proposed release commit with clean worktree, clean volumes,
   pinned images, native exit codes, totals, and artifact digests.
-- [ ] **S11-75 — Approve G3 exact-commit release authorization:** Human names the
+- [x] **S11-75 — Approve G3 exact-commit release authorization:** Human names the
   immutable commit approved for annotated `v0.6.0` publication.
 - [ ] **S11-76 — Publish and verify v0.6.0:** Push only the approved commit and
   annotated tag, follow every required job to terminal success, verify the
