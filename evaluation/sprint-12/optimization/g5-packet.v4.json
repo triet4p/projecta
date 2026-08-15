@@ -1,0 +1,24 @@
+{
+  "approvalStatus": "APPROVED_WITH_LIMITATIONS",
+  "candidateAvailable": true,
+  "candidateFreezeAuthorized": false,
+  "candidateModel": "deepseek-v4-pro",
+  "executedExperimentId": "s12-f-05",
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "packetVersion": "s12.g5.packet.v4",
+  "pendingExperiment": {
+    "artifact": "s12-f-06-sampling-preregistration.v1.json",
+    "digest": "sha256:a5e20b8dc5291b1a56ba8d14279a76c5c5190a6aabb6abd28a7d196baf44e0df",
+    "dimension": "sampling",
+    "executionAuthorized": false,
+    "status": "PREREGISTERED_NOT_EXECUTED"
+  },
+  "pendingExperimentId": "s12-f-06",
+  "rawSensitiveDataIncluded": false,
+  "registryDigest": "sha256:105c651f58bc339aec5ae038055b4a81d045e4acb435214f91bb7c17196bf3b4",
+  "registryVersion": "s12.experiment-registry.v4",
+  "stageBAuthorized": false,
+  "status": "G5_PREPARATION_DEVELOPMENT_OPEN",
+  "validationAuthorized": false
+}

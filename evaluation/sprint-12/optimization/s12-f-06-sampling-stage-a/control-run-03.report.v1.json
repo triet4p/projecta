@@ -1,0 +1,481 @@
+{
+  "baselineLockDigest": "sha256:2c3c4badd0f5da7ae6cb96c6d69e95abdc05e70e3e6448cdb9080c45ffa037b4",
+  "candidateKind": "s12-f-06-control-sampling",
+  "caseCount": 8,
+  "caseCoverage": [
+    {
+      "caseId": "s12-a-0101",
+      "split": "development",
+      "status": "scored"
+    },
+    {
+      "caseId": "s12-a-0121",
+      "split": "development",
+      "status": "scored"
+    },
+    {
+      "caseId": "s12-a-0153",
+      "split": "development",
+      "status": "scored"
+    },
+    {
+      "caseId": "s12-a-0162",
+      "split": "development",
+      "status": "scored"
+    },
+    {
+      "caseId": "s12-a-0176",
+      "split": "development",
+      "status": "scored"
+    },
+    {
+      "caseId": "s12-a-0187",
+      "split": "development",
+      "status": "scored"
+    },
+    {
+      "caseId": "s12-a-0201",
+      "split": "development",
+      "status": "scored"
+    },
+    {
+      "caseId": "s12-a-0233",
+      "split": "development",
+      "status": "scored"
+    }
+  ],
+  "casesPerSlice": 8,
+  "configuration": {
+    "apiKeyPresent": true,
+    "baseUrl": "https://api.deepseek.com",
+    "evaluatorVersion": "s12.evaluator.v1",
+    "llmType": "openai-response",
+    "manifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+    "model": "deepseek-v4-pro",
+    "oneAttemptPerCase": true,
+    "promptVersion": "m3.prompt.v3.supersession-guard",
+    "release": "v0.6.0",
+    "requestTimeoutSeconds": 60,
+    "retryPolicy": "none",
+    "runBudgetSeconds": 300,
+    "samplingConfiguration": {
+      "seed": "provider-controlled",
+      "temperature": "provider-default",
+      "topP": "provider-default"
+    },
+    "schemaVersion": "m3.v2"
+  },
+  "contractVersion": "m3.v2",
+  "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "digests": {
+    "candidateRunnerCode": "sha256:53f61051e4dbab3db8abb3e1cfe78af7908b4baa6cf8ac8cba0607b7819e38af",
+    "evaluatorCode": "sha256:03f236235ccb61cb33f476fd3613ab23e81e1811bfd67acb4322e6386efb1cef",
+    "manifest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+    "modelConfiguration": "sha256:10ddefc86b788bb59356d77bb50f2beb1ceedddac5643c4470e2be3600e18496",
+    "promptCode": "sha256:2827e7f23b50b480b157615d2bc09997d643ed607c02e02d3ec8e010a56ada03",
+    "runtimeContractCode": "sha256:fe74535ea26db917fee51b449f725431f4e0d98040ea5126533bc511142681ac",
+    "runtimeServiceCode": "sha256:f80f2ad12be5c58f6314a04e4652d97d913492a6606f21f39160dcf0c605786c",
+    "schemaContract": "sha256:235716b6fdd5d0b834e2d8a590a270e83e7175b02048cc6aa1133ff74fc75d39"
+  },
+  "failureCount": 0,
+  "failures": [],
+  "goldPositiveCounts": {
+    "entities": 9,
+    "links": 0,
+    "relations": 4
+  },
+  "hardInvariants": {
+    "datasetDigestBinding": true,
+    "heldOutNonLeakage": true,
+    "relationContractRepresentable": true,
+    "schemaValidity": true,
+    "splitIntegrity": true,
+    "status": "PASS"
+  },
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "metrics": {
+    "abstentionAccuracy": 0.875,
+    "entityMacroF1": 0.75,
+    "hallucinationRate": 0.25,
+    "linkMacroF1": 1.0,
+    "perCase": {
+      "s12-a-0101": {
+        "abstentionAccuracy": 1.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 0,
+        "hallucinationRate": 0.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relations": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "s12-a-0121": {
+        "abstentionAccuracy": 0.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 0.0,
+          "gold": 2,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 3,
+        "hallucinationRate": 0.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relations": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "s12-a-0153": {
+        "abstentionAccuracy": 1.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 1.0,
+          "gold": 2,
+          "precision": 1.0,
+          "predicted": 2,
+          "recall": 1.0,
+          "truePositive": 2
+        },
+        "goldItemCount": 3,
+        "hallucinationRate": 0.3333333333333333,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relations": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 1,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "s12-a-0162": {
+        "abstentionAccuracy": 1.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 0,
+        "hallucinationRate": 0.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relations": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "s12-a-0176": {
+        "abstentionAccuracy": 1.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 0,
+        "hallucinationRate": 0.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relations": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "s12-a-0187": {
+        "abstentionAccuracy": 1.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 1,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 1,
+        "hallucinationRate": 1.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relations": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "s12-a-0201": {
+        "abstentionAccuracy": 1.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 1.0,
+          "gold": 2,
+          "precision": 1.0,
+          "predicted": 2,
+          "recall": 1.0,
+          "truePositive": 2
+        },
+        "goldItemCount": 3,
+        "hallucinationRate": 0.3333333333333333,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relations": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 1,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "s12-a-0233": {
+        "abstentionAccuracy": 1.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 1.0,
+          "gold": 2,
+          "precision": 1.0,
+          "predicted": 2,
+          "recall": 1.0,
+          "truePositive": 2
+        },
+        "goldItemCount": 3,
+        "hallucinationRate": 0.3333333333333333,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relations": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 1,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      }
+    },
+    "relationMacroF1": 0.5
+  },
+  "missingOutputCount": 0,
+  "omittedCaseCount": 0,
+  "operational": {
+    "acceptedCandidateCostUsd": 0,
+    "costUsd": 0.0,
+    "count": 8,
+    "failureCounts": {},
+    "latencyMs": {
+      "p50": 1735.0,
+      "p95": 2812.0
+    },
+    "status": "scored",
+    "usage": {
+      "inputTokens": 12154,
+      "outputTokens": 1062
+    }
+  },
+  "operationalRecords": [
+    {
+      "caseId": "s12-a-0101",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1520,
+      "latencyMs": 2155,
+      "outputTokens": 71,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0121",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1525,
+      "latencyMs": 1500,
+      "outputTokens": 50,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0153",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1527,
+      "latencyMs": 2796,
+      "outputTokens": 252,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0162",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1515,
+      "latencyMs": 1735,
+      "outputTokens": 75,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0176",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1511,
+      "latencyMs": 1562,
+      "outputTokens": 43,
+      "slice": "fabricated-link",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0187",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1519,
+      "latencyMs": 1734,
+      "outputTokens": 98,
+      "slice": "temporal-change",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0201",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1520,
+      "latencyMs": 2530,
+      "outputTokens": 232,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0233",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1517,
+      "latencyMs": 2812,
+      "outputTokens": 241,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    }
+  ],
+  "rawSensitiveDataIncluded": false,
+  "schemaVersion": "s12.contract-candidate.v1",
+  "slices": [
+    "contradiction-or-supersession",
+    "duplicate-evidence",
+    "temporal-change",
+    "unicode-and-noisy-text"
+  ],
+  "split": "development",
+  "status": "CANDIDATE_DEVELOPMENT_SCORED",
+  "validationAuthorized": false
+}

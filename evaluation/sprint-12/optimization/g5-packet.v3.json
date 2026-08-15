@@ -1,0 +1,69 @@
+{
+  "accounting": {
+    "costAccountingStatus": "NOT_AVAILABLE_PROVIDER_PRICE_CONFIGURATION",
+    "latencyPresent": true,
+    "usagePresent": true
+  },
+  "approvalStatus": "APPROVED_WITH_LIMITATIONS",
+  "candidateAvailable": true,
+  "candidateEvidence": {
+    "artifact": "s12-77-model-stage-a.v1.json",
+    "decision": "STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B",
+    "digest": "sha256:30656e6aee4145e71d40959bf8d91e8b2e83208736e278406915a0acd652b2c4",
+    "targetedDiagnostic": {
+      "artifact": "s12-77-targeted-diagnostics.v1.json",
+      "caseIds": [
+        "s12-a-0121",
+        "s12-a-0176"
+      ],
+      "digest": "sha256:d40dd042ccc7c20b0e3829a71c0fe25b58a4153b8eb01ca19cc17e6cc96ddb1e",
+      "failureCounts": {},
+      "status": "DIAGNOSTIC_COMPLETED"
+    }
+  },
+  "candidateFreezeAuthorized": false,
+  "candidateModel": "deepseek-v4-pro",
+  "comparison": {
+    "metricDeltas": {
+      "abstentionAccuracy": -0.010119047619047805,
+      "entityMacroF1": -0.02351190476190468,
+      "hallucinationRateReduction": -0.005555555555555564,
+      "relationMacroF1": 0.0029761904761905766
+    },
+    "semanticGates": {
+      "abstentionAccuracy": false,
+      "entityMacroF1": false,
+      "hallucinationRate": false,
+      "relationMacroF1": true
+    },
+    "semanticGatesPass": false
+  },
+  "controlModel": "deepseek-v4-flash",
+  "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "executedExperimentId": "s12-f-05",
+  "hardInvariants": {
+    "candidateFailureCounts": {
+      "cross_project_link": 1,
+      "schema_invalid": 2
+    },
+    "controlFailureCounts": {
+      "invalid_evidence": 1
+    },
+    "status": "FAIL"
+  },
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "packetVersion": "s12.g5.packet.v3",
+  "rawSensitiveDataIncluded": false,
+  "registryDigest": "sha256:c5db61a8367ca7a11304cba315e8403a8ea77305064becd4722a7c8e78bc5060",
+  "registryVersion": "s12.experiment-registry.v3",
+  "selection": {
+    "heldOutInspected": false,
+    "reason": "S12-77 Stage A failed hard and semantic gates; Stage B is locked.",
+    "status": "NO_SELECTION"
+  },
+  "stageBAuthorized": false,
+  "status": "G5_PREPARATION_DEVELOPMENT_OPEN",
+  "validationAuthorized": false
+}

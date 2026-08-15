@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import statistics
+from collections.abc import Mapping
 from dataclasses import replace
 from pathlib import Path
 
@@ -57,6 +58,19 @@ def _select_cases(
     return selected
 
 
+def _select_case_ids(
+    loaded: evaluator.LoadedDataset, case_ids: tuple[str, ...]
+) -> list[dict[str, evaluator.JSONValue]]:
+    by_id = {str(case["caseId"]): case for case in loaded.cases}
+    missing = [case_id for case_id in case_ids if case_id not in by_id]
+    if missing:
+        raise ValueError("requested case IDs are absent: " + ", ".join(missing))
+    selected = [by_id[case_id] for case_id in case_ids]
+    if any(case.get("split") != "development" for case in selected):
+        raise ValueError("candidate subset must remain development-only")
+    return selected
+
+
 def _aggregate_metrics(case_results: dict[str, dict[str, object]]) -> dict[str, float]:
     """Expose scorer-derived development metrics without counting failures."""
 
@@ -96,6 +110,8 @@ def run_candidate(
     prompt_variant: str = "m3.prompt.v2",
     target_slices: tuple[str, ...] = TARGET_SLICES,
     cases_per_slice: int = CASES_PER_SLICE,
+    case_ids: tuple[str, ...] | None = None,
+    sampling_configuration: Mapping[str, object] | None = None,
     candidate_kind: str = "contract-alignment-evidence-materialization-and-local-relation-ids",
 ) -> dict[str, object]:
     loaded = evaluator.load_dataset(
@@ -103,7 +119,11 @@ def run_candidate(
         scenario_path,
         manifest_path,
     )
-    cases = _select_cases(loaded, target_slices, cases_per_slice)
+    cases = (
+        _select_case_ids(loaded, case_ids)
+        if case_ids is not None
+        else _select_cases(loaded, target_slices, cases_per_slice)
+    )
     subset = replace(loaded, cases=cases)
     case_results, operational, failures, config = evaluator._runtime_baseline(
         subset,
@@ -112,6 +132,7 @@ def run_candidate(
         operation_id="s12-g4.1-m3-v2-contract-candidate",
         profile_revision="contract-v2-candidate",
         prompt_variant=prompt_variant,
+        sampling_configuration=sampling_configuration,
     )
     coverage = [
         {
@@ -227,6 +248,7 @@ def main() -> None:
     parser.add_argument("--prompt-variant", default="m3.prompt.v2")
     parser.add_argument("--slices", nargs="+", default=list(TARGET_SLICES))
     parser.add_argument("--cases-per-slice", type=int, default=CASES_PER_SLICE)
+    parser.add_argument("--case-ids", nargs="+", default=None)
     parser.add_argument(
         "--candidate-kind",
         default="contract-alignment-evidence-materialization-and-local-relation-ids",
@@ -239,6 +261,7 @@ def main() -> None:
         prompt_variant=args.prompt_variant,
         target_slices=tuple(args.slices),
         cases_per_slice=args.cases_per_slice,
+        case_ids=tuple(args.case_ids) if args.case_ids else None,
         candidate_kind=args.candidate_kind,
     )
     args.output_path.write_text(

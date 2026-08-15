@@ -107,6 +107,11 @@ class OpenAIResponsesGateway:
             sort_keys=True,
             separators=(",", ":"),
         )
+        sampling: dict[str, float] = {}
+        if request.temperature is not None:
+            sampling["temperature"] = request.temperature
+        if request.top_p is not None:
+            sampling["top_p"] = request.top_p
         response: Any = await self._client.chat.completions.create(
             model=request.model_id,
             messages=[
@@ -122,6 +127,7 @@ class OpenAIResponsesGateway:
             max_tokens=request.max_output_tokens,
             extra_body={"thinking": {"type": "disabled"}},
             timeout=request.timeout_seconds,
+            **sampling,
         )
         choices = getattr(response, "choices", None)
         if not choices:

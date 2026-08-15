@@ -32,6 +32,18 @@ def _proposal_request() -> GatewayRequest:
     )
 
 
+def _sampling_request() -> GatewayRequest:
+    return GatewayRequest(
+        schemaVersion="m3.v1",
+        modelId="deepseek-v4-pro",
+        systemPrompt="system",
+        userPrompt="user",
+        responseSchema={"type": "object", "properties": {}, "additionalProperties": False},
+        temperature=0.0,
+        topP=1.0,
+    )
+
+
 def test_adapter_fails_closed_without_credential() -> None:
     with pytest.raises(NormalizedGatewayError) as caught:
         OpenAIResponsesGateway(base_url="https://api.deepseek.com", api_key="")
@@ -80,6 +92,32 @@ async def test_adapter_normalizes_structured_output(monkeypatch: pytest.MonkeyPa
     assert result.usage is not None
     assert result.usage.total_tokens == 7
     assert result.usage.reasoning_tokens == 0
+
+
+@pytest.mark.asyncio
+async def test_adapter_passes_explicit_sampling_configuration() -> None:
+    gateway = OpenAIResponsesGateway(base_url="https://api.deepseek.com", api_key="test-key")
+
+    class FakeCompletions:
+        async def create(self, **kwargs: object) -> object:
+            assert kwargs["temperature"] == 0.0
+            assert kwargs["top_p"] == 1.0
+            return SimpleNamespace(
+                choices=[
+                    SimpleNamespace(
+                        finish_reason="stop",
+                        message=SimpleNamespace(
+                            content='{"entities": [], "relations": [], "links": [], "abstentionReason": "empty"}'
+                        ),
+                    )
+                ],
+                usage=None,
+            )
+
+    gateway._client.chat.completions = FakeCompletions()  # type: ignore[attr-defined]
+    result = await gateway.extract(_sampling_request())
+
+    assert result.extraction.abstention_reason == "empty"
 
 
 @pytest.mark.asyncio

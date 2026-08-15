@@ -1,0 +1,86 @@
+{
+  "artifactVersion": "s12.s12-f-06.sampling-preregistration.v1",
+  "candidate": {
+    "configuration": {
+      "model": "deepseek-v4-pro",
+      "promptVersion": "m3.prompt.v3.supersession-guard",
+      "samplingConfiguration": {
+        "seed": "provider-controlled",
+        "temperature": 0.0,
+        "topP": 1.0
+      },
+      "schemaVersion": "m3.v2"
+    },
+    "configurationDigest": "sha256:75d6eeee547036124052d5f991d7d7406158f1826119bbf6cf289ed6de426ef0"
+  },
+  "control": {
+    "configuration": {
+      "model": "deepseek-v4-pro",
+      "promptVersion": "m3.prompt.v3.supersession-guard",
+      "samplingConfiguration": {
+        "seed": "provider-controlled",
+        "temperature": "provider-default",
+        "topP": "provider-default"
+      },
+      "schemaVersion": "m3.v2"
+    },
+    "configurationDigest": "sha256:1b083a91c758bcad821ba0a23b132a0b4e41f52dd418af4cb317dcb14d9a4120"
+  },
+  "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "dimension": "sampling",
+  "executionAuthorized": false,
+  "executionPrerequisites": {
+    "heldOutInspected": false,
+    "providerPriceConfigurationRequired": true,
+    "samplingTransportImplemented": true,
+    "stageBRequiresStageAHardAndSemanticPass": true,
+    "validationAuthorized": false
+  },
+  "experimentId": "s12-f-06",
+  "hardGates": {
+    "invalid_evidence": 0,
+    "isolation": "no regression",
+    "missing_output": 0,
+    "provenance": "no regression",
+    "safety": "no regression",
+    "schema_invalid": 0
+  },
+  "humanEvidence": false,
+  "hypothesis": "Explicit deterministic sampling reduces stochastic schema and relation normalization failures without changing model, prompt, dataset, or policy.",
+  "preservedArtifacts": [
+    "dataset",
+    "evaluator",
+    "ontology",
+    "policy",
+    "review-contract",
+    "model",
+    "prompt"
+  ],
+  "rawSensitiveDataIncluded": false,
+  "semanticThresholds": {
+    "abstentionAccuracyMinimumDelta": 0.05,
+    "entityMacroF1MinimumDelta": 0.05,
+    "hallucinationRateMaximumIncrease": 0.0,
+    "relationMacroF1MinimumDelta": 0.0
+  },
+  "stageA": {
+    "caseCount": 8,
+    "caseIds": [
+      "s12-a-0101",
+      "s12-a-0121",
+      "s12-a-0153",
+      "s12-a-0162",
+      "s12-a-0176",
+      "s12-a-0187",
+      "s12-a-0201",
+      "s12-a-0233"
+    ],
+    "independentRunsPerVariant": 3,
+    "noRetryWithinEachRun": true,
+    "oneAttemptPerCase": true,
+    "pairedControlCandidate": true,
+    "selectionRationale": "Includes both recurring S12-77 failures, positive entity/relation cases, abstention cases, and multiple development slices."
+  },
+  "status": "PREREGISTERED_NOT_EXECUTED"
+}

@@ -19,7 +19,15 @@ JSONValue: TypeAlias = (
 JsonObject: TypeAlias = dict[str, JSONValue]
 EVALUATOR_VERSION = "s12.evaluator.v1"
 REGISTRY_VERSION = "s12.experiment-registry.v2"
-DIMENSIONS = ("prompt", "context", "agent-workflow", "tool", "model")
+DIMENSIONS = (
+    "prompt",
+    "context",
+    "agent-workflow",
+    "tool",
+    "model",
+    "sampling",
+)
+DEFAULT_DIMENSIONS = ("prompt", "context", "agent-workflow", "tool", "model")
 REQUIRED_PRESERVED_ARTIFACTS = (
     "dataset",
     "evaluator",
@@ -108,6 +116,7 @@ def validate_experiment(spec: Mapping[str, object]) -> None:
     if status not in {
         "REGISTERED",
         "COMPLETED_STABILITY_FAILED",
+        "COMPLETED_STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B",
         "NOT_EXECUTED_BASELINE_UNAVAILABLE",
         "NOT_EXECUTED_BASELINE_INVALID",
         "EXECUTED",
@@ -120,7 +129,12 @@ def validate_experiment(spec: Mapping[str, object]) -> None:
 def validate_registry(registry: Mapping[str, object]) -> None:
     """Validate a registry envelope, uniqueness and no-test-split policy."""
 
-    if registry.get("registryVersion") != REGISTRY_VERSION:
+    if registry.get("registryVersion") not in {
+        REGISTRY_VERSION,
+        "s12.experiment-registry.v3",
+        "s12.experiment-registry.v4",
+        "s12.experiment-registry.v5",
+    }:
         raise OptimizationError("unknown experiment registry version")
     if registry.get("permittedSplits") != ["development"]:
         raise OptimizationError("registry permits a non-development split")
@@ -286,7 +300,7 @@ def build_default_registry(baseline_report: Mapping[str, object]) -> JsonObject:
     )
     baseline_gate = _baseline_gate(baseline_report)
     experiments: list[JsonObject] = []
-    for number, dimension in enumerate(DIMENSIONS, start=1):
+    for number, dimension in enumerate(DEFAULT_DIMENSIONS, start=1):
         candidate_config = {
             "release": "v0.6.0",
             "dimension": dimension,

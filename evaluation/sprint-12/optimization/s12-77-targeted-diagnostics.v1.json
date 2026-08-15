@@ -1,0 +1,69 @@
+{
+  "artifactVersion": "s12.s77.targeted-diagnostics.v1",
+  "caseCount": 2,
+  "caseIds": [
+    "s12-a-0121",
+    "s12-a-0176"
+  ],
+  "credentialIncluded": false,
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "digests": {
+    "diagnosticRunnerCode": "sha256:b92b4957055556a1de4ca8ddf653c724ed19c9f20d8f405e5fd845092666a66b",
+    "evaluatorCode": "sha256:33592d001cb863d136a9ef722ff40f365a85b830207ffc7420262b3227f27a31",
+    "gatewayAdapterCode": "sha256:0417bcf056c4d88b1b18c16420eadac06598353be46ec55b7537ad7733a6a4b3",
+    "gatewayContractCode": "sha256:4ad111b232319ecff6a506b2f72edf28c6233ff86a3b50774343816db22a6313",
+    "manifest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a"
+  },
+  "experimentId": "s12-f-05",
+  "failureCounts": {},
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "manifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+  "model": "deepseek-v4-pro",
+  "operational": {
+    "acceptedCandidateCostUsd": 0,
+    "costUsd": 0.0,
+    "count": 2,
+    "failureCounts": {},
+    "latencyMs": {
+      "p50": 2484.0,
+      "p95": 3921.0
+    },
+    "status": "scored",
+    "usage": {
+      "inputTokens": 3036,
+      "outputTokens": 297
+    }
+  },
+  "outcomes": [
+    {
+      "caseId": "s12-a-0121",
+      "category": "none",
+      "failureClass": "none",
+      "sanitizedDiagnostic": {},
+      "slice": "duplicate-evidence",
+      "status": "scored"
+    },
+    {
+      "caseId": "s12-a-0176",
+      "category": "none",
+      "failureClass": "none",
+      "sanitizedDiagnostic": {},
+      "slice": "fabricated-link",
+      "status": "scored"
+    }
+  ],
+  "protocol": {
+    "independentRunCount": 1,
+    "noRetryWithinEachRun": true,
+    "oneAttemptPerCase": true,
+    "promptVariant": "m3.prompt.v3.supersession-guard",
+    "samplingConfiguration": {
+      "seed": "provider-controlled",
+      "temperature": "provider-default",
+      "topP": "provider-default"
+    }
+  },
+  "rawSensitiveDataIncluded": false,
+  "status": "DIAGNOSTIC_COMPLETED"
+}

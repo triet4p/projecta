@@ -1,0 +1,84 @@
+{
+  "accounting": {
+    "costAccountingStatus": "NOT_AVAILABLE_PROVIDER_PRICE_CONFIGURATION",
+    "latencyPresent": true,
+    "usagePresent": true
+  },
+  "approvalStatus": "APPROVED_WITH_LIMITATIONS",
+  "candidateAvailable": true,
+  "candidateEvidence": {
+    "artifact": "s12-f-06-sampling-stage-a.v1.json",
+    "authorizationArtifact": "s12-f-06-sampling-authorization.v1.json",
+    "authorizationDigest": "sha256:201a9adf8cbdca3212f6c0b0ba83d209afb5a92d2b67b8015357ab86d973aeba",
+    "decision": "STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B",
+    "digest": "sha256:53a3180cac56c30431a2c228f0377f9a01f3c7c95583b51c8e6745a3c9cad235",
+    "erratum": {
+      "artifact": "s12-f-06-sampling-erratum.v1.json",
+      "digest": "sha256:1803470e1685589f5c44aacaa7baf2f46c41bd79ee19c3de52faae2c12036f5c",
+      "commonCaseExecutionCount": 23,
+      "status": "ERRATUM_ISSUED_WITHOUT_RERUN"
+    }
+  },
+  "candidateFreezeAuthorized": false,
+  "candidateModel": "deepseek-v4-pro",
+  "comparison": {
+    "metricDeltas": {
+      "abstentionAccuracy": -0.07738095238095244,
+      "entityMacroF1": -0.07142857142857151,
+      "hallucinationRateReduction": 0.023809523809523836,
+      "relationMacroF1": -0.023809523809523836
+    },
+    "semanticGates": {
+      "abstentionAccuracy": false,
+      "entityMacroF1": false,
+      "hallucinationRate": true,
+      "relationMacroF1": false
+    },
+    "semanticGatesPass": false
+  },
+  "controlModel": "deepseek-v4-pro",
+  "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "executedExperimentId": "s12-f-06",
+  "hardInvariants": {
+    "candidateFailureCounts": {},
+    "candidateMissingOutputCount": 0,
+    "controlFailureCounts": {
+      "schema_invalid": 1
+    },
+    "controlMissingOutputCount": 1,
+    "status": "FAIL",
+    "candidateHardGates": "PASS",
+    "controlHardGates": "FAIL",
+    "comparisonIntegrity": "DEGRADED_UNEQUAL_VALID_OUTPUTS"
+  },
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "packetVersion": "s12.g5.packet.v5",
+  "rawSensitiveDataIncluded": false,
+  "candidateHardGates": "PASS",
+  "controlHardGates": "FAIL",
+  "comparisonIntegrity": "DEGRADED_UNEQUAL_VALID_OUTPUTS",
+  "semanticComparison": {
+    "historicalAggregateLabel": "UNEQUAL_DENOMINATOR_VALID_OUTPUT_MEANS",
+    "commonCaseMetricsArtifact": "s12-f-06-sampling-erratum.v1.json",
+    "commonCaseExecutionCount": 23,
+    "commonCaseMetricDeltas": {
+      "entityMacroF1": -0.08695652173913038,
+      "relationMacroF1": 0.0,
+      "abstentionAccuracy": -0.08695652173913038,
+      "hallucinationRateReduction": 0.0289855072463768,
+      "linkMacroF1": 0.0
+    }
+  },
+  "registryDigest": "sha256:fe8b4107dc0ce4731d6e5a3aa5927c2a5e6dbc002706eb35aacb7dc5fc57224f",
+  "registryVersion": "s12.experiment-registry.v5",
+  "selection": {
+    "heldOutInspected": false,
+    "reason": "S12-f-06 Stage A failed hard and semantic gates; Stage B is locked.",
+    "status": "NO_SELECTION"
+  },
+  "stageBAuthorized": false,
+  "status": "G5_PREPARATION_DEVELOPMENT_OPEN",
+  "validationAuthorized": false
+}

@@ -1,0 +1,103 @@
+{
+  "artifactVersion": "s12.s77.model-preregistration.v2",
+  "candidateModel": "deepseek-v4-pro",
+  "candidateModelSelectionRequired": false,
+  "controlModel": "deepseek-v4-flash",
+  "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "executionAuthorized": true,
+  "experimentId": "s12-f-05",
+  "experimentStatus": "REGISTERED",
+  "fixedArtifacts": {
+    "context": "unchanged",
+    "evaluator": "unchanged",
+    "ontology": "unchanged",
+    "policy": "unchanged",
+    "promptVariant": "m3.prompt.v3.supersession-guard",
+    "retryPolicy": "none",
+    "schemaVersion": "m3.v2",
+    "tool": "unchanged"
+  },
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "modelBinding": {
+    "candidateModel": "deepseek-v4-pro",
+    "changedDimension": "model",
+    "configurationDigest": "sha256:90ab9cd33fedb5b45b07733cbb48115a01fa082d8ef80b07977d1facec61b1a3",
+    "controlModel": "deepseek-v4-flash"
+  },
+  "protocolDigests": {
+    "followupEvidence": "sha256:b5660ae919330b2fb94529d347581e2a043fc63df7e79020590ee088c27a5943",
+    "registry": "sha256:c795eb0d7b6ee8a482172aeac3a3737f072af25ea9fc6fde8a367d4bcc163990"
+  },
+  "rawSensitiveDataIncluded": false,
+  "registryDigest": "sha256:cd4594a1a0dff78f44b5da2136392d428caa43cbabee3ea1185fe7c772b0a7fe",
+  "registryVersion": "s12.experiment-registry.v2",
+  "semanticThresholds": {
+    "abstentionAccuracyMinimumDelta": 0.05,
+    "entityMacroF1MinimumDelta": 0.05,
+    "hallucinationRateMaximumIncrease": 0.0,
+    "relationMacroF1MinimumDelta": 0.0
+  },
+  "sourcePreregistration": {
+    "artifact": "s12-77-model-preregistration.v1.json",
+    "digest": "sha256:148317a374d5ced7b3586f7e3f657d3742bedd38e946d88edbb60c2a45ae0ac9"
+  },
+  "stageA": {
+    "caseCount": 16,
+    "caseIds": [
+      "s12-a-0101",
+      "s12-a-0105",
+      "s12-a-0121",
+      "s12-a-0122",
+      "s12-a-0151",
+      "s12-a-0153",
+      "s12-a-0161",
+      "s12-a-0162",
+      "s12-a-0176",
+      "s12-a-0177",
+      "s12-a-0186",
+      "s12-a-0187",
+      "s12-a-0201",
+      "s12-a-0202",
+      "s12-a-0226",
+      "s12-a-0233"
+    ],
+    "hardGates": {
+      "invalid_evidence": 0,
+      "isolation": "no regression",
+      "missing_output": 0,
+      "provenance": "no regression",
+      "safety": "no regression",
+      "schema_invalid": 0
+    },
+    "independentRunsPerModel": 3,
+    "noRetryWithinEachRun": true,
+    "oneAttemptPerCase": true,
+    "pairedControlCandidate": true,
+    "samplingConfiguration": {
+      "seed": "provider-controlled",
+      "temperature": "provider-default",
+      "topP": "provider-default"
+    },
+    "semanticGates": {
+      "abstentionAccuracy": "improve over control",
+      "entityMacroF1": "meaningful improvement over control",
+      "hallucinationRate": "decrease versus control",
+      "latencyUsageCost": "accounted for both models",
+      "relationMacroF1": "no regression versus control"
+    }
+  },
+  "stageB": {
+    "authorizedOnlyAfterStageA": true,
+    "caseCount": 32,
+    "independentRuns": 3,
+    "requires": [
+      "stage A hard gates pass",
+      "candidate model is bound",
+      "paired configuration digests are complete"
+    ]
+  },
+  "status": "AUTHORIZED_NOT_EXECUTED",
+  "taskId": "S12-77"
+}

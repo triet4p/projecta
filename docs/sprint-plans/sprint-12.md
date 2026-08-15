@@ -398,8 +398,10 @@ unchanged and blocking.
   decomposition while preserving policy and semantic authority boundaries.
 - [ ] **S12-76 — Run tool experiments:** Change only allowlisted tool behavior
   and record calls, failures, latency, and semantic impact.
-- [ ] **S12-77 — Run model comparisons:** Compare approved configurations under
-  identical dataset, prompt, budget, and scoring contracts.
+- [x] **S12-77 — Run model comparisons:** Stage A ran `deepseek-v4-pro` versus
+  `deepseek-v4-flash` on 16 development cases × 3 paired runs. The candidate
+  hard gate passed but control failed; semantic gates failed, so no Stage B or
+  candidate selection is authorized.
 - [ ] **S12-78 — Select one candidate configuration:** Apply the registered
   multi-metric rule without inspecting held-out data.
 - [ ] **S12-79 — Evaluate the candidate on validation:** Run once after selection

@@ -712,3 +712,18 @@ overwrite existing run or summary files.
 **Watch out for:** Stability evidence is only auditable when each run is an
 immutable, independently addressable report with failure classes and all
 configuration/code/schema/manifest digests bound to that report.
+
+## [2026-08-15] Experiment-level hard gates can hide a passing candidate
+
+**Symptom:** The S12-f-06 packet described the candidate as hard-gate failed,
+although the candidate had zero failures and zero missing outputs.
+**Root cause:** The experiment-level boolean was computed as
+`controlHardGates && candidateHardGates`, conflating a failed control with a
+failed candidate and obscuring unequal valid-output denominators in semantic
+means.
+**Fix / workaround:** Preserve the historical Stage A report, issue a
+deterministic erratum with separate candidate/control gate statuses and
+common-case paired metrics, and bind that erratum into registry/G5 evidence.
+**Watch out for:** Paired experiments must report per-variant hard gates and
+comparison integrity separately; never interpret an experiment-level failure
+as candidate failure without checking both sides.

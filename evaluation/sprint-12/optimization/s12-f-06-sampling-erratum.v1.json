@@ -1,0 +1,80 @@
+{
+  "artifactVersion": "s12.s12-f-06.erratum.v1",
+  "candidateHardGates": "PASS",
+  "commonCaseMetrics": {
+    "caseCountByRun": {
+      "run-01": 7,
+      "run-02": 8,
+      "run-03": 8
+    },
+    "caseExecutionCount": 23,
+    "method": "COMMON_VALID_OUTPUT_CASES_PER_PAIRED_RUN",
+    "metrics": {
+      "abstentionAccuracy": {
+        "candidate": 0.782608695652174,
+        "control": 0.8695652173913043,
+        "delta": -0.08695652173913038
+      },
+      "entityMacroF1": {
+        "candidate": 0.6521739130434783,
+        "control": 0.7391304347826086,
+        "delta": -0.08695652173913038
+      },
+      "hallucinationRate": {
+        "candidate": 0.21739130434782608,
+        "control": 0.24637681159420288,
+        "delta": -0.0289855072463768
+      },
+      "hallucinationRateReduction": {
+        "candidate": 0.21739130434782608,
+        "control": 0.24637681159420288,
+        "delta": 0.0289855072463768
+      },
+      "linkMacroF1": {
+        "candidate": 1.0,
+        "control": 1.0,
+        "delta": 0.0
+      },
+      "relationMacroF1": {
+        "candidate": 0.5217391304347826,
+        "control": 0.5217391304347826,
+        "delta": 0.0
+      }
+    }
+  },
+  "comparisonIntegrity": "DEGRADED_UNEQUAL_VALID_OUTPUTS",
+  "controlHardGates": "FAIL",
+  "decision": "STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B",
+  "experimentId": "s12-f-06",
+  "historicalAggregate": {
+    "interpretation": "Retained for historical traceability; control and candidate means were computed over different valid-output denominators.",
+    "method": "UNEQUAL_DENOMINATOR_VALID_OUTPUT_MEANS",
+    "metricDeltas": {
+      "abstentionAccuracy": -0.07738095238095244,
+      "entityMacroF1": -0.07142857142857151,
+      "hallucinationRateReduction": 0.023809523809523836,
+      "relationMacroF1": -0.023809523809523836
+    }
+  },
+  "humanEvidence": false,
+  "rawSensitiveDataIncluded": false,
+  "reportDigests": {
+    "candidate-run-01": "sha256:f8637b6f2b6835c43647f8efaf25c166ae1c250c98e2921672108eb3df895367",
+    "candidate-run-02": "sha256:f1966c138c2a591975775060bbd48d922af503843715355b6e888fb3d8667962",
+    "candidate-run-03": "sha256:ea10170908d8cfdf9aa85c5fae8ea9da8168c92f6d49e0d86eab971b60ffe050",
+    "control-run-01": "sha256:18661d527b1ed36e8aa74dc2e8a52be5e9356aa4a1daf879690b39d9b90440a3",
+    "control-run-02": "sha256:41362d18021b16d3b9d90bcf50e0ce1e179445bda5b04d297e591c2b6e01b9c0",
+    "control-run-03": "sha256:b4bdd88a3d473c85daa9df530ba8216a1e45624ab6173837b799c316ea96b1a8"
+  },
+  "semanticGates": {
+    "abstentionAccuracy": false,
+    "entityMacroF1": false,
+    "hallucinationRate": true,
+    "relationMacroF1": false
+  },
+  "sourceArtifact": {
+    "artifact": "s12-f-06-sampling-stage-a.v1.json",
+    "digest": "sha256:53a3180cac56c30431a2c228f0377f9a01f3c7c95583b51c8e6745a3c9cad235"
+  },
+  "status": "ERRATUM_ISSUED_WITHOUT_RERUN"
+}

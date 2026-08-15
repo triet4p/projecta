@@ -1,0 +1,24 @@
+{
+  "approvalSource": "current-user-instruction",
+  "artifactVersion": "s12.s12-f-06.authorization.v1",
+  "credentialIncluded": false,
+  "experimentId": "s12-f-06",
+  "humanEvidence": false,
+  "preregistration": {
+    "artifact": "s12-f-06-sampling-preregistration.v1.json",
+    "digest": "sha256:a5e20b8dc5291b1a56ba8d14279a76c5c5190a6aabb6abd28a7d196baf44e0df"
+  },
+  "rawSensitiveDataIncluded": false,
+  "scope": {
+    "caseCount": 8,
+    "developmentOnly": true,
+    "heldOutInspected": false,
+    "independentRunsPerVariant": 3,
+    "noRetryWithinEachRun": true,
+    "oneAttemptPerCase": true,
+    "stage": "A",
+    "stageBAuthorized": false,
+    "validationAuthorized": false
+  },
+  "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A"
+}

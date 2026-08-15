@@ -692,6 +692,7 @@ def _runtime_baseline(
     operation_id: str = "s12-v0.6.0-baseline",
     profile_revision: str = "released-v0.6.0",
     prompt_variant: str = "m3.prompt.v2",
+    sampling_configuration: Mapping[str, object] | None = None,
     collect_diagnostics: bool = False,
 ) -> tuple[dict[str, JsonObject], list[JsonObject], list[JsonObject], JsonObject]:
     """Run one bounded attempt per case through the released extraction gateway."""
@@ -793,6 +794,18 @@ def _runtime_baseline(
                             requestId=f"s12-baseline-{case_id}",
                             operationId=operation_id,
                             profileRevision=profile_revision,
+                            temperature=(
+                                float(sampling_configuration["temperature"])
+                                if sampling_configuration is not None
+                                and isinstance(sampling_configuration.get("temperature"), (int, float))
+                                else None
+                            ),
+                            topP=(
+                                float(sampling_configuration["topP"])
+                                if sampling_configuration is not None
+                                and isinstance(sampling_configuration.get("topP"), (int, float))
+                                else None
+                            ),
                         )
                     ),
                     timeout=RUNTIME_REQUEST_TIMEOUT_SECONDS,
@@ -892,6 +905,16 @@ def _runtime_baseline(
                 )
 
     asyncio.run(run_with_budget())
+    configured_temperature = (
+        sampling_configuration.get("temperature")
+        if sampling_configuration is not None
+        else None
+    )
+    configured_top_p = (
+        sampling_configuration.get("topP")
+        if sampling_configuration is not None
+        else None
+    )
     config = {
         "release": "v0.6.0",
         "schemaVersion": schema_version,
@@ -907,8 +930,16 @@ def _runtime_baseline(
         "requestTimeoutSeconds": RUNTIME_REQUEST_TIMEOUT_SECONDS,
         "runBudgetSeconds": RUNTIME_RUN_BUDGET_SECONDS,
         "samplingConfiguration": {
-            "temperature": "provider-default",
-            "topP": "provider-default",
+            "temperature": (
+                configured_temperature
+                if isinstance(configured_temperature, (int, float))
+                else "provider-default"
+            ),
+            "topP": (
+                configured_top_p
+                if isinstance(configured_top_p, (int, float))
+                else "provider-default"
+            ),
             "seed": "provider-controlled",
         },
     }

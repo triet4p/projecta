@@ -42,6 +42,8 @@ class GatewayRequest(BaseModel):
     source_text: str | None = Field(default=None, max_length=100_000, alias="sourceText")
     timeout_seconds: float = Field(gt=0, le=120, default=10.0, alias="timeoutSeconds")
     max_output_tokens: int = Field(gt=0, le=16_384, default=4_096, alias="maxOutputTokens")
+    temperature: float | None = Field(default=None, ge=0, le=2)
+    top_p: float | None = Field(default=None, gt=0, le=1, alias="topP")
     request_id: str = Field(default="request-unknown", max_length=128, alias="requestId")
     operation_id: str = Field(default="operation-unknown", max_length=128, alias="operationId")
     profile_revision: str = Field(default="unknown", max_length=128, alias="profileRevision")

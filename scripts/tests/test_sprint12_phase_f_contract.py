@@ -295,6 +295,248 @@ def test_s12_73_registry_and_g5_packet_bind_completed_failed_execution() -> None
     )
 
 
+def test_s12_77_stage_a_is_preregistered_without_execution() -> None:
+    prereg = json.loads(
+        (
+            ROOT
+            / "evaluation/sprint-12/optimization/s12-77-model-preregistration.v1.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert prereg["status"] == "PREREGISTERED_NOT_EXECUTED"
+    assert prereg["experimentId"] == "s12-f-05"
+    assert prereg["candidateModel"] is None
+    assert prereg["candidateModelSelectionRequired"] is True
+    assert prereg["executionAuthorized"] is False
+    assert prereg["stageA"]["caseCount"] == 16
+    assert prereg["stageA"]["independentRunsPerModel"] == 3
+    assert prereg["stageA"]["noRetryWithinEachRun"] is True
+    assert {"s12-a-0153", "s12-a-0187"}.issubset(
+        prereg["stageA"]["caseIds"]
+    )
+    assert prereg["stageA"]["hardGates"] == {
+        "schema_invalid": 0,
+        "invalid_evidence": 0,
+        "missing_output": 0,
+        "provenance": "no regression",
+        "isolation": "no regression",
+        "safety": "no regression",
+    }
+
+
+def test_s12_77_stage_a_result_keeps_stage_b_locked_and_registry_v3_valid() -> None:
+    stage = json.loads(
+        (
+            ROOT / "evaluation/sprint-12/optimization/s12-77-model-stage-a.v1.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert stage["status"] == "STAGE_A_COMPLETED"
+    assert stage["decision"] == "STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B"
+    assert stage["stageBAuthorized"] is False
+    assert stage["candidate"]["model"] == "deepseek-v4-pro"
+    assert stage["candidate"]["aggregateFailureCounts"] == {
+        "cross_project_link": 1,
+        "schema_invalid": 2,
+    }
+    assert stage["accounting"]["costAccountingStatus"] == (
+        "NOT_AVAILABLE_PROVIDER_PRICE_CONFIGURATION"
+    )
+    registry = json.loads(
+        (
+            ROOT / "evaluation/sprint-12/optimization/experiment-registry.v3.json"
+        ).read_text(encoding="utf-8")
+    )
+    MODULE.validate_registry(registry)
+    experiment = next(
+        item for item in registry["experiments"] if item["experimentId"] == "s12-f-05"
+    )
+    assert experiment["status"] == "COMPLETED_STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B"
+    registry_targeted = experiment["executionEvidence"]["targetedDiagnostic"]
+    targeted_path = (
+        ROOT / "evaluation/sprint-12/optimization/s12-77-targeted-diagnostics.v1.json"
+    )
+    targeted_digest = "sha256:" + hashlib.sha256(targeted_path.read_bytes()).hexdigest()
+    assert registry_targeted["digest"] == targeted_digest
+    assert registry_targeted["failureCounts"] == {}
+    packet = json.loads(
+        (ROOT / "evaluation/sprint-12/optimization/g5-packet.v3.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert packet["stageBAuthorized"] is False
+    assert packet["selection"]["status"] == "NO_SELECTION"
+    targeted = packet["candidateEvidence"]["targetedDiagnostic"]
+    assert targeted["artifact"] == "s12-77-targeted-diagnostics.v1.json"
+    assert targeted["caseIds"] == ["s12-a-0121", "s12-a-0176"]
+    assert targeted["status"] == "DIAGNOSTIC_COMPLETED"
+    assert targeted["failureCounts"] == {}
+    assert targeted["digest"] == targeted_digest
+
+
+def test_s12_77_targeted_diagnostic_is_sanitized_and_no_retry() -> None:
+    diagnostic = json.loads(
+        (
+            ROOT
+            / "evaluation/sprint-12/optimization/s12-77-targeted-diagnostics.v1.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert diagnostic["status"] == "DIAGNOSTIC_COMPLETED"
+    assert diagnostic["experimentId"] == "s12-f-05"
+    assert diagnostic["model"] == "deepseek-v4-pro"
+    assert diagnostic["caseIds"] == ["s12-a-0121", "s12-a-0176"]
+    assert diagnostic["protocol"] == {
+        "independentRunCount": 1,
+        "oneAttemptPerCase": True,
+        "noRetryWithinEachRun": True,
+        "promptVariant": "m3.prompt.v3.supersession-guard",
+        "samplingConfiguration": {
+            "seed": "provider-controlled",
+            "temperature": "provider-default",
+            "topP": "provider-default",
+        },
+    }
+    assert diagnostic["rawSensitiveDataIncluded"] is False
+    assert diagnostic["credentialIncluded"] is False
+    for outcome in diagnostic["outcomes"]:
+        assert "rawText" not in outcome
+        assert "sourceText" not in outcome
+        assert "outputText" not in outcome
+        assert "text" not in outcome
+
+
+def test_s12_f06_sampling_experiment_is_preregistered_and_not_authorized() -> None:
+    prereg = json.loads(
+        (
+            ROOT
+            / "evaluation/sprint-12/optimization/s12-f-06-sampling-preregistration.v1.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert prereg["status"] == "PREREGISTERED_NOT_EXECUTED"
+    assert prereg["experimentId"] == "s12-f-06"
+    assert prereg["dimension"] == "sampling"
+    assert prereg["executionAuthorized"] is False
+    assert prereg["stageA"]["caseCount"] == 8
+    assert prereg["stageA"]["independentRunsPerVariant"] == 3
+    assert prereg["stageA"]["noRetryWithinEachRun"] is True
+    assert prereg["control"]["configuration"]["model"] == "deepseek-v4-pro"
+    assert prereg["candidate"]["configuration"]["model"] == "deepseek-v4-pro"
+    assert (
+        prereg["control"]["configuration"]["samplingConfiguration"]["temperature"]
+        == "provider-default"
+    )
+    assert prereg["candidate"]["configuration"]["samplingConfiguration"] == {
+        "temperature": 0.0,
+        "topP": 1.0,
+        "seed": "provider-controlled",
+    }
+    registry = json.loads(
+        (
+            ROOT / "evaluation/sprint-12/optimization/experiment-registry.v4.json"
+        ).read_text(encoding="utf-8")
+    )
+    MODULE.validate_registry(registry)
+    experiment = next(
+        item for item in registry["experiments"] if item["experimentId"] == "s12-f-06"
+    )
+    assert experiment["status"] == "REGISTERED"
+    assert experiment["changedArtifacts"] == ["sampling"]
+    prereg_digest = "sha256:" + hashlib.sha256(
+        (
+            ROOT
+            / "evaluation/sprint-12/optimization/s12-f-06-sampling-preregistration.v1.json"
+        ).read_bytes()
+    ).hexdigest()
+    assert experiment["executionEvidence"]["digest"] == prereg_digest
+    packet = json.loads(
+        (ROOT / "evaluation/sprint-12/optimization/g5-packet.v4.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert packet["pendingExperimentId"] == "s12-f-06"
+    assert packet["pendingExperiment"]["executionAuthorized"] is False
+    assert packet["stageBAuthorized"] is False
+
+
+def test_s12_f06_stage_a_result_rejects_candidate_and_binds_v5_evidence() -> None:
+    stage = json.loads(
+        (
+            ROOT
+            / "evaluation/sprint-12/optimization/s12-f-06-sampling-stage-a.v1.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert stage["status"] == "STAGE_A_COMPLETED"
+    assert stage["decision"] == "STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B"
+    assert stage["stageBAuthorized"] is False
+    assert stage["control"]["aggregateFailureCounts"] == {"schema_invalid": 1}
+    assert stage["candidate"]["aggregateFailureCounts"] == {}
+    assert stage["candidate"]["aggregateMissingOutputCount"] == 0
+    assert stage["comparison"]["semanticGates"] == {
+        "entityMacroF1": False,
+        "abstentionAccuracy": False,
+        "hallucinationRate": True,
+        "relationMacroF1": False,
+    }
+    assert stage["accounting"]["costAccountingStatus"] == (
+        "NOT_AVAILABLE_PROVIDER_PRICE_CONFIGURATION"
+    )
+    authorization = json.loads(
+        (
+            ROOT
+            / "evaluation/sprint-12/optimization/s12-f-06-sampling-authorization.v1.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert authorization["status"] == "APPROVED_FOR_DEVELOPMENT_STAGE_A"
+    registry = json.loads(
+        (
+            ROOT / "evaluation/sprint-12/optimization/experiment-registry.v5.json"
+        ).read_text(encoding="utf-8")
+    )
+    MODULE.validate_registry(registry)
+    experiment = next(
+        item for item in registry["experiments"] if item["experimentId"] == "s12-f-06"
+    )
+    assert experiment["status"] == "COMPLETED_STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B"
+    assert experiment["executionEvidence"]["decision"] == stage["decision"]
+    assert experiment["executionEvidence"]["candidateHardGates"] == "PASS"
+    assert experiment["executionEvidence"]["controlHardGates"] == "FAIL"
+    assert experiment["executionEvidence"]["comparisonIntegrity"] == (
+        "DEGRADED_UNEQUAL_VALID_OUTPUTS"
+    )
+    packet = json.loads(
+        (ROOT / "evaluation/sprint-12/optimization/g5-packet.v5.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert packet["executedExperimentId"] == "s12-f-06"
+    assert packet["selection"]["status"] == "NO_SELECTION"
+    assert packet["stageBAuthorized"] is False
+    assert packet["candidateHardGates"] == "PASS"
+    assert packet["controlHardGates"] == "FAIL"
+    assert packet["comparisonIntegrity"] == "DEGRADED_UNEQUAL_VALID_OUTPUTS"
+
+
+def test_s12_f06_erratum_separates_hard_gates_and_derives_common_metrics() -> None:
+    erratum = json.loads(
+        (
+            ROOT / "evaluation/sprint-12/optimization/s12-f-06-sampling-erratum.v1.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert erratum["status"] == "ERRATUM_ISSUED_WITHOUT_RERUN"
+    assert erratum["candidateHardGates"] == "PASS"
+    assert erratum["controlHardGates"] == "FAIL"
+    assert erratum["comparisonIntegrity"] == "DEGRADED_UNEQUAL_VALID_OUTPUTS"
+    assert erratum["commonCaseMetrics"]["caseExecutionCount"] == 23
+    assert erratum["commonCaseMetrics"]["caseCountByRun"] == {
+        "run-01": 7,
+        "run-02": 8,
+        "run-03": 8,
+    }
+    metrics = erratum["commonCaseMetrics"]["metrics"]
+    assert metrics["entityMacroF1"]["delta"] < -0.05
+    assert metrics["abstentionAccuracy"]["delta"] < -0.05
+    assert metrics["relationMacroF1"]["delta"] <= 0
+    assert erratum["decision"] == "STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B"
+
+
 def test_phase_f_plan_stops_at_g5_approval_gate() -> None:
     plan = (ROOT / "docs/sprint-plans/sprint-12.md").read_text(encoding="utf-8")
     packet = (ROOT / "docs/sprint-plans/sprint-12/g5-optimization.md").read_text(
