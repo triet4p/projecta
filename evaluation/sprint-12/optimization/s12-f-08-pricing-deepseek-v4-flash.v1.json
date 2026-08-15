@@ -1,0 +1,15 @@
+{
+  "artifactVersion": "s12.s12-f-08.pricing.deepseek-v4-flash.v1",
+  "currency": "USD",
+  "model": "deepseek-v4-flash",
+  "notes": "Rates are bound to the official DeepSeek pricing page at retrieval time; product prices may change.",
+  "rates": {
+    "inputCacheHitUsdPer1M": "0.0028",
+    "inputCacheMissUsdPer1M": "0.14",
+    "outputUsdPer1M": "0.28"
+  },
+  "retrievedAt": "2026-08-16",
+  "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing",
+  "status": "BOUND",
+  "unit": "USD per 1M tokens"
+}
