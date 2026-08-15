@@ -19,6 +19,12 @@ class ExtractionTelemetryEvent(BaseModel):
     schema_version: str = Field(min_length=1, max_length=64, alias="schemaVersion")
     latency_ms: int = Field(ge=0, alias="latencyMs")
     input_tokens: int | None = Field(default=None, ge=0, alias="inputTokens")
+    prompt_cache_hit_tokens: int | None = Field(
+        default=None, ge=0, alias="promptCacheHitTokens"
+    )
+    prompt_cache_miss_tokens: int | None = Field(
+        default=None, ge=0, alias="promptCacheMissTokens"
+    )
     output_tokens: int | None = Field(default=None, ge=0, alias="outputTokens")
     reasoning_tokens: int | None = Field(default=None, ge=0, alias="reasoningTokens")
     entity_count: int = Field(default=0, ge=0, alias="entityCount")

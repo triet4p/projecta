@@ -171,6 +171,8 @@ def _usage(value: Any) -> UsageMetadata | None:
         output_details = getattr(value, "completion_tokens_details", None)
     return UsageMetadata(
         inputTokens=getattr(value, "input_tokens", None) or getattr(value, "prompt_tokens", None),
+        promptCacheHitTokens=getattr(value, "prompt_cache_hit_tokens", None),
+        promptCacheMissTokens=getattr(value, "prompt_cache_miss_tokens", None),
         outputTokens=getattr(value, "output_tokens", None)
         or getattr(value, "completion_tokens", None),
         totalTokens=getattr(value, "total_tokens", None),

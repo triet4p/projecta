@@ -17,7 +17,7 @@ JSONValue: TypeAlias = (
     None | bool | int | float | str | list["JSONValue"] | dict[str, "JSONValue"]
 )
 JsonObject: TypeAlias = dict[str, JSONValue]
-EVALUATOR_VERSION = "s12.evaluator.v1"
+EVALUATOR_VERSION = "s12.evaluator.v2"
 REGISTRY_VERSION = "s12.experiment-registry.v2"
 DIMENSIONS = (
     "prompt",

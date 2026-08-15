@@ -27,6 +27,12 @@ class ProviderAttemptEvent(BaseModel):
         default=None, alias="terminalOutcome"
     )
     input_tokens: int | None = Field(default=None, ge=0, alias="inputTokens")
+    prompt_cache_hit_tokens: int | None = Field(
+        default=None, ge=0, alias="promptCacheHitTokens"
+    )
+    prompt_cache_miss_tokens: int | None = Field(
+        default=None, ge=0, alias="promptCacheMissTokens"
+    )
     output_tokens: int | None = Field(default=None, ge=0, alias="outputTokens")
     reasoning_tokens: int | None = Field(default=None, ge=0, alias="reasoningTokens")
 

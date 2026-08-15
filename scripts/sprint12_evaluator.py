@@ -35,7 +35,7 @@ JSONValue: TypeAlias = (
 )
 JsonObject: TypeAlias = dict[str, JSONValue]
 JsonList: TypeAlias = list[JSONValue]
-EVALUATOR_VERSION = "s12.evaluator.v1"
+EVALUATOR_VERSION = "s12.evaluator.v2"
 RUNTIME_REQUEST_TIMEOUT_SECONDS = 60
 RUNTIME_RUN_BUDGET_SECONDS = 300
 REQUIRED_RUNTIME_ENV = (
@@ -789,6 +789,12 @@ def score_operational(records: Sequence[Mapping[str, object]]) -> JsonObject:
         "costUsd": sum(costs),
         "usage": {
             "inputTokens": sum(int(record.get("inputTokens", 0)) for record in records),
+            "promptCacheHitTokens": sum(
+                int(record.get("promptCacheHitTokens", 0)) for record in records
+            ),
+            "promptCacheMissTokens": sum(
+                int(record.get("promptCacheMissTokens", 0)) for record in records
+            ),
             "outputTokens": sum(
                 int(record.get("outputTokens", 0)) for record in records
             ),
@@ -974,6 +980,7 @@ def _runtime_baseline(
             raw_text = _object(case.get("source"), f"{case_id}.source").get("rawText")
             if not isinstance(raw_text, str):
                 raise EvaluationError(f"missing source text for {case_id}")
+            gold = _object(case.get("gold"), f"{case_id}.gold")
             started = monotonic()
             try:
                 system, user = build_extraction_prompt(
@@ -1033,7 +1040,6 @@ def _runtime_baseline(
                 prediction = cast(
                     JsonObject, normalized.model_dump(mode="json", by_alias=True)
                 )
-                gold = _object(case.get("gold"), f"{case_id}.gold")
                 case_results[case_id] = score_extraction(
                     gold, prediction, relation_predicates
                 )
@@ -1049,6 +1055,14 @@ def _runtime_baseline(
                         "slice": _manifest_slice(loaded.manifest, case_id),
                         "latencyMs": int((monotonic() - started) * 1000),
                         "inputTokens": usage.get("inputTokens", 0) or 0,
+                        "promptCacheHitTokens": usage.get(
+                            "promptCacheHitTokens", 0
+                        )
+                        or 0,
+                        "promptCacheMissTokens": usage.get(
+                            "promptCacheMissTokens", 0
+                        )
+                        or 0,
                         "outputTokens": usage.get("outputTokens", 0) or 0,
                         "costUsd": 0.0,
                         "failureClass": "none",
@@ -1074,11 +1088,15 @@ def _runtime_baseline(
                             "diagnostic": diagnostic if isinstance(diagnostic, dict) else {},
                         }
                     )
-                case_results[case_id] = {
-                    "status": "missing-output",
-                    "failureClass": failure["failureClass"],
-                    "category": category,
-                }
+                case_results[case_id] = score_extraction(
+                    gold, None, relation_predicates
+                )
+                case_results[case_id].update(
+                    {
+                        "failureClass": failure["failureClass"],
+                        "category": category,
+                    }
+                )
                 operational.append(
                     {
                         "caseId": case_id,
@@ -1086,6 +1104,8 @@ def _runtime_baseline(
                         "slice": _manifest_slice(loaded.manifest, case_id),
                         "latencyMs": int((monotonic() - started) * 1000),
                         "inputTokens": 0,
+                        "promptCacheHitTokens": 0,
+                        "promptCacheMissTokens": 0,
                         "outputTokens": 0,
                         "costUsd": 0.0,
                         "failureClass": failure["failureClass"],
@@ -1107,11 +1127,23 @@ def _runtime_baseline(
                     "failureClass": "baseline_run_budget_exceeded",
                 }
                 failures.append(failure)
-                case_results[case_id] = {
-                    "status": "missing-output",
-                    "failureClass": failure["failureClass"],
-                    "category": failure["category"],
-                }
+                gold = _object(
+                    next(
+                        case.get("gold")
+                        for case in loaded.cases
+                        if str(case.get("caseId")) == case_id
+                    ),
+                    f"{case_id}.gold",
+                )
+                case_results[case_id] = score_extraction(
+                    gold, None, relation_predicates
+                )
+                case_results[case_id].update(
+                    {
+                        "failureClass": failure["failureClass"],
+                        "category": failure["category"],
+                    }
+                )
                 operational.append(
                     {
                         "caseId": case_id,
@@ -1119,6 +1151,8 @@ def _runtime_baseline(
                         "slice": _manifest_slice(loaded.manifest, case_id),
                         "latencyMs": RUNTIME_RUN_BUDGET_SECONDS * 1000,
                         "inputTokens": 0,
+                        "promptCacheHitTokens": 0,
+                        "promptCacheMissTokens": 0,
                         "outputTokens": 0,
                         "costUsd": 0.0,
                         "failureClass": failure["failureClass"],
@@ -1164,10 +1198,17 @@ def _runtime_baseline(
             "seed": "provider-controlled",
         },
     }
-    if prompt_variant == "m3.prompt.v4.relation-decision-rubric":
+    if prompt_variant in {
+        "m3.prompt.v4.relation-decision-rubric",
+        "m3.prompt.v5.composed-relation-contract",
+    }:
         prompt_artifact = root / (
             "evaluation/sprint-12/optimization/"
-            "s12-f-07-prompt-v4-relation-decision-rubric.v1.txt"
+            + (
+                "s12-f-08-prompt-v5-composed-relation-contract.v1.txt"
+                if prompt_variant == "m3.prompt.v5.composed-relation-contract"
+                else "s12-f-07-prompt-v4-relation-decision-rubric.v1.txt"
+            )
         )
         if not prompt_artifact.exists():
             raise EvaluationError(f"missing prompt artifact: {prompt_artifact}")

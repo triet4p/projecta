@@ -90,6 +90,12 @@ class UsageMetadata(ContractModel):
     """Provider-neutral usage counters; all fields are optional and non-negative."""
 
     input_tokens: int | None = Field(default=None, ge=0, alias="inputTokens")
+    prompt_cache_hit_tokens: int | None = Field(
+        default=None, ge=0, alias="promptCacheHitTokens"
+    )
+    prompt_cache_miss_tokens: int | None = Field(
+        default=None, ge=0, alias="promptCacheMissTokens"
+    )
     output_tokens: int | None = Field(default=None, ge=0, alias="outputTokens")
     total_tokens: int | None = Field(default=None, ge=0, alias="totalTokens")
     reasoning_tokens: int | None = Field(default=None, ge=0, alias="reasoningTokens")

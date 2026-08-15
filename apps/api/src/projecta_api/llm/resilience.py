@@ -89,6 +89,12 @@ class ResilientGateway:
                         latencyMs=int((monotonic() - started) * 1000),
                         terminalOutcome="success",
                         inputTokens=usage.input_tokens if usage else None,
+                        promptCacheHitTokens=(
+                            usage.prompt_cache_hit_tokens if usage else None
+                        ),
+                        promptCacheMissTokens=(
+                            usage.prompt_cache_miss_tokens if usage else None
+                        ),
                         outputTokens=usage.output_tokens if usage else None,
                         reasoningTokens=usage.reasoning_tokens if usage else None,
                     ),
