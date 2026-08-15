@@ -72,6 +72,7 @@ def build_registry(prereg: dict[str, Any], package: dict[str, Any]) -> dict[str,
     registry = copy.deepcopy(load(REGISTRY_V6))
     registry.pop("registryDigest", None)
     registry["registryVersion"] = "s12.experiment-registry.v7"
+    registry["status"] = "G5_PREPARATION_DEVELOPMENT_OPEN_S12_F07_STAGE_A_AUTHORIZED"
     registry["openedExperimentId"] = "s12-f-07"
     registry["pendingExperiment"] = {
         "experimentId": "s12-f-07",

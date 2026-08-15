@@ -1,0 +1,49 @@
+{
+  "approvalSource": "owner-authorized-after-execution-package-freeze",
+  "artifactVersion": "s12.s12-f-07.authorization.v2",
+  "authorizationHistory": {
+    "priorArtifact": "s12-f-07-authorization.v1.json",
+    "priorDigest": "sha256:5709186982ff7f3e853b7c02f91a9af9df5058b9e8cb267592420d4dd8f5479c",
+    "priorStatus": "PENDING_USER_AUTHORIZATION"
+  },
+  "credentialIncluded": false,
+  "executionPackage": {
+    "commitSha": "2b8ca5a14f150b372645186fa6acbbffb7fa8914",
+    "digests": {
+      "candidateRunnerCode": "sha256:fd6e8fe073ed24fd537f96291d14862d488cd137be06ec1c10cecb22a02e6cba",
+      "evaluatorCode": "sha256:24bcf7032eaf4a69a1f2d41f93e87cecb802b90ffac07e9f16c7d8e50dfedf2a",
+      "promptArtifact": "sha256:d30170306e5fafa401c6b6e8d78e4fcf5ede3aa6c81f85c269a95fb78a9e290b",
+      "promptImplementation": "sha256:52bf864a14237c9e1c8672677f19b4327ae90187e74634ca60c3d7936b6acf2d",
+      "stageRunnerCode": "sha256:a1823c83e9762e0f99cdddd61a0081757138ca9630254a9329d28782210dae6b"
+    }
+  },
+  "experimentId": "s12-f-07",
+  "humanEvidence": false,
+  "preregistration": {
+    "artifact": "s12-f-07-relation-prompt-preregistration.v2.json",
+    "digest": "sha256:a8669d7a036fc211e57fb8d032d482ccecce86f231a242cf99c8c6dd79c2b051"
+  },
+  "pricingContract": {
+    "rationale": "Stage A may produce development evidence without a bound price table; candidate selection, Stage B authorization and any promotion remain blocked until the provider price configuration is bound and cost is recomputed.",
+    "requiredBeforeExecution": false,
+    "requiredBeforeSelection": true,
+    "status": "NOT_BOUND_PRESELECTION"
+  },
+  "rawSensitiveDataIncluded": false,
+  "registry": {
+    "artifact": "experiment-registry.v7.json",
+    "digest": "sha256:ed21ace6b2c5545ae20f5b82902b4e9de07dc04bf6647265608ee03a9d46a2ad"
+  },
+  "scope": {
+    "caseCount": 16,
+    "developmentOnly": true,
+    "heldOutInspected": false,
+    "independentPairedRuns": 3,
+    "noRetryWithinEachRun": true,
+    "oneAttemptPerCase": true,
+    "stage": "A",
+    "stageBAuthorized": false,
+    "validationAuthorized": false
+  },
+  "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A"
+}

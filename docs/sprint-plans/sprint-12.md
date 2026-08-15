@@ -405,8 +405,15 @@ unchanged and blocking.
 - [x] **S12-f-07 preparation — Build the development error backlog:** All 288
   persisted S12-73/S12-77/S12-f-06 report executions were accounted with 17
   fail-explicit missing outputs. The backlog approves one relation-focused
-  prompt hypothesis on `deepseek-v4-flash` and preregisters Stage A only;
-  provider execution remains deferred.
+  prompt hypothesis on `deepseek-v4-flash`; Stage A execution remained deferred
+  until the execution package was frozen.
+- [x] **S12-f-07 execution package freeze:** Prompt, evaluator instrumentation,
+  interleaved temporal pairing, fail-closed accounting, digest preflight and
+  mocked runner custody were committed at `2b8ca5a`; no provider call was made.
+- [x] **S12-f-07 Stage A authorization:** Authorization v1 remains immutable
+  pending history; authorization v2 binds registry/G5 v7 and the frozen commit.
+  Stage A is authorized but not executed; pricing remains required before
+  selection and Stage B.
 - [ ] **S12-78 — Select one candidate configuration:** Apply the registered
   multi-metric rule without inspecting held-out data.
 - [ ] **S12-79 — Evaluate the candidate on validation:** Run once after selection

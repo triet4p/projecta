@@ -1,0 +1,74 @@
+{
+  "approvalStatus": "APPROVED_WITH_LIMITATIONS",
+  "candidateAvailable": false,
+  "candidateFreezeAuthorized": false,
+  "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "denominatorContract": {
+    "candidateHardGates": {
+      "invalid_evidence": 0,
+      "missing_output": 0,
+      "schema_invalid": 0
+    },
+    "controlFailurePolicy": "degrade_comparison_integrity_without_relabeling_as_candidate_hard_gate_failure",
+    "controlHardGates": {
+      "invalid_evidence": 0,
+      "missing_output": 0,
+      "schema_invalid": 0
+    },
+    "primary": {
+      "caseRunsPerArm": 48,
+      "missingOutputTreatment": "metric_value_zero_and_hard_gate_failure_for_that_arm",
+      "name": "fail_closed_all_declared_case_runs"
+    },
+    "primaryRelationDeltaMinimum": 0.05,
+    "sensitivity": {
+      "missingOutputTreatment": "exclude_only_from_sensitivity_denominator",
+      "name": "paired_common_valid_case_runs"
+    },
+    "sensitivityRelationDeltaMinimum": 0.0
+  },
+  "executionBlockedReasons": [
+    "pricing must be bound and selection recomputed before selection or Stage B",
+    "validation, candidate freeze and held-out remain locked"
+  ],
+  "executionPackage": {
+    "commitSha": "2b8ca5a14f150b372645186fa6acbbffb7fa8914",
+    "digests": {
+      "candidateRunnerCode": "sha256:fd6e8fe073ed24fd537f96291d14862d488cd137be06ec1c10cecb22a02e6cba",
+      "evaluatorCode": "sha256:24bcf7032eaf4a69a1f2d41f93e87cecb802b90ffac07e9f16c7d8e50dfedf2a",
+      "promptArtifact": "sha256:d30170306e5fafa401c6b6e8d78e4fcf5ede3aa6c81f85c269a95fb78a9e290b",
+      "promptImplementation": "sha256:52bf864a14237c9e1c8672677f19b4327ae90187e74634ca60c3d7936b6acf2d",
+      "stageRunnerCode": "sha256:a1823c83e9762e0f99cdddd61a0081757138ca9630254a9329d28782210dae6b"
+    }
+  },
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "optimizationAuthorized": false,
+  "packetVersion": "s12.g5.packet.v7",
+  "pendingExperiment": {
+    "authorizationArtifact": "s12-f-07-authorization.v2.json",
+    "authorizationDigest": "sha256:41db90d80f947c292004f5824d31d29df657a038956cc328c72afee382bceb80",
+    "executionAuthorized": true,
+    "experimentId": "s12-f-07",
+    "preregistrationArtifact": "s12-f-07-relation-prompt-preregistration.v2.json",
+    "preregistrationDigest": "sha256:a8669d7a036fc211e57fb8d032d482ccecce86f231a242cf99c8c6dd79c2b051",
+    "stageBAuthorized": false
+  },
+  "pricingContract": {
+    "rationale": "Stage A may produce development evidence without a bound price table; candidate selection, Stage B authorization and any promotion remain blocked until the provider price configuration is bound and cost is recomputed.",
+    "requiredBeforeExecution": false,
+    "requiredBeforeSelection": true,
+    "status": "NOT_BOUND_PRESELECTION"
+  },
+  "rawSensitiveDataIncluded": false,
+  "registryDigest": "sha256:ed21ace6b2c5545ae20f5b82902b4e9de07dc04bf6647265608ee03a9d46a2ad",
+  "registryVersion": "s12.experiment-registry.v7",
+  "selection": {
+    "heldOutInspected": false,
+    "reason": "Stage A is authorized but no Stage A result exists; pricing remains a pre-selection gate.",
+    "status": "NO_SELECTION"
+  },
+  "status": "G5_PREPARATION_DEVELOPMENT_OPEN_S12_F07_STAGE_A_AUTHORIZED",
+  "validationAuthorized": false
+}
