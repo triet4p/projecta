@@ -1,0 +1,1638 @@
+{
+  "baselineLockDigest": "sha256:2c3c4badd0f5da7ae6cb96c6d69e95abdc05e70e3e6448cdb9080c45ffa037b4",
+  "candidateKind": "s12-f-07-candidate-relation-prompt",
+  "caseCount": 16,
+  "caseCoverage": [
+    {
+      "caseId": "s12-a-0101",
+      "split": "development",
+      "status": "scored"
+    },
+    {
+      "caseId": "s12-a-0105",
+      "split": "development",
+      "status": "scored"
+    },
+    {
+      "caseId": "s12-a-0121",
+      "split": "development",
+      "status": "scored"
+    },
+    {
+      "caseId": "s12-a-0122",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0151",
+      "split": "development",
+      "status": "scored"
+    },
+    {
+      "caseId": "s12-a-0153",
+      "split": "development",
+      "status": "scored"
+    },
+    {
+      "caseId": "s12-a-0161",
+      "split": "development",
+      "status": "scored"
+    },
+    {
+      "caseId": "s12-a-0162",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0176",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0177",
+      "split": "development",
+      "status": "scored"
+    },
+    {
+      "caseId": "s12-a-0186",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0187",
+      "split": "development",
+      "status": "scored"
+    },
+    {
+      "caseId": "s12-a-0201",
+      "split": "development",
+      "status": "scored"
+    },
+    {
+      "caseId": "s12-a-0202",
+      "split": "development",
+      "status": "scored"
+    },
+    {
+      "caseId": "s12-a-0226",
+      "split": "development",
+      "status": "missing-output"
+    },
+    {
+      "caseId": "s12-a-0233",
+      "split": "development",
+      "status": "scored"
+    }
+  ],
+  "casesPerSlice": 8,
+  "configuration": {
+    "apiKeyPresent": true,
+    "baseUrl": "https://api.deepseek.com",
+    "evaluatorVersion": "s12.evaluator.v1",
+    "llmType": "openai-response",
+    "manifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+    "model": "deepseek-v4-flash",
+    "oneAttemptPerCase": true,
+    "promptArtifact": "evaluation/sprint-12/optimization/s12-f-07-prompt-v4-relation-decision-rubric.v1.txt",
+    "promptArtifactDigest": "sha256:d30170306e5fafa401c6b6e8d78e4fcf5ede3aa6c81f85c269a95fb78a9e290b",
+    "promptVersion": "m3.prompt.v4.relation-decision-rubric",
+    "relationInstrumentationVersion": "s12.relation-instrumentation.v1",
+    "release": "v0.6.0",
+    "requestTimeoutSeconds": 60,
+    "retryPolicy": "none",
+    "runBudgetSeconds": 300,
+    "samplingConfiguration": {
+      "seed": "provider-controlled",
+      "temperature": "provider-default",
+      "topP": "provider-default"
+    },
+    "schemaVersion": "m3.v2"
+  },
+  "contractVersion": "m3.v2",
+  "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "digests": {
+    "candidateRunnerCode": "sha256:fd6e8fe073ed24fd537f96291d14862d488cd137be06ec1c10cecb22a02e6cba",
+    "evaluatorCode": "sha256:24bcf7032eaf4a69a1f2d41f93e87cecb802b90ffac07e9f16c7d8e50dfedf2a",
+    "manifest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+    "modelConfiguration": "sha256:58fe1bdd2a059480aded31905dcee77c8b8d21fd6d8d2e91ae1c2a4334871474",
+    "promptArtifact": "sha256:d30170306e5fafa401c6b6e8d78e4fcf5ede3aa6c81f85c269a95fb78a9e290b",
+    "promptCode": "sha256:52bf864a14237c9e1c8672677f19b4327ae90187e74634ca60c3d7936b6acf2d",
+    "runtimeContractCode": "sha256:fe74535ea26db917fee51b449f725431f4e0d98040ea5126533bc511142681ac",
+    "runtimeServiceCode": "sha256:f80f2ad12be5c58f6314a04e4652d97d913492a6606f21f39160dcf0c605786c",
+    "schemaContract": "sha256:235716b6fdd5d0b834e2d8a590a270e83e7175b02048cc6aa1133ff74fc75d39"
+  },
+  "failureCount": 5,
+  "failures": [
+    {
+      "caseId": "s12-a-0122",
+      "category": "model",
+      "failureClass": "invalid_evidence"
+    },
+    {
+      "caseId": "s12-a-0162",
+      "category": "model",
+      "failureClass": "schema_invalid"
+    },
+    {
+      "caseId": "s12-a-0176",
+      "category": "model",
+      "failureClass": "schema_invalid"
+    },
+    {
+      "caseId": "s12-a-0186",
+      "category": "model",
+      "failureClass": "schema_invalid"
+    },
+    {
+      "caseId": "s12-a-0226",
+      "category": "model",
+      "failureClass": "schema_invalid"
+    }
+  ],
+  "goldPositiveCounts": {
+    "entities": 15,
+    "links": 0,
+    "relations": 7
+  },
+  "hardInvariants": {
+    "datasetDigestBinding": true,
+    "heldOutNonLeakage": true,
+    "relationContractRepresentable": true,
+    "schemaValidity": false,
+    "splitIntegrity": true,
+    "status": "FAIL"
+  },
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "metrics": {
+    "abstentionAccuracy": 0.8181818181818182,
+    "entityMacroF1": 0.7272727272727273,
+    "hallucinationRate": 0.36363636363636365,
+    "linkMacroF1": 1.0,
+    "perCase": {
+      "s12-a-0101": {
+        "abstentionAccuracy": 1.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 0,
+        "hallucinationRate": 0.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            }
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "gold": 0,
+            "missingRelation": 0,
+            "predicted": 0,
+            "unallowlistedPredictedPredicate": 0,
+            "unmatchedPredicate": 0
+          },
+          "version": "s12.relation-instrumentation.v1"
+        },
+        "relations": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "s12-a-0105": {
+        "abstentionAccuracy": 1.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 1.0,
+          "gold": 2,
+          "precision": 1.0,
+          "predicted": 2,
+          "recall": 1.0,
+          "truePositive": 2
+        },
+        "goldItemCount": 3,
+        "hallucinationRate": 0.3333333333333333,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 1,
+              "missingRelation": 1,
+              "predicted": 1,
+              "unmatchedPredicate": 1
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            }
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "gold": 1,
+            "missingRelation": 1,
+            "predicted": 1,
+            "unallowlistedPredictedPredicate": 0,
+            "unmatchedPredicate": 1
+          },
+          "version": "s12.relation-instrumentation.v1"
+        },
+        "relations": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 1,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "s12-a-0121": {
+        "abstentionAccuracy": 1.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 1.0,
+          "gold": 2,
+          "precision": 1.0,
+          "predicted": 2,
+          "recall": 1.0,
+          "truePositive": 2
+        },
+        "goldItemCount": 3,
+        "hallucinationRate": 0.3333333333333333,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 1,
+              "missingRelation": 1,
+              "predicted": 1,
+              "unmatchedPredicate": 1
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            }
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "gold": 1,
+            "missingRelation": 1,
+            "predicted": 1,
+            "unallowlistedPredictedPredicate": 0,
+            "unmatchedPredicate": 1
+          },
+          "version": "s12.relation-instrumentation.v1"
+        },
+        "relations": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 1,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "s12-a-0122": {
+        "category": "model",
+        "failureClass": "invalid_evidence",
+        "status": "missing-output"
+      },
+      "s12-a-0151": {
+        "abstentionAccuracy": 1.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 0,
+        "hallucinationRate": 0.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            }
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "gold": 0,
+            "missingRelation": 0,
+            "predicted": 0,
+            "unallowlistedPredictedPredicate": 0,
+            "unmatchedPredicate": 0
+          },
+          "version": "s12.relation-instrumentation.v1"
+        },
+        "relations": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "s12-a-0153": {
+        "abstentionAccuracy": 1.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 1.0,
+          "gold": 2,
+          "precision": 1.0,
+          "predicted": 2,
+          "recall": 1.0,
+          "truePositive": 2
+        },
+        "goldItemCount": 3,
+        "hallucinationRate": 0.3333333333333333,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 1,
+              "missingRelation": 1,
+              "predicted": 1,
+              "unmatchedPredicate": 1
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            }
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "gold": 1,
+            "missingRelation": 1,
+            "predicted": 1,
+            "unallowlistedPredictedPredicate": 0,
+            "unmatchedPredicate": 1
+          },
+          "version": "s12.relation-instrumentation.v1"
+        },
+        "relations": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 1,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "s12-a-0161": {
+        "abstentionAccuracy": 1.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 1.0,
+          "gold": 2,
+          "precision": 1.0,
+          "predicted": 2,
+          "recall": 1.0,
+          "truePositive": 2
+        },
+        "goldItemCount": 3,
+        "hallucinationRate": 0.3333333333333333,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 1,
+              "missingRelation": 1,
+              "predicted": 1,
+              "unmatchedPredicate": 1
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            }
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "gold": 1,
+            "missingRelation": 1,
+            "predicted": 1,
+            "unallowlistedPredictedPredicate": 0,
+            "unmatchedPredicate": 1
+          },
+          "version": "s12.relation-instrumentation.v1"
+        },
+        "relations": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 1,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "s12-a-0162": {
+        "category": "model",
+        "failureClass": "schema_invalid",
+        "status": "missing-output"
+      },
+      "s12-a-0176": {
+        "category": "model",
+        "failureClass": "schema_invalid",
+        "status": "missing-output"
+      },
+      "s12-a-0177": {
+        "abstentionAccuracy": 1.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 1.0,
+          "gold": 2,
+          "precision": 1.0,
+          "predicted": 2,
+          "recall": 1.0,
+          "truePositive": 2
+        },
+        "goldItemCount": 3,
+        "hallucinationRate": 0.3333333333333333,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 1,
+              "missingRelation": 1,
+              "predicted": 1,
+              "unmatchedPredicate": 1
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            }
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "gold": 1,
+            "missingRelation": 1,
+            "predicted": 1,
+            "unallowlistedPredictedPredicate": 0,
+            "unmatchedPredicate": 1
+          },
+          "version": "s12.relation-instrumentation.v1"
+        },
+        "relations": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 1,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "s12-a-0186": {
+        "category": "model",
+        "failureClass": "schema_invalid",
+        "status": "missing-output"
+      },
+      "s12-a-0187": {
+        "abstentionAccuracy": 1.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 1,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 1,
+        "hallucinationRate": 1.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            }
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "gold": 0,
+            "missingRelation": 0,
+            "predicted": 0,
+            "unallowlistedPredictedPredicate": 0,
+            "unmatchedPredicate": 0
+          },
+          "version": "s12.relation-instrumentation.v1"
+        },
+        "relations": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "s12-a-0201": {
+        "abstentionAccuracy": 0.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 0.0,
+          "gold": 2,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 3,
+        "hallucinationRate": 0.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 1,
+              "missingRelation": 1,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            }
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "gold": 1,
+            "missingRelation": 1,
+            "predicted": 0,
+            "unallowlistedPredictedPredicate": 0,
+            "unmatchedPredicate": 0
+          },
+          "version": "s12.relation-instrumentation.v1"
+        },
+        "relations": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "s12-a-0202": {
+        "abstentionAccuracy": 0.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 0.0,
+          "gold": 0,
+          "precision": 0.0,
+          "predicted": 1,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 0,
+        "hallucinationRate": 1.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            }
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "gold": 0,
+            "missingRelation": 0,
+            "predicted": 0,
+            "unallowlistedPredictedPredicate": 0,
+            "unmatchedPredicate": 0
+          },
+          "version": "s12.relation-instrumentation.v1"
+        },
+        "relations": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "s12-a-0226": {
+        "category": "model",
+        "failureClass": "schema_invalid",
+        "status": "missing-output"
+      },
+      "s12-a-0233": {
+        "abstentionAccuracy": 1.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 1.0,
+          "gold": 2,
+          "precision": 1.0,
+          "predicted": 2,
+          "recall": 1.0,
+          "truePositive": 2
+        },
+        "goldItemCount": 3,
+        "hallucinationRate": 0.3333333333333333,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 1,
+              "missingRelation": 1,
+              "predicted": 1,
+              "unmatchedPredicate": 1
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "gold": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "unmatchedPredicate": 0
+            }
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "gold": 1,
+            "missingRelation": 1,
+            "predicted": 1,
+            "unallowlistedPredictedPredicate": 0,
+            "unmatchedPredicate": 1
+          },
+          "version": "s12.relation-instrumentation.v1"
+        },
+        "relations": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 1,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      }
+    },
+    "relationMacroF1": 0.36363636363636365
+  },
+  "missingOutputCount": 5,
+  "omittedCaseCount": 0,
+  "operational": {
+    "acceptedCandidateCostUsd": 0,
+    "costUsd": 0.0,
+    "count": 16,
+    "failureCounts": {
+      "invalid_evidence": 1,
+      "schema_invalid": 4
+    },
+    "latencyMs": {
+      "p50": 1224.0,
+      "p95": 1704.0
+    },
+    "status": "scored",
+    "usage": {
+      "inputTokens": 17828,
+      "outputTokens": 1453
+    }
+  },
+  "operationalRecords": [
+    {
+      "caseId": "s12-a-0101",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1621,
+      "latencyMs": 1059,
+      "outputTokens": 44,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0105",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1620,
+      "latencyMs": 1640,
+      "outputTokens": 241,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0121",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1626,
+      "latencyMs": 1376,
+      "outputTokens": 154,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0122",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 992,
+      "outputTokens": 0,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0151",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1616,
+      "latencyMs": 854,
+      "outputTokens": 39,
+      "slice": "cross-project-isolation",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0153",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1628,
+      "latencyMs": 1203,
+      "outputTokens": 164,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0161",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1620,
+      "latencyMs": 1429,
+      "outputTokens": 241,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0162",
+      "costUsd": 0.0,
+      "failureClass": "schema_invalid",
+      "inputTokens": 0,
+      "latencyMs": 1704,
+      "outputTokens": 0,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0176",
+      "costUsd": 0.0,
+      "failureClass": "schema_invalid",
+      "inputTokens": 0,
+      "latencyMs": 929,
+      "outputTokens": 0,
+      "slice": "fabricated-link",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0177",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1622,
+      "latencyMs": 1224,
+      "outputTokens": 154,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0186",
+      "costUsd": 0.0,
+      "failureClass": "schema_invalid",
+      "inputTokens": 0,
+      "latencyMs": 1551,
+      "outputTokens": 0,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0187",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1620,
+      "latencyMs": 842,
+      "outputTokens": 61,
+      "slice": "temporal-change",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0201",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1621,
+      "latencyMs": 885,
+      "outputTokens": 38,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0202",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1616,
+      "latencyMs": 1307,
+      "outputTokens": 79,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0226",
+      "costUsd": 0.0,
+      "failureClass": "schema_invalid",
+      "inputTokens": 0,
+      "latencyMs": 1465,
+      "outputTokens": 0,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0233",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1618,
+      "latencyMs": 1704,
+      "outputTokens": 238,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    }
+  ],
+  "rawSensitiveDataIncluded": false,
+  "schemaVersion": "s12.contract-candidate.v1",
+  "slices": [
+    "contradiction-or-supersession",
+    "duplicate-evidence",
+    "temporal-change",
+    "unicode-and-noisy-text"
+  ],
+  "split": "development",
+  "status": "CANDIDATE_DEVELOPMENT_WITH_FAILURES",
+  "validationAuthorized": false
+}
