@@ -1,6 +1,6 @@
 # S12-f-07 Preparation — Development Error Backlog and Execution Package
 
-**Status:** `S12_F07_COMPLETED_REJECTED_S12_F08_PREREGISTERED_NOT_EXECUTED`
+**Status:** `S12_F07_COMPLETED_REJECTED_S12_F08_AUTHORIZED_NOT_EXECUTED`
 
 ## Scope
 
@@ -27,6 +27,12 @@ and did not modify gold or ontology artifacts.
 - [`s12-f-08-relation-prompt-preregistration.v1.json`](../../../../evaluation/sprint-12/optimization/s12-f-08-relation-prompt-preregistration.v1.json)
 - [`s12-f-08-authorization.v1.json`](../../../../evaluation/sprint-12/optimization/s12-f-08-authorization.v1.json)
 - [`s12-f-08-prompt-v5-composed-relation-contract.v1.txt`](../../../../evaluation/sprint-12/optimization/s12-f-08-prompt-v5-composed-relation-contract.v1.txt)
+- [`s12-f-08-pricing-deepseek-v4-flash.v1.json`](../../../../evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json)
+- [`s12-f-08-relation-prompt-preregistration.v2.json`](../../../../evaluation/sprint-12/optimization/s12-f-08-relation-prompt-preregistration.v2.json)
+- [`s12-f-08-authorization.v2.json`](../../../../evaluation/sprint-12/optimization/s12-f-08-authorization.v2.json)
+- [`experiment-registry.v9.json`](../../../../evaluation/sprint-12/optimization/experiment-registry.v9.json)
+- [`g5-packet.v9.json`](../../../../evaluation/sprint-12/optimization/g5-packet.v9.json)
+- [`run_sprint12_f08_prompt_experiment.py`](../../../../scripts/run_sprint12_f08_prompt_experiment.py)
 - [`s12-f-07-prompt-v4-relation-decision-rubric.v1.txt`](../../../../evaluation/sprint-12/optimization/s12-f-07-prompt-v4-relation-decision-rubric.v1.txt)
 - [`sprint12_development_error_analysis.py`](../../../../scripts/sprint12_development_error_analysis.py)
 - [`prepare_sprint12_f07_execution_package.py`](../../../../scripts/prepare_sprint12_f07_execution_package.py)
@@ -60,17 +66,19 @@ no Stage B or candidate selection, binds the aggregate and all six report
 digests, and records the scoring erratum. The erratum corrects entity
 aggregation while retaining relation values as provisional because raw
 predictions were not retained. S12-f-08 is preregistered with composed prompt
-v5, stronger relation/supersession gates, and remains unauthorized and
-unexecuted pending pricing.
+v5, evaluator v2, cache-aware usage/pricing, stronger relation/supersession
+gates, and a frozen execution package. Authorization v2 is approved for Stage
+A, but the provider run has not yet been executed.
 
 ## Validation
 
 - `python -m pytest scripts/tests/test_sprint12_development_error_analysis.py -q` — passed (2 tests).
 - `python -m pytest scripts/tests/test_sprint12_f07_execution_contract.py scripts/tests/test_sprint12_f08_contract.py scripts/tests/test_sprint12_phase_e_contract.py -q` — passed (30 tests).
-- `python -m pytest scripts/tests -q` — passed (160 tests).
-- Offline closure validation — passed; registry/G5 v8, immutable aggregate and six report digests, f08 preregistration and pending authorization are bound.
+- `python -m pytest scripts/tests/test_sprint12_f08_runner_contract.py -q` — passed (5 tests).
+- `python -m pytest scripts/tests -q` — passed (164 tests).
+- Offline f08 preflight — passed; registry/G5 v9, evaluator v2, frozen runner commit, pricing artifact and authorization v2 are digest-bound.
 - JSON parsing for all generated JSON artifacts — passed.
-- No provider calls were made while closing S12-f-07 or preregistering S12-f-08.
+- No provider calls were made while revising or authorizing S12-f-08.
 - `git diff --check` — passed.
 
 The pytest run emitted only an environment warning because the local

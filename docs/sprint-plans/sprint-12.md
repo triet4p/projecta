@@ -419,8 +419,9 @@ unchanged and blocking.
   relation measurement, and prohibit Stage B and candidate selection.
 - [x] **S12-f-08 preparation:** Open a new prompt-only experiment with composed
   v5, canonical relation endpoints, positive-relation floors/deltas, zero
-  supersession false positives, and pricing required before execution. It is
-  preregistered but not authorized or executed.
+  supersession false positives, evaluator v2, cache-aware pricing and a
+  frozen guarded runner. Registry/G5 v9 and authorization v2 bind the
+  execution-package commit; Stage A is authorized but not yet executed.
 - [ ] **S12-78 — Select one candidate configuration:** Apply the registered
   multi-metric rule without inspecting held-out data.
 - [ ] **S12-79 — Evaluate the candidate on validation:** Run once after selection

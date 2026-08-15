@@ -1,0 +1,67 @@
+{
+  "approvalSource": "owner-approved-development-stage-a",
+  "artifactVersion": "s12.s12-f-08.authorization.v2",
+  "authorizationHistory": {
+    "priorArtifact": "s12-f-08-authorization.v1.json",
+    "priorDigest": "sha256:b5bbc3d271979607be9050fb0771c96bd863b7f373c356a93cf665f508c98fda",
+    "priorStatus": "PENDING_USER_AUTHORIZATION"
+  },
+  "credentialIncluded": false,
+  "executionPackage": {
+    "commitSha": "84e589bce954d8e23ad734eeb01b0711140dd854",
+    "digests": {
+      "datasetManifest": "sha256:9de3e73ef10fe4f43c994f85c8f41fc009349b4c9f6857959b807e8da0a06829",
+      "evaluatorCode": "sha256:0eb9221962bb408d54e9fb6a3a84a769831152cf2d6b3e201aa5ab4eb67dd01e",
+      "pricingArtifact": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+      "pricingModuleCode": "sha256:babc33da52788e65e031b56d89464bbc4a4360edcb14b1cc5cd5d33a2109486b",
+      "promptArtifact": "sha256:efafb779bd4b96b4b53f7a5e927dcad215217b9ec6df6d707a332406e983a7c9",
+      "promptImplementation": "sha256:ebd9888e62723f09425f5d074a29060c1e674b3e0178f7cb283cac81ff68f190",
+      "runnerCode": "sha256:cfb38081cdf3316e8fa874d918a34770eb73ce289031b83c5b16a177c0305c5a",
+      "runtimeContractCode": "sha256:f889260141f70753b255ccb813c9d9ce6fc57cd41c2deece4b027b739dc76b34",
+      "runtimeServiceCode": "sha256:a91bacc991972a4ed291ee2c85617418e582ce7bbbd2ea3751999dfd991f5157"
+    },
+    "oneAttemptPerCase": true,
+    "retryPolicy": "none",
+    "stage": "A"
+  },
+  "experimentId": "s12-f-08",
+  "humanEvidence": false,
+  "preregistration": {
+    "artifact": "s12-f-08-relation-prompt-preregistration.v2.json",
+    "digest": "sha256:62745799d004c117f1637c396f721702f9411175cfb6b3bd6ec45f4511a861ee"
+  },
+  "pricingContract": {
+    "artifact": "s12-f-08-pricing-deepseek-v4-flash.v1.json",
+    "artifactDigest": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+    "currency": "USD",
+    "model": "deepseek-v4-flash",
+    "rateClasses": [
+      "inputCacheHitUsdPer1M",
+      "inputCacheMissUsdPer1M",
+      "outputUsdPer1M"
+    ],
+    "requiredBeforeExecution": true,
+    "requiredBeforeSelection": true,
+    "retrievedAt": "2026-08-16",
+    "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing",
+    "status": "BOUND",
+    "unit": "USD per 1M tokens"
+  },
+  "rawSensitiveDataIncluded": false,
+  "registry": {
+    "artifact": "experiment-registry.v9.json",
+    "digest": "sha256:086d134cae5efc0dbef34a33d1eb8e157ae846c789bab8d560a6def4b328d466",
+    "fileDigest": "sha256:a9d3431e35414c27afec0b5e2bfb4242a74ee3c4dfd103d40f86c6d6622d5849"
+  },
+  "scope": {
+    "caseCount": 16,
+    "developmentOnly": true,
+    "heldOutInspected": false,
+    "independentPairedRuns": 3,
+    "noRetryWithinEachRun": true,
+    "stage": "A",
+    "stageBAuthorized": false,
+    "validationAuthorized": false
+  },
+  "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A"
+}

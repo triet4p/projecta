@@ -119,6 +119,36 @@ def test_pricing_requires_three_cache_aware_token_classes() -> None:
         )
 
 
+def test_v2_governance_binds_evaluator_runner_commit_and_pricing() -> None:
+    prereg = read_json("s12-f-08-relation-prompt-preregistration.v2.json")
+    registry = read_json("experiment-registry.v9.json")
+    authorization = read_json("s12-f-08-authorization.v2.json")
+    g5 = read_json("g5-packet.v9.json")
+    package = authorization["executionPackage"]
+
+    assert prereg["fixedArtifacts"]["evaluator"] == "s12.evaluator.v2"
+    assert prereg["measurementContract"]["positiveRelationDenominator"] == (
+        "fail-closed-all-positive-gold-case-runs"
+    )
+    assert authorization["status"] == "APPROVED_FOR_DEVELOPMENT_STAGE_A"
+    assert package["commitSha"] == "84e589bce954d8e23ad734eeb01b0711140dd854"
+    assert package["digests"] == RUNNER.execution_package_digests()
+    assert prereg["executionPackage"] == package
+    assert registry["registryVersion"] == "s12.experiment-registry.v9"
+    assert registry["evaluatorVersion"] == "s12.evaluator.v2"
+    assert registry["status"] == "G5_DEVELOPMENT_STAGE_A_AUTHORIZED_S12_F08"
+    assert authorization["registry"]["fileDigest"] == RUNNER.file_digest(
+        RUNNER.REGISTRY
+    )
+    assert g5["pendingExperiment"]["authorizationDigest"] == RUNNER.file_digest(
+        RUNNER.AUTHORIZATION
+    )
+    preregistration, case_ids, pricing = RUNNER.preflight()
+    assert preregistration["status"] == "PREREGISTERED_NOT_EXECUTED"
+    assert len(case_ids) == 16
+    assert pricing["artifactDigest"] == RUNNER.file_digest(RUNNER.PRICING)
+
+
 def test_mocked_f08_execution_is_six_interleaved_calls_and_no_overwrite(tmp_path: Path) -> None:
     prereg = read_json("s12-f-08-relation-prompt-preregistration.v1.json")
     case_ids = tuple(prereg["stageA"]["caseIds"])

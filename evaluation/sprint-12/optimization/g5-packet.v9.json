@@ -1,0 +1,90 @@
+{
+  "approvalStatus": "APPROVED_FOR_DEVELOPMENT_STAGE_A",
+  "candidateAvailable": false,
+  "candidateFreezeAuthorized": false,
+  "closedExperiment": {
+    "aggregateArtifact": "s12-f-07-relation-prompt-stage-a.v1.json",
+    "aggregateDigest": "sha256:b75fcb75e52b2dae637b36f345454a151495802ec921a96e99c5dc0e9a523d12",
+    "experimentId": "s12-f-07",
+    "noCandidateSelection": true,
+    "noStageB": true,
+    "scoringErratumArtifact": "s12-f-07-scoring-erratum.v1.json",
+    "scoringErratumDigest": "sha256:03b836a65cf58e5092a4c600b9354ef389f0b609ff6aa755730526a9c12d6af2",
+    "status": "COMPLETED_REJECTED"
+  },
+  "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "denominatorContract": {
+    "candidateHardGates": {
+      "invalid_evidence": 0,
+      "missing_output": 0,
+      "schema_invalid": 0
+    },
+    "controlFailurePolicy": "degrade_comparison_integrity_without_relabeling_as_candidate_hard_gate_failure",
+    "controlHardGates": {
+      "invalid_evidence": 0,
+      "missing_output": 0,
+      "schema_invalid": 0
+    },
+    "positiveRelationMacroF1Minimum": 0.05,
+    "positiveRelationMacroF1MinimumDelta": 0.05,
+    "positiveRelationMicroF1Minimum": 0.05,
+    "primary": {
+      "caseRunsPerArm": 48,
+      "missingOutputTreatment": "metric_value_zero_and_hard_gate_failure_for_that_arm",
+      "name": "fail_closed_all_declared_case_runs"
+    },
+    "primaryRelationDeltaMinimum": 0.05,
+    "sensitivity": {
+      "missingOutputTreatment": "exclude_only_from_sensitivity_denominator",
+      "name": "paired_common_valid_case_runs"
+    },
+    "sensitivityRelationDeltaMinimum": 0.0,
+    "supersessionFalsePositiveMaximum": 0,
+    "supersessionSliceCaseCount": 5
+  },
+  "executionBlockedReasons": [
+    "S12-f-07 is closed as COMPLETED_REJECTED with no Stage B or selection",
+    "S12-f-08 Stage A is authorized once and must not retry or overwrite evidence"
+  ],
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "optimizationAuthorized": false,
+  "packetVersion": "s12.g5.packet.v9",
+  "pendingExperiment": {
+    "authorizationArtifact": "s12-f-08-authorization.v2.json",
+    "authorizationDigest": "sha256:0ec576fd70b33be551e053db7ffa0061524608394fc404027e57433e48813dfe",
+    "executionAuthorized": true,
+    "experimentId": "s12-f-08",
+    "preregistrationArtifact": "s12-f-08-relation-prompt-preregistration.v2.json",
+    "preregistrationDigest": "sha256:62745799d004c117f1637c396f721702f9411175cfb6b3bd6ec45f4511a861ee",
+    "stageBAuthorized": false
+  },
+  "pricingContract": {
+    "artifact": "s12-f-08-pricing-deepseek-v4-flash.v1.json",
+    "artifactDigest": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+    "currency": "USD",
+    "model": "deepseek-v4-flash",
+    "rateClasses": [
+      "inputCacheHitUsdPer1M",
+      "inputCacheMissUsdPer1M",
+      "outputUsdPer1M"
+    ],
+    "requiredBeforeExecution": true,
+    "requiredBeforeSelection": true,
+    "retrievedAt": "2026-08-16",
+    "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing",
+    "status": "BOUND",
+    "unit": "USD per 1M tokens"
+  },
+  "rawSensitiveDataIncluded": false,
+  "registryDigest": "sha256:086d134cae5efc0dbef34a33d1eb8e157ae846c789bab8d560a6def4b328d466",
+  "registryVersion": "s12.experiment-registry.v9",
+  "selection": {
+    "heldOutInspected": false,
+    "reason": "S12-f-08 Stage A is authorized; no Stage B or candidate selection is authorized.",
+    "status": "NO_SELECTION"
+  },
+  "status": "G5_DEVELOPMENT_STAGE_A_AUTHORIZED_S12_F08",
+  "validationAuthorized": false
+}

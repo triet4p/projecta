@@ -429,3 +429,10 @@ next highest-value work.
 **Alternatives considered:** Fix the runner and rerun f-07; overwrite the aggregate with corrected metrics; or continue to Stage B using the uncorrected aggregate.
 **Reason:** The candidate independently regressed on missing outputs, supersession abstention, hallucination and corrected entity/relation metrics, while the aggregate also contained a field-mapping defect and provisional relation measurement. Separating closure from correction preserves both the observed model behavior and an auditable measurement erratum.
 **Consequences:** S12-f-07 cannot be rerun or selected; Registry/G5 v8 records its rejection and opens S12-f-08. S12-f-08 must use canonical relation endpoints, positive-relation gates, supersession false-positive zero, composed prompt v5, and pricing bound before execution.
+
+## [2026-08-16] Freeze S12-f-08 with evaluator v2 and cache-aware pricing
+
+**Decision:** Require S12-f-08 to use evaluator v2, a standalone digest-guarded runner, and a bound three-class DeepSeek pricing contract before provider execution.
+**Alternatives considered:** Keep evaluator v1 and bind only a prompt; reuse the closed f07 runner; or estimate cost from aggregate input/output tokens.
+**Reason:** Canonical relation endpoints, positive-relation fail-closed metrics and cache-aware cost accounting materially change the measurement and execution contracts. A standalone runner makes the six-call temporal schedule, no-retry policy and evidence custody auditable.
+**Consequences:** The execution package is frozen at commit `84e589bce954d8e23ad734eeb01b0711140dd854`; Registry/G5 v9 and authorization v2 bind its evaluator, runner, prompt, runtime, pricing artifact and dataset digests. Stage A remains a one-time provider operation; no Stage B or selection is authorized.
