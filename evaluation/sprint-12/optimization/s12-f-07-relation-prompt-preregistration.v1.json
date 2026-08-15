@@ -1,0 +1,114 @@
+{
+  "artifactVersion": "s12.s12-f-07.relation-prompt-preregistration.v1",
+  "experimentId": "s12-f-07",
+  "experimentStatus": "PREREGISTERED_NOT_EXECUTED",
+  "executionAuthorized": false,
+  "executionDeferredByUserInstruction": true,
+  "changedDimension": "prompt",
+  "hypothesis": "A relation decision rubric in the prompt reduces missing and wrong predicate/endpoints errors while preserving entity extraction, abstention safety and hallucination rate on the incumbent model.",
+  "control": {
+    "configuration": {
+      "model": "deepseek-v4-flash",
+      "promptVersion": "m3.prompt.v3.supersession-guard",
+      "samplingConfiguration": {
+        "seed": "provider-controlled",
+        "temperature": "provider-default",
+        "topP": "provider-default"
+      },
+      "schemaVersion": "m3.v2"
+    },
+    "configurationDigest": "sha256:f0d066cbab02b834acf323be2a96b70bfa41c65c3d47cb62c968afa0deac9d2f"
+  },
+  "candidate": {
+    "configuration": {
+      "model": "deepseek-v4-flash",
+      "promptVersion": "m3.prompt.v4.relation-decision-rubric",
+      "samplingConfiguration": {
+        "seed": "provider-controlled",
+        "temperature": "provider-default",
+        "topP": "provider-default"
+      },
+      "schemaVersion": "m3.v2"
+    },
+    "configurationDigest": "sha256:b10030d7ec44b0efb5f84824789b216323810f6406abdca928ab1c0b4af6e483"
+  },
+  "fixedArtifacts": {
+    "datasetVersion": "s12.corpus.atomic.v2",
+    "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+    "evaluator": "unchanged",
+    "context": "unchanged",
+    "tool": "unchanged",
+    "ontology": "unchanged",
+    "policy": "unchanged",
+    "schemaVersion": "m3.v2",
+    "retryPolicy": "none"
+  },
+  "stageA": {
+    "caseCount": 16,
+    "caseIds": [
+      "s12-a-0101",
+      "s12-a-0105",
+      "s12-a-0121",
+      "s12-a-0122",
+      "s12-a-0151",
+      "s12-a-0153",
+      "s12-a-0161",
+      "s12-a-0162",
+      "s12-a-0176",
+      "s12-a-0177",
+      "s12-a-0186",
+      "s12-a-0187",
+      "s12-a-0201",
+      "s12-a-0202",
+      "s12-a-0226",
+      "s12-a-0233"
+    ],
+    "independentPairedRuns": 3,
+    "oneAttemptPerCase": true,
+    "noRetryWithinEachRun": true,
+    "selectionRationale": "Prioritize positive relation cases, hard negatives/semantic-gap abstentions, and safety/isolation abstention cases while retaining the incumbent model and provider-default sampling.",
+    "selectionProfile": {
+      "positiveRelationCases": 7,
+      "hardNegativeOrSemanticGapCases": 5,
+      "abstentionOrIsolationCases": 4
+    }
+  },
+  "stageB": {
+    "caseCount": 32,
+    "independentPairedRuns": 3,
+    "authorizedOnlyAfterStageAAllGatesPass": true
+  },
+  "hardGates": {
+    "schema_invalid": 0,
+    "invalid_evidence": 0,
+    "missing_output": 0,
+    "hallucinationRateIncrease": "none"
+  },
+  "semanticGates": {
+    "relationMacroF1MinimumDelta": 0.05,
+    "entityMacroF1MaximumDecrease": 0.01,
+    "abstentionAccuracyMaximumDecrease": 0.01,
+    "latencyAndUsage": "accounted"
+  },
+  "costAccounting": {
+    "latencyRequired": true,
+    "usageRequired": true,
+    "providerPriceConfigurationRequiredBeforeExecution": true
+  },
+  "prohibitedBeforeStageA": [
+    "deepseek-v4-pro",
+    "sampling-sweep",
+    "held-out-inspection",
+    "gold-or-ontology-change"
+  ],
+  "sourceEvidence": {
+    "errorBacklog": "evaluation/sprint-12/optimization/development-error-analysis.v1.json",
+    "errorBacklogDigest": "sha256:e9de3f5f01c97a761f127f0a5a320f80779a2f1826a7796a9c00866e0fb6f1e9",
+    "registrySource": "evaluation/sprint-12/optimization/experiment-registry.v5.json",
+    "registrySourceDigest": "sha256:2977f6b5f5c71ee86ea1bcfa26b987946d3d38a2a0395843ce4e0f207ffaafb8"
+  },
+  "datasetSplit": "development",
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "rawSensitiveDataIncluded": false
+}

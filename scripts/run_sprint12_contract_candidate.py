@@ -157,6 +157,24 @@ def run_candidate(
         )
         for name in ("entities", "relations", "links")
     }
+    digest_map: dict[str, str] = {
+        "evaluatorCode": _file_digest(ROOT / "scripts/sprint12_evaluator.py"),
+        "candidateRunnerCode": _file_digest(Path(__file__)),
+        "promptCode": _file_digest(
+            ROOT / "apps/api/src/projecta_api/extraction/prompt.py"
+        ),
+        "runtimeContractCode": _file_digest(
+            ROOT / "apps/api/src/projecta_api/extraction/contracts.py"
+        ),
+        "runtimeServiceCode": _file_digest(
+            ROOT / "apps/api/src/projecta_api/extraction/service.py"
+        ),
+        "manifest": subset.manifest.get("manifestDigest"),
+    }
+    prompt_artifact = config.get("promptArtifact")
+    if isinstance(prompt_artifact, str):
+        digest_map["promptArtifact"] = _file_digest(ROOT / prompt_artifact)
+
     result: dict[str, object] = {
         "schemaVersion": "s12.contract-candidate.v1",
         "status": status,
@@ -193,17 +211,7 @@ def run_candidate(
         },
         "configuration": config,
         "digests": {
-            "evaluatorCode": _file_digest(ROOT / "scripts/sprint12_evaluator.py"),
-            "candidateRunnerCode": _file_digest(Path(__file__)),
-            "promptCode": _file_digest(
-                ROOT / "apps/api/src/projecta_api/extraction/prompt.py"
-            ),
-            "runtimeContractCode": _file_digest(
-                ROOT / "apps/api/src/projecta_api/extraction/contracts.py"
-            ),
-            "runtimeServiceCode": _file_digest(
-                ROOT / "apps/api/src/projecta_api/extraction/service.py"
-            ),
+            **digest_map,
             "schemaContract": evaluator.digest(
                 {
                     "schemaVersion": "m3.v2",
@@ -215,7 +223,6 @@ def run_candidate(
                     ),
                 }
             ),
-            "manifest": subset.manifest.get("manifestDigest"),
             "modelConfiguration": evaluator.digest(
                 {
                     "model": config.get("model"),

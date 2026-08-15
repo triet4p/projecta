@@ -7,6 +7,28 @@ from projecta_api.extraction.contracts import EntityType, RelationPredicate
 
 PROMPT_VERSION = "m3.prompt.v2"
 
+PROMPT_V3_SUPERSESSION_GUARD = """Supersession guard: do not emit the released predicate supersedes because it is not in the allowed predicate list. Do not convert a clause whose meaning is only supersession into a Requirement. If there is no standalone supported entity, abstain. Preserve exact evidence quote and occurrence and assign unique candidateId values to emitted entities."""
+
+PROMPT_V4_RELATION_DECISION_RUBRIC = """Relation decision rubric:
+1. Extract a relation only when the note explicitly supports one predicate from the server-provided allowlist.
+2. Verify both endpoints are grounded in emitted local candidates or bounded same-project context before emitting the relation.
+3. Preserve predicate meaning and direction exactly: do not substitute a related predicate, reverse source and target, or infer an endpoint from a name or pronoun alone.
+4. Use the smallest exact evidence clause that expresses the relation, with its exact occurrence.
+5. If the predicate is unsupported, the endpoints are missing or ambiguous, or the direction is not evidenced, omit the relation. Keep independently supported entities; abstain only when no supported extraction remains.
+6. Before returning, check every relation for an allowlisted predicate, two grounded endpoints, correct direction, and evidence that contains the relation clause."""
+
+
+def prompt_variant_instructions(prompt_variant: str) -> str:
+    """Return the exact versioned addendum for a supported prompt variant."""
+
+    if prompt_variant == "m3.prompt.v2":
+        return ""
+    if prompt_variant == "m3.prompt.v3.supersession-guard":
+        return PROMPT_V3_SUPERSESSION_GUARD
+    if prompt_variant == "m3.prompt.v4.relation-decision-rubric":
+        return PROMPT_V4_RELATION_DECISION_RUBRIC
+    raise ValueError(f"unsupported prompt variant: {prompt_variant}")
+
 _SYSTEM_INSTRUCTIONS = """You are Projecta's extraction component.
 Return only JSON matching the supplied m3.v1 schema.
 Extract proposals supported by the allowlists below. Do not create ontology

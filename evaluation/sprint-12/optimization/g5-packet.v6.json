@@ -1,0 +1,65 @@
+{
+  "approvalStatus": "APPROVED_WITH_LIMITATIONS",
+  "candidateAvailable": false,
+  "candidateFreezeAuthorized": false,
+  "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "denominatorContract": {
+    "candidateHardGates": {
+      "invalid_evidence": 0,
+      "missing_output": 0,
+      "schema_invalid": 0
+    },
+    "controlFailurePolicy": "degrade_comparison_integrity_without_relabeling_as_candidate_hard_gate_failure",
+    "controlHardGates": {
+      "invalid_evidence": 0,
+      "missing_output": 0,
+      "schema_invalid": 0
+    },
+    "primary": {
+      "caseRunsPerArm": 48,
+      "missingOutputTreatment": "metric_value_zero_and_hard_gate_failure_for_that_arm",
+      "name": "fail_closed_all_declared_case_runs"
+    },
+    "primaryRelationDeltaMinimum": 0.05,
+    "sensitivity": {
+      "missingOutputTreatment": "exclude_only_from_sensitivity_denominator",
+      "name": "paired_common_valid_case_runs"
+    },
+    "sensitivityRelationDeltaMinimum": 0.0
+  },
+  "executionBlockedReasons": [
+    "user authorization artifact is pending",
+    "provider credentials are not requested or stored by this package",
+    "pricing is not bound and selection is therefore blocked"
+  ],
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "optimizationAuthorized": false,
+  "packetVersion": "s12.g5.packet.v6",
+  "pendingExperiment": {
+    "authorizationArtifact": "s12-f-07-authorization.v1.json",
+    "authorizationDigest": "sha256:5709186982ff7f3e853b7c02f91a9af9df5058b9e8cb267592420d4dd8f5479c",
+    "executionAuthorized": false,
+    "experimentId": "s12-f-07",
+    "preregistrationArtifact": "s12-f-07-relation-prompt-preregistration.v2.json",
+    "preregistrationDigest": "sha256:a8669d7a036fc211e57fb8d032d482ccecce86f231a242cf99c8c6dd79c2b051",
+    "stageBAuthorized": false
+  },
+  "pricingContract": {
+    "rationale": "Stage A may produce development evidence without a bound price table; candidate selection, Stage B authorization and any promotion remain blocked until the provider price configuration is bound and cost is recomputed.",
+    "requiredBeforeExecution": false,
+    "requiredBeforeSelection": true,
+    "status": "NOT_BOUND_PRESELECTION"
+  },
+  "rawSensitiveDataIncluded": false,
+  "registryDigest": "sha256:2f85e38744ef0e0366f4ac11e5137477fa77c7df36d0ba27664d66ac3001db1e",
+  "registryVersion": "s12.experiment-registry.v6",
+  "selection": {
+    "heldOutInspected": false,
+    "reason": "S12-f-07 execution authorization is pending; no Stage A result exists.",
+    "status": "NO_SELECTION"
+  },
+  "status": "G5_PREPARATION_DEVELOPMENT_OPEN_PENDING_S12_F07_AUTHORIZATION",
+  "validationAuthorized": false
+}

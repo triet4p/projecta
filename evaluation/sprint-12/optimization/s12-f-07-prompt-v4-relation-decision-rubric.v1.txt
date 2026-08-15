@@ -1,0 +1,7 @@
+Relation decision rubric:
+1. Extract a relation only when the note explicitly supports one predicate from the server-provided allowlist.
+2. Verify both endpoints are grounded in emitted local candidates or bounded same-project context before emitting the relation.
+3. Preserve predicate meaning and direction exactly: do not substitute a related predicate, reverse source and target, or infer an endpoint from a name or pronoun alone.
+4. Use the smallest exact evidence clause that expresses the relation, with its exact occurrence.
+5. If the predicate is unsupported, the endpoints are missing or ambiguous, or the direction is not evidenced, omit the relation. Keep independently supported entities; abstain only when no supported extraction remains.
+6. Before returning, check every relation for an allowlisted predicate, two grounded endpoints, correct direction, and evidence that contains the relation clause.

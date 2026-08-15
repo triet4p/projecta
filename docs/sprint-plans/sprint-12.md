@@ -402,6 +402,11 @@ unchanged and blocking.
   `deepseek-v4-flash` on 16 development cases × 3 paired runs. The candidate
   hard gate passed but control failed; semantic gates failed, so no Stage B or
   candidate selection is authorized.
+- [x] **S12-f-07 preparation — Build the development error backlog:** All 288
+  persisted S12-73/S12-77/S12-f-06 report executions were accounted with 17
+  fail-explicit missing outputs. The backlog approves one relation-focused
+  prompt hypothesis on `deepseek-v4-flash` and preregisters Stage A only;
+  provider execution remains deferred.
 - [ ] **S12-78 — Select one candidate configuration:** Apply the registered
   multi-metric rule without inspecting held-out data.
 - [ ] **S12-79 — Evaluate the candidate on validation:** Run once after selection

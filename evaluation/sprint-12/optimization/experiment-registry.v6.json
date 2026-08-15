@@ -1,0 +1,390 @@
+{
+  "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "evaluatorVersion": "s12.evaluator.v1",
+  "experiments": [
+    {
+      "baselineConfigurationDigest": "sha256:2f4a4c84984fefd1d6ab502a5e73a70bf37ef92e416336392acc2227fa1a5cb2",
+      "candidateConfigurationDigest": "sha256:1c63b91a4d9b1f85b40572d26b038e03f05f912dacb04041ee3c57db616020da",
+      "changedArtifacts": [
+        "prompt"
+      ],
+      "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+      "dimension": "prompt",
+      "executionEvidence": {
+        "initialExperiment": {
+          "artifact": "s12-73-prompt-supersession.v1.json",
+          "digest": "sha256:7fb394675b5f0de5b10f66c2f9693d4d2ee5ca0ef2d5bd39fe1d2ee31ecc83e0",
+          "status": "PROMPT_EXPERIMENT_COMPLETED_CANDIDATE_NOT_PROMOTED"
+        },
+        "stabilityFollowup": {
+          "artifact": "s12-73-prompt-followup-stability.v2.json",
+          "digest": "sha256:b5660ae919330b2fb94529d347581e2a043fc63df7e79020590ee088c27a5943",
+          "failureCounts": {
+            "invalid_evidence": 0,
+            "schema_invalid": 3
+          },
+          "status": "STABILITY_GATE_FAIL"
+        },
+        "targetedDiagnostic": {
+          "artifact": "s12-73-targeted-diagnostics.v1.json",
+          "caseIds": [
+            "s12-a-0153",
+            "s12-a-0187"
+          ],
+          "digest": "sha256:90ea3443dde91a8b21f4a9be590017d96b81e0afb34bb3ac90ac4821e3c8d48b",
+          "failureCounts": {},
+          "status": "DIAGNOSTIC_COMPLETED"
+        }
+      },
+      "executionProtocol": {
+        "followupCaseCount": 32,
+        "followupIndependentRunCount": 3,
+        "initialCasesPerVariant": 8,
+        "initialIndependentRunsPerVariant": 3,
+        "noRetryWithinEachRun": true,
+        "retryPolicy": "none"
+      },
+      "experimentId": "s12-f-01",
+      "hypothesis": "A bounded supersession-guard prompt avoids unsupported Requirement proposals while preserving m3.v2 evidence and candidate IDs.",
+      "metricTarget": {
+        "semanticQuality": {
+          "direction": "higher",
+          "minimumDelta": 0.01
+        }
+      },
+      "permittedSplit": "development",
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract"
+      ],
+      "protocolAmendment": "The registered one-run development stopping rule was amended for measurement stability: execute three independent 8-case runs per variant, then a three-run 32-case guarded-prompt follow-up. No retry was used within a run.",
+      "protocolVariance": true,
+      "resultSummary": {
+        "candidateSchemaEvidenceClean": true,
+        "followupFailureCounts": {
+          "invalid_evidence": 0,
+          "schema_invalid": 3
+        },
+        "followupStatus": "STABILITY_GATE_FAIL",
+        "semanticMetricsImproved": true,
+        "status": "COMPLETED_NOT_PROMOTED"
+      },
+      "status": "COMPLETED_STABILITY_FAILED",
+      "stoppingRule": "Stop after one development run or immediately on a hard-invariant regression."
+    },
+    {
+      "baselineConfigurationDigest": "sha256:2f4a4c84984fefd1d6ab502a5e73a70bf37ef92e416336392acc2227fa1a5cb2",
+      "candidateConfigurationDigest": "sha256:da88cf56d5c3dd3e361e466be0482526166f50e0e20761c666dde535c2e685df",
+      "changedArtifacts": [
+        "context"
+      ],
+      "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+      "dimension": "context",
+      "experimentId": "s12-f-02",
+      "hypothesis": "A bounded context change improves the registered development metric without weakening hard invariants.",
+      "metricTarget": {
+        "semanticQuality": {
+          "direction": "higher",
+          "minimumDelta": 0.01
+        }
+      },
+      "permittedSplit": "development",
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract"
+      ],
+      "status": "REGISTERED",
+      "stoppingRule": "Stop after one development run or immediately on a hard-invariant regression."
+    },
+    {
+      "baselineConfigurationDigest": "sha256:2f4a4c84984fefd1d6ab502a5e73a70bf37ef92e416336392acc2227fa1a5cb2",
+      "candidateConfigurationDigest": "sha256:3c3c75919274b42c15ecb4287cfe18e72ca20a86725c426aa094a154273275bd",
+      "changedArtifacts": [
+        "agent-workflow"
+      ],
+      "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+      "dimension": "agent-workflow",
+      "experimentId": "s12-f-03",
+      "hypothesis": "A bounded agent-workflow change improves the registered development metric without weakening hard invariants.",
+      "metricTarget": {
+        "semanticQuality": {
+          "direction": "higher",
+          "minimumDelta": 0.01
+        }
+      },
+      "permittedSplit": "development",
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract"
+      ],
+      "status": "REGISTERED",
+      "stoppingRule": "Stop after one development run or immediately on a hard-invariant regression."
+    },
+    {
+      "baselineConfigurationDigest": "sha256:2f4a4c84984fefd1d6ab502a5e73a70bf37ef92e416336392acc2227fa1a5cb2",
+      "candidateConfigurationDigest": "sha256:ab1eb385faac94fc74514569330ae42c78cff4b044586d83e8695ed8a9dc0173",
+      "changedArtifacts": [
+        "tool"
+      ],
+      "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+      "dimension": "tool",
+      "experimentId": "s12-f-04",
+      "hypothesis": "A bounded tool change improves the registered development metric without weakening hard invariants.",
+      "metricTarget": {
+        "semanticQuality": {
+          "direction": "higher",
+          "minimumDelta": 0.01
+        }
+      },
+      "permittedSplit": "development",
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract"
+      ],
+      "status": "REGISTERED",
+      "stoppingRule": "Stop after one development run or immediately on a hard-invariant regression."
+    },
+    {
+      "baselineConfigurationDigest": "sha256:2f4a4c84984fefd1d6ab502a5e73a70bf37ef92e416336392acc2227fa1a5cb2",
+      "candidateConfigurationDigest": "sha256:ae034290395e7592c676d27b1b675f65d81fd12d4473dfe52f3c93b9c97b0494",
+      "changedArtifacts": [
+        "model"
+      ],
+      "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+      "dimension": "model",
+      "executionEvidence": {
+        "artifact": "s12-77-model-stage-a.v1.json",
+        "costAccountingStatus": "NOT_AVAILABLE_PROVIDER_PRICE_CONFIGURATION",
+        "decision": "STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B",
+        "digest": "sha256:30656e6aee4145e71d40959bf8d91e8b2e83208736e278406915a0acd652b2c4",
+        "hardGatesPass": false,
+        "semanticGatesPass": false,
+        "stageBAuthorized": false,
+        "targetedDiagnostic": {
+          "artifact": "s12-77-targeted-diagnostics.v1.json",
+          "caseIds": [
+            "s12-a-0121",
+            "s12-a-0176"
+          ],
+          "digest": "sha256:d40dd042ccc7c20b0e3829a71c0fe25b58a4153b8eb01ca19cc17e6cc96ddb1e",
+          "failureCounts": {},
+          "status": "DIAGNOSTIC_COMPLETED"
+        }
+      },
+      "experimentId": "s12-f-05",
+      "hypothesis": "A bounded model change improves the registered development metric without weakening hard invariants.",
+      "metricTarget": {
+        "semanticQuality": {
+          "direction": "higher",
+          "minimumDelta": 0.01
+        }
+      },
+      "permittedSplit": "development",
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract"
+      ],
+      "resultSummary": {
+        "candidateFailureCounts": {
+          "cross_project_link": 1,
+          "schema_invalid": 2
+        },
+        "candidateModel": "deepseek-v4-pro",
+        "controlFailureCounts": {
+          "invalid_evidence": 1
+        },
+        "controlModel": "deepseek-v4-flash",
+        "metricDeltas": {
+          "abstentionAccuracy": -0.010119047619047805,
+          "entityMacroF1": -0.02351190476190468,
+          "hallucinationRateReduction": -0.005555555555555564,
+          "relationMacroF1": 0.0029761904761905766
+        }
+      },
+      "status": "COMPLETED_STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B",
+      "stoppingRule": "Stop after one development run or immediately on a hard-invariant regression."
+    },
+    {
+      "baselineConfigurationDigest": "sha256:1b083a91c758bcad821ba0a23b132a0b4e41f52dd418af4cb317dcb14d9a4120",
+      "candidateConfigurationDigest": "sha256:75d6eeee547036124052d5f991d7d7406158f1826119bbf6cf289ed6de426ef0",
+      "changedArtifacts": [
+        "sampling"
+      ],
+      "dimension": "sampling",
+      "executionEvidence": {
+        "artifact": "s12-f-06-sampling-stage-a.v1.json",
+        "authorizationArtifact": "s12-f-06-sampling-authorization.v1.json",
+        "authorizationDigest": "sha256:201a9adf8cbdca3212f6c0b0ba83d209afb5a92d2b67b8015357ab86d973aeba",
+        "candidateHardGates": "PASS",
+        "comparisonIntegrity": "DEGRADED_UNEQUAL_VALID_OUTPUTS",
+        "controlHardGates": "FAIL",
+        "costAccountingStatus": "NOT_AVAILABLE_PROVIDER_PRICE_CONFIGURATION",
+        "decision": "STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B",
+        "digest": "sha256:53a3180cac56c30431a2c228f0377f9a01f3c7c95583b51c8e6745a3c9cad235",
+        "erratum": {
+          "artifact": "s12-f-06-sampling-erratum.v1.json",
+          "commonCaseExecutionCount": 23,
+          "digest": "sha256:1803470e1685589f5c44aacaa7baf2f46c41bd79ee19c3de52faae2c12036f5c",
+          "status": "ERRATUM_ISSUED_WITHOUT_RERUN"
+        },
+        "hardGatesPass": false,
+        "semanticGatesPass": false,
+        "stageBAuthorized": false
+      },
+      "experimentId": "s12-f-06",
+      "hypothesis": "Explicit deterministic sampling reduces stochastic schema and relation normalization failures without changing model, prompt, dataset, or policy.",
+      "metricTarget": {
+        "semanticQuality": {
+          "direction": "higher",
+          "minimumDelta": 0.05
+        }
+      },
+      "permittedSplit": "development",
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract",
+        "model",
+        "prompt"
+      ],
+      "resultSummary": {
+        "candidateFailureCounts": {},
+        "candidateHardGates": "PASS",
+        "candidateMissingOutputCount": 0,
+        "commonCaseExecutionCount": 23,
+        "comparisonIntegrity": "DEGRADED_UNEQUAL_VALID_OUTPUTS",
+        "controlFailureCounts": {
+          "schema_invalid": 1
+        },
+        "controlHardGates": "FAIL",
+        "controlMissingOutputCount": 1,
+        "metricDeltas": {
+          "abstentionAccuracy": -0.07738095238095244,
+          "entityMacroF1": -0.07142857142857151,
+          "hallucinationRateReduction": 0.023809523809523836,
+          "relationMacroF1": -0.023809523809523836
+        }
+      },
+      "status": "COMPLETED_STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B",
+      "stoppingRule": "Stop after Stage A if any hard gate fails; authorize Stage B only when all hard and registered semantic gates pass."
+    },
+    {
+      "baselineConfigurationDigest": "sha256:f0d066cbab02b834acf323be2a96b70bfa41c65c3d47cb62c968afa0deac9d2f",
+      "candidateConfigurationDigest": "sha256:b10030d7ec44b0efb5f84824789b216323810f6406abdca928ab1c0b4af6e483",
+      "changedArtifacts": [
+        "prompt"
+      ],
+      "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+      "denominatorContract": {
+        "candidateHardGates": {
+          "invalid_evidence": 0,
+          "missing_output": 0,
+          "schema_invalid": 0
+        },
+        "controlFailurePolicy": "degrade_comparison_integrity_without_relabeling_as_candidate_hard_gate_failure",
+        "controlHardGates": {
+          "invalid_evidence": 0,
+          "missing_output": 0,
+          "schema_invalid": 0
+        },
+        "primary": {
+          "caseRunsPerArm": 48,
+          "missingOutputTreatment": "metric_value_zero_and_hard_gate_failure_for_that_arm",
+          "name": "fail_closed_all_declared_case_runs"
+        },
+        "primaryRelationDeltaMinimum": 0.05,
+        "sensitivity": {
+          "missingOutputTreatment": "exclude_only_from_sensitivity_denominator",
+          "name": "paired_common_valid_case_runs"
+        },
+        "sensitivityRelationDeltaMinimum": 0.0
+      },
+      "dimension": "prompt",
+      "experimentId": "s12-f-07",
+      "hypothesis": "A relation decision rubric in the prompt reduces missing and wrong predicate/endpoints errors while preserving entity extraction, abstention safety and hallucination rate on the incumbent model.",
+      "metricTarget": {
+        "abstentionAccuracy": {
+          "direction": "higher",
+          "minimumDelta": -0.01
+        },
+        "entityMacroF1": {
+          "direction": "higher",
+          "minimumDelta": -0.01
+        },
+        "relationMacroF1": {
+          "direction": "higher",
+          "minimumDelta": 0.05
+        }
+      },
+      "permittedSplit": "development",
+      "preregistration": {
+        "artifact": "s12-f-07-relation-prompt-preregistration.v2.json",
+        "digest": "sha256:a8669d7a036fc211e57fb8d032d482ccecce86f231a242cf99c8c6dd79c2b051"
+      },
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract",
+        "context",
+        "tool"
+      ],
+      "pricingContract": {
+        "rationale": "Stage A may produce development evidence without a bound price table; candidate selection, Stage B authorization and any promotion remain blocked until the provider price configuration is bound and cost is recomputed.",
+        "requiredBeforeExecution": false,
+        "requiredBeforeSelection": true,
+        "status": "NOT_BOUND_PRESELECTION"
+      },
+      "promptArtifact": {
+        "artifact": "s12-f-07-prompt-v4-relation-decision-rubric.v1.txt",
+        "digest": "sha256:d30170306e5fafa401c6b6e8d78e4fcf5ede3aa6c81f85c269a95fb78a9e290b",
+        "implementation": "apps/api/src/projecta_api/extraction/prompt.py",
+        "implementationDigest": "sha256:52bf864a14237c9e1c8672677f19b4327ae90187e74634ca60c3d7936b6acf2d"
+      },
+      "status": "REGISTERED_PENDING_AUTHORIZATION",
+      "stoppingRule": "Stop after Stage A if the candidate hard gate fails; authorize Stage B only after primary and sensitivity denominator gates, pricing-before-selection and comparison-integrity conditions pass."
+    }
+  ],
+  "heldOutInspected": false,
+  "openedExperimentId": "s12-f-07",
+  "pendingExperiment": {
+    "authorization": {
+      "artifact": "s12-f-07-authorization.v1.json",
+      "status": "PENDING_USER_AUTHORIZATION"
+    },
+    "executionAuthorized": false,
+    "experimentId": "s12-f-07",
+    "preregistration": {
+      "artifact": "s12-f-07-relation-prompt-preregistration.v2.json",
+      "digest": "sha256:a8669d7a036fc211e57fb8d032d482ccecce86f231a242cf99c8c6dd79c2b051"
+    },
+    "stageBAuthorized": false
+  },
+  "permittedSplits": [
+    "development"
+  ],
+  "promptDevelopmentExperimentAuthorized": true,
+  "registryDigest": "sha256:2f85e38744ef0e0366f4ac11e5137477fa77c7df36d0ba27664d66ac3001db1e",
+  "registryVersion": "s12.experiment-registry.v6",
+  "status": "G5_PREPARATION_DEVELOPMENT_OPEN",
+  "validationAuthorized": false
+}

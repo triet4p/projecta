@@ -1,0 +1,188 @@
+{
+  "artifactVersion": "s12.s12-f-07.relation-prompt-preregistration.v2",
+  "candidate": {
+    "configuration": {
+      "model": "deepseek-v4-flash",
+      "promptVersion": "m3.prompt.v4.relation-decision-rubric",
+      "samplingConfiguration": {
+        "seed": "provider-controlled",
+        "temperature": "provider-default",
+        "topP": "provider-default"
+      },
+      "schemaVersion": "m3.v2"
+    },
+    "configurationDigest": "sha256:b10030d7ec44b0efb5f84824789b216323810f6406abdca928ab1c0b4af6e483"
+  },
+  "changedDimension": "prompt",
+  "control": {
+    "configuration": {
+      "model": "deepseek-v4-flash",
+      "promptVersion": "m3.prompt.v3.supersession-guard",
+      "samplingConfiguration": {
+        "seed": "provider-controlled",
+        "temperature": "provider-default",
+        "topP": "provider-default"
+      },
+      "schemaVersion": "m3.v2"
+    },
+    "configurationDigest": "sha256:f0d066cbab02b834acf323be2a96b70bfa41c65c3d47cb62c968afa0deac9d2f"
+  },
+  "costAccounting": {
+    "latencyRequired": true,
+    "pricingRevisionRationale": "Pricing is intentionally deferred from execution to selection so Stage A can collect development evidence while preserving a hard pricing gate before any candidate selection or promotion.",
+    "providerPriceConfigurationRequiredBeforeExecution": false,
+    "providerPriceConfigurationRequiredBeforeSelection": true,
+    "usageRequired": true
+  },
+  "datasetSplit": "development",
+  "denominatorContract": {
+    "candidateHardGates": {
+      "invalid_evidence": 0,
+      "missing_output": 0,
+      "schema_invalid": 0
+    },
+    "controlFailurePolicy": "degrade_comparison_integrity_without_relabeling_as_candidate_hard_gate_failure",
+    "controlHardGates": {
+      "invalid_evidence": 0,
+      "missing_output": 0,
+      "schema_invalid": 0
+    },
+    "primary": {
+      "caseRunsPerArm": 48,
+      "missingOutputTreatment": "metric_value_zero_and_hard_gate_failure_for_that_arm",
+      "name": "fail_closed_all_declared_case_runs"
+    },
+    "primaryRelationDeltaMinimum": 0.05,
+    "sensitivity": {
+      "missingOutputTreatment": "exclude_only_from_sensitivity_denominator",
+      "name": "paired_common_valid_case_runs"
+    },
+    "sensitivityRelationDeltaMinimum": 0.0
+  },
+  "executionAuthorized": false,
+  "executionDeferredByUserInstruction": true,
+  "experimentId": "s12-f-07",
+  "experimentStatus": "PREREGISTERED_NOT_EXECUTED",
+  "fixedArtifacts": {
+    "context": "unchanged",
+    "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+    "datasetVersion": "s12.corpus.atomic.v2",
+    "evaluator": "unchanged",
+    "ontology": "unchanged",
+    "policy": "unchanged",
+    "retryPolicy": "none",
+    "schemaVersion": "m3.v2",
+    "tool": "unchanged"
+  },
+  "hardGates": {
+    "hallucinationRateIncrease": "none",
+    "invalid_evidence": 0,
+    "missing_output": 0,
+    "schema_invalid": 0
+  },
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "hypothesis": "A relation decision rubric in the prompt reduces missing and wrong predicate/endpoints errors while preserving entity extraction, abstention safety and hallucination rate on the incumbent model.",
+  "pricingContract": {
+    "rationale": "Stage A may produce development evidence without a bound price table; candidate selection, Stage B authorization and any promotion remain blocked until the provider price configuration is bound and cost is recomputed.",
+    "requiredBeforeExecution": false,
+    "requiredBeforeSelection": true,
+    "status": "NOT_BOUND_PRESELECTION"
+  },
+  "prohibitedBeforeStageA": [
+    "deepseek-v4-pro",
+    "sampling-sweep",
+    "held-out-inspection",
+    "gold-or-ontology-change"
+  ],
+  "promptArtifact": {
+    "artifact": "s12-f-07-prompt-v4-relation-decision-rubric.v1.txt",
+    "digest": "sha256:d30170306e5fafa401c6b6e8d78e4fcf5ede3aa6c81f85c269a95fb78a9e290b",
+    "implementation": "apps/api/src/projecta_api/extraction/prompt.py",
+    "implementationDigest": "sha256:52bf864a14237c9e1c8672677f19b4327ae90187e74634ca60c3d7936b6acf2d"
+  },
+  "rawSensitiveDataIncluded": false,
+  "revisionOf": "s12-f-07-relation-prompt-preregistration.v1.json",
+  "semanticGates": {
+    "abstentionAccuracyMaximumDecrease": 0.01,
+    "entityMacroF1MaximumDecrease": 0.01,
+    "latencyAndUsage": "accounted",
+    "relationMacroF1MinimumDelta": 0.05
+  },
+  "sourceEvidence": {
+    "backlogDigest": "sha256:e9de3f5f01c97a761f127f0a5a320f80779a2f1826a7796a9c00866e0fb6f1e9",
+    "errorBacklog": "evaluation/sprint-12/optimization/development-error-analysis.v1.json",
+    "errorBacklogDigest": "sha256:e9de3f5f01c97a761f127f0a5a320f80779a2f1826a7796a9c00866e0fb6f1e9",
+    "promptArtifactDigest": "sha256:d30170306e5fafa401c6b6e8d78e4fcf5ede3aa6c81f85c269a95fb78a9e290b",
+    "registrySource": "evaluation/sprint-12/optimization/experiment-registry.v5.json",
+    "registrySourceDigest": "sha256:2977f6b5f5c71ee86ea1bcfa26b987946d3d38a2a0395843ce4e0f207ffaafb8"
+  },
+  "stageA": {
+    "caseCount": 16,
+    "caseIds": [
+      "s12-a-0101",
+      "s12-a-0105",
+      "s12-a-0121",
+      "s12-a-0122",
+      "s12-a-0151",
+      "s12-a-0153",
+      "s12-a-0161",
+      "s12-a-0162",
+      "s12-a-0176",
+      "s12-a-0177",
+      "s12-a-0186",
+      "s12-a-0187",
+      "s12-a-0201",
+      "s12-a-0202",
+      "s12-a-0226",
+      "s12-a-0233"
+    ],
+    "independentPairedRuns": 3,
+    "noRetryWithinEachRun": true,
+    "oneAttemptPerCase": true,
+    "selectionProfile": {
+      "additionalTemporalControlCases": 1,
+      "hardNegativeOrSemanticGapCases": 5,
+      "positiveRelationCases": 7,
+      "safetyAbstentionOrIsolationCases": 3
+    },
+    "selectionRationale": "Prioritize positive relation cases, hard negatives/semantic-gap abstentions, and safety/isolation abstention cases while retaining the incumbent model and provider-default sampling.",
+    "temporalPairing": {
+      "noRetryWithinEachRun": true,
+      "oneAttemptPerCase": true,
+      "schedule": [
+        {
+          "armOrder": [
+            "control",
+            "candidate"
+          ],
+          "pairId": "pair-1",
+          "runNumber": 1
+        },
+        {
+          "armOrder": [
+            "candidate",
+            "control"
+          ],
+          "pairId": "pair-2",
+          "runNumber": 2
+        },
+        {
+          "armOrder": [
+            "control",
+            "candidate"
+          ],
+          "pairId": "pair-3",
+          "runNumber": 3
+        }
+      ],
+      "strategy": "interleaved_paired_runs"
+    }
+  },
+  "stageB": {
+    "authorizedOnlyAfterStageAAllGatesPass": true,
+    "caseCount": 32,
+    "independentPairedRuns": 3
+  },
+  "status": "PREREGISTERED_NOT_EXECUTED"
+}

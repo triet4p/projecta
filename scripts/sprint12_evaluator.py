@@ -321,7 +321,116 @@ def _f1(gold: set[object], predicted: set[object]) -> dict[str, float | int]:
     }
 
 
-def score_extraction(gold: JsonObject, prediction: JsonObject | None) -> JsonObject:
+def _relation_span_key(item: JsonObject) -> tuple[object, object]:
+    span = _object(item.get("span", item.get("evidence", item)), "relation.span")
+    return span.get("start", span.get("startOffset")), span.get(
+        "end", span.get("endOffset")
+    )
+
+
+def _relation_key(item: JsonObject) -> tuple[object, object, object, object, object]:
+    start, end = _relation_span_key(item)
+    return (
+        start,
+        end,
+        item.get("predicate"),
+        item.get("sourceEntityId"),
+        item.get("targetEntityId"),
+    )
+
+
+def _relation_instrumentation(
+    gold_items: Sequence[JsonObject],
+    predicted_items: Sequence[JsonObject],
+    allowlisted_predicates: Sequence[str] | None = None,
+) -> JsonObject:
+    """Persist relation error buckets without endpoint identifiers or raw text."""
+
+    predicates = sorted(
+        set(allowlisted_predicates or ())
+        | {str(item.get("predicate")) for item in gold_items}
+        | {str(item.get("predicate")) for item in predicted_items}
+    )
+    gold_keys = {_relation_key(item) for item in gold_items}
+    predicted_keys = {_relation_key(item) for item in predicted_items}
+    gold_by_predicate = Counter(str(item.get("predicate")) for item in gold_items)
+    predicted_by_predicate = Counter(
+        str(item.get("predicate")) for item in predicted_items
+    )
+    exact_by_predicate = Counter(
+        str(item.get("predicate"))
+        for item in gold_items
+        if _relation_key(item) in predicted_keys
+    )
+    missing_by_predicate: Counter[str] = Counter()
+    wrong_endpoint_by_predicate: Counter[str] = Counter()
+    unmatched_predicate_by_predicate: Counter[str] = Counter()
+    for gold in gold_items:
+        if _relation_key(gold) in predicted_keys:
+            continue
+        same_span = [
+            item
+            for item in predicted_items
+            if _relation_span_key(item) == _relation_span_key(gold)
+        ]
+        predicate = str(gold.get("predicate"))
+        if not same_span:
+            missing_by_predicate[predicate] += 1
+        elif any(item.get("predicate") == gold.get("predicate") for item in same_span):
+            wrong_endpoint_by_predicate[predicate] += 1
+    for predicted in predicted_items:
+        if _relation_key(predicted) in gold_keys:
+            continue
+        same_span_gold = [
+            item
+            for item in gold_items
+            if _relation_span_key(item) == _relation_span_key(predicted)
+        ]
+        if not same_span_gold or not any(
+            item.get("predicate") == predicted.get("predicate") for item in same_span_gold
+        ):
+            unmatched_predicate_by_predicate[str(predicted.get("predicate"))] += 1
+
+    counts = {
+        predicate: {
+            "gold": gold_by_predicate[predicate],
+            "predicted": predicted_by_predicate[predicate],
+            "exactMatch": exact_by_predicate[predicate],
+            "missingRelation": missing_by_predicate[predicate],
+            "unmatchedPredicate": unmatched_predicate_by_predicate[predicate],
+            "correctPredicateWrongEndpoint": wrong_endpoint_by_predicate[predicate],
+        }
+        for predicate in predicates
+    }
+    allowlist = set(allowlisted_predicates or ())
+    return {
+        "version": "s12.relation-instrumentation.v1",
+        "status": "scored",
+        "allowlistedPredicates": sorted(allowlist),
+        "countsByPredicate": counts,
+        "totals": {
+            "gold": len(gold_items),
+            "predicted": len(predicted_items),
+            "exactMatch": len(gold_keys & predicted_keys),
+            "missingRelation": sum(missing_by_predicate.values()),
+            "unmatchedPredicate": sum(unmatched_predicate_by_predicate.values()),
+            "correctPredicateWrongEndpoint": sum(wrong_endpoint_by_predicate.values()),
+            "unallowlistedPredictedPredicate": sum(
+                1
+                for item in predicted_items
+                if item.get("predicate") not in allowlist
+            )
+            if allowlist
+            else 0,
+        },
+    }
+
+
+def score_extraction(
+    gold: JsonObject,
+    prediction: JsonObject | None,
+    relation_predicates: Sequence[str] | None = None,
+) -> JsonObject:
     """Score atomic extraction and abstention without silently accepting missing output."""
 
     if prediction is None:
@@ -330,6 +439,10 @@ def score_extraction(gold: JsonObject, prediction: JsonObject | None) -> JsonObj
             "abstentionAccuracy": 0.0,
             "hallucinationRate": 0.0,
             "calibration": {"status": "not-available"},
+            "relationInstrumentation": {
+                "version": "s12.relation-instrumentation.v1",
+                "status": "not-available",
+            },
         }
     result: JsonObject = {}
     for name in ("entities", "relations", "links"):
@@ -371,6 +484,11 @@ def score_extraction(gold: JsonObject, prediction: JsonObject | None) -> JsonObj
         result["calibration"] = {"status": "not-available"}
     result["status"] = "scored"
     result["goldItemCount"] = gold_count
+    result["relationInstrumentation"] = _relation_instrumentation(
+        _items(gold.get("relations")),
+        _items(prediction.get("relations")),
+        relation_predicates,
+    )
     return result
 
 
@@ -700,7 +818,10 @@ def _runtime_baseline(
     root = Path(__file__).resolve().parents[1]
     sys.path.insert(0, str(root / "apps" / "api" / "src"))
     from projecta_api.extraction.normalize import normalize_extraction
-    from projecta_api.extraction.prompt import build_extraction_prompt
+    from projecta_api.extraction.prompt import (
+        build_extraction_prompt,
+        prompt_variant_instructions,
+    )
     from projecta_api.extraction.service import _response_schema
     from projecta_api.llm.gateway import GatewayRequest
     from projecta_api.llm.openai_responses import OpenAIResponsesGateway
@@ -767,17 +888,12 @@ def _runtime_baseline(
                         "For every evidence object, return exact text and its one-based "
                         "occurrence in the whole note; do not return offsets."
                     )
-                if prompt_variant == "m3.prompt.v3.supersession-guard":
-                    user += (
-                        "\nSupersession guard: do not emit the released predicate "
-                        "supersedes because it is not in the allowed predicate list. "
-                        "Do not convert a clause whose meaning is only supersession "
-                        "into a Requirement. If there is no standalone supported "
-                        "entity, abstain. Preserve exact evidence quote and occurrence "
-                        "and assign unique candidateId values to emitted entities."
-                    )
-                elif prompt_variant != "m3.prompt.v2":
-                    raise EvaluationError(f"unsupported prompt variant: {prompt_variant}")
+                try:
+                    variant_instructions = prompt_variant_instructions(prompt_variant)
+                except ValueError as error:
+                    raise EvaluationError(str(error)) from error
+                if variant_instructions:
+                    user += "\n" + variant_instructions
                 response = await asyncio.wait_for(
                     gateway.extract(
                         GatewayRequest(
@@ -815,7 +931,9 @@ def _runtime_baseline(
                     JsonObject, normalized.model_dump(mode="json", by_alias=True)
                 )
                 gold = _object(case.get("gold"), f"{case_id}.gold")
-                case_results[case_id] = score_extraction(gold, prediction)
+                case_results[case_id] = score_extraction(
+                    gold, prediction, relation_predicates
+                )
                 usage = (
                     _object(prediction.get("usage"), "usage")
                     if isinstance(prediction.get("usage"), dict)
@@ -943,6 +1061,18 @@ def _runtime_baseline(
             "seed": "provider-controlled",
         },
     }
+    if prompt_variant == "m3.prompt.v4.relation-decision-rubric":
+        prompt_artifact = root / (
+            "evaluation/sprint-12/optimization/"
+            "s12-f-07-prompt-v4-relation-decision-rubric.v1.txt"
+        )
+        if not prompt_artifact.exists():
+            raise EvaluationError(f"missing prompt artifact: {prompt_artifact}")
+        config["promptArtifact"] = prompt_artifact.relative_to(root).as_posix()
+        config["promptArtifactDigest"] = "sha256:" + hashlib.sha256(
+            prompt_artifact.read_bytes()
+        ).hexdigest()
+        config["relationInstrumentationVersion"] = "s12.relation-instrumentation.v1"
     if collect_diagnostics:
         return case_results, operational, failures, config, diagnostics  # type: ignore[return-value]
     return case_results, operational, failures, config

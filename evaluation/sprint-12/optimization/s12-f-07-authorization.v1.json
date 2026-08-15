@@ -1,0 +1,34 @@
+{
+  "approvalSource": "pending-owner-approval",
+  "artifactVersion": "s12.s12-f-07.authorization.v1",
+  "credentialIncluded": false,
+  "experimentId": "s12-f-07",
+  "humanEvidence": false,
+  "preregistration": {
+    "artifact": "s12-f-07-relation-prompt-preregistration.v2.json",
+    "digest": "sha256:acf8baa0fbed58b2cf553bc9c045c27140c1fc68ca79b8c61d9336aa581933fe"
+  },
+  "pricingContract": {
+    "rationale": "Stage A may produce development evidence without a bound price table; candidate selection, Stage B authorization and any promotion remain blocked until the provider price configuration is bound and cost is recomputed.",
+    "requiredBeforeExecution": false,
+    "requiredBeforeSelection": true,
+    "status": "NOT_BOUND_PRESELECTION"
+  },
+  "rawSensitiveDataIncluded": false,
+  "registry": {
+    "artifact": "experiment-registry.v6.json",
+    "digest": "sha256:c31f0234b834207018447f13ab1ddf665baa06ea026759dbf65fc8e020b7ebea"
+  },
+  "scope": {
+    "caseCount": 16,
+    "developmentOnly": true,
+    "heldOutInspected": false,
+    "independentPairedRuns": 3,
+    "noRetryWithinEachRun": true,
+    "oneAttemptPerCase": true,
+    "stage": "A",
+    "stageBAuthorized": false,
+    "validationAuthorized": false
+  },
+  "status": "PENDING_USER_AUTHORIZATION"
+}
