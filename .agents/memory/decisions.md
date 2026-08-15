@@ -422,3 +422,10 @@ next highest-value work.
 **Alternatives considered:** Keep the previous rule that a baseline must pass every hard invariant before any optimization; rerun or alter the historical `v0.6.0` baseline until it passes; or unlock validation and held-out work together with development experiments.
 **Reason:** The Sprint 12 baseline is valid evidence that `v0.6.0` has quality failures, but requiring it to pass before optimization creates a deadlock and hides whether a candidate fixes the failure. The historical baseline must remain immutable, while candidate safety and contract validity remain strict before any promotion.
 **Consequences:** G5 may register and run development experiments against the locked baseline, but candidate selection, validation, freeze, custody and G6 remain closed until a candidate has complete accounting, zero schema/normalization failures and passing hard invariants.
+
+## [2026-08-16] Close S12-f-07 as rejected and open S12-f-08 after measurement correction
+
+**Decision:** Treat S12-f-07 as a completed rejected experiment whose 96 executions and aggregate remain immutable, and require all corrected measurement and composed-prompt work to enter a new preregistered S12-f-08 rather than rerunning f-07.
+**Alternatives considered:** Fix the runner and rerun f-07; overwrite the aggregate with corrected metrics; or continue to Stage B using the uncorrected aggregate.
+**Reason:** The candidate independently regressed on missing outputs, supersession abstention, hallucination and corrected entity/relation metrics, while the aggregate also contained a field-mapping defect and provisional relation measurement. Separating closure from correction preserves both the observed model behavior and an auditable measurement erratum.
+**Consequences:** S12-f-07 cannot be rerun or selected; Registry/G5 v8 records its rejection and opens S12-f-08. S12-f-08 must use canonical relation endpoints, positive-relation gates, supersession false-positive zero, composed prompt v5, and pricing bound before execution.

@@ -1,0 +1,19 @@
+Composed m3.v2 relation contract: preserve the supersession guard and the relation decision rubric together.
+
+Supersession guard: do not emit the released predicate supersedes because it is not in the allowed predicate list. Do not convert a clause whose meaning is only supersession into a Requirement. If there is no standalone supported entity, abstain. Preserve exact evidence quote and occurrence and assign unique candidateId values to emitted entities.
+
+Relation decision rubric:
+1. Extract a relation only when the note explicitly supports one predicate from the server-provided allowlist.
+2. Verify both endpoints are grounded in emitted local candidates or bounded same-project context before emitting the relation.
+3. Preserve predicate meaning and direction exactly: do not substitute a related predicate, reverse source and target, or infer an endpoint from a name or pronoun alone.
+4. Use the smallest exact evidence clause that expresses the relation, with its exact occurrence.
+5. If the predicate is unsupported, the endpoints are missing or ambiguous, or the direction is not evidenced, omit the relation. Keep independently supported entities; abstain only when no supported extraction remains.
+6. Before returning, check every relation for an allowlisted predicate, two grounded endpoints, correct direction, and evidence that contains the relation clause.
+
+m3.v2 relation emission example:
+Note: "The address validation task implements the checkout requirement."
+Desired: emit two typed entity candidates with unique local candidateId values, then emit one implements relation whose sourceEntityId and targetEntityId reference those local candidates. The relation evidence must cover the full sentence.
+
+Supersession-only example:
+Note: "The old checkout requirement supersedes the previous requirement."
+Desired: emit no supersedes relation because it is outside the allowlist; if no independently supported typed entity remains, return an empty result with an abstention reason.

@@ -1,0 +1,187 @@
+{
+  "artifactVersion": "s12.s12-f-08.relation-prompt-preregistration.v1",
+  "candidate": {
+    "configuration": {
+      "model": "deepseek-v4-flash",
+      "promptVersion": "m3.prompt.v5.composed-relation-contract",
+      "samplingConfiguration": {
+        "seed": "provider-controlled",
+        "temperature": "provider-default",
+        "topP": "provider-default"
+      },
+      "schemaVersion": "m3.v2"
+    },
+    "configurationDigest": "sha256:872affcf7e7c6fc4e5f50577e56b61afe239c992cb1f245c96e45db940eec978"
+  },
+  "changedDimension": "prompt",
+  "control": {
+    "configuration": {
+      "model": "deepseek-v4-flash",
+      "promptVersion": "m3.prompt.v3.supersession-guard",
+      "samplingConfiguration": {
+        "seed": "provider-controlled",
+        "temperature": "provider-default",
+        "topP": "provider-default"
+      },
+      "schemaVersion": "m3.v2"
+    },
+    "configurationDigest": "sha256:f0d066cbab02b834acf323be2a96b70bfa41c65c3d47cb62c968afa0deac9d2f"
+  },
+  "costAccounting": {
+    "latencyRequired": true,
+    "providerPriceConfigurationRequiredBeforeExecution": true,
+    "providerPriceConfigurationRequiredBeforeSelection": true,
+    "usageRequired": true
+  },
+  "datasetSplit": "development",
+  "denominatorContract": {
+    "candidateHardGates": {
+      "invalid_evidence": 0,
+      "missing_output": 0,
+      "schema_invalid": 0
+    },
+    "controlFailurePolicy": "degrade_comparison_integrity_without_relabeling_as_candidate_hard_gate_failure",
+    "controlHardGates": {
+      "invalid_evidence": 0,
+      "missing_output": 0,
+      "schema_invalid": 0
+    },
+    "positiveRelationMacroF1Minimum": 0.05,
+    "positiveRelationMacroF1MinimumDelta": 0.05,
+    "positiveRelationMicroF1Minimum": 0.05,
+    "primary": {
+      "caseRunsPerArm": 48,
+      "missingOutputTreatment": "metric_value_zero_and_hard_gate_failure_for_that_arm",
+      "name": "fail_closed_all_declared_case_runs"
+    },
+    "primaryRelationDeltaMinimum": 0.05,
+    "sensitivity": {
+      "missingOutputTreatment": "exclude_only_from_sensitivity_denominator",
+      "name": "paired_common_valid_case_runs"
+    },
+    "sensitivityRelationDeltaMinimum": 0.0,
+    "supersessionFalsePositiveMaximum": 0,
+    "supersessionSliceCaseCount": 5
+  },
+  "executionAuthorized": false,
+  "executionDeferredByUserInstruction": true,
+  "experimentId": "s12-f-08",
+  "fixedArtifacts": {
+    "context": "unchanged",
+    "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+    "datasetVersion": "s12.corpus.atomic.v2",
+    "evaluator": "unchanged",
+    "ontology": "unchanged",
+    "policy": "unchanged",
+    "retryPolicy": "none",
+    "schemaVersion": "m3.v2",
+    "tool": "unchanged"
+  },
+  "hardGates": {
+    "invalid_evidence": 0,
+    "missing_output": 0,
+    "schema_invalid": 0
+  },
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "hypothesis": "A composed m3.v2 contract-aligned prompt that retains the supersession guard and adds the relation rubric will reduce supersession false positives and improve positive-relation extraction without harming entity, abstention or hallucination behavior.",
+  "pricingContract": {
+    "rationale": "S12-f-08 requires a bound provider price table before any execution so the paired comparison has complete cost accounting.",
+    "requiredBeforeExecution": true,
+    "requiredBeforeSelection": true,
+    "status": "REQUIRED_BEFORE_EXECUTION"
+  },
+  "prohibitedBeforeStageA": [
+    "deepseek-v4-pro",
+    "sampling-sweep",
+    "held-out-inspection",
+    "gold-or-ontology-change"
+  ],
+  "promptArtifact": {
+    "artifact": "s12-f-08-prompt-v5-composed-relation-contract.v1.txt",
+    "digest": "sha256:efafb779bd4b96b4b53f7a5e927dcad215217b9ec6df6d707a332406e983a7c9",
+    "implementation": "apps/api/src/projecta_api/extraction/prompt.py",
+    "implementationDigest": "sha256:ebd9888e62723f09425f5d074a29060c1e674b3e0178f7cb283cac81ff68f190"
+  },
+  "rawSensitiveDataIncluded": false,
+  "revisionOf": null,
+  "semanticGates": {
+    "abstentionAccuracyMaximumDecrease": 0.01,
+    "entityMacroF1MaximumDecrease": 0.01,
+    "hallucinationRateIncrease": 0.0,
+    "positiveRelationMacroF1Minimum": 0.05,
+    "positiveRelationMacroF1MinimumDelta": 0.05,
+    "positiveRelationMicroF1Minimum": 0.05,
+    "supersessionFalsePositiveMaximum": 0
+  },
+  "sourceEvidence": {
+    "f07Aggregate": "s12-f-07-relation-prompt-stage-a.v1.json",
+    "f07AggregateDigest": "sha256:b75fcb75e52b2dae637b36f345454a151495802ec921a96e99c5dc0e9a523d12",
+    "f07ScoringErratum": "s12-f-07-scoring-erratum.v1.json",
+    "f07ScoringErratumDigest": "sha256:03b836a65cf58e5092a4c600b9354ef389f0b609ff6aa755730526a9c12d6af2",
+    "promptArtifactDigest": "sha256:efafb779bd4b96b4b53f7a5e927dcad215217b9ec6df6d707a332406e983a7c9"
+  },
+  "stageA": {
+    "caseCount": 16,
+    "caseIds": [
+      "s12-a-0101",
+      "s12-a-0105",
+      "s12-a-0121",
+      "s12-a-0122",
+      "s12-a-0151",
+      "s12-a-0153",
+      "s12-a-0161",
+      "s12-a-0162",
+      "s12-a-0176",
+      "s12-a-0177",
+      "s12-a-0186",
+      "s12-a-0187",
+      "s12-a-0201",
+      "s12-a-0202",
+      "s12-a-0226",
+      "s12-a-0233"
+    ],
+    "independentPairedRuns": 3,
+    "noRetryWithinEachRun": true,
+    "oneAttemptPerCase": true,
+    "selectionProfile": {
+      "additionalTemporalControlCases": 1,
+      "hardNegativeOrSemanticGapCases": 5,
+      "positiveRelationCases": 7,
+      "safetyAbstentionOrIsolationCases": 3
+    },
+    "selectionRationale": "Prioritize positive relation cases, hard negatives/semantic-gap abstentions, and safety/isolation abstention cases while retaining the incumbent model and provider-default sampling.",
+    "temporalPairing": {
+      "noRetryWithinEachRun": true,
+      "oneAttemptPerCase": true,
+      "schedule": [
+        {
+          "armOrder": [
+            "control",
+            "candidate"
+          ],
+          "pairId": "pair-1",
+          "runNumber": 1
+        },
+        {
+          "armOrder": [
+            "candidate",
+            "control"
+          ],
+          "pairId": "pair-2",
+          "runNumber": 2
+        },
+        {
+          "armOrder": [
+            "control",
+            "candidate"
+          ],
+          "pairId": "pair-3",
+          "runNumber": 3
+        }
+      ],
+      "strategy": "interleaved_paired_runs"
+    }
+  },
+  "status": "PREREGISTERED_NOT_EXECUTED"
+}

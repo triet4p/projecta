@@ -412,8 +412,15 @@ unchanged and blocking.
   mocked runner custody were committed at `2b8ca5a`; no provider call was made.
 - [x] **S12-f-07 Stage A authorization:** Authorization v1 remains immutable
   pending history; authorization v2 binds registry/G5 v7 and the frozen commit.
-  Stage A is authorized but not executed; pricing remains required before
-  selection and Stage B.
+  Stage A was executed once and is now closed as `COMPLETED_REJECTED`; pricing
+  remained required before selection and Stage B.
+- [x] **S12-f-07 closure and scoring erratum:** Preserve the aggregate and six
+  report digests unchanged, record corrected entity metrics and provisional
+  relation measurement, and prohibit Stage B and candidate selection.
+- [x] **S12-f-08 preparation:** Open a new prompt-only experiment with composed
+  v5, canonical relation endpoints, positive-relation floors/deltas, zero
+  supersession false positives, and pricing required before execution. It is
+  preregistered but not authorized or executed.
 - [ ] **S12-78 — Select one candidate configuration:** Apply the registered
   multi-metric rule without inspecting held-out data.
 - [ ] **S12-79 — Evaluate the candidate on validation:** Run once after selection

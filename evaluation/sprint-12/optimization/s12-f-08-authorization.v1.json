@@ -1,0 +1,33 @@
+{
+  "approvalSource": "pending-owner-approval",
+  "artifactVersion": "s12.s12-f-08.authorization.v1",
+  "credentialIncluded": false,
+  "experimentId": "s12-f-08",
+  "humanEvidence": false,
+  "preregistration": {
+    "artifact": "s12-f-08-relation-prompt-preregistration.v1.json",
+    "digest": "sha256:93a1da2c8673ed4d32aecad84684a9c0e81b33919bed04f9cb8f8fa8048259ce"
+  },
+  "pricingContract": {
+    "rationale": "S12-f-08 requires a bound provider price table before any execution so the paired comparison has complete cost accounting.",
+    "requiredBeforeExecution": true,
+    "requiredBeforeSelection": true,
+    "status": "REQUIRED_BEFORE_EXECUTION"
+  },
+  "rawSensitiveDataIncluded": false,
+  "registry": {
+    "artifact": "experiment-registry.v8.json",
+    "digest": "sha256:6c2855df65380fa290d8b2e0c87c4976500965a60dece3eca25c50a0e528e61b"
+  },
+  "scope": {
+    "caseCount": 16,
+    "developmentOnly": true,
+    "heldOutInspected": false,
+    "independentPairedRuns": 3,
+    "noRetryWithinEachRun": true,
+    "stage": "A",
+    "stageBAuthorized": false,
+    "validationAuthorized": false
+  },
+  "status": "PENDING_USER_AUTHORIZATION"
+}

@@ -727,3 +727,10 @@ common-case paired metrics, and bind that erratum into registry/G5 evidence.
 **Watch out for:** Paired experiments must report per-variant hard gates and
 comparison integrity separately; never interpret an experiment-level failure
 as candidate failure without checking both sides.
+
+## [2026-08-16] Aggregate metric names must match persisted per-case schema
+
+**Symptom:** S12-f-07 aggregate entity and relation macro F1 values were both zero even though the immutable per-case reports contained non-zero `entities.f1` and `relations.f1` values.
+**Root cause:** The runner requested aggregate names `entityMacroF1` and `relationMacroF1` directly from per-case records, but the scorer persists the metric objects under `entities` and `relations`.
+**Fix / workaround:** Add an explicit metric-name mapping, emit positive-relation macro/micro metrics, issue a non-destructive scoring erratum for f-07, and add tests that assert the persisted field contract. Relation endpoint scoring now canonicalizes through entity span/type rather than raw local IDs.
+**Watch out for:** Any new aggregate metric must be tested against a real per-case report shape; local candidate IDs are not stable semantic identity and raw predictions must be retained if retrospective relation rescoring is required.

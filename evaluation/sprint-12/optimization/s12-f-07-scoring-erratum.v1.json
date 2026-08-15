@@ -1,0 +1,104 @@
+{
+  "artifactVersion": "s12.s12-f-07.scoring-erratum.v1",
+  "correctedMetrics": {
+    "candidate": {
+      "abstentionAccuracy": 0.6041666666666666,
+      "entityMacroF1": 0.5416666666666666,
+      "hallucinationRate": 0.3194444444444444,
+      "positiveRelationCaseRuns": 21,
+      "positiveRelationMacroF1": 0.0,
+      "positiveRelationMicroF1": 0.0,
+      "relationMacroF1": 0.4166666666666667,
+      "supersessionSlice": {
+        "abstentionAccuracy": 0.13333333333333333,
+        "caseCount": 5,
+        "caseRuns": 15,
+        "hallucinationRate": 0.4666666666666667,
+        "missingOutputCount": 6
+      }
+    },
+    "control": {
+      "abstentionAccuracy": 0.7916666666666666,
+      "entityMacroF1": 0.75,
+      "hallucinationRate": 0.13888888888888887,
+      "positiveRelationCaseRuns": 21,
+      "positiveRelationMacroF1": 0.0,
+      "positiveRelationMicroF1": 0.0,
+      "relationMacroF1": 0.5208333333333334,
+      "supersessionSlice": {
+        "abstentionAccuracy": 0.8666666666666667,
+        "caseCount": 5,
+        "caseRuns": 15,
+        "hallucinationRate": 0.0,
+        "missingOutputCount": 2
+      }
+    },
+    "delta": {
+      "abstentionAccuracy": -0.1875,
+      "entityMacroF1": -0.20833333333333337,
+      "hallucinationRateIncrease": 0.18055555555555555,
+      "positiveRelationMacroF1": 0.0,
+      "relationMacroF1": -0.10416666666666669
+    }
+  },
+  "experimentId": "s12-f-07",
+  "hardGates": {
+    "candidate": false,
+    "control": false,
+    "decisionPreserved": true
+  },
+  "heldOutInspected": false,
+  "immutableEvidence": true,
+  "measurementCorrection": {
+    "aggregateRewritten": false,
+    "bug": "The Stage A runner looked for entityMacroF1 and relationMacroF1 in per-case records; the persisted keys are entities and relations.",
+    "correctedEntityMetric": "entities.f1",
+    "correctedRelationMetric": "relations.f1",
+    "source": "scripts/run_sprint12_f07_prompt_experiment.py:_case_metric"
+  },
+  "noCandidateSelection": true,
+  "noStageB": true,
+  "pricingStatus": "NOT_BOUND_PRESELECTION",
+  "providerCallsForErratum": 0,
+  "rawSensitiveDataIncluded": false,
+  "relationMetricLimitation": "The immutable reports retain sanitized scored metrics but not raw predictions; relation endpoint canonicalization cannot be fully rescored retrospectively. The current relation values are retained as provisional and do not authorize a rerun.",
+  "relationMetricStatus": "PROVISIONAL_MEASUREMENT_LIMITATION",
+  "sourceAggregate": {
+    "artifact": "s12-f-07-relation-prompt-stage-a.v1.json",
+    "digest": "sha256:b75fcb75e52b2dae637b36f345454a151495802ec921a96e99c5dc0e9a523d12"
+  },
+  "sourceReports": [
+    {
+      "arm": "control",
+      "artifact": "evaluation/sprint-12/optimization/s12-f-07-relation-prompt-stage-a/pair-1-01-control.report.v1.json",
+      "digest": "sha256:6f0b308c7538d9ba81533c5027923f0cd84044959e9fede00b26403f0b286227"
+    },
+    {
+      "arm": "control",
+      "artifact": "evaluation/sprint-12/optimization/s12-f-07-relation-prompt-stage-a/pair-2-02-control.report.v1.json",
+      "digest": "sha256:5b79166883817934bc31cd32b0e696973d20f0e3f426780393cb3060d93c57f2"
+    },
+    {
+      "arm": "control",
+      "artifact": "evaluation/sprint-12/optimization/s12-f-07-relation-prompt-stage-a/pair-3-01-control.report.v1.json",
+      "digest": "sha256:61e90226e0f48757bf78ef9697857969895d4380ca6f15fd5f98558b9e3d8b1a"
+    },
+    {
+      "arm": "candidate",
+      "artifact": "evaluation/sprint-12/optimization/s12-f-07-relation-prompt-stage-a/pair-1-02-candidate.report.v1.json",
+      "digest": "sha256:b0479d48678da2d5b7a1400e9a1ba5da5b84ea30f4b4235f91276bc36c213c3d"
+    },
+    {
+      "arm": "candidate",
+      "artifact": "evaluation/sprint-12/optimization/s12-f-07-relation-prompt-stage-a/pair-2-01-candidate.report.v1.json",
+      "digest": "sha256:c57c1898d5cc77e8bc4f43a230f4079f8dc4795d2c1ec7fdcd4c9926ee1cc9c7"
+    },
+    {
+      "arm": "candidate",
+      "artifact": "evaluation/sprint-12/optimization/s12-f-07-relation-prompt-stage-a/pair-3-02-candidate.report.v1.json",
+      "digest": "sha256:65806af2de5e3b18eea9078f804fddb0efb2cd6b8ad4c4754e17b26a6fc6a5c6"
+    }
+  ],
+  "status": "SCORING_ERRATUM_ISSUED_MEASUREMENT_LIMITATION_RETAINED",
+  "supersessionEvidencePreserved": true
+}

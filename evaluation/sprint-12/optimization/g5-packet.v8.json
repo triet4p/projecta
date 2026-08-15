@@ -1,0 +1,80 @@
+{
+  "approvalStatus": "APPROVED_WITH_LIMITATIONS",
+  "candidateAvailable": false,
+  "candidateFreezeAuthorized": false,
+  "closedExperiment": {
+    "aggregateArtifact": "s12-f-07-relation-prompt-stage-a.v1.json",
+    "aggregateDigest": "sha256:b75fcb75e52b2dae637b36f345454a151495802ec921a96e99c5dc0e9a523d12",
+    "experimentId": "s12-f-07",
+    "noCandidateSelection": true,
+    "noStageB": true,
+    "scoringErratumArtifact": "s12-f-07-scoring-erratum.v1.json",
+    "scoringErratumDigest": "sha256:03b836a65cf58e5092a4c600b9354ef389f0b609ff6aa755730526a9c12d6af2",
+    "status": "COMPLETED_REJECTED"
+  },
+  "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "denominatorContract": {
+    "candidateHardGates": {
+      "invalid_evidence": 0,
+      "missing_output": 0,
+      "schema_invalid": 0
+    },
+    "controlFailurePolicy": "degrade_comparison_integrity_without_relabeling_as_candidate_hard_gate_failure",
+    "controlHardGates": {
+      "invalid_evidence": 0,
+      "missing_output": 0,
+      "schema_invalid": 0
+    },
+    "positiveRelationMacroF1Minimum": 0.05,
+    "positiveRelationMacroF1MinimumDelta": 0.05,
+    "positiveRelationMicroF1Minimum": 0.05,
+    "primary": {
+      "caseRunsPerArm": 48,
+      "missingOutputTreatment": "metric_value_zero_and_hard_gate_failure_for_that_arm",
+      "name": "fail_closed_all_declared_case_runs"
+    },
+    "primaryRelationDeltaMinimum": 0.05,
+    "sensitivity": {
+      "missingOutputTreatment": "exclude_only_from_sensitivity_denominator",
+      "name": "paired_common_valid_case_runs"
+    },
+    "sensitivityRelationDeltaMinimum": 0.0,
+    "supersessionFalsePositiveMaximum": 0,
+    "supersessionSliceCaseCount": 5
+  },
+  "executionBlockedReasons": [
+    "S12-f-08 authorization is pending",
+    "provider pricing must be bound before execution",
+    "S12-f-07 was rejected with no Stage B or selection"
+  ],
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "optimizationAuthorized": false,
+  "packetVersion": "s12.g5.packet.v8",
+  "pendingExperiment": {
+    "authorizationArtifact": "s12-f-08-authorization.v1.json",
+    "authorizationDigest": "sha256:b5bbc3d271979607be9050fb0771c96bd863b7f373c356a93cf665f508c98fda",
+    "executionAuthorized": false,
+    "experimentId": "s12-f-08",
+    "preregistrationArtifact": "s12-f-08-relation-prompt-preregistration.v1.json",
+    "preregistrationDigest": "sha256:93a1da2c8673ed4d32aecad84684a9c0e81b33919bed04f9cb8f8fa8048259ce",
+    "stageBAuthorized": false
+  },
+  "pricingContract": {
+    "rationale": "S12-f-08 requires a bound provider price table before any execution so the paired comparison has complete cost accounting.",
+    "requiredBeforeExecution": true,
+    "requiredBeforeSelection": true,
+    "status": "REQUIRED_BEFORE_EXECUTION"
+  },
+  "rawSensitiveDataIncluded": false,
+  "registryDigest": "sha256:6c2855df65380fa290d8b2e0c87c4976500965a60dece3eca25c50a0e528e61b",
+  "registryVersion": "s12.experiment-registry.v8",
+  "selection": {
+    "heldOutInspected": false,
+    "reason": "S12-f-07 was rejected; S12-f-08 is pending authorization and pricing.",
+    "status": "NO_SELECTION"
+  },
+  "status": "G5_PREPARATION_DEVELOPMENT_OPEN_S12_F08_PENDING_AUTHORIZATION",
+  "validationAuthorized": false
+}
