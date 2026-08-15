@@ -4,6 +4,12 @@
 
 **Status:** `G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE`
 
+The repository-visible pilot and development/validation gold now have
+owner-delegated AI semantic review. They remain agent-authored synthetic data
+with `humanEvidence: false`; the runtime-backed baseline currently fails schema
+validity, while test custody, frozen candidate and held-out business evidence
+remain blocking.
+
 This directory contains the governed contract for the Sprint 12 business
 semantic benchmark. It does not contain the held-out test cases or gold. Test
 inputs and annotations remain under human custody until the approved G6

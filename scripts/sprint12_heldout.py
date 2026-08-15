@@ -68,6 +68,10 @@ def verify_test_custody(
         failures.append("custody status is not established")
     if manifest.get("payloadPresent") is not True:
         failures.append("test payload is absent from authorized custody boundary")
+    if manifest.get("reconstructibleFromRepository") is not False:
+        failures.append("test payload is reconstructible from repository-visible material")
+    if manifest.get("eligibleForHeldOut") is not True:
+        failures.append("test bundle is not eligible for held-out evaluation")
     if (
         counts.get("atomicCases") != expected_atomic
         or counts.get("scenarios") != expected_scenarios

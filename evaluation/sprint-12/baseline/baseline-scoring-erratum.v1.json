@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "s12.baseline-scoring-erratum.v1",
+  "status": "SCORING_ERRATUM_APPLIED_WITHOUT_BASELINE_REWRITE",
+  "baselineReport": "baseline-report.v1.json",
+  "baselineLock": "baseline-lock.v1.json",
+  "baselineReportDigest": "sha256:d3d94e4b7b822a55fc271b9d56191a7d2ec5ec09ab7cebd095ad144423b45c54",
+  "executionEvidence": {
+    "preserved": true,
+    "caseCount": 160,
+    "successfulOutputs": 105,
+    "failureCount": 55,
+    "failureCounts": {
+      "schema_invalid": 7,
+      "invalid_evidence": 48
+    },
+    "runtimeBacked": true,
+    "retryPolicy": "none"
+  },
+  "scoringDefect": {
+    "component": "_span_signature",
+    "defect": "The historical scorer read only span.start and span.end, while m3.v2 predictions use span.startOffset and span.endOffset.",
+    "affectedMetrics": [
+      "entity span precision/recall/F1",
+      "relation span precision/recall/F1",
+      "link span precision/recall/F1",
+      "derived hallucination rate"
+    ],
+    "historicalMetricsReliable": false,
+    "executionEvidenceReliable": true
+  },
+  "correctiveAction": {
+    "canonicalization": "The evaluator now accepts both start/end and startOffset/endOffset without changing the locked report.",
+    "regeneratedReports": "Only new versioned candidate reports may use the corrected scorer.",
+    "historicalReportOverwritten": false
+  },
+  "decisionBoundary": {
+    "promptExperimentsAuthorized": false,
+    "validationAuthorized": false,
+    "candidateFreezeAuthorized": false,
+    "heldOutInspected": false
+  },
+  "humanEvidence": false,
+  "rawSensitiveDataIncluded": false
+}

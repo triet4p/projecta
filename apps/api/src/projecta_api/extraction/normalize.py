@@ -20,6 +20,11 @@ def normalize_extraction(
 ) -> ExtractionResponse:
     """Validate all categories first, then canonicalize duplicates and ordering."""
     valid_ids = [item["id"] for item in bounded_entities]
+    valid_ids.extend(
+        candidate.candidate_id
+        for candidate in response.entities
+        if candidate.candidate_id is not None
+    )
     entities = normalize_entity_candidates(raw_text, response)
     relations = normalize_relation_candidates(raw_text, response, valid_ids)
     links = normalize_entity_link_candidates(raw_text, response, bounded_entities)
@@ -43,8 +48,19 @@ def _entity_key(value: EntityCandidateOutput) -> tuple[object, ...]:
 
 
 def _relation_key(value: RelationCandidateOutput) -> tuple[object, ...]:
-    return (value.evidence.start_offset, value.evidence.end_offset, value.predicate, value.source_entity_id, value.target_entity_id)
+    return (
+        value.evidence.start_offset,
+        value.evidence.end_offset,
+        value.predicate,
+        value.source_entity_id,
+        value.target_entity_id,
+    )
 
 
 def _link_key(value: EntityLinkCandidateOutput) -> tuple[object, ...]:
-    return (value.evidence.start_offset, value.evidence.end_offset, value.target_entity_id, value.mention)
+    return (
+        value.evidence.start_offset,
+        value.evidence.end_offset,
+        value.target_entity_id,
+        value.mention,
+    )

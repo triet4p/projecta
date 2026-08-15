@@ -9,6 +9,10 @@ preparation, with the evidence limitations below explicitly retained. Human
 annotation evidence and a fresh rerun remain required before any claim of
 qualified annotator reliability or production-scale readiness.
 
+**Owner-delegated amendment:** The synthetic AI-reviewed track is complete
+under the [G1 amendment](g1-owner-delegated-ai-amendment.md). This closes the
+pilot preparation tasks without converting the artifacts into human evidence.
+
 ## 1. Decision record
 
 | Field | Value |
@@ -38,6 +42,8 @@ annotators have met the G2 agreement thresholds.
 | `pilot/agreement-report.v1.json` | Type, span, relation/link, abstention, graph and QA agreement | Fixture only |
 | `pilot/adjudication-log.v1.json` | Two controlled disagreements and accepted outcomes | Fixture only |
 | `pilot/annotation-guide.v1.1.md` | Two guide revisions from calibration disagreement | Proposed |
+| `pilot/owner-delegated-ai-review.v1.json` | Digest-bound review of 20 atomic cases, 3 scenarios and competency answers | Complete for synthetic AI track |
+| `pilot/fresh-rerun.v1.json` | Guide v1.1 rerun on 12 disjoint development cases | Complete for synthetic AI track |
 
 ## 3. Fixture validation and provisional results
 
@@ -64,9 +70,11 @@ type/abstention, span and relation/link dimensions are diagnostic.
 - [x] Scenario fixtures include the required `sourceManifest` field and the
   contract test validates the actual instance shape.
 - [x] The context-free `s12-a-0009` gold outcome is abstention under AG-01.
-- [ ] Qualified human calibration and independent annotation are supplied.
-- [ ] A qualified reviewer adjudicates the human disagreements.
-- [ ] A fresh subset is rerun after guide revision.
+- [x] Owner-delegated AI calibration and semantic review are supplied.
+- [x] Owner-delegated AI adjudication is digest-bound.
+- [x] Guide v1.1 is rerun on a disjoint 12-case development subset.
+- [ ] Independent qualified-human annotation evidence is supplied, if a future
+  claim requires inter-human reliability.
 
 These limitations are accepted as explicit residual risks for this approval;
 they do not convert synthetic fixture evidence into human evidence.
@@ -99,9 +107,11 @@ as the human pilot result.
   validated for the scenario instances.
 - [x] Calibration protocol and role separation are defined.
 - [x] Two isolated label-set fixtures exist and are intentionally non-identical.
-- [ ] Human agreement metrics and provisional thresholds are computed.
-- [ ] Human disagreements have accepted outcomes and guide revisions.
-- [ ] Fresh-rerun procedure is executed on a fresh subset.
+- [x] Applicable fixture agreement metrics are recomputed; scenario and
+  competency agreement remain `N/A`.
+- [x] Synthetic disagreements have owner-delegated accepted outcomes and guide
+  revisions.
+- [x] Fresh-rerun procedure is executed on 12 disjoint development cases.
 - [ ] Qualified human annotation evidence is supplied.
 - [x] Project owner approves G2 annotation reliability with the limitations
   recorded above.
@@ -114,5 +124,5 @@ as the human pilot result.
 | Project owner | Explicit approval recorded in Codex task on 2026-08-14 |
 | Annotation lead | _Awaiting qualified human evidence_ |
 | Semantic reviewer | Limitation retained; no new ontology change approved |
-| Approved revisions | Evidence limitation recorded; no contract/ontology revision |
+| Approved revisions | G1 owner-delegated AI amendment; no ontology revision |
 | Authorization after approval | Proceed to G3 preparation only; do not claim qualified human reliability or unseal held-out test |

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "s12.baseline-lock.v1",
+  "status": "LOCKED_HISTORICAL_BASELINE",
+  "reportPath": "baseline-report.v1.json",
+  "reportDigest": "sha256:d3d94e4b7b822a55fc271b9d56191a7d2ec5ec09ab7cebd095ad144423b45c54",
+  "configurationDigest": "sha256:2f4a4c84984fefd1d6ab502a5e73a70bf37ef92e416336392acc2227fa1a5cb2",
+  "manifestDigest": "sha256:380cb041c54c1b1b33bb42d6d49a933997fe9466e8e855d00ad1e79e16cfd0a8",
+  "baselineStatus": "RUNTIME_BACKED_WITH_FAILURES",
+  "caseCount": 160,
+  "missingOutputCount": 55,
+  "humanEvidence": false,
+  "rawSensitiveDataIncluded": false,
+  "optimizationEligible": false,
+  "note": "Historical v0.6.0 baseline. Do not overwrite; contract-alignment diagnostics and candidates must use new versioned artifacts."
+}

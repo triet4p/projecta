@@ -1,5 +1,7 @@
 # Sprint 12 G1 Dataset Contract Review Packet
 
+Post-approval amendment: [Owner-Delegated AI Annotation Amendment](g1-owner-delegated-ai-amendment.md).
+
 **Status:** `APPROVED`
 
 **Sprint:** Sprint 12 — Business Semantic Quality and Evaluation

@@ -8,6 +8,11 @@ This directory contains a synthetic calibration fixture for testing the Phase C
 annotation workflow. It is not evidence that qualified human annotators have
 achieved G2 agreement.
 
+The project owner subsequently delegated the synthetic-track semantic review
+to the implementation agent. `owner-delegated-ai-review.v1.json` and
+`fresh-rerun.v1.json` complete that bounded track while retaining
+`humanEvidence: false`.
+
 ## Contents
 
 - `atomic-pilot.v1.json` — 20 synthetic atomic cases spanning released types,
@@ -22,6 +27,8 @@ achieved G2 agreement.
 - `agreement-report.v1.json` — deterministic fixture agreement report.
 - `adjudication-log.v1.json` — fixture disagreements and accepted outcomes.
 - `annotation-guide.v1.1.md` — guide revisions derived from the fixture.
+- `owner-delegated-ai-review.v1.json` — digest-bound AI semantic review.
+- `fresh-rerun.v1.json` — guide v1.1 conformance rerun on 12 disjoint cases.
 
 Before claiming qualified annotator reliability or production-scale readiness,
 a data/annotation owner must replace or supplement the fixture with two

@@ -46,7 +46,7 @@ def test_phase_c_tasks_and_g2_approval_boundary_are_recorded() -> None:
     assert "[x] **S12-30" in plan
     assert "[x] **S12-31" in plan
     for number in range(32, 38):
-        assert f"[ ] **S12-{number:02d}" in plan
+        assert f"[x] **S12-{number:02d}" in plan
     assert "[x] **S12-38 — Prepare the draft G2 packet" in plan
     assert "[x] **S12-39" in plan
 
@@ -67,6 +67,7 @@ def test_pilot_has_twenty_cases_three_scenarios_and_real_digests() -> None:
     }
     for case in atomic["cases"]:
         source = case["source"]
+        assert source["origin"] == "agent-authored-synthetic"
         digest = hashlib.sha256(source["rawText"].encode("utf-8")).hexdigest()
         assert source["contentDigest"] == f"sha256:{digest}"
         for item in (
@@ -208,6 +209,19 @@ def test_g2_packet_records_approval_with_explicit_limitations() -> None:
         in packet
     )
     assert "These limitations are accepted as explicit residual risks" in packet
+
+
+def test_owner_delegated_ai_review_and_fresh_rerun_are_bound() -> None:
+    review = _read_json(PILOT / "owner-delegated-ai-review.v1.json")
+    rerun = _read_json(PILOT / "fresh-rerun.v1.json")
+    assert review["status"] == "COMPLETE_FOR_SYNTHETIC_AI_TRACK"
+    assert review["reviewerKind"] == "ai-agent"
+    assert review["humanEvidence"] is False
+    assert len(review["pilotAtomicReviews"]) == 20
+    assert len(review["pilotScenarioReviews"]) == 3
+    assert rerun["status"] == "COMPLETE_FOR_SYNTHETIC_AI_TRACK"
+    assert rerun["humanEvidence"] is False
+    assert len(rerun["caseReviews"]) == 12
 
 
 def test_phase_c_summaries_and_guide_revision_exist() -> None:

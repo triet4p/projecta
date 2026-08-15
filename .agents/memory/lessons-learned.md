@@ -652,3 +652,63 @@ inputs. Keep synthetic fixtures and human evidence separate.
 **Watch out for:** Every gate test should distinguish durable approval evidence
 from the current overall status, and every reported metric must have a declared
 input set that the test recomputes before accepting the report.
+
+## [2026-08-14] DeepSeek-compatible response streams can outlive request timeouts
+
+**Symptom:** The Sprint 12 runtime baseline hung in the first DeepSeek-compatible
+chat completion even though the gateway passed a 60-second request timeout and
+the evaluator wrapped the await in `asyncio.wait_for`.
+**Root cause:** The OpenAI-compatible client's HTTP transport did not reliably
+apply the request-level timeout while reading the response body, and cancellation
+remained blocked in the TLS stream.
+**Fix / workaround:** Configure an explicit `httpx.Timeout` on the shared
+`AsyncOpenAI` client, keep SDK retries disabled, and retain evaluator-level
+per-request and whole-run budgets with fail-closed missing outputs.
+**Watch out for:** A provider adapter must enforce timeouts at the transport
+constructor as well as at individual calls; test a real bounded probe against
+each OpenAI-compatible provider before launching a full benchmark.
+
+## [2026-08-15] Span scorer must canonicalize versioned extraction offsets
+
+**Symptom:** The m3.v2 candidate produced structurally valid entities, but the
+evaluator reported entity F1 as zero because gold spans used `start`/`end` and
+predictions used `startOffset`/`endOffset`; relation predicate errors were also
+not distinguished by the old signature.
+**Root cause:** `_span_signature()` assumed one field naming convention and used
+only a target identifier as the relation label.
+**Fix / workaround:** Canonicalize both offset pairs and include the relation
+predicate in the relation signature; add exact, off-by-one, type, predicate and
+missing-output regression tests. Historical reports must be corrected by an
+erratum, never overwritten.
+**Watch out for:** Every new extraction contract version must have scorer
+fixtures that compare its output shape against the gold shape before any
+quality or optimization decision is trusted.
+
+## [2026-08-15] Repository .env is not inherited by evaluator shells
+
+**Symptom:** Runtime candidate execution failed with a missing
+`PROJECTA_LLM_TYPE` even though all required keys existed in the repository
+`.env` file.
+**Root cause:** The PowerShell process used to launch `uv` did not load dotenv
+files automatically; the evaluator intentionally reads process environment
+only.
+**Fix / workaround:** Load `.env` into the temporary process environment before
+the bounded run, without printing or persisting credential values.
+**Watch out for:** Runtime evidence scripts must either document explicit dotenv
+loading or fail closed; never copy credentials into evaluation artifacts.
+
+## [2026-08-15] Stability runners must preserve immutable run evidence
+
+**Symptom:** A stability run could write a report and then fail while resolving
+relative paths, leaving an orphan report without a summary; the earlier runner
+also reused one report path and overwrote prior runs.
+**Root cause:** Run output paths were resolved after the subprocess changed the
+working-directory assumptions, and the runner had no per-run artifact contract
+or overwrite guard.
+**Fix / workaround:** Resolve all CLI paths before execution, write
+`run-XX.report.v1.json` under a dedicated runs directory, persist its digest and
+full sanitized evidence metadata in the stability artifact, and refuse to
+overwrite existing run or summary files.
+**Watch out for:** Stability evidence is only auditable when each run is an
+immutable, independently addressable report with failure classes and all
+configuration/code/schema/manifest digests bound to that report.

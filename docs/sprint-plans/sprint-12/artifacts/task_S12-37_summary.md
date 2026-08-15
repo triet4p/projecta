@@ -6,16 +6,16 @@
 
 ## Summary of Work
 
-Documented the fresh-subset rerun procedure, but did not execute a fresh
-subset. The synthetic fixture has no independent scenario or question-answer
-labels and cannot substitute for the required rerun, so S12-37 is reopened.
+Executed guide v1.1 against 12 disjoint development cases and digest-bound the
+accepted gold. The result is recorded as single-reviewer AI semantic
+conformance, not inter-human agreement.
 
 ## Files Modified
 
-* [agreement-report.v1.json](../../../../evaluation/sprint-12/pilot/agreement-report.v1.json) - Provisional rerun metrics.
+* [fresh-rerun.v1.json](../../../../evaluation/sprint-12/pilot/fresh-rerun.v1.json) - Disjoint synthetic-track rerun evidence.
 * [annotation-guide.v1.1.md](../../../../evaluation/sprint-12/pilot/annotation-guide.v1.1.md) - Fresh-subset rerun requirement.
 * [g2-annotation-pilot.md](../g2-annotation-pilot.md) - G2 blocking human evidence.
-* [sprint-12.md](../../sprint-12.md) - Reopened S12-37 pending fresh rerun.
+* [sprint-12.md](../../sprint-12.md) - Recorded the completed AI rerun.
 
 ## Testing
 
@@ -25,5 +25,4 @@ labels and cannot substitute for the required rerun, so S12-37 is reopened.
 
 ## Additional Notes
 
-The rerun procedure is implemented as a contract; fixture results are not
-human agreement evidence.
+The rerun result cannot establish human agreement or production readiness.

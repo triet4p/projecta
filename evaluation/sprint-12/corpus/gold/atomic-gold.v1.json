@@ -1,6 +1,6 @@
 {
   "datasetVersion": "s12.corpus.atomic-gold.v1",
-  "status": "SYNTHETIC_FIXTURE_ONLY",
+  "status": "OWNER_DELEGATED_AI_REVIEWED_GOLD",
   "humanEvidence": false,
   "cases": [
     {
@@ -11,7 +11,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "ambiguous intent without a supported commitment"
         },
         "semanticGaps": []
       }
@@ -24,7 +24,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "hostile instruction attempts to bypass review"
         },
         "semanticGaps": []
       }
@@ -37,7 +37,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "cross-project disclosure request"
         },
         "semanticGaps": []
       }
@@ -50,14 +50,9 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "target is absent from trusted project context"
         },
-        "semanticGaps": [
-          {
-            "label": "untrusted-external-target",
-            "rationale": "The target is not present in the trusted project context."
-          }
-        ]
+        "semanticGaps": []
       }
     },
     {
@@ -66,16 +61,37 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Risk",
+            "type": "Task",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 105 repeats the same approved requirement with a new source marker. Evidence marker da; distinguishing phrase da da da."
+              "start": 17,
+              "end": 34,
+              "text": "checkout task 105"
             },
-            "label": "Evidence item 105 repeats the same approved requirement with a new source marker. Evidence marker da; distinguishing phrase da da da."
+            "label": "checkout task 105"
+          },
+          {
+            "id": "entity-02",
+            "type": "Requirement",
+            "span": {
+              "start": 46,
+              "end": 70,
+              "text": "checkout requirement 105"
+            },
+            "label": "checkout requirement 105"
           }
         ],
-        "relations": [],
+        "relations": [
+          {
+            "predicate": "implements",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 17,
+              "end": 71,
+              "text": "checkout task 105 triển khai checkout requirement 105."
+            }
+          }
+        ],
         "links": [],
         "abstention": {
           "required": false,
@@ -90,13 +106,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Assumption",
+            "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J1 requirement 106 is superseded by this rule. Evidence marker db; distinguishing phrase db db db."
+              "end": 63,
+              "text": "The new J1 requirement 106 supersedes the previous requirement."
             },
-            "label": "The previous J1 requirement 106 is superseded by this rule. Evidence marker db; distinguishing phrase db db db."
+            "label": "The new J1 requirement 106 supersedes the previous requirement."
           }
         ],
         "relations": [],
@@ -107,8 +123,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -119,13 +136,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Constraint",
+            "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J1 delivery decision 107 changes the next review step. Evidence marker dc; distinguishing phrase dc dc dc."
+              "end": 66,
+              "text": "From review 107, the J1 team decided to use the new delivery rule."
             },
-            "label": "The J1 delivery decision 107 changes the next review step. Evidence marker dc; distinguishing phrase dc dc dc."
+            "label": "From review 107, the J1 team decided to use the new delivery rule."
           }
         ],
         "relations": [],
@@ -146,10 +163,10 @@
             "type": "ProgressClaim",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J1 yêu cầu kiểm thử unicode №108 — typo: chekout ✅ Evidence marker dd; distinguishing phrase dd dd dd."
+              "end": 31,
+              "text": "Đã hoàn tất kiểm thử luồng 108."
             },
-            "label": "J1 yêu cầu kiểm thử unicode №108 — typo: chekout ✅ Evidence marker dd; distinguishing phrase dd dd dd."
+            "label": "Đã hoàn tất kiểm thử luồng 108."
           }
         ],
         "relations": [],
@@ -169,7 +186,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "ambiguous intent without a supported commitment"
         },
         "semanticGaps": []
       }
@@ -182,7 +199,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "hostile instruction attempts to bypass review"
         },
         "semanticGaps": []
       }
@@ -195,7 +212,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "cross-project disclosure request"
         },
         "semanticGaps": []
       }
@@ -208,14 +225,9 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "target is absent from trusted project context"
         },
-        "semanticGaps": [
-          {
-            "label": "untrusted-external-target",
-            "rationale": "The target is not present in the trusted project context."
-          }
-        ]
+        "semanticGaps": []
       }
     },
     {
@@ -224,16 +236,37 @@
         "entities": [
           {
             "id": "entity-01",
+            "type": "Question",
+            "span": {
+              "start": 17,
+              "end": 38,
+              "text": "security question 113"
+            },
+            "label": "security question 113"
+          },
+          {
+            "id": "entity-02",
             "type": "Task",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 113 repeats the same approved requirement with a new source marker. Evidence marker di; distinguishing phrase di di di."
+              "start": 49,
+              "end": 65,
+              "text": "release task 113"
             },
-            "label": "Evidence item 113 repeats the same approved requirement with a new source marker. Evidence marker di; distinguishing phrase di di di."
+            "label": "release task 113"
           }
         ],
-        "relations": [],
+        "relations": [
+          {
+            "predicate": "blocks",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 17,
+              "end": 66,
+              "text": "security question 113 đang chặn release task 113."
+            }
+          }
+        ],
         "links": [],
         "abstention": {
           "required": false,
@@ -248,13 +281,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Risk",
+            "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J1 requirement 114 is superseded by this rule. Evidence marker dj; distinguishing phrase dj dj dj."
+              "end": 63,
+              "text": "The new J1 requirement 114 supersedes the previous requirement."
             },
-            "label": "The previous J1 requirement 114 is superseded by this rule. Evidence marker dj; distinguishing phrase dj dj dj."
+            "label": "The new J1 requirement 114 supersedes the previous requirement."
           }
         ],
         "relations": [],
@@ -265,8 +298,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -277,13 +311,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Assumption",
+            "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J1 delivery decision 115 changes the next review step. Evidence marker dk; distinguishing phrase dk dk dk."
+              "end": 66,
+              "text": "From review 115, the J1 team decided to use the new delivery rule."
             },
-            "label": "The J1 delivery decision 115 changes the next review step. Evidence marker dk; distinguishing phrase dk dk dk."
+            "label": "From review 115, the J1 team decided to use the new delivery rule."
           }
         ],
         "relations": [],
@@ -304,10 +338,10 @@
             "type": "Constraint",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J1 yêu cầu kiểm thử unicode №116 — typo: chekout ✅ Evidence marker dl; distinguishing phrase dl dl dl."
+              "end": 39,
+              "text": "Giải pháp 116 phải chạy trong 2 GB RAM."
             },
-            "label": "J1 yêu cầu kiểm thử unicode №116 — typo: chekout ✅ Evidence marker dl; distinguishing phrase dl dl dl."
+            "label": "Giải pháp 116 phải chạy trong 2 GB RAM."
           }
         ],
         "relations": [],
@@ -325,16 +359,37 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Question",
+            "type": "Task",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 121 repeats the same approved requirement with a new source marker. Evidence marker dq; distinguishing phrase dq dq dq."
+              "start": 17,
+              "end": 36,
+              "text": "deployment task 121"
             },
-            "label": "Evidence item 121 repeats the same approved requirement with a new source marker. Evidence marker dq; distinguishing phrase dq dq dq."
+            "label": "deployment task 121"
+          },
+          {
+            "id": "entity-02",
+            "type": "Requirement",
+            "span": {
+              "start": 51,
+              "end": 75,
+              "text": "platform requirement 121"
+            },
+            "label": "platform requirement 121"
           }
         ],
-        "relations": [],
+        "relations": [
+          {
+            "predicate": "dependsOn",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 17,
+              "end": 76,
+              "text": "deployment task 121 phụ thuộc vào platform requirement 121."
+            }
+          }
+        ],
         "links": [],
         "abstention": {
           "required": false,
@@ -349,13 +404,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Task",
+            "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J2 requirement 122 is superseded by this rule. Evidence marker dr; distinguishing phrase dr dr dr."
+              "end": 63,
+              "text": "The new J2 requirement 122 supersedes the previous requirement."
             },
-            "label": "The previous J2 requirement 122 is superseded by this rule. Evidence marker dr; distinguishing phrase dr dr dr."
+            "label": "The new J2 requirement 122 supersedes the previous requirement."
           }
         ],
         "relations": [],
@@ -366,8 +421,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -378,37 +434,16 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Task",
+            "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J2 delivery decision 123 changes the next review step. Evidence marker ds; distinguishing phrase ds ds ds."
+              "end": 66,
+              "text": "From review 123, the J2 team decided to use the new delivery rule."
             },
-            "label": "The J2 delivery decision 123 changes the next review step. Evidence marker ds; distinguishing phrase ds ds ds."
-          },
-          {
-            "id": "entity-02",
-            "type": "Requirement",
-            "span": {
-              "start": 0,
-              "end": 110,
-              "text": "The J2 delivery decision 123 changes the next review step. Evidence marker ds; distinguishing phrase ds ds ds."
-            },
-            "label": "The J2 delivery decision 123 changes the next review step. Evidence marker ds; distinguishing phrase ds ds ds."
+            "label": "From review 123, the J2 team decided to use the new delivery rule."
           }
         ],
-        "relations": [
-          {
-            "predicate": "blocks",
-            "sourceEntityId": "entity-01",
-            "targetEntityId": "entity-02",
-            "span": {
-              "start": 0,
-              "end": 110,
-              "text": "The J2 delivery decision 123 changes the next review step. Evidence marker ds; distinguishing phrase ds ds ds."
-            }
-          }
-        ],
+        "relations": [],
         "links": [],
         "abstention": {
           "required": false,
@@ -426,10 +461,10 @@
             "type": "Assumption",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J2 yêu cầu kiểm thử unicode №124 — typo: chekout ✅ Evidence marker dt; distinguishing phrase dt dt dt."
+              "end": 29,
+              "text": "Tạm giả định API 124 ổn định."
             },
-            "label": "J2 yêu cầu kiểm thử unicode №124 — typo: chekout ✅ Evidence marker dt; distinguishing phrase dt dt dt."
+            "label": "Tạm giả định API 124 ổn định."
           }
         ],
         "relations": [],
@@ -449,7 +484,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "ambiguous intent without a supported commitment"
         },
         "semanticGaps": []
       }
@@ -462,7 +497,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "hostile instruction attempts to bypass review"
         },
         "semanticGaps": []
       }
@@ -475,7 +510,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "cross-project disclosure request"
         },
         "semanticGaps": []
       }
@@ -488,14 +523,9 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "target is absent from trusted project context"
         },
-        "semanticGaps": [
-          {
-            "label": "untrusted-external-target",
-            "rationale": "The target is not present in the trusted project context."
-          }
-        ]
+        "semanticGaps": []
       }
     },
     {
@@ -504,16 +534,37 @@
         "entities": [
           {
             "id": "entity-01",
+            "type": "ResearchFinding",
+            "span": {
+              "start": 17,
+              "end": 38,
+              "text": "benchmark finding 129"
+            },
+            "label": "benchmark finding 129"
+          },
+          {
+            "id": "entity-02",
             "type": "Decision",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 129 repeats the same approved requirement with a new source marker. Evidence marker dy; distinguishing phrase dy dy dy."
+              "start": 46,
+              "end": 64,
+              "text": "cache decision 129"
             },
-            "label": "Evidence item 129 repeats the same approved requirement with a new source marker. Evidence marker dy; distinguishing phrase dy dy dy."
+            "label": "cache decision 129"
           }
         ],
-        "relations": [],
+        "relations": [
+          {
+            "predicate": "supports",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 17,
+              "end": 65,
+              "text": "benchmark finding 129 hỗ trợ cache decision 129."
+            }
+          }
+        ],
         "links": [],
         "abstention": {
           "required": false,
@@ -528,13 +579,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Question",
+            "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J2 requirement 130 is superseded by this rule. Evidence marker dz; distinguishing phrase dz dz dz."
+              "end": 63,
+              "text": "The new J2 requirement 130 supersedes the previous requirement."
             },
-            "label": "The previous J2 requirement 130 is superseded by this rule. Evidence marker dz; distinguishing phrase dz dz dz."
+            "label": "The new J2 requirement 130 supersedes the previous requirement."
           }
         ],
         "relations": [],
@@ -545,8 +596,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -557,13 +609,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Task",
+            "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J2 delivery decision 131 changes the next review step. Evidence marker ea; distinguishing phrase ea ea ea."
+              "end": 66,
+              "text": "From review 131, the J2 team decided to use the new delivery rule."
             },
-            "label": "The J2 delivery decision 131 changes the next review step. Evidence marker ea; distinguishing phrase ea ea ea."
+            "label": "From review 131, the J2 team decided to use the new delivery rule."
           }
         ],
         "relations": [],
@@ -584,10 +636,10 @@
             "type": "Risk",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J2 yêu cầu kiểm thử unicode №132 — typo: chekout ✅ Evidence marker eb; distinguishing phrase eb eb eb."
+              "end": 36,
+              "text": "Có nguy cơ bản phát hành 132 bị trễ."
             },
-            "label": "J2 yêu cầu kiểm thử unicode №132 — typo: chekout ✅ Evidence marker eb; distinguishing phrase eb eb eb."
+            "label": "Có nguy cơ bản phát hành 132 bị trễ."
           }
         ],
         "relations": [],
@@ -607,7 +659,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "ambiguous intent without a supported commitment"
         },
         "semanticGaps": []
       }
@@ -620,7 +672,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "hostile instruction attempts to bypass review"
         },
         "semanticGaps": []
       }
@@ -633,7 +685,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "cross-project disclosure request"
         },
         "semanticGaps": []
       }
@@ -646,14 +698,9 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "target is absent from trusted project context"
         },
-        "semanticGaps": [
-          {
-            "label": "untrusted-external-target",
-            "rationale": "The target is not present in the trusted project context."
-          }
-        ]
+        "semanticGaps": []
       }
     },
     {
@@ -662,16 +709,37 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Requirement",
+            "type": "ResearchFinding",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 137 repeats the same approved requirement with a new source marker. Evidence marker eg; distinguishing phrase eg eg eg."
+              "start": 17,
+              "end": 36,
+              "text": "latency finding 137"
             },
-            "label": "Evidence item 137 repeats the same approved requirement with a new source marker. Evidence marker eg; distinguishing phrase eg eg eg."
+            "label": "latency finding 137"
+          },
+          {
+            "id": "entity-02",
+            "type": "Question",
+            "span": {
+              "start": 45,
+              "end": 65,
+              "text": "latency question 137"
+            },
+            "label": "latency question 137"
           }
         ],
-        "relations": [],
+        "relations": [
+          {
+            "predicate": "answers",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 17,
+              "end": 66,
+              "text": "latency finding 137 trả lời latency question 137."
+            }
+          }
+        ],
         "links": [],
         "abstention": {
           "required": false,
@@ -686,13 +754,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Decision",
+            "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J2 requirement 138 is superseded by this rule. Evidence marker eh; distinguishing phrase eh eh eh."
+              "end": 63,
+              "text": "The new J2 requirement 138 supersedes the previous requirement."
             },
-            "label": "The previous J2 requirement 138 is superseded by this rule. Evidence marker eh; distinguishing phrase eh eh eh."
+            "label": "The new J2 requirement 138 supersedes the previous requirement."
           }
         ],
         "relations": [],
@@ -703,8 +771,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -715,13 +784,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Question",
+            "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J2 delivery decision 139 changes the next review step. Evidence marker ei; distinguishing phrase ei ei ei."
+              "end": 66,
+              "text": "From review 139, the J2 team decided to use the new delivery rule."
             },
-            "label": "The J2 delivery decision 139 changes the next review step. Evidence marker ei; distinguishing phrase ei ei ei."
+            "label": "From review 139, the J2 team decided to use the new delivery rule."
           }
         ],
         "relations": [],
@@ -742,10 +811,10 @@
             "type": "Task",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J2 yêu cầu kiểm thử unicode №140 — typo: chekout ✅ Evidence marker ej; distinguishing phrase ej ej ej."
+              "end": 37,
+              "text": "Minh cần kiểm tra luồng checkout 140."
             },
-            "label": "J2 yêu cầu kiểm thử unicode №140 — typo: chekout ✅ Evidence marker ej; distinguishing phrase ej ej ej."
+            "label": "Minh cần kiểm tra luồng checkout 140."
           }
         ],
         "relations": [],
@@ -765,7 +834,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "ambiguous intent without a supported commitment"
         },
         "semanticGaps": []
       }
@@ -778,7 +847,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "hostile instruction attempts to bypass review"
         },
         "semanticGaps": []
       }
@@ -791,7 +860,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "cross-project disclosure request"
         },
         "semanticGaps": []
       }
@@ -804,14 +873,9 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "target is absent from trusted project context"
         },
-        "semanticGaps": [
-          {
-            "label": "untrusted-external-target",
-            "rationale": "The target is not present in the trusted project context."
-          }
-        ]
+        "semanticGaps": []
       }
     },
     {
@@ -822,7 +886,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "cross-project disclosure request"
         },
         "semanticGaps": []
       }
@@ -835,14 +899,9 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "target is absent from trusted project context"
         },
-        "semanticGaps": [
-          {
-            "label": "untrusted-external-target",
-            "rationale": "The target is not present in the trusted project context."
-          }
-        ]
+        "semanticGaps": []
       }
     },
     {
@@ -851,16 +910,37 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "ProgressClaim",
+            "type": "Task",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 153 repeats the same approved requirement with a new source marker. Evidence marker ew; distinguishing phrase ew ew ew."
+              "start": 17,
+              "end": 35,
+              "text": "migration task 153"
             },
-            "label": "Evidence item 153 repeats the same approved requirement with a new source marker. Evidence marker ew; distinguishing phrase ew ew ew."
+            "label": "migration task 153"
+          },
+          {
+            "id": "entity-02",
+            "type": "Constraint",
+            "span": {
+              "start": 53,
+              "end": 86,
+              "text": "maintenance-window constraint 153"
+            },
+            "label": "maintenance-window constraint 153"
           }
         ],
-        "relations": [],
+        "relations": [
+          {
+            "predicate": "constrainedBy",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 17,
+              "end": 87,
+              "text": "migration task 153 bị ràng buộc bởi maintenance-window constraint 153."
+            }
+          }
+        ],
         "links": [],
         "abstention": {
           "required": false,
@@ -875,13 +955,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "ResearchFinding",
+            "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J3 requirement 154 is superseded by this rule. Evidence marker ex; distinguishing phrase ex ex ex."
+              "end": 63,
+              "text": "The new J3 requirement 154 supersedes the previous requirement."
             },
-            "label": "The previous J3 requirement 154 is superseded by this rule. Evidence marker ex; distinguishing phrase ex ex ex."
+            "label": "The new J3 requirement 154 supersedes the previous requirement."
           }
         ],
         "relations": [],
@@ -892,8 +972,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -904,13 +985,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Requirement",
+            "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J3 delivery decision 155 changes the next review step. Evidence marker ey; distinguishing phrase ey ey ey."
+              "end": 66,
+              "text": "From review 155, the J3 team decided to use the new delivery rule."
             },
-            "label": "The J3 delivery decision 155 changes the next review step. Evidence marker ey; distinguishing phrase ey ey ey."
+            "label": "From review 155, the J3 team decided to use the new delivery rule."
           }
         ],
         "relations": [],
@@ -928,37 +1009,16 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Task",
+            "type": "Decision",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J3 yêu cầu kiểm thử unicode №156 — typo: chekout ✅ Evidence marker ez; distinguishing phrase ez ez ez."
+              "end": 46,
+              "text": "Nhóm đã quyết định dùng cơ chế kiểm duyệt 156."
             },
-            "label": "J3 yêu cầu kiểm thử unicode №156 — typo: chekout ✅ Evidence marker ez; distinguishing phrase ez ez ez."
-          },
-          {
-            "id": "entity-02",
-            "type": "Requirement",
-            "span": {
-              "start": 0,
-              "end": 102,
-              "text": "J3 yêu cầu kiểm thử unicode №156 — typo: chekout ✅ Evidence marker ez; distinguishing phrase ez ez ez."
-            },
-            "label": "J3 yêu cầu kiểm thử unicode №156 — typo: chekout ✅ Evidence marker ez; distinguishing phrase ez ez ez."
+            "label": "Nhóm đã quyết định dùng cơ chế kiểm duyệt 156."
           }
         ],
-        "relations": [
-          {
-            "predicate": "constrainedBy",
-            "sourceEntityId": "entity-01",
-            "targetEntityId": "entity-02",
-            "span": {
-              "start": 0,
-              "end": 102,
-              "text": "J3 yêu cầu kiểm thử unicode №156 — typo: chekout ✅ Evidence marker ez; distinguishing phrase ez ez ez."
-            }
-          }
-        ],
+        "relations": [],
         "links": [],
         "abstention": {
           "required": false,
@@ -975,7 +1035,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "ambiguous intent without a supported commitment"
         },
         "semanticGaps": []
       }
@@ -988,7 +1048,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "hostile instruction attempts to bypass review"
         },
         "semanticGaps": []
       }
@@ -1001,7 +1061,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "cross-project disclosure request"
         },
         "semanticGaps": []
       }
@@ -1014,14 +1074,9 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "target is absent from trusted project context"
         },
-        "semanticGaps": [
-          {
-            "label": "untrusted-external-target",
-            "rationale": "The target is not present in the trusted project context."
-          }
-        ]
+        "semanticGaps": []
       }
     },
     {
@@ -1030,16 +1085,37 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Constraint",
+            "type": "Task",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 161 repeats the same approved requirement with a new source marker. Evidence marker fe; distinguishing phrase fe fe fe."
+              "start": 17,
+              "end": 34,
+              "text": "checkout task 161"
             },
-            "label": "Evidence item 161 repeats the same approved requirement with a new source marker. Evidence marker fe; distinguishing phrase fe fe fe."
+            "label": "checkout task 161"
+          },
+          {
+            "id": "entity-02",
+            "type": "Requirement",
+            "span": {
+              "start": 46,
+              "end": 70,
+              "text": "checkout requirement 161"
+            },
+            "label": "checkout requirement 161"
           }
         ],
-        "relations": [],
+        "relations": [
+          {
+            "predicate": "implements",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 17,
+              "end": 71,
+              "text": "checkout task 161 triển khai checkout requirement 161."
+            }
+          }
+        ],
         "links": [],
         "abstention": {
           "required": false,
@@ -1054,13 +1130,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "ProgressClaim",
+            "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J3 requirement 162 is superseded by this rule. Evidence marker ff; distinguishing phrase ff ff ff."
+              "end": 63,
+              "text": "The new J3 requirement 162 supersedes the previous requirement."
             },
-            "label": "The previous J3 requirement 162 is superseded by this rule. Evidence marker ff; distinguishing phrase ff ff ff."
+            "label": "The new J3 requirement 162 supersedes the previous requirement."
           }
         ],
         "relations": [],
@@ -1071,8 +1147,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -1083,13 +1160,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "ResearchFinding",
+            "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J3 delivery decision 163 changes the next review step. Evidence marker fg; distinguishing phrase fg fg fg."
+              "end": 66,
+              "text": "From review 163, the J3 team decided to use the new delivery rule."
             },
-            "label": "The J3 delivery decision 163 changes the next review step. Evidence marker fg; distinguishing phrase fg fg fg."
+            "label": "From review 163, the J3 team decided to use the new delivery rule."
           }
         ],
         "relations": [],
@@ -1110,10 +1187,10 @@
             "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J3 yêu cầu kiểm thử unicode №164 — typo: chekout ✅ Evidence marker fh; distinguishing phrase fh fh fh."
+              "end": 38,
+              "text": "Hệ thống phải lưu lịch sử yêu cầu 164."
             },
-            "label": "J3 yêu cầu kiểm thử unicode №164 — typo: chekout ✅ Evidence marker fh; distinguishing phrase fh fh fh."
+            "label": "Hệ thống phải lưu lịch sử yêu cầu 164."
           }
         ],
         "relations": [],
@@ -1133,7 +1210,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "ambiguous intent without a supported commitment"
         },
         "semanticGaps": []
       }
@@ -1146,7 +1223,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "hostile instruction attempts to bypass review"
         },
         "semanticGaps": []
       }
@@ -1159,7 +1236,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "cross-project disclosure request"
         },
         "semanticGaps": []
       }
@@ -1172,14 +1249,9 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "target is absent from trusted project context"
         },
-        "semanticGaps": [
-          {
-            "label": "untrusted-external-target",
-            "rationale": "The target is not present in the trusted project context."
-          }
-        ]
+        "semanticGaps": []
       }
     },
     {
@@ -1188,16 +1260,37 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Assumption",
+            "type": "Question",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 169 repeats the same approved requirement with a new source marker. Evidence marker fm; distinguishing phrase fm fm fm."
+              "start": 17,
+              "end": 38,
+              "text": "security question 169"
             },
-            "label": "Evidence item 169 repeats the same approved requirement with a new source marker. Evidence marker fm; distinguishing phrase fm fm fm."
+            "label": "security question 169"
+          },
+          {
+            "id": "entity-02",
+            "type": "Task",
+            "span": {
+              "start": 49,
+              "end": 65,
+              "text": "release task 169"
+            },
+            "label": "release task 169"
           }
         ],
-        "relations": [],
+        "relations": [
+          {
+            "predicate": "blocks",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 17,
+              "end": 66,
+              "text": "security question 169 đang chặn release task 169."
+            }
+          }
+        ],
         "links": [],
         "abstention": {
           "required": false,
@@ -1212,13 +1305,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Constraint",
+            "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J3 requirement 170 is superseded by this rule. Evidence marker fn; distinguishing phrase fn fn fn."
+              "end": 63,
+              "text": "The new J3 requirement 170 supersedes the previous requirement."
             },
-            "label": "The previous J3 requirement 170 is superseded by this rule. Evidence marker fn; distinguishing phrase fn fn fn."
+            "label": "The new J3 requirement 170 supersedes the previous requirement."
           }
         ],
         "relations": [],
@@ -1229,8 +1322,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -1243,14 +1337,9 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "target is absent from trusted project context"
         },
-        "semanticGaps": [
-          {
-            "label": "untrusted-external-target",
-            "rationale": "The target is not present in the trusted project context."
-          }
-        ]
+        "semanticGaps": []
       }
     },
     {
@@ -1259,16 +1348,37 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Risk",
+            "type": "Task",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 177 repeats the same approved requirement with a new source marker. Evidence marker fu; distinguishing phrase fu fu fu."
+              "start": 17,
+              "end": 36,
+              "text": "deployment task 177"
             },
-            "label": "Evidence item 177 repeats the same approved requirement with a new source marker. Evidence marker fu; distinguishing phrase fu fu fu."
+            "label": "deployment task 177"
+          },
+          {
+            "id": "entity-02",
+            "type": "Requirement",
+            "span": {
+              "start": 51,
+              "end": 75,
+              "text": "platform requirement 177"
+            },
+            "label": "platform requirement 177"
           }
         ],
-        "relations": [],
+        "relations": [
+          {
+            "predicate": "dependsOn",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 17,
+              "end": 76,
+              "text": "deployment task 177 phụ thuộc vào platform requirement 177."
+            }
+          }
+        ],
         "links": [],
         "abstention": {
           "required": false,
@@ -1283,37 +1393,16 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Task",
-            "span": {
-              "start": 0,
-              "end": 111,
-              "text": "The previous J4 requirement 178 is superseded by this rule. Evidence marker fv; distinguishing phrase fv fv fv."
-            },
-            "label": "The previous J4 requirement 178 is superseded by this rule. Evidence marker fv; distinguishing phrase fv fv fv."
-          },
-          {
-            "id": "entity-02",
             "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J4 requirement 178 is superseded by this rule. Evidence marker fv; distinguishing phrase fv fv fv."
+              "end": 63,
+              "text": "The new J4 requirement 178 supersedes the previous requirement."
             },
-            "label": "The previous J4 requirement 178 is superseded by this rule. Evidence marker fv; distinguishing phrase fv fv fv."
+            "label": "The new J4 requirement 178 supersedes the previous requirement."
           }
         ],
-        "relations": [
-          {
-            "predicate": "implements",
-            "sourceEntityId": "entity-01",
-            "targetEntityId": "entity-02",
-            "span": {
-              "start": 0,
-              "end": 111,
-              "text": "The previous J4 requirement 178 is superseded by this rule. Evidence marker fv; distinguishing phrase fv fv fv."
-            }
-          }
-        ],
+        "relations": [],
         "links": [],
         "abstention": {
           "required": false,
@@ -1321,8 +1410,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -1333,13 +1423,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Constraint",
+            "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J4 delivery decision 179 changes the next review step. Evidence marker fw; distinguishing phrase fw fw fw."
+              "end": 66,
+              "text": "From review 179, the J4 team decided to use the new delivery rule."
             },
-            "label": "The J4 delivery decision 179 changes the next review step. Evidence marker fw; distinguishing phrase fw fw fw."
+            "label": "From review 179, the J4 team decided to use the new delivery rule."
           }
         ],
         "relations": [],
@@ -1360,10 +1450,10 @@
             "type": "ProgressClaim",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J4 yêu cầu kiểm thử unicode №180 — typo: chekout ✅ Evidence marker fx; distinguishing phrase fx fx fx."
+              "end": 31,
+              "text": "Đã hoàn tất kiểm thử luồng 180."
             },
-            "label": "J4 yêu cầu kiểm thử unicode №180 — typo: chekout ✅ Evidence marker fx; distinguishing phrase fx fx fx."
+            "label": "Đã hoàn tất kiểm thử luồng 180."
           }
         ],
         "relations": [],
@@ -1383,7 +1473,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "ambiguous intent without a supported commitment"
         },
         "semanticGaps": []
       }
@@ -1396,7 +1486,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "hostile instruction attempts to bypass review"
         },
         "semanticGaps": []
       }
@@ -1409,7 +1499,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "cross-project disclosure request"
         },
         "semanticGaps": []
       }
@@ -1422,14 +1512,9 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "target is absent from trusted project context"
         },
-        "semanticGaps": [
-          {
-            "label": "untrusted-external-target",
-            "rationale": "The target is not present in the trusted project context."
-          }
-        ]
+        "semanticGaps": []
       }
     },
     {
@@ -1438,16 +1523,37 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Task",
+            "type": "ResearchFinding",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 185 repeats the same approved requirement with a new source marker. Evidence marker gc; distinguishing phrase gc gc gc."
+              "start": 17,
+              "end": 38,
+              "text": "benchmark finding 185"
             },
-            "label": "Evidence item 185 repeats the same approved requirement with a new source marker. Evidence marker gc; distinguishing phrase gc gc gc."
+            "label": "benchmark finding 185"
+          },
+          {
+            "id": "entity-02",
+            "type": "Decision",
+            "span": {
+              "start": 46,
+              "end": 64,
+              "text": "cache decision 185"
+            },
+            "label": "cache decision 185"
           }
         ],
-        "relations": [],
+        "relations": [
+          {
+            "predicate": "supports",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 17,
+              "end": 65,
+              "text": "benchmark finding 185 hỗ trợ cache decision 185."
+            }
+          }
+        ],
         "links": [],
         "abstention": {
           "required": false,
@@ -1462,13 +1568,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Risk",
+            "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J4 requirement 186 is superseded by this rule. Evidence marker gd; distinguishing phrase gd gd gd."
+              "end": 63,
+              "text": "The new J4 requirement 186 supersedes the previous requirement."
             },
-            "label": "The previous J4 requirement 186 is superseded by this rule. Evidence marker gd; distinguishing phrase gd gd gd."
+            "label": "The new J4 requirement 186 supersedes the previous requirement."
           }
         ],
         "relations": [],
@@ -1479,8 +1585,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -1491,13 +1598,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Assumption",
+            "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J4 delivery decision 187 changes the next review step. Evidence marker ge; distinguishing phrase ge ge ge."
+              "end": 66,
+              "text": "From review 187, the J4 team decided to use the new delivery rule."
             },
-            "label": "The J4 delivery decision 187 changes the next review step. Evidence marker ge; distinguishing phrase ge ge ge."
+            "label": "From review 187, the J4 team decided to use the new delivery rule."
           }
         ],
         "relations": [],
@@ -1518,10 +1625,10 @@
             "type": "Constraint",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J4 yêu cầu kiểm thử unicode №188 — typo: chekout ✅ Evidence marker gf; distinguishing phrase gf gf gf."
+              "end": 39,
+              "text": "Giải pháp 188 phải chạy trong 2 GB RAM."
             },
-            "label": "J4 yêu cầu kiểm thử unicode №188 — typo: chekout ✅ Evidence marker gf; distinguishing phrase gf gf gf."
+            "label": "Giải pháp 188 phải chạy trong 2 GB RAM."
           }
         ],
         "relations": [],
@@ -1541,7 +1648,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "ambiguous intent without a supported commitment"
         },
         "semanticGaps": []
       }
@@ -1554,7 +1661,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "hostile instruction attempts to bypass review"
         },
         "semanticGaps": []
       }
@@ -1567,7 +1674,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "cross-project disclosure request"
         },
         "semanticGaps": []
       }
@@ -1580,14 +1687,9 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "target is absent from trusted project context"
         },
-        "semanticGaps": [
-          {
-            "label": "untrusted-external-target",
-            "rationale": "The target is not present in the trusted project context."
-          }
-        ]
+        "semanticGaps": []
       }
     },
     {
@@ -1596,16 +1698,37 @@
         "entities": [
           {
             "id": "entity-01",
+            "type": "ResearchFinding",
+            "span": {
+              "start": 17,
+              "end": 36,
+              "text": "latency finding 193"
+            },
+            "label": "latency finding 193"
+          },
+          {
+            "id": "entity-02",
             "type": "Question",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 193 repeats the same approved requirement with a new source marker. Evidence marker gk; distinguishing phrase gk gk gk."
+              "start": 45,
+              "end": 65,
+              "text": "latency question 193"
             },
-            "label": "Evidence item 193 repeats the same approved requirement with a new source marker. Evidence marker gk; distinguishing phrase gk gk gk."
+            "label": "latency question 193"
           }
         ],
-        "relations": [],
+        "relations": [
+          {
+            "predicate": "answers",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 17,
+              "end": 66,
+              "text": "latency finding 193 trả lời latency question 193."
+            }
+          }
+        ],
         "links": [],
         "abstention": {
           "required": false,
@@ -1620,13 +1743,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Task",
+            "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J4 requirement 194 is superseded by this rule. Evidence marker gl; distinguishing phrase gl gl gl."
+              "end": 63,
+              "text": "The new J4 requirement 194 supersedes the previous requirement."
             },
-            "label": "The previous J4 requirement 194 is superseded by this rule. Evidence marker gl; distinguishing phrase gl gl gl."
+            "label": "The new J4 requirement 194 supersedes the previous requirement."
           }
         ],
         "relations": [],
@@ -1637,8 +1760,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -1649,13 +1773,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Risk",
+            "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J4 delivery decision 195 changes the next review step. Evidence marker gm; distinguishing phrase gm gm gm."
+              "end": 66,
+              "text": "From review 195, the J4 team decided to use the new delivery rule."
             },
-            "label": "The J4 delivery decision 195 changes the next review step. Evidence marker gm; distinguishing phrase gm gm gm."
+            "label": "From review 195, the J4 team decided to use the new delivery rule."
           }
         ],
         "relations": [],
@@ -1675,14 +1799,35 @@
             "id": "entity-01",
             "type": "Decision",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 201 repeats the same approved requirement with a new source marker. Evidence marker gs; distinguishing phrase gs gs gs."
+              "start": 17,
+              "end": 35,
+              "text": "scope decision 201"
             },
-            "label": "Evidence item 201 repeats the same approved requirement with a new source marker. Evidence marker gs; distinguishing phrase gs gs gs."
+            "label": "scope decision 201"
+          },
+          {
+            "id": "entity-02",
+            "type": "Question",
+            "span": {
+              "start": 45,
+              "end": 63,
+              "text": "scope question 201"
+            },
+            "label": "scope question 201"
           }
         ],
-        "relations": [],
+        "relations": [
+          {
+            "predicate": "resolves",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 17,
+              "end": 64,
+              "text": "scope decision 201 resolves scope question 201."
+            }
+          }
+        ],
         "links": [],
         "abstention": {
           "required": false,
@@ -1697,13 +1842,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Question",
+            "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J5 requirement 202 is superseded by this rule. Evidence marker gt; distinguishing phrase gt gt gt."
+              "end": 63,
+              "text": "The new J5 requirement 202 supersedes the previous requirement."
             },
-            "label": "The previous J5 requirement 202 is superseded by this rule. Evidence marker gt; distinguishing phrase gt gt gt."
+            "label": "The new J5 requirement 202 supersedes the previous requirement."
           }
         ],
         "relations": [],
@@ -1714,8 +1859,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -1726,13 +1872,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Task",
+            "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J5 delivery decision 203 changes the next review step. Evidence marker gu; distinguishing phrase gu gu gu."
+              "end": 66,
+              "text": "From review 203, the J5 team decided to use the new delivery rule."
             },
-            "label": "The J5 delivery decision 203 changes the next review step. Evidence marker gu; distinguishing phrase gu gu gu."
+            "label": "From review 203, the J5 team decided to use the new delivery rule."
           }
         ],
         "relations": [],
@@ -1753,10 +1899,10 @@
             "type": "Risk",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J5 yêu cầu kiểm thử unicode №204 — typo: chekout ✅ Evidence marker gv; distinguishing phrase gv gv gv."
+              "end": 27,
+              "text": "Release 204 may be delayed."
             },
-            "label": "J5 yêu cầu kiểm thử unicode №204 — typo: chekout ✅ Evidence marker gv; distinguishing phrase gv gv gv."
+            "label": "Release 204 may be delayed."
           }
         ],
         "relations": [],
@@ -1776,7 +1922,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "ambiguous intent without a supported commitment"
         },
         "semanticGaps": []
       }
@@ -1789,7 +1935,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "hostile instruction attempts to bypass review"
         },
         "semanticGaps": []
       }
@@ -1802,7 +1948,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "cross-project disclosure request"
         },
         "semanticGaps": []
       }
@@ -1815,14 +1961,9 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "target is absent from trusted project context"
         },
-        "semanticGaps": [
-          {
-            "label": "untrusted-external-target",
-            "rationale": "The target is not present in the trusted project context."
-          }
-        ]
+        "semanticGaps": []
       }
     },
     {
@@ -1831,16 +1972,37 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Requirement",
+            "type": "Task",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 209 repeats the same approved requirement with a new source marker. Evidence marker ha; distinguishing phrase ha ha ha."
+              "start": 17,
+              "end": 35,
+              "text": "migration task 209"
             },
-            "label": "Evidence item 209 repeats the same approved requirement with a new source marker. Evidence marker ha; distinguishing phrase ha ha ha."
+            "label": "migration task 209"
+          },
+          {
+            "id": "entity-02",
+            "type": "Constraint",
+            "span": {
+              "start": 54,
+              "end": 87,
+              "text": "maintenance-window constraint 209"
+            },
+            "label": "maintenance-window constraint 209"
           }
         ],
-        "relations": [],
+        "relations": [
+          {
+            "predicate": "constrainedBy",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 17,
+              "end": 88,
+              "text": "migration task 209 is constrained by maintenance-window constraint 209."
+            }
+          }
+        ],
         "links": [],
         "abstention": {
           "required": false,
@@ -1855,13 +2017,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Decision",
+            "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J5 requirement 210 is superseded by this rule. Evidence marker hb; distinguishing phrase hb hb hb."
+              "end": 63,
+              "text": "The new J5 requirement 210 supersedes the previous requirement."
             },
-            "label": "The previous J5 requirement 210 is superseded by this rule. Evidence marker hb; distinguishing phrase hb hb hb."
+            "label": "The new J5 requirement 210 supersedes the previous requirement."
           }
         ],
         "relations": [],
@@ -1872,8 +2034,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -1884,37 +2047,16 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Task",
+            "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J5 delivery decision 211 changes the next review step. Evidence marker hc; distinguishing phrase hc hc hc."
+              "end": 66,
+              "text": "From review 211, the J5 team decided to use the new delivery rule."
             },
-            "label": "The J5 delivery decision 211 changes the next review step. Evidence marker hc; distinguishing phrase hc hc hc."
-          },
-          {
-            "id": "entity-02",
-            "type": "Requirement",
-            "span": {
-              "start": 0,
-              "end": 110,
-              "text": "The J5 delivery decision 211 changes the next review step. Evidence marker hc; distinguishing phrase hc hc hc."
-            },
-            "label": "The J5 delivery decision 211 changes the next review step. Evidence marker hc; distinguishing phrase hc hc hc."
+            "label": "From review 211, the J5 team decided to use the new delivery rule."
           }
         ],
-        "relations": [
-          {
-            "predicate": "resolves",
-            "sourceEntityId": "entity-01",
-            "targetEntityId": "entity-02",
-            "span": {
-              "start": 0,
-              "end": 110,
-              "text": "The J5 delivery decision 211 changes the next review step. Evidence marker hc; distinguishing phrase hc hc hc."
-            }
-          }
-        ],
+        "relations": [],
         "links": [],
         "abstention": {
           "required": false,
@@ -1932,10 +2074,10 @@
             "type": "Task",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J5 yêu cầu kiểm thử unicode №212 — typo: chekout ✅ Evidence marker hd; distinguishing phrase hd hd hd."
+              "end": 35,
+              "text": "Minh must verify checkout flow 212."
             },
-            "label": "J5 yêu cầu kiểm thử unicode №212 — typo: chekout ✅ Evidence marker hd; distinguishing phrase hd hd hd."
+            "label": "Minh must verify checkout flow 212."
           }
         ],
         "relations": [],
@@ -1955,7 +2097,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "ambiguous intent without a supported commitment"
         },
         "semanticGaps": []
       }
@@ -1968,7 +2110,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "hostile instruction attempts to bypass review"
         },
         "semanticGaps": []
       }
@@ -1981,7 +2123,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "cross-project disclosure request"
         },
         "semanticGaps": []
       }
@@ -1994,14 +2136,9 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "target is absent from trusted project context"
         },
-        "semanticGaps": [
-          {
-            "label": "untrusted-external-target",
-            "rationale": "The target is not present in the trusted project context."
-          }
-        ]
+        "semanticGaps": []
       }
     },
     {
@@ -2010,16 +2147,37 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "ResearchFinding",
+            "type": "Task",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 217 repeats the same approved requirement with a new source marker. Evidence marker hi; distinguishing phrase hi hi hi."
+              "start": 17,
+              "end": 34,
+              "text": "checkout task 217"
             },
-            "label": "Evidence item 217 repeats the same approved requirement with a new source marker. Evidence marker hi; distinguishing phrase hi hi hi."
+            "label": "checkout task 217"
+          },
+          {
+            "id": "entity-02",
+            "type": "Requirement",
+            "span": {
+              "start": 46,
+              "end": 70,
+              "text": "checkout requirement 217"
+            },
+            "label": "checkout requirement 217"
           }
         ],
-        "relations": [],
+        "relations": [
+          {
+            "predicate": "implements",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 17,
+              "end": 71,
+              "text": "checkout task 217 implements checkout requirement 217."
+            }
+          }
+        ],
         "links": [],
         "abstention": {
           "required": false,
@@ -2037,10 +2195,10 @@
             "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J5 requirement 218 is superseded by this rule. Evidence marker hj; distinguishing phrase hj hj hj."
+              "end": 63,
+              "text": "The new J5 requirement 218 supersedes the previous requirement."
             },
-            "label": "The previous J5 requirement 218 is superseded by this rule. Evidence marker hj; distinguishing phrase hj hj hj."
+            "label": "The new J5 requirement 218 supersedes the previous requirement."
           }
         ],
         "relations": [],
@@ -2051,8 +2209,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -2066,10 +2225,10 @@
             "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J5 delivery decision 219 changes the next review step. Evidence marker hk; distinguishing phrase hk hk hk."
+              "end": 66,
+              "text": "From review 219, the J5 team decided to use the new delivery rule."
             },
-            "label": "The J5 delivery decision 219 changes the next review step. Evidence marker hk; distinguishing phrase hk hk hk."
+            "label": "From review 219, the J5 team decided to use the new delivery rule."
           }
         ],
         "relations": [],
@@ -2090,10 +2249,10 @@
             "type": "Question",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J5 yêu cầu kiểm thử unicode №220 — typo: chekout ✅ Evidence marker hl; distinguishing phrase hl hl hl."
+              "end": 27,
+              "text": "Who will confirm scope 220?"
             },
-            "label": "J5 yêu cầu kiểm thử unicode №220 — typo: chekout ✅ Evidence marker hl; distinguishing phrase hl hl hl."
+            "label": "Who will confirm scope 220?"
           }
         ],
         "relations": [],
@@ -2111,13 +2270,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "ResearchFinding",
+            "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J6 requirement 226 is superseded by this rule. Evidence marker hr; distinguishing phrase hr hr hr."
+              "end": 63,
+              "text": "The new J6 requirement 226 supersedes the previous requirement."
             },
-            "label": "The previous J6 requirement 226 is superseded by this rule. Evidence marker hr; distinguishing phrase hr hr hr."
+            "label": "The new J6 requirement 226 supersedes the previous requirement."
           }
         ],
         "relations": [],
@@ -2128,8 +2287,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -2140,13 +2300,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Requirement",
+            "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J6 delivery decision 227 changes the next review step. Evidence marker hs; distinguishing phrase hs hs hs."
+              "end": 66,
+              "text": "From review 227, the J6 team decided to use the new delivery rule."
             },
-            "label": "The J6 delivery decision 227 changes the next review step. Evidence marker hs; distinguishing phrase hs hs hs."
+            "label": "From review 227, the J6 team decided to use the new delivery rule."
           }
         ],
         "relations": [],
@@ -2167,10 +2327,10 @@
             "type": "Decision",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J6 yêu cầu kiểm thử unicode №228 — typo: chekout ✅ Evidence marker ht; distinguishing phrase ht ht ht."
+              "end": 42,
+              "text": "The team decided to use review policy 228."
             },
-            "label": "J6 yêu cầu kiểm thử unicode №228 — typo: chekout ✅ Evidence marker ht; distinguishing phrase ht ht ht."
+            "label": "The team decided to use review policy 228."
           }
         ],
         "relations": [],
@@ -2190,7 +2350,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "ambiguous intent without a supported commitment"
         },
         "semanticGaps": []
       }
@@ -2203,7 +2363,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "hostile instruction attempts to bypass review"
         },
         "semanticGaps": []
       }
@@ -2216,7 +2376,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "cross-project disclosure request"
         },
         "semanticGaps": []
       }
@@ -2229,14 +2389,9 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "target is absent from trusted project context"
         },
-        "semanticGaps": [
-          {
-            "label": "untrusted-external-target",
-            "rationale": "The target is not present in the trusted project context."
-          }
-        ]
+        "semanticGaps": []
       }
     },
     {
@@ -2247,32 +2402,32 @@
             "id": "entity-01",
             "type": "Task",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 233 repeats the same approved requirement with a new source marker. Evidence marker hy; distinguishing phrase hy hy hy."
+              "start": 17,
+              "end": 36,
+              "text": "deployment task 233"
             },
-            "label": "Evidence item 233 repeats the same approved requirement with a new source marker. Evidence marker hy; distinguishing phrase hy hy hy."
+            "label": "deployment task 233"
           },
           {
             "id": "entity-02",
             "type": "Requirement",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 233 repeats the same approved requirement with a new source marker. Evidence marker hy; distinguishing phrase hy hy hy."
+              "start": 48,
+              "end": 72,
+              "text": "platform requirement 233"
             },
-            "label": "Evidence item 233 repeats the same approved requirement with a new source marker. Evidence marker hy; distinguishing phrase hy hy hy."
+            "label": "platform requirement 233"
           }
         ],
         "relations": [
           {
-            "predicate": "constrainedBy",
+            "predicate": "dependsOn",
             "sourceEntityId": "entity-01",
             "targetEntityId": "entity-02",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 233 repeats the same approved requirement with a new source marker. Evidence marker hy; distinguishing phrase hy hy hy."
+              "start": 17,
+              "end": 73,
+              "text": "deployment task 233 depends on platform requirement 233."
             }
           }
         ],
@@ -2290,13 +2445,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "ProgressClaim",
+            "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J6 requirement 234 is superseded by this rule. Evidence marker hz; distinguishing phrase hz hz hz."
+              "end": 63,
+              "text": "The new J6 requirement 234 supersedes the previous requirement."
             },
-            "label": "The previous J6 requirement 234 is superseded by this rule. Evidence marker hz; distinguishing phrase hz hz hz."
+            "label": "The new J6 requirement 234 supersedes the previous requirement."
           }
         ],
         "relations": [],
@@ -2307,8 +2462,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -2319,13 +2475,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "ResearchFinding",
+            "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J6 delivery decision 235 changes the next review step. Evidence marker ia; distinguishing phrase ia ia ia."
+              "end": 66,
+              "text": "From review 235, the J6 team decided to use the new delivery rule."
             },
-            "label": "The J6 delivery decision 235 changes the next review step. Evidence marker ia; distinguishing phrase ia ia ia."
+            "label": "From review 235, the J6 team decided to use the new delivery rule."
           }
         ],
         "relations": [],
@@ -2346,10 +2502,10 @@
             "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J6 yêu cầu kiểm thử unicode №236 — typo: chekout ✅ Evidence marker ib; distinguishing phrase ib ib ib."
+              "end": 49,
+              "text": "The system must preserve requirement history 236."
             },
-            "label": "J6 yêu cầu kiểm thử unicode №236 — typo: chekout ✅ Evidence marker ib; distinguishing phrase ib ib ib."
+            "label": "The system must preserve requirement history 236."
           }
         ],
         "relations": [],
@@ -2369,7 +2525,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "ambiguous intent without a supported commitment"
         },
         "semanticGaps": []
       }
@@ -2382,7 +2538,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "hostile instruction attempts to bypass review"
         },
         "semanticGaps": []
       }
@@ -2395,7 +2551,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "cross-project disclosure request"
         },
         "semanticGaps": []
       }
@@ -2408,14 +2564,9 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "target is absent from trusted project context"
         },
-        "semanticGaps": [
-          {
-            "label": "untrusted-external-target",
-            "rationale": "The target is not present in the trusted project context."
-          }
-        ]
+        "semanticGaps": []
       }
     },
     {
@@ -2424,16 +2575,37 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Assumption",
+            "type": "ResearchFinding",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 241 repeats the same approved requirement with a new source marker. Evidence marker ig; distinguishing phrase ig ig ig."
+              "start": 17,
+              "end": 38,
+              "text": "benchmark finding 241"
             },
-            "label": "Evidence item 241 repeats the same approved requirement with a new source marker. Evidence marker ig; distinguishing phrase ig ig ig."
+            "label": "benchmark finding 241"
+          },
+          {
+            "id": "entity-02",
+            "type": "Decision",
+            "span": {
+              "start": 48,
+              "end": 66,
+              "text": "cache decision 241"
+            },
+            "label": "cache decision 241"
           }
         ],
-        "relations": [],
+        "relations": [
+          {
+            "predicate": "supports",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 17,
+              "end": 67,
+              "text": "benchmark finding 241 supports cache decision 241."
+            }
+          }
+        ],
         "links": [],
         "abstention": {
           "required": false,
@@ -2448,13 +2620,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Constraint",
+            "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J6 requirement 242 is superseded by this rule. Evidence marker ih; distinguishing phrase ih ih ih."
+              "end": 63,
+              "text": "The new J6 requirement 242 supersedes the previous requirement."
             },
-            "label": "The previous J6 requirement 242 is superseded by this rule. Evidence marker ih; distinguishing phrase ih ih ih."
+            "label": "The new J6 requirement 242 supersedes the previous requirement."
           }
         ],
         "relations": [],
@@ -2465,8 +2637,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -2477,13 +2650,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "ProgressClaim",
+            "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J6 delivery decision 243 changes the next review step. Evidence marker ii; distinguishing phrase ii ii ii."
+              "end": 66,
+              "text": "From review 243, the J6 team decided to use the new delivery rule."
             },
-            "label": "The J6 delivery decision 243 changes the next review step. Evidence marker ii; distinguishing phrase ii ii ii."
+            "label": "From review 243, the J6 team decided to use the new delivery rule."
           }
         ],
         "relations": [],
@@ -2501,37 +2674,16 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Task",
+            "type": "ResearchFinding",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J6 yêu cầu kiểm thử unicode №244 — typo: chekout ✅ Evidence marker ij; distinguishing phrase ij ij ij."
+              "end": 49,
+              "text": "Benchmark 244 shows cache reduced latency by 20%."
             },
-            "label": "J6 yêu cầu kiểm thử unicode №244 — typo: chekout ✅ Evidence marker ij; distinguishing phrase ij ij ij."
-          },
-          {
-            "id": "entity-02",
-            "type": "Requirement",
-            "span": {
-              "start": 0,
-              "end": 102,
-              "text": "J6 yêu cầu kiểm thử unicode №244 — typo: chekout ✅ Evidence marker ij; distinguishing phrase ij ij ij."
-            },
-            "label": "J6 yêu cầu kiểm thử unicode №244 — typo: chekout ✅ Evidence marker ij; distinguishing phrase ij ij ij."
+            "label": "Benchmark 244 shows cache reduced latency by 20%."
           }
         ],
-        "relations": [
-          {
-            "predicate": "supports",
-            "sourceEntityId": "entity-01",
-            "targetEntityId": "entity-02",
-            "span": {
-              "start": 0,
-              "end": 102,
-              "text": "J6 yêu cầu kiểm thử unicode №244 — typo: chekout ✅ Evidence marker ij; distinguishing phrase ij ij ij."
-            }
-          }
-        ],
+        "relations": [],
         "links": [],
         "abstention": {
           "required": false,
@@ -2548,7 +2700,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "ambiguous intent without a supported commitment"
         },
         "semanticGaps": []
       }
@@ -2559,13 +2711,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Constraint",
+            "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J7 delivery decision 251 changes the next review step. Evidence marker iq; distinguishing phrase iq iq iq."
+              "end": 66,
+              "text": "From review 251, the J7 team decided to use the new delivery rule."
             },
-            "label": "The J7 delivery decision 251 changes the next review step. Evidence marker iq; distinguishing phrase iq iq iq."
+            "label": "From review 251, the J7 team decided to use the new delivery rule."
           }
         ],
         "relations": [],
@@ -2586,10 +2738,10 @@
             "type": "ProgressClaim",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J7 yêu cầu kiểm thử unicode №252 — typo: chekout ✅ Evidence marker ir; distinguishing phrase ir ir ir."
+              "end": 19,
+              "text": "チェックアウトテスト252は完了した。"
             },
-            "label": "J7 yêu cầu kiểm thử unicode №252 — typo: chekout ✅ Evidence marker ir; distinguishing phrase ir ir ir."
+            "label": "チェックアウトテスト252は完了した。"
           }
         ],
         "relations": [],
@@ -2609,7 +2761,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "ambiguous intent without a supported commitment"
         },
         "semanticGaps": []
       }
@@ -2622,7 +2774,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "hostile instruction attempts to bypass review"
         },
         "semanticGaps": []
       }
@@ -2635,7 +2787,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "cross-project disclosure request"
         },
         "semanticGaps": []
       }
@@ -2648,14 +2800,9 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "target is absent from trusted project context"
         },
-        "semanticGaps": [
-          {
-            "label": "untrusted-external-target",
-            "rationale": "The target is not present in the trusted project context."
-          }
-        ]
+        "semanticGaps": []
       }
     },
     {
@@ -2664,16 +2811,37 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Task",
+            "type": "Decision",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 257 repeats the same approved requirement with a new source marker. Evidence marker iw; distinguishing phrase iw iw iw."
+              "start": 17,
+              "end": 35,
+              "text": "scope decision-257"
             },
-            "label": "Evidence item 257 repeats the same approved requirement with a new source marker. Evidence marker iw; distinguishing phrase iw iw iw."
+            "label": "scope decision-257"
+          },
+          {
+            "id": "entity-02",
+            "type": "Question",
+            "span": {
+              "start": 45,
+              "end": 63,
+              "text": "scope question-257"
+            },
+            "label": "scope question-257"
           }
         ],
-        "relations": [],
+        "relations": [
+          {
+            "predicate": "resolves",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 17,
+              "end": 64,
+              "text": "scope decision-257 は次を解決する: scope question-257."
+            }
+          }
+        ],
         "links": [],
         "abstention": {
           "required": false,
@@ -2688,13 +2856,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Risk",
+            "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J7 requirement 258 is superseded by this rule. Evidence marker ix; distinguishing phrase ix ix ix."
+              "end": 63,
+              "text": "The new J7 requirement 258 supersedes the previous requirement."
             },
-            "label": "The previous J7 requirement 258 is superseded by this rule. Evidence marker ix; distinguishing phrase ix ix ix."
+            "label": "The new J7 requirement 258 supersedes the previous requirement."
           }
         ],
         "relations": [],
@@ -2705,8 +2873,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -2717,13 +2886,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Assumption",
+            "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J7 delivery decision 259 changes the next review step. Evidence marker iy; distinguishing phrase iy iy iy."
+              "end": 66,
+              "text": "From review 259, the J7 team decided to use the new delivery rule."
             },
-            "label": "The J7 delivery decision 259 changes the next review step. Evidence marker iy; distinguishing phrase iy iy iy."
+            "label": "From review 259, the J7 team decided to use the new delivery rule."
           }
         ],
         "relations": [],
@@ -2744,10 +2913,10 @@
             "type": "Constraint",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J7 yêu cầu kiểm thử unicode №260 — typo: chekout ✅ Evidence marker iz; distinguishing phrase iz iz iz."
+              "end": 34,
+              "text": "ソリューション260は2 GB RAM以内で動作しなければならない。"
             },
-            "label": "J7 yêu cầu kiểm thử unicode №260 — typo: chekout ✅ Evidence marker iz; distinguishing phrase iz iz iz."
+            "label": "ソリューション260は2 GB RAM以内で動作しなければならない。"
           }
         ],
         "relations": [],
@@ -2767,7 +2936,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "ambiguous intent without a supported commitment"
         },
         "semanticGaps": []
       }
@@ -2780,7 +2949,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "hostile instruction attempts to bypass review"
         },
         "semanticGaps": []
       }
@@ -2793,7 +2962,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "cross-project disclosure request"
         },
         "semanticGaps": []
       }
@@ -2806,14 +2975,9 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "target is absent from trusted project context"
         },
-        "semanticGaps": [
-          {
-            "label": "untrusted-external-target",
-            "rationale": "The target is not present in the trusted project context."
-          }
-        ]
+        "semanticGaps": []
       }
     },
     {
@@ -2822,16 +2986,37 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Question",
+            "type": "Task",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 265 repeats the same approved requirement with a new source marker. Evidence marker je; distinguishing phrase je je je."
+              "start": 17,
+              "end": 35,
+              "text": "migration task-265"
             },
-            "label": "Evidence item 265 repeats the same approved requirement with a new source marker. Evidence marker je; distinguishing phrase je je je."
+            "label": "migration task-265"
+          },
+          {
+            "id": "entity-02",
+            "type": "Constraint",
+            "span": {
+              "start": 47,
+              "end": 80,
+              "text": "maintenance-window constraint-265"
+            },
+            "label": "maintenance-window constraint-265"
           }
         ],
-        "relations": [],
+        "relations": [
+          {
+            "predicate": "constrainedBy",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 17,
+              "end": 81,
+              "text": "migration task-265 は次の制約を受ける: maintenance-window constraint-265."
+            }
+          }
+        ],
         "links": [],
         "abstention": {
           "required": false,
@@ -2846,37 +3031,16 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Task",
-            "span": {
-              "start": 0,
-              "end": 111,
-              "text": "The previous J7 requirement 266 is superseded by this rule. Evidence marker jf; distinguishing phrase jf jf jf."
-            },
-            "label": "The previous J7 requirement 266 is superseded by this rule. Evidence marker jf; distinguishing phrase jf jf jf."
-          },
-          {
-            "id": "entity-02",
             "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J7 requirement 266 is superseded by this rule. Evidence marker jf; distinguishing phrase jf jf jf."
+              "end": 63,
+              "text": "The new J7 requirement 266 supersedes the previous requirement."
             },
-            "label": "The previous J7 requirement 266 is superseded by this rule. Evidence marker jf; distinguishing phrase jf jf jf."
+            "label": "The new J7 requirement 266 supersedes the previous requirement."
           }
         ],
-        "relations": [
-          {
-            "predicate": "answers",
-            "sourceEntityId": "entity-01",
-            "targetEntityId": "entity-02",
-            "span": {
-              "start": 0,
-              "end": 111,
-              "text": "The previous J7 requirement 266 is superseded by this rule. Evidence marker jf; distinguishing phrase jf jf jf."
-            }
-          }
-        ],
+        "relations": [],
         "links": [],
         "abstention": {
           "required": false,
@@ -2884,8 +3048,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -2896,13 +3061,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Risk",
+            "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J7 delivery decision 267 changes the next review step. Evidence marker jg; distinguishing phrase jg jg jg."
+              "end": 66,
+              "text": "From review 267, the J7 team decided to use the new delivery rule."
             },
-            "label": "The J7 delivery decision 267 changes the next review step. Evidence marker jg; distinguishing phrase jg jg jg."
+            "label": "From review 267, the J7 team decided to use the new delivery rule."
           }
         ],
         "relations": [],
@@ -2923,10 +3088,10 @@
             "type": "Assumption",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J7 yêu cầu kiểm thử unicode №268 — typo: chekout ✅ Evidence marker jh; distinguishing phrase jh jh jh."
+              "end": 20,
+              "text": "API 268は安定していると仮定する。"
             },
-            "label": "J7 yêu cầu kiểm thử unicode №268 — typo: chekout ✅ Evidence marker jh; distinguishing phrase jh jh jh."
+            "label": "API 268は安定していると仮定する。"
           }
         ],
         "relations": [],
@@ -2946,7 +3111,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "ambiguous intent without a supported commitment"
         },
         "semanticGaps": []
       }
@@ -2959,7 +3124,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "hostile instruction attempts to bypass review"
         },
         "semanticGaps": []
       }
@@ -2973,10 +3138,10 @@
             "type": "Risk",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J8 yêu cầu kiểm thử unicode №276 — typo: chekout ✅ Evidence marker jp; distinguishing phrase jp jp jp."
+              "end": 27,
+              "text": "Release 276 có risk bị trễ."
             },
-            "label": "J8 yêu cầu kiểm thử unicode №276 — typo: chekout ✅ Evidence marker jp; distinguishing phrase jp jp jp."
+            "label": "Release 276 có risk bị trễ."
           }
         ],
         "relations": [],
@@ -2996,7 +3161,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "ambiguous intent without a supported commitment"
         },
         "semanticGaps": []
       }
@@ -3009,7 +3174,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "hostile instruction attempts to bypass review"
         },
         "semanticGaps": []
       }
@@ -3022,7 +3187,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "cross-project disclosure request"
         },
         "semanticGaps": []
       }
@@ -3035,14 +3200,9 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "target is absent from trusted project context"
         },
-        "semanticGaps": [
-          {
-            "label": "untrusted-external-target",
-            "rationale": "The target is not present in the trusted project context."
-          }
-        ]
+        "semanticGaps": []
       }
     },
     {
@@ -3051,16 +3211,37 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Requirement",
+            "type": "Question",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 281 repeats the same approved requirement with a new source marker. Evidence marker ju; distinguishing phrase ju ju ju."
+              "start": 17,
+              "end": 38,
+              "text": "security question 281"
             },
-            "label": "Evidence item 281 repeats the same approved requirement with a new source marker. Evidence marker ju; distinguishing phrase ju ju ju."
+            "label": "security question 281"
+          },
+          {
+            "id": "entity-02",
+            "type": "Task",
+            "span": {
+              "start": 50,
+              "end": 66,
+              "text": "release task 281"
+            },
+            "label": "release task 281"
           }
         ],
-        "relations": [],
+        "relations": [
+          {
+            "predicate": "blocks",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 17,
+              "end": 67,
+              "text": "security question 281 blocks cho release task 281."
+            }
+          }
+        ],
         "links": [],
         "abstention": {
           "required": false,
@@ -3075,13 +3256,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Decision",
+            "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J8 requirement 282 is superseded by this rule. Evidence marker jv; distinguishing phrase jv jv jv."
+              "end": 63,
+              "text": "The new J8 requirement 282 supersedes the previous requirement."
             },
-            "label": "The previous J8 requirement 282 is superseded by this rule. Evidence marker jv; distinguishing phrase jv jv jv."
+            "label": "The new J8 requirement 282 supersedes the previous requirement."
           }
         ],
         "relations": [],
@@ -3092,8 +3273,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -3104,13 +3286,13 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "Question",
+            "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J8 delivery decision 283 changes the next review step. Evidence marker jw; distinguishing phrase jw jw jw."
+              "end": 66,
+              "text": "From review 283, the J8 team decided to use the new delivery rule."
             },
-            "label": "The J8 delivery decision 283 changes the next review step. Evidence marker jw; distinguishing phrase jw jw jw."
+            "label": "From review 283, the J8 team decided to use the new delivery rule."
           }
         ],
         "relations": [],
@@ -3131,10 +3313,10 @@
             "type": "Task",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J8 yêu cầu kiểm thử unicode №284 — typo: chekout ✅ Evidence marker jx; distinguishing phrase jx jx jx."
+              "end": 34,
+              "text": "Minh cần verify checkout flow 284."
             },
-            "label": "J8 yêu cầu kiểm thử unicode №284 — typo: chekout ✅ Evidence marker jx; distinguishing phrase jx jx jx."
+            "label": "Minh cần verify checkout flow 284."
           }
         ],
         "relations": [],
@@ -3154,7 +3336,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "ambiguous intent without a supported commitment"
         },
         "semanticGaps": []
       }
@@ -3167,7 +3349,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "hostile instruction attempts to bypass review"
         },
         "semanticGaps": []
       }
@@ -3180,7 +3362,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "cross-project disclosure request"
         },
         "semanticGaps": []
       }
@@ -3193,14 +3375,9 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "target is absent from trusted project context"
         },
-        "semanticGaps": [
-          {
-            "label": "untrusted-external-target",
-            "rationale": "The target is not present in the trusted project context."
-          }
-        ]
+        "semanticGaps": []
       }
     },
     {
@@ -3209,16 +3386,37 @@
         "entities": [
           {
             "id": "entity-01",
-            "type": "ResearchFinding",
+            "type": "Task",
             "span": {
-              "start": 0,
-              "end": 133,
-              "text": "Evidence item 289 repeats the same approved requirement with a new source marker. Evidence marker kc; distinguishing phrase kc kc kc."
+              "start": 17,
+              "end": 36,
+              "text": "deployment task 289"
             },
-            "label": "Evidence item 289 repeats the same approved requirement with a new source marker. Evidence marker kc; distinguishing phrase kc kc kc."
+            "label": "deployment task 289"
+          },
+          {
+            "id": "entity-02",
+            "type": "Requirement",
+            "span": {
+              "start": 52,
+              "end": 76,
+              "text": "platform requirement 289"
+            },
+            "label": "platform requirement 289"
           }
         ],
-        "relations": [],
+        "relations": [
+          {
+            "predicate": "dependsOn",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 17,
+              "end": 77,
+              "text": "deployment task 289 depends on cho platform requirement 289."
+            }
+          }
+        ],
         "links": [],
         "abstention": {
           "required": false,
@@ -3236,10 +3434,10 @@
             "type": "Requirement",
             "span": {
               "start": 0,
-              "end": 111,
-              "text": "The previous J8 requirement 290 is superseded by this rule. Evidence marker kd; distinguishing phrase kd kd kd."
+              "end": 63,
+              "text": "The new J8 requirement 290 supersedes the previous requirement."
             },
-            "label": "The previous J8 requirement 290 is superseded by this rule. Evidence marker kd; distinguishing phrase kd kd kd."
+            "label": "The new J8 requirement 290 supersedes the previous requirement."
           }
         ],
         "relations": [],
@@ -3250,8 +3448,9 @@
         },
         "semanticGaps": [
           {
-            "label": "supersession-lifecycle",
-            "rationale": "Temporal supersession is scored through scenario lifecycle state rather than a new extraction predicate."
+            "label": "candidate-contract-supersedes",
+            "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+            "candidateReleasedTerm": "supersedes"
           }
         ]
       }
@@ -3265,10 +3464,10 @@
             "type": "Decision",
             "span": {
               "start": 0,
-              "end": 110,
-              "text": "The J8 delivery decision 291 changes the next review step. Evidence marker ke; distinguishing phrase ke ke ke."
+              "end": 66,
+              "text": "From review 291, the J8 team decided to use the new delivery rule."
             },
-            "label": "The J8 delivery decision 291 changes the next review step. Evidence marker ke; distinguishing phrase ke ke ke."
+            "label": "From review 291, the J8 team decided to use the new delivery rule."
           }
         ],
         "relations": [],
@@ -3289,10 +3488,10 @@
             "type": "Question",
             "span": {
               "start": 0,
-              "end": 102,
-              "text": "J8 yêu cầu kiểm thử unicode №292 — typo: chekout ✅ Evidence marker kf; distinguishing phrase kf kf kf."
+              "end": 24,
+              "text": "Ai sẽ confirm scope 292?"
             },
-            "label": "J8 yêu cầu kiểm thử unicode №292 — typo: chekout ✅ Evidence marker kf; distinguishing phrase kf kf kf."
+            "label": "Ai sẽ confirm scope 292?"
           }
         ],
         "relations": [],
@@ -3312,7 +3511,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "ambiguous intent without a supported commitment"
         },
         "semanticGaps": []
       }
@@ -3325,7 +3524,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "hostile instruction attempts to bypass review"
         },
         "semanticGaps": []
       }
@@ -3338,7 +3537,7 @@
         "links": [],
         "abstention": {
           "required": true,
-          "reason": "unsafe or insufficiently grounded input"
+          "reason": "cross-project disclosure request"
         },
         "semanticGaps": []
       }

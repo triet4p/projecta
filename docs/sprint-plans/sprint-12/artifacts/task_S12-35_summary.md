@@ -6,16 +6,16 @@
 
 ## Summary of Work
 
-Recorded two controlled fixture disagreements and accepted fixture outcomes.
-The context-free ResearchFinding case is now adjudicated to abstention under
-AG-01. No unresolved fixture disagreement remains, but S12-35 is reopened
-pending qualified human adjudication.
+Accepted the two controlled fixture outcomes under owner-delegated AI
+adjudication. The context-free ResearchFinding case remains abstained under
+AG-01, and no synthetic-track disagreement remains unresolved.
 
 ## Files Modified
 
 * [adjudication-log.v1.json](../../../../evaluation/sprint-12/pilot/adjudication-log.v1.json) - Disagreement and accepted-outcome log.
 * [g2-annotation-pilot.md](../g2-annotation-pilot.md) - Adjudication evidence.
-* [sprint-12.md](../../sprint-12.md) - Reopened S12-35 pending human adjudication.
+* [owner-delegated-ai-review.v1.json](../../../../evaluation/sprint-12/pilot/owner-delegated-ai-review.v1.json) - Bound AI review evidence.
+* [sprint-12.md](../../sprint-12.md) - Recorded synthetic-track adjudication.
 
 ## Testing
 
@@ -25,5 +25,4 @@ pending qualified human adjudication.
 
 ## Additional Notes
 
-The log is explicitly labeled calibration-fixture-only until human reviewers
-repeat the process.
+The log remains non-human evidence and cannot support an inter-human claim.

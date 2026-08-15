@@ -1,0 +1,76 @@
+{
+  "rerunVersion": "s12.pilot.fresh-rerun.v1",
+  "status": "COMPLETE_FOR_SYNTHETIC_AI_TRACK",
+  "reviewerKind": "ai-agent",
+  "humanEvidence": false,
+  "guideVersion": "annotation-guide.v1.1",
+  "sourceDatasetVersion": "s12.corpus.atomic.v1",
+  "caseReviews": [
+    {
+      "caseId": "s12-a-0101",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83"
+    },
+    {
+      "caseId": "s12-a-0102",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762"
+    },
+    {
+      "caseId": "s12-a-0103",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29"
+    },
+    {
+      "caseId": "s12-a-0104",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04"
+    },
+    {
+      "caseId": "s12-a-0105",
+      "disposition": "accepted",
+      "goldDigest": "sha256:80f433d8be7a817be99cc977ff3f2b2c423a9ee340cdd03699636b8356f599ff"
+    },
+    {
+      "caseId": "s12-a-0106",
+      "disposition": "accepted",
+      "goldDigest": "sha256:e58e9bdcb70d0a07cf9e27afa25a7335e2a838b589e252ac609b23e8b8f69f25"
+    },
+    {
+      "caseId": "s12-a-0107",
+      "disposition": "accepted",
+      "goldDigest": "sha256:a41b0fdcc50d2a0247e71d9b96a39b50dd066b0cd34c779b6a4b22d4f9ace4c2"
+    },
+    {
+      "caseId": "s12-a-0108",
+      "disposition": "accepted",
+      "goldDigest": "sha256:6ef14e9af5758a8c6d2b450413bd4fc21902d008a7fe8c6c81b7809d3c44b469"
+    },
+    {
+      "caseId": "s12-a-0109",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83"
+    },
+    {
+      "caseId": "s12-a-0110",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762"
+    },
+    {
+      "caseId": "s12-a-0111",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29"
+    },
+    {
+      "caseId": "s12-a-0112",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04"
+    }
+  ],
+  "semanticConformance": 1.0,
+  "limitations": [
+    "single owner-delegated AI reviewer",
+    "not an inter-annotator agreement rerun",
+    "not human evidence"
+  ]
+}

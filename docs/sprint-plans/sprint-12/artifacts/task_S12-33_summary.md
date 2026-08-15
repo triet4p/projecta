@@ -6,17 +6,17 @@
 
 ## Summary of Work
 
-Created two isolated, deliberately non-identical calibration label-set
-fixtures with explicit `humanEvidence: false` metadata. They are not
-independent human annotations, so S12-33 is reopened pending two qualified
-human label sets.
+Preserved two isolated, deliberately non-identical logical calibration passes
+and added a digest-bound owner-delegated AI semantic review. The evidence is
+complete for the synthetic track and remains explicitly non-human.
 
 ## Files Modified
 
 * [annotator-a.v1.json](../../../../evaluation/sprint-12/pilot/labels/annotator-a.v1.json) - Isolated fixture label set A.
 * [annotator-b.v1.json](../../../../evaluation/sprint-12/pilot/labels/annotator-b.v1.json) - Isolated fixture label set B.
 * [g2-annotation-pilot.md](../g2-annotation-pilot.md) - Human-evidence boundary.
-* [sprint-12.md](../../sprint-12.md) - Reopened S12-33 pending human labels.
+* [owner-delegated-ai-review.v1.json](../../../../evaluation/sprint-12/pilot/owner-delegated-ai-review.v1.json) - Owner-delegated semantic review.
+* [sprint-12.md](../../sprint-12.md) - Recorded synthetic-track completion.
 
 ## Testing
 
@@ -26,4 +26,4 @@ human label sets.
 
 ## Additional Notes
 
-These files are evaluator fixtures, not human annotation records.
+Logical isolation is not represented as independent-human annotation.

@@ -1,7 +1,8 @@
 {
   "logVersion": "s12.corpus.adjudication.v1",
-  "status": "HUMAN_ADJUDICATION_PENDING",
+  "status": "OWNER_DELEGATED_AI_ADJUDICATION_COMPLETE",
   "humanEvidence": false,
-  "unresolvedDisagreements": null,
-  "note": "A qualified reviewer must adjudicate the validation/test material before G3 approval."
+  "unresolvedDisagreements": 0,
+  "independentHumanAdjudication": false,
+  "note": "The project owner delegated semantic adjudication of the synthetic development/validation fixture to the implementation agent. No inter-human reliability claim is permitted."
 }

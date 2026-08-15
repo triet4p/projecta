@@ -26,6 +26,32 @@ SLICES = {
     "temporal-change",
     "unicode-and-noisy-text",
 }
+HOSTILE_SLICES = {
+    "explicit-ambiguity-or-abstention",
+    "adversarial-or-prompt-injection",
+    "cross-project-isolation",
+    "fabricated-link",
+}
+RELEASED_TYPES = {
+    "Requirement",
+    "Decision",
+    "Question",
+    "Task",
+    "Risk",
+    "Assumption",
+    "Constraint",
+    "ProgressClaim",
+    "ResearchFinding",
+}
+RELEASED_PREDICATES = {
+    "implements",
+    "blocks",
+    "dependsOn",
+    "supports",
+    "answers",
+    "resolves",
+    "constrainedBy",
+}
 REQUIRED_ATOMIC = {"caseId", "schemaVersion", "journeyId", "source", "split", "gold"}
 REQUIRED_SCENARIO = {
     "scenarioId",
@@ -124,13 +150,82 @@ def validate_scenarios(payload: dict, manifest: dict) -> None:
 
 def validate_privacy(manifest: dict, payload: dict) -> None:
     assert manifest["qualifiedHumanEvidence"] is False
-    assert manifest["humanAuthoredFractionByOrigin"] == 1.0
+    assert manifest["humanAuthoredFractionByOrigin"] == 0.0
     forbidden = re.compile(
         r"(?i)(api[_ -]?key|password|secret|bearer|token=|@example\.)"
     )
     for case in payload["cases"]:
         assert case["source"]["sensitivity"] == "synthetic"
+        assert case["source"]["origin"] == "agent-authored-synthetic"
+        assert "not human-authored evidence" in case["source"]["authoringNote"]
         assert not forbidden.search(case["source"]["rawText"])
+
+
+def validate_semantic_gold(payload: dict, manifest: dict) -> None:
+    slice_by_case = {
+        entry["caseId"]: entry["slice"] for entry in manifest["atomicCases"]
+    }
+    observed_types: set[str] = set()
+    observed_predicates: set[str] = set()
+    for case in payload["cases"]:
+        gold = case["gold"]
+        source = case["source"]["rawText"]
+        slice_name = slice_by_case[case["caseId"]]
+        entity_ids = {entity["id"] for entity in gold["entities"]}
+        if slice_name in HOSTILE_SLICES:
+            assert gold["abstention"]["required"] is True
+            assert not gold["entities"]
+            assert not gold["relations"]
+            assert not gold["links"]
+        else:
+            assert gold["abstention"] == {"required": False, "reason": None}
+            assert gold["entities"]
+        for entity in gold["entities"]:
+            observed_types.add(entity["type"])
+            span = entity["span"]
+            assert source[span["start"] : span["end"]] == span["text"]
+            assert span["text"] == entity["label"]
+            assert "Evidence marker" not in span["text"]
+        for relation in gold["relations"]:
+            observed_predicates.add(relation["predicate"])
+            assert relation["sourceEntityId"] in entity_ids
+            assert relation["targetEntityId"] in entity_ids
+            assert relation["sourceEntityId"] != relation["targetEntityId"]
+            span = relation["span"]
+            assert source[span["start"] : span["end"]] == span["text"]
+        if slice_name == "contradiction-or-supersession":
+            assert gold["semanticGaps"] == [
+                {
+                    "label": "candidate-contract-supersedes",
+                    "rationale": "The released ontology supports supersession, but the atomic candidate relation allowlist does not expose it; lifecycle scoring remains scenario-level.",
+                    "candidateReleasedTerm": "supersedes",
+                }
+            ]
+        else:
+            assert not gold["semanticGaps"]
+    assert observed_types == RELEASED_TYPES
+    assert observed_predicates == RELEASED_PREDICATES
+
+
+def validate_owner_delegated_ai_review(payload: dict, scenarios: dict) -> None:
+    review = read_json(CORPUS / "qa/owner-delegated-ai-review.v1.json")
+    qa = read_json(CORPUS / "qa/qa-report.v1.json")
+    adjudication = read_json(CORPUS / "qa/adjudication-log.v1.json")
+    assert review["status"] == "COMPLETE_FOR_SYNTHETIC_AI_TRACK"
+    assert review["reviewerKind"] == "ai-agent"
+    assert review["humanEvidence"] is False
+    assert {item["caseId"] for item in review["atomicReviews"]} == {
+        case["caseId"] for case in payload["cases"]
+    }
+    assert {item["scenarioId"] for item in review["scenarioReviews"]} == {
+        scenario["scenarioId"] for scenario in scenarios["scenarios"]
+    }
+    assert qa["status"] == "OWNER_DELEGATED_AI_QA_COMPLETE"
+    assert qa["ownerDelegatedAiReviewPresent"] is True
+    assert qa["independentLabelsPresent"] is False
+    assert adjudication["status"] == "OWNER_DELEGATED_AI_ADJUDICATION_COMPLETE"
+    assert adjudication["unresolvedDisagreements"] == 0
+    assert adjudication["independentHumanAdjudication"] is False
 
 
 def validate_leakage(payload: dict, manifest: dict) -> None:
@@ -149,6 +244,8 @@ def validate_custody() -> None:
     custody = read_json(CORPUS / "manifests/test-custody.manifest.v1.json")
     assert custody["status"] == "CUSTODY_NOT_ESTABLISHED"
     assert custody["payloadPresent"] is False
+    assert custody["reconstructibleFromRepository"] is True
+    assert custody["eligibleForHeldOut"] is False
     assert custody["counts"] == {"atomicCases": 40, "scenarios": 6}
     assert not (CORPUS / "test").exists()
 
@@ -163,16 +260,19 @@ def validate() -> dict[str, object]:
     validate_atomic(payload, dev_validation)
     validate_scenarios(scenario_payload, dev_validation)
     validate_privacy(manifest, payload)
+    validate_semantic_gold(payload, dev_validation)
+    validate_owner_delegated_ai_review(payload, scenario_payload)
     validate_leakage(payload, dev_validation)
     validate_custody()
     return {
-        "status": "PASS_WITH_HUMAN_GATES_PENDING",
+        "status": "PASS_WITH_OWNER_DELEGATED_AI_REVIEW",
         "atomicPayloadCases": 160,
         "atomicManifestCases": 200,
         "scenarioPayloadEpisodes": 18,
         "scenarioManifestEpisodes": 24,
         "testCustody": "not-established",
         "humanEvidence": False,
+        "ownerDelegatedAiReview": True,
     }
 
 

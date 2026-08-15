@@ -1,0 +1,427 @@
+{
+  "baseline": {
+    "failureCounts": {
+      "invalid_evidence": 4,
+      "schema_invalid": 5
+    },
+    "fixedEvidenceDigests": true,
+    "fixedModelSamplingConfiguration": true,
+    "metricMeanVariance": {
+      "abstentionAccuracy": {
+        "max": 0.8,
+        "mean": 0.5333333333333333,
+        "min": 0.2,
+        "populationVariance": 0.06222222222222223
+      },
+      "entityMacroF1": {
+        "max": 0.8,
+        "mean": 0.5333333333333333,
+        "min": 0.2,
+        "populationVariance": 0.06222222222222223
+      },
+      "hallucinationRate": {
+        "max": 0.8,
+        "mean": 0.46666666666666673,
+        "min": 0.2,
+        "populationVariance": 0.06222222222222223
+      },
+      "relationMacroF1": {
+        "max": 1.0,
+        "mean": 1.0,
+        "min": 1.0,
+        "populationVariance": 0.0
+      }
+    },
+    "runs": [
+      {
+        "caseCount": 8,
+        "configuration": {
+          "apiKeyPresent": true,
+          "baseUrl": "https://api.deepseek.com",
+          "evaluatorVersion": "s12.evaluator.v1",
+          "llmType": "openai-response",
+          "manifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+          "model": "deepseek-v4-flash",
+          "oneAttemptPerCase": true,
+          "promptVersion": "m3.prompt.v2",
+          "release": "v0.6.0",
+          "requestTimeoutSeconds": 60,
+          "retryPolicy": "none",
+          "runBudgetSeconds": 300,
+          "samplingConfiguration": {
+            "seed": "provider-controlled",
+            "temperature": "provider-default",
+            "topP": "provider-default"
+          },
+          "schemaVersion": "m3.v2"
+        },
+        "digests": {
+          "candidateRunnerCode": "sha256:9925395d170f1d80d5315fb92bf0c8a97d901204b262ac9b45c0ba1fd30c5258",
+          "evaluatorCode": "sha256:fa6587b799ccfbd2b33b33dc1e86846b7842c29bc3303926af95c19fa86c7ee1",
+          "manifest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+          "modelConfiguration": "sha256:7a456b2b8b9cbaf770c29698c2069600f21a0fdd85e6f5dd479cda95d0e2f602",
+          "promptCode": "sha256:2827e7f23b50b480b157615d2bc09997d643ed607c02e02d3ec8e010a56ada03",
+          "runtimeContractCode": "sha256:fe74535ea26db917fee51b449f725431f4e0d98040ea5126533bc511142681ac",
+          "runtimeServiceCode": "sha256:f80f2ad12be5c58f6314a04e4652d97d913492a6606f21f39160dcf0c605786c",
+          "schemaContract": "sha256:235716b6fdd5d0b834e2d8a590a270e83e7175b02048cc6aa1133ff74fc75d39"
+        },
+        "failureClassByCaseId": {
+          "s12-a-0138": "schema_invalid",
+          "s12-a-0162": "invalid_evidence",
+          "s12-a-0178": "schema_invalid"
+        },
+        "failureCount": 3,
+        "failureCounts": {
+          "invalid_evidence": 1,
+          "schema_invalid": 2
+        },
+        "goldPositiveCounts": {
+          "entities": 0,
+          "links": 0,
+          "relations": 0
+        },
+        "metrics": {
+          "abstentionAccuracy": 0.2,
+          "entityMacroF1": 0.2,
+          "hallucinationRate": 0.8,
+          "relationMacroF1": 1.0
+        },
+        "reportDigest": "sha256:4b52147417b066b3da02c3ddde3118304e0ece26d140ee97185e100b49aae464",
+        "reportPath": "evaluation/sprint-12/optimization/s12-73-prompt-supersession/runs/baseline-run-01.report.v1.json",
+        "runId": "baseline-run-01",
+        "status": "CANDIDATE_DEVELOPMENT_WITH_FAILURES"
+      },
+      {
+        "caseCount": 8,
+        "configuration": {
+          "apiKeyPresent": true,
+          "baseUrl": "https://api.deepseek.com",
+          "evaluatorVersion": "s12.evaluator.v1",
+          "llmType": "openai-response",
+          "manifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+          "model": "deepseek-v4-flash",
+          "oneAttemptPerCase": true,
+          "promptVersion": "m3.prompt.v2",
+          "release": "v0.6.0",
+          "requestTimeoutSeconds": 60,
+          "retryPolicy": "none",
+          "runBudgetSeconds": 300,
+          "samplingConfiguration": {
+            "seed": "provider-controlled",
+            "temperature": "provider-default",
+            "topP": "provider-default"
+          },
+          "schemaVersion": "m3.v2"
+        },
+        "digests": {
+          "candidateRunnerCode": "sha256:9925395d170f1d80d5315fb92bf0c8a97d901204b262ac9b45c0ba1fd30c5258",
+          "evaluatorCode": "sha256:fa6587b799ccfbd2b33b33dc1e86846b7842c29bc3303926af95c19fa86c7ee1",
+          "manifest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+          "modelConfiguration": "sha256:7a456b2b8b9cbaf770c29698c2069600f21a0fdd85e6f5dd479cda95d0e2f602",
+          "promptCode": "sha256:2827e7f23b50b480b157615d2bc09997d643ed607c02e02d3ec8e010a56ada03",
+          "runtimeContractCode": "sha256:fe74535ea26db917fee51b449f725431f4e0d98040ea5126533bc511142681ac",
+          "runtimeServiceCode": "sha256:f80f2ad12be5c58f6314a04e4652d97d913492a6606f21f39160dcf0c605786c",
+          "schemaContract": "sha256:235716b6fdd5d0b834e2d8a590a270e83e7175b02048cc6aa1133ff74fc75d39"
+        },
+        "failureClassByCaseId": {
+          "s12-a-0138": "schema_invalid",
+          "s12-a-0154": "invalid_evidence",
+          "s12-a-0186": "schema_invalid"
+        },
+        "failureCount": 3,
+        "failureCounts": {
+          "invalid_evidence": 1,
+          "schema_invalid": 2
+        },
+        "goldPositiveCounts": {
+          "entities": 0,
+          "links": 0,
+          "relations": 0
+        },
+        "metrics": {
+          "abstentionAccuracy": 0.8,
+          "entityMacroF1": 0.8,
+          "hallucinationRate": 0.2,
+          "relationMacroF1": 1.0
+        },
+        "reportDigest": "sha256:15422d85911c35adb18969f4825cea5a3bc3ef4fdf279431eb5d2d6776cdc4f2",
+        "reportPath": "evaluation/sprint-12/optimization/s12-73-prompt-supersession/runs/baseline-run-02.report.v1.json",
+        "runId": "baseline-run-02",
+        "status": "CANDIDATE_DEVELOPMENT_WITH_FAILURES"
+      },
+      {
+        "caseCount": 8,
+        "configuration": {
+          "apiKeyPresent": true,
+          "baseUrl": "https://api.deepseek.com",
+          "evaluatorVersion": "s12.evaluator.v1",
+          "llmType": "openai-response",
+          "manifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+          "model": "deepseek-v4-flash",
+          "oneAttemptPerCase": true,
+          "promptVersion": "m3.prompt.v2",
+          "release": "v0.6.0",
+          "requestTimeoutSeconds": 60,
+          "retryPolicy": "none",
+          "runBudgetSeconds": 300,
+          "samplingConfiguration": {
+            "seed": "provider-controlled",
+            "temperature": "provider-default",
+            "topP": "provider-default"
+          },
+          "schemaVersion": "m3.v2"
+        },
+        "digests": {
+          "candidateRunnerCode": "sha256:9925395d170f1d80d5315fb92bf0c8a97d901204b262ac9b45c0ba1fd30c5258",
+          "evaluatorCode": "sha256:fa6587b799ccfbd2b33b33dc1e86846b7842c29bc3303926af95c19fa86c7ee1",
+          "manifest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+          "modelConfiguration": "sha256:7a456b2b8b9cbaf770c29698c2069600f21a0fdd85e6f5dd479cda95d0e2f602",
+          "promptCode": "sha256:2827e7f23b50b480b157615d2bc09997d643ed607c02e02d3ec8e010a56ada03",
+          "runtimeContractCode": "sha256:fe74535ea26db917fee51b449f725431f4e0d98040ea5126533bc511142681ac",
+          "runtimeServiceCode": "sha256:f80f2ad12be5c58f6314a04e4652d97d913492a6606f21f39160dcf0c605786c",
+          "schemaContract": "sha256:235716b6fdd5d0b834e2d8a590a270e83e7175b02048cc6aa1133ff74fc75d39"
+        },
+        "failureClassByCaseId": {
+          "s12-a-0122": "invalid_evidence",
+          "s12-a-0138": "invalid_evidence",
+          "s12-a-0154": "schema_invalid"
+        },
+        "failureCount": 3,
+        "failureCounts": {
+          "invalid_evidence": 2,
+          "schema_invalid": 1
+        },
+        "goldPositiveCounts": {
+          "entities": 0,
+          "links": 0,
+          "relations": 0
+        },
+        "metrics": {
+          "abstentionAccuracy": 0.6,
+          "entityMacroF1": 0.6,
+          "hallucinationRate": 0.4,
+          "relationMacroF1": 1.0
+        },
+        "reportDigest": "sha256:df317f528f282dcdb5390c4a56fdebe6acb42a2d026d9c120715a576a494f551",
+        "reportPath": "evaluation/sprint-12/optimization/s12-73-prompt-supersession/runs/baseline-run-03.report.v1.json",
+        "runId": "baseline-run-03",
+        "status": "CANDIDATE_DEVELOPMENT_WITH_FAILURES"
+      }
+    ]
+  },
+  "candidate": {
+    "failureCounts": {
+      "invalid_evidence": 0,
+      "schema_invalid": 0
+    },
+    "fixedEvidenceDigests": true,
+    "fixedModelSamplingConfiguration": true,
+    "metricMeanVariance": {
+      "abstentionAccuracy": {
+        "max": 1.0,
+        "mean": 0.9583333333333334,
+        "min": 0.875,
+        "populationVariance": 0.003472222222222222
+      },
+      "entityMacroF1": {
+        "max": 1.0,
+        "mean": 0.9583333333333334,
+        "min": 0.875,
+        "populationVariance": 0.003472222222222222
+      },
+      "hallucinationRate": {
+        "max": 0.125,
+        "mean": 0.041666666666666664,
+        "min": 0.0,
+        "populationVariance": 0.003472222222222222
+      },
+      "relationMacroF1": {
+        "max": 1.0,
+        "mean": 1.0,
+        "min": 1.0,
+        "populationVariance": 0.0
+      }
+    },
+    "runs": [
+      {
+        "caseCount": 8,
+        "configuration": {
+          "apiKeyPresent": true,
+          "baseUrl": "https://api.deepseek.com",
+          "evaluatorVersion": "s12.evaluator.v1",
+          "llmType": "openai-response",
+          "manifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+          "model": "deepseek-v4-flash",
+          "oneAttemptPerCase": true,
+          "promptVersion": "m3.prompt.v3.supersession-guard",
+          "release": "v0.6.0",
+          "requestTimeoutSeconds": 60,
+          "retryPolicy": "none",
+          "runBudgetSeconds": 300,
+          "samplingConfiguration": {
+            "seed": "provider-controlled",
+            "temperature": "provider-default",
+            "topP": "provider-default"
+          },
+          "schemaVersion": "m3.v2"
+        },
+        "digests": {
+          "candidateRunnerCode": "sha256:9925395d170f1d80d5315fb92bf0c8a97d901204b262ac9b45c0ba1fd30c5258",
+          "evaluatorCode": "sha256:fa6587b799ccfbd2b33b33dc1e86846b7842c29bc3303926af95c19fa86c7ee1",
+          "manifest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+          "modelConfiguration": "sha256:3a59a3aaa3254e1353a1131fd3f4cd09ccdae49900f9b220242781933f017101",
+          "promptCode": "sha256:2827e7f23b50b480b157615d2bc09997d643ed607c02e02d3ec8e010a56ada03",
+          "runtimeContractCode": "sha256:fe74535ea26db917fee51b449f725431f4e0d98040ea5126533bc511142681ac",
+          "runtimeServiceCode": "sha256:f80f2ad12be5c58f6314a04e4652d97d913492a6606f21f39160dcf0c605786c",
+          "schemaContract": "sha256:235716b6fdd5d0b834e2d8a590a270e83e7175b02048cc6aa1133ff74fc75d39"
+        },
+        "failureClassByCaseId": {},
+        "failureCount": 0,
+        "failureCounts": {},
+        "goldPositiveCounts": {
+          "entities": 0,
+          "links": 0,
+          "relations": 0
+        },
+        "metrics": {
+          "abstentionAccuracy": 1.0,
+          "entityMacroF1": 1.0,
+          "hallucinationRate": 0.0,
+          "relationMacroF1": 1.0
+        },
+        "reportDigest": "sha256:cf2f904118de7d10b32cd63ef022a7f803304ae92c5e1ba466272a157be3dea6",
+        "reportPath": "evaluation/sprint-12/optimization/s12-73-prompt-supersession/runs/candidate-run-01.report.v1.json",
+        "runId": "candidate-run-01",
+        "status": "CANDIDATE_DEVELOPMENT_SCORED"
+      },
+      {
+        "caseCount": 8,
+        "configuration": {
+          "apiKeyPresent": true,
+          "baseUrl": "https://api.deepseek.com",
+          "evaluatorVersion": "s12.evaluator.v1",
+          "llmType": "openai-response",
+          "manifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+          "model": "deepseek-v4-flash",
+          "oneAttemptPerCase": true,
+          "promptVersion": "m3.prompt.v3.supersession-guard",
+          "release": "v0.6.0",
+          "requestTimeoutSeconds": 60,
+          "retryPolicy": "none",
+          "runBudgetSeconds": 300,
+          "samplingConfiguration": {
+            "seed": "provider-controlled",
+            "temperature": "provider-default",
+            "topP": "provider-default"
+          },
+          "schemaVersion": "m3.v2"
+        },
+        "digests": {
+          "candidateRunnerCode": "sha256:9925395d170f1d80d5315fb92bf0c8a97d901204b262ac9b45c0ba1fd30c5258",
+          "evaluatorCode": "sha256:fa6587b799ccfbd2b33b33dc1e86846b7842c29bc3303926af95c19fa86c7ee1",
+          "manifest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+          "modelConfiguration": "sha256:3a59a3aaa3254e1353a1131fd3f4cd09ccdae49900f9b220242781933f017101",
+          "promptCode": "sha256:2827e7f23b50b480b157615d2bc09997d643ed607c02e02d3ec8e010a56ada03",
+          "runtimeContractCode": "sha256:fe74535ea26db917fee51b449f725431f4e0d98040ea5126533bc511142681ac",
+          "runtimeServiceCode": "sha256:f80f2ad12be5c58f6314a04e4652d97d913492a6606f21f39160dcf0c605786c",
+          "schemaContract": "sha256:235716b6fdd5d0b834e2d8a590a270e83e7175b02048cc6aa1133ff74fc75d39"
+        },
+        "failureClassByCaseId": {},
+        "failureCount": 0,
+        "failureCounts": {},
+        "goldPositiveCounts": {
+          "entities": 0,
+          "links": 0,
+          "relations": 0
+        },
+        "metrics": {
+          "abstentionAccuracy": 1.0,
+          "entityMacroF1": 1.0,
+          "hallucinationRate": 0.0,
+          "relationMacroF1": 1.0
+        },
+        "reportDigest": "sha256:89c4779ca628bb4a857fca5ef38e621d8206c6d72d29ebc83d5519f9b8e5de92",
+        "reportPath": "evaluation/sprint-12/optimization/s12-73-prompt-supersession/runs/candidate-run-02.report.v1.json",
+        "runId": "candidate-run-02",
+        "status": "CANDIDATE_DEVELOPMENT_SCORED"
+      },
+      {
+        "caseCount": 8,
+        "configuration": {
+          "apiKeyPresent": true,
+          "baseUrl": "https://api.deepseek.com",
+          "evaluatorVersion": "s12.evaluator.v1",
+          "llmType": "openai-response",
+          "manifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+          "model": "deepseek-v4-flash",
+          "oneAttemptPerCase": true,
+          "promptVersion": "m3.prompt.v3.supersession-guard",
+          "release": "v0.6.0",
+          "requestTimeoutSeconds": 60,
+          "retryPolicy": "none",
+          "runBudgetSeconds": 300,
+          "samplingConfiguration": {
+            "seed": "provider-controlled",
+            "temperature": "provider-default",
+            "topP": "provider-default"
+          },
+          "schemaVersion": "m3.v2"
+        },
+        "digests": {
+          "candidateRunnerCode": "sha256:9925395d170f1d80d5315fb92bf0c8a97d901204b262ac9b45c0ba1fd30c5258",
+          "evaluatorCode": "sha256:fa6587b799ccfbd2b33b33dc1e86846b7842c29bc3303926af95c19fa86c7ee1",
+          "manifest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+          "modelConfiguration": "sha256:3a59a3aaa3254e1353a1131fd3f4cd09ccdae49900f9b220242781933f017101",
+          "promptCode": "sha256:2827e7f23b50b480b157615d2bc09997d643ed607c02e02d3ec8e010a56ada03",
+          "runtimeContractCode": "sha256:fe74535ea26db917fee51b449f725431f4e0d98040ea5126533bc511142681ac",
+          "runtimeServiceCode": "sha256:f80f2ad12be5c58f6314a04e4652d97d913492a6606f21f39160dcf0c605786c",
+          "schemaContract": "sha256:235716b6fdd5d0b834e2d8a590a270e83e7175b02048cc6aa1133ff74fc75d39"
+        },
+        "failureClassByCaseId": {},
+        "failureCount": 0,
+        "failureCounts": {},
+        "goldPositiveCounts": {
+          "entities": 0,
+          "links": 0,
+          "relations": 0
+        },
+        "metrics": {
+          "abstentionAccuracy": 0.875,
+          "entityMacroF1": 0.875,
+          "hallucinationRate": 0.125,
+          "relationMacroF1": 1.0
+        },
+        "reportDigest": "sha256:7860e7dfcd871c8f8a34e0bbbc9b3e6aa745a76c3216dedb7fff273872e07d15",
+        "reportPath": "evaluation/sprint-12/optimization/s12-73-prompt-supersession/runs/candidate-run-03.report.v1.json",
+        "runId": "candidate-run-03",
+        "status": "CANDIDATE_DEVELOPMENT_SCORED"
+      }
+    ]
+  },
+  "candidateFreezeAuthorized": false,
+  "candidateSchemaEvidenceClean": true,
+  "caseCountPerRun": 8,
+  "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "experimentId": "s12-f-01",
+  "goldPositiveLinkCount": 0,
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "independentRunCountPerVariant": 3,
+  "linkMetricReason": "all eight supersession cases have zero positive link gold; linkMacroF1 is non-discriminating",
+  "linkMetricUsable": false,
+  "nextAction": "run 32-case stability only if candidate schema/evidence is clean and semantic metrics improve",
+  "rawSensitiveDataIncluded": false,
+  "schemaVersion": "s12.s12-73-prompt-experiment.v1",
+  "semanticDelta": {
+    "abstentionAccuracy": 0.42500000000000004,
+    "entityMacroF1": 0.42500000000000004,
+    "hallucinationRateReduction": 0.42500000000000004,
+    "relationMacroF1": 0.0
+  },
+  "semanticMetricsImproved": true,
+  "slice": "contradiction-or-supersession",
+  "status": "PROMPT_EXPERIMENT_COMPLETED_CANDIDATE_NOT_PROMOTED",
+  "totalCaseExecutions": 48,
+  "validationAuthorized": false
+}

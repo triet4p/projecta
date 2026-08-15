@@ -1,10 +1,13 @@
 # S12-68 — Run the v0.6.0 baseline
 
-The baseline runner and report boundary are prepared, but the released
-runtime/model configuration is not present in the environment. The task
-remains pending and the report says `NOT_EXECUTED_MISSING_RUNTIME_CONFIGURATION`.
+The released `v0.6.0` runtime was executed on all 160 development/validation
+cases with one bounded attempt per case. The report is
+`RUNTIME_BACKED_WITH_FAILURES`: 105 cases produced valid normalized output and
+55 were fail-closed as missing output (`48 invalid_evidence`, `7
+schema_invalid`). The task is complete as an execution record, but the G4
+quality gate remains failed because schema validity is not satisfied.
 
 ## Testing
 
-The self-test asserts that missing configuration produces 160 explicit missing
-outputs and never substitutes a synthetic replay score.
+The self-test covers missing configuration and the no-network bounded adapter;
+the runtime report binds all 160 case IDs, configuration and manifest digests.

@@ -11,6 +11,7 @@ from typing import Annotated, Literal
 from pydantic import BaseModel, ConfigDict, Field, StringConstraints, model_validator
 
 EXTRACTION_SCHEMA_VERSION = "m3.v1"
+EXTRACTION_SCHEMA_VERSION_V2 = "m3.v2"
 
 EntityType = Literal[
     "Requirement",
@@ -57,8 +58,9 @@ class EvidenceSpan(ContractModel):
 
 
 class EntityCandidateOutput(ContractModel):
-    """A proposed typed entity mention; target IDs are not generated here."""
+    """A proposed typed entity mention with an optional v2 local candidate ID."""
 
+    candidate_id: OpaqueId | None = Field(default=None, alias="candidateId")
     type: EntityType
     label: str = Field(min_length=1, max_length=4096)
     evidence: EvidenceSpan
@@ -96,7 +98,7 @@ class UsageMetadata(ContractModel):
 class ExtractionResponse(ContractModel):
     """Versioned structured output accepted from replay or a live adapter."""
 
-    schema_version: Literal["m3.v1"] = Field(alias="schemaVersion")
+    schema_version: Literal["m3.v1", "m3.v2"] = Field(alias="schemaVersion")
     model_id: Version = Field(alias="modelId")
     model_version: Version = Field(alias="modelVersion")
     entities: list[EntityCandidateOutput] = Field(default_factory=list[EntityCandidateOutput])
@@ -109,6 +111,12 @@ class ExtractionResponse(ContractModel):
 
     @model_validator(mode="after")
     def validate_abstention(self) -> "ExtractionResponse":
+        if self.schema_version == EXTRACTION_SCHEMA_VERSION_V2:
+            candidate_ids = [item.candidate_id for item in self.entities]
+            if any(candidate_id is None for candidate_id in candidate_ids):
+                raise ValueError("m3.v2 requires candidateId on every entity candidate")
+            if len(set(candidate_ids)) != len(candidate_ids):
+                raise ValueError("m3.v2 candidateId values must be unique")
         if self.abstention_reason and (self.entities or self.relations or self.links):
             raise ValueError("abstention cannot be combined with extraction candidates")
         if not self.abstention_reason and not (self.entities or self.relations or self.links):

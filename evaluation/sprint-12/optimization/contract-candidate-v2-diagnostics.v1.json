@@ -1,0 +1,80 @@
+{
+  "candidateReportDigest": "sha256:f5c90bc7b03264fcdf85e4b4855fd4f4ff469748ce7947c037f8cd7e695f25f6",
+  "supersededBy": "contract-candidate-v2-stability.v1.json",
+  "caseCount": 3,
+  "contractVersion": "m3.v2",
+  "credentialsPersisted": false,
+  "entries": [
+    {
+      "caseId": "s12-a-0106",
+      "diagnosticClasses": [
+        "no_reproducible_contract_failure"
+      ],
+      "providerPayload": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "e1",
+            "confidence": 0.9,
+            "evidence": {
+              "endOffset": 62,
+              "startOffset": 4,
+              "text": "new J1 requirement 106 supersedes the previous requirement"
+            },
+            "label": "new J1 requirement 106 supersedes the previous requirement",
+            "type": "Requirement"
+          }
+        ],
+        "links": [],
+        "relations": []
+      },
+      "sourceDigest": "sha256:1383cde394c2ab76eb8e9b8ef0fa64c49a4530355206c4d4f32effe91e4c3637",
+      "sourceText": "The new J1 requirement 106 supersedes the previous requirement. Evidence marker db; distinguishing phrase db db db."
+    },
+    {
+      "caseId": "s12-a-0130",
+      "diagnosticClasses": [
+        "no_reproducible_contract_failure"
+      ],
+      "providerPayload": {
+        "abstentionReason": "The note mentions a requirement but does not provide any specific behavior, acceptance condition, or outcome. It is too ambiguous to extract a supported proposal.",
+        "entities": [],
+        "links": [],
+        "relations": []
+      },
+      "sourceDigest": "sha256:6c6c5f68829bada46dfd93455e592aa6f6f337424d3ff22be3f8a29ec94429b5",
+      "sourceText": "The new J2 requirement 130 supersedes the previous requirement. Evidence marker dz; distinguishing phrase dz dz dz."
+    },
+    {
+      "caseId": "s12-a-0154",
+      "diagnosticClasses": [
+        "no_reproducible_contract_failure"
+      ],
+      "providerPayload": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "e1",
+            "confidence": 0.9,
+            "evidence": {
+              "endOffset": 26,
+              "startOffset": 4,
+              "text": "new J3 requirement 154"
+            },
+            "label": "new J3 requirement 154",
+            "type": "Requirement"
+          }
+        ],
+        "links": [],
+        "relations": []
+      },
+      "sourceDigest": "sha256:ea9565ececdb3dca7fd1fe8f023a513d300462ba7a730d00b322a0e537e91f04",
+      "sourceText": "The new J3 requirement 154 supersedes the previous requirement. Evidence marker ex; distinguishing phrase ex ex ex."
+    }
+  ],
+  "humanEvidence": false,
+  "rawSensitiveDataIncluded": false,
+  "schemaVersion": "s12.contract-candidate-v2-diagnostics.v1",
+  "status": "HISTORICAL_DIAGNOSTIC_SUPERSEDED",
+  "syntheticOnly": true
+}

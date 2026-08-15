@@ -1,9 +1,12 @@
 {
   "reportVersion": "s12.corpus.qa.v1",
-  "status": "HUMAN_QA_PENDING",
+  "status": "OWNER_DELEGATED_AI_QA_COMPLETE",
   "humanEvidence": false,
   "independentLabelsPresent": false,
+  "ownerDelegatedAiReviewPresent": true,
+  "reviewedAtomicCases": 160,
+  "reviewedScenarios": 18,
   "validationAndTestCases": 80,
   "developmentSampleCases": 40,
-  "note": "The fixture defines the QA boundary but does not claim independent human annotation."
+  "note": "Repository-visible development/validation gold received owner-delegated AI semantic review. This is not independent human annotation evidence."
 }

@@ -15,26 +15,27 @@ released `v0.6.0` boundary. The test split remains sealed and is not loaded.
 | Loader and integrity | `evaluation/sprint-12/harness/` | Implemented and self-tested |
 | Metric contract | `harness/metric-contract.v1.json` | Versioned |
 | Error taxonomy | `harness/error-taxonomy.v1.json` | Versioned |
-| Baseline report | `baseline/baseline-report.v1.json` | Not executed |
+| Baseline report | `baseline/baseline-report.v1.json` | Runtime-backed; 160 accounted, 55 missing outputs |
 | Baseline Markdown | `baseline/baseline-report.v1.md` | Prepared |
 
 ## 2. Measurement status
 
-The repository does not contain an approved live runtime configuration for the
-`v0.6.0` baseline. The runner therefore records
-`NOT_EXECUTED_MISSING_RUNTIME_CONFIGURATION`, marks all 160 repository-visible
-development/validation outputs as missing, and records one runtime-class
-observation. This is a truthful preparation result, not a model-quality score.
+The released `v0.6.0` runtime was executed against all 160 repository-visible
+development/validation cases. The report is
+`RUNTIME_BACKED_WITH_FAILURES`: 105 cases produced valid normalized output and
+55 cases were fail-closed as missing outputs (`48 invalid_evidence`, `7
+schema_invalid`). This is a truthful runtime measurement, not a passing
+model-quality result.
 
-No hard invariant, slice metric, latency, cost or accepted-candidate result is
-claimed until the released prompt and runtime are supplied unchanged and the
-baseline is executed.
+Split integrity, dataset digest binding and held-out nonleakage pass. Schema
+validity fails, so no accepted-candidate or optimization result is claimed
+until the model-output failures are resolved and the baseline is rerun.
 
 ## 3. Validation evidence
 
 ```text
 uv run --project apps/api pytest -q scripts/tests/test_sprint12_phase_e_contract.py
-uv run --script scripts/sprint12_evaluator.py
+uv run --project apps/api --env-file .env python scripts/sprint12_evaluator.py
 ```
 
 The self-tests cover unknown schema, tampered source, split policy, duplicate
@@ -49,8 +50,8 @@ reports.
 - [x] Evidence JSON/Markdown is bound to dataset/configuration digests.
 - [x] Error taxonomy is finite and versioned.
 - [x] Draft G4 packet is prepared.
-- [ ] `v0.6.0` baseline is executed on unchanged development/validation data.
-- [ ] Baseline errors are classified from observed model/runtime outputs.
+- [x] `v0.6.0` baseline is executed on unchanged development/validation data.
+- [x] Baseline errors are classified from observed model/runtime outputs.
 - [x] Project owner approves the truthful no-run measurement boundary with the
   limitation recorded below.
 - [ ] Semantic reviewer approves a runtime-backed baseline quality measurement.
@@ -60,7 +61,9 @@ reports.
 | Field | Value |
 | --- | --- |
 | G4 outcome | `APPROVED_WITH_LIMITATIONS` |
-| Baseline status | `NOT_EXECUTED_MISSING_RUNTIME_CONFIGURATION` |
+| Baseline status | `RUNTIME_BACKED_WITH_FAILURES` |
+| Case accounting | `160 total; 105 valid outputs; 55 missing outputs` |
+| Observed failures | `48 invalid_evidence; 7 schema_invalid` |
 | Project owner | Explicit approval recorded in Codex task on 2026-08-14 |
 | Semantic reviewer | _Awaiting baseline evidence_ |
-| Authorization after approval | No optimization or held-out evaluation unlock |
+| Authorization after approval | No optimization or held-out evaluation unlock; schema-valid rerun required |

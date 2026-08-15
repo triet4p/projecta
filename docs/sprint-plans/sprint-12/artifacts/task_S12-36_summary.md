@@ -6,16 +6,15 @@
 
 ## Summary of Work
 
-Prepared guide v1.1 with two ambiguity rules exposed by the pilot fixture.
-The accepted gold is now consistent with AG-01, but the guide still requires
-human review and a fresh rerun, so S12-36 is reopened. No ontology, threshold
-or split rule was changed.
+Accepted guide v1.1 for the synthetic AI-reviewed track and aligned the pilot
+gold with AG-01, minimal link spans and released supersession semantics. No
+ontology, threshold or split rule was changed.
 
 ## Files Modified
 
 * [annotation-guide.v1.1.md](../../../../evaluation/sprint-12/pilot/annotation-guide.v1.1.md) - Versioned guide revision.
 * [adjudication-log.v1.json](../../../../evaluation/sprint-12/pilot/adjudication-log.v1.json) - Revision rationale.
-* [sprint-12.md](../../sprint-12.md) - Reopened S12-36 pending review.
+* [sprint-12.md](../../sprint-12.md) - Recorded guide completion under the amendment.
 
 ## Testing
 
@@ -25,5 +24,4 @@ or split rule was changed.
 
 ## Additional Notes
 
-The revised guide must be tested on a fresh calibration subset before G2
-approval.
+The revised guide is bound to the disjoint fresh-rerun artifact from S12-37.

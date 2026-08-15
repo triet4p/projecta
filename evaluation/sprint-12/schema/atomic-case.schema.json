@@ -22,7 +22,7 @@
       "properties": {
         "rawText": {"type": "string", "minLength": 1, "maxLength": 100000},
         "language": {"type": "string", "enum": ["vi", "en", "ja", "mixed"]},
-        "origin": {"type": "string", "enum": ["human-authored-synthetic", "model-assisted-rewritten", "authorized-deidentified", "public-licensed"]},
+        "origin": {"type": "string", "enum": ["agent-authored-synthetic", "human-authored-synthetic", "model-assisted-rewritten", "authorized-deidentified", "public-licensed"]},
         "sensitivity": {"type": "string", "enum": ["synthetic", "deidentified", "public"]},
         "license": {"type": "string", "minLength": 1, "maxLength": 512},
         "permissionRef": {"type": "string", "minLength": 1, "maxLength": 256},

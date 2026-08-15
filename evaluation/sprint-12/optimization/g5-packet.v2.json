@@ -1,0 +1,63 @@
+{
+  "approvalStatus": "APPROVED_WITH_LIMITATIONS",
+  "candidateAvailable": true,
+  "candidateEvidence": {
+    "artifact": "s12-73-prompt-followup-stability.v2.json",
+    "digest": "sha256:b5660ae919330b2fb94529d347581e2a043fc63df7e79020590ee088c27a5943",
+    "failureCounts": {
+      "invalid_evidence": 0,
+      "schema_invalid": 3
+    },
+    "status": "STABILITY_GATE_FAIL",
+    "targetedDiagnostic": {
+      "artifact": "s12-73-targeted-diagnostics.v1.json",
+      "caseIds": [
+        "s12-a-0153",
+        "s12-a-0187"
+      ],
+      "digest": "sha256:90ea3443dde91a8b21f4a9be590017d96b81e0afb34bb3ac90ac4821e3c8d48b",
+      "failureCounts": {},
+      "status": "DIAGNOSTIC_COMPLETED"
+    }
+  },
+  "candidateFreezeAuthorized": false,
+  "comparisons": {
+    "s12-f-01": {
+      "failureCounts": {
+        "invalid_evidence": 0,
+        "schema_invalid": 3
+      },
+      "reason": "candidate exists but the 32-case stability follow-up has schema_invalid failures",
+      "status": "REJECTED_CANDIDATE_HARD_INVARIANT"
+    }
+  },
+  "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "developmentExperimentsAuthorized": true,
+  "experimentCount": 5,
+  "g4Status": "CONTRACT_ALIGNED_STABILITY_FAILED",
+  "hardInvariants": {
+    "followupFailureCounts": {
+      "invalid_evidence": 0,
+      "schema_invalid": 3
+    },
+    "schemaValidity": false,
+    "status": "FAIL"
+  },
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "openedExperimentId": "s12-f-01",
+  "optimizationAuthorized": false,
+  "packetVersion": "s12.g5.packet.v2",
+  "promptDevelopmentExperimentAuthorized": true,
+  "rawSensitiveDataIncluded": false,
+  "registryDigest": "sha256:cd4594a1a0dff78f44b5da2136392d428caa43cbabee3ea1185fe7c772b0a7fe",
+  "registryVersion": "s12.experiment-registry.v2",
+  "selection": {
+    "heldOutInspected": false,
+    "reason": "candidate exists but failed the guarded-prompt stability follow-up; no candidate promotion is authorized.",
+    "status": "NO_SELECTION"
+  },
+  "status": "G5_PREPARATION_DEVELOPMENT_OPEN",
+  "validationAuthorized": false
+}

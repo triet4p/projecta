@@ -1,0 +1,2815 @@
+{
+  "datasetVersion": "s12.corpus.scenario.v2",
+  "humanEvidence": false,
+  "scenarios": [
+    {
+      "checkpoints": [
+        {
+          "afterSequence": 1,
+          "assertedIds": [],
+          "candidateIds": [
+            "candidate-01-01"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [],
+          "provenanceActivityIds": [
+            "activity-01-01"
+          ],
+          "sourceIds": [
+            "s12-a-0101"
+          ]
+        },
+        {
+          "afterSequence": 3,
+          "assertedIds": [
+            "asserted-01-01"
+          ],
+          "candidateIds": [
+            "candidate-01-01",
+            "candidate-01-02",
+            "candidate-01-03"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-01-01",
+            "activity-01-02",
+            "activity-01-03"
+          ],
+          "sourceIds": [
+            "s12-a-0101",
+            "s12-a-0102",
+            "s12-a-0103"
+          ]
+        },
+        {
+          "afterSequence": 5,
+          "assertedIds": [
+            "asserted-01-01"
+          ],
+          "candidateIds": [
+            "candidate-01-01",
+            "candidate-01-02",
+            "candidate-01-03",
+            "candidate-01-04",
+            "candidate-01-05"
+          ],
+          "contradictionIds": [
+            "contradiction-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-01-01",
+            "activity-01-02",
+            "activity-01-03",
+            "activity-01-04",
+            "activity-01-05"
+          ],
+          "sourceIds": [
+            "s12-a-0101",
+            "s12-a-0102",
+            "s12-a-0103",
+            "s12-a-0104",
+            "s12-a-0105"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0101",
+            "s12-a-0102"
+          ],
+          "expectedFactIds": [
+            "asserted-01-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-01",
+          "status": "answerable"
+        }
+      ],
+      "events": [
+        {
+          "caseId": "s12-a-0101",
+          "eventId": "event-01",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "supersedes",
+          "sequence": 1
+        },
+        {
+          "caseId": "s12-a-0102",
+          "eventId": "event-02",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "contradicts",
+          "sequence": 2
+        },
+        {
+          "caseId": "s12-a-0103",
+          "eventId": "event-03",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "duplicates",
+          "sequence": 3
+        },
+        {
+          "caseId": "s12-a-0104",
+          "eventId": "event-04",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "creates",
+          "sequence": 4
+        },
+        {
+          "caseId": "s12-a-0105",
+          "eventId": "event-05",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "updates",
+          "sequence": 5
+        }
+      ],
+      "journeyId": "J1",
+      "scenarioId": "s12-s-001",
+      "schemaVersion": "s12.scenario.v1",
+      "sourceManifest": [
+        "s12-a-0101",
+        "s12-a-0102",
+        "s12-a-0103",
+        "s12-a-0104",
+        "s12-a-0105"
+      ],
+      "split": "development"
+    },
+    {
+      "checkpoints": [
+        {
+          "afterSequence": 1,
+          "assertedIds": [],
+          "candidateIds": [
+            "candidate-02-01"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [],
+          "provenanceActivityIds": [
+            "activity-02-01"
+          ],
+          "sourceIds": [
+            "s12-a-0101"
+          ]
+        },
+        {
+          "afterSequence": 3,
+          "assertedIds": [
+            "asserted-02-01"
+          ],
+          "candidateIds": [
+            "candidate-02-01",
+            "candidate-02-02",
+            "candidate-02-03"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-02-01",
+            "activity-02-02",
+            "activity-02-03"
+          ],
+          "sourceIds": [
+            "s12-a-0101",
+            "s12-a-0102",
+            "s12-a-0103"
+          ]
+        },
+        {
+          "afterSequence": 5,
+          "assertedIds": [
+            "asserted-02-01"
+          ],
+          "candidateIds": [
+            "candidate-02-01",
+            "candidate-02-02",
+            "candidate-02-03",
+            "candidate-02-04",
+            "candidate-02-05"
+          ],
+          "contradictionIds": [
+            "contradiction-02"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-02-01",
+            "activity-02-02",
+            "activity-02-03",
+            "activity-02-04",
+            "activity-02-05"
+          ],
+          "sourceIds": [
+            "s12-a-0101",
+            "s12-a-0102",
+            "s12-a-0103",
+            "s12-a-0104",
+            "s12-a-0105"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0101",
+            "s12-a-0102"
+          ],
+          "expectedFactIds": [
+            "asserted-02-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-02",
+          "status": "answerable"
+        }
+      ],
+      "events": [
+        {
+          "caseId": "s12-a-0101",
+          "eventId": "event-01",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "contradicts",
+          "sequence": 1
+        },
+        {
+          "caseId": "s12-a-0102",
+          "eventId": "event-02",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "duplicates",
+          "sequence": 2
+        },
+        {
+          "caseId": "s12-a-0103",
+          "eventId": "event-03",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "creates",
+          "sequence": 3
+        },
+        {
+          "caseId": "s12-a-0104",
+          "eventId": "event-04",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "updates",
+          "sequence": 4
+        },
+        {
+          "caseId": "s12-a-0105",
+          "eventId": "event-05",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "supersedes",
+          "sequence": 5
+        }
+      ],
+      "journeyId": "J1",
+      "scenarioId": "s12-s-002",
+      "schemaVersion": "s12.scenario.v1",
+      "sourceManifest": [
+        "s12-a-0101",
+        "s12-a-0102",
+        "s12-a-0103",
+        "s12-a-0104",
+        "s12-a-0105"
+      ],
+      "split": "development"
+    },
+    {
+      "checkpoints": [
+        {
+          "afterSequence": 1,
+          "assertedIds": [],
+          "candidateIds": [
+            "candidate-03-01"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [],
+          "provenanceActivityIds": [
+            "activity-03-01"
+          ],
+          "sourceIds": [
+            "s12-a-0101"
+          ]
+        },
+        {
+          "afterSequence": 3,
+          "assertedIds": [
+            "asserted-03-01"
+          ],
+          "candidateIds": [
+            "candidate-03-01",
+            "candidate-03-02",
+            "candidate-03-03"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-03-01",
+            "activity-03-02",
+            "activity-03-03"
+          ],
+          "sourceIds": [
+            "s12-a-0101",
+            "s12-a-0102",
+            "s12-a-0103"
+          ]
+        },
+        {
+          "afterSequence": 5,
+          "assertedIds": [
+            "asserted-03-01"
+          ],
+          "candidateIds": [
+            "candidate-03-01",
+            "candidate-03-02",
+            "candidate-03-03",
+            "candidate-03-04",
+            "candidate-03-05"
+          ],
+          "contradictionIds": [
+            "contradiction-03"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-03-01",
+            "activity-03-02",
+            "activity-03-03",
+            "activity-03-04",
+            "activity-03-05"
+          ],
+          "sourceIds": [
+            "s12-a-0101",
+            "s12-a-0102",
+            "s12-a-0103",
+            "s12-a-0104",
+            "s12-a-0105"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0101",
+            "s12-a-0102"
+          ],
+          "expectedFactIds": [
+            "asserted-03-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-03",
+          "status": "answerable"
+        }
+      ],
+      "events": [
+        {
+          "caseId": "s12-a-0101",
+          "eventId": "event-01",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "duplicates",
+          "sequence": 1
+        },
+        {
+          "caseId": "s12-a-0102",
+          "eventId": "event-02",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "creates",
+          "sequence": 2
+        },
+        {
+          "caseId": "s12-a-0103",
+          "eventId": "event-03",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "updates",
+          "sequence": 3
+        },
+        {
+          "caseId": "s12-a-0104",
+          "eventId": "event-04",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "supersedes",
+          "sequence": 4
+        },
+        {
+          "caseId": "s12-a-0105",
+          "eventId": "event-05",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "contradicts",
+          "sequence": 5
+        }
+      ],
+      "journeyId": "J1",
+      "scenarioId": "s12-s-003",
+      "schemaVersion": "s12.scenario.v1",
+      "sourceManifest": [
+        "s12-a-0101",
+        "s12-a-0102",
+        "s12-a-0103",
+        "s12-a-0104",
+        "s12-a-0105"
+      ],
+      "split": "development"
+    },
+    {
+      "checkpoints": [
+        {
+          "afterSequence": 1,
+          "assertedIds": [],
+          "candidateIds": [
+            "candidate-04-01"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [],
+          "provenanceActivityIds": [
+            "activity-04-01"
+          ],
+          "sourceIds": [
+            "s12-a-0121"
+          ]
+        },
+        {
+          "afterSequence": 3,
+          "assertedIds": [
+            "asserted-04-01"
+          ],
+          "candidateIds": [
+            "candidate-04-01",
+            "candidate-04-02",
+            "candidate-04-03"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-04-01",
+            "activity-04-02",
+            "activity-04-03"
+          ],
+          "sourceIds": [
+            "s12-a-0121",
+            "s12-a-0122",
+            "s12-a-0123"
+          ]
+        },
+        {
+          "afterSequence": 5,
+          "assertedIds": [
+            "asserted-04-01"
+          ],
+          "candidateIds": [
+            "candidate-04-01",
+            "candidate-04-02",
+            "candidate-04-03",
+            "candidate-04-04",
+            "candidate-04-05"
+          ],
+          "contradictionIds": [
+            "contradiction-04"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-04-01",
+            "activity-04-02",
+            "activity-04-03",
+            "activity-04-04",
+            "activity-04-05"
+          ],
+          "sourceIds": [
+            "s12-a-0121",
+            "s12-a-0122",
+            "s12-a-0123",
+            "s12-a-0124",
+            "s12-a-0125"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0121",
+            "s12-a-0122"
+          ],
+          "expectedFactIds": [
+            "asserted-04-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-04",
+          "status": "answerable"
+        }
+      ],
+      "events": [
+        {
+          "caseId": "s12-a-0121",
+          "eventId": "event-01",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "creates",
+          "sequence": 1
+        },
+        {
+          "caseId": "s12-a-0122",
+          "eventId": "event-02",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "updates",
+          "sequence": 2
+        },
+        {
+          "caseId": "s12-a-0123",
+          "eventId": "event-03",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "supersedes",
+          "sequence": 3
+        },
+        {
+          "caseId": "s12-a-0124",
+          "eventId": "event-04",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "contradicts",
+          "sequence": 4
+        },
+        {
+          "caseId": "s12-a-0125",
+          "eventId": "event-05",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "duplicates",
+          "sequence": 5
+        }
+      ],
+      "journeyId": "J2",
+      "scenarioId": "s12-s-004",
+      "schemaVersion": "s12.scenario.v1",
+      "sourceManifest": [
+        "s12-a-0121",
+        "s12-a-0122",
+        "s12-a-0123",
+        "s12-a-0124",
+        "s12-a-0125"
+      ],
+      "split": "development"
+    },
+    {
+      "checkpoints": [
+        {
+          "afterSequence": 1,
+          "assertedIds": [],
+          "candidateIds": [
+            "candidate-05-01"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [],
+          "provenanceActivityIds": [
+            "activity-05-01"
+          ],
+          "sourceIds": [
+            "s12-a-0121"
+          ]
+        },
+        {
+          "afterSequence": 3,
+          "assertedIds": [
+            "asserted-05-01"
+          ],
+          "candidateIds": [
+            "candidate-05-01",
+            "candidate-05-02",
+            "candidate-05-03"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-05-01",
+            "activity-05-02",
+            "activity-05-03"
+          ],
+          "sourceIds": [
+            "s12-a-0121",
+            "s12-a-0122",
+            "s12-a-0123"
+          ]
+        },
+        {
+          "afterSequence": 5,
+          "assertedIds": [
+            "asserted-05-01"
+          ],
+          "candidateIds": [
+            "candidate-05-01",
+            "candidate-05-02",
+            "candidate-05-03",
+            "candidate-05-04",
+            "candidate-05-05"
+          ],
+          "contradictionIds": [
+            "contradiction-05"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-05-01",
+            "activity-05-02",
+            "activity-05-03",
+            "activity-05-04",
+            "activity-05-05"
+          ],
+          "sourceIds": [
+            "s12-a-0121",
+            "s12-a-0122",
+            "s12-a-0123",
+            "s12-a-0124",
+            "s12-a-0125"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0121",
+            "s12-a-0122"
+          ],
+          "expectedFactIds": [
+            "asserted-05-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-05",
+          "status": "answerable"
+        }
+      ],
+      "events": [
+        {
+          "caseId": "s12-a-0121",
+          "eventId": "event-01",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "updates",
+          "sequence": 1
+        },
+        {
+          "caseId": "s12-a-0122",
+          "eventId": "event-02",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "supersedes",
+          "sequence": 2
+        },
+        {
+          "caseId": "s12-a-0123",
+          "eventId": "event-03",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "contradicts",
+          "sequence": 3
+        },
+        {
+          "caseId": "s12-a-0124",
+          "eventId": "event-04",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "duplicates",
+          "sequence": 4
+        },
+        {
+          "caseId": "s12-a-0125",
+          "eventId": "event-05",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "creates",
+          "sequence": 5
+        }
+      ],
+      "journeyId": "J2",
+      "scenarioId": "s12-s-005",
+      "schemaVersion": "s12.scenario.v1",
+      "sourceManifest": [
+        "s12-a-0121",
+        "s12-a-0122",
+        "s12-a-0123",
+        "s12-a-0124",
+        "s12-a-0125"
+      ],
+      "split": "development"
+    },
+    {
+      "checkpoints": [
+        {
+          "afterSequence": 1,
+          "assertedIds": [],
+          "candidateIds": [
+            "candidate-06-01"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [],
+          "provenanceActivityIds": [
+            "activity-06-01"
+          ],
+          "sourceIds": [
+            "s12-a-0121"
+          ]
+        },
+        {
+          "afterSequence": 3,
+          "assertedIds": [
+            "asserted-06-01"
+          ],
+          "candidateIds": [
+            "candidate-06-01",
+            "candidate-06-02",
+            "candidate-06-03"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-06-01",
+            "activity-06-02",
+            "activity-06-03"
+          ],
+          "sourceIds": [
+            "s12-a-0121",
+            "s12-a-0122",
+            "s12-a-0123"
+          ]
+        },
+        {
+          "afterSequence": 5,
+          "assertedIds": [
+            "asserted-06-01"
+          ],
+          "candidateIds": [
+            "candidate-06-01",
+            "candidate-06-02",
+            "candidate-06-03",
+            "candidate-06-04",
+            "candidate-06-05"
+          ],
+          "contradictionIds": [
+            "contradiction-06"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-06-01",
+            "activity-06-02",
+            "activity-06-03",
+            "activity-06-04",
+            "activity-06-05"
+          ],
+          "sourceIds": [
+            "s12-a-0121",
+            "s12-a-0122",
+            "s12-a-0123",
+            "s12-a-0124",
+            "s12-a-0125"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0121",
+            "s12-a-0122"
+          ],
+          "expectedFactIds": [
+            "asserted-06-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-06",
+          "status": "answerable"
+        }
+      ],
+      "events": [
+        {
+          "caseId": "s12-a-0121",
+          "eventId": "event-01",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "supersedes",
+          "sequence": 1
+        },
+        {
+          "caseId": "s12-a-0122",
+          "eventId": "event-02",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "contradicts",
+          "sequence": 2
+        },
+        {
+          "caseId": "s12-a-0123",
+          "eventId": "event-03",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "duplicates",
+          "sequence": 3
+        },
+        {
+          "caseId": "s12-a-0124",
+          "eventId": "event-04",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "creates",
+          "sequence": 4
+        },
+        {
+          "caseId": "s12-a-0125",
+          "eventId": "event-05",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "updates",
+          "sequence": 5
+        }
+      ],
+      "journeyId": "J2",
+      "scenarioId": "s12-s-006",
+      "schemaVersion": "s12.scenario.v1",
+      "sourceManifest": [
+        "s12-a-0121",
+        "s12-a-0122",
+        "s12-a-0123",
+        "s12-a-0124",
+        "s12-a-0125"
+      ],
+      "split": "development"
+    },
+    {
+      "checkpoints": [
+        {
+          "afterSequence": 1,
+          "assertedIds": [],
+          "candidateIds": [
+            "candidate-07-01"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [],
+          "provenanceActivityIds": [
+            "activity-07-01"
+          ],
+          "sourceIds": [
+            "s12-a-0151"
+          ]
+        },
+        {
+          "afterSequence": 3,
+          "assertedIds": [
+            "asserted-07-01"
+          ],
+          "candidateIds": [
+            "candidate-07-01",
+            "candidate-07-02",
+            "candidate-07-03"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-07-01",
+            "activity-07-02",
+            "activity-07-03"
+          ],
+          "sourceIds": [
+            "s12-a-0151",
+            "s12-a-0152",
+            "s12-a-0153"
+          ]
+        },
+        {
+          "afterSequence": 5,
+          "assertedIds": [
+            "asserted-07-01"
+          ],
+          "candidateIds": [
+            "candidate-07-01",
+            "candidate-07-02",
+            "candidate-07-03",
+            "candidate-07-04",
+            "candidate-07-05"
+          ],
+          "contradictionIds": [
+            "contradiction-07"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-07-01",
+            "activity-07-02",
+            "activity-07-03",
+            "activity-07-04",
+            "activity-07-05"
+          ],
+          "sourceIds": [
+            "s12-a-0151",
+            "s12-a-0152",
+            "s12-a-0153",
+            "s12-a-0154",
+            "s12-a-0155"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0151",
+            "s12-a-0152"
+          ],
+          "expectedFactIds": [
+            "asserted-07-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-07",
+          "status": "answerable"
+        }
+      ],
+      "events": [
+        {
+          "caseId": "s12-a-0151",
+          "eventId": "event-01",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "contradicts",
+          "sequence": 1
+        },
+        {
+          "caseId": "s12-a-0152",
+          "eventId": "event-02",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "duplicates",
+          "sequence": 2
+        },
+        {
+          "caseId": "s12-a-0153",
+          "eventId": "event-03",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "creates",
+          "sequence": 3
+        },
+        {
+          "caseId": "s12-a-0154",
+          "eventId": "event-04",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "updates",
+          "sequence": 4
+        },
+        {
+          "caseId": "s12-a-0155",
+          "eventId": "event-05",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "supersedes",
+          "sequence": 5
+        }
+      ],
+      "journeyId": "J3",
+      "scenarioId": "s12-s-007",
+      "schemaVersion": "s12.scenario.v1",
+      "sourceManifest": [
+        "s12-a-0151",
+        "s12-a-0152",
+        "s12-a-0153",
+        "s12-a-0154",
+        "s12-a-0155"
+      ],
+      "split": "development"
+    },
+    {
+      "checkpoints": [
+        {
+          "afterSequence": 1,
+          "assertedIds": [],
+          "candidateIds": [
+            "candidate-08-01"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [],
+          "provenanceActivityIds": [
+            "activity-08-01"
+          ],
+          "sourceIds": [
+            "s12-a-0151"
+          ]
+        },
+        {
+          "afterSequence": 3,
+          "assertedIds": [
+            "asserted-08-01"
+          ],
+          "candidateIds": [
+            "candidate-08-01",
+            "candidate-08-02",
+            "candidate-08-03"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-08-01",
+            "activity-08-02",
+            "activity-08-03"
+          ],
+          "sourceIds": [
+            "s12-a-0151",
+            "s12-a-0152",
+            "s12-a-0153"
+          ]
+        },
+        {
+          "afterSequence": 5,
+          "assertedIds": [
+            "asserted-08-01"
+          ],
+          "candidateIds": [
+            "candidate-08-01",
+            "candidate-08-02",
+            "candidate-08-03",
+            "candidate-08-04",
+            "candidate-08-05"
+          ],
+          "contradictionIds": [
+            "contradiction-08"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-08-01",
+            "activity-08-02",
+            "activity-08-03",
+            "activity-08-04",
+            "activity-08-05"
+          ],
+          "sourceIds": [
+            "s12-a-0151",
+            "s12-a-0152",
+            "s12-a-0153",
+            "s12-a-0154",
+            "s12-a-0155"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0151",
+            "s12-a-0152"
+          ],
+          "expectedFactIds": [
+            "asserted-08-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-08",
+          "status": "answerable"
+        }
+      ],
+      "events": [
+        {
+          "caseId": "s12-a-0151",
+          "eventId": "event-01",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "duplicates",
+          "sequence": 1
+        },
+        {
+          "caseId": "s12-a-0152",
+          "eventId": "event-02",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "creates",
+          "sequence": 2
+        },
+        {
+          "caseId": "s12-a-0153",
+          "eventId": "event-03",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "updates",
+          "sequence": 3
+        },
+        {
+          "caseId": "s12-a-0154",
+          "eventId": "event-04",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "supersedes",
+          "sequence": 4
+        },
+        {
+          "caseId": "s12-a-0155",
+          "eventId": "event-05",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "contradicts",
+          "sequence": 5
+        }
+      ],
+      "journeyId": "J3",
+      "scenarioId": "s12-s-008",
+      "schemaVersion": "s12.scenario.v1",
+      "sourceManifest": [
+        "s12-a-0151",
+        "s12-a-0152",
+        "s12-a-0153",
+        "s12-a-0154",
+        "s12-a-0155"
+      ],
+      "split": "development"
+    },
+    {
+      "checkpoints": [
+        {
+          "afterSequence": 1,
+          "assertedIds": [],
+          "candidateIds": [
+            "candidate-09-01"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [],
+          "provenanceActivityIds": [
+            "activity-09-01"
+          ],
+          "sourceIds": [
+            "s12-a-0151"
+          ]
+        },
+        {
+          "afterSequence": 3,
+          "assertedIds": [
+            "asserted-09-01"
+          ],
+          "candidateIds": [
+            "candidate-09-01",
+            "candidate-09-02",
+            "candidate-09-03"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-09-01",
+            "activity-09-02",
+            "activity-09-03"
+          ],
+          "sourceIds": [
+            "s12-a-0151",
+            "s12-a-0152",
+            "s12-a-0153"
+          ]
+        },
+        {
+          "afterSequence": 5,
+          "assertedIds": [
+            "asserted-09-01"
+          ],
+          "candidateIds": [
+            "candidate-09-01",
+            "candidate-09-02",
+            "candidate-09-03",
+            "candidate-09-04",
+            "candidate-09-05"
+          ],
+          "contradictionIds": [
+            "contradiction-09"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-09-01",
+            "activity-09-02",
+            "activity-09-03",
+            "activity-09-04",
+            "activity-09-05"
+          ],
+          "sourceIds": [
+            "s12-a-0151",
+            "s12-a-0152",
+            "s12-a-0153",
+            "s12-a-0154",
+            "s12-a-0155"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0151",
+            "s12-a-0152"
+          ],
+          "expectedFactIds": [
+            "asserted-09-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-09",
+          "status": "answerable"
+        }
+      ],
+      "events": [
+        {
+          "caseId": "s12-a-0151",
+          "eventId": "event-01",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "creates",
+          "sequence": 1
+        },
+        {
+          "caseId": "s12-a-0152",
+          "eventId": "event-02",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "updates",
+          "sequence": 2
+        },
+        {
+          "caseId": "s12-a-0153",
+          "eventId": "event-03",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "supersedes",
+          "sequence": 3
+        },
+        {
+          "caseId": "s12-a-0154",
+          "eventId": "event-04",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "contradicts",
+          "sequence": 4
+        },
+        {
+          "caseId": "s12-a-0155",
+          "eventId": "event-05",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "duplicates",
+          "sequence": 5
+        }
+      ],
+      "journeyId": "J3",
+      "scenarioId": "s12-s-009",
+      "schemaVersion": "s12.scenario.v1",
+      "sourceManifest": [
+        "s12-a-0151",
+        "s12-a-0152",
+        "s12-a-0153",
+        "s12-a-0154",
+        "s12-a-0155"
+      ],
+      "split": "development"
+    },
+    {
+      "checkpoints": [
+        {
+          "afterSequence": 1,
+          "assertedIds": [],
+          "candidateIds": [
+            "candidate-10-01"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [],
+          "provenanceActivityIds": [
+            "activity-10-01"
+          ],
+          "sourceIds": [
+            "s12-a-0176"
+          ]
+        },
+        {
+          "afterSequence": 3,
+          "assertedIds": [
+            "asserted-10-01"
+          ],
+          "candidateIds": [
+            "candidate-10-01",
+            "candidate-10-02",
+            "candidate-10-03"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-10-01",
+            "activity-10-02",
+            "activity-10-03"
+          ],
+          "sourceIds": [
+            "s12-a-0176",
+            "s12-a-0177",
+            "s12-a-0178"
+          ]
+        },
+        {
+          "afterSequence": 5,
+          "assertedIds": [
+            "asserted-10-01"
+          ],
+          "candidateIds": [
+            "candidate-10-01",
+            "candidate-10-02",
+            "candidate-10-03",
+            "candidate-10-04",
+            "candidate-10-05"
+          ],
+          "contradictionIds": [
+            "contradiction-10"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-10-01",
+            "activity-10-02",
+            "activity-10-03",
+            "activity-10-04",
+            "activity-10-05"
+          ],
+          "sourceIds": [
+            "s12-a-0176",
+            "s12-a-0177",
+            "s12-a-0178",
+            "s12-a-0179",
+            "s12-a-0180"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0176",
+            "s12-a-0177"
+          ],
+          "expectedFactIds": [
+            "asserted-10-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-10",
+          "status": "answerable"
+        }
+      ],
+      "events": [
+        {
+          "caseId": "s12-a-0176",
+          "eventId": "event-01",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "updates",
+          "sequence": 1
+        },
+        {
+          "caseId": "s12-a-0177",
+          "eventId": "event-02",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "supersedes",
+          "sequence": 2
+        },
+        {
+          "caseId": "s12-a-0178",
+          "eventId": "event-03",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "contradicts",
+          "sequence": 3
+        },
+        {
+          "caseId": "s12-a-0179",
+          "eventId": "event-04",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "duplicates",
+          "sequence": 4
+        },
+        {
+          "caseId": "s12-a-0180",
+          "eventId": "event-05",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "creates",
+          "sequence": 5
+        }
+      ],
+      "journeyId": "J4",
+      "scenarioId": "s12-s-010",
+      "schemaVersion": "s12.scenario.v1",
+      "sourceManifest": [
+        "s12-a-0176",
+        "s12-a-0177",
+        "s12-a-0178",
+        "s12-a-0179",
+        "s12-a-0180"
+      ],
+      "split": "development"
+    },
+    {
+      "checkpoints": [
+        {
+          "afterSequence": 1,
+          "assertedIds": [],
+          "candidateIds": [
+            "candidate-11-01"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [],
+          "provenanceActivityIds": [
+            "activity-11-01"
+          ],
+          "sourceIds": [
+            "s12-a-0176"
+          ]
+        },
+        {
+          "afterSequence": 3,
+          "assertedIds": [
+            "asserted-11-01"
+          ],
+          "candidateIds": [
+            "candidate-11-01",
+            "candidate-11-02",
+            "candidate-11-03"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-11-01",
+            "activity-11-02",
+            "activity-11-03"
+          ],
+          "sourceIds": [
+            "s12-a-0176",
+            "s12-a-0177",
+            "s12-a-0178"
+          ]
+        },
+        {
+          "afterSequence": 5,
+          "assertedIds": [
+            "asserted-11-01"
+          ],
+          "candidateIds": [
+            "candidate-11-01",
+            "candidate-11-02",
+            "candidate-11-03",
+            "candidate-11-04",
+            "candidate-11-05"
+          ],
+          "contradictionIds": [
+            "contradiction-11"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-11-01",
+            "activity-11-02",
+            "activity-11-03",
+            "activity-11-04",
+            "activity-11-05"
+          ],
+          "sourceIds": [
+            "s12-a-0176",
+            "s12-a-0177",
+            "s12-a-0178",
+            "s12-a-0179",
+            "s12-a-0180"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0176",
+            "s12-a-0177"
+          ],
+          "expectedFactIds": [
+            "asserted-11-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-11",
+          "status": "answerable"
+        }
+      ],
+      "events": [
+        {
+          "caseId": "s12-a-0176",
+          "eventId": "event-01",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "supersedes",
+          "sequence": 1
+        },
+        {
+          "caseId": "s12-a-0177",
+          "eventId": "event-02",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "contradicts",
+          "sequence": 2
+        },
+        {
+          "caseId": "s12-a-0178",
+          "eventId": "event-03",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "duplicates",
+          "sequence": 3
+        },
+        {
+          "caseId": "s12-a-0179",
+          "eventId": "event-04",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "creates",
+          "sequence": 4
+        },
+        {
+          "caseId": "s12-a-0180",
+          "eventId": "event-05",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "updates",
+          "sequence": 5
+        }
+      ],
+      "journeyId": "J4",
+      "scenarioId": "s12-s-011",
+      "schemaVersion": "s12.scenario.v1",
+      "sourceManifest": [
+        "s12-a-0176",
+        "s12-a-0177",
+        "s12-a-0178",
+        "s12-a-0179",
+        "s12-a-0180"
+      ],
+      "split": "development"
+    },
+    {
+      "checkpoints": [
+        {
+          "afterSequence": 1,
+          "assertedIds": [],
+          "candidateIds": [
+            "candidate-12-01"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [],
+          "provenanceActivityIds": [
+            "activity-12-01"
+          ],
+          "sourceIds": [
+            "s12-a-0176"
+          ]
+        },
+        {
+          "afterSequence": 3,
+          "assertedIds": [
+            "asserted-12-01"
+          ],
+          "candidateIds": [
+            "candidate-12-01",
+            "candidate-12-02",
+            "candidate-12-03"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-12-01",
+            "activity-12-02",
+            "activity-12-03"
+          ],
+          "sourceIds": [
+            "s12-a-0176",
+            "s12-a-0177",
+            "s12-a-0178"
+          ]
+        },
+        {
+          "afterSequence": 5,
+          "assertedIds": [
+            "asserted-12-01"
+          ],
+          "candidateIds": [
+            "candidate-12-01",
+            "candidate-12-02",
+            "candidate-12-03",
+            "candidate-12-04",
+            "candidate-12-05"
+          ],
+          "contradictionIds": [
+            "contradiction-12"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-12-01",
+            "activity-12-02",
+            "activity-12-03",
+            "activity-12-04",
+            "activity-12-05"
+          ],
+          "sourceIds": [
+            "s12-a-0176",
+            "s12-a-0177",
+            "s12-a-0178",
+            "s12-a-0179",
+            "s12-a-0180"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0176",
+            "s12-a-0177"
+          ],
+          "expectedFactIds": [
+            "asserted-12-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-12",
+          "status": "answerable"
+        }
+      ],
+      "events": [
+        {
+          "caseId": "s12-a-0176",
+          "eventId": "event-01",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "contradicts",
+          "sequence": 1
+        },
+        {
+          "caseId": "s12-a-0177",
+          "eventId": "event-02",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "duplicates",
+          "sequence": 2
+        },
+        {
+          "caseId": "s12-a-0178",
+          "eventId": "event-03",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "creates",
+          "sequence": 3
+        },
+        {
+          "caseId": "s12-a-0179",
+          "eventId": "event-04",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "updates",
+          "sequence": 4
+        },
+        {
+          "caseId": "s12-a-0180",
+          "eventId": "event-05",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "supersedes",
+          "sequence": 5
+        }
+      ],
+      "journeyId": "J4",
+      "scenarioId": "s12-s-012",
+      "schemaVersion": "s12.scenario.v1",
+      "sourceManifest": [
+        "s12-a-0176",
+        "s12-a-0177",
+        "s12-a-0178",
+        "s12-a-0179",
+        "s12-a-0180"
+      ],
+      "split": "development"
+    },
+    {
+      "checkpoints": [
+        {
+          "afterSequence": 1,
+          "assertedIds": [],
+          "candidateIds": [
+            "candidate-13-01"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [],
+          "provenanceActivityIds": [
+            "activity-13-01"
+          ],
+          "sourceIds": [
+            "s12-a-0216"
+          ]
+        },
+        {
+          "afterSequence": 3,
+          "assertedIds": [
+            "asserted-13-01"
+          ],
+          "candidateIds": [
+            "candidate-13-01",
+            "candidate-13-02",
+            "candidate-13-03"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-13-01",
+            "activity-13-02",
+            "activity-13-03"
+          ],
+          "sourceIds": [
+            "s12-a-0216",
+            "s12-a-0217",
+            "s12-a-0218"
+          ]
+        },
+        {
+          "afterSequence": 5,
+          "assertedIds": [
+            "asserted-13-01"
+          ],
+          "candidateIds": [
+            "candidate-13-01",
+            "candidate-13-02",
+            "candidate-13-03",
+            "candidate-13-04",
+            "candidate-13-05"
+          ],
+          "contradictionIds": [
+            "contradiction-13"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-13-01",
+            "activity-13-02",
+            "activity-13-03",
+            "activity-13-04",
+            "activity-13-05"
+          ],
+          "sourceIds": [
+            "s12-a-0216",
+            "s12-a-0217",
+            "s12-a-0218",
+            "s12-a-0219",
+            "s12-a-0220"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0216",
+            "s12-a-0217"
+          ],
+          "expectedFactIds": [
+            "asserted-13-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-13",
+          "status": "answerable"
+        }
+      ],
+      "events": [
+        {
+          "caseId": "s12-a-0216",
+          "eventId": "event-01",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "duplicates",
+          "sequence": 1
+        },
+        {
+          "caseId": "s12-a-0217",
+          "eventId": "event-02",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "creates",
+          "sequence": 2
+        },
+        {
+          "caseId": "s12-a-0218",
+          "eventId": "event-03",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "updates",
+          "sequence": 3
+        },
+        {
+          "caseId": "s12-a-0219",
+          "eventId": "event-04",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "supersedes",
+          "sequence": 4
+        },
+        {
+          "caseId": "s12-a-0220",
+          "eventId": "event-05",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "contradicts",
+          "sequence": 5
+        }
+      ],
+      "journeyId": "J5",
+      "scenarioId": "s12-s-013",
+      "schemaVersion": "s12.scenario.v1",
+      "sourceManifest": [
+        "s12-a-0216",
+        "s12-a-0217",
+        "s12-a-0218",
+        "s12-a-0219",
+        "s12-a-0220"
+      ],
+      "split": "validation"
+    },
+    {
+      "checkpoints": [
+        {
+          "afterSequence": 1,
+          "assertedIds": [],
+          "candidateIds": [
+            "candidate-14-01"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [],
+          "provenanceActivityIds": [
+            "activity-14-01"
+          ],
+          "sourceIds": [
+            "s12-a-0216"
+          ]
+        },
+        {
+          "afterSequence": 3,
+          "assertedIds": [
+            "asserted-14-01"
+          ],
+          "candidateIds": [
+            "candidate-14-01",
+            "candidate-14-02",
+            "candidate-14-03"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-14-01",
+            "activity-14-02",
+            "activity-14-03"
+          ],
+          "sourceIds": [
+            "s12-a-0216",
+            "s12-a-0217",
+            "s12-a-0218"
+          ]
+        },
+        {
+          "afterSequence": 5,
+          "assertedIds": [
+            "asserted-14-01"
+          ],
+          "candidateIds": [
+            "candidate-14-01",
+            "candidate-14-02",
+            "candidate-14-03",
+            "candidate-14-04",
+            "candidate-14-05"
+          ],
+          "contradictionIds": [
+            "contradiction-14"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-14-01",
+            "activity-14-02",
+            "activity-14-03",
+            "activity-14-04",
+            "activity-14-05"
+          ],
+          "sourceIds": [
+            "s12-a-0216",
+            "s12-a-0217",
+            "s12-a-0218",
+            "s12-a-0219",
+            "s12-a-0220"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0216",
+            "s12-a-0217"
+          ],
+          "expectedFactIds": [
+            "asserted-14-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-14",
+          "status": "answerable"
+        }
+      ],
+      "events": [
+        {
+          "caseId": "s12-a-0216",
+          "eventId": "event-01",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "creates",
+          "sequence": 1
+        },
+        {
+          "caseId": "s12-a-0217",
+          "eventId": "event-02",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "updates",
+          "sequence": 2
+        },
+        {
+          "caseId": "s12-a-0218",
+          "eventId": "event-03",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "supersedes",
+          "sequence": 3
+        },
+        {
+          "caseId": "s12-a-0219",
+          "eventId": "event-04",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "contradicts",
+          "sequence": 4
+        },
+        {
+          "caseId": "s12-a-0220",
+          "eventId": "event-05",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "duplicates",
+          "sequence": 5
+        }
+      ],
+      "journeyId": "J5",
+      "scenarioId": "s12-s-014",
+      "schemaVersion": "s12.scenario.v1",
+      "sourceManifest": [
+        "s12-a-0216",
+        "s12-a-0217",
+        "s12-a-0218",
+        "s12-a-0219",
+        "s12-a-0220"
+      ],
+      "split": "validation"
+    },
+    {
+      "checkpoints": [
+        {
+          "afterSequence": 1,
+          "assertedIds": [],
+          "candidateIds": [
+            "candidate-15-01"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [],
+          "provenanceActivityIds": [
+            "activity-15-01"
+          ],
+          "sourceIds": [
+            "s12-a-0216"
+          ]
+        },
+        {
+          "afterSequence": 3,
+          "assertedIds": [
+            "asserted-15-01"
+          ],
+          "candidateIds": [
+            "candidate-15-01",
+            "candidate-15-02",
+            "candidate-15-03"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-15-01",
+            "activity-15-02",
+            "activity-15-03"
+          ],
+          "sourceIds": [
+            "s12-a-0216",
+            "s12-a-0217",
+            "s12-a-0218"
+          ]
+        },
+        {
+          "afterSequence": 5,
+          "assertedIds": [
+            "asserted-15-01"
+          ],
+          "candidateIds": [
+            "candidate-15-01",
+            "candidate-15-02",
+            "candidate-15-03",
+            "candidate-15-04",
+            "candidate-15-05"
+          ],
+          "contradictionIds": [
+            "contradiction-15"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-15-01",
+            "activity-15-02",
+            "activity-15-03",
+            "activity-15-04",
+            "activity-15-05"
+          ],
+          "sourceIds": [
+            "s12-a-0216",
+            "s12-a-0217",
+            "s12-a-0218",
+            "s12-a-0219",
+            "s12-a-0220"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0216",
+            "s12-a-0217"
+          ],
+          "expectedFactIds": [
+            "asserted-15-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-15",
+          "status": "answerable"
+        }
+      ],
+      "events": [
+        {
+          "caseId": "s12-a-0216",
+          "eventId": "event-01",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "updates",
+          "sequence": 1
+        },
+        {
+          "caseId": "s12-a-0217",
+          "eventId": "event-02",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "supersedes",
+          "sequence": 2
+        },
+        {
+          "caseId": "s12-a-0218",
+          "eventId": "event-03",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "contradicts",
+          "sequence": 3
+        },
+        {
+          "caseId": "s12-a-0219",
+          "eventId": "event-04",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "duplicates",
+          "sequence": 4
+        },
+        {
+          "caseId": "s12-a-0220",
+          "eventId": "event-05",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "creates",
+          "sequence": 5
+        }
+      ],
+      "journeyId": "J5",
+      "scenarioId": "s12-s-015",
+      "schemaVersion": "s12.scenario.v1",
+      "sourceManifest": [
+        "s12-a-0216",
+        "s12-a-0217",
+        "s12-a-0218",
+        "s12-a-0219",
+        "s12-a-0220"
+      ],
+      "split": "validation"
+    },
+    {
+      "checkpoints": [
+        {
+          "afterSequence": 1,
+          "assertedIds": [],
+          "candidateIds": [
+            "candidate-16-01"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [],
+          "provenanceActivityIds": [
+            "activity-16-01"
+          ],
+          "sourceIds": [
+            "s12-a-0241"
+          ]
+        },
+        {
+          "afterSequence": 3,
+          "assertedIds": [
+            "asserted-16-01"
+          ],
+          "candidateIds": [
+            "candidate-16-01",
+            "candidate-16-02",
+            "candidate-16-03"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-16-01",
+            "activity-16-02",
+            "activity-16-03"
+          ],
+          "sourceIds": [
+            "s12-a-0241",
+            "s12-a-0242",
+            "s12-a-0243"
+          ]
+        },
+        {
+          "afterSequence": 5,
+          "assertedIds": [
+            "asserted-16-01"
+          ],
+          "candidateIds": [
+            "candidate-16-01",
+            "candidate-16-02",
+            "candidate-16-03",
+            "candidate-16-04",
+            "candidate-16-05"
+          ],
+          "contradictionIds": [
+            "contradiction-16"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-16-01",
+            "activity-16-02",
+            "activity-16-03",
+            "activity-16-04",
+            "activity-16-05"
+          ],
+          "sourceIds": [
+            "s12-a-0241",
+            "s12-a-0242",
+            "s12-a-0243",
+            "s12-a-0244",
+            "s12-a-0245"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0241",
+            "s12-a-0242"
+          ],
+          "expectedFactIds": [
+            "asserted-16-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-16",
+          "status": "answerable"
+        }
+      ],
+      "events": [
+        {
+          "caseId": "s12-a-0241",
+          "eventId": "event-01",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "supersedes",
+          "sequence": 1
+        },
+        {
+          "caseId": "s12-a-0242",
+          "eventId": "event-02",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "contradicts",
+          "sequence": 2
+        },
+        {
+          "caseId": "s12-a-0243",
+          "eventId": "event-03",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "duplicates",
+          "sequence": 3
+        },
+        {
+          "caseId": "s12-a-0244",
+          "eventId": "event-04",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "creates",
+          "sequence": 4
+        },
+        {
+          "caseId": "s12-a-0245",
+          "eventId": "event-05",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "updates",
+          "sequence": 5
+        }
+      ],
+      "journeyId": "J6",
+      "scenarioId": "s12-s-016",
+      "schemaVersion": "s12.scenario.v1",
+      "sourceManifest": [
+        "s12-a-0241",
+        "s12-a-0242",
+        "s12-a-0243",
+        "s12-a-0244",
+        "s12-a-0245"
+      ],
+      "split": "validation"
+    },
+    {
+      "checkpoints": [
+        {
+          "afterSequence": 1,
+          "assertedIds": [],
+          "candidateIds": [
+            "candidate-17-01"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [],
+          "provenanceActivityIds": [
+            "activity-17-01"
+          ],
+          "sourceIds": [
+            "s12-a-0241"
+          ]
+        },
+        {
+          "afterSequence": 3,
+          "assertedIds": [
+            "asserted-17-01"
+          ],
+          "candidateIds": [
+            "candidate-17-01",
+            "candidate-17-02",
+            "candidate-17-03"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-17-01",
+            "activity-17-02",
+            "activity-17-03"
+          ],
+          "sourceIds": [
+            "s12-a-0241",
+            "s12-a-0242",
+            "s12-a-0243"
+          ]
+        },
+        {
+          "afterSequence": 5,
+          "assertedIds": [
+            "asserted-17-01"
+          ],
+          "candidateIds": [
+            "candidate-17-01",
+            "candidate-17-02",
+            "candidate-17-03",
+            "candidate-17-04",
+            "candidate-17-05"
+          ],
+          "contradictionIds": [
+            "contradiction-17"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-17-01",
+            "activity-17-02",
+            "activity-17-03",
+            "activity-17-04",
+            "activity-17-05"
+          ],
+          "sourceIds": [
+            "s12-a-0241",
+            "s12-a-0242",
+            "s12-a-0243",
+            "s12-a-0244",
+            "s12-a-0245"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0241",
+            "s12-a-0242"
+          ],
+          "expectedFactIds": [
+            "asserted-17-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-17",
+          "status": "answerable"
+        }
+      ],
+      "events": [
+        {
+          "caseId": "s12-a-0241",
+          "eventId": "event-01",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "contradicts",
+          "sequence": 1
+        },
+        {
+          "caseId": "s12-a-0242",
+          "eventId": "event-02",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "duplicates",
+          "sequence": 2
+        },
+        {
+          "caseId": "s12-a-0243",
+          "eventId": "event-03",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "creates",
+          "sequence": 3
+        },
+        {
+          "caseId": "s12-a-0244",
+          "eventId": "event-04",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "updates",
+          "sequence": 4
+        },
+        {
+          "caseId": "s12-a-0245",
+          "eventId": "event-05",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "supersedes",
+          "sequence": 5
+        }
+      ],
+      "journeyId": "J6",
+      "scenarioId": "s12-s-017",
+      "schemaVersion": "s12.scenario.v1",
+      "sourceManifest": [
+        "s12-a-0241",
+        "s12-a-0242",
+        "s12-a-0243",
+        "s12-a-0244",
+        "s12-a-0245"
+      ],
+      "split": "validation"
+    },
+    {
+      "checkpoints": [
+        {
+          "afterSequence": 1,
+          "assertedIds": [],
+          "candidateIds": [
+            "candidate-18-01"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [],
+          "provenanceActivityIds": [
+            "activity-18-01"
+          ],
+          "sourceIds": [
+            "s12-a-0241"
+          ]
+        },
+        {
+          "afterSequence": 3,
+          "assertedIds": [
+            "asserted-18-01"
+          ],
+          "candidateIds": [
+            "candidate-18-01",
+            "candidate-18-02",
+            "candidate-18-03"
+          ],
+          "contradictionIds": [],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-18-01",
+            "activity-18-02",
+            "activity-18-03"
+          ],
+          "sourceIds": [
+            "s12-a-0241",
+            "s12-a-0242",
+            "s12-a-0243"
+          ]
+        },
+        {
+          "afterSequence": 5,
+          "assertedIds": [
+            "asserted-18-01"
+          ],
+          "candidateIds": [
+            "candidate-18-01",
+            "candidate-18-02",
+            "candidate-18-03",
+            "candidate-18-04",
+            "candidate-18-05"
+          ],
+          "contradictionIds": [
+            "contradiction-18"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-18-01",
+            "activity-18-02",
+            "activity-18-03",
+            "activity-18-04",
+            "activity-18-05"
+          ],
+          "sourceIds": [
+            "s12-a-0241",
+            "s12-a-0242",
+            "s12-a-0243",
+            "s12-a-0244",
+            "s12-a-0245"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0241",
+            "s12-a-0242"
+          ],
+          "expectedFactIds": [
+            "asserted-18-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-18",
+          "status": "answerable"
+        }
+      ],
+      "events": [
+        {
+          "caseId": "s12-a-0241",
+          "eventId": "event-01",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "duplicates",
+          "sequence": 1
+        },
+        {
+          "caseId": "s12-a-0242",
+          "eventId": "event-02",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "creates",
+          "sequence": 2
+        },
+        {
+          "caseId": "s12-a-0243",
+          "eventId": "event-03",
+          "expectedReview": {
+            "correctionClass": "unchanged",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "updates",
+          "sequence": 3
+        },
+        {
+          "caseId": "s12-a-0244",
+          "eventId": "event-04",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "confirmed"
+          },
+          "expectedTemporalEffect": "supersedes",
+          "sequence": 4
+        },
+        {
+          "caseId": "s12-a-0245",
+          "eventId": "event-05",
+          "expectedReview": {
+            "correctionClass": "minor-semantic",
+            "disposition": "deferred"
+          },
+          "expectedTemporalEffect": "contradicts",
+          "sequence": 5
+        }
+      ],
+      "journeyId": "J6",
+      "scenarioId": "s12-s-018",
+      "schemaVersion": "s12.scenario.v1",
+      "sourceManifest": [
+        "s12-a-0241",
+        "s12-a-0242",
+        "s12-a-0243",
+        "s12-a-0244",
+        "s12-a-0245"
+      ],
+      "split": "validation"
+    }
+  ],
+  "status": "OWNER_DELEGATED_AI_REVIEW_FIXTURE_BOUND_TO_ATOMIC_V2"
+}

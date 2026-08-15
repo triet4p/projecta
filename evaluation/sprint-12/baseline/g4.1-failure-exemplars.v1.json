@@ -1,0 +1,689 @@
+{
+  "baselineReportDigest": "sha256:d3d94e4b7b822a55fc271b9d56191a7d2ec5ec09ab7cebd095ad144423b45c54",
+  "credentialsPersisted": false,
+  "entries": [
+    {
+      "caseId": "s12-a-0105",
+      "diagnosticClasses": [
+        "no_reproducible_contract_failure"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": "The note is too ambiguous and contains no clearly supported proposal; the repeated phrases do not provide sufficient evidence for any typed entity.",
+        "entities": [],
+        "links": [],
+        "relations": []
+      },
+      "reportedFailureClass": "schema_invalid",
+      "slice": "duplicate-evidence",
+      "sourceDigest": "sha256:ba924e828cbb2994fb888065af1ab5f5fc85f8adec6a00f0d9fd53d0348d6b75",
+      "sourceText": "Repeated source: checkout task 105 triển khai checkout requirement 105. Evidence marker da; distinguishing phrase da da da.",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0106",
+      "diagnosticClasses": [
+        "no_reproducible_contract_failure"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": "The note is too ambiguous to support any typed proposal; it references a requirement but lacks sufficient context and is mixed with unclear marker text.",
+        "entities": [],
+        "links": [],
+        "relations": []
+      },
+      "reportedFailureClass": "schema_invalid",
+      "slice": "contradiction-or-supersession",
+      "sourceDigest": "sha256:1383cde394c2ab76eb8e9b8ef0fa64c49a4530355206c4d4f32effe91e4c3637",
+      "sourceText": "The new J1 requirement 106 supersedes the previous requirement. Evidence marker db; distinguishing phrase db db db.",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0107",
+      "diagnosticClasses": [
+        "entity_evidence_text_mismatch",
+        "normalizer_invalid_evidence"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "confidence": 0.95,
+            "evidence": {
+              "endOffset": 66,
+              "startOffset": 40,
+              "text": "use the new delivery rule"
+            },
+            "label": "use the new delivery rule",
+            "type": "Decision"
+          }
+        ],
+        "links": [],
+        "relations": []
+      },
+      "reportedFailureClass": "invalid_evidence",
+      "slice": "temporal-change",
+      "sourceDigest": "sha256:9100588cc3a4ed616ee49e22190cda2774c76d575a3af3fb86919613646b4764",
+      "sourceText": "From review 107, the J1 team decided to use the new delivery rule. Evidence marker dc; distinguishing phrase dc dc dc.",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0113",
+      "diagnosticClasses": [
+        "no_reproducible_contract_failure"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": "The note mentions 'security question 113' and 'release task 113' but neither is explicitly declared as a known same-project entity in the context, and the extraction does not meet the criteria for any of the allowed entity types; the evidence is ambiguous and insufficient to support a proposal.",
+        "entities": [],
+        "links": [],
+        "relations": []
+      },
+      "reportedFailureClass": "invalid_evidence",
+      "slice": "duplicate-evidence",
+      "sourceDigest": "sha256:60c391984d83caaf7fe53b7276e40f8f281315cbed04780e5540922ded998c64",
+      "sourceText": "Repeated source: security question 113 đang chặn release task 113. Evidence marker di; distinguishing phrase di di di.",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0114",
+      "diagnosticClasses": [
+        "json_or_schema_shape"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "confidence": 0.9,
+            "evidence": {
+              "endOffset": 23,
+              "startOffset": 4,
+              "text": "J1 requirement 114"
+            },
+            "label": "J1 requirement 114",
+            "type": "Requirement"
+          },
+          {
+            "confidence": 0.9,
+            "evidence": {
+              "endOffset": 63,
+              "startOffset": 38,
+              "text": "the previous requirement"
+            },
+            "label": "the previous requirement",
+            "type": "Requirement"
+          }
+        ],
+        "links": [],
+        "relations": [
+          {
+            "confidence": 0.9,
+            "evidence": {
+              "endOffset": 63,
+              "startOffset": 4,
+              "text": "J1 requirement 114 supersedes the previous requirement"
+            },
+            "predicate": "supersedes",
+            "sourceEntityId": "requirement_114",
+            "targetEntityId": "previous_requirement"
+          }
+        ]
+      },
+      "reportedFailureClass": "schema_invalid",
+      "slice": "contradiction-or-supersession",
+      "sourceDigest": "sha256:4ce86d2b5e579ff5c29ec40f0ba89f1217032fce1c09502dc1ceaf859815f257",
+      "sourceText": "The new J1 requirement 114 supersedes the previous requirement. Evidence marker dj; distinguishing phrase dj dj dj.",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0116",
+      "diagnosticClasses": [
+        "entity_evidence_text_mismatch",
+        "normalizer_invalid_evidence"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "confidence": 0.9,
+            "evidence": {
+              "endOffset": 55,
+              "startOffset": 0,
+              "text": "Giải pháp 116 phải chạy trong 2 GB RAM"
+            },
+            "label": "phải chạy trong 2 GB RAM",
+            "type": "Constraint"
+          }
+        ],
+        "links": [],
+        "relations": []
+      },
+      "reportedFailureClass": "invalid_evidence",
+      "slice": "unicode-and-noisy-text",
+      "sourceDigest": "sha256:a1eac9a493a5b6fe8112c4f4b90eec7eeed85eea66e25a57b204f74d635f4607",
+      "sourceText": "Giải pháp 116 phải chạy trong 2 GB RAM. Typo: chekout ✅ Evidence marker dl; distinguishing phrase dl dl dl.",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0122",
+      "diagnosticClasses": [
+        "json_or_schema_shape"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "confidence": 0.9,
+            "evidence": {
+              "endOffset": 27,
+              "startOffset": 4,
+              "text": "new J2 requirement 122"
+            },
+            "label": "new J2 requirement 122",
+            "type": "Requirement"
+          },
+          {
+            "confidence": 0.8,
+            "evidence": {
+              "endOffset": 70,
+              "startOffset": 50,
+              "text": "previous requirement"
+            },
+            "label": "previous requirement",
+            "type": "Requirement"
+          }
+        ],
+        "links": [],
+        "relations": [
+          {
+            "confidence": 0.85,
+            "evidence": {
+              "endOffset": 70,
+              "startOffset": 4,
+              "text": "new J2 requirement 122 supersedes the previous requirement"
+            },
+            "predicate": "supersedes",
+            "sourceEntityId": "entity1",
+            "targetEntityId": "entity2"
+          }
+        ]
+      },
+      "reportedFailureClass": "schema_invalid",
+      "slice": "contradiction-or-supersession",
+      "sourceDigest": "sha256:be6d0ec65639d88825f7f9551410218fcc1e7a7e790d910195c622d2c8893151",
+      "sourceText": "The new J2 requirement 122 supersedes the previous requirement. Evidence marker dr; distinguishing phrase dr dr dr.",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0130",
+      "diagnosticClasses": [
+        "no_reproducible_contract_failure"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": "Insufficient evidence: the note is ambiguous and contains markers ('dz') with no clear proposal context, and the requirement mention is not a supported proposal.",
+        "entities": [],
+        "links": [],
+        "relations": []
+      },
+      "reportedFailureClass": "invalid_evidence",
+      "slice": "contradiction-or-supersession",
+      "sourceDigest": "sha256:6c6c5f68829bada46dfd93455e592aa6f6f337424d3ff22be3f8a29ec94429b5",
+      "sourceText": "The new J2 requirement 130 supersedes the previous requirement. Evidence marker dz; distinguishing phrase dz dz dz.",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0138",
+      "diagnosticClasses": [
+        "no_reproducible_contract_failure"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": "The note mentions 'requirement 138' and 'the previous requirement' but lacks specific, actionable content; the text is too ambiguous to support a typed proposal.",
+        "entities": [],
+        "links": [],
+        "relations": []
+      },
+      "reportedFailureClass": "invalid_evidence",
+      "slice": "contradiction-or-supersession",
+      "sourceDigest": "sha256:6afd14a11d0c052b33d1749af0eb714564904afdaf298167838f81c0fee25f0c",
+      "sourceText": "The new J2 requirement 138 supersedes the previous requirement. Evidence marker eh; distinguishing phrase eh eh eh.",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0153",
+      "diagnosticClasses": [
+        "entity_evidence_text_mismatch",
+        "normalizer_invalid_evidence",
+        "relation_endpoint_unrepresentable_without_bounded_context",
+        "relation_evidence_text_mismatch"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "confidence": 1.0,
+            "evidence": {
+              "endOffset": 19,
+              "startOffset": 0,
+              "text": "migration task 153"
+            },
+            "label": "migration task 153",
+            "type": "Task"
+          },
+          {
+            "confidence": 1.0,
+            "evidence": {
+              "endOffset": 58,
+              "startOffset": 26,
+              "text": "maintenance-window constraint 153"
+            },
+            "label": "maintenance-window constraint 153",
+            "type": "Constraint"
+          }
+        ],
+        "links": [],
+        "relations": [
+          {
+            "confidence": 1.0,
+            "evidence": {
+              "endOffset": 58,
+              "startOffset": 0,
+              "text": "migration task 153 bị ràng buộc bởi maintenance-window constraint 153"
+            },
+            "predicate": "constrainedBy",
+            "sourceEntityId": "entity_0",
+            "targetEntityId": "entity_1"
+          }
+        ]
+      },
+      "reportedFailureClass": "schema_invalid",
+      "slice": "duplicate-evidence",
+      "sourceDigest": "sha256:a430a450319c09b5cd12df416dbbdaf720297a0a01a5292b38bd5440be72c924",
+      "sourceText": "Repeated source: migration task 153 bị ràng buộc bởi maintenance-window constraint 153. Evidence marker ew; distinguishing phrase ew ew ew.",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0161",
+      "diagnosticClasses": [
+        "no_reproducible_contract_failure"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": "The note is too ambiguous: the 'checkout task 161' and 'checkout requirement 161' mentions refer to bounded context entities that cannot be linked here, and the rest of the text ('Evidence marker fe; distinguishing phrase fe fe fe.') is generic and does not support any typed proposal.",
+        "entities": [],
+        "links": [],
+        "relations": []
+      },
+      "reportedFailureClass": "invalid_evidence",
+      "slice": "duplicate-evidence",
+      "sourceDigest": "sha256:4650a0c98d7beeaaa73ff3fe9fdacb6b61db48ca469a31ab5c8a691d2f5f6dbb",
+      "sourceText": "Repeated source: checkout task 161 triển khai checkout requirement 161. Evidence marker fe; distinguishing phrase fe fe fe.",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0162",
+      "diagnosticClasses": [
+        "entity_evidence_text_mismatch",
+        "normalizer_invalid_evidence"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "confidence": 1.0,
+            "evidence": {
+              "endOffset": 66,
+              "startOffset": 11,
+              "text": "requirement 162 supersedes the previous requirement"
+            },
+            "label": "requirement 162 supersedes the previous requirement",
+            "type": "Requirement"
+          }
+        ],
+        "links": [],
+        "relations": []
+      },
+      "reportedFailureClass": "invalid_evidence",
+      "slice": "contradiction-or-supersession",
+      "sourceDigest": "sha256:edb28221e4412b88eb068bbc691d134e6df07f5f6d9fa608f3b027871ed1c212",
+      "sourceText": "The new J3 requirement 162 supersedes the previous requirement. Evidence marker ff; distinguishing phrase ff ff ff.",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0169",
+      "diagnosticClasses": [
+        "no_reproducible_contract_failure"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": "The note is ambiguous and contains untrusted instructions-like content ('Repeated source', 'Evidence marker fm; distinguishing phrase fm fm fm.') that cannot support any typed proposal.",
+        "entities": [],
+        "links": [],
+        "relations": []
+      },
+      "reportedFailureClass": "invalid_evidence",
+      "slice": "duplicate-evidence",
+      "sourceDigest": "sha256:4bc2529e19d5787f78085771a396ade9a81a935012a127395b0af2fdf807a6e6",
+      "sourceText": "Repeated source: security question 169 đang chặn release task 169. Evidence marker fm; distinguishing phrase fm fm fm.",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0177",
+      "diagnosticClasses": [
+        "no_reproducible_contract_failure"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": "The note appears to contain untrusted instructions or ambiguous content with repeated markers, not a clear proposal.",
+        "entities": [],
+        "links": [],
+        "relations": []
+      },
+      "reportedFailureClass": "invalid_evidence",
+      "slice": "duplicate-evidence",
+      "sourceDigest": "sha256:e48a73f2a6e25938e5d888a5a8b7d7849069521a510b6a7f937447a462c947e4",
+      "sourceText": "Repeated source: deployment task 177 phụ thuộc vào platform requirement 177. Evidence marker fu; distinguishing phrase fu fu fu.",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0178",
+      "diagnosticClasses": [
+        "no_reproducible_contract_failure"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": "Note is too ambiguous: mentions 'requirement 178' and 'previous requirement' without clear definitions or context, and evidence marker 'fv' is not meaningful.",
+        "entities": [],
+        "links": [],
+        "relations": []
+      },
+      "reportedFailureClass": "schema_invalid",
+      "slice": "contradiction-or-supersession",
+      "sourceDigest": "sha256:7b81c89a928279ffc5e49c0dc7f15b3b315673e87914b624c5ce78603c001891",
+      "sourceText": "The new J4 requirement 178 supersedes the previous requirement. Evidence marker fv; distinguishing phrase fv fv fv.",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0186",
+      "diagnosticClasses": [
+        "json_or_schema_shape"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "confidence": 0.9,
+            "evidence": {
+              "endOffset": 27,
+              "startOffset": 4,
+              "text": "new J4 requirement 186"
+            },
+            "label": "new J4 requirement 186",
+            "type": "Requirement"
+          },
+          {
+            "confidence": 0.9,
+            "evidence": {
+              "endOffset": 52,
+              "startOffset": 31,
+              "text": "previous requirement"
+            },
+            "label": "previous requirement",
+            "type": "Requirement"
+          }
+        ],
+        "links": [],
+        "relations": [
+          {
+            "confidence": 0.9,
+            "evidence": {
+              "endOffset": 52,
+              "startOffset": 4,
+              "text": "new J4 requirement 186 supersedes the previous requirement"
+            },
+            "predicate": "supersedes",
+            "sourceEntityId": "e1",
+            "targetEntityId": "e2"
+          }
+        ]
+      },
+      "reportedFailureClass": "invalid_evidence",
+      "slice": "contradiction-or-supersession",
+      "sourceDigest": "sha256:ad1a5f6e79709dab223655a0b7f2edaba2296a3eb611b2d5c50d0e3e7351618a",
+      "sourceText": "The new J4 requirement 186 supersedes the previous requirement. Evidence marker gd; distinguishing phrase gd gd gd.",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0202",
+      "diagnosticClasses": [
+        "no_reproducible_contract_failure"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": "The note is too ambiguous to support any typed proposal; it mentions a requirement without clear evidence of a specific, extractable entity or relation.",
+        "entities": [],
+        "links": [],
+        "relations": []
+      },
+      "reportedFailureClass": "invalid_evidence",
+      "slice": "contradiction-or-supersession",
+      "sourceDigest": "sha256:d64b0490ae32aace5e3a6615841ff216dc776078cef07a452dd188373f83db9c",
+      "sourceText": "The new J5 requirement 202 supersedes the previous requirement. Evidence marker gt; distinguishing phrase gt gt gt.",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0226",
+      "diagnosticClasses": [
+        "entity_evidence_text_mismatch",
+        "normalizer_invalid_evidence"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "confidence": 0.9,
+            "evidence": {
+              "endOffset": 28,
+              "startOffset": 4,
+              "text": "new J6 requirement 226"
+            },
+            "label": "new J6 requirement 226",
+            "type": "Requirement"
+          }
+        ],
+        "links": [],
+        "relations": []
+      },
+      "reportedFailureClass": "invalid_evidence",
+      "slice": "contradiction-or-supersession",
+      "sourceDigest": "sha256:901ac910517e1cd899da2cfdbd18a3fd40d7014bf28ebc262ca612cf79210495",
+      "sourceText": "The new J6 requirement 226 supersedes the previous requirement. Evidence marker hr; distinguishing phrase hr hr hr.",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0234",
+      "diagnosticClasses": [
+        "entity_evidence_text_mismatch",
+        "normalizer_invalid_evidence"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "confidence": 0.9,
+            "evidence": {
+              "endOffset": 33,
+              "startOffset": 4,
+              "text": "the new J6 requirement 234"
+            },
+            "label": "the new J6 requirement 234",
+            "type": "Requirement"
+          },
+          {
+            "confidence": 0.9,
+            "evidence": {
+              "endOffset": 70,
+              "startOffset": 47,
+              "text": "the previous requirement"
+            },
+            "label": "the previous requirement",
+            "type": "Requirement"
+          }
+        ],
+        "links": [],
+        "relations": []
+      },
+      "reportedFailureClass": "invalid_evidence",
+      "slice": "contradiction-or-supersession",
+      "sourceDigest": "sha256:cb1a92c54bf0b4131af083bfec8fe9f7ae8d80ba0752193a6be0d47f4dead9fd",
+      "sourceText": "The new J6 requirement 234 supersedes the previous requirement. Evidence marker hz; distinguishing phrase hz hz hz.",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0257",
+      "diagnosticClasses": [
+        "no_reproducible_contract_failure"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": "The note contains only untrusted instructions and a distinguishing marker, no supported proposal can be extracted.",
+        "entities": [],
+        "links": [],
+        "relations": []
+      },
+      "reportedFailureClass": "invalid_evidence",
+      "slice": "duplicate-evidence",
+      "sourceDigest": "sha256:045b4306b29f2187e55ab029857ca2b610e71cd66e26cd7bb5b8feeec55bd2d5",
+      "sourceText": "Repeated source: scope decision-257 は次を解決する: scope question-257. Evidence marker iw; distinguishing phrase iw iw iw.",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0265",
+      "diagnosticClasses": [
+        "no_reproducible_contract_failure"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": "The note contains only untrusted instructions and no specific proposal about a same-project entity.",
+        "entities": [],
+        "links": [],
+        "relations": []
+      },
+      "reportedFailureClass": "invalid_evidence",
+      "slice": "duplicate-evidence",
+      "sourceDigest": "sha256:171223cfe1682680b6042946d557fc66d13a9f96145dc6def47bcec770d979aa",
+      "sourceText": "Repeated source: migration task-265 は次の制約を受ける: maintenance-window constraint-265. Evidence marker je; distinguishing phrase je je je.",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0266",
+      "diagnosticClasses": [
+        "entity_evidence_text_mismatch",
+        "normalizer_invalid_evidence"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "confidence": 0.9,
+            "evidence": {
+              "endOffset": 24,
+              "startOffset": 9,
+              "text": "requirement 266"
+            },
+            "label": "requirement 266",
+            "type": "Requirement"
+          }
+        ],
+        "links": [],
+        "relations": []
+      },
+      "reportedFailureClass": "schema_invalid",
+      "slice": "contradiction-or-supersession",
+      "sourceDigest": "sha256:85ff64a397e6a9f48b59aa6c2e9084c8f10d20cca6eee3dfd17c9bd27bf962fd",
+      "sourceText": "The new J7 requirement 266 supersedes the previous requirement. Evidence marker jf; distinguishing phrase jf jf jf.",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0289",
+      "diagnosticClasses": [
+        "entity_evidence_text_mismatch",
+        "normalizer_invalid_evidence",
+        "relation_endpoint_unrepresentable_without_bounded_context",
+        "relation_evidence_text_mismatch"
+      ],
+      "parseStatus": "json",
+      "providerPayload": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "confidence": 0.95,
+            "evidence": {
+              "endOffset": 20,
+              "startOffset": 0,
+              "text": "deployment task 289"
+            },
+            "label": "deployment task 289",
+            "type": "Task"
+          },
+          {
+            "confidence": 0.95,
+            "evidence": {
+              "endOffset": 53,
+              "startOffset": 25,
+              "text": "cho platform requirement 289"
+            },
+            "label": "cho platform requirement 289",
+            "type": "Requirement"
+          }
+        ],
+        "links": [],
+        "relations": [
+          {
+            "confidence": 0.95,
+            "evidence": {
+              "endOffset": 32,
+              "startOffset": 21,
+              "text": "depends on"
+            },
+            "predicate": "dependsOn",
+            "sourceEntityId": "entity-0",
+            "targetEntityId": "entity-1"
+          }
+        ]
+      },
+      "reportedFailureClass": "invalid_evidence",
+      "slice": "duplicate-evidence",
+      "sourceDigest": "sha256:be839cc025bf0170a14a00d82bb04340b6d77996155aa5177c5631a126e50a10",
+      "sourceText": "Repeated source: deployment task 289 depends on cho platform requirement 289. Evidence marker kc; distinguishing phrase kc kc kc.",
+      "split": "development"
+    }
+  ],
+  "humanEvidence": false,
+  "rawSensitiveDataIncluded": false,
+  "samplePolicy": {
+    "invalidEvidenceSampleCount": 16,
+    "schemaInvalidCount": 7,
+    "strata": [
+      "temporal-change",
+      "unicode-and-noisy-text",
+      "contradiction-or-supersession",
+      "duplicate-evidence"
+    ],
+    "totalCaseCount": 23
+  },
+  "schemaVersion": "s12.g4.1.failure-exemplars.v1",
+  "status": "G4_1_DIAGNOSTICS_COMPLETE",
+  "syntheticOnly": true
+}

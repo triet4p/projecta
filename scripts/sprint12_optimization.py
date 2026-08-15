@@ -18,7 +18,7 @@ JSONValue: TypeAlias = (
 )
 JsonObject: TypeAlias = dict[str, JSONValue]
 EVALUATOR_VERSION = "s12.evaluator.v1"
-REGISTRY_VERSION = "s12.experiment-registry.v1"
+REGISTRY_VERSION = "s12.experiment-registry.v2"
 DIMENSIONS = ("prompt", "context", "agent-workflow", "tool", "model")
 REQUIRED_PRESERVED_ARTIFACTS = (
     "dataset",
@@ -107,7 +107,9 @@ def validate_experiment(spec: Mapping[str, object]) -> None:
     status = _string(spec["status"], f"{experiment_id}.status")
     if status not in {
         "REGISTERED",
+        "COMPLETED_STABILITY_FAILED",
         "NOT_EXECUTED_BASELINE_UNAVAILABLE",
+        "NOT_EXECUTED_BASELINE_INVALID",
         "EXECUTED",
         "REJECTED",
         "SELECTED",
@@ -141,12 +143,26 @@ def compare_results(
     candidate: Mapping[str, object],
     metric_target: Mapping[str, object],
 ) -> JsonObject:
-    """Compare results only when both runs are real and hard invariants pass."""
+    """Compare an accounted baseline against a candidate that passes invariants."""
 
-    if baseline.get("status") != "SCORED" or candidate.get("status") != "SCORED":
+    if baseline.get("status") not in {
+        "SCORED",
+        "RUNTIME_BACKED_SCORED",
+        "RUNTIME_BACKED_WITH_FAILURES",
+    } or not _baseline_is_accounted(baseline):
+        status = (
+            "REJECTED_BASELINE_INVALID"
+            if str(baseline.get("status", "")).startswith("RUNTIME_BACKED")
+            else "NOT_EXECUTED_BASELINE_UNAVAILABLE"
+        )
+        return {
+            "status": status,
+            "reason": "baseline must be runtime-backed and fully accounted before comparison",
+        }
+    if candidate.get("status") not in {"SCORED", "RUNTIME_BACKED_SCORED"}:
         return {
             "status": "NOT_EXECUTED_BASELINE_UNAVAILABLE",
-            "reason": "baseline and candidate must both be scored",
+            "reason": "candidate must be runtime-backed and scored before comparison",
         }
     baseline_invariants = _object(
         baseline.get("hardInvariants"), "baseline.hardInvariants"
@@ -154,6 +170,15 @@ def compare_results(
     candidate_invariants = _object(
         candidate.get("hardInvariants"), "candidate.hardInvariants"
     )
+    if candidate_invariants.get("status") not in {None, "PASS"} or candidate.get(
+        "failureCount", 0
+    ):
+        return {
+            "status": "REJECTED_CANDIDATE_HARD_INVARIANT",
+            "reason": "candidate must have zero failures and passing hard invariants",
+            "hardInvariants": candidate_invariants,
+            "failureCount": candidate.get("failureCount", 0),
+        }
     invariant_result = hard_invariant_regression(
         baseline_invariants, candidate_invariants
     )
@@ -259,6 +284,7 @@ def build_default_registry(baseline_report: Mapping[str, object]) -> JsonObject:
     dataset_digest = _string(
         baseline_report.get("manifestDigest"), "baseline manifestDigest"
     )
+    baseline_gate = _baseline_gate(baseline_report)
     experiments: list[JsonObject] = []
     for number, dimension in enumerate(DIMENSIONS, start=1):
         candidate_config = {
@@ -283,12 +309,12 @@ def build_default_registry(baseline_report: Mapping[str, object]) -> JsonObject:
                 "changedArtifacts": [dimension],
                 "preservedArtifacts": list(REQUIRED_PRESERVED_ARTIFACTS),
                 "datasetManifestDigest": dataset_digest,
-                "status": "NOT_EXECUTED_BASELINE_UNAVAILABLE",
+                "status": baseline_gate[0],
             }
         )
     registry: JsonObject = {
         "registryVersion": REGISTRY_VERSION,
-        "status": "G5_PREPARATION_BLOCKED_BASELINE_UNAVAILABLE",
+        "status": baseline_gate[1],
         "evaluatorVersion": EVALUATOR_VERSION,
         "permittedSplits": ["development"],
         "heldOutInspected": False,
@@ -299,6 +325,43 @@ def build_default_registry(baseline_report: Mapping[str, object]) -> JsonObject:
     return registry
 
 
+def _baseline_gate(baseline_report: Mapping[str, object]) -> tuple[str, str]:
+    """Open development when runtime accounting is complete, even if quality fails."""
+
+    status = str(baseline_report.get("status", ""))
+    if status == "NOT_EXECUTED_MISSING_RUNTIME_CONFIGURATION":
+        return (
+            "NOT_EXECUTED_BASELINE_UNAVAILABLE",
+            "G5_PREPARATION_BLOCKED_BASELINE_UNAVAILABLE",
+        )
+    if status.startswith("RUNTIME_BACKED"):
+        if _baseline_is_accounted(baseline_report):
+            return "REGISTERED", "G5_PREPARATION_DEVELOPMENT_OPEN"
+        return (
+            "NOT_EXECUTED_BASELINE_INVALID",
+            "G5_PREPARATION_BLOCKED_BASELINE_INVALID",
+        )
+    return (
+        "NOT_EXECUTED_BASELINE_UNAVAILABLE",
+        "G5_PREPARATION_BLOCKED_BASELINE_UNAVAILABLE",
+    )
+
+
+def _baseline_is_accounted(baseline_report: Mapping[str, object]) -> bool:
+    """Require every declared case ID to have an explicit scored/missing row."""
+
+    case_count = baseline_report.get("caseCount")
+    coverage = baseline_report.get("caseCoverage")
+    omitted = baseline_report.get("omittedCaseCount", 0)
+    return (
+        isinstance(case_count, int)
+        and case_count > 0
+        and isinstance(coverage, list)
+        and len(coverage) == case_count
+        and omitted == 0
+    )
+
+
 def build_g5_packet(
     registry: Mapping[str, object], baseline_report: Mapping[str, object]
 ) -> JsonObject:
@@ -306,17 +369,35 @@ def build_g5_packet(
 
     validate_registry(registry)
     baseline_status = baseline_report.get("status")
+    experiment_status, packet_status = _baseline_gate(baseline_report)
+    if experiment_status == "NOT_EXECUTED_BASELINE_UNAVAILABLE":
+        comparison_status = "NOT_EXECUTED_BASELINE_UNAVAILABLE"
+        comparison_reason = "G4 baseline is not runtime-backed"
+        invariant_status = "NOT_EVALUATED_BASELINE_UNAVAILABLE"
+    elif experiment_status == "NOT_EXECUTED_BASELINE_INVALID":
+        comparison_status = "NOT_EXECUTED_BASELINE_INVALID"
+        comparison_reason = (
+            "G4 runtime-backed baseline failed hard invariants or contains failed cases"
+        )
+        invariant_status = "NOT_EVALUATED_BASELINE_INVALID"
+    else:
+        comparison_status = "NOT_EXECUTED_CANDIDATE_UNAVAILABLE"
+        comparison_reason = (
+            "development experiment is registered but candidate run is not available"
+        )
+        invariant_status = "NOT_EVALUATED_CANDIDATE_UNAVAILABLE"
     comparisons = {
         str(_object(item, "experiment")["experimentId"]): {
-            "status": "NOT_EXECUTED_BASELINE_UNAVAILABLE",
-            "reason": "G4 baseline is not runtime-backed",
+            "status": comparison_status,
+            "reason": comparison_reason,
         }
         for item in cast(list[object], registry["experiments"])
     }
     selection = select_candidate(comparisons)
     return {
         "packetVersion": "s12.g5.packet.v1",
-        "status": "G5_PREPARATION_BLOCKED_BASELINE_UNAVAILABLE",
+        "status": packet_status,
+        "approvalStatus": "APPROVED_WITH_LIMITATIONS",
         "registryVersion": registry["registryVersion"],
         "registryDigest": registry.get("registryDigest", digest(registry)),
         "baselineConfigurationDigest": baseline_report.get("configurationDigest"),
@@ -325,10 +406,11 @@ def build_g5_packet(
         "experimentCount": len(comparisons),
         "comparisons": comparisons,
         "selection": selection,
-        "hardInvariants": {"status": "NOT_EVALUATED_BASELINE_UNAVAILABLE"},
+        "hardInvariants": {"status": invariant_status},
         "sliceMetrics": {},
         "costLatency": {"status": "NOT_AVAILABLE"},
         "heldOutInspected": False,
+        "developmentExperimentsAuthorized": experiment_status == "REGISTERED",
         "optimizationAuthorized": False,
         "rawSensitiveDataIncluded": False,
     }
@@ -349,8 +431,9 @@ def write_packet(packet: JsonObject, json_path: Path, markdown_path: Path) -> No
         f"**Status:** `{packet['status']}`",
         "",
         "The packet binds controlled development-only experiments to the approved",
-        "G4 measurement boundary. No held-out data is inspected and no candidate",
-        "is selected while the runtime-backed baseline is unavailable.",
+        "G4 measurement boundary. Development experiments are allowed, but no",
+        "candidate is selected and no held-out data is inspected before candidate",
+        "hard-invariant review.",
         "",
         "## Bound evidence",
         "",
@@ -365,6 +448,7 @@ def write_packet(packet: JsonObject, json_path: Path, markdown_path: Path) -> No
         f"- Comparison state: `{packet['selection']['status']}`",
         f"- Hard invariants: `{packet['hardInvariants']['status']}`",
         f"- Held-out inspected: `{packet['heldOutInspected']}`",
+        f"- Development experiments authorized: `{packet['developmentExperimentsAuthorized']}`",
         f"- Optimization authorized: `{packet['optimizationAuthorized']}`",
         "- Cost/latency and slice results: `NOT_AVAILABLE`",
         "",
@@ -384,8 +468,9 @@ def write_packet(packet: JsonObject, json_path: Path, markdown_path: Path) -> No
         "",
         "## Approval boundary (S12-83)",
         "",
-        "`PENDING_HUMAN_APPROVAL`; this packet authorizes no optimization and no",
-        "held-out evaluation until the runtime-backed G4 baseline exists.",
+        f"`{packet['approvalStatus']}`; this approval records a no-go decision",
+        "and authorizes development experiments only; validation, freeze and",
+        "held-out evaluation still require a candidate with passing hard invariants.",
         "",
     ]
     markdown_path.write_text("\n".join(lines), encoding="utf-8")

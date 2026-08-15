@@ -11,6 +11,13 @@
     "minimumScenariosPerJourney": 3,
     "humanAuthoredFraction": 0.60
   },
+  "ownerDelegatedAiAmendment": {
+    "appliesTo": "repository-visible synthetic pilot and development-validation track",
+    "humanAuthoredFraction": 0.0,
+    "humanEvidence": false,
+    "independentHumanAgreement": "not-applicable",
+    "claimBoundary": "named synthetic AI-reviewed benchmark only"
+  },
   "languageMinimums": {"vi": 80, "en": 40, "ja": 20, "mixed": 20},
   "mandatorySlices": [
     "explicit-ambiguity-or-abstention",

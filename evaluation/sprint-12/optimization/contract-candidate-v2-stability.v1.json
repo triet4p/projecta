@@ -1,0 +1,148 @@
+{
+  "aggregateFailureCounts": {
+    "invalid_evidence": 5,
+    "schema_invalid": 8
+  },
+  "candidateFreezeAuthorized": false,
+  "caseCountPerRun": 32,
+  "contractVersion": "m3.v2",
+  "fixedModelConfiguration": true,
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "independentRunCount": 3,
+  "metricVariance": {
+    "abstentionAccuracy": {
+      "max": 0.8148148148148148,
+      "mean": 0.663686675180928,
+      "min": 0.5555555555555556,
+      "populationVariance": 0.012126932450082915
+    },
+    "entityMacroF1": {
+      "max": 0.20987654320987656,
+      "mean": 0.14233006953313468,
+      "min": 0.06896551724137931,
+      "populationVariance": 0.0033262445593009895
+    },
+    "hallucinationRate": {
+      "max": 0.654320987654321,
+      "mean": 0.561941251596424,
+      "min": 0.45679012345679015,
+      "populationVariance": 0.006584627946289956
+    },
+    "linkMacroF1": {
+      "max": 1.0,
+      "mean": 1.0,
+      "min": 1.0,
+      "populationVariance": 0.0
+    },
+    "relationMacroF1": {
+      "max": 0.7407407407407407,
+      "mean": 0.7228607918263091,
+      "min": 0.7037037037037037,
+      "populationVariance": 0.00022943922769233543
+    }
+  },
+  "noRetryWithinEachRun": true,
+  "rawSensitiveDataIncluded": false,
+  "retryPolicy": "none",
+  "runs": [
+    {
+      "caseCount": 32,
+      "configuration": {
+        "baseUrl": "https://api.deepseek.com",
+        "model": "deepseek-v4-flash",
+        "oneAttemptPerCase": true,
+        "promptVersion": "m3.prompt.v2",
+        "retryPolicy": "none",
+        "schemaVersion": "m3.v2"
+      },
+      "failureCaseIds": [
+        "s12-a-0106",
+        "s12-a-0130",
+        "s12-a-0162",
+        "s12-a-0186",
+        "s12-a-0121"
+      ],
+      "failureCount": 5,
+      "failureCounts": {
+        "invalid_evidence": 3,
+        "schema_invalid": 2
+      },
+      "metrics": {
+        "abstentionAccuracy": 0.5555555555555556,
+        "entityMacroF1": 0.14814814814814814,
+        "hallucinationRate": 0.45679012345679015,
+        "linkMacroF1": 1.0,
+        "relationMacroF1": 0.7407407407407407
+      },
+      "runId": "run-01",
+      "status": "CANDIDATE_DEVELOPMENT_WITH_FAILURES"
+    },
+    {
+      "caseCount": 32,
+      "configuration": {
+        "baseUrl": "https://api.deepseek.com",
+        "model": "deepseek-v4-flash",
+        "oneAttemptPerCase": true,
+        "promptVersion": "m3.prompt.v2",
+        "retryPolicy": "none",
+        "schemaVersion": "m3.v2"
+      },
+      "failureCaseIds": [
+        "s12-a-0106",
+        "s12-a-0138",
+        "s12-a-0162",
+        "s12-a-0178",
+        "s12-a-0186"
+      ],
+      "failureCount": 5,
+      "failureCounts": {
+        "invalid_evidence": 1,
+        "schema_invalid": 4
+      },
+      "metrics": {
+        "abstentionAccuracy": 0.8148148148148148,
+        "entityMacroF1": 0.20987654320987656,
+        "hallucinationRate": 0.654320987654321,
+        "linkMacroF1": 1.0,
+        "relationMacroF1": 0.7037037037037037
+      },
+      "runId": "run-02",
+      "status": "CANDIDATE_DEVELOPMENT_WITH_FAILURES"
+    },
+    {
+      "caseCount": 32,
+      "configuration": {
+        "baseUrl": "https://api.deepseek.com",
+        "model": "deepseek-v4-flash",
+        "oneAttemptPerCase": true,
+        "promptVersion": "m3.prompt.v2",
+        "retryPolicy": "none",
+        "schemaVersion": "m3.v2"
+      },
+      "failureCaseIds": [
+        "s12-a-0122",
+        "s12-a-0130",
+        "s12-a-0162"
+      ],
+      "failureCount": 3,
+      "failureCounts": {
+        "invalid_evidence": 1,
+        "schema_invalid": 2
+      },
+      "metrics": {
+        "abstentionAccuracy": 0.6206896551724138,
+        "entityMacroF1": 0.06896551724137931,
+        "hallucinationRate": 0.574712643678161,
+        "linkMacroF1": 1.0,
+        "relationMacroF1": 0.7241379310344828
+      },
+      "runId": "run-03",
+      "status": "CANDIDATE_DEVELOPMENT_WITH_FAILURES"
+    }
+  ],
+  "schemaVersion": "s12.contract-candidate-v2-stability.v1",
+  "status": "STABILITY_GATE_FAIL",
+  "totalCaseExecutions": 96,
+  "validationAuthorized": false
+}

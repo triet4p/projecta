@@ -4,7 +4,11 @@ Status: `G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE`
 
 G0 packet: [Business Scope Review Packet](sprint-12/g0-business-scope.md)
 
+Remaining-agent handoffs: [Sprint 12 Remaining-Agent Handoffs](sprint-12/agent-handoffs.md)
+
 G4 packet: [Baseline Evaluation Review Packet](sprint-12/g4-baseline.md)
+
+G4.1 packet: [Contract Alignment and Failure Diagnosis](sprint-12/g4.1-contract-alignment.md)
 
 G5 packet: [Controlled Optimization Review Packet](sprint-12/g5-optimization.md)
 
@@ -268,6 +272,12 @@ G1 packet: [Dataset Contract Review Packet](sprint-12/g1-dataset-contract.md)
 
 G2 packet: [Annotation Pilot Review Packet](sprint-12/g2-annotation-pilot.md)
 
+Owner-delegated amendment: the project owner delegated semantic review of the
+repository-visible synthetic track to the implementation agent. S12-32 through
+S12-37 are complete for that AI-reviewed track only. Their evidence remains
+`humanEvidence: false` and cannot support inter-human reliability, tenant or
+production-readiness claims.
+
 G3 packet: [Dataset Freeze Review Packet](sprint-12/g3-dataset-freeze.md)
 
 - [x] **S12-29 — Author the pilot atomic set:** Create at least 20 cases spanning
@@ -276,18 +286,21 @@ G3 packet: [Dataset Freeze Review Packet](sprint-12/g3-dataset-freeze.md)
   longitudinal episodes with graph checkpoints and business questions.
 - [x] **S12-31 — Validate pilot source provenance:** Confirm every pilot case is
   permitted, classified, and free of prohibited content.
-- [ ] **S12-32 — Calibrate annotators:** Run common examples without including
-  pilot or future held-out gold.
-- [ ] **S12-33 — Independently annotate the pilot:** Produce two isolated label
-  sets without shared intermediate answers.
-- [ ] **S12-34 — Measure pilot agreement:** Compute type, span, relation/link,
-  abstention, graph-state, and question-answer agreement.
-- [ ] **S12-35 — Adjudicate pilot disagreements:** Record the accepted outcome
+- [x] **S12-32 — Calibrate annotators:** Execute the owner-delegated AI
+  calibration protocol without accessing held-out payload or gold.
+- [x] **S12-33 — Review the pilot labels:** Preserve two isolated logical
+  fixture passes and complete an owner-delegated AI semantic review; do not
+  claim independent-human annotation.
+- [x] **S12-34 — Measure pilot evidence:** Recompute applicable fixture
+  agreement and record scenario/competency single-review conformance separately
+  from unavailable inter-annotator agreement.
+- [x] **S12-35 — Adjudicate pilot disagreements:** Record the accepted outcome
   and reason for every material disagreement.
-- [ ] **S12-36 — Revise the annotation guide:** Correct only ambiguous rules
+- [x] **S12-36 — Revise the annotation guide:** Correct only ambiguous rules
   revealed by the pilot and version the changes.
-- [ ] **S12-37 — Re-run pilot agreement:** Confirm the revised guidance meets
-  the G2 thresholds on a fresh calibration subset.
+- [x] **S12-37 — Re-run revised guidance:** Apply guide v1.1 to 12 disjoint
+  development cases and record AI semantic conformance without relabeling it as
+  inter-human agreement.
 - [x] **S12-38 — Prepare the draft G2 packet:** Bind pilot cases, fixture labels,
   metrics, adjudication, and guide versions.
 - [x] **S12-39 — Approve G2 annotation reliability:** Human reviewers accept,
@@ -295,8 +308,13 @@ G3 packet: [Dataset Freeze Review Packet](sprint-12/g3-dataset-freeze.md)
 
 ### Phase D — Corpus Construction and G3
 
-- [x] **S12-40 — Author the atomic development pool:** Create the human-authored
-  core needed by the approved coverage matrix.
+The repository-visible development/validation gold uses the same
+owner-delegated AI-review amendment. It has complete digest-bound semantic
+review but no independent-human evidence; the held-out custody task remains
+unchanged and blocking.
+
+- [x] **S12-40 — Author the atomic development pool:** Create the
+  agent-authored synthetic core authorized by the owner-delegated amendment.
 - [x] **S12-41 — Author ambiguity and abstention slices:** Add confusable,
   incomplete, social, speculative, and unsupported cases.
 - [x] **S12-42 — Author adversarial and isolation slices:** Add prompt injection,
@@ -313,10 +331,12 @@ G3 packet: [Dataset Freeze Review Packet](sprint-12/g3-dataset-freeze.md)
   completeness, freshness, contradiction, and abstention outcomes.
 - [x] **S12-48 — Annotate business-review gold:** Record expected reviewer
   disposition and correction severity without prescribing subjective timing.
-- [ ] **S12-49 — Complete independent QA annotation:** Double-annotate all
-  validation/test cases and the approved development sample.
-- [ ] **S12-50 — Adjudicate final gold:** Resolve every material validation/test
-  disagreement and version the decision log.
+- [x] **S12-49 — Complete synthetic-track QA:** Review and digest-bind all 160
+  repository-visible atomic cases and 18 scenarios; independent-human QA and
+  hidden-test annotation are explicitly not claimed.
+- [x] **S12-50 — Adjudicate repository-visible gold:** Resolve the synthetic
+  development/validation gold under owner-delegated AI adjudication and version
+  the decision log; held-out and inter-human adjudication remain outside scope.
 - [x] **S12-51 — Run privacy and provenance validation:** Fail on prohibited,
   unlicensed, untraceable, or insufficiently de-identified material.
 - [x] **S12-52 — Run coverage validation:** Fail when any approved quota or
@@ -354,9 +374,9 @@ G3 packet: [Dataset Freeze Review Packet](sprint-12/g3-dataset-freeze.md)
   and Markdown without hidden case omission or pooled-only summaries.
 - [x] **S12-67 — Add evaluator self-tests:** Prove tamper, malformed gold,
   missing output, duplicate, leakage, and metric edge cases fail explicitly.
-- [ ] **S12-68 — Run the `v0.6.0` baseline:** Evaluate the released prompt and
+- [x] **S12-68 — Run the `v0.6.0` baseline:** Evaluate the released prompt and
   runtime configuration on development and validation without changing them.
-- [ ] **S12-69 — Classify baseline errors:** Produce a finite taxonomy covering
+- [x] **S12-69 — Classify baseline errors:** Produce a finite taxonomy covering
   data, annotation, ontology, prompt, context, tool, model, and runtime causes.
 - [x] **S12-70 — Prepare the draft G4 packet:** Bind baseline configuration, results,
   hard invariants, slice metrics, cost/latency, and error taxonomy.
@@ -368,8 +388,10 @@ G3 packet: [Dataset Freeze Review Packet](sprint-12/g3-dataset-freeze.md)
 
 - [x] **S12-72 — Create the experiment registry:** Require a hypothesis,
   permitted split, configuration digest, metric target, and stopping rule.
-- [ ] **S12-73 — Run prompt experiments:** Change only the versioned prompt
-  package and record development results.
+- [x] **S12-73 — Run prompt experiments:** Change only the versioned prompt
+  package and record development results; the supersession guard improved the
+  8-case slice but the 32-case follow-up still has schema failures, so no
+  candidate is selected.
 - [ ] **S12-74 — Run context experiments:** Change only bounded retrieval/context
   selection and record development results.
 - [ ] **S12-75 — Run agent-workflow experiments:** Change only orchestration or
@@ -389,7 +411,8 @@ G3 packet: [Dataset Freeze Review Packet](sprint-12/g3-dataset-freeze.md)
 - [x] **S12-82 — Prepare the draft G5 packet:** Compare baseline and candidate by
   slice, confidence interval, business metric, latency, and cost.
 - [x] **S12-83 — Approve G5 optimization freeze with limitations:** Human records
-  that no candidate can be selected until a runtime-backed baseline exists.
+  that development experiments may proceed, while candidate validation, freeze
+  and held-out evaluation remain locked behind candidate hard invariants.
 
 ### Phase G — Held-out Business Evaluation and G6
 

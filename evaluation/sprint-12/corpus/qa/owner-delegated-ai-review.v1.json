@@ -1,0 +1,1066 @@
+{
+  "reviewVersion": "s12.corpus.owner-delegated-ai-review.v1",
+  "status": "COMPLETE_FOR_SYNTHETIC_AI_TRACK",
+  "reviewerKind": "ai-agent",
+  "humanEvidence": false,
+  "scope": "repository-visible development and validation fixtures only",
+  "atomicReviews": [
+    {
+      "caseId": "s12-a-0101",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83",
+      "rule": "annotation-guide-v1:explicit-ambiguity-or-abstention"
+    },
+    {
+      "caseId": "s12-a-0102",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762",
+      "rule": "annotation-guide-v1:adversarial-or-prompt-injection"
+    },
+    {
+      "caseId": "s12-a-0103",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29",
+      "rule": "annotation-guide-v1:cross-project-isolation"
+    },
+    {
+      "caseId": "s12-a-0104",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04",
+      "rule": "annotation-guide-v1:fabricated-link"
+    },
+    {
+      "caseId": "s12-a-0105",
+      "disposition": "accepted",
+      "goldDigest": "sha256:80f433d8be7a817be99cc977ff3f2b2c423a9ee340cdd03699636b8356f599ff",
+      "rule": "annotation-guide-v1:duplicate-evidence"
+    },
+    {
+      "caseId": "s12-a-0106",
+      "disposition": "accepted",
+      "goldDigest": "sha256:e58e9bdcb70d0a07cf9e27afa25a7335e2a838b589e252ac609b23e8b8f69f25",
+      "rule": "annotation-guide-v1:contradiction-or-supersession"
+    },
+    {
+      "caseId": "s12-a-0107",
+      "disposition": "accepted",
+      "goldDigest": "sha256:a41b0fdcc50d2a0247e71d9b96a39b50dd066b0cd34c779b6a4b22d4f9ace4c2",
+      "rule": "annotation-guide-v1:temporal-change"
+    },
+    {
+      "caseId": "s12-a-0108",
+      "disposition": "accepted",
+      "goldDigest": "sha256:6ef14e9af5758a8c6d2b450413bd4fc21902d008a7fe8c6c81b7809d3c44b469",
+      "rule": "annotation-guide-v1:unicode-and-noisy-text"
+    },
+    {
+      "caseId": "s12-a-0109",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83",
+      "rule": "annotation-guide-v1:explicit-ambiguity-or-abstention"
+    },
+    {
+      "caseId": "s12-a-0110",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762",
+      "rule": "annotation-guide-v1:adversarial-or-prompt-injection"
+    },
+    {
+      "caseId": "s12-a-0111",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29",
+      "rule": "annotation-guide-v1:cross-project-isolation"
+    },
+    {
+      "caseId": "s12-a-0112",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04",
+      "rule": "annotation-guide-v1:fabricated-link"
+    },
+    {
+      "caseId": "s12-a-0113",
+      "disposition": "accepted",
+      "goldDigest": "sha256:166b2e24989b7fb7b142f4e5033262088cb857aa9bdf97678caebacbb6bfee80",
+      "rule": "annotation-guide-v1:duplicate-evidence"
+    },
+    {
+      "caseId": "s12-a-0114",
+      "disposition": "accepted",
+      "goldDigest": "sha256:665d095426b612fc9c2bf5b163d53e49a56e86d300ccf96a80047e3f6389058e",
+      "rule": "annotation-guide-v1:contradiction-or-supersession"
+    },
+    {
+      "caseId": "s12-a-0115",
+      "disposition": "accepted",
+      "goldDigest": "sha256:2e64c27e17eacd00938ff512110e179ec95127d2e815566b82e70024cc93b3f8",
+      "rule": "annotation-guide-v1:temporal-change"
+    },
+    {
+      "caseId": "s12-a-0116",
+      "disposition": "accepted",
+      "goldDigest": "sha256:016b3b8bb0ce98c137e6d3ef343ca08d3d91f25a081ca3cd0c8a66e642adb4ed",
+      "rule": "annotation-guide-v1:unicode-and-noisy-text"
+    },
+    {
+      "caseId": "s12-a-0121",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ccf1ee67a7957c2d1d7ba63b3da486b4c31f184dc3a180bff76b962b24c07139",
+      "rule": "annotation-guide-v1:explicit-ambiguity-or-abstention"
+    },
+    {
+      "caseId": "s12-a-0122",
+      "disposition": "accepted",
+      "goldDigest": "sha256:2d91e630fac0131874fd53c4744f342890e605195c7755ef0439b1e897a16ff6",
+      "rule": "annotation-guide-v1:adversarial-or-prompt-injection"
+    },
+    {
+      "caseId": "s12-a-0123",
+      "disposition": "accepted",
+      "goldDigest": "sha256:35e512745b9026783e3116c830c0e8fed0211766a6dda73557f08eeb588acdcb",
+      "rule": "annotation-guide-v1:cross-project-isolation"
+    },
+    {
+      "caseId": "s12-a-0124",
+      "disposition": "accepted",
+      "goldDigest": "sha256:0e6cf5de04f174b1536307df2d60c0ede789f090d8b99f7c6662546fb58ddcb3",
+      "rule": "annotation-guide-v1:fabricated-link"
+    },
+    {
+      "caseId": "s12-a-0125",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83",
+      "rule": "annotation-guide-v1:duplicate-evidence"
+    },
+    {
+      "caseId": "s12-a-0126",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762",
+      "rule": "annotation-guide-v1:contradiction-or-supersession"
+    },
+    {
+      "caseId": "s12-a-0127",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29",
+      "rule": "annotation-guide-v1:temporal-change"
+    },
+    {
+      "caseId": "s12-a-0128",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04",
+      "rule": "annotation-guide-v1:unicode-and-noisy-text"
+    },
+    {
+      "caseId": "s12-a-0129",
+      "disposition": "accepted",
+      "goldDigest": "sha256:f02df2bb765bdc7249f98c7fce132004e874970d6b5b287e190672213c7dfb69",
+      "rule": "annotation-guide-v1:explicit-ambiguity-or-abstention"
+    },
+    {
+      "caseId": "s12-a-0130",
+      "disposition": "accepted",
+      "goldDigest": "sha256:1084bbdd6b1ca951370697bd203ef02abcf322a70c9739982a0cd1cb9b8f25f0",
+      "rule": "annotation-guide-v1:adversarial-or-prompt-injection"
+    },
+    {
+      "caseId": "s12-a-0131",
+      "disposition": "accepted",
+      "goldDigest": "sha256:10d9055926ec409441196c8b10c643f7202a9936e361d2cf7acdb8d93cda0cba",
+      "rule": "annotation-guide-v1:cross-project-isolation"
+    },
+    {
+      "caseId": "s12-a-0132",
+      "disposition": "accepted",
+      "goldDigest": "sha256:a1aad64f4aea386cee36ae1c348904bc6c4aa6813ea16078a970aa1d8bbbe2fd",
+      "rule": "annotation-guide-v1:fabricated-link"
+    },
+    {
+      "caseId": "s12-a-0133",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83",
+      "rule": "annotation-guide-v1:duplicate-evidence"
+    },
+    {
+      "caseId": "s12-a-0134",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762",
+      "rule": "annotation-guide-v1:contradiction-or-supersession"
+    },
+    {
+      "caseId": "s12-a-0135",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29",
+      "rule": "annotation-guide-v1:temporal-change"
+    },
+    {
+      "caseId": "s12-a-0136",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04",
+      "rule": "annotation-guide-v1:unicode-and-noisy-text"
+    },
+    {
+      "caseId": "s12-a-0137",
+      "disposition": "accepted",
+      "goldDigest": "sha256:2321ce1c13bf8d72922f0ed38e4c58bceb86294f0040752d1398a4f3c1549a47",
+      "rule": "annotation-guide-v1:explicit-ambiguity-or-abstention"
+    },
+    {
+      "caseId": "s12-a-0138",
+      "disposition": "accepted",
+      "goldDigest": "sha256:5026bfedcd26572d2ddaa909988b38ab22e2e89fcdb037cf68d69784e7a685fa",
+      "rule": "annotation-guide-v1:adversarial-or-prompt-injection"
+    },
+    {
+      "caseId": "s12-a-0139",
+      "disposition": "accepted",
+      "goldDigest": "sha256:6e640d4e3e0b6a7cb43c945c5c5647f13ce46130dfa508b65fc137c44457c8a7",
+      "rule": "annotation-guide-v1:cross-project-isolation"
+    },
+    {
+      "caseId": "s12-a-0140",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9e478544635864099ccfe8a323ec34feee4a61e8f6084fa8f9b146b130db6811",
+      "rule": "annotation-guide-v1:fabricated-link"
+    },
+    {
+      "caseId": "s12-a-0141",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83",
+      "rule": "annotation-guide-v1:duplicate-evidence"
+    },
+    {
+      "caseId": "s12-a-0142",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762",
+      "rule": "annotation-guide-v1:contradiction-or-supersession"
+    },
+    {
+      "caseId": "s12-a-0143",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29",
+      "rule": "annotation-guide-v1:temporal-change"
+    },
+    {
+      "caseId": "s12-a-0144",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04",
+      "rule": "annotation-guide-v1:unicode-and-noisy-text"
+    },
+    {
+      "caseId": "s12-a-0151",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29",
+      "rule": "annotation-guide-v1:explicit-ambiguity-or-abstention"
+    },
+    {
+      "caseId": "s12-a-0152",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04",
+      "rule": "annotation-guide-v1:adversarial-or-prompt-injection"
+    },
+    {
+      "caseId": "s12-a-0153",
+      "disposition": "accepted",
+      "goldDigest": "sha256:812bce2700e4dd274379d8397951164cf0086f84e44cd53f70e96cf37490bed1",
+      "rule": "annotation-guide-v1:cross-project-isolation"
+    },
+    {
+      "caseId": "s12-a-0154",
+      "disposition": "accepted",
+      "goldDigest": "sha256:2c48dc6828e7cf99159dc2d1df61a162d4aa206f0b1581c470422706a3efcfcf",
+      "rule": "annotation-guide-v1:fabricated-link"
+    },
+    {
+      "caseId": "s12-a-0155",
+      "disposition": "accepted",
+      "goldDigest": "sha256:582b9fcc174297f8c301d649284d6f1908431ed432b1ced566e2476c7770be23",
+      "rule": "annotation-guide-v1:duplicate-evidence"
+    },
+    {
+      "caseId": "s12-a-0156",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ae8e1557c5000728ce8846cd5544f3485a4c32452f57f795fcabd819e4784def",
+      "rule": "annotation-guide-v1:contradiction-or-supersession"
+    },
+    {
+      "caseId": "s12-a-0157",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83",
+      "rule": "annotation-guide-v1:temporal-change"
+    },
+    {
+      "caseId": "s12-a-0158",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762",
+      "rule": "annotation-guide-v1:unicode-and-noisy-text"
+    },
+    {
+      "caseId": "s12-a-0159",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29",
+      "rule": "annotation-guide-v1:explicit-ambiguity-or-abstention"
+    },
+    {
+      "caseId": "s12-a-0160",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04",
+      "rule": "annotation-guide-v1:adversarial-or-prompt-injection"
+    },
+    {
+      "caseId": "s12-a-0161",
+      "disposition": "accepted",
+      "goldDigest": "sha256:17bc0cb87db5e14e62011e6b36a9eaaf5bec7d1147df2b3128e2ae4c63077695",
+      "rule": "annotation-guide-v1:cross-project-isolation"
+    },
+    {
+      "caseId": "s12-a-0162",
+      "disposition": "accepted",
+      "goldDigest": "sha256:717bc13f1252493a06e0d598014eaff34e678756cd14da005be6a1328669ad89",
+      "rule": "annotation-guide-v1:fabricated-link"
+    },
+    {
+      "caseId": "s12-a-0163",
+      "disposition": "accepted",
+      "goldDigest": "sha256:46050892aa00404c35c9b8117c745c6b286d332b525e1ef9714f7bd7efda274d",
+      "rule": "annotation-guide-v1:duplicate-evidence"
+    },
+    {
+      "caseId": "s12-a-0164",
+      "disposition": "accepted",
+      "goldDigest": "sha256:98e64bdf7af55d2c6654408c0678e552d8f4fa6853cd0d0a2128299b4c2f423c",
+      "rule": "annotation-guide-v1:contradiction-or-supersession"
+    },
+    {
+      "caseId": "s12-a-0165",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83",
+      "rule": "annotation-guide-v1:temporal-change"
+    },
+    {
+      "caseId": "s12-a-0166",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762",
+      "rule": "annotation-guide-v1:unicode-and-noisy-text"
+    },
+    {
+      "caseId": "s12-a-0167",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29",
+      "rule": "annotation-guide-v1:explicit-ambiguity-or-abstention"
+    },
+    {
+      "caseId": "s12-a-0168",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04",
+      "rule": "annotation-guide-v1:adversarial-or-prompt-injection"
+    },
+    {
+      "caseId": "s12-a-0169",
+      "disposition": "accepted",
+      "goldDigest": "sha256:442e883a73ac956cefdd54e33de5e07585090fbcd8324aa039857988dea41e9b",
+      "rule": "annotation-guide-v1:cross-project-isolation"
+    },
+    {
+      "caseId": "s12-a-0170",
+      "disposition": "accepted",
+      "goldDigest": "sha256:1dd86804da995aedfd4e9262e4eb706a646df66706cde0643086099883532ae5",
+      "rule": "annotation-guide-v1:fabricated-link"
+    },
+    {
+      "caseId": "s12-a-0176",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04",
+      "rule": "annotation-guide-v1:duplicate-evidence"
+    },
+    {
+      "caseId": "s12-a-0177",
+      "disposition": "accepted",
+      "goldDigest": "sha256:de69781b2d2a899dcf1f79d2ffc96cb50117802e23ff697449a69e6de91d05f9",
+      "rule": "annotation-guide-v1:contradiction-or-supersession"
+    },
+    {
+      "caseId": "s12-a-0178",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7a45daae7b0fd1afd1016d6e4600ea43e254e4db974cb1ac650d91c9fffe0464",
+      "rule": "annotation-guide-v1:temporal-change"
+    },
+    {
+      "caseId": "s12-a-0179",
+      "disposition": "accepted",
+      "goldDigest": "sha256:78298090c43b4f615ea3ef839e7bd6ae2ac4ac81fc819b7ac26c34aa65a0f050",
+      "rule": "annotation-guide-v1:unicode-and-noisy-text"
+    },
+    {
+      "caseId": "s12-a-0180",
+      "disposition": "accepted",
+      "goldDigest": "sha256:995582f988e9053a3c93913147bfe709ba2fe9bf909e6fd7f800e78cae76bb65",
+      "rule": "annotation-guide-v1:explicit-ambiguity-or-abstention"
+    },
+    {
+      "caseId": "s12-a-0181",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83",
+      "rule": "annotation-guide-v1:adversarial-or-prompt-injection"
+    },
+    {
+      "caseId": "s12-a-0182",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762",
+      "rule": "annotation-guide-v1:cross-project-isolation"
+    },
+    {
+      "caseId": "s12-a-0183",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29",
+      "rule": "annotation-guide-v1:fabricated-link"
+    },
+    {
+      "caseId": "s12-a-0184",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04",
+      "rule": "annotation-guide-v1:duplicate-evidence"
+    },
+    {
+      "caseId": "s12-a-0185",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ac878d777f487448de0b57cb539b70e907eb1ba3c5f2314e8a2a76c13860de5c",
+      "rule": "annotation-guide-v1:contradiction-or-supersession"
+    },
+    {
+      "caseId": "s12-a-0186",
+      "disposition": "accepted",
+      "goldDigest": "sha256:6dd582576d3cc4ace8f72be27d2dd93ebe84728ef363948d4800076e151d6cc0",
+      "rule": "annotation-guide-v1:temporal-change"
+    },
+    {
+      "caseId": "s12-a-0187",
+      "disposition": "accepted",
+      "goldDigest": "sha256:24d1ce35665c80310c8633acade14398892e7c57b068c5702255952bbd8e6048",
+      "rule": "annotation-guide-v1:unicode-and-noisy-text"
+    },
+    {
+      "caseId": "s12-a-0188",
+      "disposition": "accepted",
+      "goldDigest": "sha256:e3d49900aa6e93ca657e1050976428c5f3ba602c8a148857e3dbaf63a1341c4b",
+      "rule": "annotation-guide-v1:explicit-ambiguity-or-abstention"
+    },
+    {
+      "caseId": "s12-a-0189",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83",
+      "rule": "annotation-guide-v1:adversarial-or-prompt-injection"
+    },
+    {
+      "caseId": "s12-a-0190",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762",
+      "rule": "annotation-guide-v1:cross-project-isolation"
+    },
+    {
+      "caseId": "s12-a-0191",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29",
+      "rule": "annotation-guide-v1:fabricated-link"
+    },
+    {
+      "caseId": "s12-a-0192",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04",
+      "rule": "annotation-guide-v1:duplicate-evidence"
+    },
+    {
+      "caseId": "s12-a-0193",
+      "disposition": "accepted",
+      "goldDigest": "sha256:287b67c97c8c3ac5cc6907fffa0264975111e1bf3ebf2bb4f7b3d373c7a32fc4",
+      "rule": "annotation-guide-v1:contradiction-or-supersession"
+    },
+    {
+      "caseId": "s12-a-0194",
+      "disposition": "accepted",
+      "goldDigest": "sha256:5d20e2d45269e402786c7d8130c93cee7ba3a7b46498eee50a8a4e34b0a4cfa1",
+      "rule": "annotation-guide-v1:temporal-change"
+    },
+    {
+      "caseId": "s12-a-0195",
+      "disposition": "accepted",
+      "goldDigest": "sha256:b8fe7427d36950414acb0433312023e25468723c27db2ba6b4d0104547389ca9",
+      "rule": "annotation-guide-v1:unicode-and-noisy-text"
+    },
+    {
+      "caseId": "s12-a-0201",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ea357c8c2d9b00f7fc095ef91210e2d5164af4418c281b675be3b3b8cfee36c9",
+      "rule": "annotation-guide-v1:explicit-ambiguity-or-abstention"
+    },
+    {
+      "caseId": "s12-a-0202",
+      "disposition": "accepted",
+      "goldDigest": "sha256:8ee35586ed53f890b7016fbac12af0f6587c6d15d1bb8d938189ae7a51e21bb5",
+      "rule": "annotation-guide-v1:adversarial-or-prompt-injection"
+    },
+    {
+      "caseId": "s12-a-0203",
+      "disposition": "accepted",
+      "goldDigest": "sha256:2e5d3b262ee2138d635a1e7e67e1da37b23191bab9774308421bf36acce01ce6",
+      "rule": "annotation-guide-v1:cross-project-isolation"
+    },
+    {
+      "caseId": "s12-a-0204",
+      "disposition": "accepted",
+      "goldDigest": "sha256:8548181e591d8c5e58386487aae2ea3077c82e934ef1174f9c46feb621125a66",
+      "rule": "annotation-guide-v1:fabricated-link"
+    },
+    {
+      "caseId": "s12-a-0205",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83",
+      "rule": "annotation-guide-v1:duplicate-evidence"
+    },
+    {
+      "caseId": "s12-a-0206",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762",
+      "rule": "annotation-guide-v1:contradiction-or-supersession"
+    },
+    {
+      "caseId": "s12-a-0207",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29",
+      "rule": "annotation-guide-v1:temporal-change"
+    },
+    {
+      "caseId": "s12-a-0208",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04",
+      "rule": "annotation-guide-v1:unicode-and-noisy-text"
+    },
+    {
+      "caseId": "s12-a-0209",
+      "disposition": "accepted",
+      "goldDigest": "sha256:cd4cbbec97483746a82181275f07bc9987609f408af76985a54686185f36b8b9",
+      "rule": "annotation-guide-v1:explicit-ambiguity-or-abstention"
+    },
+    {
+      "caseId": "s12-a-0210",
+      "disposition": "accepted",
+      "goldDigest": "sha256:b5071e2e4e8431d46db96e7dd2e319b1a5892b523a3656afb36297480809bf6b",
+      "rule": "annotation-guide-v1:adversarial-or-prompt-injection"
+    },
+    {
+      "caseId": "s12-a-0211",
+      "disposition": "accepted",
+      "goldDigest": "sha256:af5f5a21881c5ffd300ef4b4011015750aff545be773430b9f33b91a5dda68f5",
+      "rule": "annotation-guide-v1:cross-project-isolation"
+    },
+    {
+      "caseId": "s12-a-0212",
+      "disposition": "accepted",
+      "goldDigest": "sha256:3d6e311da95bcd3b92e803092063c41355c21e1bc77f1940fe17c7c18efd2c1c",
+      "rule": "annotation-guide-v1:fabricated-link"
+    },
+    {
+      "caseId": "s12-a-0213",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83",
+      "rule": "annotation-guide-v1:duplicate-evidence"
+    },
+    {
+      "caseId": "s12-a-0214",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762",
+      "rule": "annotation-guide-v1:contradiction-or-supersession"
+    },
+    {
+      "caseId": "s12-a-0215",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29",
+      "rule": "annotation-guide-v1:temporal-change"
+    },
+    {
+      "caseId": "s12-a-0216",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04",
+      "rule": "annotation-guide-v1:unicode-and-noisy-text"
+    },
+    {
+      "caseId": "s12-a-0217",
+      "disposition": "accepted",
+      "goldDigest": "sha256:3fb2c43d152c021b458b385e7ac74d387cdd8428fbcf1ab80544d15f5cde2a13",
+      "rule": "annotation-guide-v1:explicit-ambiguity-or-abstention"
+    },
+    {
+      "caseId": "s12-a-0218",
+      "disposition": "accepted",
+      "goldDigest": "sha256:2591a976a99f27b3fb52abfa08fec8aa38a9734620005423f4c07bf1522fd864",
+      "rule": "annotation-guide-v1:adversarial-or-prompt-injection"
+    },
+    {
+      "caseId": "s12-a-0219",
+      "disposition": "accepted",
+      "goldDigest": "sha256:5e4fd1441318e61f28eafcaae55e082afe89c0ebd4cdfe18743a01e248b37dc6",
+      "rule": "annotation-guide-v1:cross-project-isolation"
+    },
+    {
+      "caseId": "s12-a-0220",
+      "disposition": "accepted",
+      "goldDigest": "sha256:546315cb8de2b105444e5827f54e8c3d1ae2306f12824d540d1f020657504363",
+      "rule": "annotation-guide-v1:fabricated-link"
+    },
+    {
+      "caseId": "s12-a-0226",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9ebb7a34b95c00c9506e62f386e88f94ab5cf3b22d0d0debe61e0e55fe33b4ad",
+      "rule": "annotation-guide-v1:duplicate-evidence"
+    },
+    {
+      "caseId": "s12-a-0227",
+      "disposition": "accepted",
+      "goldDigest": "sha256:f98aca6bd9e1ad4a50ae22e019dfb526cd39cd32407b983fb40e828d30b98837",
+      "rule": "annotation-guide-v1:contradiction-or-supersession"
+    },
+    {
+      "caseId": "s12-a-0228",
+      "disposition": "accepted",
+      "goldDigest": "sha256:f1e7880364039cd5361c5232bb1caff61d57a9a3f64cd25a822c536e3c15b7d2",
+      "rule": "annotation-guide-v1:temporal-change"
+    },
+    {
+      "caseId": "s12-a-0229",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83",
+      "rule": "annotation-guide-v1:unicode-and-noisy-text"
+    },
+    {
+      "caseId": "s12-a-0230",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762",
+      "rule": "annotation-guide-v1:explicit-ambiguity-or-abstention"
+    },
+    {
+      "caseId": "s12-a-0231",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29",
+      "rule": "annotation-guide-v1:adversarial-or-prompt-injection"
+    },
+    {
+      "caseId": "s12-a-0232",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04",
+      "rule": "annotation-guide-v1:cross-project-isolation"
+    },
+    {
+      "caseId": "s12-a-0233",
+      "disposition": "accepted",
+      "goldDigest": "sha256:16cf92e4c86d17aab5e86e0783eb2736d7decf2767227eaa2455b7283ab6e650",
+      "rule": "annotation-guide-v1:fabricated-link"
+    },
+    {
+      "caseId": "s12-a-0234",
+      "disposition": "accepted",
+      "goldDigest": "sha256:c1bba2f39ad8c6ac8a4153880efabb27ca52373e8985f4366e8d005aed70dfdd",
+      "rule": "annotation-guide-v1:duplicate-evidence"
+    },
+    {
+      "caseId": "s12-a-0235",
+      "disposition": "accepted",
+      "goldDigest": "sha256:87a0cfd78f902bdecc42baabe3b124559bda767b4a1da5141141b336f5138719",
+      "rule": "annotation-guide-v1:contradiction-or-supersession"
+    },
+    {
+      "caseId": "s12-a-0236",
+      "disposition": "accepted",
+      "goldDigest": "sha256:0b86cb39b4b8a75ef1ebb669d41fe22f0aab09ac358a98e9a152e74a37262b2a",
+      "rule": "annotation-guide-v1:temporal-change"
+    },
+    {
+      "caseId": "s12-a-0237",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83",
+      "rule": "annotation-guide-v1:unicode-and-noisy-text"
+    },
+    {
+      "caseId": "s12-a-0238",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762",
+      "rule": "annotation-guide-v1:explicit-ambiguity-or-abstention"
+    },
+    {
+      "caseId": "s12-a-0239",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29",
+      "rule": "annotation-guide-v1:adversarial-or-prompt-injection"
+    },
+    {
+      "caseId": "s12-a-0240",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04",
+      "rule": "annotation-guide-v1:cross-project-isolation"
+    },
+    {
+      "caseId": "s12-a-0241",
+      "disposition": "accepted",
+      "goldDigest": "sha256:1ea7445260ea7605b03554a45f74cc01309ae24e90ffaaf15e7d01181c1de80a",
+      "rule": "annotation-guide-v1:fabricated-link"
+    },
+    {
+      "caseId": "s12-a-0242",
+      "disposition": "accepted",
+      "goldDigest": "sha256:1360b4694dd0ec3b8b49fc8d1fa30e49527ab1ecd1058ebf5c38902cac73afa2",
+      "rule": "annotation-guide-v1:duplicate-evidence"
+    },
+    {
+      "caseId": "s12-a-0243",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7462bf7ea4d7481364c31b4c8a559f5abbbcd36c8b7e7aa091a2c1117310ed3c",
+      "rule": "annotation-guide-v1:contradiction-or-supersession"
+    },
+    {
+      "caseId": "s12-a-0244",
+      "disposition": "accepted",
+      "goldDigest": "sha256:12af8fcf8bcad9048e84d725ce9639962f3e29a7bd2d5ee3d21895da73c1ef96",
+      "rule": "annotation-guide-v1:temporal-change"
+    },
+    {
+      "caseId": "s12-a-0245",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83",
+      "rule": "annotation-guide-v1:unicode-and-noisy-text"
+    },
+    {
+      "caseId": "s12-a-0251",
+      "disposition": "accepted",
+      "goldDigest": "sha256:f34cb0c1056859e1e7416931bbccf4b753cb61d9c1771d61307ee3fd8f215b49",
+      "rule": "annotation-guide-v1:explicit-ambiguity-or-abstention"
+    },
+    {
+      "caseId": "s12-a-0252",
+      "disposition": "accepted",
+      "goldDigest": "sha256:8a70934d8acaf4e4dbac1c3ca38eca16705b4ed06cb106f12c3b4fe0c124d844",
+      "rule": "annotation-guide-v1:adversarial-or-prompt-injection"
+    },
+    {
+      "caseId": "s12-a-0253",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83",
+      "rule": "annotation-guide-v1:cross-project-isolation"
+    },
+    {
+      "caseId": "s12-a-0254",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762",
+      "rule": "annotation-guide-v1:fabricated-link"
+    },
+    {
+      "caseId": "s12-a-0255",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29",
+      "rule": "annotation-guide-v1:duplicate-evidence"
+    },
+    {
+      "caseId": "s12-a-0256",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04",
+      "rule": "annotation-guide-v1:contradiction-or-supersession"
+    },
+    {
+      "caseId": "s12-a-0257",
+      "disposition": "accepted",
+      "goldDigest": "sha256:a1c6cdc078018166656d1600554ad3eccc99351146ad3dced51f56575994d30e",
+      "rule": "annotation-guide-v1:temporal-change"
+    },
+    {
+      "caseId": "s12-a-0258",
+      "disposition": "accepted",
+      "goldDigest": "sha256:347335cc6ae285db7e05a9487fe705025b1cb4e94c9020854971fd605e9dcc48",
+      "rule": "annotation-guide-v1:unicode-and-noisy-text"
+    },
+    {
+      "caseId": "s12-a-0259",
+      "disposition": "accepted",
+      "goldDigest": "sha256:4e240685dfac05ace3176d3528e701d5e17c08b6f26e37589d1c8f05780aba6c",
+      "rule": "annotation-guide-v1:explicit-ambiguity-or-abstention"
+    },
+    {
+      "caseId": "s12-a-0260",
+      "disposition": "accepted",
+      "goldDigest": "sha256:677e1055a1d4f8cec2915b1f59536f896f4f48e5b2095313f9607414be7192ba",
+      "rule": "annotation-guide-v1:adversarial-or-prompt-injection"
+    },
+    {
+      "caseId": "s12-a-0261",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83",
+      "rule": "annotation-guide-v1:cross-project-isolation"
+    },
+    {
+      "caseId": "s12-a-0262",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762",
+      "rule": "annotation-guide-v1:fabricated-link"
+    },
+    {
+      "caseId": "s12-a-0263",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29",
+      "rule": "annotation-guide-v1:duplicate-evidence"
+    },
+    {
+      "caseId": "s12-a-0264",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04",
+      "rule": "annotation-guide-v1:contradiction-or-supersession"
+    },
+    {
+      "caseId": "s12-a-0265",
+      "disposition": "accepted",
+      "goldDigest": "sha256:b576af14b7aaebb4f11283bba2bd6235238c55195ee77cc023fcd6ae5ac159e8",
+      "rule": "annotation-guide-v1:temporal-change"
+    },
+    {
+      "caseId": "s12-a-0266",
+      "disposition": "accepted",
+      "goldDigest": "sha256:a33c66df0abee9f7bd45749fe8b5885d7382bc08d41bfc3da2c2cb379772d9e2",
+      "rule": "annotation-guide-v1:unicode-and-noisy-text"
+    },
+    {
+      "caseId": "s12-a-0267",
+      "disposition": "accepted",
+      "goldDigest": "sha256:e7a4a26489e688f16f90d0c6de658f5b1c6ecaa6b825839b37b05a2dcf623171",
+      "rule": "annotation-guide-v1:explicit-ambiguity-or-abstention"
+    },
+    {
+      "caseId": "s12-a-0268",
+      "disposition": "accepted",
+      "goldDigest": "sha256:eb376ed200cdce43a9b5759cad8a3fe87158f180a78e335fea7c273ec66825f8",
+      "rule": "annotation-guide-v1:adversarial-or-prompt-injection"
+    },
+    {
+      "caseId": "s12-a-0269",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83",
+      "rule": "annotation-guide-v1:cross-project-isolation"
+    },
+    {
+      "caseId": "s12-a-0270",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762",
+      "rule": "annotation-guide-v1:fabricated-link"
+    },
+    {
+      "caseId": "s12-a-0276",
+      "disposition": "accepted",
+      "goldDigest": "sha256:e0c972c0bc4a84d444e2d3f78d4898d97aa3eff54a225992e87deb666d76be5d",
+      "rule": "annotation-guide-v1:duplicate-evidence"
+    },
+    {
+      "caseId": "s12-a-0277",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83",
+      "rule": "annotation-guide-v1:contradiction-or-supersession"
+    },
+    {
+      "caseId": "s12-a-0278",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762",
+      "rule": "annotation-guide-v1:temporal-change"
+    },
+    {
+      "caseId": "s12-a-0279",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29",
+      "rule": "annotation-guide-v1:unicode-and-noisy-text"
+    },
+    {
+      "caseId": "s12-a-0280",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04",
+      "rule": "annotation-guide-v1:explicit-ambiguity-or-abstention"
+    },
+    {
+      "caseId": "s12-a-0281",
+      "disposition": "accepted",
+      "goldDigest": "sha256:755960b5ac8a36af8632e3fc80907e88aec1b332b5516d3be5f4bc23f12d60dc",
+      "rule": "annotation-guide-v1:adversarial-or-prompt-injection"
+    },
+    {
+      "caseId": "s12-a-0282",
+      "disposition": "accepted",
+      "goldDigest": "sha256:331e4bda1519642dcf9694af2cc212ca7fe0fa67638e97293a067577003313ab",
+      "rule": "annotation-guide-v1:cross-project-isolation"
+    },
+    {
+      "caseId": "s12-a-0283",
+      "disposition": "accepted",
+      "goldDigest": "sha256:93d85d48df35639f7318e9bed5da2c250e220009003dc6ecd648dec0bbe25da6",
+      "rule": "annotation-guide-v1:fabricated-link"
+    },
+    {
+      "caseId": "s12-a-0284",
+      "disposition": "accepted",
+      "goldDigest": "sha256:fd0a24497ba590936891cb646fa805e007c7f9f3acb786e17e161d1b38ca4949",
+      "rule": "annotation-guide-v1:duplicate-evidence"
+    },
+    {
+      "caseId": "s12-a-0285",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83",
+      "rule": "annotation-guide-v1:contradiction-or-supersession"
+    },
+    {
+      "caseId": "s12-a-0286",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762",
+      "rule": "annotation-guide-v1:temporal-change"
+    },
+    {
+      "caseId": "s12-a-0287",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29",
+      "rule": "annotation-guide-v1:unicode-and-noisy-text"
+    },
+    {
+      "caseId": "s12-a-0288",
+      "disposition": "accepted",
+      "goldDigest": "sha256:deabd81236289032eeed4014fb9789e120bda9596050145cf65546b6069b3d04",
+      "rule": "annotation-guide-v1:explicit-ambiguity-or-abstention"
+    },
+    {
+      "caseId": "s12-a-0289",
+      "disposition": "accepted",
+      "goldDigest": "sha256:be361684e1d19aa318f2e29893bb9cbb688b32df2b0e0f5635bbf73c1f459a71",
+      "rule": "annotation-guide-v1:adversarial-or-prompt-injection"
+    },
+    {
+      "caseId": "s12-a-0290",
+      "disposition": "accepted",
+      "goldDigest": "sha256:d5809425c4eceac622508fc68bd56693a53aa45922155b6724bb83f42ad02427",
+      "rule": "annotation-guide-v1:cross-project-isolation"
+    },
+    {
+      "caseId": "s12-a-0291",
+      "disposition": "accepted",
+      "goldDigest": "sha256:43d69977f61b9a6c74727f6b2aa04ea08f4b1d7a81b3cfeb2a3d426580ca1273",
+      "rule": "annotation-guide-v1:fabricated-link"
+    },
+    {
+      "caseId": "s12-a-0292",
+      "disposition": "accepted",
+      "goldDigest": "sha256:0c8721b3d0abed8db0f65a898c0d3e8dc1bc5fff1b1fba001ea23579b43f2c9f",
+      "rule": "annotation-guide-v1:duplicate-evidence"
+    },
+    {
+      "caseId": "s12-a-0293",
+      "disposition": "accepted",
+      "goldDigest": "sha256:ab54c65817f62e9c569838f60abdfda05fed11689aa5f4808824bab6df66aa83",
+      "rule": "annotation-guide-v1:contradiction-or-supersession"
+    },
+    {
+      "caseId": "s12-a-0294",
+      "disposition": "accepted",
+      "goldDigest": "sha256:9700c1c17b6fb492ecb5f593c2abfcb555d9e8bd28f21670096d445f6f534762",
+      "rule": "annotation-guide-v1:temporal-change"
+    },
+    {
+      "caseId": "s12-a-0295",
+      "disposition": "accepted",
+      "goldDigest": "sha256:7ca3404dded4853a0c3d88a435baf8cf9e92ef3f853da75499a5491f21b7de29",
+      "rule": "annotation-guide-v1:unicode-and-noisy-text"
+    }
+  ],
+  "scenarioReviews": [
+    {
+      "scenarioId": "s12-s-001",
+      "disposition": "accepted-as-synthetic-fixture",
+      "scenarioDigest": "sha256:47be6b22fbd48a7873e137dd51bfd937434087b2374d0b178065b08ff0d1125d"
+    },
+    {
+      "scenarioId": "s12-s-002",
+      "disposition": "accepted-as-synthetic-fixture",
+      "scenarioDigest": "sha256:134f424925e2978bfe577db9783a93be80ac645e28fd40cfb78e80ef9920882b"
+    },
+    {
+      "scenarioId": "s12-s-003",
+      "disposition": "accepted-as-synthetic-fixture",
+      "scenarioDigest": "sha256:31e589dcd248603d6808889e3b638f667abd86e89e8477c231e29933e07fff60"
+    },
+    {
+      "scenarioId": "s12-s-004",
+      "disposition": "accepted-as-synthetic-fixture",
+      "scenarioDigest": "sha256:ee0967b9dc165a4267cbbabaf363240012bfde178879c0562b8ae6dd0c5f3b1c"
+    },
+    {
+      "scenarioId": "s12-s-005",
+      "disposition": "accepted-as-synthetic-fixture",
+      "scenarioDigest": "sha256:c0e598619f5a66ac05f77877ce0690c7d98eef69b593a148962cbd9a5814865a"
+    },
+    {
+      "scenarioId": "s12-s-006",
+      "disposition": "accepted-as-synthetic-fixture",
+      "scenarioDigest": "sha256:c261a68bea1b640d932be22789d0fd9ae102f04f915ddbf723f6832f41312a39"
+    },
+    {
+      "scenarioId": "s12-s-007",
+      "disposition": "accepted-as-synthetic-fixture",
+      "scenarioDigest": "sha256:774e3a6512a3ccec61a360ae213eea4fd0b137e293a532ae27d7fee254e17b72"
+    },
+    {
+      "scenarioId": "s12-s-008",
+      "disposition": "accepted-as-synthetic-fixture",
+      "scenarioDigest": "sha256:380fc5916e1aabf2c7bab4f4eaad470486d5c890227f303c41706341552ac9cb"
+    },
+    {
+      "scenarioId": "s12-s-009",
+      "disposition": "accepted-as-synthetic-fixture",
+      "scenarioDigest": "sha256:538e5960a6ed1e7828a3f847e4d4facf3448fdb48a028dafa5fcd920ff2d2494"
+    },
+    {
+      "scenarioId": "s12-s-010",
+      "disposition": "accepted-as-synthetic-fixture",
+      "scenarioDigest": "sha256:6dc9f096a7b35482547de99c9149063206f162c7101f2e594f1ddabe2ec4a00b"
+    },
+    {
+      "scenarioId": "s12-s-011",
+      "disposition": "accepted-as-synthetic-fixture",
+      "scenarioDigest": "sha256:a082b7ca961a3a52897586b6923d2553c888bc4ae91e866a99ea966a8bdb445b"
+    },
+    {
+      "scenarioId": "s12-s-012",
+      "disposition": "accepted-as-synthetic-fixture",
+      "scenarioDigest": "sha256:41c5954ee72b09c66b7d7f2541f64b6a0b18eefb0d974c158cf510a5c25c807d"
+    },
+    {
+      "scenarioId": "s12-s-013",
+      "disposition": "accepted-as-synthetic-fixture",
+      "scenarioDigest": "sha256:18d96e199e51c1f52fef1f5574e7d724746be5ea4a47ee8931de29ae70122403"
+    },
+    {
+      "scenarioId": "s12-s-014",
+      "disposition": "accepted-as-synthetic-fixture",
+      "scenarioDigest": "sha256:944454194af6b344faead569cafb9294808ed605a068ea887d9e4cb2c1a9a0b2"
+    },
+    {
+      "scenarioId": "s12-s-015",
+      "disposition": "accepted-as-synthetic-fixture",
+      "scenarioDigest": "sha256:4d8bd609c3c9bef17e60a1d2eff07f1911794fb20efe7bcc668d472fe596d394"
+    },
+    {
+      "scenarioId": "s12-s-016",
+      "disposition": "accepted-as-synthetic-fixture",
+      "scenarioDigest": "sha256:b905bd27754351c37431e85a25001d9b79f7f081bb3d96da98315262b59e7021"
+    },
+    {
+      "scenarioId": "s12-s-017",
+      "disposition": "accepted-as-synthetic-fixture",
+      "scenarioDigest": "sha256:1f8a67548bfc315be04d704eabfdc64095a8f813e6c3e30f3ab635c1e2cd694f"
+    },
+    {
+      "scenarioId": "s12-s-018",
+      "disposition": "accepted-as-synthetic-fixture",
+      "scenarioDigest": "sha256:567674becec4cd75053c1abd5875c40557500669de72dacef38839732ad90be0"
+    }
+  ],
+  "limitations": [
+    "not independent human annotation",
+    "not evidence of inter-human agreement",
+    "not held-out or tenant production evidence"
+  ]
+}

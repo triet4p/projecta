@@ -1,6 +1,6 @@
 {
   "datasetVersion": "s12.corpus.scenario.v1",
-  "status": "AGENT_GENERATED_SYNTHETIC_PREPARATION_FIXTURE",
+  "status": "OWNER_DELEGATED_AI_REVIEW_FIXTURE",
   "humanEvidence": false,
   "scenarios": [
     {

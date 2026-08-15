@@ -1,7 +1,10 @@
 #!/usr/bin/env -S uv run --script
 # /// script
 # requires-python = ">=3.12"
-# dependencies = []
+# dependencies = [
+#     "openai>=2,<3",
+#     "pydantic>=2,<3",
+# ]
 # ///
 """Deterministic Sprint 12 Phase E evaluation harness.
 
@@ -13,15 +16,18 @@ digests only; source text is never copied into evidence artifacts.
 
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import json
 import math
 import os
 import statistics
+import sys
 from collections import Counter
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Callable, Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
+from time import monotonic
 from typing import TypeAlias, cast
 
 JSONValue: TypeAlias = (
@@ -30,6 +36,8 @@ JSONValue: TypeAlias = (
 JsonObject: TypeAlias = dict[str, JSONValue]
 JsonList: TypeAlias = list[JSONValue]
 EVALUATOR_VERSION = "s12.evaluator.v1"
+RUNTIME_REQUEST_TIMEOUT_SECONDS = 60
+RUNTIME_RUN_BUDGET_SECONDS = 300
 REQUIRED_RUNTIME_ENV = (
     "PROJECTA_LLM_TYPE",
     "PROJECTA_LLM_BASE_URL",
@@ -277,11 +285,15 @@ def _items(value: object) -> list[JsonObject]:
 
 
 def _span_signature(item: JsonObject) -> tuple[object, object, object]:
-    span = _object(item.get("span"), "span")
+    span = _object(item.get("span", item.get("evidence", item)), "span")
+    if "predicate" in item:
+        label: object = (item.get("predicate"), item.get("targetEntityId"))
+    else:
+        label = item.get("type", item.get("targetEntityId"))
     return (
-        span.get("start"),
-        span.get("end"),
-        item.get("type", item.get("targetEntityId", item.get("predicate"))),
+        span.get("start", span.get("startOffset")),
+        span.get("end", span.get("endOffset")),
+        label,
     )
 
 
@@ -330,6 +342,8 @@ def score_extraction(gold: JsonObject, prediction: JsonObject | None) -> JsonObj
     actual_abstention = (
         _object(prediction.get("abstention"), "prediction.abstention").get("required")
         is True
+        if isinstance(prediction.get("abstention"), dict)
+        else bool(prediction.get("abstentionReason"))
     )
     result["abstentionAccuracy"] = 1.0 if gold_abstention == actual_abstention else 0.0
     gold_count = sum(
@@ -669,17 +683,305 @@ def missing_runtime_configuration(
     return [name for name in REQUIRED_RUNTIME_ENV if not values.get(name)]
 
 
+def _runtime_baseline(
+    loaded: LoadedDataset,
+    environment: Mapping[str, str],
+    *,
+    gateway_factory: Callable[[str, str], object] | None = None,
+    schema_version: str = "m3.v1",
+    operation_id: str = "s12-v0.6.0-baseline",
+    profile_revision: str = "released-v0.6.0",
+    prompt_variant: str = "m3.prompt.v2",
+    collect_diagnostics: bool = False,
+) -> tuple[dict[str, JsonObject], list[JsonObject], list[JsonObject], JsonObject]:
+    """Run one bounded attempt per case through the released extraction gateway."""
+
+    root = Path(__file__).resolve().parents[1]
+    sys.path.insert(0, str(root / "apps" / "api" / "src"))
+    from projecta_api.extraction.normalize import normalize_extraction
+    from projecta_api.extraction.prompt import build_extraction_prompt
+    from projecta_api.extraction.service import _response_schema
+    from projecta_api.llm.gateway import GatewayRequest
+    from projecta_api.llm.openai_responses import OpenAIResponsesGateway
+
+    llm_type = environment["PROJECTA_LLM_TYPE"]
+    if llm_type not in {"openai", "openai-response"}:
+        raise EvaluationError(f"unsupported runtime LLM type: {llm_type}")
+    gateway = (
+        gateway_factory(
+            environment["PROJECTA_LLM_BASE_URL"], environment["PROJECTA_LLM_API_KEY"]
+        )
+        if gateway_factory is not None
+        else OpenAIResponsesGateway(
+            base_url=environment["PROJECTA_LLM_BASE_URL"],
+            api_key=environment["PROJECTA_LLM_API_KEY"],
+        )
+    )
+    model = environment["PROJECTA_LLM_MODEL"]
+    entity_types = [
+        "Requirement",
+        "Decision",
+        "Question",
+        "Task",
+        "Risk",
+        "Assumption",
+        "Constraint",
+        "ProgressClaim",
+        "ResearchFinding",
+    ]
+    relation_predicates = [
+        "implements",
+        "blocks",
+        "dependsOn",
+        "supports",
+        "answers",
+        "resolves",
+        "constrainedBy",
+    ]
+    case_results: dict[str, JsonObject] = {}
+    operational: list[JsonObject] = []
+    failures: list[JsonObject] = []
+    diagnostics: list[JsonObject] = []
+
+    async def evaluate_cases() -> None:
+        for case in loaded.cases:
+            case_id = _string(case.get("caseId"), "caseId")
+            raw_text = _object(case.get("source"), f"{case_id}.source").get("rawText")
+            if not isinstance(raw_text, str):
+                raise EvaluationError(f"missing source text for {case_id}")
+            started = monotonic()
+            try:
+                system, user = build_extraction_prompt(
+                    raw_text,
+                    entity_types,
+                    relation_predicates,
+                    [],
+                    schema_version=schema_version,
+                )
+                if schema_version == "m3.v2":
+                    user += (
+                        "\nContract m3.v2: assign every emitted entity a unique local "
+                        "candidateId. Relation sourceEntityId and targetEntityId may "
+                        "reference those local candidate IDs or bounded same-project IDs. "
+                        "For every evidence object, return exact text and its one-based "
+                        "occurrence in the whole note; do not return offsets."
+                    )
+                if prompt_variant == "m3.prompt.v3.supersession-guard":
+                    user += (
+                        "\nSupersession guard: do not emit the released predicate "
+                        "supersedes because it is not in the allowed predicate list. "
+                        "Do not convert a clause whose meaning is only supersession "
+                        "into a Requirement. If there is no standalone supported "
+                        "entity, abstain. Preserve exact evidence quote and occurrence "
+                        "and assign unique candidateId values to emitted entities."
+                    )
+                elif prompt_variant != "m3.prompt.v2":
+                    raise EvaluationError(f"unsupported prompt variant: {prompt_variant}")
+                response = await asyncio.wait_for(
+                    gateway.extract(
+                        GatewayRequest(
+                            schemaVersion=schema_version,
+                            modelId=model,
+                            systemPrompt=system,
+                            userPrompt=user,
+                            responseSchema=_response_schema(
+                                schema_version=schema_version
+                            ),
+                            sourceText=raw_text if schema_version == "m3.v2" else None,
+                            timeoutSeconds=RUNTIME_REQUEST_TIMEOUT_SECONDS,
+                            maxOutputTokens=4096,
+                            requestId=f"s12-baseline-{case_id}",
+                            operationId=operation_id,
+                            profileRevision=profile_revision,
+                        )
+                    ),
+                    timeout=RUNTIME_REQUEST_TIMEOUT_SECONDS,
+                )
+                normalized = normalize_extraction(raw_text, response.extraction, [])
+                prediction = cast(
+                    JsonObject, normalized.model_dump(mode="json", by_alias=True)
+                )
+                gold = _object(case.get("gold"), f"{case_id}.gold")
+                case_results[case_id] = score_extraction(gold, prediction)
+                usage = (
+                    _object(prediction.get("usage"), "usage")
+                    if isinstance(prediction.get("usage"), dict)
+                    else {}
+                )
+                operational.append(
+                    {
+                        "caseId": case_id,
+                        "split": case.get("split"),
+                        "slice": _manifest_slice(loaded.manifest, case_id),
+                        "latencyMs": int((monotonic() - started) * 1000),
+                        "inputTokens": usage.get("inputTokens", 0) or 0,
+                        "outputTokens": usage.get("outputTokens", 0) or 0,
+                        "costUsd": 0.0,
+                        "failureClass": "none",
+                    }
+                )
+            except Exception as error:  # noqa: BLE001 - sanitized baseline evidence
+                category = _runtime_error_category(error)
+                failure = {
+                    "caseId": case_id,
+                    "category": category,
+                    "failureClass": str(
+                        getattr(error, "error_class", type(error).__name__)
+                    ),
+                }
+                failures.append(failure)
+                if collect_diagnostics:
+                    diagnostic = getattr(error, "diagnostic", {})
+                    diagnostics.append(
+                        {
+                            "caseId": case_id,
+                            "failureClass": failure["failureClass"],
+                            "category": category,
+                            "diagnostic": diagnostic if isinstance(diagnostic, dict) else {},
+                        }
+                    )
+                case_results[case_id] = {
+                    "status": "missing-output",
+                    "failureClass": failure["failureClass"],
+                    "category": category,
+                }
+                operational.append(
+                    {
+                        "caseId": case_id,
+                        "split": case.get("split"),
+                        "slice": _manifest_slice(loaded.manifest, case_id),
+                        "latencyMs": int((monotonic() - started) * 1000),
+                        "inputTokens": 0,
+                        "outputTokens": 0,
+                        "costUsd": 0.0,
+                        "failureClass": failure["failureClass"],
+                    }
+                )
+
+    async def run_with_budget() -> None:
+        try:
+            async with asyncio.timeout(RUNTIME_RUN_BUDGET_SECONDS):
+                await evaluate_cases()
+        except TimeoutError:
+            for case in loaded.cases:
+                case_id = _string(case.get("caseId"), "caseId")
+                if case_id in case_results:
+                    continue
+                failure = {
+                    "caseId": case_id,
+                    "category": "runtime",
+                    "failureClass": "baseline_run_budget_exceeded",
+                }
+                failures.append(failure)
+                case_results[case_id] = {
+                    "status": "missing-output",
+                    "failureClass": failure["failureClass"],
+                    "category": failure["category"],
+                }
+                operational.append(
+                    {
+                        "caseId": case_id,
+                        "split": case.get("split"),
+                        "slice": _manifest_slice(loaded.manifest, case_id),
+                        "latencyMs": RUNTIME_RUN_BUDGET_SECONDS * 1000,
+                        "inputTokens": 0,
+                        "outputTokens": 0,
+                        "costUsd": 0.0,
+                        "failureClass": failure["failureClass"],
+                    }
+                )
+
+    asyncio.run(run_with_budget())
+    config = {
+        "release": "v0.6.0",
+        "schemaVersion": schema_version,
+        "llmType": llm_type,
+        "model": model,
+        "baseUrl": environment["PROJECTA_LLM_BASE_URL"],
+        "promptVersion": prompt_variant,
+        "evaluatorVersion": EVALUATOR_VERSION,
+        "manifestDigest": loaded.manifest.get("manifestDigest"),
+        "apiKeyPresent": True,
+        "oneAttemptPerCase": True,
+        "retryPolicy": "none",
+        "requestTimeoutSeconds": RUNTIME_REQUEST_TIMEOUT_SECONDS,
+        "runBudgetSeconds": RUNTIME_RUN_BUDGET_SECONDS,
+        "samplingConfiguration": {
+            "temperature": "provider-default",
+            "topP": "provider-default",
+            "seed": "provider-controlled",
+        },
+    }
+    if collect_diagnostics:
+        return case_results, operational, failures, config, diagnostics  # type: ignore[return-value]
+    return case_results, operational, failures, config
+
+
+def _manifest_slice(manifest: JsonObject, case_id: str) -> str | None:
+    for entry in _list(manifest.get("atomicCases"), "manifest.atomicCases"):
+        if entry.get("caseId") == case_id:
+            value = entry.get("slice")
+            return value if isinstance(value, str) else None
+    return None
+
+
+def _runtime_error_category(error: Exception) -> str:
+    error_class = str(getattr(error, "error_class", "runtime"))
+    if error_class in {"schema_invalid", "normalization_invalid", "invalid_evidence"}:
+        return "model"
+    if error_class in {"policy_rejection", "hallucinated_link", "cross_project_link"}:
+        return "context"
+    return "runtime"
+
+
 def build_baseline_report(
     loaded: LoadedDataset, *, environment: Mapping[str, str] | None = None
 ) -> JsonObject:
     """Prepare a truthful baseline result; never substitute fixture replay for a run."""
 
     missing = missing_runtime_configuration(environment)
-    status = (
-        "NOT_EXECUTED_MISSING_RUNTIME_CONFIGURATION"
-        if missing
-        else "NOT_EXECUTED_ADAPTER_NOT_CONFIGURED"
-    )
+    if not missing:
+        case_results, operational, failures, config = _runtime_baseline(
+            loaded, os.environ if environment is None else environment
+        )
+        status = (
+            "RUNTIME_BACKED_SCORED" if not failures else "RUNTIME_BACKED_WITH_FAILURES"
+        )
+        report = build_evidence_report(
+            loaded, config=config, case_results=case_results, status=status
+        )
+        report["operational"] = score_operational(operational)
+        report["operationalRecords"] = operational
+        report["failureCount"] = len(failures)
+        report["hardInvariants"] = {
+            "status": "PASS" if not failures else "FAIL",
+            "schemaValidity": not failures,
+            "splitIntegrity": True,
+            "datasetDigestBinding": True,
+            "heldOutNonLeakage": True,
+        }
+        report["baseline"] = {
+            "release": "v0.6.0",
+            "execution": status,
+            "developmentAndValidationOnly": True,
+            "oneAttemptPerCase": True,
+            "retryPolicy": "none",
+        }
+        report["errorTaxonomy"] = {
+            "categories": [
+                "data",
+                "annotation",
+                "ontology",
+                "prompt",
+                "context",
+                "tool",
+                "model",
+                "runtime",
+            ],
+            "observations": failures,
+        }
+        return report
+    status = "NOT_EXECUTED_MISSING_RUNTIME_CONFIGURATION"
     config = {
         "release": "v0.6.0",
         "promptChange": False,
@@ -713,6 +1015,15 @@ def main() -> None:
     """Generate a baseline report for the repository-visible Phase E fixture."""
 
     root = Path(__file__).resolve().parents[1]
+    report_path = root / "evaluation/sprint-12/baseline/baseline-report.v1.json"
+    lock_path = root / "evaluation/sprint-12/baseline/baseline-lock.v1.json"
+    if lock_path.exists() and report_path.exists():
+        lock = json.loads(lock_path.read_text(encoding="utf-8"))
+        report_digest = "sha256:" + hashlib.sha256(report_path.read_bytes()).hexdigest()
+        if lock.get("reportDigest") == report_digest:
+            raise SystemExit(
+                "historical Sprint 12 v0.6.0 baseline is locked; write a new versioned report"
+            )
     loaded = load_dataset(
         root / "evaluation/sprint-12/corpus/atomic-development-validation.v1.json",
         root / "evaluation/sprint-12/corpus/scenario-development-validation.v1.json",
@@ -722,7 +1033,7 @@ def main() -> None:
     report = build_baseline_report(loaded)
     write_evidence_report(
         report,
-        root / "evaluation/sprint-12/baseline/baseline-report.v1.json",
+        report_path,
         root / "evaluation/sprint-12/baseline/baseline-report.v1.md",
     )
     print(

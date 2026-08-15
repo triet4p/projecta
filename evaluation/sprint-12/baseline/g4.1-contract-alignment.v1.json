@@ -1,0 +1,109 @@
+{
+  "baselineCaseCount": 160,
+  "baselineLock": "baseline-lock.v1.json",
+  "baselineMissingOutputCount": 55,
+  "baselineStatus": "RUNTIME_BACKED_WITH_FAILURES",
+  "candidateDiagnostics": {
+    "appliesToCurrentCandidateReport": false,
+    "artifact": "../optimization/contract-candidate-v2-diagnostics.v1.json",
+    "status": "HISTORICAL_DIAGNOSTIC_SUPERSEDED"
+  },
+  "currentPromptExperimentEvidence": {
+    "artifact": "../optimization/s12-73-prompt-supersession.v1.json",
+    "candidateSchemaEvidenceClean": true,
+    "evidenceScope": "currentPromptExperimentEvidence",
+    "followupArtifact": "../optimization/s12-73-prompt-followup-stability.v2.json",
+    "followupFailureCounts": {
+      "invalid_evidence": 0,
+      "schema_invalid": 3
+    },
+    "followupStatus": "STABILITY_GATE_FAIL",
+    "linkMetricUsable": false,
+    "nextAction": "do not promote S12-73 candidate; revise prompt/contract diagnosis and keep validation, freeze and held-out locked",
+    "semanticMetricsImproved": true,
+    "status": "PROMPT_EXPERIMENT_COMPLETED_CANDIDATE_NOT_PROMOTED",
+    "targetedDiagnosticArtifact": "../optimization/s12-73-targeted-diagnostics.v1.json",
+    "targetedDiagnosticCaseIds": [
+      "s12-a-0153",
+      "s12-a-0187"
+    ],
+    "targetedDiagnosticFailureCounts": {},
+    "targetedDiagnosticStatus": "DIAGNOSTIC_COMPLETED"
+  },
+  "decisionBoundary": {
+    "baselineOverwriteAllowed": false,
+    "custodyAuthorized": false,
+    "nextAction": "do not promote S12-73 candidate; revise prompt/contract diagnosis and keep validation, freeze and held-out locked",
+    "promptExperimentsAuthorized": true,
+    "validationAuthorized": false
+  },
+  "diagnostics": {
+    "artifact": "g4.1-failure-exemplars.v1.json",
+    "caseCount": 23,
+    "humanEvidence": false,
+    "invalidEvidenceSample": 16,
+    "observedClasses": {
+      "entityEvidenceTextMismatch": 8,
+      "jsonOrSchemaShape": 3,
+      "normalizerInvalidEvidence": 8,
+      "notReproducedOnRepeat": 12,
+      "relationEndpointUnrepresentableWithoutBoundedContext": 2,
+      "relationEvidenceTextMismatch": 2
+    },
+    "schemaInvalidCases": 7,
+    "syntheticOnly": true
+  },
+  "evidenceBoundaryVersion": "s12.g4.1.evidence-boundary.v2",
+  "historicalContractEvidence": {
+    "contractCandidate": {
+      "artifact": "../optimization/contract-candidate-v2-stability/runs/run-03.report.v1.json",
+      "caseCount": 32,
+      "heldOutInspected": false,
+      "invalidEvidenceCount": 0,
+      "missingOutputCount": 3,
+      "relationContractRepresentable": false,
+      "schemaInvalidCount": 2,
+      "schemaVersion": "m3.v2",
+      "status": "CANDIDATE_DEVELOPMENT_WITH_FAILURES",
+      "validationAuthorized": false
+    },
+    "evidenceScope": "historicalContractEvidence",
+    "stabilityGate": {
+      "aggregateFailureCounts": {
+        "invalid_evidence": 4,
+        "schema_invalid": 7
+      },
+      "artifact": "../optimization/contract-candidate-v2-stability.v2.json",
+      "derivedFromArtifact": true,
+      "fixedModelConfiguration": true,
+      "independentRunCount": 3,
+      "noRetryWithinEachRun": true,
+      "status": "STABILITY_GATE_FAIL",
+      "totalCaseExecutions": 96
+    },
+    "summary": {
+      "caseCount": 32,
+      "derivedFromOperationalAccounting": true,
+      "failureCounts": {
+        "cross_project_link": 1,
+        "schema_invalid": 2
+      },
+      "invalidEvidenceCount": 0,
+      "schemaInvalidCount": 2,
+      "sourceReport": "../optimization/contract-candidate-v2-stability/runs/run-03.report.v1.json"
+    }
+  },
+  "humanEvidence": false,
+  "rawSensitiveDataIncluded": false,
+  "schemaVersion": "s12.g4.1.contract-alignment.v1",
+  "status": "CONTRACT_ALIGNED_STABILITY_FAILED",
+  "supersessionReview": {
+    "adjudicationArtifact": "supersession-adjudication.v2.json",
+    "artifact": "supersession-review.v2.json",
+    "candidateContractGap": true,
+    "goldChanged": true,
+    "goldChangedSilently": false,
+    "ontologyChangeRequired": false,
+    "status": "ADJUDICATED_DATASET_AMENDMENT_PUBLISHED"
+  }
+}

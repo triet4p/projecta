@@ -1,0 +1,9 @@
+{
+  "adjudicationAmendment": "supersession-adjudication.v2.json",
+  "humanEvidence": false,
+  "independentHumanAdjudication": false,
+  "logVersion": "s12.corpus.adjudication.v2",
+  "note": "The project owner delegated semantic adjudication of the synthetic development/validation fixture to the implementation agent. No inter-human reliability claim is permitted.",
+  "status": "OWNER_DELEGATED_AI_ADJUDICATION_COMPLETE",
+  "unresolvedDisagreements": 0
+}

@@ -6,8 +6,9 @@
 
 ## Summary of Work
 
-Prepared a test-custody manifest containing only counts, schema versions and
-cryptographic digests. Human data-owner custody is not established, so S12-55
+Prepared a test-custody diagnostic manifest and recorded that its deterministic
+fixture is reconstructible from the repository generator. It is explicitly
+ineligible for held-out use; external custody is not established and S12-55
 remains pending.
 
 ## Files Modified
@@ -23,4 +24,6 @@ remains pending.
 
 ## Additional Notes
 
-No test payload or gold is stored in the agent-visible repository.
+No test payload or gold is stored in Git, but the preparation fixture is still
+reconstructible and must be replaced by a new external non-reconstructible
+bundle rather than relabeled as sealed.

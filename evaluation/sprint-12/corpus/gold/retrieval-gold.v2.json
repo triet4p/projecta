@@ -1,0 +1,350 @@
+{
+  "adjudicationAmendment": "supersession-adjudication.v2.json",
+  "answers": [
+    {
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0101",
+            "s12-a-0102"
+          ],
+          "expectedFactIds": [
+            "asserted-01-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-01",
+          "status": "answerable"
+        }
+      ],
+      "scenarioId": "s12-s-001"
+    },
+    {
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0101",
+            "s12-a-0102"
+          ],
+          "expectedFactIds": [
+            "asserted-02-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-02",
+          "status": "answerable"
+        }
+      ],
+      "scenarioId": "s12-s-002"
+    },
+    {
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0101",
+            "s12-a-0102"
+          ],
+          "expectedFactIds": [
+            "asserted-03-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-03",
+          "status": "answerable"
+        }
+      ],
+      "scenarioId": "s12-s-003"
+    },
+    {
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0121",
+            "s12-a-0122"
+          ],
+          "expectedFactIds": [
+            "asserted-04-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-04",
+          "status": "answerable"
+        }
+      ],
+      "scenarioId": "s12-s-004"
+    },
+    {
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0121",
+            "s12-a-0122"
+          ],
+          "expectedFactIds": [
+            "asserted-05-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-05",
+          "status": "answerable"
+        }
+      ],
+      "scenarioId": "s12-s-005"
+    },
+    {
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0121",
+            "s12-a-0122"
+          ],
+          "expectedFactIds": [
+            "asserted-06-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-06",
+          "status": "answerable"
+        }
+      ],
+      "scenarioId": "s12-s-006"
+    },
+    {
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0151",
+            "s12-a-0152"
+          ],
+          "expectedFactIds": [
+            "asserted-07-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-07",
+          "status": "answerable"
+        }
+      ],
+      "scenarioId": "s12-s-007"
+    },
+    {
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0151",
+            "s12-a-0152"
+          ],
+          "expectedFactIds": [
+            "asserted-08-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-08",
+          "status": "answerable"
+        }
+      ],
+      "scenarioId": "s12-s-008"
+    },
+    {
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0151",
+            "s12-a-0152"
+          ],
+          "expectedFactIds": [
+            "asserted-09-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-09",
+          "status": "answerable"
+        }
+      ],
+      "scenarioId": "s12-s-009"
+    },
+    {
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0176",
+            "s12-a-0177"
+          ],
+          "expectedFactIds": [
+            "asserted-10-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-10",
+          "status": "answerable"
+        }
+      ],
+      "scenarioId": "s12-s-010"
+    },
+    {
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0176",
+            "s12-a-0177"
+          ],
+          "expectedFactIds": [
+            "asserted-11-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-11",
+          "status": "answerable"
+        }
+      ],
+      "scenarioId": "s12-s-011"
+    },
+    {
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0176",
+            "s12-a-0177"
+          ],
+          "expectedFactIds": [
+            "asserted-12-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-12",
+          "status": "answerable"
+        }
+      ],
+      "scenarioId": "s12-s-012"
+    },
+    {
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0216",
+            "s12-a-0217"
+          ],
+          "expectedFactIds": [
+            "asserted-13-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-13",
+          "status": "answerable"
+        }
+      ],
+      "scenarioId": "s12-s-013"
+    },
+    {
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0216",
+            "s12-a-0217"
+          ],
+          "expectedFactIds": [
+            "asserted-14-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-14",
+          "status": "answerable"
+        }
+      ],
+      "scenarioId": "s12-s-014"
+    },
+    {
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0216",
+            "s12-a-0217"
+          ],
+          "expectedFactIds": [
+            "asserted-15-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-15",
+          "status": "answerable"
+        }
+      ],
+      "scenarioId": "s12-s-015"
+    },
+    {
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0241",
+            "s12-a-0242"
+          ],
+          "expectedFactIds": [
+            "asserted-16-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-16",
+          "status": "answerable"
+        }
+      ],
+      "scenarioId": "s12-s-016"
+    },
+    {
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0241",
+            "s12-a-0242"
+          ],
+          "expectedFactIds": [
+            "asserted-17-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-17",
+          "status": "answerable"
+        }
+      ],
+      "scenarioId": "s12-s-017"
+    },
+    {
+      "competencyAnswers": [
+        {
+          "abstain": false,
+          "completeness": "complete",
+          "expectedCitationIds": [
+            "s12-a-0241",
+            "s12-a-0242"
+          ],
+          "expectedFactIds": [
+            "asserted-18-01"
+          ],
+          "freshness": "current",
+          "questionId": "CQ-18",
+          "status": "answerable"
+        }
+      ],
+      "scenarioId": "s12-s-018"
+    }
+  ],
+  "datasetVersion": "s12.corpus.retrieval-gold.v2",
+  "humanEvidence": false,
+  "status": "OWNER_DELEGATED_AI_REVIEWED_GOLD"
+}

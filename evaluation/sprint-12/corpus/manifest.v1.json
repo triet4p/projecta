@@ -14,7 +14,7 @@
     "test": 6,
     "total": 24
   },
-  "humanAuthoredFractionByOrigin": 1.0,
+  "humanAuthoredFractionByOrigin": 0.0,
   "qualifiedHumanEvidence": false,
   "atomicManifest": "manifests/development-validation.manifest.v1.json",
   "testCustodyManifest": "manifests/test-custody.manifest.v1.json"

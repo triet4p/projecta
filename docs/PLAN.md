@@ -87,12 +87,14 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 ## Active Sprints
 
 - [Sprint 12 — Business Semantic Quality and Evaluation](sprint-plans/sprint-12.md)
-  — *In progress; G0, G1, G2 and G3 are approved with recorded evidence
-  limitations, and G6 preparation is blocked because test custody and a frozen
-  candidate are missing. The held-out preregistration and fail-closed evidence
+  — *In progress; the repository-visible synthetic corpus has owner-delegated
+  AI semantic review, explicitly not human evidence. A runtime-backed
+  `v0.6.0` baseline now exists, but 55 model-output failures make its schema
+  validity fail. G5 development experiments are open under the revised gate;
+  G6 remains blocked until a clean contract candidate, test custody and a
+  frozen candidate exist. The held-out preregistration and fail-closed evidence
   guards are ready; no business-quality claim is made. New connector and
-  outbound breadth remains deferred while Projecta establishes business and
-  semantic quality.*
+  outbound breadth remains deferred.*
 
 ## Planned Sprints
 

@@ -1,6 +1,6 @@
 {
   "datasetVersion": "s12.corpus.review-gold.v1",
-  "status": "SYNTHETIC_FIXTURE_ONLY",
+  "status": "OWNER_DELEGATED_AI_REVIEWED_GOLD",
   "humanEvidence": false,
   "reviews": [
     {

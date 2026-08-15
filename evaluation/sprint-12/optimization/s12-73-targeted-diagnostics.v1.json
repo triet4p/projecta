@@ -1,0 +1,51 @@
+{
+  "artifactVersion": "s12.s73.targeted-diagnostics.v1",
+  "caseCount": 2,
+  "caseIds": [
+    "s12-a-0153",
+    "s12-a-0187"
+  ],
+  "credentialIncluded": false,
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "digests": {
+    "diagnosticRunnerCode": "sha256:e84e329b536b47b2751f8a3c8d9ef867b810bba94cc7a7c7c644b2e87b97a330",
+    "evaluatorCode": "sha256:33592d001cb863d136a9ef722ff40f365a85b830207ffc7420262b3227f27a31",
+    "gatewayAdapterCode": "sha256:0417bcf056c4d88b1b18c16420eadac06598353be46ec55b7537ad7733a6a4b3",
+    "gatewayContractCode": "sha256:4ad111b232319ecff6a506b2f72edf28c6233ff86a3b50774343816db22a6313",
+    "manifest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a"
+  },
+  "failureCounts": {},
+  "humanEvidence": false,
+  "manifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+  "outcomes": [
+    {
+      "caseId": "s12-a-0153",
+      "category": "none",
+      "failureClass": "none",
+      "sanitizedDiagnostic": {},
+      "slice": "duplicate-evidence",
+      "status": "scored"
+    },
+    {
+      "caseId": "s12-a-0187",
+      "category": "none",
+      "failureClass": "none",
+      "sanitizedDiagnostic": {},
+      "slice": "temporal-change",
+      "status": "scored"
+    }
+  ],
+  "protocol": {
+    "independentRunCount": 1,
+    "noRetryWithinEachRun": true,
+    "oneAttemptPerCase": true,
+    "promptVariant": "m3.prompt.v3.supersession-guard",
+    "samplingConfiguration": {
+      "seed": "provider-controlled",
+      "temperature": "provider-default",
+      "topP": "provider-default"
+    }
+  },
+  "rawSensitiveDataIncluded": false,
+  "status": "DIAGNOSTIC_COMPLETED"
+}

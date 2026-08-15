@@ -1,41 +1,43 @@
 {
-  "baselineConfigurationDigest": "sha256:e3b25747b7b4d4271b2f043f56704dcc902fef57460cefaa902144651c355f6a",
-  "baselineStatus": "NOT_EXECUTED_MISSING_RUNTIME_CONFIGURATION",
+  "approvalStatus": "APPROVED_WITH_LIMITATIONS",
+  "baselineConfigurationDigest": "sha256:2f4a4c84984fefd1d6ab502a5e73a70bf37ef92e416336392acc2227fa1a5cb2",
+  "baselineStatus": "RUNTIME_BACKED_WITH_FAILURES",
   "comparisons": {
     "s12-f-01": {
-      "reason": "G4 baseline is not runtime-backed",
-      "status": "NOT_EXECUTED_BASELINE_UNAVAILABLE"
+      "reason": "development experiment is registered but candidate run is not available",
+      "status": "NOT_EXECUTED_CANDIDATE_UNAVAILABLE"
     },
     "s12-f-02": {
-      "reason": "G4 baseline is not runtime-backed",
-      "status": "NOT_EXECUTED_BASELINE_UNAVAILABLE"
+      "reason": "development experiment is registered but candidate run is not available",
+      "status": "NOT_EXECUTED_CANDIDATE_UNAVAILABLE"
     },
     "s12-f-03": {
-      "reason": "G4 baseline is not runtime-backed",
-      "status": "NOT_EXECUTED_BASELINE_UNAVAILABLE"
+      "reason": "development experiment is registered but candidate run is not available",
+      "status": "NOT_EXECUTED_CANDIDATE_UNAVAILABLE"
     },
     "s12-f-04": {
-      "reason": "G4 baseline is not runtime-backed",
-      "status": "NOT_EXECUTED_BASELINE_UNAVAILABLE"
+      "reason": "development experiment is registered but candidate run is not available",
+      "status": "NOT_EXECUTED_CANDIDATE_UNAVAILABLE"
     },
     "s12-f-05": {
-      "reason": "G4 baseline is not runtime-backed",
-      "status": "NOT_EXECUTED_BASELINE_UNAVAILABLE"
+      "reason": "development experiment is registered but candidate run is not available",
+      "status": "NOT_EXECUTED_CANDIDATE_UNAVAILABLE"
     }
   },
   "costLatency": {
     "status": "NOT_AVAILABLE"
   },
-  "datasetManifestDigest": "sha256:7c0e32242f5596f4f6a153069c2afbe5a13990fdde90840340a4408de3f4cd65",
+  "datasetManifestDigest": "sha256:380cb041c54c1b1b33bb42d6d49a933997fe9466e8e855d00ad1e79e16cfd0a8",
+  "developmentExperimentsAuthorized": true,
   "experimentCount": 5,
   "hardInvariants": {
-    "status": "NOT_EVALUATED_BASELINE_UNAVAILABLE"
+    "status": "NOT_EVALUATED_CANDIDATE_UNAVAILABLE"
   },
   "heldOutInspected": false,
   "optimizationAuthorized": false,
   "packetVersion": "s12.g5.packet.v1",
   "rawSensitiveDataIncluded": false,
-  "registryDigest": "sha256:07bec15f8b5be6b8d73712393cb43c59ce690828f58ea1fe6b805af10c681a73",
+  "registryDigest": "sha256:dd0ec5a026c5d2ae193907f4bc848db69fdc2ce9d8746e00c0d8fbcd67928438",
   "registryVersion": "s12.experiment-registry.v1",
   "selection": {
     "heldOutInspected": false,
@@ -44,5 +46,5 @@
     "status": "NO_SELECTION"
   },
   "sliceMetrics": {},
-  "status": "G5_PREPARATION_BLOCKED_BASELINE_UNAVAILABLE"
+  "status": "G5_PREPARATION_DEVELOPMENT_OPEN"
 }

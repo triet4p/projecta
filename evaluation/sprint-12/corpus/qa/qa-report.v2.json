@@ -1,0 +1,13 @@
+{
+  "adjudicationAmendment": "supersession-adjudication.v2.json",
+  "developmentSampleCases": 40,
+  "humanEvidence": false,
+  "independentLabelsPresent": false,
+  "note": "Repository-visible development/validation gold received owner-delegated AI semantic review. This is not independent human annotation evidence.",
+  "ownerDelegatedAiReviewPresent": true,
+  "reportVersion": "s12.corpus.qa.v2",
+  "reviewedAtomicCases": 160,
+  "reviewedScenarios": 18,
+  "status": "OWNER_DELEGATED_AI_QA_COMPLETE",
+  "validationAndTestCases": 80
+}

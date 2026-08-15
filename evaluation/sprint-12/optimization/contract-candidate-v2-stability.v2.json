@@ -1,0 +1,229 @@
+{
+  "aggregateFailureCounts": {
+    "invalid_evidence": 4,
+    "schema_invalid": 7
+  },
+  "candidateFreezeAuthorized": false,
+  "caseCountPerRun": 32,
+  "contractVersion": "m3.v2",
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "fixedEvidenceDigests": true,
+  "fixedModelConfiguration": true,
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "independentRunCount": 3,
+  "metricVariance": {
+    "abstentionAccuracy": {
+      "max": 0.7241379310344828,
+      "mean": 0.6635720601237843,
+      "min": 0.5769230769230769,
+      "populationVariance": 0.00395219991854036
+    },
+    "entityMacroF1": {
+      "max": 0.3103448275862069,
+      "mean": 0.22435897435897437,
+      "min": 0.17307692307692307,
+      "populationVariance": 0.003742589869453494
+    },
+    "hallucinationRate": {
+      "max": 0.6436781609195402,
+      "mean": 0.5570291777188329,
+      "min": 0.48717948717948717,
+      "populationVariance": 0.004223080597360301
+    },
+    "linkMacroF1": {
+      "max": 1.0,
+      "mean": 1.0,
+      "min": 1.0,
+      "populationVariance": 0.0
+    },
+    "relationMacroF1": {
+      "max": 0.7586206896551724,
+      "mean": 0.7250221043324491,
+      "min": 0.6923076923076923,
+      "populationVariance": 0.0007332931507449018
+    }
+  },
+  "noRetryWithinEachRun": true,
+  "rawSensitiveDataIncluded": false,
+  "retryPolicy": "none",
+  "runs": [
+    {
+      "caseCount": 32,
+      "configuration": {
+        "apiKeyPresent": true,
+        "baseUrl": "https://api.deepseek.com",
+        "evaluatorVersion": "s12.evaluator.v1",
+        "llmType": "openai-response",
+        "manifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+        "model": "deepseek-v4-flash",
+        "oneAttemptPerCase": true,
+        "promptVersion": "m3.prompt.v2",
+        "release": "v0.6.0",
+        "requestTimeoutSeconds": 60,
+        "retryPolicy": "none",
+        "runBudgetSeconds": 300,
+        "samplingConfiguration": {
+          "seed": "provider-controlled",
+          "temperature": "provider-default",
+          "topP": "provider-default"
+        },
+        "schemaVersion": "m3.v2"
+      },
+      "datasetVersion": "s12.corpus.atomic.v2",
+      "digests": {
+        "candidateRunnerCode": "sha256:9e3c224defbdc5c268e48772e4d28fbd2274173b50b811f0d8420d24fdf99c09",
+        "evaluatorCode": "sha256:fa6587b799ccfbd2b33b33dc1e86846b7842c29bc3303926af95c19fa86c7ee1",
+        "manifest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+        "modelConfiguration": "sha256:7a456b2b8b9cbaf770c29698c2069600f21a0fdd85e6f5dd479cda95d0e2f602",
+        "promptCode": "sha256:2827e7f23b50b480b157615d2bc09997d643ed607c02e02d3ec8e010a56ada03",
+        "runtimeContractCode": "sha256:fe74535ea26db917fee51b449f725431f4e0d98040ea5126533bc511142681ac",
+        "runtimeServiceCode": "sha256:f80f2ad12be5c58f6314a04e4652d97d913492a6606f21f39160dcf0c605786c",
+        "schemaContract": "sha256:235716b6fdd5d0b834e2d8a590a270e83e7175b02048cc6aa1133ff74fc75d39"
+      },
+      "failureClassByCaseId": {
+        "s12-a-0106": "schema_invalid",
+        "s12-a-0138": "schema_invalid",
+        "s12-a-0154": "invalid_evidence"
+      },
+      "failureCount": 3,
+      "failureCounts": {
+        "invalid_evidence": 1,
+        "schema_invalid": 2
+      },
+      "metrics": {
+        "abstentionAccuracy": 0.6896551724137931,
+        "entityMacroF1": 0.1896551724137931,
+        "hallucinationRate": 0.6436781609195402,
+        "linkMacroF1": 1.0,
+        "relationMacroF1": 0.7241379310344828
+      },
+      "reportDigest": "sha256:7716af7c677d65bcd2eb777a3c8bda5ace0bbb016c553187920ffa77f1494b9a",
+      "reportPath": "evaluation/sprint-12/optimization/contract-candidate-v2-stability/runs/run-01.report.v1.json",
+      "runId": "run-01",
+      "status": "CANDIDATE_DEVELOPMENT_WITH_FAILURES"
+    },
+    {
+      "caseCount": 32,
+      "configuration": {
+        "apiKeyPresent": true,
+        "baseUrl": "https://api.deepseek.com",
+        "evaluatorVersion": "s12.evaluator.v1",
+        "llmType": "openai-response",
+        "manifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+        "model": "deepseek-v4-flash",
+        "oneAttemptPerCase": true,
+        "promptVersion": "m3.prompt.v2",
+        "release": "v0.6.0",
+        "requestTimeoutSeconds": 60,
+        "retryPolicy": "none",
+        "runBudgetSeconds": 300,
+        "samplingConfiguration": {
+          "seed": "provider-controlled",
+          "temperature": "provider-default",
+          "topP": "provider-default"
+        },
+        "schemaVersion": "m3.v2"
+      },
+      "datasetVersion": "s12.corpus.atomic.v2",
+      "digests": {
+        "candidateRunnerCode": "sha256:9e3c224defbdc5c268e48772e4d28fbd2274173b50b811f0d8420d24fdf99c09",
+        "evaluatorCode": "sha256:fa6587b799ccfbd2b33b33dc1e86846b7842c29bc3303926af95c19fa86c7ee1",
+        "manifest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+        "modelConfiguration": "sha256:7a456b2b8b9cbaf770c29698c2069600f21a0fdd85e6f5dd479cda95d0e2f602",
+        "promptCode": "sha256:2827e7f23b50b480b157615d2bc09997d643ed607c02e02d3ec8e010a56ada03",
+        "runtimeContractCode": "sha256:fe74535ea26db917fee51b449f725431f4e0d98040ea5126533bc511142681ac",
+        "runtimeServiceCode": "sha256:f80f2ad12be5c58f6314a04e4652d97d913492a6606f21f39160dcf0c605786c",
+        "schemaContract": "sha256:235716b6fdd5d0b834e2d8a590a270e83e7175b02048cc6aa1133ff74fc75d39"
+      },
+      "failureClassByCaseId": {
+        "s12-a-0106": "invalid_evidence",
+        "s12-a-0122": "schema_invalid",
+        "s12-a-0130": "schema_invalid",
+        "s12-a-0162": "schema_invalid",
+        "s12-a-0178": "invalid_evidence",
+        "s12-a-0186": "invalid_evidence"
+      },
+      "failureCount": 6,
+      "failureCounts": {
+        "invalid_evidence": 3,
+        "schema_invalid": 3
+      },
+      "metrics": {
+        "abstentionAccuracy": 0.5769230769230769,
+        "entityMacroF1": 0.17307692307692307,
+        "hallucinationRate": 0.48717948717948717,
+        "linkMacroF1": 1.0,
+        "relationMacroF1": 0.6923076923076923
+      },
+      "reportDigest": "sha256:411418fc6dfd5845c3127b3b59aedfc2660c87f930d168fcb4ed72073683cc63",
+      "reportPath": "evaluation/sprint-12/optimization/contract-candidate-v2-stability/runs/run-02.report.v1.json",
+      "runId": "run-02",
+      "status": "CANDIDATE_DEVELOPMENT_WITH_FAILURES"
+    },
+    {
+      "caseCount": 32,
+      "configuration": {
+        "apiKeyPresent": true,
+        "baseUrl": "https://api.deepseek.com",
+        "evaluatorVersion": "s12.evaluator.v1",
+        "llmType": "openai-response",
+        "manifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+        "model": "deepseek-v4-flash",
+        "oneAttemptPerCase": true,
+        "promptVersion": "m3.prompt.v2",
+        "release": "v0.6.0",
+        "requestTimeoutSeconds": 60,
+        "retryPolicy": "none",
+        "runBudgetSeconds": 300,
+        "samplingConfiguration": {
+          "seed": "provider-controlled",
+          "temperature": "provider-default",
+          "topP": "provider-default"
+        },
+        "schemaVersion": "m3.v2"
+      },
+      "datasetVersion": "s12.corpus.atomic.v2",
+      "digests": {
+        "candidateRunnerCode": "sha256:9e3c224defbdc5c268e48772e4d28fbd2274173b50b811f0d8420d24fdf99c09",
+        "evaluatorCode": "sha256:fa6587b799ccfbd2b33b33dc1e86846b7842c29bc3303926af95c19fa86c7ee1",
+        "manifest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+        "modelConfiguration": "sha256:7a456b2b8b9cbaf770c29698c2069600f21a0fdd85e6f5dd479cda95d0e2f602",
+        "promptCode": "sha256:2827e7f23b50b480b157615d2bc09997d643ed607c02e02d3ec8e010a56ada03",
+        "runtimeContractCode": "sha256:fe74535ea26db917fee51b449f725431f4e0d98040ea5126533bc511142681ac",
+        "runtimeServiceCode": "sha256:f80f2ad12be5c58f6314a04e4652d97d913492a6606f21f39160dcf0c605786c",
+        "schemaContract": "sha256:235716b6fdd5d0b834e2d8a590a270e83e7175b02048cc6aa1133ff74fc75d39"
+      },
+      "failureClassByCaseId": {
+        "s12-a-0121": "cross_project_link",
+        "s12-a-0122": "schema_invalid",
+        "s12-a-0130": "schema_invalid"
+      },
+      "failureCount": 3,
+      "failureCounts": {
+        "cross_project_link": 1,
+        "schema_invalid": 2
+      },
+      "metrics": {
+        "abstentionAccuracy": 0.7241379310344828,
+        "entityMacroF1": 0.3103448275862069,
+        "hallucinationRate": 0.5402298850574713,
+        "linkMacroF1": 1.0,
+        "relationMacroF1": 0.7586206896551724
+      },
+      "reportDigest": "sha256:88e2e180107a589d96090780919764893d3123d67cef9955dead885454de084e",
+      "reportPath": "evaluation/sprint-12/optimization/contract-candidate-v2-stability/runs/run-03.report.v1.json",
+      "runId": "run-03",
+      "status": "CANDIDATE_DEVELOPMENT_WITH_FAILURES"
+    }
+  ],
+  "samplingConfiguration": {
+    "seed": "provider-controlled",
+    "temperature": "provider-default",
+    "topP": "provider-default"
+  },
+  "schemaVersion": "s12.contract-candidate-v2-stability.v2",
+  "status": "STABILITY_GATE_FAIL",
+  "totalCaseExecutions": 96,
+  "validationAuthorized": false
+}

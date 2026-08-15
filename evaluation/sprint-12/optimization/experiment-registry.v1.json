@@ -2,12 +2,12 @@
   "evaluatorVersion": "s12.evaluator.v1",
   "experiments": [
     {
-      "baselineConfigurationDigest": "sha256:e3b25747b7b4d4271b2f043f56704dcc902fef57460cefaa902144651c355f6a",
-      "candidateConfigurationDigest": "sha256:1d41eb34d3293224bcebe9b386a09a3aa2aff9fb5fffcdd7eb06ab39db42f66f",
+      "baselineConfigurationDigest": "sha256:2f4a4c84984fefd1d6ab502a5e73a70bf37ef92e416336392acc2227fa1a5cb2",
+      "candidateConfigurationDigest": "sha256:fb58e24e30dc3b4337650d7281010b02c3ef3937c6dcacf374158f0366f553b4",
       "changedArtifacts": [
         "prompt"
       ],
-      "datasetManifestDigest": "sha256:7c0e32242f5596f4f6a153069c2afbe5a13990fdde90840340a4408de3f4cd65",
+      "datasetManifestDigest": "sha256:380cb041c54c1b1b33bb42d6d49a933997fe9466e8e855d00ad1e79e16cfd0a8",
       "dimension": "prompt",
       "experimentId": "s12-f-01",
       "hypothesis": "A bounded prompt change improves the registered development metric without weakening hard invariants.",
@@ -25,16 +25,16 @@
         "policy",
         "review-contract"
       ],
-      "status": "NOT_EXECUTED_BASELINE_UNAVAILABLE",
+      "status": "REGISTERED",
       "stoppingRule": "Stop after one development run or immediately on a hard-invariant regression."
     },
     {
-      "baselineConfigurationDigest": "sha256:e3b25747b7b4d4271b2f043f56704dcc902fef57460cefaa902144651c355f6a",
-      "candidateConfigurationDigest": "sha256:0518e267b3df53f7f1df00ca3dc8a7e13a8ad3bacde900a00f2214c2d922fdda",
+      "baselineConfigurationDigest": "sha256:2f4a4c84984fefd1d6ab502a5e73a70bf37ef92e416336392acc2227fa1a5cb2",
+      "candidateConfigurationDigest": "sha256:da88cf56d5c3dd3e361e466be0482526166f50e0e20761c666dde535c2e685df",
       "changedArtifacts": [
         "context"
       ],
-      "datasetManifestDigest": "sha256:7c0e32242f5596f4f6a153069c2afbe5a13990fdde90840340a4408de3f4cd65",
+      "datasetManifestDigest": "sha256:380cb041c54c1b1b33bb42d6d49a933997fe9466e8e855d00ad1e79e16cfd0a8",
       "dimension": "context",
       "experimentId": "s12-f-02",
       "hypothesis": "A bounded context change improves the registered development metric without weakening hard invariants.",
@@ -52,16 +52,16 @@
         "policy",
         "review-contract"
       ],
-      "status": "NOT_EXECUTED_BASELINE_UNAVAILABLE",
+      "status": "REGISTERED",
       "stoppingRule": "Stop after one development run or immediately on a hard-invariant regression."
     },
     {
-      "baselineConfigurationDigest": "sha256:e3b25747b7b4d4271b2f043f56704dcc902fef57460cefaa902144651c355f6a",
-      "candidateConfigurationDigest": "sha256:8f72437aaeee828dcbdac809d0510143effe4d41c08fae9d638d93330ddff252",
+      "baselineConfigurationDigest": "sha256:2f4a4c84984fefd1d6ab502a5e73a70bf37ef92e416336392acc2227fa1a5cb2",
+      "candidateConfigurationDigest": "sha256:3c3c75919274b42c15ecb4287cfe18e72ca20a86725c426aa094a154273275bd",
       "changedArtifacts": [
         "agent-workflow"
       ],
-      "datasetManifestDigest": "sha256:7c0e32242f5596f4f6a153069c2afbe5a13990fdde90840340a4408de3f4cd65",
+      "datasetManifestDigest": "sha256:380cb041c54c1b1b33bb42d6d49a933997fe9466e8e855d00ad1e79e16cfd0a8",
       "dimension": "agent-workflow",
       "experimentId": "s12-f-03",
       "hypothesis": "A bounded agent-workflow change improves the registered development metric without weakening hard invariants.",
@@ -79,16 +79,16 @@
         "policy",
         "review-contract"
       ],
-      "status": "NOT_EXECUTED_BASELINE_UNAVAILABLE",
+      "status": "REGISTERED",
       "stoppingRule": "Stop after one development run or immediately on a hard-invariant regression."
     },
     {
-      "baselineConfigurationDigest": "sha256:e3b25747b7b4d4271b2f043f56704dcc902fef57460cefaa902144651c355f6a",
-      "candidateConfigurationDigest": "sha256:11f1f9a22e0c85f56e7b1affaf2d9963d3fda17a5c27e56edea30eed43148430",
+      "baselineConfigurationDigest": "sha256:2f4a4c84984fefd1d6ab502a5e73a70bf37ef92e416336392acc2227fa1a5cb2",
+      "candidateConfigurationDigest": "sha256:ab1eb385faac94fc74514569330ae42c78cff4b044586d83e8695ed8a9dc0173",
       "changedArtifacts": [
         "tool"
       ],
-      "datasetManifestDigest": "sha256:7c0e32242f5596f4f6a153069c2afbe5a13990fdde90840340a4408de3f4cd65",
+      "datasetManifestDigest": "sha256:380cb041c54c1b1b33bb42d6d49a933997fe9466e8e855d00ad1e79e16cfd0a8",
       "dimension": "tool",
       "experimentId": "s12-f-04",
       "hypothesis": "A bounded tool change improves the registered development metric without weakening hard invariants.",
@@ -106,16 +106,16 @@
         "policy",
         "review-contract"
       ],
-      "status": "NOT_EXECUTED_BASELINE_UNAVAILABLE",
+      "status": "REGISTERED",
       "stoppingRule": "Stop after one development run or immediately on a hard-invariant regression."
     },
     {
-      "baselineConfigurationDigest": "sha256:e3b25747b7b4d4271b2f043f56704dcc902fef57460cefaa902144651c355f6a",
-      "candidateConfigurationDigest": "sha256:5740eea02dc6edfc9e6f54068b56449d1600ba95e288cc5857abac859fccce48",
+      "baselineConfigurationDigest": "sha256:2f4a4c84984fefd1d6ab502a5e73a70bf37ef92e416336392acc2227fa1a5cb2",
+      "candidateConfigurationDigest": "sha256:ae034290395e7592c676d27b1b675f65d81fd12d4473dfe52f3c93b9c97b0494",
       "changedArtifacts": [
         "model"
       ],
-      "datasetManifestDigest": "sha256:7c0e32242f5596f4f6a153069c2afbe5a13990fdde90840340a4408de3f4cd65",
+      "datasetManifestDigest": "sha256:380cb041c54c1b1b33bb42d6d49a933997fe9466e8e855d00ad1e79e16cfd0a8",
       "dimension": "model",
       "experimentId": "s12-f-05",
       "hypothesis": "A bounded model change improves the registered development metric without weakening hard invariants.",
@@ -133,7 +133,7 @@
         "policy",
         "review-contract"
       ],
-      "status": "NOT_EXECUTED_BASELINE_UNAVAILABLE",
+      "status": "REGISTERED",
       "stoppingRule": "Stop after one development run or immediately on a hard-invariant regression."
     }
   ],
@@ -141,7 +141,7 @@
   "permittedSplits": [
     "development"
   ],
-  "registryDigest": "sha256:07bec15f8b5be6b8d73712393cb43c59ce690828f58ea1fe6b805af10c681a73",
+  "registryDigest": "sha256:dd0ec5a026c5d2ae193907f4bc848db69fdc2ce9d8746e00c0d8fbcd67928438",
   "registryVersion": "s12.experiment-registry.v1",
-  "status": "G5_PREPARATION_BLOCKED_BASELINE_UNAVAILABLE"
+  "status": "G5_PREPARATION_DEVELOPMENT_OPEN"
 }

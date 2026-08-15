@@ -1,0 +1,307 @@
+{
+  "adjudicationArtifact": "supersession-adjudication.v2.json",
+  "caseCount": 21,
+  "cases": [
+    {
+      "caseId": "s12-a-0106",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:e58e9bdcb70d0a07cf9e27afa25a7335e2a838b589e252ac609b23e8b8f69f25",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    },
+    {
+      "caseId": "s12-a-0114",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:665d095426b612fc9c2bf5b163d53e49a56e86d300ccf96a80047e3f6389058e",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    },
+    {
+      "caseId": "s12-a-0122",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:2d91e630fac0131874fd53c4744f342890e605195c7755ef0439b1e897a16ff6",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    },
+    {
+      "caseId": "s12-a-0130",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:1084bbdd6b1ca951370697bd203ef02abcf322a70c9739982a0cd1cb9b8f25f0",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    },
+    {
+      "caseId": "s12-a-0138",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:5026bfedcd26572d2ddaa909988b38ab22e2e89fcdb037cf68d69784e7a685fa",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    },
+    {
+      "caseId": "s12-a-0154",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:2c48dc6828e7cf99159dc2d1df61a162d4aa206f0b1581c470422706a3efcfcf",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    },
+    {
+      "caseId": "s12-a-0162",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:717bc13f1252493a06e0d598014eaff34e678756cd14da005be6a1328669ad89",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    },
+    {
+      "caseId": "s12-a-0170",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:1dd86804da995aedfd4e9262e4eb706a646df66706cde0643086099883532ae5",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    },
+    {
+      "caseId": "s12-a-0178",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:7a45daae7b0fd1afd1016d6e4600ea43e254e4db974cb1ac650d91c9fffe0464",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    },
+    {
+      "caseId": "s12-a-0186",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:6dd582576d3cc4ace8f72be27d2dd93ebe84728ef363948d4800076e151d6cc0",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    },
+    {
+      "caseId": "s12-a-0194",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:5d20e2d45269e402786c7d8130c93cee7ba3a7b46498eee50a8a4e34b0a4cfa1",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    },
+    {
+      "caseId": "s12-a-0202",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:8ee35586ed53f890b7016fbac12af0f6587c6d15d1bb8d938189ae7a51e21bb5",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    },
+    {
+      "caseId": "s12-a-0210",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:b5071e2e4e8431d46db96e7dd2e319b1a5892b523a3656afb36297480809bf6b",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    },
+    {
+      "caseId": "s12-a-0218",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:2591a976a99f27b3fb52abfa08fec8aa38a9734620005423f4c07bf1522fd864",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    },
+    {
+      "caseId": "s12-a-0226",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:9ebb7a34b95c00c9506e62f386e88f94ab5cf3b22d0d0debe61e0e55fe33b4ad",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    },
+    {
+      "caseId": "s12-a-0234",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:c1bba2f39ad8c6ac8a4153880efabb27ca52373e8985f4366e8d005aed70dfdd",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    },
+    {
+      "caseId": "s12-a-0242",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:1360b4694dd0ec3b8b49fc8d1fa30e49527ab1ecd1058ebf5c38902cac73afa2",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    },
+    {
+      "caseId": "s12-a-0258",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:347335cc6ae285db7e05a9487fe705025b1cb4e94c9020854971fd605e9dcc48",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    },
+    {
+      "caseId": "s12-a-0266",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:a33c66df0abee9f7bd45749fe8b5885d7382bc08d41bfc3da2c2cb379772d9e2",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    },
+    {
+      "caseId": "s12-a-0282",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:331e4bda1519642dcf9694af2cc212ca7fe0fa67638e97293a067577003313ab",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    },
+    {
+      "caseId": "s12-a-0290",
+      "containsSupersedesSemanticGap": true,
+      "entitySpanMatchesFirstSentence": true,
+      "goldDigest": "sha256:d5809425c4eceac622508fc68bd56693a53aa45922155b6724bb83f42ad02427",
+      "goldEntitySpans": [
+        {
+          "end": 63,
+          "start": 0
+        }
+      ],
+      "goldRelationPredicates": []
+    }
+  ],
+  "contractBoundary": {
+    "candidateContractGap": true,
+    "ontologyChangeRequired": false,
+    "supersedesIsCurrentAtomicCandidatePredicate": false,
+    "supersedesIsReleasedOntologyTerm": true
+  },
+  "corpusDigest": "sha256:6ef0316fbff131a81d516cab4712c4eeba06e401d4c4c80e54ba3d7eb40e70ce",
+  "datasetVersion": "s12.corpus.atomic.v1",
+  "guideVersions": [
+    "annotation-guide.v1",
+    "annotation-guide.v1.1"
+  ],
+  "humanEvidence": false,
+  "policyReview": {
+    "adjudicated": true,
+    "decision": "abstain-with-semantic-gap",
+    "goldChanged": true,
+    "minimalEvidencePolicy": "annotation-guide.v1 requires the smallest phrase expressing the complete semantic item.",
+    "newDatasetVersionRequiredIfAdjudicationChangesGold": true,
+    "potentialEntitySpanTension": false,
+    "relationEvidencePolicy": "annotation-guide.v1 permits full clause/sentence evidence for relations.",
+    "silentGoldRewrite": false
+  },
+  "publishedDatasetVersion": "s12.corpus.atomic.v2",
+  "rawSensitiveDataIncluded": false,
+  "schemaVersion": "s12.supersession-review.v2",
+  "slice": "contradiction-or-supersession",
+  "status": "ADJUDICATED_DATASET_AMENDMENT_PUBLISHED"
+}

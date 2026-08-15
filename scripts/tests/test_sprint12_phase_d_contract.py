@@ -22,13 +22,13 @@ def read_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def test_phase_d_tasks_stop_at_human_g3_gate() -> None:
+def test_phase_d_tasks_stop_at_external_custody_gate() -> None:
     plan = PLAN.read_text(encoding="utf-8")
     assert "Status: `G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE`" in plan
     for number in range(40, 49):
         assert f"[x] **S12-{number:02d}" in plan
     for number in (49, 50):
-        assert f"[ ] **S12-{number:02d}" in plan
+        assert f"[x] **S12-{number:02d}" in plan
     for number in range(51, 55):
         assert f"[x] **S12-{number:02d}" in plan
     assert "[ ] **S12-55" in plan
@@ -36,16 +36,17 @@ def test_phase_d_tasks_stop_at_human_g3_gate() -> None:
     assert "[x] **S12-57" in plan
 
 
-def test_phase_d_validator_passes_without_claiming_human_evidence() -> None:
+def test_phase_d_validator_passes_with_owner_delegated_ai_review() -> None:
     result = validate()
     assert result == {
-        "status": "PASS_WITH_HUMAN_GATES_PENDING",
+        "status": "PASS_WITH_OWNER_DELEGATED_AI_REVIEW",
         "atomicPayloadCases": 160,
         "atomicManifestCases": 200,
         "scenarioPayloadEpisodes": 18,
         "scenarioManifestEpisodes": 24,
         "testCustody": "not-established",
         "humanEvidence": False,
+        "ownerDelegatedAiReview": True,
     }
 
 
@@ -66,6 +67,8 @@ def test_phase_d_manifests_and_gold_artifacts_are_bound() -> None:
     }
     assert manifest["qualifiedHumanEvidence"] is False
     assert custody["payloadPresent"] is False
+    assert custody["reconstructibleFromRepository"] is True
+    assert custody["eligibleForHeldOut"] is False
     for relative in [
         "gold/atomic-gold.v1.json",
         "gold/scenario-gold.v1.json",
@@ -73,6 +76,7 @@ def test_phase_d_manifests_and_gold_artifacts_are_bound() -> None:
         "gold/business-review-gold.v1.json",
         "qa/qa-report.v1.json",
         "qa/adjudication-log.v1.json",
+        "qa/owner-delegated-ai-review.v1.json",
         "manifests/development-validation.manifest.v1.json",
         "manifests/test-custody.manifest.v1.json",
         "validation/report.v1.json",
@@ -83,7 +87,7 @@ def test_phase_d_manifests_and_gold_artifacts_are_bound() -> None:
 def test_g3_packet_records_approval_with_explicit_limitations() -> None:
     packet = PACKET.read_text(encoding="utf-8")
     assert "**Status:** `G3_APPROVED_G4_PENDING`" in packet
-    assert "PASS_WITH_HUMAN_GATES_PENDING" in packet
+    assert "PASS_WITH_OWNER_DELEGATED_AI_REVIEW" in packet
     assert "| G3 outcome | `APPROVED_WITH_LIMITATIONS` |" in packet
     assert "Test payloads" in packet
     assert "and gold are intentionally absent from the repository" in packet

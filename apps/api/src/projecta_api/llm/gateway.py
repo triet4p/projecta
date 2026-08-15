@@ -6,6 +6,7 @@ from typing import Literal, Protocol
 from pydantic import BaseModel, ConfigDict, Field
 
 from projecta_api.extraction.contracts import (
+    EXTRACTION_SCHEMA_VERSION,
     ExtractionResponse,
     UsageMetadata,
 )
@@ -31,7 +32,9 @@ class GatewayRequest(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    schema_version: Literal["m3.v1"] = Field(alias="schemaVersion")
+    schema_version: Literal["m3.v1", "m3.v2"] = Field(
+        default=EXTRACTION_SCHEMA_VERSION, alias="schemaVersion"
+    )
     model_id: str = Field(min_length=1, max_length=128, alias="modelId")
     system_prompt: str = Field(min_length=1, max_length=100_000, alias="systemPrompt")
     user_prompt: str = Field(min_length=1, max_length=200_000, alias="userPrompt")
@@ -64,8 +67,16 @@ class LLMGateway(Protocol):
 class NormalizedGatewayError(Exception):
     """Safe, provider-neutral error with explicit retryability."""
 
-    def __init__(self, error_class: GatewayErrorClass, detail: str, *, retryable: bool) -> None:
+    def __init__(
+        self,
+        error_class: GatewayErrorClass,
+        detail: str,
+        *,
+        retryable: bool,
+        diagnostic: Mapping[str, object] | None = None,
+    ) -> None:
         self.error_class = error_class
         self.detail = detail
         self.retryable = retryable
+        self.diagnostic = dict(diagnostic or {})
         super().__init__(detail)

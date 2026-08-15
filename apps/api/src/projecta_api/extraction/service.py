@@ -10,6 +10,7 @@ from projecta_api.configuration.ports import RuntimeConfigurationProvider
 from projecta_api.context import TrustedRequestContext
 from projecta_api.extraction.contracts import (
     EXTRACTION_SCHEMA_VERSION,
+    EXTRACTION_SCHEMA_VERSION_V2,
     ExtractionResponse,
     UsageMetadata,
 )
@@ -41,6 +42,7 @@ class ExtractionOrchestrator:
         timeout_seconds: float = 60.0,
         configuration_provider: RuntimeConfigurationProvider | None = None,
         gateway_factory: Callable[[LLMConfigurationSnapshot], LLMGateway] | None = None,
+        schema_version: str = EXTRACTION_SCHEMA_VERSION,
     ) -> None:
         self._gateway = gateway
         self._semantic = semantic
@@ -49,6 +51,9 @@ class ExtractionOrchestrator:
         self._timeout_seconds = timeout_seconds
         self._configuration_provider = configuration_provider
         self._gateway_factory = gateway_factory
+        if schema_version not in {EXTRACTION_SCHEMA_VERSION, EXTRACTION_SCHEMA_VERSION_V2}:
+            raise ValueError(f"unsupported extraction schema version: {schema_version}")
+        self._schema_version = schema_version
 
     async def propose(
         self, context: TrustedRequestContext, request: ExtractionRequest
@@ -132,7 +137,17 @@ class ExtractionOrchestrator:
                 ]
             ),
             bounded,
+            schema_version=self._schema_version,
         )
+        if self._schema_version == EXTRACTION_SCHEMA_VERSION_V2:
+            user += (
+                "\nContract m3.v2: assign every emitted entity a unique local "
+                "candidateId. Relation sourceEntityId and targetEntityId may "
+                "reference those local candidate IDs or bounded same-project IDs. "
+                "For every entity, relation and link evidence, return exact text "
+                "and its one-based occurrence in the whole note; do not return "
+                "offsets. The server materializes offsets."
+            )
         if proposal_only:
             user += (
                 "\nAssisted import mode: return only entity proposals and an "
@@ -144,12 +159,14 @@ class ExtractionOrchestrator:
             )
         gateway_result = await operation_gateway.extract(
             GatewayRequest(
-                schemaVersion=EXTRACTION_SCHEMA_VERSION,
+                schemaVersion=self._schema_version,
                 modelId=model_id,
                 systemPrompt=system,
                 userPrompt=user,
-                responseSchema=_response_schema(proposal_only=proposal_only),
-                sourceText=request.raw_text if proposal_only else None,
+                responseSchema=_response_schema(
+                    schema_version=self._schema_version, proposal_only=proposal_only
+                ),
+                sourceText=request.raw_text,
                 timeoutSeconds=self._timeout_seconds,
                 maxOutputTokens=4_096,
                 requestId=context.request_id,
@@ -209,11 +226,13 @@ class ExtractionOrchestrator:
         )
 
 
-def _response_schema(*, proposal_only: bool = False) -> dict[str, object]:
+def _response_schema(
+    *, schema_version: str = EXTRACTION_SCHEMA_VERSION, proposal_only: bool = False
+) -> dict[str, object]:
     """Return a DeepSeek-compatible strict schema with every object field required."""
     evidence_properties: dict[str, object]
     evidence_required: list[str]
-    if proposal_only:
+    if schema_version == EXTRACTION_SCHEMA_VERSION_V2 or proposal_only:
         evidence_properties = {
             "text": {"type": "string"},
             "occurrence": {"type": "integer", "minimum": 1},
@@ -249,11 +268,22 @@ def _response_schema(*, proposal_only: bool = False) -> dict[str, object]:
                     "ResearchFinding",
                 ],
             },
+            **(
+                {"candidateId": {"type": "string"}}
+                if schema_version == EXTRACTION_SCHEMA_VERSION_V2
+                else {}
+            ),
             "label": {"type": "string"},
             "evidence": evidence,
             "confidence": {"type": "number"},
         },
-        "required": ["type", "label", "evidence", "confidence"],
+        "required": [
+            *(["candidateId"] if schema_version == EXTRACTION_SCHEMA_VERSION_V2 else []),
+            "type",
+            "label",
+            "evidence",
+            "confidence",
+        ],
         "additionalProperties": False,
     }
     relation = {
@@ -331,8 +361,9 @@ def _with_extraction_details(result: object, response: ExtractionResponse) -> ob
 
 def _ingestion_body(raw_text: str, response: ExtractionResponse) -> dict[str, object]:
     data = response.model_dump(mode="json", by_alias=True)
-    entities = [
-        {
+    entities = []
+    for item in data["entities"]:
+        entity = {
             "type": item["type"],
             "label": item["label"],
             "text": item["evidence"]["text"],
@@ -340,8 +371,9 @@ def _ingestion_body(raw_text: str, response: ExtractionResponse) -> dict[str, ob
             "endOffset": item["evidence"]["endOffset"],
             "confidence": float(item["confidence"]),
         }
-        for item in data["entities"]
-    ]
+        if item.get("candidateId") is not None:
+            entity["candidateId"] = item["candidateId"]
+        entities.append(entity)
     relations = [
         {
             "predicate": item["predicate"],

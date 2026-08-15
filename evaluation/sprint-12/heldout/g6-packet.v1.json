@@ -12,10 +12,12 @@
   },
   "custody": {
     "atomicCases": 40,
-    "bundleDigest": "sha256:f08309ae9adf5f4e1df4d7a51ca88dffaa1ef935f2ce80419941feadad3243b5",
+    "bundleDigest": "sha256:f69a1cf187b11a491d3968e0d1851d049d4dce38d5185314ae7e34501bf41c70",
     "failures": [
       "custody status is not established",
-      "test payload is absent from authorized custody boundary"
+      "test payload is absent from authorized custody boundary",
+      "test payload is reconstructible from repository-visible material",
+      "test bundle is not eligible for held-out evaluation"
     ],
     "payloadPresent": false,
     "scenarios": 6,
@@ -29,7 +31,7 @@
       "manual"
     ],
     "componentDigests": {
-      "custody": "sha256:5b5a657d24de16d5ffc0459cfb59fda116257c5c434725edb5152d18f74206d0",
+      "custody": "sha256:1139dc8e8cf39d1f2d47dabd35f433d04a1c1b881d94f6dc2f97d9337a158224",
       "manual": "sha256:75acefa1843b638679ace41c39762f973e562e6dab505dc0b1a44a5681fc3b8e",
       "preregistration": "sha256:5b6521a77462257f76fcbcc49f2f6ad9d2823cb0de343b8c1bb652dc03262646",
       "reviewer": "sha256:75915a47c3804854a1292fcef09ed0bb33d08100534cc21d9284fb7bedcd6776",

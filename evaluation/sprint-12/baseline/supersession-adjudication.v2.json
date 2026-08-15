@@ -1,0 +1,54 @@
+{
+  "changedCaseCount": 21,
+  "changedCaseIds": [
+    "s12-a-0106",
+    "s12-a-0114",
+    "s12-a-0122",
+    "s12-a-0130",
+    "s12-a-0138",
+    "s12-a-0154",
+    "s12-a-0162",
+    "s12-a-0170",
+    "s12-a-0178",
+    "s12-a-0186",
+    "s12-a-0194",
+    "s12-a-0202",
+    "s12-a-0210",
+    "s12-a-0218",
+    "s12-a-0226",
+    "s12-a-0234",
+    "s12-a-0242",
+    "s12-a-0258",
+    "s12-a-0266",
+    "s12-a-0282",
+    "s12-a-0290"
+  ],
+  "decision": {
+    "abstentionRequired": true,
+    "entities": [],
+    "links": [],
+    "relations": [],
+    "semanticGapPreserved": "candidate-contract-supersedes"
+  },
+  "goldChanged": true,
+  "goldChangedSilently": false,
+  "humanEvidence": false,
+  "publishedDataset": {
+    "contentDigest": "sha256:929b2824e6db7886d9e5abdf8f7e909996bb23503495f4c33387c092c7a0a884",
+    "datasetVersion": "s12.corpus.atomic.v2",
+    "fileDigest": "sha256:a4bfe225d570fe3b937565755ff7a140a06d079910120c42a36e2c6783539d51",
+    "path": "../corpus/atomic-development-validation.v2.json"
+  },
+  "publishedManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+  "rationale": "A supersession clause alone does not establish a standalone Requirement under the minimal-span and released-type rules; supersedes remains a candidate-contract gap.",
+  "rawSensitiveDataIncluded": false,
+  "schemaVersion": "s12.supersession-adjudication.v2",
+  "sourceDataset": {
+    "contentDigest": "sha256:e2a5426f6433dca4af0691e6b92e016b7d83f3eb33beb82b00dc6b14f862ad3e",
+    "datasetVersion": "s12.corpus.atomic.v1",
+    "fileDigest": "sha256:6ef0316fbff131a81d516cab4712c4eeba06e401d4c4c80e54ba3d7eb40e70ce",
+    "path": "../corpus/atomic-development-validation.v1.json"
+  },
+  "sourceManifestDigest": "sha256:380cb041c54c1b1b33bb42d6d49a933997fe9466e8e855d00ad1e79e16cfd0a8",
+  "status": "ADJUDICATED_DATASET_AMENDMENT_PUBLISHED"
+}

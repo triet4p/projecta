@@ -2,12 +2,21 @@
 
 **Status:** `G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE`
 
+## Owner-delegated synthetic-track amendment
+
+The project owner delegated semantic review of repository-visible synthetic
+artifacts to the implementation agent. These cases use
+`agent-authored-synthetic`, have a human-authored fraction of `0.0`, and remain
+`humanEvidence: false`. The original human-authoring and independent-annotation
+rules continue to describe any future human-evidence track but are not claimed
+for the amended synthetic track.
+
 ## Provenance and licensing (S12-19)
 
 Every case must record:
 
 - stable case/scenario ID and schema version;
-- authoring origin: human-authored synthetic, model-assisted rewritten,
+- authoring origin: agent-authored synthetic, human-authored synthetic, model-assisted rewritten,
   authorized de-identified or public licensed;
 - authoring organization/person reference held in the restricted review log;
 - source language, source style, sensitivity class and creation date;

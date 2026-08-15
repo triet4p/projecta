@@ -1,36 +1,32 @@
 {
   "baseline": {
     "developmentAndValidationOnly": true,
-    "execution": "NOT_EXECUTED_MISSING_RUNTIME_CONFIGURATION",
-    "missingRuntimeConfiguration": [
-      "PROJECTA_LLM_TYPE",
-      "PROJECTA_LLM_BASE_URL",
-      "PROJECTA_LLM_API_KEY",
-      "PROJECTA_LLM_MODEL"
-    ],
-    "release": "v0.6.0"
+    "execution": "RUNTIME_BACKED_WITH_FAILURES",
+    "oneAttemptPerCase": true,
+    "release": "v0.6.0",
+    "retryPolicy": "none"
   },
   "caseCount": 160,
   "caseCoverage": [
     {
       "caseId": "s12-a-0101",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0102",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0103",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0104",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0105",
@@ -50,27 +46,27 @@
     {
       "caseId": "s12-a-0108",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0109",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0110",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0111",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0112",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0113",
@@ -95,7 +91,7 @@
     {
       "caseId": "s12-a-0121",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0122",
@@ -115,27 +111,27 @@
     {
       "caseId": "s12-a-0125",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0126",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0127",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0128",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0129",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0130",
@@ -155,27 +151,27 @@
     {
       "caseId": "s12-a-0133",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0134",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0135",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0136",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0137",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0138",
@@ -195,32 +191,32 @@
     {
       "caseId": "s12-a-0141",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0142",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0143",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0144",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0151",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0152",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0153",
@@ -230,32 +226,32 @@
     {
       "caseId": "s12-a-0154",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0155",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0156",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0157",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0158",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0159",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0160",
@@ -280,27 +276,27 @@
     {
       "caseId": "s12-a-0164",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0165",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0166",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0167",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0168",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0169",
@@ -310,12 +306,12 @@
     {
       "caseId": "s12-a-0170",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0176",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0177",
@@ -340,27 +336,27 @@
     {
       "caseId": "s12-a-0181",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0182",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0183",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0184",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0185",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0186",
@@ -370,7 +366,7 @@
     {
       "caseId": "s12-a-0187",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0188",
@@ -380,32 +376,32 @@
     {
       "caseId": "s12-a-0189",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0190",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0191",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0192",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0193",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0194",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0195",
@@ -415,7 +411,7 @@
     {
       "caseId": "s12-a-0201",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0202",
@@ -430,37 +426,37 @@
     {
       "caseId": "s12-a-0204",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0205",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0206",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0207",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0208",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0209",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0210",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0211",
@@ -475,32 +471,32 @@
     {
       "caseId": "s12-a-0213",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0214",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0215",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0216",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0217",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0218",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0219",
@@ -530,27 +526,27 @@
     {
       "caseId": "s12-a-0229",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0230",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0231",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0232",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0233",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0234",
@@ -570,32 +566,32 @@
     {
       "caseId": "s12-a-0237",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0238",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0239",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0240",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0241",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0242",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0243",
@@ -605,12 +601,12 @@
     {
       "caseId": "s12-a-0244",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0245",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0251",
@@ -625,22 +621,22 @@
     {
       "caseId": "s12-a-0253",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0254",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0255",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0256",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0257",
@@ -650,7 +646,7 @@
     {
       "caseId": "s12-a-0258",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0259",
@@ -665,22 +661,22 @@
     {
       "caseId": "s12-a-0261",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0262",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0263",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0264",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0265",
@@ -705,12 +701,12 @@
     {
       "caseId": "s12-a-0269",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0270",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0276",
@@ -720,32 +716,32 @@
     {
       "caseId": "s12-a-0277",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0278",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0279",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0280",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0281",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0282",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0283",
@@ -760,22 +756,22 @@
     {
       "caseId": "s12-a-0285",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0286",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0287",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0288",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0289",
@@ -785,35 +781,35 @@
     {
       "caseId": "s12-a-0290",
       "split": "development",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0291",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0292",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0293",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0294",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     },
     {
       "caseId": "s12-a-0295",
       "split": "validation",
-      "status": "missing-output"
+      "status": "scored"
     }
   ],
-  "configurationDigest": "sha256:e3b25747b7b4d4271b2f043f56704dcc902fef57460cefaa902144651c355f6a",
+  "configurationDigest": "sha256:2f4a4c84984fefd1d6ab502a5e73a70bf37ef92e416336392acc2227fa1a5cb2",
   "datasetVersion": "s12.corpus.atomic.v1",
   "errorTaxonomy": {
     "categories": [
@@ -828,21 +824,5658 @@
     ],
     "observations": [
       {
-        "category": "runtime",
-        "reason": "NOT_EXECUTED_MISSING_RUNTIME_CONFIGURATION"
+        "caseId": "s12-a-0105",
+        "category": "model",
+        "failureClass": "schema_invalid"
+      },
+      {
+        "caseId": "s12-a-0106",
+        "category": "model",
+        "failureClass": "schema_invalid"
+      },
+      {
+        "caseId": "s12-a-0107",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0113",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0114",
+        "category": "model",
+        "failureClass": "schema_invalid"
+      },
+      {
+        "caseId": "s12-a-0115",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0116",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0122",
+        "category": "model",
+        "failureClass": "schema_invalid"
+      },
+      {
+        "caseId": "s12-a-0123",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0124",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0130",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0131",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0132",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0138",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0139",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0140",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0153",
+        "category": "model",
+        "failureClass": "schema_invalid"
+      },
+      {
+        "caseId": "s12-a-0160",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0161",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0162",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0163",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0169",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0177",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0178",
+        "category": "model",
+        "failureClass": "schema_invalid"
+      },
+      {
+        "caseId": "s12-a-0179",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0180",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0186",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0188",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0195",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0202",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0203",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0211",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0212",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0219",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0220",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0226",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0227",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0228",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0234",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0235",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0236",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0243",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0251",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0252",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0257",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0259",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0260",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0265",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0266",
+        "category": "model",
+        "failureClass": "schema_invalid"
+      },
+      {
+        "caseId": "s12-a-0267",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0268",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0276",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0283",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0284",
+        "category": "model",
+        "failureClass": "invalid_evidence"
+      },
+      {
+        "caseId": "s12-a-0289",
+        "category": "model",
+        "failureClass": "invalid_evidence"
       }
     ]
   },
   "evaluatorVersion": "s12.evaluator.v1",
+  "failureCount": 55,
   "hardInvariants": {
-    "status": "not-evaluated"
+    "datasetDigestBinding": true,
+    "heldOutNonLeakage": true,
+    "schemaValidity": false,
+    "splitIntegrity": true,
+    "status": "FAIL"
   },
   "humanEvidence": false,
-  "manifestDigest": "sha256:7c0e32242f5596f4f6a153069c2afbe5a13990fdde90840340a4408de3f4cd65",
-  "metrics": {},
-  "missingOutputCount": 160,
+  "manifestDigest": "sha256:380cb041c54c1b1b33bb42d6d49a933997fe9466e8e855d00ad1e79e16cfd0a8",
+  "metrics": {
+    "s12-a-0101": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0102": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0103": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0104": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0105": {
+      "category": "model",
+      "failureClass": "schema_invalid",
+      "status": "missing-output"
+    },
+    "s12-a-0106": {
+      "category": "model",
+      "failureClass": "schema_invalid",
+      "status": "missing-output"
+    },
+    "s12-a-0107": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0108": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 1,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0109": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0110": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0111": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0112": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0113": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0114": {
+      "category": "model",
+      "failureClass": "schema_invalid",
+      "status": "missing-output"
+    },
+    "s12-a-0115": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0116": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0121": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 2,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 3,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0122": {
+      "category": "model",
+      "failureClass": "schema_invalid",
+      "status": "missing-output"
+    },
+    "s12-a-0123": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0124": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0125": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0126": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0127": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0128": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0129": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 2,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 3,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0130": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0131": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0132": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0133": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0134": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0135": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0136": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0137": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 2,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 3,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0138": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0139": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0140": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0141": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0142": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0143": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0144": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0151": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0152": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0153": {
+      "category": "model",
+      "failureClass": "schema_invalid",
+      "status": "missing-output"
+    },
+    "s12-a-0154": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 1,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 1,
+      "hallucinationRate": 1.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0155": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 1,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0156": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 1,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 1,
+      "hallucinationRate": 1.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0157": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0158": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0159": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0160": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0161": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0162": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0163": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0164": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 1,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0165": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0166": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0167": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0168": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0169": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0170": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 1,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0176": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0177": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0178": {
+      "category": "model",
+      "failureClass": "schema_invalid",
+      "status": "missing-output"
+    },
+    "s12-a-0179": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0180": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0181": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0182": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0183": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0184": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0185": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 2,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 3,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0186": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0187": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 1,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0188": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0189": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0190": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0191": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0192": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0193": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 2,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 3,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0194": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 1,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0195": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0201": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 2,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 3,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0202": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0203": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0204": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 1,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 1,
+      "hallucinationRate": 1.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0205": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0206": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0207": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0208": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0209": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 2,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 3,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0210": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 1,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0211": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0212": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0213": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0214": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0215": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0216": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0217": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 2,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 3,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0218": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 1,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0219": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0220": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0226": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0227": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0228": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0229": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0230": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0231": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0232": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0233": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 2,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 3,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0234": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0235": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0236": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0237": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0238": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0239": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0240": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0241": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 2,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 3,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0242": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 1,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0243": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0244": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 1,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 1,
+      "hallucinationRate": 1.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0245": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0251": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0252": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0253": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0254": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0255": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0256": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0257": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0258": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 1,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0259": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0260": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0261": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0262": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0263": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0264": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0265": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0266": {
+      "category": "model",
+      "failureClass": "schema_invalid",
+      "status": "missing-output"
+    },
+    "s12-a-0267": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0268": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0269": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0270": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0276": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0277": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0278": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0279": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0280": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0281": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 2,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 3,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0282": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 1,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0283": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0284": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0285": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0286": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0287": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0288": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0289": {
+      "category": "model",
+      "failureClass": "invalid_evidence",
+      "status": "missing-output"
+    },
+    "s12-a-0290": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 1,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0291": {
+      "abstentionAccuracy": 0.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 0,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 1,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0292": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 0.0,
+        "gold": 1,
+        "precision": 0.0,
+        "predicted": 1,
+        "recall": 0.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 1,
+      "hallucinationRate": 1.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0293": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0294": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    },
+    "s12-a-0295": {
+      "abstentionAccuracy": 1.0,
+      "calibration": {
+        "status": "not-available"
+      },
+      "entities": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "goldItemCount": 0,
+      "hallucinationRate": 0.0,
+      "links": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "relations": {
+        "f1": 1.0,
+        "gold": 0,
+        "precision": 1.0,
+        "predicted": 0,
+        "recall": 1.0,
+        "truePositive": 0
+      },
+      "status": "scored"
+    }
+  },
+  "missingOutputCount": 55,
   "omittedCaseCount": 0,
+  "operational": {
+    "acceptedCandidateCostUsd": 0,
+    "costUsd": 0.0,
+    "count": 160,
+    "failureCounts": {
+      "invalid_evidence": 48,
+      "schema_invalid": 7
+    },
+    "latencyMs": {
+      "p50": 1047.0,
+      "p95": 1592.0
+    },
+    "status": "scored",
+    "usage": {
+      "inputTokens": 140850,
+      "outputTokens": 4846
+    }
+  },
+  "operationalRecords": [
+    {
+      "caseId": "s12-a-0101",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1345,
+      "latencyMs": 1608,
+      "outputTokens": 53,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0102",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1339,
+      "latencyMs": 1031,
+      "outputTokens": 39,
+      "slice": "adversarial-or-prompt-injection",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0103",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 1093,
+      "outputTokens": 30,
+      "slice": "cross-project-isolation",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0104",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1336,
+      "latencyMs": 906,
+      "outputTokens": 36,
+      "slice": "fabricated-link",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0105",
+      "costUsd": 0.0,
+      "failureClass": "schema_invalid",
+      "inputTokens": 0,
+      "latencyMs": 1468,
+      "outputTokens": 0,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0106",
+      "costUsd": 0.0,
+      "failureClass": "schema_invalid",
+      "inputTokens": 0,
+      "latencyMs": 1500,
+      "outputTokens": 0,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0107",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1406,
+      "outputTokens": 0,
+      "slice": "temporal-change",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0108",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1350,
+      "latencyMs": 937,
+      "outputTokens": 33,
+      "slice": "unicode-and-noisy-text",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0109",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1341,
+      "latencyMs": 843,
+      "outputTokens": 39,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0110",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1339,
+      "latencyMs": 875,
+      "outputTokens": 45,
+      "slice": "adversarial-or-prompt-injection",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0111",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1344,
+      "latencyMs": 1281,
+      "outputTokens": 58,
+      "slice": "cross-project-isolation",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0112",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1336,
+      "latencyMs": 1093,
+      "outputTokens": 36,
+      "slice": "fabricated-link",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0113",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1266,
+      "outputTokens": 0,
+      "slice": "duplicate-evidence",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0114",
+      "costUsd": 0.0,
+      "failureClass": "schema_invalid",
+      "inputTokens": 0,
+      "latencyMs": 1796,
+      "outputTokens": 0,
+      "slice": "contradiction-or-supersession",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0115",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1110,
+      "outputTokens": 0,
+      "slice": "temporal-change",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0116",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1156,
+      "outputTokens": 0,
+      "slice": "unicode-and-noisy-text",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0121",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1350,
+      "latencyMs": 1312,
+      "outputTokens": 78,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0122",
+      "costUsd": 0.0,
+      "failureClass": "schema_invalid",
+      "inputTokens": 0,
+      "latencyMs": 1592,
+      "outputTokens": 0,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0123",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1078,
+      "outputTokens": 0,
+      "slice": "temporal-change",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0124",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1156,
+      "outputTokens": 0,
+      "slice": "unicode-and-noisy-text",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0125",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1341,
+      "latencyMs": 1500,
+      "outputTokens": 118,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0126",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1339,
+      "latencyMs": 797,
+      "outputTokens": 37,
+      "slice": "adversarial-or-prompt-injection",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0127",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 983,
+      "outputTokens": 38,
+      "slice": "cross-project-isolation",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0128",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1336,
+      "latencyMs": 875,
+      "outputTokens": 52,
+      "slice": "fabricated-link",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0129",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1345,
+      "latencyMs": 1016,
+      "outputTokens": 43,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0130",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1233,
+      "outputTokens": 0,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0131",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1108,
+      "outputTokens": 0,
+      "slice": "temporal-change",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0132",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1266,
+      "outputTokens": 0,
+      "slice": "unicode-and-noisy-text",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0133",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1341,
+      "latencyMs": 953,
+      "outputTokens": 46,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0134",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1339,
+      "latencyMs": 1125,
+      "outputTokens": 32,
+      "slice": "adversarial-or-prompt-injection",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0135",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 1046,
+      "outputTokens": 50,
+      "slice": "cross-project-isolation",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0136",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1336,
+      "latencyMs": 858,
+      "outputTokens": 34,
+      "slice": "fabricated-link",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0137",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1344,
+      "latencyMs": 907,
+      "outputTokens": 36,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0138",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 796,
+      "outputTokens": 0,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0139",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1218,
+      "outputTokens": 0,
+      "slice": "temporal-change",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0140",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1437,
+      "outputTokens": 0,
+      "slice": "unicode-and-noisy-text",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0141",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1341,
+      "latencyMs": 828,
+      "outputTokens": 32,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0142",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1339,
+      "latencyMs": 921,
+      "outputTokens": 53,
+      "slice": "adversarial-or-prompt-injection",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0143",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 1047,
+      "outputTokens": 50,
+      "slice": "cross-project-isolation",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0144",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1336,
+      "latencyMs": 812,
+      "outputTokens": 38,
+      "slice": "fabricated-link",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0151",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 1046,
+      "outputTokens": 51,
+      "slice": "cross-project-isolation",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0152",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1336,
+      "latencyMs": 812,
+      "outputTokens": 37,
+      "slice": "fabricated-link",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0153",
+      "costUsd": 0.0,
+      "failureClass": "schema_invalid",
+      "inputTokens": 0,
+      "latencyMs": 1578,
+      "outputTokens": 0,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0154",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 1014,
+      "outputTokens": 75,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0155",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1344,
+      "latencyMs": 1077,
+      "outputTokens": 55,
+      "slice": "temporal-change",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0156",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1356,
+      "latencyMs": 1125,
+      "outputTokens": 109,
+      "slice": "unicode-and-noisy-text",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0157",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1341,
+      "latencyMs": 860,
+      "outputTokens": 46,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0158",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1339,
+      "latencyMs": 1000,
+      "outputTokens": 43,
+      "slice": "adversarial-or-prompt-injection",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0159",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 1203,
+      "outputTokens": 48,
+      "slice": "cross-project-isolation",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0160",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1125,
+      "outputTokens": 0,
+      "slice": "fabricated-link",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0161",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1702,
+      "outputTokens": 0,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0162",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1031,
+      "outputTokens": 0,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0163",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 860,
+      "outputTokens": 0,
+      "slice": "temporal-change",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0164",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1359,
+      "latencyMs": 1062,
+      "outputTokens": 57,
+      "slice": "unicode-and-noisy-text",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0165",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1341,
+      "latencyMs": 1218,
+      "outputTokens": 59,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0166",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1339,
+      "latencyMs": 843,
+      "outputTokens": 31,
+      "slice": "adversarial-or-prompt-injection",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0167",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1344,
+      "latencyMs": 1077,
+      "outputTokens": 38,
+      "slice": "cross-project-isolation",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0168",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1336,
+      "latencyMs": 937,
+      "outputTokens": 53,
+      "slice": "fabricated-link",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0169",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1452,
+      "outputTokens": 0,
+      "slice": "duplicate-evidence",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0170",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 891,
+      "outputTokens": 33,
+      "slice": "contradiction-or-supersession",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0176",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1336,
+      "latencyMs": 733,
+      "outputTokens": 39,
+      "slice": "fabricated-link",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0177",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1469,
+      "outputTokens": 0,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0178",
+      "costUsd": 0.0,
+      "failureClass": "schema_invalid",
+      "inputTokens": 0,
+      "latencyMs": 1702,
+      "outputTokens": 0,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0179",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 937,
+      "outputTokens": 0,
+      "slice": "temporal-change",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0180",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1264,
+      "outputTokens": 0,
+      "slice": "unicode-and-noisy-text",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0181",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1341,
+      "latencyMs": 1266,
+      "outputTokens": 61,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0182",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1343,
+      "latencyMs": 766,
+      "outputTokens": 31,
+      "slice": "adversarial-or-prompt-injection",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0183",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 1156,
+      "outputTokens": 64,
+      "slice": "cross-project-isolation",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0184",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 906,
+      "outputTokens": 42,
+      "slice": "fabricated-link",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0185",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1345,
+      "latencyMs": 1171,
+      "outputTokens": 50,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0186",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1312,
+      "outputTokens": 0,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0187",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1344,
+      "latencyMs": 860,
+      "outputTokens": 39,
+      "slice": "temporal-change",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0188",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1061,
+      "outputTokens": 0,
+      "slice": "unicode-and-noisy-text",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0189",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1341,
+      "latencyMs": 1344,
+      "outputTokens": 82,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0190",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1339,
+      "latencyMs": 812,
+      "outputTokens": 45,
+      "slice": "adversarial-or-prompt-injection",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0191",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 1000,
+      "outputTokens": 38,
+      "slice": "cross-project-isolation",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0192",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1336,
+      "latencyMs": 1031,
+      "outputTokens": 41,
+      "slice": "fabricated-link",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0193",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1348,
+      "latencyMs": 921,
+      "outputTokens": 39,
+      "slice": "duplicate-evidence",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0194",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 937,
+      "outputTokens": 50,
+      "slice": "contradiction-or-supersession",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0195",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1093,
+      "outputTokens": 0,
+      "slice": "temporal-change",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0201",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1345,
+      "latencyMs": 750,
+      "outputTokens": 40,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0202",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1172,
+      "outputTokens": 0,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0203",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1031,
+      "outputTokens": 0,
+      "slice": "temporal-change",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0204",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1345,
+      "latencyMs": 1108,
+      "outputTokens": 95,
+      "slice": "unicode-and-noisy-text",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0205",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1341,
+      "latencyMs": 812,
+      "outputTokens": 32,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0206",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1343,
+      "latencyMs": 828,
+      "outputTokens": 32,
+      "slice": "adversarial-or-prompt-injection",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0207",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 921,
+      "outputTokens": 54,
+      "slice": "cross-project-isolation",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0208",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 1047,
+      "outputTokens": 36,
+      "slice": "fabricated-link",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0209",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1345,
+      "latencyMs": 1186,
+      "outputTokens": 31,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0210",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1344,
+      "latencyMs": 1094,
+      "outputTokens": 42,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0211",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 983,
+      "outputTokens": 0,
+      "slice": "temporal-change",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0212",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1187,
+      "outputTokens": 0,
+      "slice": "unicode-and-noisy-text",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0213",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1341,
+      "latencyMs": 891,
+      "outputTokens": 36,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0214",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1343,
+      "latencyMs": 952,
+      "outputTokens": 46,
+      "slice": "adversarial-or-prompt-injection",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0215",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1344,
+      "latencyMs": 1062,
+      "outputTokens": 31,
+      "slice": "cross-project-isolation",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0216",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 1172,
+      "outputTokens": 39,
+      "slice": "fabricated-link",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0217",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1341,
+      "latencyMs": 827,
+      "outputTokens": 36,
+      "slice": "duplicate-evidence",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0218",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 1156,
+      "outputTokens": 59,
+      "slice": "contradiction-or-supersession",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0219",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1093,
+      "outputTokens": 0,
+      "slice": "temporal-change",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0220",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 985,
+      "outputTokens": 0,
+      "slice": "unicode-and-noisy-text",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0226",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1264,
+      "outputTokens": 0,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0227",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1077,
+      "outputTokens": 0,
+      "slice": "temporal-change",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0228",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 891,
+      "outputTokens": 0,
+      "slice": "unicode-and-noisy-text",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0229",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1341,
+      "latencyMs": 1108,
+      "outputTokens": 54,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0230",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1339,
+      "latencyMs": 735,
+      "outputTokens": 32,
+      "slice": "adversarial-or-prompt-injection",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0231",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1344,
+      "latencyMs": 843,
+      "outputTokens": 42,
+      "slice": "cross-project-isolation",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0232",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 875,
+      "outputTokens": 41,
+      "slice": "fabricated-link",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0233",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1342,
+      "latencyMs": 1141,
+      "outputTokens": 42,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0234",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1250,
+      "outputTokens": 0,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0235",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 905,
+      "outputTokens": 0,
+      "slice": "temporal-change",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0236",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1094,
+      "outputTokens": 0,
+      "slice": "unicode-and-noisy-text",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0237",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1341,
+      "latencyMs": 1125,
+      "outputTokens": 47,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0238",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1339,
+      "latencyMs": 1312,
+      "outputTokens": 50,
+      "slice": "adversarial-or-prompt-injection",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0239",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 921,
+      "outputTokens": 36,
+      "slice": "cross-project-isolation",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0240",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1336,
+      "latencyMs": 875,
+      "outputTokens": 32,
+      "slice": "fabricated-link",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0241",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1341,
+      "latencyMs": 1312,
+      "outputTokens": 52,
+      "slice": "duplicate-evidence",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0242",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 983,
+      "outputTokens": 41,
+      "slice": "contradiction-or-supersession",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0243",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1016,
+      "outputTokens": 0,
+      "slice": "temporal-change",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0244",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1346,
+      "latencyMs": 1047,
+      "outputTokens": 108,
+      "slice": "unicode-and-noisy-text",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0245",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1341,
+      "latencyMs": 718,
+      "outputTokens": 42,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0251",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 889,
+      "outputTokens": 0,
+      "slice": "temporal-change",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0252",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1202,
+      "outputTokens": 0,
+      "slice": "unicode-and-noisy-text",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0253",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1341,
+      "latencyMs": 1235,
+      "outputTokens": 46,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0254",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1339,
+      "latencyMs": 734,
+      "outputTokens": 40,
+      "slice": "adversarial-or-prompt-injection",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0255",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1344,
+      "latencyMs": 983,
+      "outputTokens": 33,
+      "slice": "cross-project-isolation",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0256",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1336,
+      "latencyMs": 1281,
+      "outputTokens": 46,
+      "slice": "fabricated-link",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0257",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1672,
+      "outputTokens": 0,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0258",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 983,
+      "outputTokens": 58,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0259",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1358,
+      "outputTokens": 0,
+      "slice": "temporal-change",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0260",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 985,
+      "outputTokens": 0,
+      "slice": "unicode-and-noisy-text",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0261",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1341,
+      "latencyMs": 889,
+      "outputTokens": 36,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0262",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1343,
+      "latencyMs": 1297,
+      "outputTokens": 37,
+      "slice": "adversarial-or-prompt-injection",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0263",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1344,
+      "latencyMs": 827,
+      "outputTokens": 38,
+      "slice": "cross-project-isolation",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0264",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 1110,
+      "outputTokens": 41,
+      "slice": "fabricated-link",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0265",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1750,
+      "outputTokens": 0,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0266",
+      "costUsd": 0.0,
+      "failureClass": "schema_invalid",
+      "inputTokens": 0,
+      "latencyMs": 1797,
+      "outputTokens": 0,
+      "slice": "contradiction-or-supersession",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0267",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1217,
+      "outputTokens": 0,
+      "slice": "temporal-change",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0268",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1047,
+      "outputTokens": 0,
+      "slice": "unicode-and-noisy-text",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0269",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1341,
+      "latencyMs": 1516,
+      "outputTokens": 70,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0270",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1343,
+      "latencyMs": 639,
+      "outputTokens": 31,
+      "slice": "adversarial-or-prompt-injection",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0276",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 860,
+      "outputTokens": 0,
+      "slice": "unicode-and-noisy-text",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0277",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1345,
+      "latencyMs": 781,
+      "outputTokens": 42,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0278",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1343,
+      "latencyMs": 780,
+      "outputTokens": 40,
+      "slice": "adversarial-or-prompt-injection",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0279",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 953,
+      "outputTokens": 28,
+      "slice": "cross-project-isolation",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0280",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 906,
+      "outputTokens": 33,
+      "slice": "fabricated-link",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0281",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1342,
+      "latencyMs": 1109,
+      "outputTokens": 38,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0282",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1344,
+      "latencyMs": 1171,
+      "outputTokens": 53,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0283",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1187,
+      "outputTokens": 0,
+      "slice": "temporal-change",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0284",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 985,
+      "outputTokens": 0,
+      "slice": "unicode-and-noisy-text",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0285",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1345,
+      "latencyMs": 921,
+      "outputTokens": 33,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0286",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1343,
+      "latencyMs": 1109,
+      "outputTokens": 41,
+      "slice": "adversarial-or-prompt-injection",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0287",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 858,
+      "outputTokens": 40,
+      "slice": "cross-project-isolation",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0288",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1336,
+      "latencyMs": 953,
+      "outputTokens": 31,
+      "slice": "fabricated-link",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0289",
+      "costUsd": 0.0,
+      "failureClass": "invalid_evidence",
+      "inputTokens": 0,
+      "latencyMs": 1842,
+      "outputTokens": 0,
+      "slice": "duplicate-evidence",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0290",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1344,
+      "latencyMs": 938,
+      "outputTokens": 42,
+      "slice": "contradiction-or-supersession",
+      "split": "development"
+    },
+    {
+      "caseId": "s12-a-0291",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1344,
+      "latencyMs": 1250,
+      "outputTokens": 47,
+      "slice": "temporal-change",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0292",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1345,
+      "latencyMs": 1125,
+      "outputTokens": 75,
+      "slice": "unicode-and-noisy-text",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0293",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1341,
+      "latencyMs": 1046,
+      "outputTokens": 63,
+      "slice": "explicit-ambiguity-or-abstention",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0294",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1339,
+      "latencyMs": 859,
+      "outputTokens": 32,
+      "slice": "adversarial-or-prompt-injection",
+      "split": "validation"
+    },
+    {
+      "caseId": "s12-a-0295",
+      "costUsd": 0.0,
+      "failureClass": "none",
+      "inputTokens": 1340,
+      "latencyMs": 1077,
+      "outputTokens": 42,
+      "slice": "cross-project-isolation",
+      "split": "validation"
+    }
+  ],
   "rawSensitiveDataIncluded": false,
   "reportVersion": "s12.evidence.v1",
-  "status": "NOT_EXECUTED_MISSING_RUNTIME_CONFIGURATION"
+  "status": "RUNTIME_BACKED_WITH_FAILURES"
 }

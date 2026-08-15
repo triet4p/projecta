@@ -1,0 +1,22 @@
+{
+  "atomicCounts": {
+    "development": 120,
+    "test": 40,
+    "total": 200,
+    "validation": 40
+  },
+  "atomicManifest": "manifests/development-validation.manifest.v2.json",
+  "datasetVersion": "s12.corpus.v2",
+  "humanAuthoredFractionByOrigin": 0.0,
+  "humanEvidence": false,
+  "qualifiedHumanEvidence": false,
+  "scenarioCounts": {
+    "development": 12,
+    "test": 6,
+    "total": 24,
+    "validation": 6
+  },
+  "status": "G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE",
+  "supersessionAdjudication": "../baseline/supersession-adjudication.v2.json",
+  "testCustodyManifest": "manifests/test-custody.manifest.v1.json"
+}
