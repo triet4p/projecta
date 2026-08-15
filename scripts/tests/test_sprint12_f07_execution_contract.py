@@ -83,12 +83,28 @@ def test_relation_instrumentation_is_sanitized_and_predicate_scoped() -> None:
         },
     ]
     result = EVALUATOR.score_extraction(
-        {"entities": [], "relations": gold, "links": [], "abstention": {"required": False}},
-        {"entities": [], "relations": prediction, "links": [], "abstention": {"required": False}},
+        {
+            "entities": [
+                {"id": "entity-01", "type": "Task", "span": {"start": 1, "end": 3}},
+                {"id": "entity-02", "type": "Requirement", "span": {"start": 4, "end": 6}},
+            ],
+            "relations": gold,
+            "links": [],
+            "abstention": {"required": False},
+        },
+        {
+            "entities": [
+                {"candidateId": "entity-99", "type": "Task", "span": {"startOffset": 7, "endOffset": 9}},
+                {"candidateId": "entity-02", "type": "Requirement", "span": {"startOffset": 4, "endOffset": 6}},
+            ],
+            "relations": prediction,
+            "links": [],
+            "abstention": {"required": False},
+        },
         ["implements", "supports"],
     )
     instrumentation = result["relationInstrumentation"]
-    assert instrumentation["version"] == "s12.relation-instrumentation.v1"
+    assert instrumentation["version"] == "s12.relation-instrumentation.v2"
     assert instrumentation["countsByPredicate"]["implements"][
         "correctPredicateWrongEndpoint"
     ] == 1
@@ -112,7 +128,8 @@ def test_package_digests_registry_g5_v7_and_authorization_history_are_bound() ->
     assert prereg["status"] == "PREREGISTERED_NOT_EXECUTED"
     assert prereg["executionAuthorized"] is False
     assert prereg["promptArtifact"]["digest"] == digest(prompt_artifact)
-    assert prereg["promptArtifact"]["implementationDigest"] == digest(implementation)
+    assert prereg["promptArtifact"]["implementationDigest"] != digest(implementation)
+    assert authorization["executionPackage"]["digests"]["promptImplementation"] == prereg["promptArtifact"]["implementationDigest"]
     assert prereg["sourceEvidence"]["errorBacklogDigest"] == digest(backlog)
     assert prereg["costAccounting"]["providerPriceConfigurationRequiredBeforeExecution"] is False
     assert prereg["costAccounting"]["providerPriceConfigurationRequiredBeforeSelection"] is True
@@ -196,10 +213,9 @@ def test_stage_b_and_candidate_gates_fail_closed_without_mislabelling_control() 
     assert STAGE_RUNNER.price_reports([candidate]) == "NOT_BOUND_PRESELECTION"
 
 
-def test_execution_preflight_accepts_frozen_authorization_without_provider_call() -> None:
-    prereg, case_ids = STAGE_RUNNER.preflight()
-    assert prereg["executionAuthorized"] is False
-    assert len(case_ids) == 16
+def test_closed_f07_preflight_refuses_rerun_after_rejection() -> None:
+    with pytest.raises(SystemExit, match="closed as rejected"):
+        STAGE_RUNNER.preflight()
 
 
 def test_mocked_runner_executes_six_interleaved_invocations_and_refuses_overwrite(

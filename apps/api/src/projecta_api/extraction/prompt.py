@@ -17,6 +17,25 @@ PROMPT_V4_RELATION_DECISION_RUBRIC = """Relation decision rubric:
 5. If the predicate is unsupported, the endpoints are missing or ambiguous, or the direction is not evidenced, omit the relation. Keep independently supported entities; abstain only when no supported extraction remains.
 6. Before returning, check every relation for an allowlisted predicate, two grounded endpoints, correct direction, and evidence that contains the relation clause."""
 
+PROMPT_V5_COMPOSED_RELATION_CONTRACT = (
+    "Composed m3.v2 relation contract: preserve the supersession guard and the "
+    "relation decision rubric together.\n\n"
+    + PROMPT_V3_SUPERSESSION_GUARD
+    + "\n\n"
+    + PROMPT_V4_RELATION_DECISION_RUBRIC
+    + "\n\nm3.v2 relation emission example:\n"
+    + 'Note: "The address validation task implements the checkout requirement."\n'
+    + "Desired: emit two typed entity candidates with unique local candidateId "
+    + "values, then emit one implements relation whose sourceEntityId and "
+    + "targetEntityId reference those local candidates. The relation evidence "
+    + "must cover the full sentence.\n\n"
+    + "Supersession-only example:\n"
+    + 'Note: "The old checkout requirement supersedes the previous requirement."\n'
+    + "Desired: emit no supersedes relation because it is outside the allowlist; "
+    + "if no independently supported typed entity remains, return an empty "
+    + "result with an abstention reason."
+)
+
 
 def prompt_variant_instructions(prompt_variant: str) -> str:
     """Return the exact versioned addendum for a supported prompt variant."""
@@ -27,6 +46,8 @@ def prompt_variant_instructions(prompt_variant: str) -> str:
         return PROMPT_V3_SUPERSESSION_GUARD
     if prompt_variant == "m3.prompt.v4.relation-decision-rubric":
         return PROMPT_V4_RELATION_DECISION_RUBRIC
+    if prompt_variant == "m3.prompt.v5.composed-relation-contract":
+        return PROMPT_V5_COMPOSED_RELATION_CONTRACT
     raise ValueError(f"unsupported prompt variant: {prompt_variant}")
 
 _SYSTEM_INSTRUCTIONS = """You are Projecta's extraction component.
@@ -79,8 +100,9 @@ Link rules:
 
 Few-shot examples:
 Note: "The address validation task implements the checkout requirement."
-Desired: one relation spanning the full sentence; no entity candidates and
-no links, because both entities are already relation endpoints.
+Desired: emit two typed entity candidates with unique local candidateId values,
+then one relation spanning the full sentence whose sourceEntityId and
+targetEntityId reference those local candidates; emit no links.
 Note: "Le asked the checkout team to investigate the timeout."
 Desired: one link to the bounded "checkout team" entity; the requested
 action "investigate the timeout" is not extracted as a Task.
@@ -89,6 +111,9 @@ Desired: abstention with a reason; no supported proposal is specific enough.
 Note: "The platform team owns this requirement."
 Desired: abstention with a reason; the mention refers to a team from another
 project and no proposal is emitted.
+Note: "The old checkout requirement supersedes the previous requirement."
+Desired: emit no supersedes relation because it is outside the allowlist; if no
+independently supported typed entity remains, abstain with a reason.
 Note: "Le sẽ kiểm tra API thuế."
 Desired: one Task entity spanning exactly "kiểm tra API thuế"; exclude the
 author name and the trailing period.

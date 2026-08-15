@@ -116,7 +116,8 @@ def validate_experiment(spec: Mapping[str, object]) -> None:
     if status not in {
         "REGISTERED",
         "COMPLETED_STABILITY_FAILED",
-        "COMPLETED_STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B",
+            "COMPLETED_STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B",
+            "COMPLETED_REJECTED",
         "NOT_EXECUTED_BASELINE_UNAVAILABLE",
         "NOT_EXECUTED_BASELINE_INVALID",
         "EXECUTED",
@@ -137,6 +138,7 @@ def validate_registry(registry: Mapping[str, object]) -> None:
         "s12.experiment-registry.v5",
         "s12.experiment-registry.v6",
         "s12.experiment-registry.v7",
+        "s12.experiment-registry.v8",
     }:
         raise OptimizationError("unknown experiment registry version")
     if registry.get("permittedSplits") != ["development"]:

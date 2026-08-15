@@ -23,6 +23,7 @@ OPT = ROOT / "evaluation/sprint-12/optimization"
 PREREGISTRATION = OPT / "s12-f-07-relation-prompt-preregistration.v2.json"
 AUTHORIZATION = OPT / "s12-f-07-authorization.v2.json"
 REGISTRY = OPT / "experiment-registry.v7.json"
+CLOSURE_REGISTRY = OPT / "experiment-registry.v8.json"
 RUNS_DIR = OPT / "s12-f-07-relation-prompt-stage-a"
 OUTPUT_PATH = OPT / "s12-f-07-relation-prompt-stage-a.v1.json"
 ATOMIC = ROOT / "evaluation/sprint-12/corpus/atomic-development-validation.v2.json"
@@ -108,6 +109,14 @@ def _case_profile(case_ids: tuple[str, ...]) -> dict[str, int]:
 
 
 def preflight() -> tuple[dict[str, Any], tuple[str, ...]]:
+    if CLOSURE_REGISTRY.exists():
+        closure = load(CLOSURE_REGISTRY)
+        closed = next(
+            (item for item in closure.get("experiments", []) if item.get("experimentId") == "s12-f-07"),
+            None,
+        )
+        if isinstance(closed, dict) and closed.get("status") == "COMPLETED_REJECTED":
+            raise SystemExit("S12-f-07 is closed as rejected and cannot be rerun")
     prereg = load(PREREGISTRATION)
     authorization = load(AUTHORIZATION)
     registry = load(REGISTRY)
@@ -217,18 +226,43 @@ def _case_metric(case: dict[str, Any], name: str) -> float:
         return 0.0
     if name in {"abstentionAccuracy", "hallucinationRate"}:
         return float(case.get(name, 0.0))
-    return float(case.get(name, {}).get("f1", 0.0))
+    field = {
+        "entityMacroF1": "entities",
+        "relationMacroF1": "relations",
+    }.get(name, name)
+    return float(case.get(field, {}).get("f1", 0.0))
 
 
 def primary_metrics(runs: list[dict[str, Any]]) -> dict[str, float]:
     values: dict[str, list[float]] = {name: [] for name in (
         "entityMacroF1", "relationMacroF1", "abstentionAccuracy", "hallucinationRate"
     )}
+    positive_relation_f1: list[float] = []
+    positive_relation_true_positive = 0
+    positive_relation_gold = 0
+    positive_relation_predicted = 0
     for run in runs:
         for case in run["perCase"].values():
             for name in values:
                 values[name].append(_case_metric(case, name))
-    return {name: statistics.fmean(items) if items else 0.0 for name, items in values.items()}
+            relation = case.get("relations", {})
+            if int(relation.get("gold", 0)) > 0:
+                positive_relation_f1.append(float(relation.get("f1", 0.0)))
+                positive_relation_true_positive += int(relation.get("truePositive", 0))
+                positive_relation_gold += int(relation.get("gold", 0))
+                positive_relation_predicted += int(relation.get("predicted", 0))
+    result = {
+        name: statistics.fmean(items) if items else 0.0
+        for name, items in values.items()
+    }
+    result["positiveRelationMacroF1"] = (
+        statistics.fmean(positive_relation_f1) if positive_relation_f1 else 0.0
+    )
+    denominator = positive_relation_gold + positive_relation_predicted
+    result["positiveRelationMicroF1"] = (
+        2 * positive_relation_true_positive / denominator if denominator else 1.0
+    )
+    return result
 
 
 def sensitivity_metrics(control: list[dict[str, Any]], candidate: list[dict[str, Any]]) -> dict[str, float]:

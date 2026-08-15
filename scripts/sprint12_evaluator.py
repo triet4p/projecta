@@ -286,10 +286,7 @@ def _items(value: object) -> list[JsonObject]:
 
 def _span_signature(item: JsonObject) -> tuple[object, object, object]:
     span = _object(item.get("span", item.get("evidence", item)), "span")
-    if "predicate" in item:
-        label: object = (item.get("predicate"), item.get("targetEntityId"))
-    else:
-        label = item.get("type", item.get("targetEntityId"))
+    label: object = item.get("type", item.get("targetEntityId"))
     return (
         span.get("start", span.get("startOffset")),
         span.get("end", span.get("endOffset")),
@@ -328,31 +325,65 @@ def _relation_span_key(item: JsonObject) -> tuple[object, object]:
     )
 
 
-def _relation_key(item: JsonObject) -> tuple[object, object, object, object, object]:
+def _entity_signature(item: JsonObject) -> tuple[object, object, object]:
+    start, end = _span_signature(item)[:2]
+    return start, end, item.get("type")
+
+
+def _entity_index(items: Sequence[JsonObject]) -> dict[str, tuple[object, object, object]]:
+    index: dict[str, tuple[object, object, object]] = {}
+    for item in items:
+        signature = _entity_signature(item)
+        for key in ("id", "entityId", "candidateId"):
+            value = item.get(key)
+            if isinstance(value, str) and value:
+                index[value] = signature
+    return index
+
+
+def _canonical_endpoint(
+    endpoint: object,
+    entity_index: Mapping[str, tuple[object, object, object]],
+) -> tuple[object, ...]:
+    if isinstance(endpoint, str) and endpoint in entity_index:
+        return ("resolved", *entity_index[endpoint])
+    return ("missing",)
+
+
+def _relation_signature(
+    item: JsonObject,
+    entity_index: Mapping[str, tuple[object, object, object]],
+) -> tuple[object, object, object, object, object]:
     start, end = _relation_span_key(item)
     return (
+        item.get("predicate"),
+        _canonical_endpoint(item.get("sourceEntityId"), entity_index),
+        _canonical_endpoint(item.get("targetEntityId"), entity_index),
         start,
         end,
-        item.get("predicate"),
-        item.get("sourceEntityId"),
-        item.get("targetEntityId"),
     )
 
 
 def _relation_instrumentation(
     gold_items: Sequence[JsonObject],
     predicted_items: Sequence[JsonObject],
+    gold_entities: Sequence[JsonObject],
+    predicted_entities: Sequence[JsonObject],
     allowlisted_predicates: Sequence[str] | None = None,
 ) -> JsonObject:
-    """Persist relation error buckets without endpoint identifiers or raw text."""
+    """Persist canonical relation error buckets without IDs or raw text."""
 
+    gold_index = _entity_index(gold_entities)
+    predicted_index = _entity_index(predicted_entities)
     predicates = sorted(
         set(allowlisted_predicates or ())
         | {str(item.get("predicate")) for item in gold_items}
         | {str(item.get("predicate")) for item in predicted_items}
     )
-    gold_keys = {_relation_key(item) for item in gold_items}
-    predicted_keys = {_relation_key(item) for item in predicted_items}
+    gold_keys = {_relation_signature(item, gold_index) for item in gold_items}
+    predicted_keys = {
+        _relation_signature(item, predicted_index) for item in predicted_items
+    }
     gold_by_predicate = Counter(str(item.get("predicate")) for item in gold_items)
     predicted_by_predicate = Counter(
         str(item.get("predicate")) for item in predicted_items
@@ -360,26 +391,66 @@ def _relation_instrumentation(
     exact_by_predicate = Counter(
         str(item.get("predicate"))
         for item in gold_items
-        if _relation_key(item) in predicted_keys
+        if _relation_signature(item, gold_index) in predicted_keys
     )
     missing_by_predicate: Counter[str] = Counter()
+    wrong_span_by_predicate: Counter[str] = Counter()
+    wrong_predicate_by_predicate: Counter[str] = Counter()
+    reversed_endpoint_by_predicate: Counter[str] = Counter()
+    missing_endpoint_by_predicate: Counter[str] = Counter()
     wrong_endpoint_by_predicate: Counter[str] = Counter()
+    extra_by_predicate: Counter[str] = Counter()
     unmatched_predicate_by_predicate: Counter[str] = Counter()
     for gold in gold_items:
-        if _relation_key(gold) in predicted_keys:
+        gold_signature = _relation_signature(gold, gold_index)
+        if gold_signature in predicted_keys:
+            continue
+        predicate = str(gold.get("predicate"))
+        same_predicate = [
+            item
+            for item in predicted_items
+            if item.get("predicate") == gold.get("predicate")
+        ]
+        if any(
+            _relation_signature(item, predicted_index)[1:3] == gold_signature[1:3]
+            and _relation_span_key(item) != _relation_span_key(gold)
+            for item in same_predicate
+        ):
+            wrong_span_by_predicate[predicate] += 1
             continue
         same_span = [
             item
             for item in predicted_items
             if _relation_span_key(item) == _relation_span_key(gold)
         ]
-        predicate = str(gold.get("predicate"))
         if not same_span:
             missing_by_predicate[predicate] += 1
-        elif any(item.get("predicate") == gold.get("predicate") for item in same_span):
-            wrong_endpoint_by_predicate[predicate] += 1
+        else:
+            same_predicate_span = [
+                item
+                for item in same_span
+                if item.get("predicate") == gold.get("predicate")
+            ]
+            if not same_predicate_span:
+                wrong_predicate_by_predicate[predicate] += 1
+                continue
+            gold_source, gold_target = gold_signature[1:3]
+            for predicted in same_predicate_span:
+                predicted_signature = _relation_signature(predicted, predicted_index)
+                predicted_source, predicted_target = predicted_signature[1:3]
+                if ("missing",) in (predicted_source, predicted_target):
+                    missing_endpoint_by_predicate[predicate] += 1
+                elif (
+                    predicted_source == gold_target
+                    and predicted_target == gold_source
+                ):
+                    reversed_endpoint_by_predicate[predicate] += 1
+                else:
+                    wrong_endpoint_by_predicate[predicate] += 1
+                break
     for predicted in predicted_items:
-        if _relation_key(predicted) in gold_keys:
+        predicted_signature = _relation_signature(predicted, predicted_index)
+        if predicted_signature in gold_keys:
             continue
         same_span_gold = [
             item
@@ -390,6 +461,8 @@ def _relation_instrumentation(
             item.get("predicate") == predicted.get("predicate") for item in same_span_gold
         ):
             unmatched_predicate_by_predicate[str(predicted.get("predicate"))] += 1
+        else:
+            extra_by_predicate[str(predicted.get("predicate"))] += 1
 
     counts = {
         predicate: {
@@ -397,14 +470,19 @@ def _relation_instrumentation(
             "predicted": predicted_by_predicate[predicate],
             "exactMatch": exact_by_predicate[predicate],
             "missingRelation": missing_by_predicate[predicate],
+            "wrongSpan": wrong_span_by_predicate[predicate],
+            "wrongPredicate": wrong_predicate_by_predicate[predicate],
+            "reversedEndpoint": reversed_endpoint_by_predicate[predicate],
+            "missingEndpoint": missing_endpoint_by_predicate[predicate],
             "unmatchedPredicate": unmatched_predicate_by_predicate[predicate],
             "correctPredicateWrongEndpoint": wrong_endpoint_by_predicate[predicate],
+            "extraRelation": extra_by_predicate[predicate],
         }
         for predicate in predicates
     }
     allowlist = set(allowlisted_predicates or ())
     return {
-        "version": "s12.relation-instrumentation.v1",
+        "version": "s12.relation-instrumentation.v2",
         "status": "scored",
         "allowlistedPredicates": sorted(allowlist),
         "countsByPredicate": counts,
@@ -413,8 +491,13 @@ def _relation_instrumentation(
             "predicted": len(predicted_items),
             "exactMatch": len(gold_keys & predicted_keys),
             "missingRelation": sum(missing_by_predicate.values()),
+            "wrongSpan": sum(wrong_span_by_predicate.values()),
+            "wrongPredicate": sum(wrong_predicate_by_predicate.values()),
+            "reversedEndpoint": sum(reversed_endpoint_by_predicate.values()),
+            "missingEndpoint": sum(missing_endpoint_by_predicate.values()),
             "unmatchedPredicate": sum(unmatched_predicate_by_predicate.values()),
             "correctPredicateWrongEndpoint": sum(wrong_endpoint_by_predicate.values()),
+            "extraRelation": sum(extra_by_predicate.values()),
             "unallowlistedPredictedPredicate": sum(
                 1
                 for item in predicted_items
@@ -434,20 +517,38 @@ def score_extraction(
     """Score atomic extraction and abstention without silently accepting missing output."""
 
     if prediction is None:
-        return {
-            "status": "missing-output",
-            "abstentionAccuracy": 0.0,
-            "hallucinationRate": 0.0,
-            "calibration": {"status": "not-available"},
-            "relationInstrumentation": {
-                "version": "s12.relation-instrumentation.v1",
-                "status": "not-available",
-            },
+        fail_closed = score_extraction(
+            gold,
+            {"entities": [], "relations": [], "links": [], "abstention": {}},
+            relation_predicates,
+        )
+        fail_closed["status"] = "missing-output"
+        fail_closed["abstentionAccuracy"] = 0.0
+        fail_closed["hallucinationRate"] = 0.0
+        fail_closed["calibration"] = {"status": "not-available"}
+        fail_closed["relationInstrumentation"] = {
+            "version": "s12.relation-instrumentation.v2",
+            "status": "not-available",
         }
+        return fail_closed
     result: JsonObject = {}
+    gold_entities = _items(gold.get("entities"))
+    predicted_entities = _items(prediction.get("entities"))
+    gold_entity_index = _entity_index(gold_entities)
+    predicted_entity_index = _entity_index(predicted_entities)
     for name in ("entities", "relations", "links"):
-        expected = {_span_signature(item) for item in _items(gold.get(name))}
-        actual = {_span_signature(item) for item in _items(prediction.get(name))}
+        if name == "relations":
+            expected = {
+                _relation_signature(item, gold_entity_index)
+                for item in _items(gold.get(name))
+            }
+            actual = {
+                _relation_signature(item, predicted_entity_index)
+                for item in _items(prediction.get(name))
+            }
+        else:
+            expected = {_span_signature(item) for item in _items(gold.get(name))}
+            actual = {_span_signature(item) for item in _items(prediction.get(name))}
         result[name] = _f1(expected, actual)
     gold_abstention = (
         _object(gold.get("abstention"), "gold.abstention").get("required") is True
@@ -487,6 +588,8 @@ def score_extraction(
     result["relationInstrumentation"] = _relation_instrumentation(
         _items(gold.get("relations")),
         _items(prediction.get("relations")),
+        gold_entities,
+        predicted_entities,
         relation_predicates,
     )
     return result
@@ -1072,7 +1175,7 @@ def _runtime_baseline(
         config["promptArtifactDigest"] = "sha256:" + hashlib.sha256(
             prompt_artifact.read_bytes()
         ).hexdigest()
-        config["relationInstrumentationVersion"] = "s12.relation-instrumentation.v1"
+        config["relationInstrumentationVersion"] = "s12.relation-instrumentation.v2"
     if collect_diagnostics:
         return case_results, operational, failures, config, diagnostics  # type: ignore[return-value]
     return case_results, operational, failures, config

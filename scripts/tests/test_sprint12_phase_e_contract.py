@@ -158,7 +158,8 @@ def test_metrics_fail_explicitly_on_missing_output_and_handle_empty_sets() -> No
 def test_span_scoring_canonicalizes_gold_and_v2_prediction_offsets() -> None:
     gold = {
         "entities": [
-            {"type": "Task", "span": {"start": 17, "end": 34, "text": "task"}}
+            {"id": "entity-01", "type": "Task", "span": {"start": 17, "end": 34, "text": "task"}},
+            {"id": "entity-02", "type": "Requirement", "span": {"start": 40, "end": 50, "text": "requirement"}},
         ],
         "relations": [
             {
@@ -174,9 +175,15 @@ def test_span_scoring_canonicalizes_gold_and_v2_prediction_offsets() -> None:
     prediction = {
         "entities": [
             {
+                "candidateId": "entity-01",
                 "type": "Task",
                 "span": {"startOffset": 17, "endOffset": 34, "text": "task"},
-            }
+            },
+            {
+                "candidateId": "entity-02",
+                "type": "Requirement",
+                "span": {"startOffset": 40, "endOffset": 50, "text": "requirement"},
+            },
         ],
         "relations": [
             {
