@@ -741,3 +741,10 @@ as candidate failure without checking both sides.
 **Root cause:** Failure handling bypassed the scorer and discarded the fail-closed metric record.
 **Fix / workaround:** Build runtime and timeout failures through `score_extraction(gold, None)`, then attach sanitized failure class/category fields. The f08 runner tests a scored positive case plus a failed positive case and expects the macro denominator to include both.
 **Watch out for:** Hard-gate failure alone is not enough; every metric denominator must remain explicit and fail-closed, especially when semantic subsets are used for gates.
+
+## [2026-08-16] Bind every execution-package artifact before authorization
+
+**Symptom:** The first governance publication bound the pricing artifact digest but the artifact was not yet present in the frozen execution commit.
+**Root cause:** Package digest generation and commit freeze were performed in the wrong order.
+**Fix / workaround:** Keep newly bound artifacts in the execution package commit, then generate preregistration/authorization from that commit; verify the auth package digest map against the working tree before provider execution.
+**Watch out for:** A digest match alone is insufficient when the bound file is outside the commit SHA. The package commit must contain every file named by its digest map.

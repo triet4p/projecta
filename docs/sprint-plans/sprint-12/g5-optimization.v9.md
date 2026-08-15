@@ -1,8 +1,8 @@
 # Sprint 12 G5 Optimization Packet v9
 
-S12-f-07 remains `COMPLETED_REJECTED` and immutable. S12-f-08 is authorized for
-one development-only Stage A run, but no provider execution has been started
-from this package yet.
+S12-f-07 remains `COMPLETED_REJECTED` and immutable. S12-f-08 was authorized for
+one development-only Stage A run, completed with 96/96 case-runs, and failed
+the positive-relation gates. It is now closed with no Stage B or selection.
 
 - Evaluator: `s12.evaluator.v2`
 - Runner: [`run_sprint12_f08_prompt_experiment.py`](../../scripts/run_sprint12_f08_prompt_experiment.py)

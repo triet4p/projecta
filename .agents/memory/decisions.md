@@ -436,3 +436,9 @@ next highest-value work.
 **Alternatives considered:** Keep evaluator v1 and bind only a prompt; reuse the closed f07 runner; or estimate cost from aggregate input/output tokens.
 **Reason:** Canonical relation endpoints, positive-relation fail-closed metrics and cache-aware cost accounting materially change the measurement and execution contracts. A standalone runner makes the six-call temporal schedule, no-retry policy and evidence custody auditable.
 **Consequences:** The execution package is frozen at commit `84e589bce954d8e23ad734eeb01b0711140dd854`; Registry/G5 v9 and authorization v2 bind its evaluator, runner, prompt, runtime, pricing artifact and dataset digests. Stage A remains a one-time provider operation; no Stage B or selection is authorized.
+
+## [2026-08-16] Reject S12-f-08 after one guarded Stage A
+
+**Decision:** Close S12-f-08 as `COMPLETED_REJECTED` after its authorized single Stage A run; do not retry, overwrite evidence, open Stage B or select a candidate.
+**Evidence:** All 96/96 case-runs completed with zero hard-gate failures and zero supersession false positives, but candidate positive-relation macro F1 was `0.0476`, micro F1 `0.0488`, relation macro delta was negative, and sensitivity relation delta was negative.
+**Consequences:** Registry/G5 v10 bind the aggregate and six report digests. Prompt-only optimization is not promoted; any next experiment requires a new hypothesis and preregistration against the v2 measurement contract.

@@ -420,8 +420,10 @@ unchanged and blocking.
 - [x] **S12-f-08 preparation:** Open a new prompt-only experiment with composed
   v5, canonical relation endpoints, positive-relation floors/deltas, zero
   supersession false positives, evaluator v2, cache-aware pricing and a
-  frozen guarded runner. Registry/G5 v9 and authorization v2 bind the
-  execution-package commit; Stage A is authorized but not yet executed.
+  frozen guarded runner. Registry/G5 v9 and authorization v2 bound the
+  execution-package commit. Stage A ran exactly once with 96/96 case-runs and
+  failed the positive-relation gates; Registry/G5 v10 close it rejected with no
+  Stage B or candidate selection.
 - [ ] **S12-78 — Select one candidate configuration:** Apply the registered
   multi-metric rule without inspecting held-out data.
 - [ ] **S12-79 — Evaluate the candidate on validation:** Run once after selection

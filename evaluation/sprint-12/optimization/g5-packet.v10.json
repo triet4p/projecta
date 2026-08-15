@@ -1,0 +1,127 @@
+{
+  "approvalStatus": "COMPLETED_REJECTED_NO_STAGE_B",
+  "candidateAvailable": false,
+  "candidateFreezeAuthorized": false,
+  "closedExperiment": {
+    "aggregateArtifact": "s12-f-07-relation-prompt-stage-a.v1.json",
+    "aggregateDigest": "sha256:b75fcb75e52b2dae637b36f345454a151495802ec921a96e99c5dc0e9a523d12",
+    "experimentId": "s12-f-07",
+    "noCandidateSelection": true,
+    "noStageB": true,
+    "scoringErratumArtifact": "s12-f-07-scoring-erratum.v1.json",
+    "scoringErratumDigest": "sha256:03b836a65cf58e5092a4c600b9354ef389f0b609ff6aa755730526a9c12d6af2",
+    "status": "COMPLETED_REJECTED"
+  },
+  "completedExperiment": {
+    "aggregateArtifact": "s12-f-08-relation-prompt-stage-a.v1.json",
+    "aggregateDigest": "sha256:09bc9b00e081044f07a268cc3fd2ecf4f16b2222501d8d7e1ca4f4273866e76e",
+    "experimentId": "s12-f-08",
+    "noCandidateSelection": true,
+    "noStageB": true,
+    "pricingArtifact": "s12-f-08-pricing-deepseek-v4-flash.v1.json",
+    "pricingDigest": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+    "reports": [
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-08-relation-prompt-stage-a/pair-1-01-control.report.v1.json",
+        "digest": "sha256:37d3cbd02448a0eec736bda6ba708408bf040b77f9abfcd5900e2a77e762aa09"
+      },
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-08-relation-prompt-stage-a/pair-1-02-candidate.report.v1.json",
+        "digest": "sha256:6da009931d23117de503fbf67e1778925e57f82607568e3899bf80f018faee29"
+      },
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-08-relation-prompt-stage-a/pair-2-01-candidate.report.v1.json",
+        "digest": "sha256:5f0e77baa9a1994ea0b33c20e608d5955e0d16d73c632ad91a046097c2876353"
+      },
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-08-relation-prompt-stage-a/pair-2-02-control.report.v1.json",
+        "digest": "sha256:7335f312990676025735bd9e45814d0290e7530776b7428323cdc903549d9e2e"
+      },
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-08-relation-prompt-stage-a/pair-3-01-control.report.v1.json",
+        "digest": "sha256:a9ef4a1d4002f6acbb05f1594928ab4fed988556bd86736dfb2549efb34392c7"
+      },
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-08-relation-prompt-stage-a/pair-3-02-candidate.report.v1.json",
+        "digest": "sha256:0851cd4c266425441d59c4243edc71c1b84c5226ffd1a30e90e3896f31644018"
+      }
+    ],
+    "stageATechnicalPass": false,
+    "status": "COMPLETED_REJECTED"
+  },
+  "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "denominatorContract": {
+    "candidateHardGates": {
+      "invalid_evidence": 0,
+      "missing_output": 0,
+      "schema_invalid": 0
+    },
+    "controlFailurePolicy": "degrade_comparison_integrity_without_relabeling_as_candidate_hard_gate_failure",
+    "controlHardGates": {
+      "invalid_evidence": 0,
+      "missing_output": 0,
+      "schema_invalid": 0
+    },
+    "positiveRelationMacroF1Minimum": 0.05,
+    "positiveRelationMacroF1MinimumDelta": 0.05,
+    "positiveRelationMicroF1Minimum": 0.05,
+    "primary": {
+      "caseRunsPerArm": 48,
+      "missingOutputTreatment": "metric_value_zero_and_hard_gate_failure_for_that_arm",
+      "name": "fail_closed_all_declared_case_runs"
+    },
+    "primaryRelationDeltaMinimum": 0.05,
+    "sensitivity": {
+      "missingOutputTreatment": "exclude_only_from_sensitivity_denominator",
+      "name": "paired_common_valid_case_runs"
+    },
+    "sensitivityRelationDeltaMinimum": 0.0,
+    "supersessionFalsePositiveMaximum": 0,
+    "supersessionSliceCaseCount": 5
+  },
+  "executionBlockedReasons": [
+    "S12-f-08 Stage A relation gates failed",
+    "no Stage B or candidate selection is authorized",
+    "the six report artifacts and aggregate are immutable"
+  ],
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "optimizationAuthorized": false,
+  "packetVersion": "s12.g5.packet.v10",
+  "pendingExperiment": {
+    "aggregateArtifact": "s12-f-08-relation-prompt-stage-a.v1.json",
+    "aggregateDigest": "sha256:09bc9b00e081044f07a268cc3fd2ecf4f16b2222501d8d7e1ca4f4273866e76e",
+    "executionAuthorized": false,
+    "experimentId": "s12-f-08",
+    "stageBAuthorized": false,
+    "status": "COMPLETED_REJECTED"
+  },
+  "pricingContract": {
+    "artifact": "s12-f-08-pricing-deepseek-v4-flash.v1.json",
+    "artifactDigest": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+    "currency": "USD",
+    "model": "deepseek-v4-flash",
+    "rateClasses": [
+      "inputCacheHitUsdPer1M",
+      "inputCacheMissUsdPer1M",
+      "outputUsdPer1M"
+    ],
+    "requiredBeforeExecution": true,
+    "requiredBeforeSelection": true,
+    "retrievedAt": "2026-08-16",
+    "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing",
+    "status": "BOUND",
+    "unit": "USD per 1M tokens"
+  },
+  "rawSensitiveDataIncluded": false,
+  "registryDigest": "sha256:eb7941118e89656893a519d2d8b901c378f75bb7f06ada9fd660d9cbdd5e5d01",
+  "registryVersion": "s12.experiment-registry.v10",
+  "selection": {
+    "heldOutInspected": false,
+    "reason": "S12-f-08 failed Stage A relation gates; no Stage B or candidate selection is authorized.",
+    "status": "NO_SELECTION"
+  },
+  "status": "G5_PREPARATION_DEVELOPMENT_CLOSED_S12_F08_REJECTED",
+  "validationAuthorized": false
+}

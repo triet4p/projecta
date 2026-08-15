@@ -149,6 +149,22 @@ def test_v2_governance_binds_evaluator_runner_commit_and_pricing() -> None:
     assert pricing["artifactDigest"] == RUNNER.file_digest(RUNNER.PRICING)
 
 
+def test_f08_v10_closure_preserves_96_case_runs_and_blocks_promotion() -> None:
+    aggregate = read_json("s12-f-08-relation-prompt-stage-a.v1.json")
+    registry = read_json("experiment-registry.v10.json")
+    g5 = read_json("g5-packet.v10.json")
+    f08 = next(item for item in registry["experiments"] if item["experimentId"] == "s12-f-08")
+    assert aggregate["executionCount"] == 96
+    assert aggregate["decision"] == "STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B"
+    assert aggregate["accounting"]["costAccountingStatus"] == "BOUND"
+    assert f08["status"] == "COMPLETED_REJECTED"
+    assert f08["executionEvidence"]["decision"] == "REJECTED_NO_STAGE_B_NO_SELECTION"
+    assert len(f08["executionEvidence"]["reports"]) == 6
+    assert registry["status"] == "G5_PREPARATION_DEVELOPMENT_CLOSED_S12_F08_REJECTED"
+    assert g5["status"] == registry["status"]
+    assert g5["selection"]["status"] == "NO_SELECTION"
+
+
 def test_mocked_f08_execution_is_six_interleaved_calls_and_no_overwrite(tmp_path: Path) -> None:
     prereg = read_json("s12-f-08-relation-prompt-preregistration.v1.json")
     case_ids = tuple(prereg["stageA"]["caseIds"])
