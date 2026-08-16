@@ -1,0 +1,86 @@
+{
+  "version": "s12.metric-contract.v2",
+  "status": "G3.1_A_MEASUREMENT_CONTRACT_FROZEN_PENDING_INSTRUMENTATION",
+  "supersedes": "s12.metric-contract.v1",
+  "historicalContractImmutable": true,
+  "families": [
+    "extraction",
+    "ontology-mapping",
+    "scenario-graph",
+    "retrieval",
+    "reviewer-utility",
+    "operational"
+  ],
+  "relationMetrics": {
+    "relationSemanticF1": {
+      "identity": [
+        "predicate",
+        "canonicalSourceEndpoint",
+        "canonicalTargetEndpoint"
+      ],
+      "canonicalEndpoint": [
+        "startOffset",
+        "endOffset",
+        "releasedEntityType"
+      ],
+      "relationEvidenceExcludedFromIdentity": true,
+      "formula": "F1 over the set of semantic relation identities",
+      "denominators": {
+        "gold": "all gold relation identities in the scored case or slice",
+        "predicted": "all predicted relation identities in the scored case or slice",
+        "truePositive": "set intersection after endpoint canonicalization"
+      },
+      "zeroDenominator": "not-applicable only when gold and predicted sets are both empty"
+    },
+    "relationEvidenceSupport": {
+      "identity": "a semantically matched relation pair plus a valid evidence span",
+      "supportPolicy": "the evidence span passes source/code-point integrity and the versioned evidence policy for the matched endpoints and predicate trigger",
+      "formula": "supported semantic true positives divided by semantic relation true positives",
+      "denominator": "semantic relation true positives",
+      "zeroDenominator": "not-applicable; never convert to semantic relation zero",
+      "rawSourceRequiredInMetricArtifact": false
+    },
+    "relationEvidenceExact": {
+      "identity": "a semantically matched relation pair plus an exact adjudicated evidence span",
+      "exactness": "predicted half-open offsets equal one of the valid gold spans for the same semantic relation",
+      "formula": "exact evidence matches divided by semantic relation true positives",
+      "denominator": "semantic relation true positives",
+      "zeroDenominator": "not-applicable; never convert to semantic relation zero",
+      "multipleValidSpans": "any one of the adjudicated valid spans satisfies exactness"
+    }
+  },
+  "legacyMetrics": {
+    "relations.f1": "historical exact predicate-endpoint-span score; report for continuity only and do not use as relation semantic quality"
+  },
+  "reportRequirements": [
+    "datasetVersion",
+    "manifestDigest",
+    "configurationDigest",
+    "evaluatorVersion",
+    "caseCoverage",
+    "missingOutputCount",
+    "hardInvariants",
+    "rawSensitiveDataIncluded",
+    "relationSemanticF1",
+    "relationEvidenceSupport",
+    "relationEvidenceExact",
+    "perCaseDenominators",
+    "perSliceDenominators"
+  ],
+  "aggregation": {
+    "requiredUnits": [
+      "case",
+      "journey",
+      "language",
+      "predicate",
+      "relationPositiveNegative",
+      "threatOrAmbiguitySlice"
+    ],
+    "pooledOnlySummaryForbidden": true,
+    "aggregateFromPerCaseRecordsOnly": true,
+    "metricInferenceFromAggregateForbidden": true
+  },
+  "missingOutputPolicy": "fail-explicitly",
+  "testSplitPolicy": "sealed-unless-explicitly-authorized",
+  "providerExecutionAuthorized": false
+}
