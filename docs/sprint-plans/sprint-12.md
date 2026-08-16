@@ -621,11 +621,14 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   accounting and direct authorization constraints. Authorization v1 permits
   one four-call development canary only; issuance performs no provider call and
   does not open full Stage A, Stage B, selection, validation or held-out access.
-- [ ] **S12-RM-13 — Execute and review the f11 canary once:** Use authorization
-  v1 exactly once with four development calls, no retry or overwrite. Require
-  `4/4` responses to be schema-valid, usage-valid and priced, total cost within
-  `$10.00`, and no raw payload or held-out access before considering a separate
-  full Stage A authorization.
+- [x] **S12-RM-13 — Execute and review the f11 canary once:** Authorization v1
+  was used exactly once for four development calls and eight branch outputs.
+  All responses were schema-valid, usage-valid and priced; total cost was
+  `$0.0008742944`, with zero retries, no overwrite, no raw payload/source text,
+  and no held-out, Stage B, selection or promotion access.
+- [ ] **S12-RM-14 — Owner review for full Stage A:** The passing canary only
+  permits a separate review. Full Stage A requires a new authorization bound to
+  the full preregistration/package/freeze and does not inherit canary authority.
 
 #### Phase F-S — Candidate Selection Resume Path
 

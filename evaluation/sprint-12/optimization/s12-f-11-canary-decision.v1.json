@@ -1,0 +1,78 @@
+{
+  "artifactVersion": "s12.s12-f-11.canary-decision.v1",
+  "status": "CANARY_PASS_READY_FOR_FULL_STAGE_A_REVIEW",
+  "experimentId": "s12-f-11",
+  "decisionType": "CANARY_GOVERNANCE_DECISION",
+  "decisionDate": "2026-08-17",
+  "decisionBasis": {
+    "reportPath": "evaluation/sprint-12/optimization/s12-f-11-canary-report.v2.json",
+    "reportDigest": "sha256:cf4f3d4daa01754c9a95a1e56c17a8f1cb42a6f2d3c8b6eea64ec0b8e4d022c5",
+    "authorizationPath": "evaluation/sprint-12/optimization/s12-f-11-canary-authorization.v1.json",
+    "authorizationDigest": "sha256:a4ea8d046d937dc8dd5ec6bf22aee70704b701d5363a91cd27afe24a2b80135a",
+    "executionPackagePath": "evaluation/sprint-12/optimization/s12-f-11-canary-execution-package.v2.json",
+    "executionPackageDigest": "sha256:c9e5722d26c3c6456800e0c687c8f3ae88aa93802d335fcf789012d779c4437d",
+    "freezePath": "evaluation/sprint-12/optimization/s12-f-11-canary-freeze.v2.json",
+    "freezeDigest": "sha256:fafb5412e3484260d77ca7649fe839624975cbad1201af8adde19f61ae4ca465",
+    "frozenCommit": "ed08f99"
+  },
+  "execution": {
+    "status": "CANARY_EXECUTED_ONCE",
+    "providerCallsAttempted": 4,
+    "responsesReceived": 4,
+    "branchOutputs": 8,
+    "schemaValidResponses": 4,
+    "usageValidResponses": 4,
+    "providerCallsPriced": 4,
+    "retryCount": 0,
+    "failureCounts": {},
+    "outputOverwritten": false
+  },
+  "accounting": {
+    "totalCostUsd": 0.0008742944,
+    "costCeilingUsd": "10.00",
+    "withinCostCeiling": true,
+    "pricingFailures": 0
+  },
+  "custody": {
+    "rawSensitiveDataIncluded": false,
+    "heldOutInspected": false,
+    "validationAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "gateResults": {
+    "providerCalls": true,
+    "responsesReceived": true,
+    "schemaValidResponses": true,
+    "usageValidResponses": true,
+    "pricing": true,
+    "costCeiling": true,
+    "retryCount": true,
+    "noOverwrite": true,
+    "rawSensitiveDataCustody": true,
+    "heldOutCustody": true
+  },
+  "governance": {
+    "canaryPassed": true,
+    "fullStageAAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextProviderExecutionAuthorized": false,
+    "humanReviewRequiredForFullStageA": true
+  },
+  "conclusion": {
+    "summary": "The four-call development canary passed the schema, usage, pricing, cost and custody gates.",
+    "permits": "separate owner review for a new full Stage A authorization",
+    "doesNotPermit": [
+      "full Stage A provider execution",
+      "Stage B",
+      "candidate selection",
+      "validation or held-out access",
+      "promotion"
+    ],
+    "noAutomaticStageAAuthorization": true
+  },
+  "rawSensitiveDataIncluded": false
+}

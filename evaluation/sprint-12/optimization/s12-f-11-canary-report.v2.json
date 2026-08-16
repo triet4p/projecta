@@ -1,0 +1,121 @@
+{
+  "artifactVersion": "s12.s12-f-11.canary-report.v2",
+  "branchOutputs": 8,
+  "candidateSelectionAuthorized": false,
+  "experimentId": "s12-f-11",
+  "failureCounts": {},
+  "heldOutInspected": false,
+  "pricing": {
+    "costCeilingGate": true,
+    "costCeilingUsd": "10.00",
+    "pricingFailures": 0,
+    "providerCallsPriced": 4,
+    "totalCostUsd": 0.0008742944
+  },
+  "promotionAuthorized": false,
+  "providerCallsAttempted": 4,
+  "providerCallsPriced": 4,
+  "rawSensitiveDataIncluded": false,
+  "records": [
+    {
+      "caseId": "s12-a-4003",
+      "diagnostic": null,
+      "failureClasses": [],
+      "labels": [
+        "all-development",
+        "relation-positive",
+        "abstention-not-required",
+        "journey:J2",
+        "language:mixed"
+      ],
+      "priced": true,
+      "responseReceived": true,
+      "schemaValid": true,
+      "status": "schema_valid",
+      "usage": {
+        "inputTokens": 2910,
+        "outputTokens": 579,
+        "promptCacheHitTokens": 0,
+        "promptCacheMissTokens": 2910
+      },
+      "usageValid": true
+    },
+    {
+      "caseId": "s12-a-4008",
+      "diagnostic": null,
+      "failureClasses": [],
+      "labels": [
+        "all-development",
+        "relation-negative",
+        "abstention-required",
+        "journey:J2",
+        "language:mixed"
+      ],
+      "priced": true,
+      "responseReceived": true,
+      "schemaValid": true,
+      "status": "schema_valid",
+      "usage": {
+        "inputTokens": 2913,
+        "outputTokens": 404,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 97
+      },
+      "usageValid": true
+    },
+    {
+      "caseId": "s12-a-4002",
+      "diagnostic": null,
+      "failureClasses": [],
+      "labels": [
+        "all-development",
+        "relation-negative",
+        "abstention-not-required",
+        "journey:J2",
+        "language:en"
+      ],
+      "priced": true,
+      "responseReceived": true,
+      "schemaValid": true,
+      "status": "schema_valid",
+      "usage": {
+        "inputTokens": 2902,
+        "outputTokens": 364,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 86
+      },
+      "usageValid": true
+    },
+    {
+      "caseId": "s12-a-4013",
+      "diagnostic": null,
+      "failureClasses": [],
+      "labels": [
+        "all-development",
+        "relation-negative",
+        "abstention-not-required",
+        "journey:J3",
+        "language:ja"
+      ],
+      "priced": true,
+      "responseReceived": true,
+      "schemaValid": true,
+      "status": "schema_valid",
+      "usage": {
+        "inputTokens": 2901,
+        "outputTokens": 102,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 85
+      },
+      "usageValid": true
+    }
+  ],
+  "requiredSchemaValidResponses": 4,
+  "responsesReceived": 4,
+  "retryCount": 0,
+  "schemaGate": true,
+  "schemaValidResponses": 4,
+  "stageBAuthorized": false,
+  "status": "CANARY_EXECUTED",
+  "usageValidResponses": 4
+}
