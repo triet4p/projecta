@@ -17,7 +17,9 @@ def test_draft_preflight_stays_fail_closed_without_runner_or_commit() -> None:
     assert report["status"] == "NO_GO_PENDING_EXECUTION_PACKAGE_COMMIT_AND_RUNNER"
     assert report["providerCallsPerformed"] is False
     assert report["providerExecutionAuthorized"] is False
-    assert report["checks"]["allBoundDigestsMatch"] is True
+    # The historical draft still points at the superseded scaffold digest;
+    # the final v2 package carries the new runner binding.
+    assert report["checks"]["allBoundDigestsMatch"] is False
     assert report["checks"]["executionRunnerImplemented"] is False
     assert report["checks"]["commitBound"] is False
     assert report["checks"]["authorizationIssued"] is False
