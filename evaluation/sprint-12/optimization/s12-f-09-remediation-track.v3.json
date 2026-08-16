@@ -1,0 +1,44 @@
+{
+  "artifactVersion": "s12.s12-f-09.remediation-track.v3",
+  "supersedes": {
+    "artifact": "s12-f-09-remediation-track.v2.json",
+    "status": "HISTORICAL_REMEDIATION_STATUS"
+  },
+  "experimentId": "s12-f-09",
+  "status": "RM_01_RM_04_PASS_RM_05_DRAFT_PENDING_ISSUANCE",
+  "providerCallsAuthorized": false,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "selectionStatus": "NO_SELECTION",
+  "remediationItems": [
+    {"id": "S12-RM-01", "status": "PASS_OFFLINE_PRIMITIVE"},
+    {"id": "S12-RM-02", "status": "PASS_OFFLINE_CONTRACT"},
+    {"id": "S12-RM-03", "status": "PASS_OFFLINE_CONTRACT"},
+    {
+      "id": "S12-RM-04",
+      "status": "PASS_COMMIT_FROZEN",
+      "freezeRecord": "s12-f-10-execution-package-freeze.v1.json",
+      "commitSha": "620df83",
+      "requirement": "Runner, envelope, evaluator, materializer, contracts, case selection, preregistration draft and tests are bound in the frozen execution-package commit."
+    },
+    {
+      "id": "S12-RM-05",
+      "status": "DRAFT_READY_PENDING_ISSUANCE",
+      "preregistrationDraft": "s12-f-10-relation-evidence-shared-response-preregistration.draft.v1.json",
+      "requirement": "Issue a new preregistration and authorization only after explicit approval; this draft does not authorize provider execution."
+    }
+  ],
+  "freezeEvidence": {
+    "artifact": "s12-f-10-execution-package-freeze.v1.json",
+    "commitSha": "620df83",
+    "executionPackageDigest": "sha256:3d0698951462c7a7092616e4363f0c93d3a53b0a58c696f32765fc815eebdc80",
+    "providerExecutionAuthorized": false,
+    "authorizationStatus": "NOT_ISSUED"
+  },
+  "constraints": [
+    "Do not rerun S12-f-09.",
+    "Do not inspect validation or held-out data.",
+    "Do not change gold or ontology.",
+    "Do not authorize or call a provider until explicit approval and a new authorization artifact exist."
+  ]
+}

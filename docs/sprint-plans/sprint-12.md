@@ -545,7 +545,7 @@ package; artifact digests preserve evidence integrity.
 #### Phase F-R5 — S12-f-09 Remediation Before New Stage A
 
 The remediation track is open in
-`optimization/s12-f-09-remediation-track.v2.*` (v1 remains historical). It does not reopen f09, call a
+`optimization/s12-f-09-remediation-track.v3.*` (v1/v2 remain historical). It does not reopen f09, call a
 provider, inspect validation/held-out data, or authorize candidate selection.
 
 - [x] **S12-RM-01 — Prove shared-response pairing offline:** Add the
@@ -557,11 +557,11 @@ provider, inspect validation/held-out data, or authorize candidate selection.
 - [x] **S12-RM-03 — Decide trigger-quote contract:** Require
   predicate-specific `triggerQuote` for the next candidate and fail closed on
   missing/invalid trigger context; bind schema, materializer and tests.
-- [ ] **S12-RM-04 — Freeze the complete execution package:** The guarded
+- [x] **S12-RM-04 — Freeze the complete execution package:** The guarded
   runner, mocked paired schedule, draft package and offline preflight are
-  implemented, but the package remains `NO_GO_PENDING_EXECUTION_PACKAGE_COMMIT_AND_RUNNER`.
-  Commit runner, evaluator, materializer, preregistration revision, and tests
-  together; bind authorization to that commit and all digests.
+  implemented and frozen in commit `620df83`, with freeze record
+  `s12-f-10-execution-package-freeze.v1.json`. Authorization remains separate
+  and unissued.
 - [ ] **S12-RM-05 — Open a new Stage A preregistration:** Issue a new experiment
   draft (`s12-f-10-relation-evidence-shared-response-preregistration.draft.v1.json`)
   now exists, but the preregistration and authorization remain unissued until

@@ -1,0 +1,27 @@
+{
+  "artifactVersion": "s12.s12-f-10.execution-package-freeze.v1",
+  "status": "FROZEN_PENDING_AUTHORIZATION",
+  "experimentId": "s12-f-10",
+  "commitSha": "620df83",
+  "executionPackage": "evaluation/sprint-12/optimization/s12-next-tool-execution-package-draft.v1.json",
+  "executionPackageDigest": "sha256:3d0698951462c7a7092616e4363f0c93d3a53b0a58c696f32765fc815eebdc80",
+  "preregistrationDraft": "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.draft.v1.json",
+  "preregistrationDraftDigest": "sha256:f37558c43200d63220d3115cd540ade62ea5e59472a447d01e8d26c21964b051",
+  "caseSelection": "evaluation/sprint-12/optimization/s12-f-10-case-selection.v1.json",
+  "caseSelectionDigest": "sha256:50b2f5d59d9c4e609635ff835dbc98ef26f7982b9b944ac40f4287dc4fb6566a",
+  "providerExecutionAuthorized": false,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "selectionStatus": "NO_SELECTION",
+  "authorization": {
+    "status": "NOT_ISSUED",
+    "mustBindThisFreezeRecord": true,
+    "mustBindCommitSha": true
+  },
+  "constraints": [
+    "Do not call a provider from this freeze record.",
+    "Do not inspect validation or held-out data.",
+    "Do not mutate f09 evidence, gold or ontology.",
+    "Do not open Stage B or select a candidate."
+  ]
+}
