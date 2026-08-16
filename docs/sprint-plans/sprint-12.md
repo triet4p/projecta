@@ -578,11 +578,22 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   positive; preflight v3 now passes the v4 package with corpus/metric blob,
   exact-commit, Approval-A digest, cost-ceiling and invalid-evidence checks.
 - [x] **S12-RM-05 — Approval A: issue preregistration and freeze only:** Issue
-  the final v3 preregistration and v4 freeze only after RM-04C passes. This
+  the final v4 preregistration and v5 freeze only after RM-04C passes. This
   approval does not authorize provider execution; Approval B is a separate
   owner decision. Approval A is recorded in
-  `optimization/s12-f-10-approval-a.v1.json`; provider execution, Stage A,
+  `optimization/s12-f-10-approval-a.v2.json`; provider execution, Stage A,
   Stage B and candidate selection remain unauthorized.
+- [x] **S12-RM-06 — Approval B: authorize one bounded Stage A:** Owner-delegated
+  review binds Approval A v2, preregistration v4, package/freeze v5, exact
+  commit `3a90c4c`, concrete `DeepSeekProviderAdapter`, live non-secret runtime
+  digest, fixed output, no-retry policy and exact `$10.00` ceiling. Approval B
+  is recorded in `optimization/s12-f-10-approval-b.v1.json`; issuance performs
+  no provider call and does not authorize held-out access, Stage B, selection
+  or promotion.
+- [ ] **S12-RM-07 — Execute S12-f-10 Stage A once:** Use the guarded CLI with
+  Approval B v1 to perform exactly 48 shared provider calls and 96 branch
+  outputs. Preserve all failures and actual cache-aware cost; do not retry or
+  overwrite. Evaluate Stage B eligibility only from the immutable report.
 
 #### Phase F-S — Candidate Selection Resume Path
 

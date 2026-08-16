@@ -1,0 +1,62 @@
+{
+  "artifactVersion": "s12.s12-f-10.approval-b.v1",
+  "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A",
+  "experimentId": "s12-f-10",
+  "approvalScope": [
+    "one-bounded-development-stage-a-execution"
+  ],
+  "authorizationSource": "explicit-owner-delegation-confirmed-by-continue",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "decisionDate": "2026-08-16",
+  "stage": "A",
+  "approvalA": {
+    "path": "evaluation/sprint-12/optimization/s12-f-10-approval-a.v2.json",
+    "digest": "sha256:9e972dda7a93bf3db9966a3c8e815d54e18c7884e01abf27bd60862a46afce56"
+  },
+  "preregistration": {
+    "path": "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v4.json",
+    "digest": "sha256:0117a1730b2e2013a6a883eef63f442b2d9cff46f29a3f3a751190bbc21e9235"
+  },
+  "executionPackage": {
+    "path": "evaluation/sprint-12/optimization/s12-f-10-execution-package.v5.json",
+    "digest": "sha256:b4df95746446a8e81af596a2728c51bd4deea1f70360fc30c437bd479696b947"
+  },
+  "freezeRecord": {
+    "path": "evaluation/sprint-12/optimization/s12-f-10-execution-package-freeze.v5.json",
+    "digest": "sha256:7f2d2a4e8b32f7b6182ba0792b99c7461131bb431edf24eadcf39afb5bf40d95"
+  },
+  "commitSha": "3a90c4c",
+  "providerAdapter": {
+    "path": "scripts/sprint12_provider_adapter.py",
+    "class": "DeepSeekProviderAdapter",
+    "digest": "sha256:724ad2e19113e71fc2e18b08960673c09b41b200efc23d44f649027ab31bf4e6"
+  },
+  "runtimeConfiguration": {
+    "path": "evaluation/sprint-12/harness/s12-f-10-runtime-configuration.v1.json",
+    "digest": "sha256:3756b960acc767add5efaaf37ee761d027283eb98132b82a173094b68081da43",
+    "artifactDigest": "sha256:a5a93570bada9223917721d39bb4bad662bdd2ba859d8ea798a42e1587d06736",
+    "apiKeyStored": false
+  },
+  "providerExecutionAuthorized": true,
+  "providerCallsPerformedAtIssuance": false,
+  "stageAExecutedAtIssuance": false,
+  "outputPath": "evaluation/sprint-12/optimization/s12-f-10-stage-a-report.v5.json",
+  "costCeilingUsd": "10.00",
+  "runtimeWorstCaseCostUsd": "0.39105024",
+  "providerCalls": 48,
+  "branchOutputs": 96,
+  "oneAttemptPerCasePair": true,
+  "retryPolicy": "none",
+  "retryAuthorized": false,
+  "heldOutInspected": false,
+  "heldOutAccessAuthorized": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "constraints": [
+    "Authorization is limited to one S12-f-10 development Stage-A execution against the exact frozen package and output path.",
+    "Any change to model, prompt, schema, sampling, timeout, token bounds, adapter, runtime digest, case selection, commit or cost ceiling invalidates this approval.",
+    "No retry, output overwrite, validation access, held-out access, Stage B, candidate selection or promotion is authorized.",
+    "Execution must stop fail-closed if the exact runtime configuration digest does not match or the output path already exists.",
+    "The resulting report must preserve all failures and actual usage/cost accounting; this approval does not imply candidate quality or promotion."
+  ]
+}
