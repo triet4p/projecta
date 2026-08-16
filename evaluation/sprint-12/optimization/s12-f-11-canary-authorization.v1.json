@@ -1,0 +1,59 @@
+{
+  "artifactVersion": "s12.s12-f-11.canary-authorization.v1",
+  "status": "APPROVED_FOR_DEVELOPMENT_CANARY",
+  "experimentId": "s12-f-11",
+  "authorizationSource": "explicit-owner-delegation-after-package-v2-review",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "decisionDate": "2026-08-17",
+  "authorizationScope": [
+    "one-four-call-development-schema-canary"
+  ],
+  "executionPackage": {
+    "path": "evaluation/sprint-12/optimization/s12-f-11-canary-execution-package.v2.json",
+    "digest": "sha256:c9e5722d26c3c6456800e0c687c8f3ae88aa93802d335fcf789012d779c4437d"
+  },
+  "freezeRecord": {
+    "path": "evaluation/sprint-12/optimization/s12-f-11-canary-freeze.v2.json",
+    "digest": "sha256:fafb5412e3484260d77ca7649fe839624975cbad1201af8adde19f61ae4ca465"
+  },
+  "commitSha": "ed08f99",
+  "providerAdapter": {
+    "path": "scripts/sprint12_provider_adapter.py",
+    "class": "DeepSeekProviderAdapter",
+    "digest": "sha256:724ad2e19113e71fc2e18b08960673c09b41b200efc23d44f649027ab31bf4e6"
+  },
+  "runtimeConfiguration": {
+    "path": "evaluation/sprint-12/harness/s12-f-11-runtime-configuration.v2.json",
+    "digest": "sha256:6344c85be2c5de25438749c84a2b915a0f7b0e10746097ef1792224b7a0b4bca",
+    "artifactDigest": "sha256:9686d849d794d5ceafddfe73fe51cd90d618c4f34589999762a3c31ce893c3ea",
+    "apiKeyStored": false
+  },
+  "providerExecutionAuthorized": true,
+  "providerCalls": 4,
+  "requiredSchemaValidResponses": 4,
+  "expectedUsageValidResponses": 4,
+  "expectedPricedCalls": 4,
+  "oneAttemptPerCase": true,
+  "retryPolicy": "none",
+  "retryAuthorized": false,
+  "outputPath": "evaluation/sprint-12/optimization/s12-f-11-canary-report.v2.json",
+  "outputOverwriteAuthorized": false,
+  "costCeilingUsd": "10.00",
+  "runtimeWorstCaseCostUsd": "0.03258752",
+  "heldOutInspected": false,
+  "heldOutAccessAuthorized": false,
+  "validationAccessAuthorized": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false,
+  "fullStageAAuthorized": false,
+  "providerCallsPerformedAtIssuance": false,
+  "canaryExecutedAtIssuance": false,
+  "constraints": [
+    "Authorization is limited to one execution of the four-case S12-f-11 development schema canary against the exact v2 package, freeze, runtime digest and output path.",
+    "Any change to the frozen commit, package, prompt, schema, adapter, runtime configuration, case selection, retry policy or cost ceiling invalidates this authorization.",
+    "No retry, output overwrite, validation access, held-out access, full Stage A, Stage B, candidate selection or promotion is authorized.",
+    "The canary passes only when all four responses are schema-valid, usage-valid and priced, retryCount is zero, total cost is within the exact ceiling, and no raw sensitive data or held-out access is recorded.",
+    "A passing canary permits only a separate owner review; it does not automatically authorize full Stage A."
+  ]
+}

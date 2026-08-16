@@ -615,9 +615,17 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   counters, and direct authorization constraints for calls, schema-valid
   responses, Stage B, selection and promotion. Freeze v1 at `d869443` remains
   historical and untouched.
-- [ ] **S12-RM-12 — Re-review the superseding f11 canary lineage:** Requires
-  owner review of package/freeze v2 and a new canary authorization before any
-  provider call. No authorization or provider execution is issued by RM-11.
+- [x] **S12-RM-12 — Re-review and authorize the superseding f11 canary:** Owner
+  review verifies package/freeze v2, exact commit `ed08f99`, live non-secret
+  runtime digest, four-call cost proof, sanitized diagnostics, independent
+  accounting and direct authorization constraints. Authorization v1 permits
+  one four-call development canary only; issuance performs no provider call and
+  does not open full Stage A, Stage B, selection, validation or held-out access.
+- [ ] **S12-RM-13 — Execute and review the f11 canary once:** Use authorization
+  v1 exactly once with four development calls, no retry or overwrite. Require
+  `4/4` responses to be schema-valid, usage-valid and priced, total cost within
+  `$10.00`, and no raw payload or held-out access before considering a separate
+  full Stage A authorization.
 
 #### Phase F-S — Candidate Selection Resume Path
 
