@@ -559,9 +559,10 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   missing/invalid trigger context; bind schema, materializer and tests.
 - [x] **S12-RM-04 — Complete the executable package:** Reopen the historical
   scaffold freeze. The draft package and v1 freeze remain immutable historical
-  evidence; RM-04 is complete only when the provider adapter boundary, shared
-  envelope runner, evaluator/slice gates, pricing, sanitized no-overwrite
-  output, authorization guard and canonical validation are bound together.
+  evidence; the v2/v3 lineage was later found to have a false-positive
+  reproducibility preflight because corpus and metric inputs were worktree-only.
+  RM-04 is now remediated by the v4 package/freeze lineage, which binds every
+  runner-read input, exact freeze commit, authorization contract and gate.
 - [x] **S12-RM-04A — Freeze the runner implementation:** Prove the 48-call /
   96-branch schedule, identical response digests, fail-closed provider/schema
   errors, separate materializer failures and cache-aware pricing offline. The
@@ -573,9 +574,11 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   corpus profile, slice labels/denominators and blob digests from the bound
   commit; verify output custody, canonical tests, no held-out access and no
   authorization. `PREAUTHORIZATION_READY` is recorded by preflight v2; this
-  task remains separate from Approval A/B.
+  task remains separate from Approval A/B. The v2 preflight was a false
+  positive; preflight v3 now passes the v4 package with corpus/metric blob,
+  exact-commit, Approval-A digest, cost-ceiling and invalid-evidence checks.
 - [ ] **S12-RM-05 — Approval A: issue preregistration and freeze only:** Issue
-  the final v2 preregistration and v3 freeze only after RM-04C passes. This
+  the final v3 preregistration and v4 freeze only after RM-04C passes. This
   approval does not authorize provider execution; Approval B is a separate
   owner decision.
 
