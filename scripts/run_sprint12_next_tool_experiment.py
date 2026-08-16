@@ -15,6 +15,7 @@ provider payloads, or authorizes a provider call by itself.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
 import sys
@@ -48,7 +49,7 @@ FINAL_PACKAGE = ROOT / "evaluation/sprint-12/optimization/s12-f-10-execution-pac
 FINAL_FREEZE = ROOT / "evaluation/sprint-12/optimization/s12-f-10-execution-package-freeze.v4.json"
 FINAL_PREREGISTRATION = ROOT / "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v3.json"
 AUTHORIZATION_CONTRACT = ROOT / "evaluation/sprint-12/harness/s12-f-10-stage-a-authorization.schema.v2.json"
-FINAL_SELECTION = ROOT / "evaluation/sprint-12/optimization/s12-f-10-case-selection.v1.json"
+FINAL_SELECTION = ROOT / "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json"
 FINAL_ATOMIC = ROOT / "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json"
 FINAL_SCENARIO = ROOT / "evaluation/sprint-12/corpus/v3-frozen/scenario-v3.frozen.v1.json"
 FINAL_MANIFEST = ROOT / "evaluation/sprint-12/corpus/v3-frozen/atomic-manifest.v1.json"
@@ -67,6 +68,12 @@ EXPECTED_SCHEDULE = (
 
 class ExecutionPackageError(RuntimeError):
     """Raised when a package is not safe to use for provider execution."""
+
+
+def _bound_file_digest(path: Path) -> str:
+    """Hash the canonical LF blob representation used by Git freeze checks."""
+
+    return "sha256:" + hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -254,7 +261,7 @@ def load_bound_development_cases() -> tuple[evaluator.LoadedDataset, tuple[dict[
         FINAL_MANIFEST,
         allowed_splits=("development", "validation"),
     )
-    if selection.get("manifestDigest") != file_digest(FINAL_MANIFEST):
+    if selection.get("manifestDigest") != _bound_file_digest(FINAL_MANIFEST):
         raise ExecutionPackageError("case selection does not bind the frozen manifest blob")
     selected_ids = selection.get("caseIds")
     if not isinstance(selected_ids, list) or len(selected_ids) != 16:
@@ -336,14 +343,14 @@ def validate_final_execution_package(
         binding = package.get(binding_name)
         if not isinstance(binding, dict) or binding.get("path") != expected_path:
             raise ExecutionPackageError(f"{binding_name} binding is missing or not allowlisted")
-        if binding.get("digest") != file_digest(ROOT / expected_path):
+        if binding.get("digest") != _bound_file_digest(ROOT / expected_path):
             raise ExecutionPackageError(f"{binding_name} digest mismatch")
     if not bound_digests:
         raise ExecutionPackageError("final package has no bound artifacts")
     mismatches = {
         path: digest
         for path, digest in bound_digests.items()
-        if not isinstance(path, str) or digest != file_digest(ROOT / path)
+        if not isinstance(path, str) or digest != _bound_file_digest(ROOT / path)
     }
     if mismatches:
         raise ExecutionPackageError("final package bound digest mismatch")

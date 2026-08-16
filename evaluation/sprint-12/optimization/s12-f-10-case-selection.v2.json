@@ -1,0 +1,28 @@
+{
+  "artifactVersion": "s12.s12-f-10.case-selection.v2",
+  "supersedes": "s12-f-10-case-selection.v1.json",
+  "status": "DRAFT_DEVELOPMENT_ONLY_NOT_AUTHORIZED",
+  "datasetVersion": "s12.corpus.atomic.v3.frozen",
+  "manifestPath": "evaluation/sprint-12/corpus/v3-frozen/atomic-manifest.v1.json",
+  "manifestDigest": "sha256:4d0c08a2812db4d35dfd4058873ad1f0c5728c1b05640542c7cdab1fda98710d",
+  "split": "development",
+  "caseCount": 16,
+  "caseSelectionDigest": "sha256:50b2f5d59d9c4e609635ff835dbc98ef26f7982b9b944ac40f4287dc4fb6566a",
+  "caseIds": [
+    "s12-a-4003", "s12-a-4007", "s12-a-4011", "s12-a-4015",
+    "s12-a-4019", "s12-a-4027", "s12-a-4035", "s12-a-4043",
+    "s12-a-4008", "s12-a-4016", "s12-a-4024", "s12-a-4032",
+    "s12-a-4002", "s12-a-4013", "s12-a-4034", "s12-a-4045"
+  ],
+  "selectionProfile": {
+    "positiveRelationCases": 8,
+    "abstentionRequiredCases": 4,
+    "hardNegativeCases": 4,
+    "journeysRepresented": ["J1", "J2", "J3", "J4", "J5", "J6"],
+    "languagesRepresented": ["en", "ja", "mixed", "vi"]
+  },
+  "selectionRationale": "Same frozen development-only selection as v1, rebound to the committed LF manifest blob for clean-checkout reproducibility.",
+  "heldOutInspected": false,
+  "goldOrOntologyChanged": false,
+  "providerCallsAuthorized": false
+}

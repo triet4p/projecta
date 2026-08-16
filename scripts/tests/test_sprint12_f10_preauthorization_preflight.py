@@ -14,8 +14,8 @@ sys.path[:0] = [str(ROOT / "scripts"), str(ROOT / "apps" / "api" / "src")]
 from preflight_sprint12_f10_preauthorization import build_preflight
 from run_sprint12_next_tool_experiment import (
     FINAL_FREEZE,
-    FINAL_PREREGISTRATION,
     FINAL_PACKAGE,
+    FINAL_PREREGISTRATION,
     ExecutionPackageError,
     _metric_summary,
     run_offline_stage_a,
@@ -289,7 +289,7 @@ def test_authorization_rejects_non_preregistered_cost_ceiling(tmp_path: Path) ->
     payload["costCeilingUsd"] = "10.01"
     authorization.write_text(json.dumps(payload), encoding="utf-8")
     adapter = CallableProviderAdapter(lambda **_kwargs: ProviderCapture(payload=_payload()))
-    with pytest.raises(ExecutionPackageError, match="preregistered \$10.00"):
+    with pytest.raises(ExecutionPackageError, match=r"preregistered \$10.00"):
         run_offline_stage_a(
             provider_adapter=adapter,
             authorization_path=authorization,

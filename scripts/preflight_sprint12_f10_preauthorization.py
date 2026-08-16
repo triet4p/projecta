@@ -75,6 +75,10 @@ def _blob_digest(commit_sha: str, relative_path: str) -> str | None:
     return "sha256:" + sha256(result.stdout).hexdigest()
 
 
+def _canonical_file_digest(path: Path) -> str:
+    return "sha256:" + sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+
+
 def _canonical_tests_pass() -> bool:
     environment = os.environ.copy()
     environment["PYTHONPATH"] = os.pathsep.join(
@@ -187,7 +191,7 @@ def build_preflight(*, run_tests: bool = False) -> dict[str, Any]:
         package_read_paths.update(str(dataset.get(key, "")) for key in ("atomic", "scenario", "manifest"))
     package_read_paths.discard("")
     package_read_blob_checks = {
-        path: _blob_digest(commit_sha, path) == file_digest(ROOT / path)
+        path: _blob_digest(commit_sha, path) == _canonical_file_digest(ROOT / path)
         for path in sorted(package_read_paths)
     }
     metric_contract_path = str(package.get("metricContract", ""))
@@ -199,10 +203,17 @@ def build_preflight(*, run_tests: bool = False) -> dict[str, Any]:
         "packageIntegrity": package_integrity,
         "packageDigestMatchesFreeze": freeze.get("executionPackageDigest") == file_digest(FINAL_PACKAGE),
         "preregistrationDigestMatchesFreeze": freeze.get("preregistrationDigest") == file_digest(PREREGISTRATION),
+        "caseSelectionDigestMatchesFreeze": freeze.get("caseSelectionDigest") == _canonical_file_digest(ROOT / str(package.get("caseSelection", ""))),
+        "metricContractDigestMatchesFreeze": freeze.get("metricContractDigest") == _canonical_file_digest(ROOT / metric_contract_path),
+        "datasetDigestsMatchFreeze": (
+            freeze.get("datasetDigests", {}).get("atomic") == _canonical_file_digest(ROOT / str(dataset_paths.get("atomic", "")))
+            and freeze.get("datasetDigests", {}).get("scenario") == _canonical_file_digest(ROOT / str(dataset_paths.get("scenario", "")))
+            and freeze.get("datasetDigests", {}).get("manifest") == _canonical_file_digest(ROOT / str(dataset_paths.get("manifest", "")))
+        ),
         "commitPresentInHead": _commit_is_ancestor(commit_sha),
         "freezeCommitShaBound": bool(commit_sha) and freeze.get("commitSha") == commit_sha,
-        "packageBlobInCommit": _blob_digest(commit_sha, package_relative) == file_digest(FINAL_PACKAGE),
-        "preregistrationBlobInCommit": _blob_digest(commit_sha, prereg_relative) == file_digest(PREREGISTRATION),
+        "packageBlobInCommit": _blob_digest(commit_sha, package_relative) == _canonical_file_digest(FINAL_PACKAGE),
+        "preregistrationBlobInCommit": _blob_digest(commit_sha, prereg_relative) == _canonical_file_digest(PREREGISTRATION),
         "allBoundFilesInCommit": bool(blob_checks) and all(blob_checks.values()),
         "allPackageReadPathsInCommit": bool(package_read_blob_checks) and all(package_read_blob_checks.values()),
         "corpusBlobsInCommit": all(

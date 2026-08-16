@@ -50,7 +50,7 @@
     "atomicCorpusPath": "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json",
     "scenarioCorpusPath": "evaluation/sprint-12/corpus/v3-frozen/scenario-v3.frozen.v1.json",
     "datasetManifestPath": "evaluation/sprint-12/corpus/v3-frozen/atomic-manifest.v1.json",
-    "caseSelectionPath": "evaluation/sprint-12/optimization/s12-f-10-case-selection.v1.json",
+    "caseSelectionPath": "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json",
     "sliceThresholdContract": "evaluation/sprint-12/harness/slice-threshold-contract.v1.json",
     "metricContract": "evaluation/sprint-12/harness/metric-contract.v2.json",
     "triggerContract": "evaluation/sprint-12/harness/relation-trigger-contract.v1.json",
