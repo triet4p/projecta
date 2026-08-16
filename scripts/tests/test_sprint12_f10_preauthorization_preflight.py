@@ -107,6 +107,38 @@ def test_unauthorized_runner_makes_zero_adapter_calls(tmp_path: Path) -> None:
     assert calls == []
 
 
+def test_live_binding_mutation_makes_zero_adapter_calls(tmp_path: Path) -> None:
+    output = tmp_path / "mutated-binding.json"
+    authorization = _authorization(output)
+    payload = json.loads(authorization.read_text(encoding="utf-8"))
+    payload["providerAdapter"] = {
+        "path": "scripts/sprint12_provider_adapter.py",
+        "class": "DeepSeekProviderAdapter",
+        "digest": "sha256:mutated",
+    }
+    payload["runtimeConfiguration"] = {
+        "path": "evaluation/sprint-12/harness/s12-f-10-runtime-configuration.v1.json",
+        "digest": "sha256:runtime",
+    }
+    authorization.write_text(json.dumps(payload), encoding="utf-8")
+    calls: list[str] = []
+    adapter = CallableProviderAdapter(
+        lambda **kwargs: calls.append(str(kwargs["case_id"]))
+        or ProviderCapture(payload=_payload())
+    )
+
+    with pytest.raises(ExecutionPackageError, match="provider adapter digest"):
+        run_offline_stage_a(
+            provider_adapter=adapter,
+            authorization_path=authorization,
+            output_path=output,
+            adapter_digest="sha256:actual",
+            runtime_configuration_digest="sha256:actual-runtime",
+            require_concrete_provider_binding=True,
+        )
+    assert calls == []
+
+
 def test_offline_runner_uses_48_captures_and_96_sanitized_branches(tmp_path: Path) -> None:
     calls: list[str] = []
     adapter = CallableProviderAdapter(
