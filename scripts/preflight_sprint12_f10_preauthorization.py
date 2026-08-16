@@ -32,9 +32,9 @@ from run_sprint12_next_tool_experiment import (
 )
 from sprint12_pricing import file_digest, load_pricing_artifact
 
-FREEZE = ROOT / "evaluation/sprint-12/optimization/s12-f-10-execution-package-freeze.v3.json"
-PREREGISTRATION = ROOT / "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v2.json"
-OUTPUT_PATH = ROOT / "evaluation/sprint-12/optimization/s12-f-10-stage-a-report.v2.json"
+FREEZE = ROOT / "evaluation/sprint-12/optimization/s12-f-10-execution-package-freeze.v4.json"
+PREREGISTRATION = ROOT / "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v3.json"
+OUTPUT_PATH = ROOT / "evaluation/sprint-12/optimization/s12-f-10-stage-a-report.v4.json"
 CANONICAL_TESTS = (
     "scripts/tests/test_sprint12_next_tool_runner.py",
     "scripts/tests/test_sprint12_f10_preauthorization_preflight.py",
@@ -168,6 +168,30 @@ def build_preflight(*, run_tests: bool = False) -> dict[str, Any]:
     )
     package_relative = str(FINAL_PACKAGE.relative_to(ROOT).as_posix())
     prereg_relative = str(PREREGISTRATION.relative_to(ROOT).as_posix())
+    package_read_paths = {
+        str(path)
+        for path in bound_digests
+        if isinstance(path, str)
+    }
+    package_read_paths.update(
+        {
+            str(package.get("authorizationContract", "")),
+            str(package.get("metricContract", "")),
+            str(package.get("caseSelection", "")),
+            str(package.get("sliceContract", "")),
+            str(package.get("pricingArtifact", "")),
+        }
+    )
+    dataset = package.get("dataset", {})
+    if isinstance(dataset, dict):
+        package_read_paths.update(str(dataset.get(key, "")) for key in ("atomic", "scenario", "manifest"))
+    package_read_paths.discard("")
+    package_read_blob_checks = {
+        path: _blob_digest(commit_sha, path) == file_digest(ROOT / path)
+        for path in sorted(package_read_paths)
+    }
+    metric_contract_path = str(package.get("metricContract", ""))
+    dataset_paths = package.get("dataset", {}) if isinstance(package.get("dataset"), dict) else {}
     checks = {
         "freezeStatus": freeze.get("status") == "FROZEN_PENDING_APPROVAL_A",
         "packageStatus": package.get("status") == "EXECUTION_PACKAGE_FROZEN_PENDING_AUTHORIZATION",
@@ -176,13 +200,20 @@ def build_preflight(*, run_tests: bool = False) -> dict[str, Any]:
         "packageDigestMatchesFreeze": freeze.get("executionPackageDigest") == file_digest(FINAL_PACKAGE),
         "preregistrationDigestMatchesFreeze": freeze.get("preregistrationDigest") == file_digest(PREREGISTRATION),
         "commitPresentInHead": _commit_is_ancestor(commit_sha),
+        "freezeCommitShaBound": bool(commit_sha) and freeze.get("commitSha") == commit_sha,
         "packageBlobInCommit": _blob_digest(commit_sha, package_relative) == file_digest(FINAL_PACKAGE),
         "preregistrationBlobInCommit": _blob_digest(commit_sha, prereg_relative) == file_digest(PREREGISTRATION),
         "allBoundFilesInCommit": bool(blob_checks) and all(blob_checks.values()),
+        "allPackageReadPathsInCommit": bool(package_read_blob_checks) and all(package_read_blob_checks.values()),
+        "corpusBlobsInCommit": all(
+            package_read_blob_checks.get(str(dataset_paths.get(key)), False)
+            for key in ("atomic", "scenario", "manifest")
+        ),
+        "metricContractBlobInCommit": package_read_blob_checks.get(metric_contract_path, False),
         "providerSchemasMatch": schemas_match,
         "preregistrationStatusUnissued": preregistration.get("status") == "FINAL_PREREGISTRATION_DRAFT_NOT_ISSUED",
         "preregistrationExecutionUnauthorized": preregistration.get("providerExecutionAuthorized") is False,
-        "authorizationContractBound": package.get("authorizationContract") == "evaluation/sprint-12/harness/s12-f-10-stage-a-authorization.schema.v1.json",
+        "authorizationContractBound": package.get("authorizationContract") == "evaluation/sprint-12/harness/s12-f-10-stage-a-authorization.schema.v2.json",
         "caseSelectionReproducible": case_selection_reproducible,
         "sliceLabelsAndDenominatorsBound": package.get("sliceContract") == "evaluation/sprint-12/harness/slice-threshold-contract.v1.json" and slice_contract_complete,
         "pricingBound": pricing.get("status") == "BOUND" and freeze.get("pricingDigest") == file_digest(FINAL_PRICING),
@@ -190,15 +221,18 @@ def build_preflight(*, run_tests: bool = False) -> dict[str, Any]:
         "authorizationNotIssued": freeze.get("authorization", {}).get("status") == "NOT_ISSUED",
         "providerExecutionUnauthorized": freeze.get("providerExecutionAuthorized") is False,
         "heldOutUninspected": freeze.get("heldOutInspected") is False and preregistration.get("heldOutInspected") is False,
+        "exactCostCeilingBound": package.get("costCeilingUsd") == "10.00" and preregistration.get("pricingContract", {}).get("costCeilingUsd") == "10.00",
+        "invalidEvidenceGateBound": preregistration.get("hardGates", {}).get("invalidEvidence") == 0,
         "canonicalTestsPass": _canonical_tests_pass() if run_tests else False,
     }
     status = "PREAUTHORIZATION_READY" if all(checks.values()) else "NO_GO_PREAUTHORIZATION_PREFLIGHT"
     return {
-        "reportVersion": "s12.s12-f-10.preauthorization-preflight.v2",
+        "reportVersion": "s12.s12-f-10.preauthorization-preflight.v3",
         "status": status,
         "checks": checks,
         "caseSelectionProfile": profile,
         "boundBlobChecks": blob_checks,
+        "packageReadBlobChecks": package_read_blob_checks,
         "commitSha": commit_sha or None,
         "providerCallsPerformed": False,
         "providerExecutionAuthorized": False,

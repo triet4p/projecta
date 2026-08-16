@@ -1,0 +1,37 @@
+{
+  "artifactVersion": "s12.s12-f-10.stage-a-authorization.schema.v2",
+  "supersedes": "s12-f-10-stage-a-authorization.schema.v1.json",
+  "status": "AUTHORIZATION_SCHEMA_ONLY_NOT_ISSUED",
+  "requiredStatus": "APPROVED_FOR_DEVELOPMENT_STAGE_A",
+  "requiredFields": [
+    "experimentId",
+    "approvalA.path",
+    "approvalA.digest",
+    "executionPackage.digest",
+    "freezeRecord.path",
+    "freezeRecord.digest",
+    "commitSha",
+    "providerExecutionAuthorized",
+    "outputPath",
+    "costCeilingUsd",
+    "retryPolicy",
+    "heldOutInspected"
+  ],
+  "constraints": {
+    "providerExecutionAuthorized": true,
+    "retryPolicy": "none",
+    "heldOutInspected": false,
+    "stage": "A",
+    "noStageB": true,
+    "oneAttemptPerCasePair": true,
+    "providerCalls": 48,
+    "costCeilingUsd": "10.00",
+    "approvalAStatus": "APPROVED_FOR_ISSUANCE_ONLY",
+    "approvalAProviderExecutionAuthorized": false,
+    "approvalACommitMustEqualFreezeCommit": true,
+    "approvalADigestRequired": true,
+    "outputMustNotExistBeforeRun": true
+  },
+  "providerExecutionAuthorized": false,
+  "heldOutInspected": false
+}

@@ -1,0 +1,30 @@
+{
+  "artifactVersion": "s12.s12-f-10.execution-package-freeze.v4",
+  "supersedes": "s12-f-10-execution-package-freeze.v3.json",
+  "status": "FROZEN_PENDING_APPROVAL_A",
+  "experimentId": "s12-f-10",
+  "commitSha": null,
+  "executionPackage": "evaluation/sprint-12/optimization/s12-f-10-execution-package.v4.json",
+  "executionPackageDigest": "sha256:75c06b70ef8c55a0cd0de26e65d8fd39068940853e3fe31b4f5a7fe05c7711b1",
+  "preregistration": "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v3.json",
+  "preregistrationDigest": "sha256:f8957b420ede91496cb79d997a047193112b513781428d5a783e1b0c71a81aea",
+  "caseSelectionDigest": "sha256:11c4ea34c623839a1a2ae058ca0ca41f3792889ea1b44941b3685e4c3e5958fa",
+  "pricingDigest": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+  "metricContractDigest": "sha256:3168fce54a189773e9c181915348e4c2d022031ba31900412fa7485ed26ff51b",
+  "authorizationContractDigest": "sha256:29971cc4d9a7a91e46541d627949d0f7002de3583079a53e42dcd6486bfff6e3",
+  "datasetDigests": {
+    "atomic": "sha256:dd535a4ae4ad9888a1dcb041dfd781426fa2d584ef6720a366a58becd0f25841",
+    "scenario": "sha256:d8ca8b911f74e3f8d7bde71e180a076a98b83f3180126b39a8b3fcbbf4158a65",
+    "manifest": "sha256:81cd91fcef327c87348ef0563a6407bdb9aa07f1f54c2711daf77312f91e3bb1"
+  },
+  "providerExecutionAuthorized": false,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "selectionStatus": "NO_SELECTION",
+  "authorization": {"status": "NOT_ISSUED", "mustBindThisFreezeRecord": true, "mustBindExactCommitSha": true, "mustBindApprovalADigest": true},
+  "constraints": [
+    "Approval A may issue the preregistration and freeze only.",
+    "Approval B must bind this freeze, the Approval-A artifact digest, the exact commitSha, output path and exact $10.00 cost ceiling before capture.",
+    "Do not inspect held-out data or open Stage B."
+  ]
+}

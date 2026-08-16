@@ -14,6 +14,7 @@ sys.path[:0] = [str(ROOT / "scripts"), str(ROOT / "apps" / "api" / "src")]
 from preflight_sprint12_f10_preauthorization import build_preflight
 from run_sprint12_next_tool_experiment import (
     FINAL_FREEZE,
+    FINAL_PREREGISTRATION,
     FINAL_PACKAGE,
     ExecutionPackageError,
     _metric_summary,
@@ -40,6 +41,17 @@ def test_final_package_is_implemented_and_preflight_keeps_authorization_closed()
 
 
 def _authorization(output: Path) -> Path:
+    approval_a_path = output.parent / "approval-a.json"
+    freeze = json.loads(FINAL_FREEZE.read_text(encoding="utf-8"))
+    approval_a = {
+        "status": "APPROVED_FOR_ISSUANCE_ONLY",
+        "providerExecutionAuthorized": False,
+        "experimentId": "s12-f-10",
+        "commitSha": freeze["commitSha"],
+        "freezeDigest": file_digest(FINAL_FREEZE),
+        "preregistrationDigest": file_digest(FINAL_PREREGISTRATION),
+    }
+    approval_a_path.write_text(json.dumps(approval_a), encoding="utf-8")
     path = output.parent / "authorization.json"
     payload = {
         "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A",
@@ -48,11 +60,12 @@ def _authorization(output: Path) -> Path:
         "heldOutInspected": False,
         "retryPolicy": "none",
         "executionPackage": {"digest": file_digest(FINAL_PACKAGE)},
+        "approvalA": {"path": str(approval_a_path.resolve()), "digest": file_digest(approval_a_path)},
         "freezeRecord": {
             "path": str(FINAL_FREEZE.relative_to(ROOT).as_posix()),
             "digest": file_digest(FINAL_FREEZE),
         },
-        "commitSha": "89680a4",
+        "commitSha": freeze["commitSha"],
         "outputPath": str(output.resolve()),
         "costCeilingUsd": "10.00",
     }
@@ -213,3 +226,72 @@ def test_retry_count_is_a_hard_gate(tmp_path: Path) -> None:
     )
     assert report["retryCount"] == 48
     assert report["hardGates"]["retryCount"] is False
+
+
+def test_invalid_evidence_is_reported_as_a_hard_gate(tmp_path: Path) -> None:
+    output = tmp_path / "invalid-evidence.json"
+
+    def invalid_payload(raw_text: str) -> dict:
+        payload = _payload()
+        payload["extraction"]["abstentionReason"] = None
+        payload["extraction"]["entities"] = [
+            {"candidateId": "task-1", "type": "Task", "label": "task", "confidence": 1.0,
+             "evidence": {"startOffset": 0, "endOffset": 1, "text": raw_text[:1]}},
+            {"candidateId": "req-1", "type": "Requirement", "label": "req", "confidence": 1.0,
+             "evidence": {"startOffset": 2, "endOffset": 3, "text": raw_text[2:3]}},
+        ]
+        payload["extraction"]["relations"] = [
+            {"predicate": "implements", "sourceEntityId": "task-1", "targetEntityId": "req-1",
+             "confidence": 1.0, "evidence": {"startOffset": 0, "endOffset": 3, "text": raw_text[:3]}},
+        ]
+        payload["relationTriggers"] = [
+            {"predicate": "implements", "sourceEntityId": "task-1", "targetEntityId": "req-1",
+             "triggerQuote": "__missing_trigger__"},
+        ]
+        return payload
+
+    adapter = CallableProviderAdapter(
+        lambda **kwargs: ProviderCapture(payload=invalid_payload(str(kwargs["raw_text"])))
+    )
+    report = run_offline_stage_a(
+        provider_adapter=adapter,
+        authorization_path=_authorization(output),
+        output_path=output,
+    )
+    assert report["failureCounts"]["invalid_evidence"] == 48
+    assert report["hardGates"]["invalidEvidence"] is False
+
+
+def test_authorization_requires_exact_frozen_commit_and_ceiling(tmp_path: Path) -> None:
+    output = tmp_path / "exact-binding.json"
+    authorization = _authorization(output)
+    payload = json.loads(authorization.read_text(encoding="utf-8"))
+    payload["commitSha"] = "89680a4"
+    payload["costCeilingUsd"] = "10.01"
+    authorization.write_text(json.dumps(payload), encoding="utf-8")
+    calls: list[str] = []
+    adapter = CallableProviderAdapter(
+        lambda **kwargs: calls.append(str(kwargs["case_id"])) or ProviderCapture(payload=_payload())
+    )
+    with pytest.raises(ExecutionPackageError, match="exactly match"):
+        run_offline_stage_a(
+            provider_adapter=adapter,
+            authorization_path=authorization,
+            output_path=output,
+        )
+    assert calls == []
+
+
+def test_authorization_rejects_non_preregistered_cost_ceiling(tmp_path: Path) -> None:
+    output = tmp_path / "ceiling.json"
+    authorization = _authorization(output)
+    payload = json.loads(authorization.read_text(encoding="utf-8"))
+    payload["costCeilingUsd"] = "10.01"
+    authorization.write_text(json.dumps(payload), encoding="utf-8")
+    adapter = CallableProviderAdapter(lambda **_kwargs: ProviderCapture(payload=_payload()))
+    with pytest.raises(ExecutionPackageError, match="preregistered \$10.00"):
+        run_offline_stage_a(
+            provider_adapter=adapter,
+            authorization_path=authorization,
+            output_path=output,
+        )

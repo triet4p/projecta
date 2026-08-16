@@ -19,6 +19,7 @@ import json
 import subprocess
 import sys
 from collections.abc import Callable, Mapping, Sequence
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Any
 
@@ -43,15 +44,17 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PACKAGE = (
     ROOT / "evaluation/sprint-12/optimization/s12-next-tool-execution-package-draft.v1.json"
 )
-FINAL_PACKAGE = ROOT / "evaluation/sprint-12/optimization/s12-f-10-execution-package.v2.json"
-FINAL_FREEZE = ROOT / "evaluation/sprint-12/optimization/s12-f-10-execution-package-freeze.v3.json"
-AUTHORIZATION_CONTRACT = ROOT / "evaluation/sprint-12/harness/s12-f-10-stage-a-authorization.schema.v1.json"
+FINAL_PACKAGE = ROOT / "evaluation/sprint-12/optimization/s12-f-10-execution-package.v4.json"
+FINAL_FREEZE = ROOT / "evaluation/sprint-12/optimization/s12-f-10-execution-package-freeze.v4.json"
+FINAL_PREREGISTRATION = ROOT / "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v3.json"
+AUTHORIZATION_CONTRACT = ROOT / "evaluation/sprint-12/harness/s12-f-10-stage-a-authorization.schema.v2.json"
 FINAL_SELECTION = ROOT / "evaluation/sprint-12/optimization/s12-f-10-case-selection.v1.json"
 FINAL_ATOMIC = ROOT / "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json"
 FINAL_SCENARIO = ROOT / "evaluation/sprint-12/corpus/v3-frozen/scenario-v3.frozen.v1.json"
 FINAL_MANIFEST = ROOT / "evaluation/sprint-12/corpus/v3-frozen/atomic-manifest.v1.json"
 FINAL_PRICING = ROOT / "evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json"
 FINAL_SLICE_CONTRACT = ROOT / "evaluation/sprint-12/harness/slice-threshold-contract.v1.json"
+FINAL_METRIC_CONTRACT = ROOT / "evaluation/sprint-12/harness/metric-contract.v2.json"
 FINAL_PROMPT_VERSION = "m3.prompt.v6.relation-trigger-envelope"
 FINAL_PROVIDER_SCHEMA = "relation-evidence-envelope.v1"
 
@@ -203,6 +206,22 @@ def _read_json(path: Path) -> dict[str, Any]:
     return _load(path)
 
 
+def _validate_metric_contract(path: Path = FINAL_METRIC_CONTRACT) -> dict[str, Any]:
+    contract = _read_json(path)
+    if contract.get("version") != "s12.metric-contract.v2":
+        raise ExecutionPackageError("metric contract version is not v2")
+    relation_metrics = contract.get("relationMetrics")
+    if not isinstance(relation_metrics, dict) or not {
+        "relationSemanticF1",
+        "relationEvidenceSupport",
+        "relationEvidenceExact",
+    }.issubset(relation_metrics):
+        raise ExecutionPackageError("metric contract does not bind semantic/evidence metrics")
+    if contract.get("aggregation", {}).get("aggregateFromPerCaseRecordsOnly") is not True:
+        raise ExecutionPackageError("metric contract does not require per-case aggregation")
+    return contract
+
+
 def _selection_labels(case: Mapping[str, Any]) -> tuple[str, ...]:
     gold = case.get("gold")
     if not isinstance(gold, dict):
@@ -292,6 +311,24 @@ def validate_final_execution_package(
         raise ExecutionPackageError("final package does not mark the runner implemented")
     if package.get("authorizationContract") != str(AUTHORIZATION_CONTRACT.relative_to(ROOT).as_posix()):
         raise ExecutionPackageError("final package authorization contract is not bound")
+    required_paths = (
+        "metricContract",
+        "caseSelection",
+        "sliceContract",
+        "pricingArtifact",
+        "dataset.atomic",
+        "dataset.scenario",
+        "dataset.manifest",
+    )
+    bound_digests = package.get("boundDigests")
+    if not isinstance(bound_digests, dict):
+        raise ExecutionPackageError("final package bound digests are missing")
+    for field in required_paths:
+        value: Any = package
+        for component in field.split("."):
+            value = value.get(component) if isinstance(value, dict) else None
+        if not isinstance(value, str) or value not in bound_digests:
+            raise ExecutionPackageError(f"final package path is not digest-bound: {field}")
     for binding_name, expected_path in (
         ("executionRunner", "scripts/run_sprint12_next_tool_experiment.py"),
         ("providerAdapter", "scripts/sprint12_provider_adapter.py"),
@@ -301,8 +338,7 @@ def validate_final_execution_package(
             raise ExecutionPackageError(f"{binding_name} binding is missing or not allowlisted")
         if binding.get("digest") != file_digest(ROOT / expected_path):
             raise ExecutionPackageError(f"{binding_name} digest mismatch")
-    bound_digests = package.get("boundDigests")
-    if not isinstance(bound_digests, dict) or not bound_digests:
+    if not bound_digests:
         raise ExecutionPackageError("final package has no bound artifacts")
     mismatches = {
         path: digest
@@ -324,6 +360,7 @@ def validate_final_execution_package(
         raise ExecutionPackageError("control and candidate schemas are not identical")
     if output_path is not None and output_path.exists():
         raise ExecutionPackageError(f"refusing to overwrite output: {output_path}")
+    _validate_metric_contract()
     return package
 
 
@@ -366,6 +403,21 @@ def _usage_from_capture_if_available(
         return usage
 
 
+def _resolve_artifact_path(raw_path: str) -> Path:
+    path = Path(raw_path)
+    return path if path.is_absolute() else ROOT / path
+
+
+def _exact_cost_ceiling(value: Any) -> Decimal:
+    try:
+        ceiling = Decimal(str(value))
+    except (InvalidOperation, TypeError, ValueError) as error:
+        raise ExecutionPackageError("authorization cost ceiling is invalid") from error
+    if ceiling != Decimal("10.00"):
+        raise ExecutionPackageError("authorization cost ceiling must equal preregistered $10.00")
+    return ceiling
+
+
 def validate_stage_a_authorization(
     package: Mapping[str, Any],
     *,
@@ -390,23 +442,47 @@ def validate_stage_a_authorization(
         raise ExecutionPackageError("authorization retry policy is not none")
     if authorization.get("executionPackage", {}).get("digest") != file_digest(package_path):
         raise ExecutionPackageError("authorization does not bind the execution package digest")
+    freeze = _read_json(FINAL_FREEZE)
     freeze_binding = authorization.get("freezeRecord", {})
     if freeze_binding.get("path") != str(FINAL_FREEZE.relative_to(ROOT).as_posix()):
         raise ExecutionPackageError("authorization does not bind the final freeze record")
     if freeze_binding.get("digest") != file_digest(FINAL_FREEZE):
         raise ExecutionPackageError("authorization does not bind the final freeze digest")
     commit_sha = str(authorization.get("commitSha", ""))
-    if not commit_sha or not commit_is_ancestor(commit_sha):
-        raise ExecutionPackageError("authorization commit is not an ancestor of HEAD")
+    expected_commit = str(freeze.get("commitSha", ""))
+    if not commit_sha or commit_sha != expected_commit:
+        raise ExecutionPackageError("authorization commit does not exactly match the frozen commit")
+    if not commit_is_ancestor(commit_sha):
+        raise ExecutionPackageError("frozen authorization commit is not an ancestor of HEAD")
+    approval_a = authorization.get("approvalA")
+    if not isinstance(approval_a, dict):
+        raise ExecutionPackageError("Approval-A artifact binding is required before provider capture")
+    approval_a_path = approval_a.get("path")
+    if not isinstance(approval_a_path, str) or not approval_a_path:
+        raise ExecutionPackageError("Approval-A artifact path is missing")
+    approval_a_file = _resolve_artifact_path(approval_a_path)
+    if approval_a.get("digest") != file_digest(approval_a_file):
+        raise ExecutionPackageError("Approval-A artifact digest mismatch")
+    approval_a_artifact = _read_json(approval_a_file)
+    if approval_a_artifact.get("status") != "APPROVED_FOR_ISSUANCE_ONLY":
+        raise ExecutionPackageError("Approval-A artifact is not issued for preregistration only")
+    if approval_a_artifact.get("providerExecutionAuthorized") is not False:
+        raise ExecutionPackageError("Approval-A artifact authorizes provider execution")
+    if approval_a_artifact.get("experimentId") != package.get("experimentId"):
+        raise ExecutionPackageError("Approval-A experiment does not match package")
+    if approval_a_artifact.get("commitSha") != expected_commit:
+        raise ExecutionPackageError("Approval-A artifact does not bind the frozen commit")
+    if approval_a_artifact.get("freezeDigest") != file_digest(FINAL_FREEZE):
+        raise ExecutionPackageError("Approval-A artifact does not bind the final freeze")
+    if approval_a_artifact.get("preregistrationDigest") != file_digest(FINAL_PREREGISTRATION):
+        raise ExecutionPackageError("Approval-A artifact does not bind the final preregistration")
     try:
         expected_output_binding = str(output_path.resolve().relative_to(ROOT).as_posix())
     except ValueError:
         expected_output_binding = str(output_path.resolve())
     if authorization.get("outputPath") != expected_output_binding:
         raise ExecutionPackageError("authorization output path does not match the run output")
-    ceiling = authorization.get("costCeilingUsd")
-    if ceiling is None or float(ceiling) <= 0:
-        raise ExecutionPackageError("authorization cost ceiling is missing")
+    _exact_cost_ceiling(authorization.get("costCeilingUsd"))
     return authorization
 
 
@@ -633,7 +709,7 @@ def run_offline_stage_a(
     """Execute Stage A only after a separate, digest-bound Approval-B artifact."""
 
     package = validate_final_execution_package(package_path, output_path=output_path)
-    validate_stage_a_authorization(
+    authorization = validate_stage_a_authorization(
         package,
         package_path=package_path,
         authorization_path=authorization_path,
@@ -642,12 +718,20 @@ def run_offline_stage_a(
     _loaded, selected, profile = load_bound_development_cases()
     pricing = load_pricing_artifact(FINAL_PRICING)
     slice_contract = _read_json(FINAL_SLICE_CONTRACT)
+    metric_contract = _validate_metric_contract()
+    preregistration = _read_json(FINAL_PREREGISTRATION)
+    cost_ceiling = _exact_cost_ceiling(authorization.get("costCeilingUsd"))
+    if preregistration.get("pricingContract", {}).get("costCeilingUsd") != str(cost_ceiling):
+        raise ExecutionPackageError("preregistration cost ceiling is not exactly $10.00")
+    if preregistration.get("hardGates", {}).get("invalidEvidence") != 0:
+        raise ExecutionPackageError("preregistration does not bind the invalid-evidence gate")
     prompt_version = str(package["promptVersion"])
     records: dict[str, list[dict[str, Any]]] = {"control": [], "candidate": []}
     trace: list[dict[str, Any]] = []
     failure_counts: dict[str, int] = {}
     provider_calls = 0
     materializer_failures = 0
+    invalid_evidence_failures = 0
     priced_provider_calls = 0
     pricing_failures = 0
     retry_count = 0
@@ -664,9 +748,9 @@ def run_offline_stage_a(
                     prompt_version=prompt_version,
                     provider_schema=FINAL_PROVIDER_SCHEMA,
                 )
+                retry_count += int(getattr(capture, "retry_count", 0))
                 envelope = RelationEvidenceEnvelopeV1.model_validate(capture.payload)
                 usage = _usage_from_capture(capture, envelope)
-                retry_count += int(getattr(capture, "retry_count", 0))
                 branch_outputs = {
                     arm: _branch_payload(raw_text, capture.payload, arm)
                     for arm in ("control", "candidate")
@@ -677,9 +761,12 @@ def run_offline_stage_a(
                 failure_class = (
                     "schema_invalid"
                     if isinstance(error, ValidationError) or "schema" in str(error)
+                    else "invalid_evidence"
+                    if isinstance(error, ExecutionPackageError) and "materializer" in str(error)
                     else "provider_failure"
                 )
                 failure_counts[failure_class] = failure_counts.get(failure_class, 0) + 2
+                invalid_evidence_failures += 1 if failure_class == "invalid_evidence" else 0
                 branch_outputs = {
                     arm: {
                         "status": "failed",
@@ -721,7 +808,12 @@ def run_offline_stage_a(
                     "failureClass": branch.get("failureClass"),
                     "materializerFailureCount": int(branch.get("materializerFailureCount", 0)),
                 }
-                materializer_failures += int(branch.get("materializerFailureCount", 0)) if arm == "candidate" else 0
+                branch_materializer_failures = int(branch.get("materializerFailureCount", 0))
+                if arm == "candidate":
+                    materializer_failures += branch_materializer_failures
+                    invalid_evidence_failures += branch_materializer_failures
+                    if branch_materializer_failures:
+                        failure_counts["invalid_evidence"] = failure_counts.get("invalid_evidence", 0) + branch_materializer_failures
                 records[arm].append(record)
             trace.append(
                 {
@@ -762,6 +854,8 @@ def run_offline_stage_a(
         arm_metrics["candidate"]["slices"],
         slice_contract,
     )
+    total_cost = sum(Decimal(str(item["costUsd"])) for item in trace)
+    total_cost_usd = float(total_cost)
     report = {
         "artifactVersion": "s12.s12-f-10.offline-stage-a-runner-report.v1",
         "status": "OFFLINE_RUNNER_EXECUTED",
@@ -775,9 +869,17 @@ def run_offline_stage_a(
         "metrics": arm_metrics,
         "sliceGates": arm_slice_gates,
         "comparisonGates": comparison_gates,
+        "metricContract": {
+            "path": str(FINAL_METRIC_CONTRACT.relative_to(ROOT).as_posix()),
+            "digest": file_digest(FINAL_METRIC_CONTRACT),
+            "version": metric_contract["version"],
+        },
+        "preregistrationDigest": file_digest(FINAL_PREREGISTRATION),
         "pricing": {
             "artifactDigest": file_digest(FINAL_PRICING),
-            "totalCostUsd": sum(float(item["costUsd"]) for item in trace),
+            "totalCostUsd": total_cost_usd,
+            "costCeilingUsd": str(cost_ceiling),
+            "costCeilingGate": total_cost <= cost_ceiling,
             "providerCallsPriced": priced_provider_calls,
             "pricingFailures": pricing_failures,
             "cacheClasses": ["inputCacheHit", "inputCacheMiss", "output"],
@@ -790,7 +892,9 @@ def run_offline_stage_a(
             "schemaFailures": not any(item.get("failureClass") == "schema_invalid" for item in all_records),
             "missingOutputs": not any(item["score"].get("status") == "missing-output" for item in all_records),
             "materializerFailures": materializer_failures == 0,
+            "invalidEvidence": invalid_evidence_failures == 0,
             "pricing": pricing_failures == 0 and priced_provider_calls == provider_calls,
+            "costCeiling": total_cost <= cost_ceiling,
             "semanticSliceGates": all(item["status"] == "PASS" for item in arm_slice_gates.values()),
             "comparisonSliceGates": comparison_gates["status"] == "PASS",
         },
