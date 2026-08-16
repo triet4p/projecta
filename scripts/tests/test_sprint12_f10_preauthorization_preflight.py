@@ -25,7 +25,9 @@ def test_final_package_is_implemented_but_commit_binding_keeps_preflight_closed(
     assert report["checks"]["packageStatus"] is True
     assert report["checks"]["providerSchemasMatch"] is True
     assert report["checks"]["caseSelectionReproducible"] is True
-    assert report["checks"]["commitPresentInHead"] is False
+    assert report["checks"]["commitPresentInHead"] is True
+    assert report["checks"]["allBoundFilesInCommit"] is True
+    assert report["checks"]["canonicalTestsPass"] is False
     assert report["providerExecutionAuthorized"] is False
 
 

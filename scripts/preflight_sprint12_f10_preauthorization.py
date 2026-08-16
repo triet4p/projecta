@@ -18,7 +18,6 @@ from __future__ import annotations
 import json
 import os
 import subprocess
-import sys
 from hashlib import sha256
 from pathlib import Path
 from typing import Any
@@ -83,7 +82,19 @@ def _canonical_tests_pass() -> bool:
     )
     try:
         subprocess.run(
-            (sys.executable, "-m", "pytest", "-q", *CANONICAL_TESTS),
+            (
+                "uv",
+                "run",
+                "--with",
+                "pydantic>=2,<3",
+                "--with",
+                "pytest>=8,<9",
+                "python",
+                "-m",
+                "pytest",
+                "-q",
+                *CANONICAL_TESTS,
+            ),
             cwd=ROOT,
             env=environment,
             check=True,

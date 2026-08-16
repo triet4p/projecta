@@ -2,7 +2,7 @@
   "artifactVersion": "s12.s12-f-10.execution-package-freeze.v2",
   "status": "FROZEN_PENDING_APPROVAL_A",
   "experimentId": "s12-f-10",
-  "commitSha": null,
+  "commitSha": "89680a4",
   "executionPackage": "evaluation/sprint-12/optimization/s12-f-10-execution-package.v1.json",
   "executionPackageDigest": "sha256:f079ab1bd07b5f381f20683645609adfac07d76831f2edd1b501cd8bb1ad1520",
   "preregistration": "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v1.json",
