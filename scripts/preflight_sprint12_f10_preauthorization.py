@@ -18,6 +18,7 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+from decimal import Decimal
 from hashlib import sha256
 from pathlib import Path
 from typing import Any
@@ -32,9 +33,10 @@ from run_sprint12_next_tool_experiment import (
 )
 from sprint12_pricing import file_digest, load_pricing_artifact
 
-FREEZE = ROOT / "evaluation/sprint-12/optimization/s12-f-10-execution-package-freeze.v4.json"
-PREREGISTRATION = ROOT / "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v3.json"
-OUTPUT_PATH = ROOT / "evaluation/sprint-12/optimization/s12-f-10-stage-a-report.v4.json"
+FREEZE = ROOT / "evaluation/sprint-12/optimization/s12-f-10-execution-package-freeze.v5.json"
+PREREGISTRATION = ROOT / "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v4.json"
+APPROVAL_A = ROOT / "evaluation/sprint-12/optimization/s12-f-10-approval-a.v2.json"
+OUTPUT_PATH = ROOT / "evaluation/sprint-12/optimization/s12-f-10-stage-a-report.v5.json"
 CANONICAL_TESTS = (
     "scripts/tests/test_sprint12_next_tool_runner.py",
     "scripts/tests/test_sprint12_f10_preauthorization_preflight.py",
@@ -184,6 +186,8 @@ def build_preflight(*, run_tests: bool = False) -> dict[str, Any]:
             str(package.get("caseSelection", "")),
             str(package.get("sliceContract", "")),
             str(package.get("pricingArtifact", "")),
+            str(package.get("runtimeConfiguration", {}).get("path", "")),
+            str(package.get("preregistration", "")),
         }
     )
     dataset = package.get("dataset", {})
@@ -197,7 +201,7 @@ def build_preflight(*, run_tests: bool = False) -> dict[str, Any]:
     metric_contract_path = str(package.get("metricContract", ""))
     dataset_paths = package.get("dataset", {}) if isinstance(package.get("dataset"), dict) else {}
     checks = {
-        "freezeStatus": freeze.get("status") == "FROZEN_PENDING_APPROVAL_A",
+        "freezeStatus": freeze.get("status") == "FROZEN_PENDING_APPROVAL_B",
         "packageStatus": package.get("status") == "EXECUTION_PACKAGE_FROZEN_PENDING_AUTHORIZATION",
         "packageRunnerImplemented": package.get("executionRunnerImplemented") is True,
         "packageIntegrity": package_integrity,
@@ -222,23 +226,40 @@ def build_preflight(*, run_tests: bool = False) -> dict[str, Any]:
         ),
         "metricContractBlobInCommit": package_read_blob_checks.get(metric_contract_path, False),
         "providerSchemasMatch": schemas_match,
-        "preregistrationStatusUnissued": preregistration.get("status") == "FINAL_PREREGISTRATION_DRAFT_NOT_ISSUED",
+        "preregistrationStatusIssuedForApprovalA": preregistration.get("status") == "FINAL_PREREGISTRATION_ISSUED_ISSUANCE_ONLY",
         "preregistrationExecutionUnauthorized": preregistration.get("providerExecutionAuthorized") is False,
-        "authorizationContractBound": package.get("authorizationContract") == "evaluation/sprint-12/harness/s12-f-10-stage-a-authorization.schema.v2.json",
+        "authorizationContractBound": package.get("authorizationContract") == "evaluation/sprint-12/harness/s12-f-10-stage-a-authorization.schema.v3.json",
         "caseSelectionReproducible": case_selection_reproducible,
         "sliceLabelsAndDenominatorsBound": package.get("sliceContract") == "evaluation/sprint-12/harness/slice-threshold-contract.v1.json" and slice_contract_complete,
         "pricingBound": pricing.get("status") == "BOUND" and freeze.get("pricingDigest") == file_digest(FINAL_PRICING),
         "outputPathAvailable": not OUTPUT_PATH.exists(),
-        "authorizationNotIssued": freeze.get("authorization", {}).get("status") == "NOT_ISSUED",
+        "approvalAIssued": (
+            APPROVAL_A.is_file()
+            and _load(APPROVAL_A).get("status") == "APPROVED_FOR_ISSUANCE_ONLY"
+            and _load(APPROVAL_A).get("providerExecutionAuthorized") is False
+            and _load(APPROVAL_A).get("freezeDigest") == file_digest(FREEZE)
+            and _load(APPROVAL_A).get("preregistrationDigest") == file_digest(PREREGISTRATION)
+        ),
+        "authorizationNotIssued": freeze.get("authorization", {}).get("status") == "APPROVAL_A_ISSUED_PENDING_APPROVAL_B",
         "providerExecutionUnauthorized": freeze.get("providerExecutionAuthorized") is False,
         "heldOutUninspected": freeze.get("heldOutInspected") is False and preregistration.get("heldOutInspected") is False,
         "exactCostCeilingBound": package.get("costCeilingUsd") == "10.00" and preregistration.get("pricingContract", {}).get("costCeilingUsd") == "10.00",
         "invalidEvidenceGateBound": preregistration.get("hardGates", {}).get("invalidEvidence") == 0,
+        "concreteProviderAdapterBound": (
+            package.get("providerAdapter", {}).get("class") == "DeepSeekProviderAdapter"
+            and package.get("providerAdapter", {}).get("digest") == _canonical_file_digest(ROOT / "scripts/sprint12_provider_adapter.py")
+        ),
+        "runtimeConfigurationBound": (
+            package.get("runtimeConfiguration", {}).get("path") == "evaluation/sprint-12/harness/s12-f-10-runtime-configuration.v1.json"
+            and package.get("runtimeConfiguration", {}).get("digest") == _canonical_file_digest(ROOT / "evaluation/sprint-12/harness/s12-f-10-runtime-configuration.v1.json")
+            and package.get("providerBudget", {}).get("worstCaseCostUsd") == "0.39105024"
+            and Decimal(str(package.get("providerBudget", {}).get("worstCaseCostUsd", "-1"))) <= Decimal("10.00")
+        ),
         "canonicalTestsPass": _canonical_tests_pass() if run_tests else False,
     }
     status = "PREAUTHORIZATION_READY" if all(checks.values()) else "NO_GO_PREAUTHORIZATION_PREFLIGHT"
     return {
-        "reportVersion": "s12.s12-f-10.preauthorization-preflight.v3",
+        "reportVersion": "s12.s12-f-10.preauthorization-preflight.v4",
         "status": status,
         "checks": checks,
         "caseSelectionProfile": profile,
@@ -248,6 +269,7 @@ def build_preflight(*, run_tests: bool = False) -> dict[str, Any]:
         "providerCallsPerformed": False,
         "providerExecutionAuthorized": False,
         "heldOutInspected": False,
+        "approvalAIssued": checks["approvalAIssued"],
         "authorizationIssued": False,
     }
 

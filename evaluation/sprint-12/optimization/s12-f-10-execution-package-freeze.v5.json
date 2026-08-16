@@ -1,0 +1,50 @@
+{
+  "artifactVersion": "s12.s12-f-10.execution-package-freeze.v5",
+  "supersedes": "s12-f-10-execution-package-freeze.v4.json",
+  "status": "FROZEN_PENDING_APPROVAL_B",
+  "experimentId": "s12-f-10",
+  "commitSha": null,
+  "executionPackage": "evaluation/sprint-12/optimization/s12-f-10-execution-package.v5.json",
+  "executionPackageDigest": "sha256:b4df95746446a8e81af596a2728c51bd4deea1f70360fc30c437bd479696b947",
+  "preregistration": "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v4.json",
+  "preregistrationDigest": "sha256:0117a1730b2e2013a6a883eef63f442b2d9cff46f29a3f3a751190bbc21e9235",
+  "caseSelectionDigest": "sha256:54ab4640d3ef4c2e4879370c3497006638b4f60c932995f7c34b5c06d395cc8c",
+  "pricingDigest": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+  "metricContractDigest": "sha256:3168fce54a189773e9c181915348e4c2d022031ba31900412fa7485ed26ff51b",
+  "runtimeConfigurationDigest": "sha256:a5a93570bada9223917721d39bb4bad662bdd2ba859d8ea798a42e1587d06736",
+  "authorizationContractDigest": "sha256:2b5083741844696f660ec997af31451edbe5bc6200fd8e5534158857c05b9828",
+  "datasetDigests": {
+    "atomic": "sha256:0c3795c4ff38e19c7e3ea11d3e16474cced87939a37cc00ff759dd3d39541045",
+    "scenario": "sha256:7d1ae95647d8d88a74ee027e21a7fd3a54f69cb288d3709bb32e63e1387ef715",
+    "manifest": "sha256:4d0c08a2812db4d35dfd4058873ad1f0c5728c1b05640542c7cdab1fda98710d"
+  },
+  "providerAdapter": {
+    "path": "scripts/sprint12_provider_adapter.py",
+    "class": "DeepSeekProviderAdapter",
+    "digest": "sha256:724ad2e19113e71fc2e18b08960673c09b41b200efc23d44f649027ab31bf4e6"
+  },
+  "providerRuntime": {
+    "configurationPath": "evaluation/sprint-12/harness/s12-f-10-runtime-configuration.v1.json",
+    "configurationDigest": "sha256:a5a93570bada9223917721d39bb4bad662bdd2ba859d8ea798a42e1587d06736",
+    "worstCaseCostUsd": "0.39105024",
+    "costCeilingUsd": "10.00"
+  },
+  "providerExecutionAuthorized": false,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "selectionStatus": "NO_SELECTION",
+  "authorization": {
+    "status": "APPROVAL_A_ISSUED_PENDING_APPROVAL_B",
+    "approvalAPath": "evaluation/sprint-12/optimization/s12-f-10-approval-a.v2.json",
+    "mustBindExactCommitSha": true,
+    "mustBindApprovalADigest": true,
+    "mustBindConcreteProviderAdapter": true,
+    "mustBindRuntimeConfigurationDigest": true
+  },
+  "constraints": [
+    "Approval A issues only this preregistration and execution-package freeze.",
+    "Approval B must bind this freeze, Approval-A digest, exact commitSha, concrete adapter digest, runtime configuration digest, output path and exact $10.00 ceiling before capture.",
+    "Do not inspect held-out data or open Stage B.",
+    "A changed model, prompt, provider schema, sampling, timeout, token bound or retry policy invalidates Approval B."
+  ]
+}

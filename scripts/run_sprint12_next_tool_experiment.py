@@ -15,6 +15,7 @@ provider payloads, or authorizes a provider call by itself.
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import subprocess
@@ -38,23 +39,54 @@ from shared_response_pairing import (
     branch_captured_response,
     response_digest,
 )
-from sprint12_pricing import cost_usd, file_digest, load_pricing_artifact
-from sprint12_provider_adapter import ProviderAdapter, ProviderCapture
+from sprint12_pricing import (
+    cost_usd,
+    file_digest,
+    load_pricing_artifact,
+    merged_environment,
+)
+from sprint12_provider_adapter import (
+    DeepSeekProviderAdapter,
+    ProviderAdapter,
+    ProviderCapture,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PACKAGE = (
-    ROOT / "evaluation/sprint-12/optimization/s12-next-tool-execution-package-draft.v1.json"
+    ROOT
+    / "evaluation/sprint-12/optimization/s12-next-tool-execution-package-draft.v1.json"
 )
-FINAL_PACKAGE = ROOT / "evaluation/sprint-12/optimization/s12-f-10-execution-package.v4.json"
-FINAL_FREEZE = ROOT / "evaluation/sprint-12/optimization/s12-f-10-execution-package-freeze.v4.json"
-FINAL_PREREGISTRATION = ROOT / "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v3.json"
-AUTHORIZATION_CONTRACT = ROOT / "evaluation/sprint-12/harness/s12-f-10-stage-a-authorization.schema.v2.json"
-FINAL_SELECTION = ROOT / "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json"
+FINAL_PACKAGE = (
+    ROOT / "evaluation/sprint-12/optimization/s12-f-10-execution-package.v5.json"
+)
+FINAL_FREEZE = (
+    ROOT / "evaluation/sprint-12/optimization/s12-f-10-execution-package-freeze.v5.json"
+)
+FINAL_PREREGISTRATION = (
+    ROOT
+    / "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v4.json"
+)
+AUTHORIZATION_CONTRACT = (
+    ROOT / "evaluation/sprint-12/harness/s12-f-10-stage-a-authorization.schema.v3.json"
+)
+FINAL_RUNTIME_CONFIGURATION = (
+    ROOT / "evaluation/sprint-12/harness/s12-f-10-runtime-configuration.v1.json"
+)
+FINAL_SELECTION = (
+    ROOT / "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json"
+)
 FINAL_ATOMIC = ROOT / "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json"
-FINAL_SCENARIO = ROOT / "evaluation/sprint-12/corpus/v3-frozen/scenario-v3.frozen.v1.json"
+FINAL_SCENARIO = (
+    ROOT / "evaluation/sprint-12/corpus/v3-frozen/scenario-v3.frozen.v1.json"
+)
 FINAL_MANIFEST = ROOT / "evaluation/sprint-12/corpus/v3-frozen/atomic-manifest.v1.json"
-FINAL_PRICING = ROOT / "evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json"
-FINAL_SLICE_CONTRACT = ROOT / "evaluation/sprint-12/harness/slice-threshold-contract.v1.json"
+FINAL_PRICING = (
+    ROOT
+    / "evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json"
+)
+FINAL_SLICE_CONTRACT = (
+    ROOT / "evaluation/sprint-12/harness/slice-threshold-contract.v1.json"
+)
 FINAL_METRIC_CONTRACT = ROOT / "evaluation/sprint-12/harness/metric-contract.v2.json"
 FINAL_PROMPT_VERSION = "m3.prompt.v6.relation-trigger-envelope"
 FINAL_PROVIDER_SCHEMA = "relation-evidence-envelope.v1"
@@ -73,7 +105,10 @@ class ExecutionPackageError(RuntimeError):
 def _bound_file_digest(path: Path) -> str:
     """Hash the canonical LF blob representation used by Git freeze checks."""
 
-    return "sha256:" + hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+    return (
+        "sha256:"
+        + hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+    )
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -165,9 +200,9 @@ def run_paired_schedule(
                 f"{pair['pairId']}:{case_id}", provider_call(case_id)
             )
             provider_calls += 1
-            branched = branch_captured_response(captured, {
-                arm: processors[arm] for arm in pair["armOrder"]
-            })
+            branched = branch_captured_response(
+                captured, {arm: processors[arm] for arm in pair["armOrder"]}
+            )
             trace.append(
                 {
                     "sequence": len(trace) + 1,
@@ -223,10 +258,58 @@ def _validate_metric_contract(path: Path = FINAL_METRIC_CONTRACT) -> dict[str, A
         "relationEvidenceSupport",
         "relationEvidenceExact",
     }.issubset(relation_metrics):
-        raise ExecutionPackageError("metric contract does not bind semantic/evidence metrics")
-    if contract.get("aggregation", {}).get("aggregateFromPerCaseRecordsOnly") is not True:
-        raise ExecutionPackageError("metric contract does not require per-case aggregation")
+        raise ExecutionPackageError(
+            "metric contract does not bind semantic/evidence metrics"
+        )
+    if (
+        contract.get("aggregation", {}).get("aggregateFromPerCaseRecordsOnly")
+        is not True
+    ):
+        raise ExecutionPackageError(
+            "metric contract does not require per-case aggregation"
+        )
     return contract
+
+
+def _validate_runtime_configuration(
+    path: Path = FINAL_RUNTIME_CONFIGURATION,
+) -> dict[str, Any]:
+    """Validate the non-secret live configuration and its precomputed budget."""
+
+    configuration = _read_json(path)
+    if configuration.get("version") != "s12.f-10.runtime-configuration.v1":
+        raise ExecutionPackageError("runtime configuration version is not v1")
+    if configuration.get("providerType") != "openai-response":
+        raise ExecutionPackageError(
+            "runtime provider type is not the bound OpenAI-compatible type"
+        )
+    if configuration.get("transport") != "deepseek-chat-completions":
+        raise ExecutionPackageError(
+            "runtime transport is not the bound DeepSeek contract"
+        )
+    if configuration.get("model") != "deepseek-v4-flash":
+        raise ExecutionPackageError("runtime model is not deepseek-v4-flash")
+    if configuration.get("promptVersion") != FINAL_PROMPT_VERSION:
+        raise ExecutionPackageError("runtime prompt version is not frozen")
+    if configuration.get("providerSchema") != FINAL_PROVIDER_SCHEMA:
+        raise ExecutionPackageError("runtime provider schema is not frozen")
+    if configuration.get("retryPolicy") != "none":
+        raise ExecutionPackageError("runtime retry policy is not none")
+    if int(configuration.get("expectedProviderCalls", -1)) != 48:
+        raise ExecutionPackageError("runtime provider call count is not 48")
+    max_input = int(configuration.get("maxInputTokensPerCall", 0))
+    max_output = int(configuration.get("maxOutputTokens", 0))
+    if max_input <= 0 or max_output <= 0:
+        raise ExecutionPackageError("runtime token bounds must be positive")
+    try:
+        worst_case = Decimal(str(configuration["worstCaseCostUsd"]))
+    except (KeyError, InvalidOperation, TypeError, ValueError) as error:
+        raise ExecutionPackageError(
+            "runtime worst-case cost proof is invalid"
+        ) from error
+    if worst_case > Decimal("10.00"):
+        raise ExecutionPackageError("runtime token bound can exceed the $10.00 ceiling")
+    return configuration
 
 
 def _selection_labels(case: Mapping[str, Any]) -> tuple[str, ...]:
@@ -251,7 +334,9 @@ def _selection_labels(case: Mapping[str, Any]) -> tuple[str, ...]:
     return tuple(labels)
 
 
-def load_bound_development_cases() -> tuple[evaluator.LoadedDataset, tuple[dict[str, Any], ...], dict[str, int]]:
+def load_bound_development_cases() -> tuple[
+    evaluator.LoadedDataset, tuple[dict[str, Any], ...], dict[str, int]
+]:
     """Load the frozen visible corpus and recalculate the selected profile."""
 
     selection = _read_json(FINAL_SELECTION)
@@ -262,7 +347,9 @@ def load_bound_development_cases() -> tuple[evaluator.LoadedDataset, tuple[dict[
         allowed_splits=("development", "validation"),
     )
     if selection.get("manifestDigest") != _bound_file_digest(FINAL_MANIFEST):
-        raise ExecutionPackageError("case selection does not bind the frozen manifest blob")
+        raise ExecutionPackageError(
+            "case selection does not bind the frozen manifest blob"
+        )
     selected_ids = selection.get("caseIds")
     if not isinstance(selected_ids, list) or len(selected_ids) != 16:
         raise ExecutionPackageError("case selection must contain exactly 16 case IDs")
@@ -273,9 +360,15 @@ def load_bound_development_cases() -> tuple[evaluator.LoadedDataset, tuple[dict[
     if any(not case or case.get("split") != "development" for case in selected):
         raise ExecutionPackageError("case selection must remain development-only")
     profile: dict[str, int] = {
-        "relation-positive": sum("relation-positive" in _selection_labels(case) for case in selected),
-        "abstention-required": sum("abstention-required" in _selection_labels(case) for case in selected),
-        "relation-negative": sum("relation-negative" in _selection_labels(case) for case in selected),
+        "relation-positive": sum(
+            "relation-positive" in _selection_labels(case) for case in selected
+        ),
+        "abstention-required": sum(
+            "abstention-required" in _selection_labels(case) for case in selected
+        ),
+        "relation-negative": sum(
+            "relation-negative" in _selection_labels(case) for case in selected
+        ),
     }
     profile["hard-negative"] = sum(
         "relation-negative" in _selection_labels(case)
@@ -287,12 +380,25 @@ def load_bound_development_cases() -> tuple[evaluator.LoadedDataset, tuple[dict[
         raise ExecutionPackageError("case selection profile is missing")
     if (
         profile["relation-positive"] != int(expected.get("positiveRelationCases", -1))
-        or profile["abstention-required"] != int(expected.get("abstentionRequiredCases", -1))
+        or profile["abstention-required"]
+        != int(expected.get("abstentionRequiredCases", -1))
         or profile["hard-negative"] != int(expected.get("hardNegativeCases", -1))
     ):
-        raise ExecutionPackageError("recomputed case selection profile does not match the frozen artifact")
-    journeys = {label for case in selected for label in _selection_labels(case) if label.startswith("journey:")}
-    languages = {label for case in selected for label in _selection_labels(case) if label.startswith("language:")}
+        raise ExecutionPackageError(
+            "recomputed case selection profile does not match the frozen artifact"
+        )
+    journeys = {
+        label
+        for case in selected
+        for label in _selection_labels(case)
+        if label.startswith("journey:")
+    }
+    languages = {
+        label
+        for case in selected
+        for label in _selection_labels(case)
+        if label.startswith("language:")
+    }
     if journeys != {f"journey:J{index}" for index in range(1, 7)}:
         raise ExecutionPackageError("case selection does not cover J1-J6")
     if languages != {"language:en", "language:ja", "language:mixed", "language:vi"}:
@@ -315,14 +421,19 @@ def validate_final_execution_package(
     if package.get("heldOutInspected") is not False:
         raise ExecutionPackageError("final package permits held-out inspection")
     if package.get("executionRunnerImplemented") is not True:
-        raise ExecutionPackageError("final package does not mark the runner implemented")
-    if package.get("authorizationContract") != str(AUTHORIZATION_CONTRACT.relative_to(ROOT).as_posix()):
+        raise ExecutionPackageError(
+            "final package does not mark the runner implemented"
+        )
+    if package.get("authorizationContract") != str(
+        AUTHORIZATION_CONTRACT.relative_to(ROOT).as_posix()
+    ):
         raise ExecutionPackageError("final package authorization contract is not bound")
     required_paths = (
         "metricContract",
         "caseSelection",
         "sliceContract",
         "pricingArtifact",
+        "runtimeConfiguration.path",
         "dataset.atomic",
         "dataset.scenario",
         "dataset.manifest",
@@ -335,16 +446,34 @@ def validate_final_execution_package(
         for component in field.split("."):
             value = value.get(component) if isinstance(value, dict) else None
         if not isinstance(value, str) or value not in bound_digests:
-            raise ExecutionPackageError(f"final package path is not digest-bound: {field}")
+            raise ExecutionPackageError(
+                f"final package path is not digest-bound: {field}"
+            )
     for binding_name, expected_path in (
         ("executionRunner", "scripts/run_sprint12_next_tool_experiment.py"),
         ("providerAdapter", "scripts/sprint12_provider_adapter.py"),
     ):
         binding = package.get(binding_name)
         if not isinstance(binding, dict) or binding.get("path") != expected_path:
-            raise ExecutionPackageError(f"{binding_name} binding is missing or not allowlisted")
+            raise ExecutionPackageError(
+                f"{binding_name} binding is missing or not allowlisted"
+            )
         if binding.get("digest") != _bound_file_digest(ROOT / expected_path):
             raise ExecutionPackageError(f"{binding_name} digest mismatch")
+    provider_binding = package["providerAdapter"]
+    if provider_binding.get("class") != "DeepSeekProviderAdapter":
+        raise ExecutionPackageError(
+            "final package does not bind the concrete DeepSeek adapter"
+        )
+    runtime_binding = package.get("runtimeConfiguration")
+    if not isinstance(runtime_binding, dict):
+        raise ExecutionPackageError("runtime configuration binding is missing")
+    if runtime_binding.get("path") != str(
+        FINAL_RUNTIME_CONFIGURATION.relative_to(ROOT).as_posix()
+    ):
+        raise ExecutionPackageError("runtime configuration path is not allowlisted")
+    if runtime_binding.get("digest") != _bound_file_digest(FINAL_RUNTIME_CONFIGURATION):
+        raise ExecutionPackageError("runtime configuration digest mismatch")
     if not bound_digests:
         raise ExecutionPackageError("final package has no bound artifacts")
     mismatches = {
@@ -368,21 +497,32 @@ def validate_final_execution_package(
     if output_path is not None and output_path.exists():
         raise ExecutionPackageError(f"refusing to overwrite output: {output_path}")
     _validate_metric_contract()
+    _validate_runtime_configuration()
     return package
 
 
-def _usage_from_capture(capture: ProviderCapture, envelope: RelationEvidenceEnvelopeV1) -> dict[str, int]:
+def _usage_from_capture(
+    capture: ProviderCapture, envelope: RelationEvidenceEnvelopeV1
+) -> dict[str, int]:
     source = capture.usage
     if source is None and envelope.extraction.usage is not None:
         dumped = envelope.extraction.usage.model_dump(mode="json", by_alias=True)
         source = dumped
     if source is None:
         raise ExecutionPackageError("provider usage is missing")
-    required = ("inputTokens", "promptCacheHitTokens", "promptCacheMissTokens", "outputTokens")
+    required = (
+        "inputTokens",
+        "promptCacheHitTokens",
+        "promptCacheMissTokens",
+        "outputTokens",
+    )
     if any(source.get(key) is None for key in required):
         raise ExecutionPackageError("provider usage is incomplete")
     usage = {key: int(source[key]) for key in required}
-    if usage["inputTokens"] != usage["promptCacheHitTokens"] + usage["promptCacheMissTokens"]:
+    if (
+        usage["inputTokens"]
+        != usage["promptCacheHitTokens"] + usage["promptCacheMissTokens"]
+    ):
         raise ExecutionPackageError("provider usage cache totals do not reconcile")
     return usage
 
@@ -401,11 +541,19 @@ def _usage_from_capture_if_available(
         source = capture.usage
         if source is None:
             return None
-        required = ("inputTokens", "promptCacheHitTokens", "promptCacheMissTokens", "outputTokens")
+        required = (
+            "inputTokens",
+            "promptCacheHitTokens",
+            "promptCacheMissTokens",
+            "outputTokens",
+        )
         if any(source.get(key) is None for key in required):
             return None
         usage = {key: int(source[key]) for key in required}
-        if usage["inputTokens"] != usage["promptCacheHitTokens"] + usage["promptCacheMissTokens"]:
+        if (
+            usage["inputTokens"]
+            != usage["promptCacheHitTokens"] + usage["promptCacheMissTokens"]
+        ):
             return None
         return usage
 
@@ -421,7 +569,9 @@ def _exact_cost_ceiling(value: Any) -> Decimal:
     except (InvalidOperation, TypeError, ValueError) as error:
         raise ExecutionPackageError("authorization cost ceiling is invalid") from error
     if ceiling != Decimal("10.00"):
-        raise ExecutionPackageError("authorization cost ceiling must equal preregistered $10.00")
+        raise ExecutionPackageError(
+            "authorization cost ceiling must equal preregistered $10.00"
+        )
     return ceiling
 
 
@@ -431,11 +581,16 @@ def validate_stage_a_authorization(
     package_path: Path,
     authorization_path: Path | None,
     output_path: Path,
+    adapter_digest: str | None = None,
+    runtime_configuration_digest: str | None = None,
+    require_concrete_provider_binding: bool = False,
 ) -> dict[str, Any]:
-    """Require an Approval-B artifact before an injected adapter can run."""
+    """Require Approval B and, for live mode, its concrete provider bindings."""
 
     if authorization_path is None:
-        raise ExecutionPackageError("Approval-B authorization artifact is required before provider capture")
+        raise ExecutionPackageError(
+            "Approval-B authorization artifact is required before provider capture"
+        )
     authorization = _read_json(authorization_path)
     if authorization.get("status") != "APPROVED_FOR_DEVELOPMENT_STAGE_A":
         raise ExecutionPackageError("stage-A authorization is not approved")
@@ -447,23 +602,37 @@ def validate_stage_a_authorization(
         raise ExecutionPackageError("authorization permits held-out inspection")
     if authorization.get("retryPolicy") != "none":
         raise ExecutionPackageError("authorization retry policy is not none")
-    if authorization.get("executionPackage", {}).get("digest") != file_digest(package_path):
-        raise ExecutionPackageError("authorization does not bind the execution package digest")
+    if authorization.get("executionPackage", {}).get("digest") != file_digest(
+        package_path
+    ):
+        raise ExecutionPackageError(
+            "authorization does not bind the execution package digest"
+        )
     freeze = _read_json(FINAL_FREEZE)
     freeze_binding = authorization.get("freezeRecord", {})
     if freeze_binding.get("path") != str(FINAL_FREEZE.relative_to(ROOT).as_posix()):
-        raise ExecutionPackageError("authorization does not bind the final freeze record")
+        raise ExecutionPackageError(
+            "authorization does not bind the final freeze record"
+        )
     if freeze_binding.get("digest") != file_digest(FINAL_FREEZE):
-        raise ExecutionPackageError("authorization does not bind the final freeze digest")
+        raise ExecutionPackageError(
+            "authorization does not bind the final freeze digest"
+        )
     commit_sha = str(authorization.get("commitSha", ""))
     expected_commit = str(freeze.get("commitSha", ""))
     if not commit_sha or commit_sha != expected_commit:
-        raise ExecutionPackageError("authorization commit does not exactly match the frozen commit")
+        raise ExecutionPackageError(
+            "authorization commit does not exactly match the frozen commit"
+        )
     if not commit_is_ancestor(commit_sha):
-        raise ExecutionPackageError("frozen authorization commit is not an ancestor of HEAD")
+        raise ExecutionPackageError(
+            "frozen authorization commit is not an ancestor of HEAD"
+        )
     approval_a = authorization.get("approvalA")
     if not isinstance(approval_a, dict):
-        raise ExecutionPackageError("Approval-A artifact binding is required before provider capture")
+        raise ExecutionPackageError(
+            "Approval-A artifact binding is required before provider capture"
+        )
     approval_a_path = approval_a.get("path")
     if not isinstance(approval_a_path, str) or not approval_a_path:
         raise ExecutionPackageError("Approval-A artifact path is missing")
@@ -472,24 +641,76 @@ def validate_stage_a_authorization(
         raise ExecutionPackageError("Approval-A artifact digest mismatch")
     approval_a_artifact = _read_json(approval_a_file)
     if approval_a_artifact.get("status") != "APPROVED_FOR_ISSUANCE_ONLY":
-        raise ExecutionPackageError("Approval-A artifact is not issued for preregistration only")
+        raise ExecutionPackageError(
+            "Approval-A artifact is not issued for preregistration only"
+        )
     if approval_a_artifact.get("providerExecutionAuthorized") is not False:
         raise ExecutionPackageError("Approval-A artifact authorizes provider execution")
     if approval_a_artifact.get("experimentId") != package.get("experimentId"):
         raise ExecutionPackageError("Approval-A experiment does not match package")
     if approval_a_artifact.get("commitSha") != expected_commit:
-        raise ExecutionPackageError("Approval-A artifact does not bind the frozen commit")
+        raise ExecutionPackageError(
+            "Approval-A artifact does not bind the frozen commit"
+        )
     if approval_a_artifact.get("freezeDigest") != file_digest(FINAL_FREEZE):
-        raise ExecutionPackageError("Approval-A artifact does not bind the final freeze")
-    if approval_a_artifact.get("preregistrationDigest") != file_digest(FINAL_PREREGISTRATION):
-        raise ExecutionPackageError("Approval-A artifact does not bind the final preregistration")
+        raise ExecutionPackageError(
+            "Approval-A artifact does not bind the final freeze"
+        )
+    if approval_a_artifact.get("preregistrationDigest") != file_digest(
+        FINAL_PREREGISTRATION
+    ):
+        raise ExecutionPackageError(
+            "Approval-A artifact does not bind the final preregistration"
+        )
     try:
-        expected_output_binding = str(output_path.resolve().relative_to(ROOT).as_posix())
+        expected_output_binding = str(
+            output_path.resolve().relative_to(ROOT).as_posix()
+        )
     except ValueError:
         expected_output_binding = str(output_path.resolve())
     if authorization.get("outputPath") != expected_output_binding:
-        raise ExecutionPackageError("authorization output path does not match the run output")
+        raise ExecutionPackageError(
+            "authorization output path does not match the run output"
+        )
     _exact_cost_ceiling(authorization.get("costCeilingUsd"))
+    if require_concrete_provider_binding:
+        provider_binding = authorization.get("providerAdapter")
+        package_provider = package.get("providerAdapter")
+        if not isinstance(provider_binding, dict) or not isinstance(
+            package_provider, dict
+        ):
+            raise ExecutionPackageError(
+                "Approval-B concrete provider binding is missing"
+            )
+        if provider_binding.get("class") != "DeepSeekProviderAdapter":
+            raise ExecutionPackageError(
+                "Approval-B does not bind DeepSeekProviderAdapter"
+            )
+        if provider_binding.get("path") != package_provider.get("path"):
+            raise ExecutionPackageError(
+                "Approval-B provider adapter path does not match package"
+            )
+        if adapter_digest is None or provider_binding.get("digest") != adapter_digest:
+            raise ExecutionPackageError(
+                "Approval-B provider adapter digest does not match live adapter"
+            )
+        runtime_binding = authorization.get("runtimeConfiguration")
+        package_runtime = package.get("runtimeConfiguration")
+        if not isinstance(runtime_binding, dict) or not isinstance(
+            package_runtime, dict
+        ):
+            raise ExecutionPackageError(
+                "Approval-B runtime configuration binding is missing"
+            )
+        if runtime_binding.get("path") != package_runtime.get("path"):
+            raise ExecutionPackageError(
+                "Approval-B runtime configuration path does not match package"
+            )
+        expected_runtime_digest = runtime_configuration_digest or ""
+        if runtime_binding.get("digest") != expected_runtime_digest:
+            raise ExecutionPackageError(
+                "Approval-B runtime configuration digest does not match live configuration"
+            )
     return authorization
 
 
@@ -504,7 +725,11 @@ def _branch_payload(raw_text: str, payload: Any, arm: str) -> dict[str, Any]:
         materializer_failures = 0
     else:
         response = materialize_relation_evidence_envelope(raw_text, envelope)
-        materializer_failures = len(envelope.extraction.relations) - len(response.relations) if response is not None else len(envelope.extraction.relations)
+        materializer_failures = (
+            len(envelope.extraction.relations) - len(response.relations)
+            if response is not None
+            else len(envelope.extraction.relations)
+        )
         if response is None:
             raise ExecutionPackageError("relation materializer failed")
     prediction = response.model_dump(mode="json", by_alias=True)
@@ -525,11 +750,25 @@ def _fail_closed_result(gold: dict[str, Any], failure_class: str) -> dict[str, A
 
 def _binary_f1(records: Sequence[dict[str, Any]]) -> float | str:
     positives = [record for record in records if record.get("goldAbstention") is True]
-    if not positives and not any(record.get("predictedAbstention") is True for record in records):
+    if not positives and not any(
+        record.get("predictedAbstention") is True for record in records
+    ):
         return "not-applicable"
-    tp = sum(record.get("goldAbstention") is True and record.get("predictedAbstention") is True for record in records)
-    fp = sum(record.get("goldAbstention") is not True and record.get("predictedAbstention") is True for record in records)
-    fn = sum(record.get("goldAbstention") is True and record.get("predictedAbstention") is not True for record in records)
+    tp = sum(
+        record.get("goldAbstention") is True
+        and record.get("predictedAbstention") is True
+        for record in records
+    )
+    fp = sum(
+        record.get("goldAbstention") is not True
+        and record.get("predictedAbstention") is True
+        for record in records
+    )
+    fn = sum(
+        record.get("goldAbstention") is True
+        and record.get("predictedAbstention") is not True
+        for record in records
+    )
     return 2 * tp / (2 * tp + fp + fn) if 2 * tp + fp + fn else 0.0
 
 
@@ -571,17 +810,31 @@ def _metric_summary(records: Sequence[dict[str, Any]]) -> dict[str, Any]:
     ]
     if not scored:
         return {"caseRuns": 0, "status": "FAIL_MISSING_OUTPUT"}
-    def mean(name: str, source: Sequence[dict[str, Any]] = scored) -> float:
-        return sum(float(record["score"].get(name, 0.0)) for record in source) / len(source) if source else 0.0
 
-    def nested_mean(group: str, name: str, source: Sequence[dict[str, Any]]) -> float:
+    def mean(name: str, source: Sequence[dict[str, Any]] = scored) -> float:
         return (
-            sum(float(record["score"][group].get(name, 0.0)) for record in source) / len(source)
+            sum(float(record["score"].get(name, 0.0)) for record in source)
+            / len(source)
             if source
             else 0.0
         )
-    gold = sum(int(record["score"]["relationInstrumentation"]["totals"].get("gold", 0)) for record in scored)
-    predicted = sum(int(record["score"]["relationInstrumentation"]["totals"].get("predicted", 0)) for record in scored)
+
+    def nested_mean(group: str, name: str, source: Sequence[dict[str, Any]]) -> float:
+        return (
+            sum(float(record["score"][group].get(name, 0.0)) for record in source)
+            / len(source)
+            if source
+            else 0.0
+        )
+
+    gold = sum(
+        int(record["score"]["relationInstrumentation"]["totals"].get("gold", 0))
+        for record in scored
+    )
+    predicted = sum(
+        int(record["score"]["relationInstrumentation"]["totals"].get("predicted", 0))
+        for record in scored
+    )
     semantic_tp = sum(_evidence_counts(record["score"])[0] for record in scored)
     support_tp = sum(_evidence_counts(record["score"])[1] for record in scored)
     exact_tp = sum(_evidence_counts(record["score"])[2] for record in scored)
@@ -589,15 +842,35 @@ def _metric_summary(records: Sequence[dict[str, Any]]) -> dict[str, Any]:
         "status": "SCORED",
         "caseRuns": len(records),
         "relationCaseRuns": len(relation_records),
-        "relationSemanticMicroF1": 2 * semantic_tp / (gold + predicted) if gold + predicted else "not-applicable",
+        "relationSemanticMicroF1": 2 * semantic_tp / (gold + predicted)
+        if gold + predicted
+        else "not-applicable",
         "relationSemanticMacroF1": sum(
-            2 * _evidence_counts(record["score"])[0]
-            / (_evidence_counts(record["score"])[3] + int(record["score"]["relationInstrumentation"]["totals"].get("predicted", 0)))
+            2
+            * _evidence_counts(record["score"])[0]
+            / (
+                _evidence_counts(record["score"])[3]
+                + int(
+                    record["score"]["relationInstrumentation"]["totals"].get(
+                        "predicted", 0
+                    )
+                )
+            )
             for record in relation_records
-            if _evidence_counts(record["score"])[3] + int(record["score"]["relationInstrumentation"]["totals"].get("predicted", 0))
-        ) / len(relation_records) if relation_records else "not-applicable",
-        "relationEvidenceSupport": support_tp / semantic_tp if semantic_tp else "not-applicable",
-        "relationEvidenceExact": exact_tp / semantic_tp if semantic_tp else "not-applicable",
+            if _evidence_counts(record["score"])[3]
+            + int(
+                record["score"]["relationInstrumentation"]["totals"].get("predicted", 0)
+            )
+        )
+        / len(relation_records)
+        if relation_records
+        else "not-applicable",
+        "relationEvidenceSupport": support_tp / semantic_tp
+        if semantic_tp
+        else "not-applicable",
+        "relationEvidenceExact": exact_tp / semantic_tp
+        if semantic_tp
+        else "not-applicable",
         "entityMacroF1": nested_mean("entities", "f1", scored),
         "abstentionF1": _binary_f1(records),
         "hallucinationRate": mean("hallucinationRate"),
@@ -608,14 +881,21 @@ def _metric_summary(records: Sequence[dict[str, Any]]) -> dict[str, Any]:
             "relationSemanticTruePositive": semantic_tp,
             "relationEvidenceSupportTruePositive": support_tp,
             "relationEvidenceExactTruePositive": exact_tp,
-            "abstentionGold": sum(record.get("goldAbstention") is True for record in records),
+            "abstentionGold": sum(
+                record.get("goldAbstention") is True for record in records
+            ),
         },
     }
 
 
 def _slice_metrics(records: Sequence[dict[str, Any]]) -> dict[str, dict[str, Any]]:
     labels = sorted({label for record in records for label in record["labels"]})
-    return {label: _metric_summary([record for record in records if label in record["labels"]]) for label in labels}
+    return {
+        label: _metric_summary(
+            [record for record in records if label in record["labels"]]
+        )
+        for label in labels
+    }
 
 
 def _slice_gate_decisions(
@@ -655,17 +935,33 @@ def _slice_gate_decisions(
             }[metric]
             threshold = thresholds.get(threshold_key)
             if threshold is None:
-                checks[metric] = {"observed": observed, "pass": False, "reason": "threshold-unbound"}
+                checks[metric] = {
+                    "observed": observed,
+                    "pass": False,
+                    "reason": "threshold-unbound",
+                }
             elif threshold_key.endswith("Maximum"):
-                checks[metric] = {"observed": observed, "threshold": threshold, "pass": observed <= float(threshold)}
+                checks[metric] = {
+                    "observed": observed,
+                    "threshold": threshold,
+                    "pass": observed <= float(threshold),
+                }
             else:
-                checks[metric] = {"observed": observed, "threshold": threshold, "pass": observed >= float(threshold)}
+                checks[metric] = {
+                    "observed": observed,
+                    "threshold": threshold,
+                    "pass": observed >= float(threshold),
+                }
         decisions[label] = {
-            "status": "PASS" if all(item.get("pass") is True for item in checks.values()) else "FAIL",
+            "status": "PASS"
+            if all(item.get("pass") is True for item in checks.values())
+            else "FAIL",
             "checks": checks,
         }
     return {
-        "status": "PASS" if decisions and all(item["status"] == "PASS" for item in decisions.values()) else "FAIL",
+        "status": "PASS"
+        if decisions and all(item["status"] == "PASS" for item in decisions.values())
+        else "FAIL",
         "slices": decisions,
     }
 
@@ -675,7 +971,9 @@ def _comparison_gate_decisions(
     candidate: Mapping[str, Mapping[str, Any]],
     contract: Mapping[str, Any],
 ) -> dict[str, Any]:
-    minimum_delta = float(contract.get("thresholds", {}).get("nonInferiorityDeltaMinimum", -0.01))
+    minimum_delta = float(
+        contract.get("thresholds", {}).get("nonInferiorityDeltaMinimum", -0.01)
+    )
     decisions: dict[str, Any] = {}
     metric_names = (
         "relationSemanticMicroF1",
@@ -691,17 +989,32 @@ def _comparison_gate_decisions(
         for metric in metric_names:
             control_value = left.get(metric)
             candidate_value = right.get(metric)
-            if not isinstance(control_value, (int, float)) or not isinstance(candidate_value, (int, float)):
+            if not isinstance(control_value, (int, float)) or not isinstance(
+                candidate_value, (int, float)
+            ):
                 continue
             delta = float(candidate_value) - float(control_value)
             if metric == "hallucinationRate":
                 passed = delta <= -minimum_delta
             else:
                 passed = delta >= minimum_delta
-            checks[metric] = {"control": control_value, "candidate": candidate_value, "delta": delta, "minimumDelta": minimum_delta, "pass": passed}
-        decisions[label] = {"status": "PASS" if all(item["pass"] for item in checks.values()) else "FAIL", "checks": checks}
+            checks[metric] = {
+                "control": control_value,
+                "candidate": candidate_value,
+                "delta": delta,
+                "minimumDelta": minimum_delta,
+                "pass": passed,
+            }
+        decisions[label] = {
+            "status": "PASS"
+            if all(item["pass"] for item in checks.values())
+            else "FAIL",
+            "checks": checks,
+        }
     return {
-        "status": "PASS" if decisions and all(item["status"] == "PASS" for item in decisions.values()) else "FAIL",
+        "status": "PASS"
+        if decisions and all(item["status"] == "PASS" for item in decisions.values())
+        else "FAIL",
         "slices": decisions,
     }
 
@@ -712,6 +1025,9 @@ def run_offline_stage_a(
     package_path: Path = FINAL_PACKAGE,
     authorization_path: Path | None = None,
     output_path: Path,
+    adapter_digest: str | None = None,
+    runtime_configuration_digest: str | None = None,
+    require_concrete_provider_binding: bool = False,
 ) -> dict[str, Any]:
     """Execute Stage A only after a separate, digest-bound Approval-B artifact."""
 
@@ -721,17 +1037,31 @@ def run_offline_stage_a(
         package_path=package_path,
         authorization_path=authorization_path,
         output_path=output_path,
+        adapter_digest=adapter_digest,
+        runtime_configuration_digest=runtime_configuration_digest,
+        require_concrete_provider_binding=require_concrete_provider_binding,
     )
     _loaded, selected, profile = load_bound_development_cases()
     pricing = load_pricing_artifact(FINAL_PRICING)
     slice_contract = _read_json(FINAL_SLICE_CONTRACT)
     metric_contract = _validate_metric_contract()
+    runtime_configuration = _validate_runtime_configuration()
     preregistration = _read_json(FINAL_PREREGISTRATION)
     cost_ceiling = _exact_cost_ceiling(authorization.get("costCeilingUsd"))
-    if preregistration.get("pricingContract", {}).get("costCeilingUsd") != str(cost_ceiling):
-        raise ExecutionPackageError("preregistration cost ceiling is not exactly $10.00")
+    if preregistration.get("pricingContract", {}).get("costCeilingUsd") != str(
+        cost_ceiling
+    ):
+        raise ExecutionPackageError(
+            "preregistration cost ceiling is not exactly $10.00"
+        )
     if preregistration.get("hardGates", {}).get("invalidEvidence") != 0:
-        raise ExecutionPackageError("preregistration does not bind the invalid-evidence gate")
+        raise ExecutionPackageError(
+            "preregistration does not bind the invalid-evidence gate"
+        )
+    if Decimal(str(runtime_configuration["worstCaseCostUsd"])) > cost_ceiling:
+        raise ExecutionPackageError(
+            "frozen runtime token bound exceeds the authorized cost ceiling"
+        )
     prompt_version = str(package["promptVersion"])
     records: dict[str, list[dict[str, Any]]] = {"control": [], "candidate": []}
     trace: list[dict[str, Any]] = []
@@ -769,11 +1099,14 @@ def run_offline_stage_a(
                     "schema_invalid"
                     if isinstance(error, ValidationError) or "schema" in str(error)
                     else "invalid_evidence"
-                    if isinstance(error, ExecutionPackageError) and "materializer" in str(error)
+                    if isinstance(error, ExecutionPackageError)
+                    and "materializer" in str(error)
                     else "provider_failure"
                 )
                 failure_counts[failure_class] = failure_counts.get(failure_class, 0) + 2
-                invalid_evidence_failures += 1 if failure_class == "invalid_evidence" else 0
+                invalid_evidence_failures += (
+                    1 if failure_class == "invalid_evidence" else 0
+                )
                 branch_outputs = {
                     arm: {
                         "status": "failed",
@@ -786,15 +1119,25 @@ def run_offline_stage_a(
                 }
                 usage = _usage_from_capture_if_available(capture)
                 if usage is None:
-                    usage = {"inputTokens": 0, "promptCacheHitTokens": 0, "promptCacheMissTokens": 0, "outputTokens": 0}
+                    usage = {
+                        "inputTokens": 0,
+                        "promptCacheHitTokens": 0,
+                        "promptCacheMissTokens": 0,
+                        "outputTokens": 0,
+                    }
                     cost = 0.0
                     pricing_failures += 1
                 else:
                     cost = cost_usd(usage, {"rates": pricing["rates"]})
                     priced_provider_calls += 1
-            source_digest = response_digest(capture.payload) if capture is not None else None
+            source_digest = (
+                response_digest(capture.payload) if capture is not None else None
+            )
             branch_input_digests = (
-                {arm: response_digest(capture.payload) for arm in ("control", "candidate")}
+                {
+                    arm: response_digest(capture.payload)
+                    for arm in ("control", "candidate")
+                }
                 if capture is not None
                 else {}
             )
@@ -802,8 +1145,14 @@ def run_offline_stage_a(
                 branch = branch_outputs[arm]
                 prediction = branch.get("prediction")
                 gold = case["gold"]
-                score = evaluator.score_extraction(gold, prediction) if isinstance(prediction, dict) else _fail_closed_result(gold, str(branch["failureClass"]))
-                predicted_abstention = bool(prediction and prediction.get("abstentionReason"))
+                score = (
+                    evaluator.score_extraction(gold, prediction)
+                    if isinstance(prediction, dict)
+                    else _fail_closed_result(gold, str(branch["failureClass"]))
+                )
+                predicted_abstention = bool(
+                    prediction and prediction.get("abstentionReason")
+                )
                 record = {
                     "caseId": case_id,
                     "runNumber": schedule["runNumber"],
@@ -813,14 +1162,21 @@ def run_offline_stage_a(
                     "goldAbstention": bool(gold["abstention"].get("required")),
                     "predictedAbstention": predicted_abstention,
                     "failureClass": branch.get("failureClass"),
-                    "materializerFailureCount": int(branch.get("materializerFailureCount", 0)),
+                    "materializerFailureCount": int(
+                        branch.get("materializerFailureCount", 0)
+                    ),
                 }
-                branch_materializer_failures = int(branch.get("materializerFailureCount", 0))
+                branch_materializer_failures = int(
+                    branch.get("materializerFailureCount", 0)
+                )
                 if arm == "candidate":
                     materializer_failures += branch_materializer_failures
                     invalid_evidence_failures += branch_materializer_failures
                     if branch_materializer_failures:
-                        failure_counts["invalid_evidence"] = failure_counts.get("invalid_evidence", 0) + branch_materializer_failures
+                        failure_counts["invalid_evidence"] = (
+                            failure_counts.get("invalid_evidence", 0)
+                            + branch_materializer_failures
+                        )
                 records[arm].append(record)
             trace.append(
                 {
@@ -834,7 +1190,10 @@ def run_offline_stage_a(
                     "sourceResponseDigest": source_digest,
                     "branchInputDigests": branch_input_digests,
                     "branchInputDigestMatch": source_digest is not None
-                    and all(digest == source_digest for digest in branch_input_digests.values()),
+                    and all(
+                        digest == source_digest
+                        for digest in branch_input_digests.values()
+                    ),
                     "usage": usage,
                     "costUsd": cost,
                     "branches": {
@@ -849,7 +1208,10 @@ def run_offline_stage_a(
             )
     all_records = records["control"] + records["candidate"]
     arm_metrics = {
-        arm: {"primary": _metric_summary(records[arm]), "slices": _slice_metrics(records[arm])}
+        arm: {
+            "primary": _metric_summary(records[arm]),
+            "slices": _slice_metrics(records[arm]),
+        }
         for arm in records
     }
     arm_slice_gates = {
@@ -895,14 +1257,23 @@ def run_offline_stage_a(
             "providerCalls": provider_calls == 48,
             "branchOutputs": len(all_records) == 96,
             "retryCount": retry_count == 0,
-            "sharedResponseDigest": all(item["branchInputDigestMatch"] for item in trace),
-            "schemaFailures": not any(item.get("failureClass") == "schema_invalid" for item in all_records),
-            "missingOutputs": not any(item["score"].get("status") == "missing-output" for item in all_records),
+            "sharedResponseDigest": all(
+                item["branchInputDigestMatch"] for item in trace
+            ),
+            "schemaFailures": not any(
+                item.get("failureClass") == "schema_invalid" for item in all_records
+            ),
+            "missingOutputs": not any(
+                item["score"].get("status") == "missing-output" for item in all_records
+            ),
             "materializerFailures": materializer_failures == 0,
             "invalidEvidence": invalid_evidence_failures == 0,
-            "pricing": pricing_failures == 0 and priced_provider_calls == provider_calls,
+            "pricing": pricing_failures == 0
+            and priced_provider_calls == provider_calls,
             "costCeiling": total_cost <= cost_ceiling,
-            "semanticSliceGates": all(item["status"] == "PASS" for item in arm_slice_gates.values()),
+            "semanticSliceGates": all(
+                item["status"] == "PASS" for item in arm_slice_gates.values()
+            ),
             "comparisonSliceGates": comparison_gates["status"] == "PASS",
         },
         "failureCounts": failure_counts,
@@ -914,11 +1285,46 @@ def run_offline_stage_a(
     output_path.parent.mkdir(parents=True, exist_ok=True)
     if output_path.exists():
         raise ExecutionPackageError(f"refusing to overwrite output: {output_path}")
-    output_path.write_text(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    output_path.write_text(
+        json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
     return report
 
 
-if __name__ == "__main__":
-    raise SystemExit(
-        "S12-f-10 runner is implemented but requires an explicitly bound provider adapter; no provider call is made by this CLI."
+def run_live_stage_a(
+    *,
+    authorization_path: Path,
+    output_path: Path,
+    package_path: Path = FINAL_PACKAGE,
+) -> dict[str, Any]:
+    """Run the guarded live entrypoint after validating Approval B bindings."""
+
+    adapter = DeepSeekProviderAdapter.from_environment(merged_environment())
+    return run_offline_stage_a(
+        provider_adapter=adapter,
+        package_path=package_path,
+        authorization_path=authorization_path,
+        output_path=output_path,
+        adapter_digest=adapter.adapter_digest,
+        runtime_configuration_digest=adapter.runtime_configuration_digest,
+        require_concrete_provider_binding=True,
     )
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Guarded S12-f-10 Stage-A runner")
+    parser.add_argument("--authorization", required=True, type=Path)
+    parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--package", default=FINAL_PACKAGE, type=Path)
+    args = parser.parse_args(argv)
+    run_live_stage_a(
+        authorization_path=args.authorization,
+        output_path=args.output,
+        package_path=args.package,
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

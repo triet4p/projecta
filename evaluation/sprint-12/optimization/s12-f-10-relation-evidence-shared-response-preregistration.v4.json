@@ -1,0 +1,117 @@
+{
+  "artifactVersion": "s12.s12-f-10.relation-evidence-shared-response-preregistration.v4",
+  "supersedes": "s12-f-10-relation-evidence-shared-response-preregistration.v3.json",
+  "experimentId": "s12-f-10",
+  "status": "FINAL_PREREGISTRATION_ISSUED_ISSUANCE_ONLY",
+  "executionAuthorized": false,
+  "providerExecutionAuthorized": false,
+  "changedDimension": "tool-post-processing-comparison-integrity",
+  "sharedProviderResponse": {
+    "schemaVersion": "relation-evidence-envelope.v1",
+    "providerResponseSchema": "evaluation/sprint-12/harness/relation-evidence-envelope.schema.v1.json",
+    "branchOutputSchema": "m3.v2",
+    "promptVersion": "m3.prompt.v6.relation-trigger-envelope",
+    "sameResponseDigestRequired": true
+  },
+  "measurementContract": {
+    "path": "evaluation/sprint-12/harness/metric-contract.v2.json",
+    "version": "s12.metric-contract.v2",
+    "semanticIdentityExcludesEvidenceSpan": true,
+    "evidenceDenominator": "semantic relation true positives",
+    "aggregateFromPerCaseRecordsOnly": true
+  },
+  "providerRuntime": {
+    "configurationPath": "evaluation/sprint-12/harness/s12-f-10-runtime-configuration.v1.json",
+    "providerType": "openai-response",
+    "transport": "deepseek-chat-completions",
+    "model": "deepseek-v4-flash",
+    "promptVersion": "m3.prompt.v6.relation-trigger-envelope",
+    "providerSchema": "relation-evidence-envelope.v1",
+    "sampling": {"temperature": 0.0, "topP": 1.0},
+    "timeoutSeconds": 60.0,
+    "maxOutputTokens": 4096,
+    "maxInputTokensPerCall": 50000,
+    "retryPolicy": "none",
+    "providerCalls": 48,
+    "worstCaseCostUsd": "0.39105024",
+    "costCeilingUsd": "10.00"
+  },
+  "control": {
+    "configuration": {
+      "model": "deepseek-v4-flash",
+      "promptVersion": "m3.prompt.v6.relation-trigger-envelope",
+      "providerSchema": "relation-evidence-envelope.v1",
+      "branchOutputSchema": "m3.v2",
+      "postProcessing": "envelope.extraction-legacy-evidence"
+    }
+  },
+  "candidate": {
+    "configuration": {
+      "model": "deepseek-v4-flash",
+      "promptVersion": "m3.prompt.v6.relation-trigger-envelope",
+      "providerSchema": "relation-evidence-envelope.v1",
+      "branchOutputSchema": "m3.v2",
+      "postProcessing": "trigger-aware-server-owned-materialization"
+    }
+  },
+  "comparisonIntegrity": {
+    "providerCallPerCasePair": 1,
+    "branchOutputsPerCasePair": 2,
+    "providerCalls": 48,
+    "branchOutputs": 96,
+    "retryPolicy": "none",
+    "failurePolicy": "provider-schema-and-invalid-evidence-failure-is-mirrored-to-both-arms"
+  },
+  "fixedArtifacts": {
+    "atomicCorpusPath": "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json",
+    "scenarioCorpusPath": "evaluation/sprint-12/corpus/v3-frozen/scenario-v3.frozen.v1.json",
+    "datasetManifestPath": "evaluation/sprint-12/corpus/v3-frozen/atomic-manifest.v1.json",
+    "caseSelectionPath": "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json",
+    "sliceThresholdContract": "evaluation/sprint-12/harness/slice-threshold-contract.v1.json",
+    "metricContract": "evaluation/sprint-12/harness/metric-contract.v2.json",
+    "triggerContract": "evaluation/sprint-12/harness/relation-trigger-contract.v1.json",
+    "providerResponseSchema": "evaluation/sprint-12/harness/relation-evidence-envelope.schema.v1.json",
+    "authorizationSchema": "evaluation/sprint-12/harness/s12-f-10-stage-a-authorization.schema.v3.json",
+    "runtimeConfiguration": "evaluation/sprint-12/harness/s12-f-10-runtime-configuration.v1.json",
+    "promptArtifact": "evaluation/sprint-12/optimization/s12-f-10-m3-prompt-v6-relation-trigger-envelope.v1.txt",
+    "runner": "scripts/run_sprint12_next_tool_experiment.py",
+    "providerAdapter": "scripts/sprint12_provider_adapter.py",
+    "evaluator": "scripts/sprint12_evaluator.py",
+    "pricing": "evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json"
+  },
+  "executionPackage": {
+    "path": "evaluation/sprint-12/optimization/s12-f-10-execution-package.v5.json",
+    "stage": "A",
+    "caseCount": 16,
+    "independentPairedRuns": 3,
+    "providerCalls": 48,
+    "branchOutputs": 96,
+    "oneAttemptPerCasePair": true,
+    "outputPath": "evaluation/sprint-12/optimization/s12-f-10-stage-a-report.v5.json"
+  },
+  "hardGates": {
+    "schemaInvalid": 0,
+    "invalidEvidence": 0,
+    "missingOutput": 0,
+    "sharedResponseDigestMismatch": 0,
+    "providerCallsPerCasePair": 1,
+    "retryCount": 0,
+    "pricingFailure": 0,
+    "costCeilingUsd": "10.00",
+    "runtimeTokenBoundCost": true
+  },
+  "sliceGate": "every-applicable-named-slice-must-pass-versioned-thresholds",
+  "pricingContract": {
+    "artifact": "evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json",
+    "costCeilingUsd": "10.00",
+    "costMustUseProviderCalls": 48,
+    "totalCostMustNotExceedCeiling": true
+  },
+  "heldOutInspected": false,
+  "rawSensitiveDataIncluded": false,
+  "authorization": {
+    "status": "APPROVED_FOR_ISSUANCE_ONLY",
+    "providerExecutionAuthorized": false,
+    "approvalBRequiredBeforeProviderCapture": true
+  }
+}

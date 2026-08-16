@@ -1,0 +1,98 @@
+{
+  "artifactVersion": "s12.s12-f-10.execution-package.v5",
+  "supersedes": "s12-f-10-execution-package.v4.json",
+  "status": "EXECUTION_PACKAGE_FROZEN_PENDING_AUTHORIZATION",
+  "experimentId": "s12-f-10",
+  "providerExecutionAuthorized": false,
+  "heldOutInspected": false,
+  "executionRunnerImplemented": true,
+  "executionRunner": {
+    "path": "scripts/run_sprint12_next_tool_experiment.py",
+    "digest": "sha256:1e23a9b9373dcc7420c20d8acb20754d67004bc66e1b6d4d79c6523300475dfc"
+  },
+  "providerAdapter": {
+    "path": "scripts/sprint12_provider_adapter.py",
+    "digest": "sha256:724ad2e19113e71fc2e18b08960673c09b41b200efc23d44f649027ab31bf4e6",
+    "class": "DeepSeekProviderAdapter",
+    "interface": "ProviderAdapter.capture",
+    "transport": "deepseek-chat-completions",
+    "retryPolicy": "none"
+  },
+  "runtimeConfiguration": {
+    "path": "evaluation/sprint-12/harness/s12-f-10-runtime-configuration.v1.json",
+    "digest": "sha256:a5a93570bada9223917721d39bb4bad662bdd2ba859d8ea798a42e1587d06736"
+  },
+  "authorizationContract": "evaluation/sprint-12/harness/s12-f-10-stage-a-authorization.schema.v3.json",
+  "providerResponseSchema": "relation-evidence-envelope.v1",
+  "branchOutputSchema": "m3.v2",
+  "promptVersion": "m3.prompt.v6.relation-trigger-envelope",
+  "metricContract": "evaluation/sprint-12/harness/metric-contract.v2.json",
+  "dataset": {
+    "atomic": "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json",
+    "scenario": "evaluation/sprint-12/corpus/v3-frozen/scenario-v3.frozen.v1.json",
+    "manifest": "evaluation/sprint-12/corpus/v3-frozen/atomic-manifest.v1.json"
+  },
+  "caseSelection": "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json",
+  "sliceContract": "evaluation/sprint-12/harness/slice-threshold-contract.v1.json",
+  "pricingArtifact": "evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json",
+  "preregistration": "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v4.json",
+  "outputPath": "evaluation/sprint-12/optimization/s12-f-10-stage-a-report.v5.json",
+  "costCeilingUsd": "10.00",
+  "providerBudget": {
+    "providerCalls": 48,
+    "maxInputTokensPerCall": 50000,
+    "maxOutputTokens": 4096,
+    "worstCaseCostUsd": "0.39105024",
+    "costCeilingUsd": "10.00",
+    "proofRequiredBeforeApprovalB": true
+  },
+  "arms": {
+    "control": {
+      "providerSchema": "relation-evidence-envelope.v1",
+      "branchOutputSchema": "m3.v2",
+      "postProcessing": "envelope.extraction-legacy-evidence"
+    },
+    "candidate": {
+      "providerSchema": "relation-evidence-envelope.v1",
+      "branchOutputSchema": "m3.v2",
+      "postProcessing": "trigger-aware-server-owned-materialization"
+    }
+  },
+  "schedule": [
+    {"pairId": "pair-1", "runNumber": 1, "armOrder": ["control", "candidate"]},
+    {"pairId": "pair-2", "runNumber": 2, "armOrder": ["candidate", "control"]},
+    {"pairId": "pair-3", "runNumber": 3, "armOrder": ["control", "candidate"]}
+  ],
+  "boundDigests": {
+    "scripts/run_sprint12_next_tool_experiment.py": "sha256:1e23a9b9373dcc7420c20d8acb20754d67004bc66e1b6d4d79c6523300475dfc",
+    "scripts/sprint12_provider_adapter.py": "sha256:724ad2e19113e71fc2e18b08960673c09b41b200efc23d44f649027ab31bf4e6",
+    "scripts/shared_response_pairing.py": "sha256:c163e0d05cc12630f59f8a6d24b4d7efc975cdbba3ab4658155e4daa1405e338",
+    "scripts/sprint12_evaluator.py": "sha256:2d97704e3109588a608db5e544e1e7b742002ea32a7d8380972ddf0e45fd0810",
+    "scripts/sprint12_pricing.py": "sha256:babc33da52788e65e031b56d89464bbc4a4360edcb14b1cc5cd5d33a2109486b",
+    "apps/api/src/projecta_api/extraction/relation_evidence.py": "sha256:d697f4651fa2f5b00c650d3a11a25b9d9dc6a4bae49ad232e4ac89f99e322d2c",
+    "apps/api/src/projecta_api/extraction/relation_evidence_envelope.py": "sha256:63fca079c2c2060984e5efd64ec3533fe113c5d605ec5a510b05f62c17a2b21b",
+    "apps/api/src/projecta_api/extraction/contracts.py": "sha256:f889260141f70753b255ccb813c9d9ce6fc57cd41c2deece4b027b739dc76b34",
+    "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json": "sha256:0c3795c4ff38e19c7e3ea11d3e16474cced87939a37cc00ff759dd3d39541045",
+    "evaluation/sprint-12/corpus/v3-frozen/scenario-v3.frozen.v1.json": "sha256:7d1ae95647d8d88a74ee027e21a7fd3a54f69cb288d3709bb32e63e1387ef715",
+    "evaluation/sprint-12/corpus/v3-frozen/atomic-manifest.v1.json": "sha256:4d0c08a2812db4d35dfd4058873ad1f0c5728c1b05640542c7cdab1fda98710d",
+    "evaluation/sprint-12/harness/relation-evidence-envelope.schema.v1.json": "sha256:b63158f5f9427b8cb85b062f221c0eb0bfc7b36ef5ea9eeabb80f046d8843409",
+    "evaluation/sprint-12/harness/relation-trigger-contract.v1.json": "sha256:bdfc4e62dd73da690578aa1c9fd816bd4dba153951e7c8081b8d0ae82adc6253",
+    "evaluation/sprint-12/harness/slice-threshold-contract.v1.json": "sha256:84ab739af415e26465f58733a82a43731d671ae17e5b4043982f862a4e456cbc",
+    "evaluation/sprint-12/harness/metric-contract.v2.json": "sha256:3168fce54a189773e9c181915348e4c2d022031ba31900412fa7485ed26ff51b",
+    "evaluation/sprint-12/harness/s12-f-10-stage-a-authorization.schema.v3.json": "sha256:2b5083741844696f660ec997af31451edbe5bc6200fd8e5534158857c05b9828",
+    "evaluation/sprint-12/harness/s12-f-10-runtime-configuration.v1.json": "sha256:a5a93570bada9223917721d39bb4bad662bdd2ba859d8ea798a42e1587d06736",
+    "evaluation/sprint-12/optimization/s12-f-10-m3-prompt-v6-relation-trigger-envelope.v1.txt": "sha256:d07f0a298361e5515ae80a2fabd34121494ccabe849e6bdaeea901efd58ee5a7",
+    "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json": "sha256:54ab4640d3ef4c2e4879370c3497006638b4f60c932995f7c34b5c06d395cc8c",
+    "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v4.json": "sha256:0117a1730b2e2013a6a883eef63f442b2d9cff46f29a3f3a751190bbc21e9235",
+    "evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596"
+  },
+  "constraints": [
+    "No provider capture is permitted without a separate digest-bound Approval-B artifact and Approval-A issuance artifact.",
+    "Only DeepSeekProviderAdapter may cross the live provider boundary.",
+    "The live adapter must send the frozen model, prompt, schema instructions, sampling, timeout, max_tokens and no-retry policy.",
+    "Provider/schema/transport/invalid-evidence failures fail closed to both branches and remain sanitized.",
+    "Do not inspect validation or held-out data.",
+    "Do not retry or overwrite sanitized output.",
+    "The precomputed runtime token bound and final total cost must not exceed the exact preregistered $10.00 ceiling."
+  ]
+}

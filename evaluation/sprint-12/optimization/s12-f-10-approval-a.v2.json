@@ -1,0 +1,34 @@
+{
+  "artifactVersion": "s12.s12-f-10.approval-a.v2",
+  "supersedes": "s12-f-10-approval-a.v1.json",
+  "status": "APPROVED_FOR_ISSUANCE_ONLY",
+  "experimentId": "s12-f-10",
+  "approvalScope": [
+    "issue-preregistration-v4",
+    "issue-execution-package-freeze-v5"
+  ],
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "decisionDate": "2026-08-16",
+  "commitSha": null,
+  "freezePath": "evaluation/sprint-12/optimization/s12-f-10-execution-package-freeze.v5.json",
+  "freezeDigest": null,
+  "preregistrationPath": "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v4.json",
+  "preregistrationDigest": "sha256:0117a1730b2e2013a6a883eef63f442b2d9cff46f29a3f3a751190bbc21e9235",
+  "executionPackagePath": "evaluation/sprint-12/optimization/s12-f-10-execution-package.v5.json",
+  "executionPackageDigest": "sha256:b4df95746446a8e81af596a2728c51bd4deea1f70360fc30c437bd479696b947",
+  "preauthorizationPreflight": {
+    "version": "s12.s12-f-10.preauthorization-preflight.v4",
+    "status": "PENDING_FINAL_COMMIT_BINDING"
+  },
+  "providerExecutionAuthorized": false,
+  "stageAAuthorized": false,
+  "stageBAuthorized": false,
+  "heldOutInspected": false,
+  "selectionStatus": "NO_SELECTION",
+  "constraints": [
+    "This approval issues only the preregistration and superseding execution-package freeze.",
+    "A separate Approval-B artifact is required before any provider capture or Stage-A execution.",
+    "Approval B must bind the concrete DeepSeekProviderAdapter, its exact digest, and the complete non-secret runtime configuration digest.",
+    "Validation and held-out data remain sealed; Stage B and candidate selection remain closed."
+  ]
+}
