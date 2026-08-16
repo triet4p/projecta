@@ -35,7 +35,7 @@ JSONValue: TypeAlias = (
 )
 JsonObject: TypeAlias = dict[str, JSONValue]
 JsonList: TypeAlias = list[JSONValue]
-EVALUATOR_VERSION = "s12.evaluator.v2"
+EVALUATOR_VERSION = "s12.evaluator.v4"
 RUNTIME_REQUEST_TIMEOUT_SECONDS = 60
 RUNTIME_RUN_BUDGET_SECONDS = 300
 REQUIRED_RUNTIME_ENV = (
@@ -371,7 +371,7 @@ def _relation_instrumentation(
     predicted_entities: Sequence[JsonObject],
     allowlisted_predicates: Sequence[str] | None = None,
 ) -> JsonObject:
-    """Persist canonical relation error buckets without IDs or raw text."""
+    """Persist mutually exclusive relation buckets without IDs or raw text."""
 
     gold_index = _entity_index(gold_entities)
     predicted_index = _entity_index(predicted_entities)
@@ -380,124 +380,208 @@ def _relation_instrumentation(
         | {str(item.get("predicate")) for item in gold_items}
         | {str(item.get("predicate")) for item in predicted_items}
     )
-    gold_keys = {_relation_signature(item, gold_index) for item in gold_items}
-    predicted_keys = {
+    gold_signatures = [
+        _relation_signature(item, gold_index) for item in gold_items
+    ]
+    predicted_signatures = [
         _relation_signature(item, predicted_index) for item in predicted_items
+    ]
+    categories = (
+        "exactMatch",
+        "wrongSpan",
+        "wrongPredicate",
+        "reversedEndpoint",
+        "missingEndpoint",
+        "correctPredicateWrongEndpoint",
+        "missingRelation",
+        "extraRelation",
+    )
+    by_predicate: dict[str, Counter[str]] = {
+        predicate: Counter() for predicate in predicates
     }
-    gold_by_predicate = Counter(str(item.get("predicate")) for item in gold_items)
-    predicted_by_predicate = Counter(
-        str(item.get("predicate")) for item in predicted_items
-    )
-    exact_by_predicate = Counter(
-        str(item.get("predicate"))
-        for item in gold_items
-        if _relation_signature(item, gold_index) in predicted_keys
-    )
-    missing_by_predicate: Counter[str] = Counter()
-    wrong_span_by_predicate: Counter[str] = Counter()
-    wrong_predicate_by_predicate: Counter[str] = Counter()
-    reversed_endpoint_by_predicate: Counter[str] = Counter()
-    missing_endpoint_by_predicate: Counter[str] = Counter()
-    wrong_endpoint_by_predicate: Counter[str] = Counter()
-    extra_by_predicate: Counter[str] = Counter()
-    unmatched_predicate_by_predicate: Counter[str] = Counter()
-    for gold in gold_items:
-        gold_signature = _relation_signature(gold, gold_index)
-        if gold_signature in predicted_keys:
-            continue
-        predicate = str(gold.get("predicate"))
-        same_predicate = [
-            item
-            for item in predicted_items
-            if item.get("predicate") == gold.get("predicate")
-        ]
-        if any(
-            _relation_signature(item, predicted_index)[1:3] == gold_signature[1:3]
-            and _relation_span_key(item) != _relation_span_key(gold)
-            for item in same_predicate
-        ):
-            wrong_span_by_predicate[predicate] += 1
-            continue
-        same_span = [
-            item
-            for item in predicted_items
-            if _relation_span_key(item) == _relation_span_key(gold)
-        ]
-        if not same_span:
-            missing_by_predicate[predicate] += 1
-        else:
-            same_predicate_span = [
-                item
-                for item in same_span
-                if item.get("predicate") == gold.get("predicate")
+    total_counts: Counter[str] = Counter()
+    gold_counts: Counter[str] = Counter()
+    predicted_counts: Counter[str] = Counter()
+    remaining_gold = set(range(len(gold_items)))
+    remaining_predicted = set(range(len(predicted_items)))
+    signature_records: dict[str, list[JsonObject]] = {"gold": [], "predicted": []}
+
+    def sanitized_endpoint(signature: tuple[object, ...]) -> JsonObject:
+        if signature[:1] == ("resolved",):
+            return {
+                "status": "resolved",
+                "startOffset": signature[1],
+                "endOffset": signature[2],
+                "type": signature[3],
+            }
+        return {"status": "missing"}
+
+    def sanitized_relation(
+        item: JsonObject,
+        entity_index: dict[str, JsonObject],
+        error_class: str,
+    ) -> JsonObject:
+        start, end = _relation_span_key(item)
+        evidence_span: JsonObject = (
+            {"status": "missing"}
+            if start is None or end is None
+            else {"startOffset": start, "endOffset": end}
+        )
+        signature = _relation_signature(item, entity_index)
+        return {
+            "predicate": item.get("predicate"),
+            "sourceEndpoint": sanitized_endpoint(signature[1]),
+            "targetEndpoint": sanitized_endpoint(signature[2]),
+            "evidenceSpan": evidence_span,
+            "errorClass": error_class,
+        }
+
+    def record(
+        category: str,
+        gold_position: int | None = None,
+        predicted_position: int | None = None,
+    ) -> None:
+        total_counts[category] += 1
+        if gold_position is not None:
+            gold_counts[category] += 1
+            by_predicate[str(gold_items[gold_position].get("predicate"))][category] += 1
+            signature_records["gold"].append(
+                sanitized_relation(gold_items[gold_position], gold_index, category)
+            )
+        if predicted_position is not None:
+            predicted_counts[category] += 1
+            signature_records["predicted"].append(
+                sanitized_relation(
+                    predicted_items[predicted_position], predicted_index, category
+                )
+            )
+
+    def pair(
+        category: str,
+        gold_position: int,
+        predicted_position: int,
+    ) -> None:
+        remaining_gold.remove(gold_position)
+        remaining_predicted.remove(predicted_position)
+        record(category, gold_position, predicted_position)
+
+    def find_pair(
+        predicate: Callable[[int, int], bool],
+    ) -> tuple[int, int] | None:
+        for gold_position in sorted(remaining_gold):
+            for predicted_position in sorted(remaining_predicted):
+                if predicate(gold_position, predicted_position):
+                    return gold_position, predicted_position
+        return None
+
+    # First pair semantic identities. Evidence boundaries cannot turn a
+    # semantically correct relation into a predicate or endpoint error.
+    while True:
+        match = find_pair(
+            lambda gold_position, predicted_position: gold_signatures[gold_position][
+                :3
             ]
-            if not same_predicate_span:
-                wrong_predicate_by_predicate[predicate] += 1
-                continue
-            gold_source, gold_target = gold_signature[1:3]
-            for predicted in same_predicate_span:
-                predicted_signature = _relation_signature(predicted, predicted_index)
-                predicted_source, predicted_target = predicted_signature[1:3]
-                if ("missing",) in (predicted_source, predicted_target):
-                    missing_endpoint_by_predicate[predicate] += 1
-                elif (
-                    predicted_source == gold_target
-                    and predicted_target == gold_source
-                ):
-                    reversed_endpoint_by_predicate[predicate] += 1
-                else:
-                    wrong_endpoint_by_predicate[predicate] += 1
-                break
-    for predicted in predicted_items:
-        predicted_signature = _relation_signature(predicted, predicted_index)
-        if predicted_signature in gold_keys:
-            continue
-        same_span_gold = [
-            item
-            for item in gold_items
-            if _relation_span_key(item) == _relation_span_key(predicted)
-        ]
-        if not same_span_gold or not any(
-            item.get("predicate") == predicted.get("predicate") for item in same_span_gold
-        ):
-            unmatched_predicate_by_predicate[str(predicted.get("predicate"))] += 1
-        else:
-            extra_by_predicate[str(predicted.get("predicate"))] += 1
+            == predicted_signatures[predicted_position][:3]
+        )
+        if match is None:
+            break
+        gold_position, predicted_position = match
+        category = (
+            "exactMatch"
+            if _relation_span_key(gold_items[gold_position])
+            == _relation_span_key(predicted_items[predicted_position])
+            else "wrongSpan"
+        )
+        pair(category, gold_position, predicted_position)
+
+    # Remaining categories are evaluated in a fixed precedence order and each
+    # pair is consumed exactly once, making the buckets mutually exclusive.
+    while True:
+        match = find_pair(
+            lambda gold_position, predicted_position: (
+                gold_items[gold_position].get("predicate")
+                == predicted_items[predicted_position].get("predicate")
+                and gold_signatures[gold_position][1] == predicted_signatures[predicted_position][2]
+                and gold_signatures[gold_position][2] == predicted_signatures[predicted_position][1]
+            )
+        )
+        if match is None:
+            break
+        pair("reversedEndpoint", *match)
+
+    while True:
+        match = find_pair(
+            lambda gold_position, predicted_position: (
+                gold_items[gold_position].get("predicate")
+                == predicted_items[predicted_position].get("predicate")
+                and ("missing",)
+                in predicted_signatures[predicted_position][1:3]
+            )
+        )
+        if match is None:
+            break
+        pair("missingEndpoint", *match)
+
+    while True:
+        match = find_pair(
+            lambda gold_position, predicted_position: gold_items[gold_position].get(
+                "predicate"
+            )
+            == predicted_items[predicted_position].get("predicate")
+        )
+        if match is None:
+            break
+        pair("correctPredicateWrongEndpoint", *match)
+
+    while True:
+        match = find_pair(
+            lambda gold_position, predicted_position: (
+                _relation_span_key(gold_items[gold_position])
+                == _relation_span_key(predicted_items[predicted_position])
+                and gold_items[gold_position].get("predicate")
+                != predicted_items[predicted_position].get("predicate")
+            )
+        )
+        if match is None:
+            break
+        pair("wrongPredicate", *match)
+
+    for gold_position in sorted(remaining_gold):
+        remaining_gold.remove(gold_position)
+        record("missingRelation", gold_position=gold_position)
+    for predicted_position in sorted(remaining_predicted):
+        remaining_predicted.remove(predicted_position)
+        record("extraRelation", predicted_position=predicted_position)
 
     counts = {
         predicate: {
-            "gold": gold_by_predicate[predicate],
-            "predicted": predicted_by_predicate[predicate],
-            "exactMatch": exact_by_predicate[predicate],
-            "missingRelation": missing_by_predicate[predicate],
-            "wrongSpan": wrong_span_by_predicate[predicate],
-            "wrongPredicate": wrong_predicate_by_predicate[predicate],
-            "reversedEndpoint": reversed_endpoint_by_predicate[predicate],
-            "missingEndpoint": missing_endpoint_by_predicate[predicate],
-            "unmatchedPredicate": unmatched_predicate_by_predicate[predicate],
-            "correctPredicateWrongEndpoint": wrong_endpoint_by_predicate[predicate],
-            "extraRelation": extra_by_predicate[predicate],
+            "gold": sum(
+                1
+                for item in gold_items
+                if str(item.get("predicate")) == predicate
+            ),
+            "predicted": sum(
+                1
+                for item in predicted_items
+                if str(item.get("predicate")) == predicate
+            ),
+            **{category: by_predicate[predicate][category] for category in categories},
         }
         for predicate in predicates
     }
     allowlist = set(allowlisted_predicates or ())
+    gold_categorized = sum(gold_counts.values())
+    predicted_categorized = sum(predicted_counts.values())
     return {
-        "version": "s12.relation-instrumentation.v2",
+        "version": "s12.relation-instrumentation.v4",
         "status": "scored",
+        "bucketPolicy": "exclusive-precedence-v1",
         "allowlistedPredicates": sorted(allowlist),
         "countsByPredicate": counts,
         "totals": {
             "gold": len(gold_items),
             "predicted": len(predicted_items),
-            "exactMatch": len(gold_keys & predicted_keys),
-            "missingRelation": sum(missing_by_predicate.values()),
-            "wrongSpan": sum(wrong_span_by_predicate.values()),
-            "wrongPredicate": sum(wrong_predicate_by_predicate.values()),
-            "reversedEndpoint": sum(reversed_endpoint_by_predicate.values()),
-            "missingEndpoint": sum(missing_endpoint_by_predicate.values()),
-            "unmatchedPredicate": sum(unmatched_predicate_by_predicate.values()),
-            "correctPredicateWrongEndpoint": sum(wrong_endpoint_by_predicate.values()),
-            "extraRelation": sum(extra_by_predicate.values()),
+            **{category: total_counts[category] for category in categories},
             "unallowlistedPredictedPredicate": sum(
                 1
                 for item in predicted_items
@@ -506,6 +590,15 @@ def _relation_instrumentation(
             if allowlist
             else 0,
         },
+        "reconciliation": {
+            "goldCategorized": gold_categorized,
+            "predictedCategorized": predicted_categorized,
+            "goldMatchesTotal": gold_categorized == len(gold_items),
+            "predictedMatchesTotal": predicted_categorized == len(predicted_items),
+            "pass": gold_categorized == len(gold_items)
+            and predicted_categorized == len(predicted_items),
+        },
+        "signatures": signature_records,
     }
 
 
@@ -526,10 +619,10 @@ def score_extraction(
         fail_closed["abstentionAccuracy"] = 0.0
         fail_closed["hallucinationRate"] = 0.0
         fail_closed["calibration"] = {"status": "not-available"}
-        fail_closed["relationInstrumentation"] = {
-            "version": "s12.relation-instrumentation.v2",
-            "status": "not-available",
-        }
+        # Keep the recursively scored relation instrumentation so a runtime
+        # failure retains the gold denominator and receives zero relation
+        # true positives.  Replacing it with a denominator-less marker causes
+        # positive-relation failures to disappear from fail-closed metrics.
         return fail_closed
     result: JsonObject = {}
     gold_entities = _items(gold.get("entities"))
@@ -1216,7 +1309,7 @@ def _runtime_baseline(
         config["promptArtifactDigest"] = "sha256:" + hashlib.sha256(
             prompt_artifact.read_bytes()
         ).hexdigest()
-        config["relationInstrumentationVersion"] = "s12.relation-instrumentation.v2"
+        config["relationInstrumentationVersion"] = "s12.relation-instrumentation.v4"
     if collect_diagnostics:
         return case_results, operational, failures, config, diagnostics  # type: ignore[return-value]
     return case_results, operational, failures, config

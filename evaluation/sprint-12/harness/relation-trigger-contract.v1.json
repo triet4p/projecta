@@ -1,0 +1,29 @@
+{
+  "artifactVersion": "s12.relation-trigger-contract.v1",
+  "status": "FROZEN_FOR_NEXT_PREREGISTRATION_NO_PROVIDER",
+  "schemaField": "triggerQuote",
+  "schemaFieldOptionalForCompatibility": false,
+  "transport": "new-versioned-relation-evidence-envelope-not-m3.v2",
+  "requiredForNextToolCandidate": true,
+  "requiredPredicates": [
+    "answers",
+    "blocks",
+    "constrainedBy",
+    "dependsOn",
+    "implements",
+    "resolves",
+    "supports"
+  ],
+  "failClosedWhen": [
+    "required triggerQuote is missing",
+    "triggerQuote is empty",
+    "triggerQuote is not inside the selected sentence",
+    "triggerQuote is not inside the selected clause",
+    "endpoint span is invalid",
+    "endpoints cross sentence boundaries"
+  ],
+  "controlPolicy": "legacy-control-may-omit-trigger-but-is-scored-as-legacy-post-processing",
+  "candidatePolicy": "next-versioned-candidate-envelope-requires-triggerQuote-for-every-allowlisted-predicate",
+  "providerCallsAuthorized": false,
+  "heldOutInspected": false
+}

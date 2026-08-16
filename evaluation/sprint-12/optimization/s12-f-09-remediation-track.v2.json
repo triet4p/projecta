@@ -1,0 +1,107 @@
+{
+  "artifactVersion": "s12.s12-f-09.remediation-track.v2",
+  "supersedes": {
+    "artifact": "s12-f-09-remediation-track.v1.json",
+    "status": "HISTORICAL_OPEN_TRACK"
+  },
+  "experimentId": "s12-f-09",
+  "status": "RM_01_RM_04_RUNNER_READY_COMMIT_PENDING_RM_05_PENDING",
+  "providerCallsAuthorized": false,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "selectionStatus": "NO_SELECTION",
+  "remediationItems": [
+    {
+      "id": "S12-RM-01",
+      "status": "PASS_OFFLINE_PRIMITIVE",
+      "evidence": [
+        "scripts/shared_response_pairing.py",
+        "scripts/tests/test_shared_response_pairing.py"
+      ],
+      "limitation": "Runner integration remains part of the execution-package freeze; this track has not called a provider."
+    },
+    {
+      "id": "S12-RM-02",
+      "status": "PASS_OFFLINE_CONTRACT",
+      "evidence": [
+        "evaluation/sprint-12/harness/slice-threshold-contract.v1.json",
+        "evaluation/sprint-12/harness/slice-threshold-contract.v1.md"
+      ]
+    },
+    {
+      "id": "S12-RM-03",
+      "status": "PASS_OFFLINE_CONTRACT",
+      "evidence": [
+        "evaluation/sprint-12/harness/relation-trigger-contract.v1.json",
+        "evaluation/sprint-12/harness/relation-trigger-contract.v1.md",
+        "apps/api/tests/test_relation_evidence_materializer.py"
+      ]
+    },
+    {
+      "id": "S12-RM-04",
+      "status": "RUNNER_IMPLEMENTED_OFFLINE_COMMIT_PENDING",
+      "evidence": [
+        "scripts/run_sprint12_next_tool_experiment.py",
+        "scripts/tests/test_sprint12_next_tool_runner.py",
+        "scripts/preflight_sprint12_remediation.py",
+        "scripts/tests/test_sprint12_remediation_preflight.py"
+      ],
+      "requirement": "Freeze runner, evaluator, schema, materializer, contracts, tests and the next preregistration in one commit before authorization."
+    },
+    {
+      "id": "S12-RM-05",
+      "status": "PENDING",
+      "requirement": "Publish a new experiment preregistration only after RM-04 and a clean offline preflight."
+    }
+  ],
+  "offlineEvidence": {
+    "sharedResponsePairing": {
+      "module": "scripts/shared_response_pairing.py",
+      "digest": "sha256:c163e0d05cc12630f59f8a6d24b4d7efc975cdbba3ab4658155e4daa1405e338",
+      "testDigest": "sha256:00ec4a599f7d2d9b5edb9a30609e4c894522bdfbab70a27321bf7eaa1c07172b",
+      "providerCallCountInMock": 1,
+      "branchCountInMock": 2
+    },
+    "executionPackageDraft": {
+      "artifact": "s12-next-tool-execution-package-draft.v1.json",
+      "preflight": "scripts/preflight_sprint12_remediation.py",
+      "status": "NO_GO_PENDING_EXECUTION_PACKAGE_COMMIT_AND_RUNNER",
+      "packageDigest": "sha256:3d0698951462c7a7092616e4363f0c93d3a53b0a58c696f32765fc815eebdc80",
+      "preflightDigest": "sha256:85f22372bc5df98eaa5372bfa6ad1ba1dbee547fdc7e2036e660df8b5a893208",
+      "regressionTest": "scripts/tests/test_sprint12_remediation_preflight.py",
+      "regressionTestDigest": "sha256:2562c644c24426b02c5d0ba3a7db1f5fb032b41b8585eb0feded0b3a0f478792"
+    },
+    "guardedRunner": {
+      "module": "scripts/run_sprint12_next_tool_experiment.py",
+      "digest": "sha256:db6ea305f0e4cf0be897630ccb01bc86abcd2d25116e2a731730625ac270876a",
+      "mockTest": "scripts/tests/test_sprint12_next_tool_runner.py",
+      "mockTestDigest": "sha256:e3e60549fae818bf595ec9654377f62df2b362b784ee58b01a1bd7353bb48919",
+      "mockProviderCalls": 48,
+      "mockBranchOutputs": 96,
+      "status": "IMPLEMENTED_OFFLINE_PENDING_COMMIT_FREEZE"
+    },
+    "sliceThresholds": {
+      "artifact": "slice-threshold-contract.v1.json",
+      "digest": "sha256:84ab739af415e26465f58733a82a43731d671ae17e5b4043982f862a4e456cbc"
+    },
+    "triggerContract": {
+      "artifact": "relation-trigger-contract.v1.json",
+      "digest": "sha256:bdfc4e62dd73da690578aa1c9fd816bd4dba153951e7c8081b8d0ae82adc6253"
+    },
+    "relationEvidenceEnvelope": {
+      "module": "apps/api/src/projecta_api/extraction/relation_evidence_envelope.py",
+      "digest": "sha256:63fca079c2c2060984e5efd64ec3533fe113c5d605ec5a510b05f62c17a2b21b",
+      "test": "apps/api/tests/test_relation_evidence_envelope.py",
+      "testDigest": "sha256:e5dd62a90392f875b50c909f9aed6084def6726a1a4dd13f2d1118e4277248b5"
+    },
+    "materializerDigest": "sha256:71d441c253ae612ef58f1aa1a6f446ea6d76339b798650e3dcc8db1b326d4447",
+    "schemaContractDigest": "sha256:f889260141f70753b255ccb813c9d9ce6fc57cd41c2deece4b027b739dc76b34",
+    "mockTestDigest": "sha256:4b0c360873a249d07f8c6b1a15cb00a1bd578c2c2633dbd84ad27ec6125d9e21"
+  },
+  "constraints": [
+    "Do not rerun S12-f-09.",
+    "Do not inspect validation or held-out data.",
+    "Do not change gold or ontology.",
+    "Do not authorize provider execution before RM-04 and RM-05."
+  ]
+}

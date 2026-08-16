@@ -442,3 +442,17 @@ next highest-value work.
 **Decision:** Close S12-f-08 as `COMPLETED_REJECTED` after its authorized single Stage A run; do not retry, overwrite evidence, open Stage B or select a candidate.
 **Evidence:** All 96/96 case-runs completed with zero hard-gate failures and zero supersession false positives, but candidate positive-relation macro F1 was `0.0476`, micro F1 `0.0488`, relation macro delta was negative, and sensitivity relation delta was negative.
 **Consequences:** Registry/G5 v10 bind the aggregate and six report digests. Prompt-only optimization is not promoted; any next experiment requires a new hypothesis and preregistration against the v2 measurement contract.
+
+## [2026-08-16] Open remediation before the next S12 Stage A
+
+**Decision:** Keep S12-f-09 closed as rejected and open an offline remediation track before any new Stage A, candidate selection, validation, or G6 activity.
+**Alternatives considered:** Rerun f09 with repaired accounting; proceed directly to S12-78 or G6; or open another provider experiment with the existing independent-arm and unversioned-slice contracts.
+**Reason:** f09 evidence is complete and correctly rejects the candidate, but independent provider calls do not identify the tool effect, slice thresholds were not versioned before execution, trigger behavior was not exercised, and the authorization commit did not contain the full execution package.
+**Consequences:** RM-01 through RM-05 must pass offline before a new preregistration and authorization can be issued. f09 evidence, Registry/G5 v11, validation/held-out custody, S12-78–81, S12-R24 and G6 remain unchanged and blocked.
+
+## [2026-08-16] Preserve m3.v2 and version the trigger envelope
+
+**Decision:** Keep the released m3.v2 extraction contract unchanged and carry the required `triggerQuote` through a new versioned relation-evidence envelope for the next tool experiment.
+**Alternatives considered:** Add an optional field directly to m3.v2, rerun f09 after changing the historical contract, or leave trigger context optional for the next candidate.
+**Reason:** Adding a field to m3.v2 changes the historical f08 execution-package digest without improving the already-closed f09 evidence. The next tool experiment needs an explicit trigger contract while prior experiment artifacts remain immutable.
+**Consequences:** The next preregistration must bind the new envelope/schema, materializer, scorer, and tests together. f08/f09 history remains unchanged; no provider execution is authorized by this decision.

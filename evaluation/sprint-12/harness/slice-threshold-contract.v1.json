@@ -1,0 +1,52 @@
+{
+  "artifactVersion": "s12.slice-threshold-contract.v1",
+  "status": "FROZEN_FOR_NEXT_PREREGISTRATION_NO_PROVIDER",
+  "datasetVersion": "s12.corpus.atomic.v3.frozen",
+  "permittedSplit": "development",
+  "primaryStatistic": "relationSemanticMicroF1",
+  "secondaryStatistic": "relationSemanticMacroF1",
+  "denominatorPolicy": {
+    "caseRuns": "all-attempted-case-runs",
+    "missingOutput": "retain-gold-denominator-and-score-zero",
+    "pairedComparison": "same-case-run-identifiers-in-both-arms",
+    "zeroDenominator": "NOT_APPLICABLE_AND_SLICE_GATE_FAILS_IF_METRIC_REQUIRED"
+  },
+  "sliceDimensions": [
+    "all-development",
+    "relation-positive",
+    "relation-negative",
+    "abstention-required",
+    "abstention-not-required",
+    "journey",
+    "language"
+  ],
+  "thresholds": {
+    "relationSemanticMicroF1Minimum": 0.8,
+    "relationSemanticMacroF1Minimum": 0.8,
+    "relationEvidenceSupportMinimum": 0.85,
+    "relationEvidenceExactMinimum": 0.85,
+    "entityMacroF1Minimum": 0.85,
+    "abstentionF1Minimum": 0.9,
+    "hallucinationRateMaximum": 0.05,
+    "nonInferiorityDeltaMinimum": -0.01
+  },
+  "sliceGate": {
+    "required": true,
+    "rule": "every-applicable-named-slice-must-pass-its-applicable-thresholds",
+    "metricApplicability": "relation-metrics-require-relation-positive-gold; abstention-metrics-require-abstention-gold-or-negative-case-contract",
+    "missingSliceLabel": "FAIL_CLOSED",
+    "unversionedThresholds": "FAIL_CLOSED"
+  },
+  "stability": {
+    "independentRuns": 3,
+    "retryPolicy": "none",
+    "providerResponsePairing": "one-captured-response-branched-to-both-arms"
+  },
+  "heldOutInspected": false,
+  "providerCallsAuthorized": false,
+  "source": {
+    "priorExperiment": "s12-f-09",
+    "priorArtifact": "../optimization/s12-f-09-remediation-track.v1.json",
+    "purpose": "remediation-only-contract-before-new-preregistration"
+  }
+}

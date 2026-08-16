@@ -1,0 +1,39 @@
+{
+  "artifactVersion": "s12.s12-f-10.case-selection.v1",
+  "status": "DRAFT_DEVELOPMENT_ONLY_NOT_AUTHORIZED",
+  "datasetVersion": "s12.corpus.atomic.v3.frozen",
+  "manifestPath": "evaluation/sprint-12/corpus/v3-frozen/atomic-manifest.v1.json",
+  "manifestDigest": "sha256:81cd91fcef327c87348ef0563a6407bdb9aa07f1f54c2711daf77312f91e3bb1",
+  "split": "development",
+  "caseCount": 16,
+  "caseSelectionDigest": "sha256:50b2f5d59d9c4e609635ff835dbc98ef26f7982b9b944ac40f4287dc4fb6566a",
+  "caseIds": [
+    "s12-a-4003",
+    "s12-a-4007",
+    "s12-a-4011",
+    "s12-a-4015",
+    "s12-a-4019",
+    "s12-a-4027",
+    "s12-a-4035",
+    "s12-a-4043",
+    "s12-a-4008",
+    "s12-a-4016",
+    "s12-a-4024",
+    "s12-a-4032",
+    "s12-a-4002",
+    "s12-a-4013",
+    "s12-a-4034",
+    "s12-a-4045"
+  ],
+  "selectionProfile": {
+    "positiveRelationCases": 8,
+    "abstentionRequiredCases": 4,
+    "hardNegativeCases": 4,
+    "journeysRepresented": ["J1", "J2", "J3", "J4", "J5", "J6"],
+    "languagesRepresented": ["en", "ja", "mixed", "vi"]
+  },
+  "selectionRationale": "Prioritize relation-positive cases, required abstentions and hard negatives while covering all six development journeys and all four available language labels. Case membership is verified from the frozen development manifest only.",
+  "heldOutInspected": false,
+  "goldOrOntologyChanged": false,
+  "providerCallsAuthorized": false
+}

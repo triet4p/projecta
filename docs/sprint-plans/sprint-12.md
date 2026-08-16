@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE`
+Status: `G3.1_REMEDIATION_REQUIRED_G5_PAUSED`
 
 G0 packet: [Business Scope Review Packet](sprint-12/g0-business-scope.md)
 
@@ -45,6 +45,13 @@ business journeys
 → sealed held-out evaluation
 → business acceptance
 ```
+
+After the immutable S12-f-07 and S12-f-08 experiments, a direct evidence audit
+found that the repository-visible corpus is suitable as a contract fixture but
+not yet as the business benchmark promised by this sprint. Sprint 12 therefore
+remains open and inserts a non-destructive G3.1 remediation gate before further
+provider optimization, candidate selection, validation, or G6. Historical G3,
+G4, G4.1, and G5 decisions remain unchanged and are not relabeled.
 
 ## Business Hypothesis
 
@@ -386,6 +393,12 @@ unchanged and blocking.
 
 ### Phase F — Controlled Optimization and G5
 
+S12-f-07 and S12-f-08 are immutable rejected experiments. The remaining
+generic context, workflow, and tool experiments plus S12-78 through S12-81 are
+paused until the G3.1 remediation track below passes. This pause does not
+rewrite the historical G3 or G5 approvals and does not authorize held-out
+access.
+
 - [x] **S12-72 — Create the experiment registry:** Require a hypothesis,
   permitted split, configuration digest, metric target, and stopping rule.
 - [x] **S12-73 — Run prompt experiments:** Change only the versioned prompt
@@ -424,14 +437,147 @@ unchanged and blocking.
   execution-package commit. Stage A ran exactly once with 96/96 case-runs and
   failed the positive-relation gates; Registry/G5 v10 close it rejected with no
   Stage B or candidate selection.
+
+#### Phase F-R1 — Measurement Remediation and G3.1-A
+
+- [x] **S12-R01 — Publish the core-quality audit:** Bind the observed corpus,
+  scenario, metric, f08, and evaluator evidence without changing any historical
+  report or approval.
+- [x] **S12-R02 — Version the metric contract:** Separate relation semantic
+  correctness `(predicate, canonical source, canonical target)` from relation
+  evidence support and exact-span quality; freeze formulas and denominators
+  before new provider execution.
+- [x] **S12-R03 — Repair relation error buckets:** Make diagnostic categories
+  mutually exclusive or explicitly directional so a wrong-span prediction is
+  not misreported as an additional predicate error.
+- [x] **S12-R04 — Persist sanitized diagnostic signatures:** Record per-case
+  predicates, canonical endpoint signatures, offsets, and error classes without
+  raw source text, credentials, or sensitive payloads.
+- [x] **S12-R05 — Strengthen near-duplicate leakage validation:** Canonicalize
+  generator markers, numeric IDs, punctuation, and scenario lineage; block
+  normalized template overlap across development, validation, and test.
+- [x] **S12-R06 — Validate language metadata:** Detect and adjudicate source
+  language mismatches and remove any language slice without qualified review.
+- [x] **S12-R07 — Validate scenario semantic consistency:** Reject repeated
+  source sequences with unexplained conflicting temporal effects, review
+  dispositions, checkpoints, or competency answers.
+- [x] **S12-R08 — Approve G3.1-A measurement readiness:** Bind evaluator tests,
+  corpus-lint tests, metric definitions, and residual limitations; provider
+  execution remains blocked until approval.
+
+#### Phase F-R2 — Dataset v3 Deep Pilot and G3.1-B
+
+- [x] **S12-R09 — Author the v3 atomic deep pilot:** Create 48–64 natural Quick
+  Notes from distinct business storylines without evidence markers, sequence
+  filler, or ID-only paraphrases; preserve origin and permission metadata.
+- [x] **S12-R10 — Author the v3 longitudinal pilot:** Create six unique episodes
+  with explicit actors, chronology, updates, contradictions, review decisions,
+  graph checkpoints, and competency questions; keep each lineage in one split.
+- [x] **S12-R11 — Annotate and adjudicate v3 pilot gold:** Apply the versioned
+  evidence, type, relation, abstention, temporal, retrieval, and correction
+  rules under owner-delegated AI review while retaining `humanEvidence: false`.
+- [x] **S12-R12 — Run the v3 pilot quality gate:** Require zero schema,
+  provenance, span-integrity, language, scenario-consistency, and split-leakage
+  failures; publish type, predicate, positive/negative, abstention, and business-
+  journey coverage instead of relying on total case count.
+- [x] **S12-R13 — Approve G3.1-B pilot quality:** Review representative cases,
+  gold rationales, normalized-template clusters, scenario timelines, and metric
+  computability before authorizing scale-up.
+
+#### Phase F-R3 — Dataset v3 Scale, Freeze, and G3.1-C
+
+- [x] **S12-R14 — Scale the approved v3 patterns:** Expand only pilot patterns
+  that passed G3.1-B, maintaining natural variation, relation-positive depth,
+  hard negatives, language policy, and lineage-disjoint splits.
+- [x] **S12-R15 — Freeze dataset v3:** Publish new atomic/scenario payloads,
+  gold, manifests, digests, coverage, privacy, provenance, leakage, and QA
+  evidence while preserving v1/v2 unchanged as historical fixtures.
+- [x] **S12-R16 — Approve G3.1-C dataset readiness:** Confirm v3 is suitable for
+  controlled development and one validation run; test custody and held-out
+  access remain separate and blocked.
+
+#### Phase F-R4 — Deterministic Relation Evidence Tool and G5-R
+
+- [x] **S12-R17 — Supersede stale generic preregistrations:** Close or version
+  S12-f-02 through S12-f-04 entries bound to the old manifest before opening a
+  v3 experiment; never mutate their historical records.
+- [x] **S12-R18 — Implement a server-owned relation evidence materializer:** Use
+  canonical entity spans, predicate output, an optional trigger quote, and
+  deterministic clause/sentence boundaries instead of relying on LLM-authored
+  offsets or arbitrary relation-span boundaries.
+- [x] **S12-R19 — Add offline materializer regressions:** Cover multilingual
+  punctuation, repeated mentions, code points, multiple entities, ambiguous
+  clauses, missing triggers, and fail-closed non-materialization.
+- [x] **S12-R20 — Preregister S12-f-09:** Change only the `tool` dimension on v3,
+  retain `deepseek-v4-flash` and the accepted control prompt, bind pricing and
+  digests, use paired interleaving, and prohibit retries, held-out access, and
+  prompt/model sweeps.
+- [x] **S12-R21 — Authorize S12-f-09 Stage A:** Require G3.1-A/B/C approval,
+  clean preflight, exact execution-package digests, explicit cost ceiling, and
+  owner authorization before any provider call.
+- [x] **S12-R22 — Execute S12-f-09 Stage A once:** Run the preregistered v3
+  development subset, preserve every case-run, and report semantic relation,
+  evidence, entity, abstention, hallucination, stability, latency, and cost
+  separately.
+- [x] **S12-R23 — Decide S12-f-09 Stage B:** Issue the offline scoring erratum
+  and close f09 as rejected in Registry/G5 v11. The fail-closed report records
+  attempted versus valid case-runs, pooled evidence denominators, the
+  unevaluated slice-floor gate, and degraded causal attribution from independent
+  provider outputs. Stage B remains closed and no candidate is selected.
+
+#### G3.1 and G5-R Gate Conditions
+
+| Gate | Required evidence before approval |
+| --- | --- |
+| G3.1-A — Measurement | Semantic relation and evidence metrics are separate; diagnostic buckets reconcile without accidental double counting; sanitized signatures support retrospective error analysis; evaluator fixtures pass. |
+| G3.1-B — Deep pilot | 48–64 natural atomic cases and six unique scenarios; no artificial evidence markers; zero normalized-template overlap across splits; zero unexplained scenario-gold conflict; language metadata and gold are adjudicated. |
+| G3.1-C — Dataset freeze | v3 scales only approved pilot patterns; all lineages stay in one split; v1/v2 remain immutable; schema, provenance, privacy, leakage, semantic QA, coverage, and digest gates pass. |
+| G5-R Stage A | Zero schema, evidence-integrity, missing-output, provenance, isolation, or supersession hard failures; proposed preregistration floors are relation semantic F1 ≥ 0.80, relation evidence exact/support ≥ 0.85, entity macro F1 ≥ 0.85, abstention F1 ≥ 0.90, and semantic hallucination rate ≤ 0.05, with no material slice regression. R02 may revise these values only before execution and with an explicit versioned approval. |
+| G5-R Stage B and selection | Stage A passes every registered gate; the larger development run confirms stability; validation remains untouched until S12-78 selects exactly one candidate. |
+
+The f09 closure is bound by `optimization/experiment-registry.v11.json` and
+`optimization/g5-packet.v11.json`. Its immutable raw aggregate remains v1;
+v2 is the prior offline repair; v3 and `s12-f-09-scoring-erratum.v1.*` are the
+corrected offline closure artifacts. The f09 authorization commit is retained
+as historical metadata because it did not contain the complete execution
+package; artifact digests preserve evidence integrity.
+
+#### Phase F-R5 — S12-f-09 Remediation Before New Stage A
+
+The remediation track is open in
+`optimization/s12-f-09-remediation-track.v2.*` (v1 remains historical). It does not reopen f09, call a
+provider, inspect validation/held-out data, or authorize candidate selection.
+
+- [x] **S12-RM-01 — Prove shared-response pairing offline:** Add the
+  provider-agnostic shared-response primitive and mocked digest proof. Full
+  runner binding remains part of RM-04.
+- [x] **S12-RM-02 — Version slice thresholds:** Freeze slice labels,
+  denominators, thresholds, zero-denominator policy, and macro/micro statistic
+  in `harness/slice-threshold-contract.v1.*` before the next preregistration.
+- [x] **S12-RM-03 — Decide trigger-quote contract:** Require
+  predicate-specific `triggerQuote` for the next candidate and fail closed on
+  missing/invalid trigger context; bind schema, materializer and tests.
+- [ ] **S12-RM-04 — Freeze the complete execution package:** The guarded
+  runner, mocked paired schedule, draft package and offline preflight are
+  implemented, but the package remains `NO_GO_PENDING_EXECUTION_PACKAGE_COMMIT_AND_RUNNER`.
+  Commit runner, evaluator, materializer, preregistration revision, and tests
+  together; bind authorization to that commit and all digests.
+- [ ] **S12-RM-05 — Open a new Stage A preregistration:** Issue a new experiment
+  draft (`s12-f-10-relation-evidence-shared-response-preregistration.draft.v1.json`)
+  now exists, but the preregistration and authorization remain unissued until
+  RM-04 commit freeze is complete. No provider call is implied by this draft.
+
+#### Phase F-S — Candidate Selection Resume Path
+
 - [ ] **S12-78 — Select one candidate configuration:** Apply the registered
-  multi-metric rule without inspecting held-out data.
+  multi-metric rule to the G5-R evidence without inspecting held-out data.
 - [ ] **S12-79 — Evaluate the candidate on validation:** Run once after selection
-  and preserve the complete result, including regressions.
+  across atomic extraction, longitudinal graph state, and grounded competency
+  answers; preserve the complete result, including regressions.
 - [ ] **S12-80 — Run hard-invariant regression:** Reject any candidate that
   weakens safety, provenance, isolation, review, or fail-explicit behavior.
 - [ ] **S12-81 — Freeze candidate artifacts:** Bind code, prompt, model,
-  ontology, tools, configuration, and evaluator digests.
+  ontology, tools, dataset v3, configuration, evaluator, and result digests.
 - [x] **S12-82 — Prepare the draft G5 packet:** Compare baseline and candidate by
   slice, confidence interval, business metric, latency, and cost.
 - [x] **S12-83 — Approve G5 optimization freeze with limitations:** Human records
@@ -441,9 +587,13 @@ unchanged and blocking.
 ### Phase G — Held-out Business Evaluation and G6
 
 - [x] **S12-84 — Prepare held-out run preregistration:** Record candidate,
-  evaluator, metrics, thresholds, reviewer protocol, and abort conditions.
+  evaluator, metrics, thresholds, reviewer protocol, and abort conditions. The
+  existing artifact is a historical draft and does not authorize a v3 run.
+- [ ] **S12-R24 — Version the G6 preregistration:** After S12-81, bind dataset v3,
+  the frozen candidate, evaluator, business metrics, reviewer protocol, abort
+  conditions, and custody procedure without inspecting held-out payload or gold.
 - [ ] **S12-85 — Verify test custody and digests:** Human confirms the sealed
-  bundle matches G3 and has not been exposed.
+  bundle matches the approved G3.1 dataset lineage and has not been exposed.
 - [ ] **S12-86 — Execute the blinded test run:** Evaluate the frozen candidate
   once and preserve all passing and failing slice results.
 - [ ] **S12-87 — Conduct target-role review:** At least three qualified reviewers
@@ -486,10 +636,10 @@ unchanged and blocking.
 | Boundary | Sprint 12 acceptance |
 | --- | --- |
 | Business coverage | Every G0 journey has atomic and longitudinal evidence plus expected reviewer and question outcomes. |
-| Dataset trust | Every case has origin, permission, sensitivity, version, split, and digest; prohibited or leaking data blocks G3. |
+| Dataset trust | Every case has origin, permission, sensitivity, version, split, and digest; normalized-template leakage, inconsistent language metadata, repeated scenario lineage across splits, or contradictory scenario gold blocks G3.1. |
 | Annotation | G2 agreement passes; validation/test disagreements are independently adjudicated. |
 | Ontology | Every gold concept maps to released semantics or an explicit governed gap; no force-fit or agent-approved ontology release. |
-| Extraction | Slice-level entity, relation, link, span, abstention, and hallucination metrics are reported and meet G6 thresholds. |
+| Extraction | Slice-level entity, semantic relation, relation evidence, link, entity span, abstention, and hallucination metrics are reported separately and meet G6 thresholds. |
 | Graph and retrieval | Longitudinal checkpoints and competency-question answers meet correctness, citation, completeness, and freshness thresholds. |
 | Human value | Target-role blind review meets acceptance, correction, time, usefulness, and trust thresholds against the manual baseline. |
 | Safety | Isolation, provenance, SHACL, allowlist, no-direct-assertion, and fail-explicit invariants remain 100%. |
@@ -499,7 +649,8 @@ unchanged and blocking.
 
 - G0 through G7 have explicit human decisions bound to exact evidence.
 - The development/validation benchmark is repository-local, sanitized,
-  versioned, documented, and executable without access to the held-out gold.
+  versioned, documented, lineage-disjoint, semantically consistent, and
+  executable without access to the held-out gold.
 - The held-out run is performed only after G5 candidate freeze and is never
   silently repeated or selectively reported.
 - Baseline and candidate results report every required slice, including zero,

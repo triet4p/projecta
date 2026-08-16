@@ -1,0 +1,52 @@
+{
+  "artifactVersion": "s12.next-tool.execution-package-draft.v1",
+  "status": "DRAFT_INCOMPLETE_PENDING_RUNNER_AND_COMMIT",
+  "experimentId": null,
+  "providerExecutionAuthorized": false,
+  "heldOutInspected": false,
+  "commitSha": null,
+  "executionRunnerImplemented": false,
+  "executionRunner": {
+    "path": "scripts/run_sprint12_next_tool_experiment.py",
+    "digest": "sha256:db6ea305f0e4cf0be897630ccb01bc86abcd2d25116e2a731730625ac270876a"
+  },
+  "sharedResponsePrimitive": "scripts/shared_response_pairing.py",
+  "branchingContract": {
+    "providerCallsPerCaseRun": 1,
+    "postProcessingBranches": ["control", "candidate"],
+    "sameCapturedResponseDigestRequired": true,
+    "retryPolicy": "none"
+  },
+  "boundContracts": {
+    "sliceThresholds": "evaluation/sprint-12/harness/slice-threshold-contract.v1.json",
+    "triggerQuote": "evaluation/sprint-12/harness/relation-trigger-contract.v1.json",
+    "caseSelection": "evaluation/sprint-12/optimization/s12-f-10-case-selection.v1.json",
+    "preregistrationDraft": "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.draft.v1.json"
+  },
+  "boundDigests": {
+    "scripts/shared_response_pairing.py": "sha256:c163e0d05cc12630f59f8a6d24b4d7efc975cdbba3ab4658155e4daa1405e338",
+    "scripts/run_sprint12_next_tool_experiment.py": "sha256:db6ea305f0e4cf0be897630ccb01bc86abcd2d25116e2a731730625ac270876a",
+    "scripts/run_sprint12_f09_relation_evidence.py": "sha256:8bf92100a4806c750e28925c24c093b93c50b526538250707a67badd5560d273",
+    "scripts/sprint12_evaluator.py": "sha256:2d97704e3109588a608db5e544e1e7b742002ea32a7d8380972ddf0e45fd0810",
+    "scripts/preflight_sprint12_remediation.py": "sha256:85f22372bc5df98eaa5372bfa6ad1ba1dbee547fdc7e2036e660df8b5a893208",
+    "apps/api/src/projecta_api/extraction/relation_evidence.py": "sha256:71d441c253ae612ef58f1aa1a6f446ea6d76339b798650e3dcc8db1b326d4447",
+    "apps/api/src/projecta_api/extraction/relation_evidence_envelope.py": "sha256:63fca079c2c2060984e5efd64ec3533fe113c5d605ec5a510b05f62c17a2b21b",
+    "apps/api/src/projecta_api/extraction/contracts.py": "sha256:f889260141f70753b255ccb813c9d9ce6fc57cd41c2deece4b027b739dc76b34",
+    "evaluation/sprint-12/harness/slice-threshold-contract.v1.json": "sha256:84ab739af415e26465f58733a82a43731d671ae17e5b4043982f862a4e456cbc",
+    "evaluation/sprint-12/harness/relation-trigger-contract.v1.json": "sha256:bdfc4e62dd73da690578aa1c9fd816bd4dba153951e7c8081b8d0ae82adc6253",
+    "evaluation/sprint-12/optimization/s12-f-10-case-selection.v1.json": "sha256:11c4ea34c623839a1a2ae058ca0ca41f3792889ea1b44941b3685e4c3e5958fa",
+    "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.draft.v1.json": "sha256:f37558c43200d63220d3115cd540ade62ea5e59472a447d01e8d26c21964b051",
+    "scripts/tests/test_shared_response_pairing.py": "sha256:00ec4a599f7d2d9b5edb9a30609e4c894522bdfbab70a27321bf7eaa1c07172b",
+    "scripts/tests/test_sprint12_remediation_contracts.py": "sha256:ec12f4d27e402883efec846151cea36ef5dbe453e229cbaf3115abb907ac9bdc",
+    "scripts/tests/test_sprint12_remediation_preflight.py": "sha256:2562c644c24426b02c5d0ba3a7db1f5fb032b41b8585eb0feded0b3a0f478792",
+    "apps/api/tests/test_relation_evidence_materializer.py": "sha256:510e8b7cce14b452525f59888afd96f04fe6d7f4e88439d08b0aea9d311ac6fe",
+    "apps/api/tests/test_relation_evidence_envelope.py": "sha256:e5dd62a90392f875b50c909f9aed6084def6726a1a4dd13f2d1118e4277248b5",
+    "scripts/tests/test_sprint12_next_tool_runner.py": "sha256:e3e60549fae818bf595ec9654377f62df2b362b784ee58b01a1bd7353bb48919"
+  },
+  "constraints": [
+    "Do not use this draft to authorize provider calls.",
+    "Do not rerun S12-f-09.",
+    "Do not inspect validation or held-out data.",
+    "A new runner and one commit containing every bound artifact are required before authorization."
+  ]
+}
