@@ -29,7 +29,7 @@ def test_final_package_is_implemented_and_preflight_keeps_authorization_closed()
     package = validate_final_execution_package()
     assert package["executionRunnerImplemented"] is True
     report = build_preflight(run_tests=False)
-    assert report["status"] == "PREAUTHORIZATION_READY"
+    assert report["status"] == "NO_GO_PREAUTHORIZATION_PREFLIGHT"
     assert report["checks"]["packageStatus"] is True
     assert report["checks"]["providerSchemasMatch"] is True
     assert report["checks"]["caseSelectionReproducible"] is True
