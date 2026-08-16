@@ -32,9 +32,9 @@ from run_sprint12_next_tool_experiment import (
 )
 from sprint12_pricing import file_digest, load_pricing_artifact
 
-FREEZE = ROOT / "evaluation/sprint-12/optimization/s12-f-10-execution-package-freeze.v2.json"
-PREREGISTRATION = ROOT / "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v1.json"
-OUTPUT_PATH = ROOT / "evaluation/sprint-12/optimization/s12-f-10-stage-a-report.v1.json"
+FREEZE = ROOT / "evaluation/sprint-12/optimization/s12-f-10-execution-package-freeze.v3.json"
+PREREGISTRATION = ROOT / "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v2.json"
+OUTPUT_PATH = ROOT / "evaluation/sprint-12/optimization/s12-f-10-stage-a-report.v2.json"
 CANONICAL_TESTS = (
     "scripts/tests/test_sprint12_next_tool_runner.py",
     "scripts/tests/test_sprint12_f10_preauthorization_preflight.py",
@@ -143,6 +143,31 @@ def build_preflight(*, run_tests: bool = False) -> dict[str, Any]:
         and arms[1].get("configuration", {}).get("branchOutputSchema") == "m3.v2"
     )
     pricing = load_pricing_artifact(FINAL_PRICING)
+    slice_contract = _load(ROOT / str(package.get("sliceContract", ""))) if package.get("sliceContract") else {}
+    required_denominators = {
+        "caseRuns",
+        "missingOutput",
+        "pairedComparison",
+        "zeroDenominator",
+    }
+    denominator_policy = slice_contract.get("denominatorPolicy", {})
+    slice_contract_complete = (
+        slice_contract.get("status") == "FROZEN_FOR_NEXT_PREREGISTRATION_NO_PROVIDER"
+        and set(slice_contract.get("sliceDimensions", []))
+        == {
+            "all-development",
+            "relation-positive",
+            "relation-negative",
+            "abstention-required",
+            "abstention-not-required",
+            "journey",
+            "language",
+        }
+        and required_denominators.issubset(denominator_policy)
+        and isinstance(slice_contract.get("thresholds"), dict)
+    )
+    package_relative = str(FINAL_PACKAGE.relative_to(ROOT).as_posix())
+    prereg_relative = str(PREREGISTRATION.relative_to(ROOT).as_posix())
     checks = {
         "freezeStatus": freeze.get("status") == "FROZEN_PENDING_APPROVAL_A",
         "packageStatus": package.get("status") == "EXECUTION_PACKAGE_FROZEN_PENDING_AUTHORIZATION",
@@ -151,10 +176,15 @@ def build_preflight(*, run_tests: bool = False) -> dict[str, Any]:
         "packageDigestMatchesFreeze": freeze.get("executionPackageDigest") == file_digest(FINAL_PACKAGE),
         "preregistrationDigestMatchesFreeze": freeze.get("preregistrationDigest") == file_digest(PREREGISTRATION),
         "commitPresentInHead": _commit_is_ancestor(commit_sha),
+        "packageBlobInCommit": _blob_digest(commit_sha, package_relative) == file_digest(FINAL_PACKAGE),
+        "preregistrationBlobInCommit": _blob_digest(commit_sha, prereg_relative) == file_digest(PREREGISTRATION),
         "allBoundFilesInCommit": bool(blob_checks) and all(blob_checks.values()),
         "providerSchemasMatch": schemas_match,
+        "preregistrationStatusUnissued": preregistration.get("status") == "FINAL_PREREGISTRATION_DRAFT_NOT_ISSUED",
+        "preregistrationExecutionUnauthorized": preregistration.get("providerExecutionAuthorized") is False,
+        "authorizationContractBound": package.get("authorizationContract") == "evaluation/sprint-12/harness/s12-f-10-stage-a-authorization.schema.v1.json",
         "caseSelectionReproducible": case_selection_reproducible,
-        "sliceLabelsAndDenominatorsBound": package.get("sliceContract") == "evaluation/sprint-12/harness/slice-threshold-contract.v1.json",
+        "sliceLabelsAndDenominatorsBound": package.get("sliceContract") == "evaluation/sprint-12/harness/slice-threshold-contract.v1.json" and slice_contract_complete,
         "pricingBound": pricing.get("status") == "BOUND" and freeze.get("pricingDigest") == file_digest(FINAL_PRICING),
         "outputPathAvailable": not OUTPUT_PATH.exists(),
         "authorizationNotIssued": freeze.get("authorization", {}).get("status") == "NOT_ISSUED",

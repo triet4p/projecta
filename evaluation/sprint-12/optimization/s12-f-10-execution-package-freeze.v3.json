@@ -1,0 +1,23 @@
+{
+  "artifactVersion": "s12.s12-f-10.execution-package-freeze.v3",
+  "supersedes": "s12-f-10-execution-package-freeze.v2.json",
+  "status": "FROZEN_PENDING_APPROVAL_A",
+  "experimentId": "s12-f-10",
+  "commitSha": null,
+  "executionPackage": "evaluation/sprint-12/optimization/s12-f-10-execution-package.v2.json",
+  "executionPackageDigest": "sha256:c4ef0130dbcccc620bc1e2c1adfe23974c46d7356f6758e054dfc44b03064a84",
+  "preregistration": "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v2.json",
+  "preregistrationDigest": "sha256:e104b9787b7f209a1373385cc25e8ef03074f19f19bca345f359eb21b6563921",
+  "caseSelectionDigest": "sha256:11c4ea34c623839a1a2ae058ca0ca41f3792889ea1b44941b3685e4c3e5958fa",
+  "pricingDigest": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+  "providerExecutionAuthorized": false,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "selectionStatus": "NO_SELECTION",
+  "authorization": {"status": "NOT_ISSUED", "mustBindThisFreezeRecord": true, "mustBindCommitSha": true},
+  "constraints": [
+    "Approval A may issue the preregistration and freeze only.",
+    "Approval B must bind this freeze, package, commit, output path and cost ceiling before capture.",
+    "Do not inspect held-out data or open Stage B."
+  ]
+}

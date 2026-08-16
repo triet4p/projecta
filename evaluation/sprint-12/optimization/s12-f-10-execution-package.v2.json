@@ -1,0 +1,58 @@
+{
+  "artifactVersion": "s12.s12-f-10.execution-package.v2",
+  "supersedes": "s12-f-10-execution-package.v1.json",
+  "status": "EXECUTION_PACKAGE_FROZEN_PENDING_AUTHORIZATION",
+  "experimentId": "s12-f-10",
+  "providerExecutionAuthorized": false,
+  "heldOutInspected": false,
+  "commitSha": null,
+  "executionRunnerImplemented": true,
+  "executionRunner": {"path": "scripts/run_sprint12_next_tool_experiment.py", "digest": "sha256:9ea172a5e909c036955196ba822a16b2d8e7f27d217fd84fa2fa936ae2b77c8b"},
+  "providerAdapter": {"path": "scripts/sprint12_provider_adapter.py", "digest": "sha256:bf223cd83d4e7a45b98cf8b30307f6def4792dcaa777e8c503298a2bc7731a3c", "interface": "ProviderAdapter.capture"},
+  "authorizationContract": "evaluation/sprint-12/harness/s12-f-10-stage-a-authorization.schema.v1.json",
+  "providerResponseSchema": "relation-evidence-envelope.v1",
+  "branchOutputSchema": "m3.v2",
+  "promptVersion": "m3.prompt.v6.relation-trigger-envelope",
+  "dataset": {
+    "atomic": "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json",
+    "scenario": "evaluation/sprint-12/corpus/v3-frozen/scenario-v3.frozen.v1.json",
+    "manifest": "evaluation/sprint-12/corpus/v3-frozen/atomic-manifest.v1.json"
+  },
+  "caseSelection": "evaluation/sprint-12/optimization/s12-f-10-case-selection.v1.json",
+  "sliceContract": "evaluation/sprint-12/harness/slice-threshold-contract.v1.json",
+  "pricingArtifact": "evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json",
+  "outputPath": "evaluation/sprint-12/optimization/s12-f-10-stage-a-report.v2.json",
+  "arms": {
+    "control": {"providerSchema": "relation-evidence-envelope.v1", "branchOutputSchema": "m3.v2", "postProcessing": "envelope.extraction-legacy-evidence"},
+    "candidate": {"providerSchema": "relation-evidence-envelope.v1", "branchOutputSchema": "m3.v2", "postProcessing": "trigger-aware-server-owned-materialization"}
+  },
+  "schedule": [
+    {"pairId": "pair-1", "runNumber": 1, "armOrder": ["control", "candidate"]},
+    {"pairId": "pair-2", "runNumber": 2, "armOrder": ["candidate", "control"]},
+    {"pairId": "pair-3", "runNumber": 3, "armOrder": ["control", "candidate"]}
+  ],
+  "boundDigests": {
+    "scripts/run_sprint12_next_tool_experiment.py": "sha256:9ea172a5e909c036955196ba822a16b2d8e7f27d217fd84fa2fa936ae2b77c8b",
+    "scripts/sprint12_provider_adapter.py": "sha256:bf223cd83d4e7a45b98cf8b30307f6def4792dcaa777e8c503298a2bc7731a3c",
+    "scripts/shared_response_pairing.py": "sha256:c163e0d05cc12630f59f8a6d24b4d7efc975cdbba3ab4658155e4daa1405e338",
+    "scripts/sprint12_evaluator.py": "sha256:2d97704e3109588a608db5e544e1e7b742002ea32a7d8380972ddf0e45fd0810",
+    "scripts/sprint12_pricing.py": "sha256:babc33da52788e65e031b56d89464bbc4a4360edcb14b1cc5cd5d33a2109486b",
+    "apps/api/src/projecta_api/extraction/relation_evidence.py": "sha256:d697f4651fa2f5b00c650d3a11a25b9d9dc6a4bae49ad232e4ac89f99e322d2c",
+    "apps/api/src/projecta_api/extraction/relation_evidence_envelope.py": "sha256:63fca079c2c2060984e5efd64ec3533fe113c5d605ec5a510b05f62c17a2b21b",
+    "apps/api/src/projecta_api/extraction/contracts.py": "sha256:f889260141f70753b255ccb813c9d9ce6fc57cd41c2deece4b027b739dc76b34",
+    "evaluation/sprint-12/harness/relation-evidence-envelope.schema.v1.json": "sha256:b63158f5f9427b8cb85b062f221c0eb0bfc7b36ef5ea9eeabb80f046d8843409",
+    "evaluation/sprint-12/harness/relation-trigger-contract.v1.json": "sha256:bdfc4e62dd73da690578aa1c9fd816bd4dba153951e7c8081b8d0ae82adc6253",
+    "evaluation/sprint-12/harness/slice-threshold-contract.v1.json": "sha256:84ab739af415e26465f58733a82a43731d671ae17e5b4043982f862a4e456cbc",
+    "evaluation/sprint-12/harness/s12-f-10-stage-a-authorization.schema.v1.json": "sha256:710c51361bded5101c7cdcef135aabb8613da2e2f5cdc7abdcf7efecd4b5ad8e",
+    "evaluation/sprint-12/optimization/s12-f-10-m3-prompt-v6-relation-trigger-envelope.v1.txt": "sha256:d07f0a298361e5515ae80a2fabd34121494ccabe849e6bdaeea901efd58ee5a7",
+    "evaluation/sprint-12/optimization/s12-f-10-case-selection.v1.json": "sha256:11c4ea34c623839a1a2ae058ca0ca41f3792889ea1b44941b3685e4c3e5958fa",
+    "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v2.json": "sha256:e104b9787b7f209a1373385cc25e8ef03074f19f19bca345f359eb21b6563921",
+    "evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596"
+  },
+  "constraints": [
+    "No provider capture is permitted without a separate digest-bound Approval-B artifact.",
+    "Provider/schema/transport failures fail closed to both branches and remain sanitized.",
+    "Do not inspect validation or held-out data.",
+    "Do not retry or overwrite sanitized output."
+  ]
+}

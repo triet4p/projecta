@@ -43,7 +43,9 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PACKAGE = (
     ROOT / "evaluation/sprint-12/optimization/s12-next-tool-execution-package-draft.v1.json"
 )
-FINAL_PACKAGE = ROOT / "evaluation/sprint-12/optimization/s12-f-10-execution-package.v1.json"
+FINAL_PACKAGE = ROOT / "evaluation/sprint-12/optimization/s12-f-10-execution-package.v2.json"
+FINAL_FREEZE = ROOT / "evaluation/sprint-12/optimization/s12-f-10-execution-package-freeze.v3.json"
+AUTHORIZATION_CONTRACT = ROOT / "evaluation/sprint-12/harness/s12-f-10-stage-a-authorization.schema.v1.json"
 FINAL_SELECTION = ROOT / "evaluation/sprint-12/optimization/s12-f-10-case-selection.v1.json"
 FINAL_ATOMIC = ROOT / "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json"
 FINAL_SCENARIO = ROOT / "evaluation/sprint-12/corpus/v3-frozen/scenario-v3.frozen.v1.json"
@@ -288,6 +290,8 @@ def validate_final_execution_package(
         raise ExecutionPackageError("final package permits held-out inspection")
     if package.get("executionRunnerImplemented") is not True:
         raise ExecutionPackageError("final package does not mark the runner implemented")
+    if package.get("authorizationContract") != str(AUTHORIZATION_CONTRACT.relative_to(ROOT).as_posix()):
+        raise ExecutionPackageError("final package authorization contract is not bound")
     for binding_name, expected_path in (
         ("executionRunner", "scripts/run_sprint12_next_tool_experiment.py"),
         ("providerAdapter", "scripts/sprint12_provider_adapter.py"),
@@ -339,6 +343,73 @@ def _usage_from_capture(capture: ProviderCapture, envelope: RelationEvidenceEnve
     return usage
 
 
+def _usage_from_capture_if_available(
+    capture: ProviderCapture | None,
+    envelope: RelationEvidenceEnvelopeV1 | None = None,
+) -> dict[str, int] | None:
+    if capture is None:
+        return None
+    try:
+        if envelope is None:
+            envelope = RelationEvidenceEnvelopeV1.model_validate(capture.payload)
+        return _usage_from_capture(capture, envelope)
+    except (ExecutionPackageError, ValidationError, ValueError, TypeError):
+        source = capture.usage
+        if source is None:
+            return None
+        required = ("inputTokens", "promptCacheHitTokens", "promptCacheMissTokens", "outputTokens")
+        if any(source.get(key) is None for key in required):
+            return None
+        usage = {key: int(source[key]) for key in required}
+        if usage["inputTokens"] != usage["promptCacheHitTokens"] + usage["promptCacheMissTokens"]:
+            return None
+        return usage
+
+
+def validate_stage_a_authorization(
+    package: Mapping[str, Any],
+    *,
+    package_path: Path,
+    authorization_path: Path | None,
+    output_path: Path,
+) -> dict[str, Any]:
+    """Require an Approval-B artifact before an injected adapter can run."""
+
+    if authorization_path is None:
+        raise ExecutionPackageError("Approval-B authorization artifact is required before provider capture")
+    authorization = _read_json(authorization_path)
+    if authorization.get("status") != "APPROVED_FOR_DEVELOPMENT_STAGE_A":
+        raise ExecutionPackageError("stage-A authorization is not approved")
+    if authorization.get("providerExecutionAuthorized") is not True:
+        raise ExecutionPackageError("stage-A provider execution is not authorized")
+    if authorization.get("experimentId") != package.get("experimentId"):
+        raise ExecutionPackageError("authorization experiment does not match package")
+    if authorization.get("heldOutInspected") is not False:
+        raise ExecutionPackageError("authorization permits held-out inspection")
+    if authorization.get("retryPolicy") != "none":
+        raise ExecutionPackageError("authorization retry policy is not none")
+    if authorization.get("executionPackage", {}).get("digest") != file_digest(package_path):
+        raise ExecutionPackageError("authorization does not bind the execution package digest")
+    freeze_binding = authorization.get("freezeRecord", {})
+    if freeze_binding.get("path") != str(FINAL_FREEZE.relative_to(ROOT).as_posix()):
+        raise ExecutionPackageError("authorization does not bind the final freeze record")
+    if freeze_binding.get("digest") != file_digest(FINAL_FREEZE):
+        raise ExecutionPackageError("authorization does not bind the final freeze digest")
+    commit_sha = str(authorization.get("commitSha", ""))
+    if not commit_sha or not commit_is_ancestor(commit_sha):
+        raise ExecutionPackageError("authorization commit is not an ancestor of HEAD")
+    try:
+        expected_output_binding = str(output_path.resolve().relative_to(ROOT).as_posix())
+    except ValueError:
+        expected_output_binding = str(output_path.resolve())
+    if authorization.get("outputPath") != expected_output_binding:
+        raise ExecutionPackageError("authorization output path does not match the run output")
+    ceiling = authorization.get("costCeilingUsd")
+    if ceiling is None or float(ceiling) <= 0:
+        raise ExecutionPackageError("authorization cost ceiling is missing")
+    return authorization
+
+
 def _branch_payload(raw_text: str, payload: Any, arm: str) -> dict[str, Any]:
     """Return sanitized branch metadata plus an m3.v2 prediction in memory."""
 
@@ -379,9 +450,42 @@ def _binary_f1(records: Sequence[dict[str, Any]]) -> float | str:
     return 2 * tp / (2 * tp + fp + fn) if 2 * tp + fp + fn else 0.0
 
 
+def _evidence_counts(score: Mapping[str, Any]) -> tuple[int, int, int, int]:
+    instrumentation = score.get("relationInstrumentation")
+    if not isinstance(instrumentation, dict):
+        return 0, 0, 0, 0
+    totals = instrumentation.get("totals", {})
+    semantic_tp = int(totals.get("exactMatch", 0)) + int(totals.get("wrongSpan", 0))
+    exact_tp = int(totals.get("exactMatch", 0))
+    support_tp = 0
+    predicted = instrumentation.get("signatures", {}).get("predicted", [])
+    for item in predicted if isinstance(predicted, list) else []:
+        if item.get("errorClass") not in {"exactMatch", "wrongSpan"}:
+            continue
+        evidence = item.get("evidenceSpan", {})
+        source = item.get("sourceEndpoint", {})
+        target = item.get("targetEndpoint", {})
+        if (
+            evidence.get("status") != "missing"
+            and source.get("status") == "resolved"
+            and target.get("status") == "resolved"
+            and evidence.get("startOffset", 0) <= source.get("startOffset", -1)
+            and evidence.get("startOffset", 0) <= target.get("startOffset", -1)
+            and evidence.get("endOffset", 0) >= source.get("endOffset", 0)
+            and evidence.get("endOffset", 0) >= target.get("endOffset", 0)
+        ):
+            support_tp += 1
+    return semantic_tp, support_tp, exact_tp, int(totals.get("gold", 0))
+
+
 def _metric_summary(records: Sequence[dict[str, Any]]) -> dict[str, Any]:
     scored = [record for record in records if isinstance(record.get("score"), dict)]
-    relation_records = [record for record in scored if int(record["score"]["relationInstrumentation"]["totals"]["gold"]) > 0]
+    relation_records = [
+        record
+        for record in scored
+        if int(record["score"]["relationInstrumentation"]["totals"].get("gold", 0))
+        or int(record["score"]["relationInstrumentation"]["totals"].get("predicted", 0))
+    ]
     if not scored:
         return {"caseRuns": 0, "status": "FAIL_MISSING_OUTPUT"}
     def mean(name: str, source: Sequence[dict[str, Any]] = scored) -> float:
@@ -393,23 +497,24 @@ def _metric_summary(records: Sequence[dict[str, Any]]) -> dict[str, Any]:
             if source
             else 0.0
         )
-    gold = sum(int(record["score"]["relations"]["gold"]) for record in relation_records)
-    predicted = sum(int(record["score"]["relations"]["predicted"]) for record in relation_records)
-    true_positive = sum(int(record["score"]["relations"]["truePositive"]) for record in relation_records)
-    evidence_tp = sum(
-        int(record["score"]["relationInstrumentation"]["totals"].get("exactMatch", 0))
-        + int(record["score"]["relationInstrumentation"]["totals"].get("wrongSpan", 0))
-        for record in relation_records
-    )
-    exact_tp = sum(int(record["score"]["relationInstrumentation"]["totals"].get("exactMatch", 0)) for record in relation_records)
+    gold = sum(int(record["score"]["relationInstrumentation"]["totals"].get("gold", 0)) for record in scored)
+    predicted = sum(int(record["score"]["relationInstrumentation"]["totals"].get("predicted", 0)) for record in scored)
+    semantic_tp = sum(_evidence_counts(record["score"])[0] for record in scored)
+    support_tp = sum(_evidence_counts(record["score"])[1] for record in scored)
+    exact_tp = sum(_evidence_counts(record["score"])[2] for record in scored)
     return {
         "status": "SCORED",
         "caseRuns": len(records),
         "relationCaseRuns": len(relation_records),
-        "relationSemanticMicroF1": 2 * true_positive / (gold + predicted) if gold + predicted else "not-applicable",
-        "relationSemanticMacroF1": nested_mean("relations", "f1", relation_records) if relation_records else "not-applicable",
-        "relationEvidenceSupport": evidence_tp / true_positive if true_positive else "not-applicable",
-        "relationEvidenceExact": exact_tp / evidence_tp if evidence_tp else "not-applicable",
+        "relationSemanticMicroF1": 2 * semantic_tp / (gold + predicted) if gold + predicted else "not-applicable",
+        "relationSemanticMacroF1": sum(
+            2 * _evidence_counts(record["score"])[0]
+            / (_evidence_counts(record["score"])[3] + int(record["score"]["relationInstrumentation"]["totals"].get("predicted", 0)))
+            for record in relation_records
+            if _evidence_counts(record["score"])[3] + int(record["score"]["relationInstrumentation"]["totals"].get("predicted", 0))
+        ) / len(relation_records) if relation_records else "not-applicable",
+        "relationEvidenceSupport": support_tp / semantic_tp if semantic_tp else "not-applicable",
+        "relationEvidenceExact": exact_tp / semantic_tp if semantic_tp else "not-applicable",
         "entityMacroF1": nested_mean("entities", "f1", scored),
         "abstentionF1": _binary_f1(records),
         "hallucinationRate": mean("hallucinationRate"),
@@ -417,6 +522,9 @@ def _metric_summary(records: Sequence[dict[str, Any]]) -> dict[str, Any]:
             "allAttemptedCaseRuns": len(records),
             "relationGold": gold,
             "relationPredicted": predicted,
+            "relationSemanticTruePositive": semantic_tp,
+            "relationEvidenceSupportTruePositive": support_tp,
+            "relationEvidenceExactTruePositive": exact_tp,
             "abstentionGold": sum(record.get("goldAbstention") is True for record in records),
         },
     }
@@ -427,23 +535,122 @@ def _slice_metrics(records: Sequence[dict[str, Any]]) -> dict[str, dict[str, Any
     return {label: _metric_summary([record for record in records if label in record["labels"]]) for label in labels}
 
 
+def _slice_gate_decisions(
+    metrics: Mapping[str, Mapping[str, Any]],
+    contract: Mapping[str, Any],
+) -> dict[str, Any]:
+    thresholds = contract.get("thresholds", {})
+    decisions: dict[str, Any] = {}
+    for label, summary in metrics.items():
+        checks: dict[str, Any] = {}
+        if int(summary.get("caseRuns", 0)) == 0:
+            decisions[label] = {"status": "FAIL_CLOSED", "checks": {"caseRuns": False}}
+            continue
+        applicable = {
+            "relationSemanticMicroF1": summary.get("relationSemanticMicroF1"),
+            "relationSemanticMacroF1": summary.get("relationSemanticMacroF1"),
+            "relationEvidenceSupport": summary.get("relationEvidenceSupport"),
+            "relationEvidenceExact": summary.get("relationEvidenceExact"),
+            "entityMacroF1": summary.get("entityMacroF1"),
+            "abstentionF1": summary.get("abstentionF1"),
+            "hallucinationRate": summary.get("hallucinationRate"),
+        }
+        for metric, observed in applicable.items():
+            if observed == "not-applicable":
+                continue
+            if not isinstance(observed, (int, float)):
+                checks[metric] = {"observed": observed, "pass": False}
+                continue
+            threshold_key = {
+                "relationSemanticMicroF1": "relationSemanticMicroF1Minimum",
+                "relationSemanticMacroF1": "relationSemanticMacroF1Minimum",
+                "relationEvidenceSupport": "relationEvidenceSupportMinimum",
+                "relationEvidenceExact": "relationEvidenceExactMinimum",
+                "entityMacroF1": "entityMacroF1Minimum",
+                "abstentionF1": "abstentionF1Minimum",
+                "hallucinationRate": "hallucinationRateMaximum",
+            }[metric]
+            threshold = thresholds.get(threshold_key)
+            if threshold is None:
+                checks[metric] = {"observed": observed, "pass": False, "reason": "threshold-unbound"}
+            elif threshold_key.endswith("Maximum"):
+                checks[metric] = {"observed": observed, "threshold": threshold, "pass": observed <= float(threshold)}
+            else:
+                checks[metric] = {"observed": observed, "threshold": threshold, "pass": observed >= float(threshold)}
+        decisions[label] = {
+            "status": "PASS" if all(item.get("pass") is True for item in checks.values()) else "FAIL",
+            "checks": checks,
+        }
+    return {
+        "status": "PASS" if decisions and all(item["status"] == "PASS" for item in decisions.values()) else "FAIL",
+        "slices": decisions,
+    }
+
+
+def _comparison_gate_decisions(
+    control: Mapping[str, Mapping[str, Any]],
+    candidate: Mapping[str, Mapping[str, Any]],
+    contract: Mapping[str, Any],
+) -> dict[str, Any]:
+    minimum_delta = float(contract.get("thresholds", {}).get("nonInferiorityDeltaMinimum", -0.01))
+    decisions: dict[str, Any] = {}
+    metric_names = (
+        "relationSemanticMicroF1",
+        "relationSemanticMacroF1",
+        "entityMacroF1",
+        "abstentionF1",
+        "hallucinationRate",
+    )
+    for label in sorted(set(control) | set(candidate)):
+        left = control.get(label, {})
+        right = candidate.get(label, {})
+        checks: dict[str, Any] = {}
+        for metric in metric_names:
+            control_value = left.get(metric)
+            candidate_value = right.get(metric)
+            if not isinstance(control_value, (int, float)) or not isinstance(candidate_value, (int, float)):
+                continue
+            delta = float(candidate_value) - float(control_value)
+            if metric == "hallucinationRate":
+                passed = delta <= -minimum_delta
+            else:
+                passed = delta >= minimum_delta
+            checks[metric] = {"control": control_value, "candidate": candidate_value, "delta": delta, "minimumDelta": minimum_delta, "pass": passed}
+        decisions[label] = {"status": "PASS" if all(item["pass"] for item in checks.values()) else "FAIL", "checks": checks}
+    return {
+        "status": "PASS" if decisions and all(item["status"] == "PASS" for item in decisions.values()) else "FAIL",
+        "slices": decisions,
+    }
+
+
 def run_offline_stage_a(
     *,
     provider_adapter: ProviderAdapter,
     package_path: Path = FINAL_PACKAGE,
+    authorization_path: Path | None = None,
     output_path: Path,
 ) -> dict[str, Any]:
-    """Execute the complete provider-injected schedule and write one report."""
+    """Execute Stage A only after a separate, digest-bound Approval-B artifact."""
 
     package = validate_final_execution_package(package_path, output_path=output_path)
+    validate_stage_a_authorization(
+        package,
+        package_path=package_path,
+        authorization_path=authorization_path,
+        output_path=output_path,
+    )
     _loaded, selected, profile = load_bound_development_cases()
     pricing = load_pricing_artifact(FINAL_PRICING)
+    slice_contract = _read_json(FINAL_SLICE_CONTRACT)
     prompt_version = str(package["promptVersion"])
     records: dict[str, list[dict[str, Any]]] = {"control": [], "candidate": []}
     trace: list[dict[str, Any]] = []
     failure_counts: dict[str, int] = {}
     provider_calls = 0
     materializer_failures = 0
+    priced_provider_calls = 0
+    pricing_failures = 0
+    retry_count = 0
     for schedule in EXPECTED_SCHEDULE:
         for case in selected:
             case_id = str(case["caseId"])
@@ -459,12 +666,14 @@ def run_offline_stage_a(
                 )
                 envelope = RelationEvidenceEnvelopeV1.model_validate(capture.payload)
                 usage = _usage_from_capture(capture, envelope)
+                retry_count += int(getattr(capture, "retry_count", 0))
                 branch_outputs = {
                     arm: _branch_payload(raw_text, capture.payload, arm)
                     for arm in ("control", "candidate")
                 }
                 cost = cost_usd(usage, {"rates": pricing["rates"]})
-            except (ExecutionPackageError, ValidationError, ValueError) as error:
+                priced_provider_calls += 1
+            except Exception as error:  # noqa: BLE001 - provider boundary must fail closed.
                 failure_class = (
                     "schema_invalid"
                     if isinstance(error, ValidationError) or "schema" in str(error)
@@ -481,8 +690,14 @@ def run_offline_stage_a(
                     }
                     for arm in ("control", "candidate")
                 }
-                usage = {"inputTokens": 0, "promptCacheHitTokens": 0, "promptCacheMissTokens": 0, "outputTokens": 0}
-                cost = 0.0
+                usage = _usage_from_capture_if_available(capture)
+                if usage is None:
+                    usage = {"inputTokens": 0, "promptCacheHitTokens": 0, "promptCacheMissTokens": 0, "outputTokens": 0}
+                    cost = 0.0
+                    pricing_failures += 1
+                else:
+                    cost = cost_usd(usage, {"rates": pricing["rates"]})
+                    priced_provider_calls += 1
             source_digest = response_digest(capture.payload) if capture is not None else None
             branch_input_digests = (
                 {arm: response_digest(capture.payload) for arm in ("control", "candidate")}
@@ -534,6 +749,19 @@ def run_offline_stage_a(
                 }
             )
     all_records = records["control"] + records["candidate"]
+    arm_metrics = {
+        arm: {"primary": _metric_summary(records[arm]), "slices": _slice_metrics(records[arm])}
+        for arm in records
+    }
+    arm_slice_gates = {
+        arm: _slice_gate_decisions(arm_metrics[arm]["slices"], slice_contract)
+        for arm in records
+    }
+    comparison_gates = _comparison_gate_decisions(
+        arm_metrics["control"]["slices"],
+        arm_metrics["candidate"]["slices"],
+        slice_contract,
+    )
     report = {
         "artifactVersion": "s12.s12-f-10.offline-stage-a-runner-report.v1",
         "status": "OFFLINE_RUNNER_EXECUTED",
@@ -542,23 +770,29 @@ def run_offline_stage_a(
         "pairCount": len(EXPECTED_SCHEDULE),
         "providerCallCount": provider_calls,
         "branchOutputCount": len(all_records),
-        "retryCount": 0,
+        "retryCount": retry_count,
         "caseSelectionProfile": profile,
-        "metrics": {arm: {"primary": _metric_summary(records[arm]), "slices": _slice_metrics(records[arm])} for arm in records},
+        "metrics": arm_metrics,
+        "sliceGates": arm_slice_gates,
+        "comparisonGates": comparison_gates,
         "pricing": {
             "artifactDigest": file_digest(FINAL_PRICING),
             "totalCostUsd": sum(float(item["costUsd"]) for item in trace),
-            "providerCallsPriced": provider_calls,
+            "providerCallsPriced": priced_provider_calls,
+            "pricingFailures": pricing_failures,
             "cacheClasses": ["inputCacheHit", "inputCacheMiss", "output"],
         },
         "hardGates": {
             "providerCalls": provider_calls == 48,
             "branchOutputs": len(all_records) == 96,
-            "retryCount": True,
+            "retryCount": retry_count == 0,
             "sharedResponseDigest": all(item["branchInputDigestMatch"] for item in trace),
             "schemaFailures": not any(item.get("failureClass") == "schema_invalid" for item in all_records),
             "missingOutputs": not any(item["score"].get("status") == "missing-output" for item in all_records),
             "materializerFailures": materializer_failures == 0,
+            "pricing": pricing_failures == 0 and priced_provider_calls == provider_calls,
+            "semanticSliceGates": all(item["status"] == "PASS" for item in arm_slice_gates.values()),
+            "comparisonSliceGates": comparison_gates["status"] == "PASS",
         },
         "failureCounts": failure_counts,
         "trace": trace,

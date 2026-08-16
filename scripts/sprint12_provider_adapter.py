@@ -23,6 +23,7 @@ class ProviderCapture:
 
     payload: Any
     usage: Usage | None = None
+    retry_count: int = 0
 
 
 class ProviderAdapter(Protocol):
