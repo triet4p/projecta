@@ -2,7 +2,7 @@
   "artifactVersion": "s12.s12-f-11.canary-freeze.v1",
   "status": "FROZEN_PENDING_CANARY_AUTHORIZATION",
   "experimentId": "s12-f-11",
-  "commitSha": null,
+  "commitSha": "dd59a51",
   "executionPackage": "evaluation/sprint-12/optimization/s12-f-11-canary-execution-package.v1.json",
   "executionPackageDigest": "sha256:c3e51a7aa64134cb5ec833057da0d14720eca69c1f8879df006da32b9f03294d",
   "preregistration": "evaluation/sprint-12/optimization/s12-f-11-canary-preregistration.v1.json",
