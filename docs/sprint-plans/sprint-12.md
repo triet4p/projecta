@@ -590,10 +590,12 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   is recorded in `optimization/s12-f-10-approval-b.v1.json`; issuance performs
   no provider call and does not authorize held-out access, Stage B, selection
   or promotion.
-- [ ] **S12-RM-07 — Execute S12-f-10 Stage A once:** Use the guarded CLI with
-  Approval B v1 to perform exactly 48 shared provider calls and 96 branch
-  outputs. Preserve all failures and actual cache-aware cost; do not retry or
-  overwrite. Evaluate Stage B eligibility only from the immutable report.
+- [x] **S12-RM-07 — Execute S12-f-10 Stage A once:** The guarded CLI used
+  Approval B v1 exactly once and performed 48 shared provider calls and 96
+  branch outputs. The immutable report preserves all 48 `schema_invalid`
+  provider outcomes, actual cache-aware cost `$0.0031325392`, zero retries,
+  no overwrite, and no held-out access. Stage B and promotion remain closed;
+  a separate decision artifact is required for any next governance action.
 
 #### Phase F-S — Candidate Selection Resume Path
 

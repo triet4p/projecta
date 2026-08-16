@@ -1,0 +1,3991 @@
+{
+  "artifactVersion": "s12.s12-f-10.offline-stage-a-runner-report.v1",
+  "boundDigests": {
+    "apps/api/src/projecta_api/extraction/contracts.py": "sha256:f889260141f70753b255ccb813c9d9ce6fc57cd41c2deece4b027b739dc76b34",
+    "apps/api/src/projecta_api/extraction/relation_evidence.py": "sha256:d697f4651fa2f5b00c650d3a11a25b9d9dc6a4bae49ad232e4ac89f99e322d2c",
+    "apps/api/src/projecta_api/extraction/relation_evidence_envelope.py": "sha256:63fca079c2c2060984e5efd64ec3533fe113c5d605ec5a510b05f62c17a2b21b",
+    "evaluation/sprint-12/corpus/v3-frozen/atomic-manifest.v1.json": "sha256:4d0c08a2812db4d35dfd4058873ad1f0c5728c1b05640542c7cdab1fda98710d",
+    "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json": "sha256:0c3795c4ff38e19c7e3ea11d3e16474cced87939a37cc00ff759dd3d39541045",
+    "evaluation/sprint-12/corpus/v3-frozen/scenario-v3.frozen.v1.json": "sha256:7d1ae95647d8d88a74ee027e21a7fd3a54f69cb288d3709bb32e63e1387ef715",
+    "evaluation/sprint-12/harness/metric-contract.v2.json": "sha256:3168fce54a189773e9c181915348e4c2d022031ba31900412fa7485ed26ff51b",
+    "evaluation/sprint-12/harness/relation-evidence-envelope.schema.v1.json": "sha256:b63158f5f9427b8cb85b062f221c0eb0bfc7b36ef5ea9eeabb80f046d8843409",
+    "evaluation/sprint-12/harness/relation-trigger-contract.v1.json": "sha256:bdfc4e62dd73da690578aa1c9fd816bd4dba153951e7c8081b8d0ae82adc6253",
+    "evaluation/sprint-12/harness/s12-f-10-runtime-configuration.v1.json": "sha256:a5a93570bada9223917721d39bb4bad662bdd2ba859d8ea798a42e1587d06736",
+    "evaluation/sprint-12/harness/s12-f-10-stage-a-authorization.schema.v3.json": "sha256:2b5083741844696f660ec997af31451edbe5bc6200fd8e5534158857c05b9828",
+    "evaluation/sprint-12/harness/slice-threshold-contract.v1.json": "sha256:84ab739af415e26465f58733a82a43731d671ae17e5b4043982f862a4e456cbc",
+    "evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+    "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json": "sha256:54ab4640d3ef4c2e4879370c3497006638b4f60c932995f7c34b5c06d395cc8c",
+    "evaluation/sprint-12/optimization/s12-f-10-m3-prompt-v6-relation-trigger-envelope.v1.txt": "sha256:d07f0a298361e5515ae80a2fabd34121494ccabe849e6bdaeea901efd58ee5a7",
+    "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v4.json": "sha256:0117a1730b2e2013a6a883eef63f442b2d9cff46f29a3f3a751190bbc21e9235",
+    "scripts/run_sprint12_next_tool_experiment.py": "sha256:1e23a9b9373dcc7420c20d8acb20754d67004bc66e1b6d4d79c6523300475dfc",
+    "scripts/shared_response_pairing.py": "sha256:c163e0d05cc12630f59f8a6d24b4d7efc975cdbba3ab4658155e4daa1405e338",
+    "scripts/sprint12_evaluator.py": "sha256:2d97704e3109588a608db5e544e1e7b742002ea32a7d8380972ddf0e45fd0810",
+    "scripts/sprint12_pricing.py": "sha256:babc33da52788e65e031b56d89464bbc4a4360edcb14b1cc5cd5d33a2109486b",
+    "scripts/sprint12_provider_adapter.py": "sha256:724ad2e19113e71fc2e18b08960673c09b41b200efc23d44f649027ab31bf4e6"
+  },
+  "branchOutputCount": 96,
+  "caseCount": 16,
+  "caseSelectionProfile": {
+    "abstention-required": 4,
+    "hard-negative": 4,
+    "relation-negative": 8,
+    "relation-positive": 8
+  },
+  "comparisonGates": {
+    "slices": {
+      "abstention-not-required": {
+        "checks": {
+          "entityMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "abstention-required": {
+        "checks": {
+          "abstentionF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "entityMacroF1": {
+            "candidate": 1.0,
+            "control": 1.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "all-development": {
+        "checks": {
+          "abstentionF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "entityMacroF1": {
+            "candidate": 0.25,
+            "control": 0.25,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "journey:J1": {
+        "checks": {
+          "entityMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "journey:J2": {
+        "checks": {
+          "abstentionF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "entityMacroF1": {
+            "candidate": 0.25,
+            "control": 0.25,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "journey:J3": {
+        "checks": {
+          "abstentionF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "entityMacroF1": {
+            "candidate": 0.25,
+            "control": 0.25,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "journey:J4": {
+        "checks": {
+          "abstentionF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "entityMacroF1": {
+            "candidate": 0.5,
+            "control": 0.5,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "journey:J5": {
+        "checks": {
+          "abstentionF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "entityMacroF1": {
+            "candidate": 0.5,
+            "control": 0.5,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "journey:J6": {
+        "checks": {
+          "entityMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "language:en": {
+        "checks": {
+          "entityMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "language:ja": {
+        "checks": {
+          "entityMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "language:mixed": {
+        "checks": {
+          "abstentionF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "entityMacroF1": {
+            "candidate": 0.4,
+            "control": 0.4,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "language:vi": {
+        "checks": {
+          "entityMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "relation-negative": {
+        "checks": {
+          "abstentionF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "entityMacroF1": {
+            "candidate": 0.5,
+            "control": 0.5,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "relation-positive": {
+        "checks": {
+          "entityMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      }
+    },
+    "status": "PASS"
+  },
+  "experimentId": "s12-f-10",
+  "failureCounts": {
+    "schema_invalid": 96
+  },
+  "hardGates": {
+    "branchOutputs": true,
+    "comparisonSliceGates": true,
+    "costCeiling": true,
+    "invalidEvidence": true,
+    "materializerFailures": true,
+    "missingOutputs": false,
+    "pricing": true,
+    "providerCalls": true,
+    "retryCount": true,
+    "schemaFailures": false,
+    "semanticSliceGates": false,
+    "sharedResponseDigest": true
+  },
+  "heldOutInspected": false,
+  "metricContract": {
+    "digest": "sha256:3168fce54a189773e9c181915348e4c2d022031ba31900412fa7485ed26ff51b",
+    "path": "evaluation/sprint-12/harness/metric-contract.v2.json",
+    "version": "s12.metric-contract.v2"
+  },
+  "metrics": {
+    "candidate": {
+      "primary": {
+        "abstentionF1": 0.0,
+        "caseRuns": 48,
+        "denominators": {
+          "abstentionGold": 12,
+          "allAttemptedCaseRuns": 48,
+          "relationEvidenceExactTruePositive": 0,
+          "relationEvidenceSupportTruePositive": 0,
+          "relationGold": 24,
+          "relationPredicted": 0,
+          "relationSemanticTruePositive": 0
+        },
+        "entityMacroF1": 0.25,
+        "hallucinationRate": 0.0,
+        "relationCaseRuns": 24,
+        "relationEvidenceExact": "not-applicable",
+        "relationEvidenceSupport": "not-applicable",
+        "relationSemanticMacroF1": 0.0,
+        "relationSemanticMicroF1": 0.0,
+        "status": "SCORED"
+      },
+      "slices": {
+        "abstention-not-required": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 36,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 36,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 24,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 24,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "abstention-required": {
+          "abstentionF1": 0.0,
+          "caseRuns": 12,
+          "denominators": {
+            "abstentionGold": 12,
+            "allAttemptedCaseRuns": 12,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 0,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 1.0,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 0,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": "not-applicable",
+          "relationSemanticMicroF1": "not-applicable",
+          "status": "SCORED"
+        },
+        "all-development": {
+          "abstentionF1": 0.0,
+          "caseRuns": 48,
+          "denominators": {
+            "abstentionGold": 12,
+            "allAttemptedCaseRuns": 48,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 24,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.25,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 24,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J1": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 3,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 3,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J2": {
+          "abstentionF1": 0.0,
+          "caseRuns": 12,
+          "denominators": {
+            "abstentionGold": 3,
+            "allAttemptedCaseRuns": 12,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 6,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.25,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 6,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J3": {
+          "abstentionF1": 0.0,
+          "caseRuns": 12,
+          "denominators": {
+            "abstentionGold": 3,
+            "allAttemptedCaseRuns": 12,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 6,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.25,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 6,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J4": {
+          "abstentionF1": 0.0,
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 3,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 3,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.5,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 3,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J5": {
+          "abstentionF1": 0.0,
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 3,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 3,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.5,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 3,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J6": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 3,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 3,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "language:en": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 0,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 0,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": "not-applicable",
+          "relationSemanticMicroF1": "not-applicable",
+          "status": "SCORED"
+        },
+        "language:ja": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 0,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 0,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": "not-applicable",
+          "relationSemanticMicroF1": "not-applicable",
+          "status": "SCORED"
+        },
+        "language:mixed": {
+          "abstentionF1": 0.0,
+          "caseRuns": 30,
+          "denominators": {
+            "abstentionGold": 12,
+            "allAttemptedCaseRuns": 30,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 18,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.4,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 18,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "language:vi": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 6,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 6,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "relation-negative": {
+          "abstentionF1": 0.0,
+          "caseRuns": 24,
+          "denominators": {
+            "abstentionGold": 12,
+            "allAttemptedCaseRuns": 24,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 0,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.5,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 0,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": "not-applicable",
+          "relationSemanticMicroF1": "not-applicable",
+          "status": "SCORED"
+        },
+        "relation-positive": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 24,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 24,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 24,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 24,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        }
+      }
+    },
+    "control": {
+      "primary": {
+        "abstentionF1": 0.0,
+        "caseRuns": 48,
+        "denominators": {
+          "abstentionGold": 12,
+          "allAttemptedCaseRuns": 48,
+          "relationEvidenceExactTruePositive": 0,
+          "relationEvidenceSupportTruePositive": 0,
+          "relationGold": 24,
+          "relationPredicted": 0,
+          "relationSemanticTruePositive": 0
+        },
+        "entityMacroF1": 0.25,
+        "hallucinationRate": 0.0,
+        "relationCaseRuns": 24,
+        "relationEvidenceExact": "not-applicable",
+        "relationEvidenceSupport": "not-applicable",
+        "relationSemanticMacroF1": 0.0,
+        "relationSemanticMicroF1": 0.0,
+        "status": "SCORED"
+      },
+      "slices": {
+        "abstention-not-required": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 36,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 36,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 24,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 24,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "abstention-required": {
+          "abstentionF1": 0.0,
+          "caseRuns": 12,
+          "denominators": {
+            "abstentionGold": 12,
+            "allAttemptedCaseRuns": 12,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 0,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 1.0,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 0,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": "not-applicable",
+          "relationSemanticMicroF1": "not-applicable",
+          "status": "SCORED"
+        },
+        "all-development": {
+          "abstentionF1": 0.0,
+          "caseRuns": 48,
+          "denominators": {
+            "abstentionGold": 12,
+            "allAttemptedCaseRuns": 48,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 24,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.25,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 24,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J1": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 3,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 3,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J2": {
+          "abstentionF1": 0.0,
+          "caseRuns": 12,
+          "denominators": {
+            "abstentionGold": 3,
+            "allAttemptedCaseRuns": 12,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 6,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.25,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 6,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J3": {
+          "abstentionF1": 0.0,
+          "caseRuns": 12,
+          "denominators": {
+            "abstentionGold": 3,
+            "allAttemptedCaseRuns": 12,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 6,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.25,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 6,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J4": {
+          "abstentionF1": 0.0,
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 3,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 3,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.5,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 3,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J5": {
+          "abstentionF1": 0.0,
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 3,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 3,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.5,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 3,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J6": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 3,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 3,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "language:en": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 0,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 0,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": "not-applicable",
+          "relationSemanticMicroF1": "not-applicable",
+          "status": "SCORED"
+        },
+        "language:ja": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 0,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 0,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": "not-applicable",
+          "relationSemanticMicroF1": "not-applicable",
+          "status": "SCORED"
+        },
+        "language:mixed": {
+          "abstentionF1": 0.0,
+          "caseRuns": 30,
+          "denominators": {
+            "abstentionGold": 12,
+            "allAttemptedCaseRuns": 30,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 18,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.4,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 18,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "language:vi": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 6,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 6,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "relation-negative": {
+          "abstentionF1": 0.0,
+          "caseRuns": 24,
+          "denominators": {
+            "abstentionGold": 12,
+            "allAttemptedCaseRuns": 24,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 0,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.5,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 0,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": "not-applicable",
+          "relationSemanticMicroF1": "not-applicable",
+          "status": "SCORED"
+        },
+        "relation-positive": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 24,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 24,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 24,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 0.0,
+          "relationCaseRuns": 24,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        }
+      }
+    }
+  },
+  "pairCount": 3,
+  "preregistrationDigest": "sha256:0117a1730b2e2013a6a883eef63f442b2d9cff46f29a3f3a751190bbc21e9235",
+  "pricing": {
+    "artifactDigest": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+    "cacheClasses": [
+      "inputCacheHit",
+      "inputCacheMiss",
+      "output"
+    ],
+    "costCeilingGate": true,
+    "costCeilingUsd": "10.00",
+    "pricingFailures": 0,
+    "providerCallsPriced": 48,
+    "totalCostUsd": 0.0031325392
+  },
+  "providerCallCount": 48,
+  "rawSensitiveDataIncluded": false,
+  "retryCount": 0,
+  "sliceGates": {
+    "candidate": {
+      "slices": {
+        "abstention-not-required": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "abstention-required": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 1.0,
+              "pass": true,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            }
+          },
+          "status": "FAIL"
+        },
+        "all-development": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.25,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J1": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J2": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.25,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J3": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.25,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J4": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.5,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J5": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.5,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J6": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "language:en": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            }
+          },
+          "status": "FAIL"
+        },
+        "language:ja": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            }
+          },
+          "status": "FAIL"
+        },
+        "language:mixed": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.4,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "language:vi": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "relation-negative": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.5,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            }
+          },
+          "status": "FAIL"
+        },
+        "relation-positive": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        }
+      },
+      "status": "FAIL"
+    },
+    "control": {
+      "slices": {
+        "abstention-not-required": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "abstention-required": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 1.0,
+              "pass": true,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            }
+          },
+          "status": "FAIL"
+        },
+        "all-development": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.25,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J1": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J2": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.25,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J3": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.25,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J4": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.5,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J5": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.5,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J6": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "language:en": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            }
+          },
+          "status": "FAIL"
+        },
+        "language:ja": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            }
+          },
+          "status": "FAIL"
+        },
+        "language:mixed": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.4,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "language:vi": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "relation-negative": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.5,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            }
+          },
+          "status": "FAIL"
+        },
+        "relation-positive": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.0,
+              "pass": true,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        }
+      },
+      "status": "FAIL"
+    }
+  },
+  "status": "OFFLINE_RUNNER_EXECUTED",
+  "trace": [
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:e10ebd0cd764850ade6460bf4b3e07d85d65c4210ce9773f517f4d005fb4a754",
+        "control": "sha256:e10ebd0cd764850ade6460bf4b3e07d85d65c4210ce9773f517f4d005fb4a754"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4003",
+      "costUsd": 0.0001827,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 1,
+      "sourceResponseDigest": "sha256:e10ebd0cd764850ade6460bf4b3e07d85d65c4210ce9773f517f4d005fb4a754",
+      "usage": {
+        "inputTokens": 611,
+        "outputTokens": 347,
+        "promptCacheHitTokens": 0,
+        "promptCacheMissTokens": 611
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad",
+        "control": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4007",
+      "costUsd": 3.19536e-05,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 2,
+      "sourceResponseDigest": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad",
+      "usage": {
+        "inputTokens": 620,
+        "outputTokens": 55,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 108
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:6f914953e9b606089b6582c75a12cfb46c82bf67274e9cbab9fdc65f25a3da73",
+        "control": "sha256:6f914953e9b606089b6582c75a12cfb46c82bf67274e9cbab9fdc65f25a3da73"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4011",
+      "costUsd": 0.0001117536,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 3,
+      "sourceResponseDigest": "sha256:6f914953e9b606089b6582c75a12cfb46c82bf67274e9cbab9fdc65f25a3da73",
+      "usage": {
+        "inputTokens": 612,
+        "outputTokens": 344,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 100
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad",
+        "control": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4015",
+      "costUsd": 3.19536e-05,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 4,
+      "sourceResponseDigest": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad",
+      "usage": {
+        "inputTokens": 620,
+        "outputTokens": 55,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 108
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:bca5e715b7514a47592a6f43ce3708cd44db6951f8e6d164c38fb0b2c51919fb",
+        "control": "sha256:bca5e715b7514a47592a6f43ce3708cd44db6951f8e6d164c38fb0b2c51919fb"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4019",
+      "costUsd": 0.0001131536,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 5,
+      "sourceResponseDigest": "sha256:bca5e715b7514a47592a6f43ce3708cd44db6951f8e6d164c38fb0b2c51919fb",
+      "usage": {
+        "inputTokens": 612,
+        "outputTokens": 349,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 100
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:fc981c35a5795cac842f8f27907283dbebef9f17713d5a393bfcc39713f31f68",
+        "control": "sha256:fc981c35a5795cac842f8f27907283dbebef9f17713d5a393bfcc39713f31f68"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4027",
+      "costUsd": 0.0001162336,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 6,
+      "sourceResponseDigest": "sha256:fc981c35a5795cac842f8f27907283dbebef9f17713d5a393bfcc39713f31f68",
+      "usage": {
+        "inputTokens": 612,
+        "outputTokens": 360,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 100
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:7a12f0bd85024dea44b373a9bc1218140358c5ed4323f3e2eb2f116db2cb848e",
+        "control": "sha256:7a12f0bd85024dea44b373a9bc1218140358c5ed4323f3e2eb2f116db2cb848e"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4035",
+      "costUsd": 8.31936e-05,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 7,
+      "sourceResponseDigest": "sha256:7a12f0bd85024dea44b373a9bc1218140358c5ed4323f3e2eb2f116db2cb848e",
+      "usage": {
+        "inputTokens": 612,
+        "outputTokens": 242,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 100
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:2a9b44c429d308f3783689af1562542285d21b697715b718c7935dc399673d45",
+        "control": "sha256:2a9b44c429d308f3783689af1562542285d21b697715b718c7935dc399673d45"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4043",
+      "costUsd": 0.0001123136,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 8,
+      "sourceResponseDigest": "sha256:2a9b44c429d308f3783689af1562542285d21b697715b718c7935dc399673d45",
+      "usage": {
+        "inputTokens": 612,
+        "outputTokens": 346,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 100
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:158ad992e44334afc51331b007328cdc2176053830a7acf63ef21113c3fe7f80",
+        "control": "sha256:158ad992e44334afc51331b007328cdc2176053830a7acf63ef21113c3fe7f80"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4008",
+      "costUsd": 3.33536e-05,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 9,
+      "sourceResponseDigest": "sha256:158ad992e44334afc51331b007328cdc2176053830a7acf63ef21113c3fe7f80",
+      "usage": {
+        "inputTokens": 614,
+        "outputTokens": 63,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 102
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:a9aec1ada3ca9012e42631a2c9398ec0ad7f488a76689914e908d0429a07eb0d",
+        "control": "sha256:a9aec1ada3ca9012e42631a2c9398ec0ad7f488a76689914e908d0429a07eb0d"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4016",
+      "costUsd": 3.22336e-05,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 10,
+      "sourceResponseDigest": "sha256:a9aec1ada3ca9012e42631a2c9398ec0ad7f488a76689914e908d0429a07eb0d",
+      "usage": {
+        "inputTokens": 614,
+        "outputTokens": 59,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 102
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:01031a4f792766b1ad09598d0dd54e9b15d948c93c98ace8dfd67a75f2f6cdb5",
+        "control": "sha256:01031a4f792766b1ad09598d0dd54e9b15d948c93c98ace8dfd67a75f2f6cdb5"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4024",
+      "costUsd": 3.58736e-05,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 11,
+      "sourceResponseDigest": "sha256:01031a4f792766b1ad09598d0dd54e9b15d948c93c98ace8dfd67a75f2f6cdb5",
+      "usage": {
+        "inputTokens": 614,
+        "outputTokens": 72,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 102
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:01031a4f792766b1ad09598d0dd54e9b15d948c93c98ace8dfd67a75f2f6cdb5",
+        "control": "sha256:01031a4f792766b1ad09598d0dd54e9b15d948c93c98ace8dfd67a75f2f6cdb5"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4032",
+      "costUsd": 3.58736e-05,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 12,
+      "sourceResponseDigest": "sha256:01031a4f792766b1ad09598d0dd54e9b15d948c93c98ace8dfd67a75f2f6cdb5",
+      "usage": {
+        "inputTokens": 614,
+        "outputTokens": 72,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 102
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad",
+        "control": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4002",
+      "costUsd": 2.95736e-05,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 13,
+      "sourceResponseDigest": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad",
+      "usage": {
+        "inputTokens": 603,
+        "outputTokens": 55,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 91
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad",
+        "control": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4013",
+      "costUsd": 2.94336e-05,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 14,
+      "sourceResponseDigest": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad",
+      "usage": {
+        "inputTokens": 602,
+        "outputTokens": 55,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 90
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:a9773e9f1962f81f95ea1fec109195efba188405761e360266f8160ba1018eba",
+        "control": "sha256:a9773e9f1962f81f95ea1fec109195efba188405761e360266f8160ba1018eba"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4034",
+      "costUsd": 5.85536e-05,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 15,
+      "sourceResponseDigest": "sha256:a9773e9f1962f81f95ea1fec109195efba188405761e360266f8160ba1018eba",
+      "usage": {
+        "inputTokens": 600,
+        "outputTokens": 160,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 88
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:2ac2c48057fd67e4ecf172f3c162da5d5b8133f01cf5bbc74f2bfa23b3f6f7c3",
+        "control": "sha256:2ac2c48057fd67e4ecf172f3c162da5d5b8133f01cf5bbc74f2bfa23b3f6f7c3"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4045",
+      "costUsd": 2.99936e-05,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 16,
+      "sourceResponseDigest": "sha256:2ac2c48057fd67e4ecf172f3c162da5d5b8133f01cf5bbc74f2bfa23b3f6f7c3",
+      "usage": {
+        "inputTokens": 602,
+        "outputTokens": 57,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 90
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:e10ebd0cd764850ade6460bf4b3e07d85d65c4210ce9773f517f4d005fb4a754",
+        "control": "sha256:e10ebd0cd764850ade6460bf4b3e07d85d65c4210ce9773f517f4d005fb4a754"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4003",
+      "costUsd": 0.0001124536,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 17,
+      "sourceResponseDigest": "sha256:e10ebd0cd764850ade6460bf4b3e07d85d65c4210ce9773f517f4d005fb4a754",
+      "usage": {
+        "inputTokens": 611,
+        "outputTokens": 347,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 99
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:a9aec1ada3ca9012e42631a2c9398ec0ad7f488a76689914e908d0429a07eb0d",
+        "control": "sha256:a9aec1ada3ca9012e42631a2c9398ec0ad7f488a76689914e908d0429a07eb0d"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4007",
+      "costUsd": 3.30736e-05,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 18,
+      "sourceResponseDigest": "sha256:a9aec1ada3ca9012e42631a2c9398ec0ad7f488a76689914e908d0429a07eb0d",
+      "usage": {
+        "inputTokens": 620,
+        "outputTokens": 59,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 108
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:6f914953e9b606089b6582c75a12cfb46c82bf67274e9cbab9fdc65f25a3da73",
+        "control": "sha256:6f914953e9b606089b6582c75a12cfb46c82bf67274e9cbab9fdc65f25a3da73"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4011",
+      "costUsd": 0.0001117536,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 19,
+      "sourceResponseDigest": "sha256:6f914953e9b606089b6582c75a12cfb46c82bf67274e9cbab9fdc65f25a3da73",
+      "usage": {
+        "inputTokens": 612,
+        "outputTokens": 344,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 100
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad",
+        "control": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4015",
+      "costUsd": 3.19536e-05,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 20,
+      "sourceResponseDigest": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad",
+      "usage": {
+        "inputTokens": 620,
+        "outputTokens": 55,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 108
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:bca5e715b7514a47592a6f43ce3708cd44db6951f8e6d164c38fb0b2c51919fb",
+        "control": "sha256:bca5e715b7514a47592a6f43ce3708cd44db6951f8e6d164c38fb0b2c51919fb"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4019",
+      "costUsd": 0.0001131536,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 21,
+      "sourceResponseDigest": "sha256:bca5e715b7514a47592a6f43ce3708cd44db6951f8e6d164c38fb0b2c51919fb",
+      "usage": {
+        "inputTokens": 612,
+        "outputTokens": 349,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 100
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:fc981c35a5795cac842f8f27907283dbebef9f17713d5a393bfcc39713f31f68",
+        "control": "sha256:fc981c35a5795cac842f8f27907283dbebef9f17713d5a393bfcc39713f31f68"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4027",
+      "costUsd": 0.0001162336,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 22,
+      "sourceResponseDigest": "sha256:fc981c35a5795cac842f8f27907283dbebef9f17713d5a393bfcc39713f31f68",
+      "usage": {
+        "inputTokens": 612,
+        "outputTokens": 360,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 100
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:d823e29eb572621c7af8ca09b76dcff4f8cbcc3cdbfafe5ddb50d717a166d33a",
+        "control": "sha256:d823e29eb572621c7af8ca09b76dcff4f8cbcc3cdbfafe5ddb50d717a166d33a"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4035",
+      "costUsd": 0.0001134336,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 23,
+      "sourceResponseDigest": "sha256:d823e29eb572621c7af8ca09b76dcff4f8cbcc3cdbfafe5ddb50d717a166d33a",
+      "usage": {
+        "inputTokens": 612,
+        "outputTokens": 350,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 100
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:8aa49aca035ebc233d6bb396f9cd21997240e9dfc062fbb740647eec9d9c9ef0",
+        "control": "sha256:8aa49aca035ebc233d6bb396f9cd21997240e9dfc062fbb740647eec9d9c9ef0"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4043",
+      "costUsd": 0.0001128736,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 24,
+      "sourceResponseDigest": "sha256:8aa49aca035ebc233d6bb396f9cd21997240e9dfc062fbb740647eec9d9c9ef0",
+      "usage": {
+        "inputTokens": 612,
+        "outputTokens": 348,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 100
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:158ad992e44334afc51331b007328cdc2176053830a7acf63ef21113c3fe7f80",
+        "control": "sha256:158ad992e44334afc51331b007328cdc2176053830a7acf63ef21113c3fe7f80"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4008",
+      "costUsd": 3.33536e-05,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 25,
+      "sourceResponseDigest": "sha256:158ad992e44334afc51331b007328cdc2176053830a7acf63ef21113c3fe7f80",
+      "usage": {
+        "inputTokens": 614,
+        "outputTokens": 63,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 102
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:3dc66fb3a70e0fc83b6b511bdc92b59707c4a3f8b7b4e682283855c364c0c83a",
+        "control": "sha256:3dc66fb3a70e0fc83b6b511bdc92b59707c4a3f8b7b4e682283855c364c0c83a"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4016",
+      "costUsd": 3.16736e-05,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 26,
+      "sourceResponseDigest": "sha256:3dc66fb3a70e0fc83b6b511bdc92b59707c4a3f8b7b4e682283855c364c0c83a",
+      "usage": {
+        "inputTokens": 614,
+        "outputTokens": 57,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 102
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:555d0511a26e1b34c46a2674f0a6cca3bb8cc22eb5a4b360a60d550070bdcb07",
+        "control": "sha256:555d0511a26e1b34c46a2674f0a6cca3bb8cc22eb5a4b360a60d550070bdcb07"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4024",
+      "costUsd": 5.99536e-05,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 27,
+      "sourceResponseDigest": "sha256:555d0511a26e1b34c46a2674f0a6cca3bb8cc22eb5a4b360a60d550070bdcb07",
+      "usage": {
+        "inputTokens": 614,
+        "outputTokens": 158,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 102
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:b1f18dd326220a21a7491780e0a54f2e1e35acc08936687827c0c41a601b209c",
+        "control": "sha256:b1f18dd326220a21a7491780e0a54f2e1e35acc08936687827c0c41a601b209c"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4032",
+      "costUsd": 3.53136e-05,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 28,
+      "sourceResponseDigest": "sha256:b1f18dd326220a21a7491780e0a54f2e1e35acc08936687827c0c41a601b209c",
+      "usage": {
+        "inputTokens": 614,
+        "outputTokens": 70,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 102
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad",
+        "control": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4002",
+      "costUsd": 2.95736e-05,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 29,
+      "sourceResponseDigest": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad",
+      "usage": {
+        "inputTokens": 603,
+        "outputTokens": 55,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 91
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad",
+        "control": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4013",
+      "costUsd": 2.94336e-05,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 30,
+      "sourceResponseDigest": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad",
+      "usage": {
+        "inputTokens": 602,
+        "outputTokens": 55,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 90
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:01031a4f792766b1ad09598d0dd54e9b15d948c93c98ace8dfd67a75f2f6cdb5",
+        "control": "sha256:01031a4f792766b1ad09598d0dd54e9b15d948c93c98ace8dfd67a75f2f6cdb5"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4034",
+      "costUsd": 3.39136e-05,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 31,
+      "sourceResponseDigest": "sha256:01031a4f792766b1ad09598d0dd54e9b15d948c93c98ace8dfd67a75f2f6cdb5",
+      "usage": {
+        "inputTokens": 600,
+        "outputTokens": 72,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 88
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:2ac2c48057fd67e4ecf172f3c162da5d5b8133f01cf5bbc74f2bfa23b3f6f7c3",
+        "control": "sha256:2ac2c48057fd67e4ecf172f3c162da5d5b8133f01cf5bbc74f2bfa23b3f6f7c3"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4045",
+      "costUsd": 2.99936e-05,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 32,
+      "sourceResponseDigest": "sha256:2ac2c48057fd67e4ecf172f3c162da5d5b8133f01cf5bbc74f2bfa23b3f6f7c3",
+      "usage": {
+        "inputTokens": 602,
+        "outputTokens": 57,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 90
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:e10ebd0cd764850ade6460bf4b3e07d85d65c4210ce9773f517f4d005fb4a754",
+        "control": "sha256:e10ebd0cd764850ade6460bf4b3e07d85d65c4210ce9773f517f4d005fb4a754"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4003",
+      "costUsd": 0.0001124536,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 33,
+      "sourceResponseDigest": "sha256:e10ebd0cd764850ade6460bf4b3e07d85d65c4210ce9773f517f4d005fb4a754",
+      "usage": {
+        "inputTokens": 611,
+        "outputTokens": 347,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 99
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:a9aec1ada3ca9012e42631a2c9398ec0ad7f488a76689914e908d0429a07eb0d",
+        "control": "sha256:a9aec1ada3ca9012e42631a2c9398ec0ad7f488a76689914e908d0429a07eb0d"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4007",
+      "costUsd": 3.30736e-05,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 34,
+      "sourceResponseDigest": "sha256:a9aec1ada3ca9012e42631a2c9398ec0ad7f488a76689914e908d0429a07eb0d",
+      "usage": {
+        "inputTokens": 620,
+        "outputTokens": 59,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 108
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:88025c837dd08c59dc3affffd289ae7ae2331414a940ea2d9a1a9c2bf2003eee",
+        "control": "sha256:88025c837dd08c59dc3affffd289ae7ae2331414a940ea2d9a1a9c2bf2003eee"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4011",
+      "costUsd": 0.0001131536,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 35,
+      "sourceResponseDigest": "sha256:88025c837dd08c59dc3affffd289ae7ae2331414a940ea2d9a1a9c2bf2003eee",
+      "usage": {
+        "inputTokens": 612,
+        "outputTokens": 349,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 100
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:a9aec1ada3ca9012e42631a2c9398ec0ad7f488a76689914e908d0429a07eb0d",
+        "control": "sha256:a9aec1ada3ca9012e42631a2c9398ec0ad7f488a76689914e908d0429a07eb0d"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4015",
+      "costUsd": 3.30736e-05,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 36,
+      "sourceResponseDigest": "sha256:a9aec1ada3ca9012e42631a2c9398ec0ad7f488a76689914e908d0429a07eb0d",
+      "usage": {
+        "inputTokens": 620,
+        "outputTokens": 59,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 108
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:5e13eeeaaec3e9c9867c1ec29a5af2f63c349e434acb5356a359b8c6a80ae281",
+        "control": "sha256:5e13eeeaaec3e9c9867c1ec29a5af2f63c349e434acb5356a359b8c6a80ae281"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4019",
+      "costUsd": 0.0001139936,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 37,
+      "sourceResponseDigest": "sha256:5e13eeeaaec3e9c9867c1ec29a5af2f63c349e434acb5356a359b8c6a80ae281",
+      "usage": {
+        "inputTokens": 612,
+        "outputTokens": 352,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 100
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:f9c8bc97255686efe24bffd69ad93680b9884ed695173410721e4785e5898749",
+        "control": "sha256:f9c8bc97255686efe24bffd69ad93680b9884ed695173410721e4785e5898749"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4027",
+      "costUsd": 0.0001165136,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 38,
+      "sourceResponseDigest": "sha256:f9c8bc97255686efe24bffd69ad93680b9884ed695173410721e4785e5898749",
+      "usage": {
+        "inputTokens": 612,
+        "outputTokens": 361,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 100
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:6e4465899430247987dfa84d8515004e3d1bd0d0442948dc512619974f670d14",
+        "control": "sha256:6e4465899430247987dfa84d8515004e3d1bd0d0442948dc512619974f670d14"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4035",
+      "costUsd": 0.0001125936,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 39,
+      "sourceResponseDigest": "sha256:6e4465899430247987dfa84d8515004e3d1bd0d0442948dc512619974f670d14",
+      "usage": {
+        "inputTokens": 612,
+        "outputTokens": 347,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 100
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:9e679659f7810514e4cd53727966fd0a1d772e60fe7f1d17f329e0aba4498e1b",
+        "control": "sha256:9e679659f7810514e4cd53727966fd0a1d772e60fe7f1d17f329e0aba4498e1b"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4043",
+      "costUsd": 0.0001120336,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 40,
+      "sourceResponseDigest": "sha256:9e679659f7810514e4cd53727966fd0a1d772e60fe7f1d17f329e0aba4498e1b",
+      "usage": {
+        "inputTokens": 612,
+        "outputTokens": 345,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 100
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:01031a4f792766b1ad09598d0dd54e9b15d948c93c98ace8dfd67a75f2f6cdb5",
+        "control": "sha256:01031a4f792766b1ad09598d0dd54e9b15d948c93c98ace8dfd67a75f2f6cdb5"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4008",
+      "costUsd": 3.58736e-05,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 41,
+      "sourceResponseDigest": "sha256:01031a4f792766b1ad09598d0dd54e9b15d948c93c98ace8dfd67a75f2f6cdb5",
+      "usage": {
+        "inputTokens": 614,
+        "outputTokens": 72,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 102
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:01698e19bb7ca91ca04d2678373a2eb64fbb8866431d722f6ba1368e091e03ad",
+        "control": "sha256:01698e19bb7ca91ca04d2678373a2eb64fbb8866431d722f6ba1368e091e03ad"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4016",
+      "costUsd": 3.58736e-05,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 42,
+      "sourceResponseDigest": "sha256:01698e19bb7ca91ca04d2678373a2eb64fbb8866431d722f6ba1368e091e03ad",
+      "usage": {
+        "inputTokens": 614,
+        "outputTokens": 72,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 102
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:0f6d4cf3617191a180e25b6312dc09b8aa0858d9de0722076d5d27318a70a7fb",
+        "control": "sha256:0f6d4cf3617191a180e25b6312dc09b8aa0858d9de0722076d5d27318a70a7fb"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4024",
+      "costUsd": 5.88336e-05,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 43,
+      "sourceResponseDigest": "sha256:0f6d4cf3617191a180e25b6312dc09b8aa0858d9de0722076d5d27318a70a7fb",
+      "usage": {
+        "inputTokens": 614,
+        "outputTokens": 154,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 102
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:01031a4f792766b1ad09598d0dd54e9b15d948c93c98ace8dfd67a75f2f6cdb5",
+        "control": "sha256:01031a4f792766b1ad09598d0dd54e9b15d948c93c98ace8dfd67a75f2f6cdb5"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4032",
+      "costUsd": 3.58736e-05,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 44,
+      "sourceResponseDigest": "sha256:01031a4f792766b1ad09598d0dd54e9b15d948c93c98ace8dfd67a75f2f6cdb5",
+      "usage": {
+        "inputTokens": 614,
+        "outputTokens": 72,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 102
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad",
+        "control": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4002",
+      "costUsd": 2.95736e-05,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 45,
+      "sourceResponseDigest": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad",
+      "usage": {
+        "inputTokens": 603,
+        "outputTokens": 55,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 91
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad",
+        "control": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4013",
+      "costUsd": 2.94336e-05,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 46,
+      "sourceResponseDigest": "sha256:6a91ff9966a117459011c50f747c2523f9df2d3e49b8627081d5c835db869aad",
+      "usage": {
+        "inputTokens": 602,
+        "outputTokens": 55,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 90
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:01031a4f792766b1ad09598d0dd54e9b15d948c93c98ace8dfd67a75f2f6cdb5",
+        "control": "sha256:01031a4f792766b1ad09598d0dd54e9b15d948c93c98ace8dfd67a75f2f6cdb5"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4034",
+      "costUsd": 3.39136e-05,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 47,
+      "sourceResponseDigest": "sha256:01031a4f792766b1ad09598d0dd54e9b15d948c93c98ace8dfd67a75f2f6cdb5",
+      "usage": {
+        "inputTokens": 600,
+        "outputTokens": 72,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 88
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:2ac2c48057fd67e4ecf172f3c162da5d5b8133f01cf5bbc74f2bfa23b3f6f7c3",
+        "control": "sha256:2ac2c48057fd67e4ecf172f3c162da5d5b8133f01cf5bbc74f2bfa23b3f6f7c3"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "failureClass": "schema_invalid",
+          "materializerFailureCount": 0,
+          "predictionDigest": null,
+          "status": "failed"
+        }
+      },
+      "caseId": "s12-a-4045",
+      "costUsd": 2.99936e-05,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 48,
+      "sourceResponseDigest": "sha256:2ac2c48057fd67e4ecf172f3c162da5d5b8133f01cf5bbc74f2bfa23b3f6f7c3",
+      "usage": {
+        "inputTokens": 602,
+        "outputTokens": 57,
+        "promptCacheHitTokens": 512,
+        "promptCacheMissTokens": 90
+      }
+    }
+  ]
+}
