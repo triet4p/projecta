@@ -3,7 +3,7 @@
   "supersedes": "s12-f-10-execution-package-freeze.v2.json",
   "status": "FROZEN_PENDING_APPROVAL_A",
   "experimentId": "s12-f-10",
-  "commitSha": null,
+  "commitSha": "5de5cfc",
   "executionPackage": "evaluation/sprint-12/optimization/s12-f-10-execution-package.v2.json",
   "executionPackageDigest": "sha256:c4ef0130dbcccc620bc1e2c1adfe23974c46d7356f6758e054dfc44b03064a84",
   "preregistration": "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v2.json",
