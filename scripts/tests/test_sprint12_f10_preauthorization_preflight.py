@@ -295,3 +295,26 @@ def test_authorization_rejects_non_preregistered_cost_ceiling(tmp_path: Path) ->
             authorization_path=authorization,
             output_path=output,
         )
+
+
+def test_actual_total_cost_over_ceiling_fails_closed(tmp_path: Path) -> None:
+    output = tmp_path / "over-ceiling.json"
+    adapter = CallableProviderAdapter(
+        lambda **_kwargs: ProviderCapture(
+            payload=_payload(input_tokens=100_000_000),
+            usage={
+                "inputTokens": 100_000_000,
+                "promptCacheHitTokens": 0,
+                "promptCacheMissTokens": 100_000_000,
+                "outputTokens": 0,
+            },
+        )
+    )
+    report = run_offline_stage_a(
+        provider_adapter=adapter,
+        authorization_path=_authorization(output),
+        output_path=output,
+    )
+    assert report["pricing"]["totalCostUsd"] > 10.0
+    assert report["pricing"]["costCeilingGate"] is False
+    assert report["hardGates"]["costCeiling"] is False
