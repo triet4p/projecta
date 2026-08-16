@@ -1,0 +1,439 @@
+{
+  "$comment": "Generated from RelationEvidenceEnvelopeV1.model_json_schema(by_alias=True); the required lists below make defaulted Pydantic fields mandatory on the wire.",
+  "$defs": {
+    "EntityCandidateOutput": {
+      "additionalProperties": false,
+      "description": "A proposed typed entity mention with an optional v2 local candidate ID.",
+      "properties": {
+        "candidateId": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Candidateid"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Confidence"
+        },
+        "evidence": {
+          "$ref": "#/$defs/EvidenceSpan"
+        },
+        "label": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "Requirement",
+            "Decision",
+            "Question",
+            "Task",
+            "Risk",
+            "Assumption",
+            "Constraint",
+            "ProgressClaim",
+            "ResearchFinding"
+          ],
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "label",
+        "evidence",
+        "confidence"
+      ],
+      "title": "EntityCandidateOutput",
+      "type": "object"
+    },
+    "EntityLinkCandidateOutput": {
+      "additionalProperties": false,
+      "description": "A proposed link to an opaque existing ID, later checked against context.",
+      "properties": {
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Confidence"
+        },
+        "evidence": {
+          "$ref": "#/$defs/EvidenceSpan"
+        },
+        "mention": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Mention",
+          "type": "string"
+        },
+        "targetEntityId": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+          "title": "Targetentityid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "mention",
+        "targetEntityId",
+        "evidence",
+        "confidence"
+      ],
+      "title": "EntityLinkCandidateOutput",
+      "type": "object"
+    },
+    "EvidenceSpan": {
+      "additionalProperties": false,
+      "description": "Exact half-open Unicode-code-point evidence range in the source note.",
+      "properties": {
+        "endOffset": {
+          "exclusiveMinimum": 0,
+          "title": "Endoffset",
+          "type": "integer"
+        },
+        "startOffset": {
+          "minimum": 0,
+          "title": "Startoffset",
+          "type": "integer"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "startOffset",
+        "endOffset",
+        "text"
+      ],
+      "title": "EvidenceSpan",
+      "type": "object"
+    },
+    "ExtractionResponse": {
+      "additionalProperties": false,
+      "description": "Versioned structured output accepted from replay or a live adapter.",
+      "properties": {
+        "abstentionReason": {
+          "anyOf": [
+            {
+              "maxLength": 1024,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Abstentionreason"
+        },
+        "entities": {
+          "items": {
+            "$ref": "#/$defs/EntityCandidateOutput"
+          },
+          "title": "Entities",
+          "type": "array"
+        },
+        "links": {
+          "items": {
+            "$ref": "#/$defs/EntityLinkCandidateOutput"
+          },
+          "title": "Links",
+          "type": "array"
+        },
+        "modelId": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$",
+          "title": "Modelid",
+          "type": "string"
+        },
+        "modelVersion": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$",
+          "title": "Modelversion",
+          "type": "string"
+        },
+        "relations": {
+          "items": {
+            "$ref": "#/$defs/RelationCandidateOutput"
+          },
+          "title": "Relations",
+          "type": "array"
+        },
+        "schemaVersion": {
+          "enum": [
+            "m3.v1",
+            "m3.v2"
+          ],
+          "title": "Schemaversion",
+          "type": "string"
+        },
+        "usage": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UsageMetadata"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "modelId",
+        "modelVersion",
+        "entities",
+        "relations",
+        "links"
+      ],
+      "title": "ExtractionResponse",
+      "type": "object"
+    },
+    "RelationCandidateOutput": {
+      "additionalProperties": false,
+      "description": "A proposed allowlisted relation between opaque entity references.",
+      "properties": {
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Confidence"
+        },
+        "evidence": {
+          "$ref": "#/$defs/EvidenceSpan"
+        },
+        "predicate": {
+          "enum": [
+            "implements",
+            "blocks",
+            "dependsOn",
+            "supports",
+            "answers",
+            "resolves",
+            "constrainedBy"
+          ],
+          "title": "Predicate",
+          "type": "string"
+        },
+        "sourceEntityId": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+          "title": "Sourceentityid",
+          "type": "string"
+        },
+        "targetEntityId": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+          "title": "Targetentityid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "predicate",
+        "sourceEntityId",
+        "targetEntityId",
+        "evidence",
+        "confidence"
+      ],
+      "title": "RelationCandidateOutput",
+      "type": "object"
+    },
+    "RelationTriggerV1": {
+      "additionalProperties": false,
+      "description": "A trigger quote bound to one relation's local endpoints.",
+      "properties": {
+        "predicate": {
+          "enum": [
+            "implements",
+            "blocks",
+            "dependsOn",
+            "supports",
+            "answers",
+            "resolves",
+            "constrainedBy"
+          ],
+          "title": "Predicate",
+          "type": "string"
+        },
+        "sourceEntityId": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+          "title": "Sourceentityid",
+          "type": "string"
+        },
+        "targetEntityId": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+          "title": "Targetentityid",
+          "type": "string"
+        },
+        "triggerQuote": {
+          "minLength": 1,
+          "title": "Triggerquote",
+          "type": "string"
+        }
+      },
+      "required": [
+        "predicate",
+        "sourceEntityId",
+        "targetEntityId",
+        "triggerQuote"
+      ],
+      "title": "RelationTriggerV1",
+      "type": "object"
+    },
+    "UsageMetadata": {
+      "additionalProperties": false,
+      "description": "Provider-neutral usage counters; all fields are optional and non-negative.",
+      "properties": {
+        "inputTokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Inputtokens"
+        },
+        "outputTokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Outputtokens"
+        },
+        "promptCacheHitTokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Promptcachehittokens"
+        },
+        "promptCacheMissTokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Promptcachemisstokens"
+        },
+        "reasoningTokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reasoningtokens"
+        },
+        "totalTokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Totaltokens"
+        }
+      },
+      "title": "UsageMetadata",
+      "type": "object"
+    }
+  },
+  "$id": "s12.relation-evidence-envelope.schema.v2",
+  "additionalProperties": false,
+  "description": "M3 response plus required trigger context for relation post-processing.",
+  "properties": {
+    "extraction": {
+      "$ref": "#/$defs/ExtractionResponse"
+    },
+    "relationTriggers": {
+      "items": {
+        "$ref": "#/$defs/RelationTriggerV1"
+      },
+      "title": "Relationtriggers",
+      "type": "array"
+    },
+    "schemaVersion": {
+      "const": "relation-evidence-envelope.v1",
+      "default": "relation-evidence-envelope.v1",
+      "title": "Schemaversion",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "extraction",
+    "relationTriggers"
+  ],
+  "title": "S12 relation evidence envelope provider schema v2",
+  "type": "object",
+  "x-runtime-validator": "projecta_api.extraction.relation_evidence_envelope.RelationEvidenceEnvelopeV1",
+  "x-validation-invariants": [
+    "m3.v2 entity candidateId values are present and unique",
+    "abstentionReason is mutually exclusive with extraction candidates",
+    "empty extraction requires abstentionReason",
+    "one unique relationTriggers item exists for every relation endpoint tuple",
+    "EvidenceSpan startOffset is less than endOffset"
+  ]
+}

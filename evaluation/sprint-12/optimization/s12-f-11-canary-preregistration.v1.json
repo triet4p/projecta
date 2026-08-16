@@ -1,0 +1,68 @@
+{
+  "artifactVersion": "s12.s12-f-11.canary-preregistration.v1",
+  "status": "PREREGISTERED_CANARY_PENDING_APPROVAL",
+  "experimentId": "s12-f-11",
+  "supersedes": "s12-f-10-stage-a-contract-failure-erratum.v1",
+  "purpose": "Offline schema-contract canary after f10 provider responses failed the bound envelope validator.",
+  "providerExecutionAuthorized": false,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false,
+  "provider": {
+    "model": "deepseek-v4-flash",
+    "promptVersion": "m3.prompt.v7.relation-trigger-envelope-examples",
+    "providerResponseSchema": "relation-evidence-envelope.v1",
+    "schemaArtifact": "evaluation/sprint-12/harness/relation-evidence-envelope.schema.v2.json",
+    "transport": "deepseek-chat-completions",
+    "sampling": {
+      "temperature": 0.0,
+      "topP": 1.0,
+      "maxOutputTokens": 4096
+    },
+    "timeoutSeconds": 60.0,
+    "retryPolicy": "none"
+  },
+  "sharedResponseDesign": {
+    "providerCalls": 4,
+    "branches": 8,
+    "responsesPerCase": 1,
+    "controlAndCandidateShareResponseDigest": true,
+    "controlPostProcessing": "envelope.extraction-legacy-evidence",
+    "candidatePostProcessing": "trigger-aware-server-owned-materialization"
+  },
+  "caseSelection": {
+    "path": "evaluation/sprint-12/optimization/s12-f-11-canary-case-selection.v1.json",
+    "caseCount": 4,
+    "positiveRelation": 1,
+    "abstentionRequired": 1,
+    "hardNegative": 2,
+    "languages": ["en", "ja", "mixed"],
+    "journeys": ["J2", "J3"]
+  },
+  "gates": {
+    "schemaValidResponses": "4/4",
+    "providerCalls": "4/4",
+    "retryCount": 0,
+    "rawSensitiveDataIncluded": false,
+    "heldOutInspected": false,
+    "outputOverwrite": false
+  },
+  "diagnostics": {
+    "allowed": ["errorType", "errorPath", "topLevelKeySignature", "arrayCounts"],
+    "rawProviderPayloadStored": false,
+    "rawSourceTextStored": false
+  },
+  "pricing": {
+    "artifact": "evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json",
+    "costCeilingUsd": "10.00",
+    "worstCaseCostUsd": "0.03258752",
+    "worstCaseBelowCeiling": true
+  },
+  "outputPath": "evaluation/sprint-12/optimization/s12-f-11-canary-report.v1.json",
+  "authorization": {
+    "status": "NOT_ISSUED",
+    "requiresSeparateOwnerApproval": true,
+    "mustBindExactPackageAndFreeze": true
+  }
+}

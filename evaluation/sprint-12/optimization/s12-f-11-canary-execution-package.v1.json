@@ -1,0 +1,95 @@
+{
+  "artifactVersion": "s12.s12-f-11.canary-execution-package.v1",
+  "status": "CANARY_PACKAGE_FROZEN_PENDING_AUTHORIZATION",
+  "experimentId": "s12-f-11",
+  "supersedes": "s12-f-10-execution-package.v5.json",
+  "providerExecutionAuthorized": false,
+  "executionRunnerImplemented": true,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false,
+  "executionRunner": {
+    "path": "scripts/run_sprint12_f11_canary.py",
+    "digest": "sha256:a754f43ea37c1511d279651e37e7a33d700d380429157e3df0b181f800723537"
+  },
+  "providerAdapter": {
+    "path": "scripts/sprint12_provider_adapter.py",
+    "digest": "sha256:724ad2e19113e71fc2e18b08960673c09b41b200efc23d44f649027ab31bf4e6",
+    "class": "DeepSeekProviderAdapter",
+    "transport": "deepseek-chat-completions"
+  },
+  "runtimeConfiguration": {
+    "path": "evaluation/sprint-12/harness/s12-f-11-runtime-configuration.v1.json",
+    "digest": "sha256:f93c152ff235df1fdbe3200a23c238e273b5e0c952d4f589afb851cc9a66c5a1"
+  },
+  "authorizationContract": "evaluation/sprint-12/harness/s12-f-11-canary-authorization.schema.v1.json",
+  "preregistration": "evaluation/sprint-12/optimization/s12-f-11-canary-preregistration.v1.json",
+  "providerResponseSchema": "relation-evidence-envelope.v1",
+  "schemaArtifact": {
+    "path": "evaluation/sprint-12/harness/relation-evidence-envelope.schema.v2.json",
+    "digest": "sha256:6155c564515e3632ae5f12ee1ac4863592e7dfa0ae191f9cf44d2a2cfd61bdab"
+  },
+  "prompt": {
+    "version": "m3.prompt.v7.relation-trigger-envelope-examples",
+    "path": "evaluation/sprint-12/optimization/s12-f-11-m3-prompt-v7-relation-trigger-envelope-examples.v1.txt",
+    "digest": "sha256:0919f9554b7f4c197cec47a3496ec031b203da123d2cc69efa17c3ea82ba7443"
+  },
+  "caseSelection": {
+    "path": "evaluation/sprint-12/optimization/s12-f-11-canary-case-selection.v1.json",
+    "digest": "sha256:e46eac9ad7e4849269defa1ba794a952a41ad27a635e7255682274f8834f38f6",
+    "caseCount": 4,
+    "caseIds": ["s12-a-4003", "s12-a-4008", "s12-a-4002", "s12-a-4013"]
+  },
+  "dataset": {
+    "atomic": "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json",
+    "scenario": "evaluation/sprint-12/corpus/v3-frozen/scenario-v3.frozen.v1.json",
+    "manifest": "evaluation/sprint-12/corpus/v3-frozen/atomic-manifest.v1.json",
+    "sourceSelection": "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json"
+  },
+  "pricingArtifact": "evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json",
+  "providerCalls": 4,
+  "caseCount": 4,
+  "branchOutputs": 8,
+  "requiredSchemaValidResponses": 4,
+  "retryPolicy": "none",
+  "outputPath": "evaluation/sprint-12/optimization/s12-f-11-canary-report.v1.json",
+  "costCeilingUsd": "10.00",
+  "authorization": {
+    "status": "NOT_ISSUED",
+    "mustBindThisPackage": true,
+    "mustBindThisFreeze": true,
+    "mustBindExactCommitSha": true
+  },
+  "boundDigests": {
+    "scripts/run_sprint12_f11_canary.py": "sha256:a754f43ea37c1511d279651e37e7a33d700d380429157e3df0b181f800723537",
+    "scripts/run_sprint12_next_tool_experiment.py": "sha256:1e23a9b9373dcc7420c20d8acb20754d67004bc66e1b6d4d79c6523300475dfc",
+    "scripts/sprint12_provider_adapter.py": "sha256:724ad2e19113e71fc2e18b08960673c09b41b200efc23d44f649027ab31bf4e6",
+    "scripts/sprint12_evaluator.py": "sha256:2d97704e3109588a608db5e544e1e7b742002ea32a7d8380972ddf0e45fd0810",
+    "scripts/sprint12_pricing.py": "sha256:babc33da52788e65e031b56d89464bbc4a4360edcb14b1cc5cd5d33a2109486b",
+    "scripts/shared_response_pairing.py": "sha256:c163e0d05cc12630f59f8a6d24b4d7efc975cdbba3ab4658155e4daa1405e338",
+    "apps/api/src/projecta_api/extraction/relation_evidence_envelope.py": "sha256:63fca079c2c2060984e5efd64ec3533fe113c5d605ec5a510b05f62c17a2b21b",
+    "apps/api/src/projecta_api/extraction/contracts.py": "sha256:f889260141f70753b255ccb813c9d9ce6fc57cd41c2deece4b027b739dc76b34",
+    "apps/api/src/projecta_api/extraction/relation_evidence.py": "sha256:d697f4651fa2f5b00c650d3a11a25b9d9dc6a4bae49ad232e4ac89f99e322d2c",
+    "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json": "sha256:0c3795c4ff38e19c7e3ea11d3e16474cced87939a37cc00ff759dd3d39541045",
+    "evaluation/sprint-12/corpus/v3-frozen/scenario-v3.frozen.v1.json": "sha256:7d1ae95647d8d88a74ee027e21a7fd3a54f69cb288d3709bb32e63e1387ef715",
+    "evaluation/sprint-12/corpus/v3-frozen/atomic-manifest.v1.json": "sha256:4d0c08a2812db4d35dfd4058873ad1f0c5728c1b05640542c7cdab1fda98710d",
+    "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json": "sha256:54ab4640d3ef4c2e4879370c3497006638b4f60c932995f7c34b5c06d395cc8c",
+    "evaluation/sprint-12/optimization/s12-f-11-canary-case-selection.v1.json": "sha256:e46eac9ad7e4849269defa1ba794a952a41ad27a635e7255682274f8834f38f6",
+    "evaluation/sprint-12/harness/relation-evidence-envelope.schema.v2.json": "sha256:6155c564515e3632ae5f12ee1ac4863592e7dfa0ae191f9cf44d2a2cfd61bdab",
+    "evaluation/sprint-12/harness/s12-f-11-runtime-configuration.v1.json": "sha256:f93c152ff235df1fdbe3200a23c238e273b5e0c952d4f589afb851cc9a66c5a1",
+    "evaluation/sprint-12/harness/s12-f-11-canary-authorization.schema.v1.json": "sha256:e30fa4afbc731043cb1e6cc95e00c90005c8e3ff491da6a477904f59394eaca7",
+    "evaluation/sprint-12/harness/metric-contract.v2.json": "sha256:3168fce54a189773e9c181915348e4c2d022031ba31900412fa7485ed26ff51b",
+    "evaluation/sprint-12/harness/slice-threshold-contract.v1.json": "sha256:84ab739af415e26465f58733a82a43731d671ae17e5b4043982f862a4e456cbc",
+    "evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+    "evaluation/sprint-12/optimization/s12-f-11-m3-prompt-v7-relation-trigger-envelope-examples.v1.txt": "sha256:0919f9554b7f4c197cec47a3496ec031b203da123d2cc69efa17c3ea82ba7443",
+    "evaluation/sprint-12/optimization/s12-f-11-canary-preregistration.v1.json": "sha256:b693c80e06cde5d44510b7f1996006e99d3b456a20e86f8f0501a18e665ba4a0"
+  },
+  "constraints": [
+    "No provider capture is permitted without a separate digest-bound f11 canary authorization.",
+    "Exactly one request per case; no retry and no overwrite.",
+    "Schema failure is fail-closed and diagnostics contain structure only.",
+    "Do not inspect validation or held-out data.",
+    "A 4/4 schema-valid canary is required before any full Stage A authorization request."
+  ]
+}

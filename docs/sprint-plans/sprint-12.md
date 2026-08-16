@@ -596,6 +596,19 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   provider outcomes, actual cache-aware cost `$0.0031325392`, zero retries,
   no overwrite, and no held-out access. Stage B and promotion remain closed;
   a separate decision artifact is required for any next governance action.
+- [x] **S12-RM-08 — Issue the f10 contract-failure erratum:** Preserve the
+  historical report and decision, while correcting the comparison-slice
+  interpretation to `NOT_EVALUABLE_SCHEMA_CONTRACT_FAILURE`. The erratum is
+  offline-only and does not retry f10 or authorize Stage B.
+- [x] **S12-RM-09 — Freeze the S12-f-11 schema canary package:** Bind the
+  Pydantic-derived envelope schema v2, prompt v7 examples, four development
+  cases, concrete adapter/runtime digests, sanitized diagnostics and exact
+  no-retry/output constraints. The package and freeze remain pending a
+  separate canary authorization; no provider call is authorized here.
+- [ ] **S12-RM-10 — Owner review and execute the S12-f-11 canary:** Requires a
+  new digest-bound authorization and exactly four development calls. A `4/4`
+  schema-valid result is required before any full Stage A authorization can be
+  considered; no f10 authorization may be reused.
 
 #### Phase F-S — Candidate Selection Resume Path
 

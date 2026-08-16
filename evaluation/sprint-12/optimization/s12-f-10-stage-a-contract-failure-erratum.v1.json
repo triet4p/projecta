@@ -1,0 +1,57 @@
+{
+  "artifactVersion": "s12.s12-f-10.stage-a-contract-failure-erratum.v1",
+  "status": "ISSUED_OFFLINE_CONTRACT_ERRATUM",
+  "experimentId": "s12-f-10",
+  "issuedDate": "2026-08-16",
+  "targetArtifacts": {
+    "report": {
+      "path": "evaluation/sprint-12/optimization/s12-f-10-stage-a-report.v5.json",
+      "committedBlobDigest": "sha256:47b2534bfc9f730db07230c5803864e28f151f66d3fcff7fb0fb386f9bb5400c",
+      "commit": "8fe2d7e"
+    },
+    "decision": {
+      "path": "evaluation/sprint-12/optimization/s12-f-10-stage-a-decision.v1.json",
+      "committedBlobDigest": "sha256:e2788007417a8a2b74bf3e85b0c532e475b8ed1b87f16b1d78df85c0f31e7b68",
+      "status": "COMPLETED_REJECTED_NO_STAGE_B"
+    }
+  },
+  "correction": {
+    "schemaValidBranches": 0,
+    "schemaInvalidBranches": 96,
+    "originalComparisonSliceGates": true,
+    "correctedComparisonSliceGates": "NOT_EVALUABLE_SCHEMA_CONTRACT_FAILURE",
+    "toolQualityEvaluable": false,
+    "relationQualityConclusion": "NOT_EVALUABLE",
+    "governanceConclusionUnchanged": "COMPLETED_REJECTED_NO_STAGE_B"
+  },
+  "basis": {
+    "providerTransportCompleted": true,
+    "providerCalls": 48,
+    "usageAndCostAvailable": true,
+    "distinctResponseDigests": 24,
+    "runtimeValidator": "RelationEvidenceEnvelopeV1",
+    "providerSchemaArtifact": "evaluation/sprint-12/harness/relation-evidence-envelope.schema.v1.json",
+    "providerSchemaWasUnderSpecified": true,
+    "adapterResponseFormat": "json_object",
+    "schemaEnforcedAtTransport": false,
+    "rawProviderPayloadStored": false
+  },
+  "preservation": {
+    "historicalReportUnmodified": true,
+    "historicalDecisionUnmodified": true,
+    "f10AuthorizationRetry": false,
+    "stageBAuthorized": false,
+    "heldOutInspected": false,
+    "nextProviderExecutionAuthorized": false,
+    "offlineRemediationOnly": true
+  },
+  "nextAction": {
+    "supersedingExperiment": "s12-f-11",
+    "requiredSchemaArtifact": "evaluation/sprint-12/harness/relation-evidence-envelope.schema.v2.json",
+    "canaryRequired": true,
+    "canaryCalls": 4,
+    "canarySchemaValidGate": "4/4",
+    "fullStageARequiresSeparateAuthorization": true
+  },
+  "rawSensitiveDataIncluded": false
+}

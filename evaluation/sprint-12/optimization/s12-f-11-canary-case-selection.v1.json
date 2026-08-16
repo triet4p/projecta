@@ -1,0 +1,25 @@
+{
+  "artifactVersion": "s12.s12-f-11.canary-case-selection.v1",
+  "supersedes": "s12-f-10-case-selection.v2.json",
+  "experimentId": "s12-f-11",
+  "status": "FROZEN_CANARY_SELECTION_NO_PROVIDER",
+  "datasetVersion": "s12.corpus.v3-frozen",
+  "sourceSelectionArtifact": "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json",
+  "caseCount": 4,
+  "caseIds": [
+    "s12-a-4003",
+    "s12-a-4008",
+    "s12-a-4002",
+    "s12-a-4013"
+  ],
+  "coverage": {
+    "positiveRelation": 1,
+    "abstentionRequired": 1,
+    "hardNegative": 2,
+    "languages": ["en", "ja", "mixed"],
+    "journeys": ["J2", "J3"]
+  },
+  "heldOutInspected": false,
+  "providerCallsAuthorized": false,
+  "selectionDoesNotAuthorizeExecution": true
+}

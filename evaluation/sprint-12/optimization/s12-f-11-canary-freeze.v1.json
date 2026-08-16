@@ -1,0 +1,28 @@
+{
+  "artifactVersion": "s12.s12-f-11.canary-freeze.v1",
+  "status": "FROZEN_PENDING_CANARY_AUTHORIZATION",
+  "experimentId": "s12-f-11",
+  "commitSha": null,
+  "executionPackage": "evaluation/sprint-12/optimization/s12-f-11-canary-execution-package.v1.json",
+  "executionPackageDigest": "sha256:c3e51a7aa64134cb5ec833057da0d14720eca69c1f8879df006da32b9f03294d",
+  "preregistration": "evaluation/sprint-12/optimization/s12-f-11-canary-preregistration.v1.json",
+  "preregistrationDigest": "sha256:b693c80e06cde5d44510b7f1996006e99d3b456a20e86f8f0501a18e665ba4a0",
+  "schemaArtifactDigest": "sha256:6155c564515e3632ae5f12ee1ac4863592e7dfa0ae191f9cf44d2a2cfd61bdab",
+  "promptDigest": "sha256:0919f9554b7f4c197cec47a3496ec031b203da123d2cc69efa17c3ea82ba7443",
+  "caseSelectionDigest": "sha256:e46eac9ad7e4849269defa1ba794a952a41ad27a635e7255682274f8834f38f6",
+  "runtimeConfigurationDigest": "sha256:f93c152ff235df1fdbe3200a23c238e273b5e0c952d4f589afb851cc9a66c5a1",
+  "providerExecutionAuthorized": false,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "authorization": {
+    "status": "NOT_ISSUED",
+    "requiresSeparateCanaryApproval": true,
+    "mustBindExactCommitSha": true,
+    "mustBindExactPackageDigest": true
+  },
+  "constraints": [
+    "This freeze prepares a canary only and does not authorize provider execution.",
+    "The canary must be exactly 4 development calls with no retry or overwrite.",
+    "Full Stage A remains prohibited until a new owner authorization after canary review."
+  ]
+}

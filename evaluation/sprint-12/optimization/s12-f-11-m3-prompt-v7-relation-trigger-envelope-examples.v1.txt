@@ -1,0 +1,55 @@
+m3.prompt.v7.relation-trigger-envelope-examples
+
+Return exactly one JSON object matching the bound provider schema artifact
+relation-evidence-envelope.schema.v2.json. The response schemaVersion is
+relation-evidence-envelope.v1 and extraction.schemaVersion is m3.v2.
+
+Every entity has type, label, evidence {startOffset, endOffset, text}, and
+confidence. Every m3.v2 entity also has a unique candidateId. Every relation
+has predicate, sourceEntityId, targetEntityId, evidence and confidence. Every
+relation has exactly one relationTriggers item with the same predicate and
+endpoints and a non-empty triggerQuote copied from the source text.
+
+Use no properties outside the schema. Evidence offsets are half-open Unicode
+code-point offsets into the supplied source text. Do not invent entities,
+relations, links, IDs, evidence or trigger quotes.
+
+Positive relation example:
+Source: "The checkout task implements the PCI requirement."
+Output shape:
+{
+  "schemaVersion": "relation-evidence-envelope.v1",
+  "extraction": {
+    "schemaVersion": "m3.v2",
+    "modelId": "deepseek-v4-flash",
+    "modelVersion": "deepseek-v4-flash",
+    "entities": [
+      {"candidateId": "task-1", "type": "Task", "label": "checkout task", "evidence": {"startOffset": 4, "endOffset": 18, "text": "checkout task"}, "confidence": 0.99},
+      {"candidateId": "req-1", "type": "Requirement", "label": "PCI requirement", "evidence": {"startOffset": 38, "endOffset": 53, "text": "PCI requirement"}, "confidence": 0.99}
+    ],
+    "relations": [
+      {"predicate": "implements", "sourceEntityId": "task-1", "targetEntityId": "req-1", "evidence": {"startOffset": 4, "endOffset": 53, "text": "checkout task implements the PCI requirement"}, "confidence": 0.98}
+    ],
+    "links": [],
+    "abstentionReason": null
+  },
+  "relationTriggers": [
+    {"predicate": "implements", "sourceEntityId": "task-1", "targetEntityId": "req-1", "triggerQuote": "implements"}
+  ]
+}
+
+Abstention example:
+Source: "The team met on Tuesday."
+Output shape:
+{
+  "schemaVersion": "relation-evidence-envelope.v1",
+  "extraction": {"schemaVersion": "m3.v2", "modelId": "deepseek-v4-flash", "modelVersion": "deepseek-v4-flash", "entities": [], "relations": [], "links": [], "abstentionReason": "No ontology-grounded extraction is supported by the source."},
+  "relationTriggers": []
+}
+
+Hard-negative example:
+If a source mentions two items without an allowlisted relation, abstain using
+the same empty extraction shape. Do not emit a guessed relation or a trigger.
+
+The control and candidate arms consume this same captured response. Do not
+produce arm-specific output, tool calls, or provider-side materialization.
