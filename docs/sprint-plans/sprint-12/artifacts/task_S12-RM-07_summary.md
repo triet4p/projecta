@@ -27,3 +27,7 @@ schema and semantic slice gates to fail closed. Comparison failure mirroring,
 pricing, cost, retry, shared-response and custody gates remain intact. Stage B,
 candidate selection, validation access and promotion remain closed. A separate
 decision artifact and owner review are required before any subsequent action.
+
+The execution decision is recorded in
+`evaluation/sprint-12/optimization/s12-f-10-stage-a-decision.v1.json` as
+`COMPLETED_REJECTED_NO_STAGE_B`.

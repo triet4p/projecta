@@ -1,0 +1,84 @@
+{
+  "artifactVersion": "s12.s12-f-10.stage-a-decision.v1",
+  "status": "COMPLETED_REJECTED_NO_STAGE_B",
+  "experimentId": "s12-f-10",
+  "decisionType": "STAGE_A_GOVERNANCE_DECISION",
+  "decisionRule": "registered-hard-and-semantic-gates",
+  "decisionDate": "2026-08-16",
+  "decisionBasis": {
+    "reportPath": "evaluation/sprint-12/optimization/s12-f-10-stage-a-report.v5.json",
+    "reportCommittedBlobDigest": "sha256:47b2534bfc9f730db07230c5803864e28f151f66d3fcff7fb0fb386f9bb5400c",
+    "reportCommit": "8fe2d7e",
+    "approvalBPath": "evaluation/sprint-12/optimization/s12-f-10-approval-b.v1.json",
+    "approvalBDigest": "sha256:8469d029436fa7f3c7902d0127d06cbf8f089a26a8c9afaabde433bbc44df875",
+    "approvalBCommit": "cf65934",
+    "freezePath": "evaluation/sprint-12/optimization/s12-f-10-execution-package-freeze.v5.json",
+    "freezeDigest": "sha256:7f2d2a4e8b32f7b6182ba0792b99c7461131bb431edf24eadcf39afb5bf40d95",
+    "executionPackagePath": "evaluation/sprint-12/optimization/s12-f-10-execution-package.v5.json",
+    "executionPackageDigest": "sha256:b4df95746446a8e81af596a2728c51bd4deea1f70360fc30c437bd479696b947",
+    "frozenCommit": "3a90c4c"
+  },
+  "execution": {
+    "status": "OFFLINE_RUNNER_EXECUTED",
+    "providerCalls": 48,
+    "branchOutputs": 96,
+    "retryCount": 0,
+    "oneAttemptPerCasePair": true,
+    "outputOverwritten": false,
+    "failureCounts": {
+      "schema_invalid": 96
+    },
+    "rawSensitiveDataIncluded": false,
+    "heldOutInspected": false
+  },
+  "accounting": {
+    "pricingArtifact": "evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json",
+    "pricingArtifactDigest": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+    "providerCallsPriced": 48,
+    "totalCostUsd": 0.0031325392,
+    "costCeilingUsd": "10.00",
+    "withinCostCeiling": true,
+    "pricingFailures": 0
+  },
+  "gateResults": {
+    "providerCalls": true,
+    "branchOutputs": true,
+    "retryCount": true,
+    "sharedResponseDigest": true,
+    "pricing": true,
+    "costCeiling": true,
+    "invalidEvidence": true,
+    "materializerFailures": true,
+    "comparisonSliceGates": true,
+    "schemaFailures": false,
+    "missingOutputs": false,
+    "semanticSliceGates": false
+  },
+  "governance": {
+    "candidateAvailable": false,
+    "candidateSelectionAuthorized": false,
+    "stageBAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "validationAccessAuthorized": false,
+    "promotionAuthorized": false,
+    "retryAuthorized": false,
+    "nextProviderExecutionAuthorized": false,
+    "humanReviewRequiredForNextAction": true
+  },
+  "conclusion": {
+    "summary": "Stage A is rejected for progression because all provider responses failed the bound relation-evidence-envelope.v1 validation and the registered semantic slice gates therefore failed closed.",
+    "preserveReport": true,
+    "doNotRetryThisAuthorization": true,
+    "supersedingPackageRequiredForAnyRerun": true,
+    "newApprovalRequiredForAnyRerun": true,
+    "stageBRemainsClosed": true,
+    "selectionRemainsClosed": true,
+    "promotionRemainsClosed": true
+  },
+  "nextReview": {
+    "requiredArtifact": "separate remediation or superseding-execution decision",
+    "ownerReviewRequired": true,
+    "rawProviderPayloadAvailable": false,
+    "allowedScope": "offline diagnosis and governance review only"
+  }
+}
