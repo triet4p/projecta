@@ -577,10 +577,12 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   task remains separate from Approval A/B. The v2 preflight was a false
   positive; preflight v3 now passes the v4 package with corpus/metric blob,
   exact-commit, Approval-A digest, cost-ceiling and invalid-evidence checks.
-- [ ] **S12-RM-05 — Approval A: issue preregistration and freeze only:** Issue
+- [x] **S12-RM-05 — Approval A: issue preregistration and freeze only:** Issue
   the final v3 preregistration and v4 freeze only after RM-04C passes. This
   approval does not authorize provider execution; Approval B is a separate
-  owner decision.
+  owner decision. Approval A is recorded in
+  `optimization/s12-f-10-approval-a.v1.json`; provider execution, Stage A,
+  Stage B and candidate selection remain unauthorized.
 
 #### Phase F-S — Candidate Selection Resume Path
 

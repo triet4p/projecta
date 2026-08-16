@@ -1,0 +1,33 @@
+{
+  "artifactVersion": "s12.s12-f-10.approval-a.v1",
+  "status": "APPROVED_FOR_ISSUANCE_ONLY",
+  "experimentId": "s12-f-10",
+  "approvalScope": [
+    "issue-preregistration-v3",
+    "issue-execution-package-freeze-v4"
+  ],
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "decisionDate": "2026-08-16",
+  "commitSha": "3dffcf5",
+  "freezePath": "evaluation/sprint-12/optimization/s12-f-10-execution-package-freeze.v4.json",
+  "freezeDigest": "sha256:a877266a1b490073edb74124403bfd7a6920c1738ada4454b6c97e8df77e70ff",
+  "preregistrationPath": "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v3.json",
+  "preregistrationDigest": "sha256:3a2373e8da384d4cf12dcf36d8ea0d6c37160a3fd55d3724e96f54bb5a142d89",
+  "executionPackagePath": "evaluation/sprint-12/optimization/s12-f-10-execution-package.v4.json",
+  "executionPackageDigest": "sha256:3bd9764c56296e8acef16ab1b049cfe7a731c103d7715d92f0ba962570f563ab",
+  "preauthorizationPreflight": {
+    "version": "s12.s12-f-10.preauthorization-preflight.v3",
+    "status": "PREAUTHORIZATION_READY"
+  },
+  "providerExecutionAuthorized": false,
+  "stageAAuthorized": false,
+  "stageBAuthorized": false,
+  "heldOutInspected": false,
+  "selectionStatus": "NO_SELECTION",
+  "constraints": [
+    "This approval issues only the preregistration and execution-package freeze.",
+    "A separate Approval-B artifact is required before any provider capture or Stage-A execution.",
+    "Validation and held-out data remain sealed.",
+    "Stage B and candidate selection remain closed."
+  ]
+}
