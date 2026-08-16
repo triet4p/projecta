@@ -18,7 +18,7 @@ The execution produced the immutable sanitized report at
 - Shared-response digest gate: `PASS`.
 - Raw sensitive data included: `false`.
 - Held-out inspected: `false`.
-- Report digest: `sha256:4bdb18175f76e78585c78775f5ab5106b24e2335d4eb6e1cd6528780e5736e9a`.
+- Committed report blob digest: `sha256:47b2534bfc9f730db07230c5803864e28f151f66d3fcff7fb0fb386f9bb5400c`.
 
 ## Governance result
 
