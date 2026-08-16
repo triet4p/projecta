@@ -7,7 +7,7 @@
   "executionPackage": "evaluation/sprint-12/optimization/s12-f-10-execution-package.v4.json",
   "executionPackageDigest": "sha256:3bd9764c56296e8acef16ab1b049cfe7a731c103d7715d92f0ba962570f563ab",
   "preregistration": "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v3.json",
-  "preregistrationDigest": "sha256:f8957b420ede91496cb79d997a047193112b513781428d5a783e1b0c71a81aea",
+  "preregistrationDigest": "sha256:3a2373e8da384d4cf12dcf36d8ea0d6c37160a3fd55d3724e96f54bb5a142d89",
   "caseSelectionDigest": "sha256:54ab4640d3ef4c2e4879370c3497006638b4f60c932995f7c34b5c06d395cc8c",
   "pricingDigest": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
   "metricContractDigest": "sha256:3168fce54a189773e9c181915348e4c2d022031ba31900412fa7485ed26ff51b",
