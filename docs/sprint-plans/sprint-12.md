@@ -609,6 +609,15 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   new digest-bound authorization and exactly four development calls. A `4/4`
   schema-valid result is required before any full Stage A authorization can be
   considered; no f10 authorization may be reused.
+- [x] **S12-RM-11 — Remediate the f11 canary contract blockers:** The
+  superseding v2 lineage explicitly binds four calls, corrected prompt spans,
+  sanitized diagnostics, independent attempt/response/schema/usage/pricing
+  counters, and direct authorization constraints for calls, schema-valid
+  responses, Stage B, selection and promotion. Freeze v1 at `d869443` remains
+  historical and untouched.
+- [ ] **S12-RM-12 — Re-review the superseding f11 canary lineage:** Requires
+  owner review of package/freeze v2 and a new canary authorization before any
+  provider call. No authorization or provider execution is issued by RM-11.
 
 #### Phase F-S — Candidate Selection Resume Path
 

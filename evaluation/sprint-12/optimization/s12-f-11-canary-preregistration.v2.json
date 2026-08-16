@@ -1,0 +1,70 @@
+{
+  "artifactVersion": "s12.s12-f-11.canary-preregistration.v2",
+  "supersedes": "s12-f-11-canary-preregistration.v1.json",
+  "status": "PREREGISTERED_CANARY_PENDING_AUTHORIZATION",
+  "experimentId": "s12-f-11",
+  "providerExecutionAuthorized": false,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false,
+  "provider": {
+    "model": "deepseek-v4-flash",
+    "promptVersion": "m3.prompt.v7.relation-trigger-envelope-examples",
+    "promptPath": "evaluation/sprint-12/optimization/s12-f-11-m3-prompt-v7-relation-trigger-envelope-examples.v2.txt",
+    "providerResponseSchema": "relation-evidence-envelope.v1",
+    "schemaArtifact": "evaluation/sprint-12/harness/relation-evidence-envelope.schema.v2.json",
+    "transport": "deepseek-chat-completions",
+    "maxOutputTokens": 4096,
+    "maxInputTokensPerCall": 50000,
+    "temperature": 0.0,
+    "topP": 1.0,
+    "timeoutSeconds": 60.0,
+    "retryPolicy": "none"
+  },
+  "sharedResponseDesign": {
+    "providerCalls": 4,
+    "branches": 8,
+    "responsesPerCase": 1,
+    "controlAndCandidateShareResponseDigest": true
+  },
+  "caseSelection": {
+    "path": "evaluation/sprint-12/optimization/s12-f-11-canary-case-selection.v1.json",
+    "caseCount": 4,
+    "caseIds": ["s12-a-4003", "s12-a-4008", "s12-a-4002", "s12-a-4013"],
+    "positiveRelation": 1,
+    "abstentionRequired": 1,
+    "hardNegative": 2,
+    "languages": ["en", "ja", "mixed"],
+    "journeys": ["J2", "J3"]
+  },
+  "gates": {
+    "providerCallsAttempted": "4/4",
+    "responsesReceived": "4/4",
+    "schemaValidResponses": "4/4",
+    "usageValidResponses": "4/4",
+    "providerCallsPriced": "4/4",
+    "retryCount": 0,
+    "rawSensitiveDataIncluded": false,
+    "heldOutInspected": false,
+    "outputOverwrite": false
+  },
+  "diagnostics": {
+    "allowed": ["allowlisted error type", "hashed unknown key/path", "array counts"],
+    "rawProviderPayloadStored": false,
+    "rawSourceTextStored": false
+  },
+  "pricing": {
+    "artifact": "evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json",
+    "costCeilingUsd": "10.00",
+    "worstCaseCostUsd": "0.03258752",
+    "worstCaseBelowCeiling": true
+  },
+  "outputPath": "evaluation/sprint-12/optimization/s12-f-11-canary-report.v2.json",
+  "authorization": {
+    "status": "NOT_ISSUED",
+    "requiresSeparateOwnerApproval": true,
+    "mustBindExactPackageAndFreeze": true,
+    "mustBindFourCallCounters": true
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "artifactVersion": "s12.s12-f-11.canary-authorization.schema.v2",
+  "supersedes": "s12-f-11-canary-authorization.schema.v1.json",
+  "status": "AUTHORIZATION_SCHEMA_ONLY_NOT_ISSUED",
+  "requiredStatus": "APPROVED_FOR_DEVELOPMENT_CANARY",
+  "requiredFields": [
+    "experimentId",
+    "executionPackage.digest",
+    "freezeRecord.path",
+    "freezeRecord.digest",
+    "commitSha",
+    "providerAdapter.digest",
+    "runtimeConfiguration.digest",
+    "providerExecutionAuthorized",
+    "providerCalls",
+    "requiredSchemaValidResponses",
+    "outputPath",
+    "costCeilingUsd",
+    "retryPolicy",
+    "heldOutInspected",
+    "stageBAuthorized",
+    "candidateSelectionAuthorized",
+    "promotionAuthorized"
+  ],
+  "constraints": {
+    "providerExecutionAuthorized": true,
+    "providerCalls": 4,
+    "requiredSchemaValidResponses": 4,
+    "retryPolicy": "none",
+    "heldOutInspected": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "outputMustNotExistBeforeRun": true
+  },
+  "providerExecutionAuthorized": false,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false
+}
