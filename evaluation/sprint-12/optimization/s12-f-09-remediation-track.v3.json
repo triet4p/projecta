@@ -30,6 +30,11 @@
   ],
   "freezeEvidence": {
     "artifact": "s12-f-10-execution-package-freeze.v1.json",
+    "preflight": "scripts/preflight_sprint12_f10_freeze.py",
+    "preflightDigest": "sha256:f73673b64c61458459964fe252b4d4370c329415f14954b49a37c42a52282de8",
+    "preflightTest": "scripts/tests/test_sprint12_f10_freeze_preflight.py",
+    "preflightTestDigest": "sha256:2959339a9336c1be056c882fc7894805dc0907d0c050f5b5f0005568861ba600",
+    "freezeRecordDigest": "sha256:2138d3b4850081eefc17a70e4b332e41754f66c4da63a777b5294742e71e31da",
     "commitSha": "620df83",
     "executionPackageDigest": "sha256:3d0698951462c7a7092616e4363f0c93d3a53b0a58c696f32765fc815eebdc80",
     "providerExecutionAuthorized": false,
