@@ -171,3 +171,46 @@ def test_accounting_does_not_call_usage_failure_schema_invalid(
     assert report["usageValidResponses"] == 0
     assert report["providerCallsPriced"] == 0
     assert report["failureCounts"] == {"usage_invalid": 4}
+
+
+@pytest.mark.parametrize(
+    ("field", "bad_value"),
+    [
+        ("providerCalls", 48),
+        ("requiredSchemaValidResponses", 3),
+        ("stageBAuthorized", True),
+        ("candidateSelectionAuthorized", True),
+        ("promotionAuthorized", True),
+    ],
+)
+def test_authorization_validator_enforces_canary_scope_directly(
+    field: str, bad_value: object, tmp_path: Path
+) -> None:
+    authorization = {
+        "status": "APPROVED_FOR_DEVELOPMENT_CANARY",
+        "providerExecutionAuthorized": True,
+        "providerCalls": 4,
+        "requiredSchemaValidResponses": 4,
+        "retryPolicy": "none",
+        "heldOutInspected": False,
+        "stageBAuthorized": False,
+        "candidateSelectionAuthorized": False,
+        "promotionAuthorized": False,
+        "experimentId": "s12-f-11",
+    }
+    authorization[field] = bad_value
+    path = tmp_path / "authorization.json"
+    path.write_text(json.dumps(authorization), encoding="utf-8")
+    adapter = canary.build_canary_adapter(
+        _environment(),
+        transport=_MockTransport(_provider_response(_valid_payload())),
+    )
+    with pytest.raises(canary.CanaryExecutionError, match=field):
+        canary.validate_canary_authorization(
+            {},
+            authorization_path=path,
+            package_path=ROOT
+            / "evaluation/sprint-12/optimization/s12-f-11-canary-execution-package.v2.json",
+            output_path=tmp_path / "report.json",
+            adapter=adapter,
+        )

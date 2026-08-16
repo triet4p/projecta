@@ -3,7 +3,7 @@
   "supersedes": "s12-f-11-canary-freeze.v1.json",
   "status": "FROZEN_PENDING_CANARY_AUTHORIZATION",
   "experimentId": "s12-f-11",
-  "commitSha": null,
+  "commitSha": "ed08f99",
   "executionPackage": "evaluation/sprint-12/optimization/s12-f-11-canary-execution-package.v2.json",
   "executionPackageDigest": "sha256:c9e5722d26c3c6456800e0c687c8f3ae88aa93802d335fcf789012d779c4437d",
   "preregistration": "evaluation/sprint-12/optimization/s12-f-11-canary-preregistration.v2.json",
