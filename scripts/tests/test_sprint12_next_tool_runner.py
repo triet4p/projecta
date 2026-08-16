@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -15,6 +16,7 @@ from run_sprint12_next_tool_experiment import (
     run_paired_schedule,
     validate_execution_package,
 )
+from sprint12_pricing import file_digest
 
 
 def _case_ids() -> tuple[str, ...]:
@@ -82,6 +84,12 @@ def test_authorized_mock_package_runs_only_after_all_guards(tmp_path: Path) -> N
             "executionRunnerImplemented": True,
         }
     )
+    package["executionRunner"]["digest"] = "sha256:" + hashlib.sha256(
+        (ROOT / "scripts/run_sprint12_next_tool_experiment.py").read_bytes()
+    ).hexdigest()
+    package["boundDigests"] = {
+        path: file_digest(ROOT / path) for path in package["boundDigests"]
+    }
     path = tmp_path / "approved-package.json"
     path.write_text(json.dumps(package), encoding="utf-8")
     calls: list[str] = []

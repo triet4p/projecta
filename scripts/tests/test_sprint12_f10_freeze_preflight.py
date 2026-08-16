@@ -11,12 +11,13 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from preflight_sprint12_f10_freeze import build_preflight
 
 
-def test_f10_technical_freeze_is_valid_but_authorization_remains_blocked() -> None:
+def test_historical_f10_freeze_cannot_pass_with_an_incomplete_package() -> None:
     report = build_preflight()
     assert report["status"] == (
-        "TECHNICAL_FREEZE_VALID_PENDING_PREREGISTRATION_AUTHORIZATION"
+        "NO_GO_INCOMPLETE_EXECUTION_PACKAGE_OR_FREEZE_INTEGRITY_FAILURE"
     )
-    assert all(report["checks"].values())
+    assert report["checks"]["packageStatusComplete"] is False
+    assert report["checks"]["packageRunnerImplemented"] is False
     assert report["commitSha"] == "620df83"
     assert report["providerCallsPerformed"] is False
     assert report["providerExecutionAuthorized"] is False

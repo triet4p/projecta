@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "s12.relation-evidence-envelope.v1",
+  "title": "S12 relation evidence envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "extraction", "relationTriggers"],
+  "properties": {
+    "schemaVersion": {"const": "relation-evidence-envelope.v1"},
+    "extraction": {
+      "type": "object",
+      "description": "The single provider response normalized to the released m3.v2 extraction contract.",
+      "required": ["schemaVersion", "modelId", "modelVersion", "entities", "relations", "links"],
+      "properties": {
+        "schemaVersion": {"const": "m3.v2"},
+        "modelId": {"type": "string", "minLength": 1},
+        "modelVersion": {"type": "string", "minLength": 1},
+        "entities": {"type": "array"},
+        "relations": {"type": "array"},
+        "links": {"type": "array"},
+        "abstentionReason": {"type": ["string", "null"]},
+        "usage": {"type": ["object", "null"]}
+      },
+      "additionalProperties": true
+    },
+    "relationTriggers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["predicate", "sourceEntityId", "targetEntityId", "triggerQuote"],
+        "properties": {
+          "predicate": {"enum": ["implements", "blocks", "dependsOn", "supports", "answers", "resolves", "constrainedBy"]},
+          "sourceEntityId": {"type": "string", "minLength": 1},
+          "targetEntityId": {"type": "string", "minLength": 1},
+          "triggerQuote": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

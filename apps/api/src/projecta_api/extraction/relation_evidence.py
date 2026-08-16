@@ -72,7 +72,12 @@ def materialize_relation_evidence(
                 for trigger_start, trigger_end in trigger_ranges
             ):
                 candidates.append((_trim_left(raw_text, clause_start, clause_end), _trim_right(raw_text, clause_start, clause_end)))
-        if not candidates:
+        # A required trigger is a clause-level contract.  Falling back to the
+        # whole sentence here would accept a trigger that is merely adjacent
+        # to the endpoint clause and would make the contract depend on
+        # sentence punctuation.  Legacy, trigger-free materialization keeps
+        # its sentence fallback for compatibility.
+        if not candidates and request.trigger_quote is None:
             candidates.append((_trim_left(raw_text, sentence_start, sentence_end), _trim_right(raw_text, sentence_start, sentence_end)))
 
     unique = sorted(set(candidates), key=lambda item: (item[1] - item[0], item[0], item[1]))

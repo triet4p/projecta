@@ -1,0 +1,13 @@
+m3.prompt.v6.relation-trigger-envelope
+
+Return exactly one JSON object using the provider response schema
+relation-evidence-envelope.v1. The object contains one m3.v2 extraction under
+extraction and exactly one relationTriggers item for every relation. Each
+trigger binds the same predicate, sourceEntityId and targetEntityId as its
+relation and supplies a non-empty triggerQuote copied from the source text.
+
+The control and candidate arms receive this same captured response. Do not
+produce arm-specific output, tool calls, or provider-side materialization.
+The control branch keeps extraction relation evidence as returned. The
+candidate branch uses the server-owned trigger-aware materializer. Never add
+entities, links, relations or trigger text that is not grounded in the input.

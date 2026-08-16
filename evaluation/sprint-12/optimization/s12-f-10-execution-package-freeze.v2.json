@@ -1,0 +1,22 @@
+{
+  "artifactVersion": "s12.s12-f-10.execution-package-freeze.v2",
+  "status": "FROZEN_PENDING_APPROVAL_A",
+  "experimentId": "s12-f-10",
+  "commitSha": null,
+  "executionPackage": "evaluation/sprint-12/optimization/s12-f-10-execution-package.v1.json",
+  "executionPackageDigest": "sha256:f079ab1bd07b5f381f20683645609adfac07d76831f2edd1b501cd8bb1ad1520",
+  "preregistration": "evaluation/sprint-12/optimization/s12-f-10-relation-evidence-shared-response-preregistration.v1.json",
+  "preregistrationDigest": "sha256:1c7faa4894112d9c2dc0854353b0c3e405a7c0c13f9ad3fd5f292ce005054ec6",
+  "caseSelectionDigest": "sha256:11c4ea34c623839a1a2ae058ca0ca41f3792889ea1b44941b3685e4c3e5958fa",
+  "pricingDigest": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+  "providerExecutionAuthorized": false,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "selectionStatus": "NO_SELECTION",
+  "authorization": {"status": "NOT_ISSUED", "mustBindThisFreezeRecord": true, "mustBindCommitSha": true},
+  "constraints": [
+    "Approval A may issue the preregistration and freeze only.",
+    "Provider execution remains unauthorized until Approval B.",
+    "Do not inspect held-out data or open Stage B."
+  ]
+}

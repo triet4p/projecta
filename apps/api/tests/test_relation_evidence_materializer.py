@@ -120,3 +120,18 @@ def test_materializer_fails_closed_when_required_trigger_is_missing() -> None:
     )
 
     assert materialize_relation_evidence(text, relation) is None
+
+
+def test_materializer_does_not_fallback_to_sentence_when_trigger_is_outside_clause() -> None:
+    text = "Task implements requirement, while review continues."
+    relation = RelationEvidenceRequest(
+        predicate="implements",
+        source_entity_id="task-1",
+        target_entity_id="req-1",
+        source_span=span(text, "Task"),
+        target_span=span(text, "requirement"),
+        trigger_quote="while",
+        trigger_required=True,
+    )
+
+    assert materialize_relation_evidence(text, relation) is None

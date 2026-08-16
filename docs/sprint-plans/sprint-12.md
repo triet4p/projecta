@@ -557,15 +557,26 @@ provider, inspect validation/held-out data, or authorize candidate selection.
 - [x] **S12-RM-03 — Decide trigger-quote contract:** Require
   predicate-specific `triggerQuote` for the next candidate and fail closed on
   missing/invalid trigger context; bind schema, materializer and tests.
-- [x] **S12-RM-04 — Freeze the complete execution package:** The guarded
-  runner, mocked paired schedule, draft package and offline preflight are
-  implemented and frozen in commit `620df83`, with freeze record
-  `s12-f-10-execution-package-freeze.v1.json`. Authorization remains separate
-  and unissued.
-- [ ] **S12-RM-05 — Open a new Stage A preregistration:** Issue a new experiment
-  draft (`s12-f-10-relation-evidence-shared-response-preregistration.draft.v1.json`)
-  now exists, but the preregistration and authorization remain unissued until
-  RM-04 commit freeze is complete. No provider call is implied by this draft.
+- [ ] **S12-RM-04 — Complete the executable package:** Reopen the historical
+  scaffold freeze. The draft package and v1 freeze remain immutable historical
+  evidence; RM-04 is not complete until the provider adapter boundary, shared
+  envelope runner, evaluator/slice gates, pricing, sanitized no-overwrite
+  output and canonical validation are bound together.
+- [ ] **S12-RM-04A — Freeze the runner implementation:** Prove the 48-call /
+  96-branch schedule, identical response digests, fail-closed provider/schema
+  errors, separate materializer failures and cache-aware pricing offline.
+- [ ] **S12-RM-04B — Commit the final package:** Add the final prompt, provider
+  response schema, adapter, evaluator, case selection and execution package as
+  new versioned artifacts; do not overwrite the draft or v1 freeze.
+- [ ] **S12-RM-04C — Pass preauthorization preflight:** Recompute the frozen
+  corpus profile, slice labels/denominators and blob digests from the bound
+  commit; verify output custody, canonical tests, no held-out access and no
+  authorization. This task must remain separate from Approval A/B.
+- [ ] **S12-RM-05 — Approval A: issue preregistration and freeze only:** Issue
+  `s12-f-10-relation-evidence-shared-response-preregistration.v1.json` and
+  `s12-f-10-execution-package-freeze.v2.json` only after RM-04C passes. This
+  approval does not authorize provider execution; Approval B is a separate
+  owner decision.
 
 #### Phase F-S — Candidate Selection Resume Path
 

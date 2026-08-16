@@ -39,6 +39,7 @@ def build_preflight() -> dict[str, Any]:
     freeze = _load(FREEZE)
     package_path = ROOT / freeze["executionPackage"]
     prereg_path = ROOT / freeze["preregistrationDraft"]
+    package = _load(package_path)
     checks = {
         "freezeStatus": freeze.get("status") == "FROZEN_PENDING_AUTHORIZATION",
         "commitPresentInHead": _commit_is_ancestor(str(freeze.get("commitSha", ""))),
@@ -50,6 +51,13 @@ def build_preflight() -> dict[str, Any]:
         "heldOutInspected": freeze.get("heldOutInspected") is False,
         "authorizationNotIssued": freeze.get("authorization", {}).get("status")
         == "NOT_ISSUED",
+        # The historical v1 preflight must inspect the package it claims to
+        # freeze.  Its old DRAFT_INCOMPLETE artifact intentionally makes this
+        # report fail closed; the replacement v2 preauthorization preflight
+        # handles the final package separately.
+        "packageStatusComplete": package.get("status")
+        == "EXECUTION_PACKAGE_FROZEN_PENDING_AUTHORIZATION",
+        "packageRunnerImplemented": package.get("executionRunnerImplemented") is True,
     }
     technical_freeze_valid = all(checks.values())
     return {
@@ -57,7 +65,7 @@ def build_preflight() -> dict[str, Any]:
         "status": (
             "TECHNICAL_FREEZE_VALID_PENDING_PREREGISTRATION_AUTHORIZATION"
             if technical_freeze_valid
-            else "NO_GO_FREEZE_INTEGRITY_FAILURE"
+            else "NO_GO_INCOMPLETE_EXECUTION_PACKAGE_OR_FREEZE_INTEGRITY_FAILURE"
         ),
         "checks": checks,
         "freezeRecord": FREEZE.name,
