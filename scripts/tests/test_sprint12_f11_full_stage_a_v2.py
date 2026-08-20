@@ -153,8 +153,8 @@ def test_v2_adapter_rejects_wrong_model_before_transport_call() -> None:
     assert transport.calls == []
 
 
-def test_issued_authorization_binds_exact_v2_lineage_without_execution() -> None:
-    package = runner.validate_full_package(output_path=runner.OUTPUT)
+def test_spent_authorization_binds_v3_lineage_and_rejected_report() -> None:
+    package = runner.validate_full_package()
     adapter = runner.build_adapter(merged_environment())
     authorization = runner.validate_authorization(
         package,
@@ -177,4 +177,25 @@ def test_issued_authorization_binds_exact_v2_lineage_without_execution() -> None
     assert authorization["stageBAuthorized"] is False
     assert authorization["candidateSelectionAuthorized"] is False
     assert authorization["promotionAuthorized"] is False
-    assert not runner.OUTPUT.exists()
+    assert runner.OUTPUT.is_file()
+
+    report = runner._load(runner.OUTPUT)
+    decision = runner._load(
+        ROOT
+        / "evaluation/sprint-12/optimization/"
+        "s12-f-11-full-stage-a-decision.v1.json"
+    )
+    assert report["providerCallCount"] == 48
+    assert report["branchOutputCount"] == 96
+    assert report["retryCount"] == 0
+    assert report["heldOutInspected"] is False
+    assert report["hardGates"]["invalidEvidence"] is False
+    assert report["hardGates"]["semanticSliceGates"] is False
+    assert decision["status"] == "COMPLETED_REJECTED_NO_STAGE_B"
+    assert decision["decisionBasis"]["reportDigest"] == runner._digest(runner.OUTPUT)
+    assert decision["decisionBasis"]["authorizationDigest"] == runner._digest(
+        AUTHORIZATION
+    )
+    assert decision["governance"]["stageBAuthorized"] is False
+    assert decision["governance"]["candidateSelectionAuthorized"] is False
+    assert decision["governance"]["nextProviderExecutionAuthorized"] is False
