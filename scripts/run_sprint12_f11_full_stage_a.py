@@ -183,6 +183,7 @@ def _configure_legacy_runner() -> None:
     legacy.FINAL_SLICE_CONTRACT = (
         ROOT / "evaluation/sprint-12/harness/slice-threshold-contract.v1.json"
     )
+    legacy._validate_runtime_configuration = _validate_runtime_configuration
 
 
 def _validate_runtime_configuration() -> dict[str, Any]:

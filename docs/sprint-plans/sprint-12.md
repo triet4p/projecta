@@ -631,13 +631,13 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   executable. Review status is `APPROVED_TO_PREPARE_FULL_STAGE_A_PACKAGE`, not
   execution authorization; canary authority is not reusable and no full Stage A
   package/freeze currently exists.
-- [~] **S12-RM-15 — Prepare and freeze the f11 full Stage A package:** Bind a
+- [x] **S12-RM-15 — Prepare and freeze the f11 full Stage A package:** Bind a
   development-only 16-case × 3-run shared-response experiment: 48 provider
   calls, 96 branch outputs, prompt/schema v2 lineage, full semantic evaluator,
   hard/slice gates, sanitized diagnostics, 48-call runtime/cost proof, no retry
-  or overwrite, and an exact freeze commit. Package and freeze artifacts are
-  prepared; final exact-commit binding and zero-call preflight remain in this
-  task. Do not issue authorization here.
+  or overwrite, and an exact freeze commit. Package/freeze v1 are bound to the
+  exact preparation commit and zero-call preflight passes. No authorization is
+  issued here.
 - [ ] **S12-RM-16 — Review and authorize full Stage A separately:** After RM-15
   passes reproducibility and zero-call preflight, owner may issue a new exact
   package/freeze/runtime-bound authorization. Canary authorization v1 remains
