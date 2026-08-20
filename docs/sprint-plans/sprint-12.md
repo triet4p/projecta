@@ -638,10 +638,19 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   or overwrite, and an exact freeze commit. Package/freeze v1 are bound to the
   exact preparation commit and zero-call preflight passes. No authorization is
   issued here.
+- [ ] **S12-RM-15A — Remediate the f11 full Stage A execution contract:** The
+  owner authorization review withheld RM-16 because package/freeze v1 is not
+  executable under its frozen preregistration field contract, the wrapper
+  writes the final report twice, and preflight does not prove commit-bound blob
+  reproducibility. Preserve v1 and publish a superseding preregistration,
+  package and freeze with mocked authorized end-to-end coverage; perform no
+  provider call during remediation.
 - [ ] **S12-RM-16 — Review and authorize full Stage A separately:** After RM-15
-  passes reproducibility and zero-call preflight, owner may issue a new exact
-  package/freeze/runtime-bound authorization. Canary authorization v1 remains
-  spent and cannot be reused; Stage B, selection and held-out remain closed.
+  and RM-15A pass reproducibility and zero-call preflight, owner may issue a new
+  exact package/freeze/runtime-bound authorization. Review v1 is recorded as
+  `AUTHORIZATION_WITHHELD_EXECUTION_CONTRACT_BLOCKERS`; canary authorization v1
+  remains spent and cannot be reused; Stage B, selection and held-out remain
+  closed.
 
 #### Phase F-S — Candidate Selection Resume Path
 

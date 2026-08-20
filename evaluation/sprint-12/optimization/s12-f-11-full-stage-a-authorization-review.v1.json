@@ -1,0 +1,79 @@
+{
+  "artifactVersion": "s12.s12-f-11.full-stage-a-authorization-review.v1",
+  "status": "AUTHORIZATION_WITHHELD_EXECUTION_CONTRACT_BLOCKERS",
+  "experimentId": "s12-f-11",
+  "decisionType": "OWNER_REVIEW_BEFORE_FULL_STAGE_A_AUTHORIZATION",
+  "decisionDate": "2026-08-20",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedLineage": {
+    "executionPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-execution-package.v1.json",
+      "digest": "sha256:23f8c5d594f2cfa844b07e6d8444f9579bc792b8a895d8f43798a0aec7cd4c31"
+    },
+    "freezeRecord": {
+      "path": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-freeze.v1.json",
+      "digest": "sha256:90bff208f5a33642756e01e75801dff66fd76244a799e5b3fe9ec3e1ae72914d"
+    },
+    "commitSha": "fca61ed",
+    "freezeCommitSha": "9de0880",
+    "runtimeConfiguration": {
+      "path": "evaluation/sprint-12/harness/s12-f-11-full-stage-a-runtime-configuration.v1.json",
+      "artifactDigest": "sha256:ed167917be6b429f364111c602d1bfaaa473ff2ebb1edbbb6d41d34244ac3cd2",
+      "reviewedLiveNonSecretDigest": "sha256:b82518811129685e417fc6e7c94308097ac399ee669011dfcea055c1be2b258b"
+    }
+  },
+  "verifiedEvidence": {
+    "zeroCallPreflightStatus": "PREAUTHORIZATION_READY_FULL_STAGE_A",
+    "preflightProviderCallsPerformed": 0,
+    "outputPathAbsent": true,
+    "packageTests": "7 passed",
+    "packageCommitIsAncestor": true,
+    "providerCalls": 48,
+    "branchOutputs": 96,
+    "worstCaseCostUsd": "0.39105024",
+    "costCeilingUsd": "10.00",
+    "heldOutInspected": false
+  },
+  "blockingFindings": [
+    {
+      "id": "F11-FULL-A-01",
+      "severity": "P1",
+      "summary": "The frozen preregistration and reused executor disagree on the invalid-evidence gate field.",
+      "evidence": "The executor requires hardGates.invalidEvidence == 0, while the f11 preregistration records measurementContract.invalidEvidenceHardGate == 0 and has no hardGates object.",
+      "impact": "An otherwise valid authorization reaches the executor but fails before the first provider capture, so the frozen package is not executable as preregistered.",
+      "requiredRemediation": "Publish a superseding preregistration/package/freeze lineage with one canonical gate field contract and add a mocked authorized execution test that reaches all 48 captures."
+    },
+    {
+      "id": "F11-FULL-A-02",
+      "severity": "P1",
+      "summary": "The f11 wrapper overwrites the report written by the reused executor.",
+      "evidence": "run_offline_stage_a writes output_path before returning; run_full_stage_a then mutates report metadata and writes the same output_path again.",
+      "impact": "The implementation contradicts the frozen no-overwrite constraint and weakens immutable evidence guarantees after provider execution.",
+      "requiredRemediation": "Ensure the final f11 report is assembled and persisted exactly once, with an offline regression test proving one write and refusal when the output already exists."
+    },
+    {
+      "id": "F11-FULL-A-03",
+      "severity": "P2",
+      "summary": "The zero-call preflight does not prove that the freeze commit is valid and reproducible.",
+      "evidence": "The preflight only rejects a null or empty commitSha; it does not require the SHA to be an ancestor or recompute bound blobs from that commit.",
+      "impact": "PREAUTHORIZATION_READY_FULL_STAGE_A can be emitted for a non-existent or unrelated non-empty SHA even though later authorization validation is stricter.",
+      "requiredRemediation": "Make preflight verify the exact commit ancestry and all package-bound blob digests at that commit; add tampered and unknown-SHA tests."
+    }
+  ],
+  "decision": {
+    "authorizationIssued": false,
+    "providerExecutionAuthorized": false,
+    "nextPermittedAction": "offline-remediation-and-superseding-freeze-only",
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "constraints": [
+    "Do not issue or synthesize full Stage A authorization against package/freeze v1.",
+    "Do not call the provider while remediating these findings.",
+    "Preserve package/freeze v1 as historical evidence and publish new versioned artifacts.",
+    "A passing canary remains valid evidence but does not waive full-run execution-contract defects."
+  ]
+}
