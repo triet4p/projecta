@@ -668,6 +668,12 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   prevents exact predicate/endpoint/evidence attribution. It recommends
   offline design of a two-step extractor; no f11 rerun or new preregistration
   is authorized by this task.
+- [ ] **S12-RM-19 — Owner review of the f12 two-step design proposal:** Review
+  `s12-f-12-two-step-extraction-design-proposal.v1.json`, including the
+  predicted-entities/gold-entities/gold-relations oracle arms, stage interfaces,
+  sanitized per-case relation buckets and pending thresholds. No new
+  preregistration or provider authorization exists until this review is
+  explicitly accepted.
 
 #### Phase F-S — Candidate Selection Resume Path
 

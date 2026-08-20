@@ -1,0 +1,71 @@
+{
+  "artifactVersion": "s12.s12-f-12.two-step-extraction-design-proposal.v1",
+  "status": "DRAFT_PENDING_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "proposalType": "OFFLINE_ARCHITECTURE_AND_ORACLE_ABLATION_DESIGN",
+  "decisionBoundary": "This is a design proposal, not a preregistration, authorization, execution package, or provider approval.",
+  "basis": {
+    "rcaPath": "evaluation/sprint-12/optimization/s12-f-11-offline-relation-rca.v1.json",
+    "rcaDigest": "sha256:dc0a1f0a66a268ee45f634f72f688ebd3fd7166c63559c700a597d07da3ba5e9",
+    "f11Status": "COMPLETED_REJECTED_NO_STAGE_B",
+    "providerRerunAuthorized": false
+  },
+  "hypothesis": "Separating entity detection from relation predicate/endpoint decoding will make the dominant error source measurable and allow a gold-entity oracle ablation before any new live execution is considered.",
+  "architecture": {
+    "stage1EntityDetection": {
+      "input": "source note text at runtime only",
+      "output": "typed m3.v2 entity candidates with unique candidateId, label, half-open evidence span and confidence",
+      "serverChecks": ["candidateId uniqueness", "entity type allowlist", "Unicode code-point span integrity", "source containment", "abstention consistency"],
+      "metrics": ["entity precision", "entity recall", "entity microF1", "entity macroF1", "span exactness", "entity hallucination rate", "abstention F1"]
+    },
+    "stage2RelationDecoding": {
+      "input": "stage-1 entity candidates with candidateId/type/span plus source note text",
+      "output": "allowlisted predicate and directed source/target candidateId pairs with confidence",
+      "serverChecks": ["endpoint existence", "no self relation", "predicate allowlist", "direction preservation", "one trigger binding per relation", "trigger/evidence span integrity"],
+      "metrics": ["relation semantic microF1", "relation semantic macroF1", "predicate accuracy", "endpoint direction accuracy", "missing endpoint rate", "reversed endpoint rate", "relation evidence support", "relation evidence exact", "relation hallucination rate"]
+    },
+    "serverOwnedPostProcessing": "Materialize and validate trigger-aware evidence after stage 2; model output cannot bypass endpoint or clause integrity rules."
+  },
+  "oracleAblation": {
+    "purpose": "Identify whether relation failure remains when entity detection is removed from the causal path.",
+    "arms": [
+      {"id": "predicted-entities", "stage1": "model", "stage2": "model", "interpretation": "end-to-end two-step performance"},
+      {"id": "gold-entities", "stage1": "frozen-gold", "stage2": "model", "interpretation": "relation/predicate/endpoint/evidence ceiling conditional on perfect entity detection"},
+      {"id": "gold-relations", "stage1": "frozen-gold", "stage2": "frozen-gold", "interpretation": "metric and materializer integrity ceiling only; not a model quality arm"}
+    ],
+    "requiredComparison": "Compare gold-entities against predicted-entities on the same cases, runs, prompt and provider response custody model.",
+    "rawPayloadPolicy": "Do not persist raw provider payload or source text; persist sanitized per-case bucket counts, denominators, response digests and failure types only.",
+    "notRetroactivelyExecutable": true,
+    "reason": "f11 did not persist predictions or per-relation buckets, so the gold-entity arm cannot be reconstructed from the closed report."
+  },
+  "measurementContract": {
+    "reuse": [
+      "evaluation/sprint-12/harness/metric-contract.v2.json",
+      "evaluation/sprint-12/harness/slice-threshold-contract.v1.json",
+      "evaluation/sprint-12/harness/relation-trigger-contract.v1.json"
+    ],
+    "newRequiredRecords": ["stage1EntityMetrics", "stage2RelationBuckets", "oracleAblationDenominators", "perCaseFailureClasses"],
+    "relationBuckets": ["exactMatch", "wrongSpan", "wrongPredicate", "reversedEndpoint", "missingEndpoint", "correctPredicateWrongEndpoint", "missingRelation", "extraRelation"],
+    "thresholdStatus": "NOT_SET_PENDING_OWNER_REVIEW",
+    "aggregateFromPerCaseRecordsOnly": true,
+    "zeroDenominator": "not-applicable"
+  },
+  "custodyAndGovernance": {
+    "developmentOnly": true,
+    "providerExecutionAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "f11RerunAuthorized": false,
+    "newPreregistrationIssued": false,
+    "rawSensitiveDataIncluded": false,
+    "requiredBeforeExecution": ["owner approval of architecture", "versioned stage interfaces", "threshold preregistration", "new package/freeze", "new authorization"]
+  },
+  "reviewQuestions": [
+    "Is the stage-1 entity candidate contract sufficient for downstream endpoint identity and evidence evaluation?",
+    "Should stage 2 receive source text directly, or only a server-owned entity/context representation?",
+    "Are the proposed relation buckets and oracle arms sufficient to separate entity, predicate, endpoint and evidence failures?",
+    "What hard and slice thresholds should be preregistered for a future development-only run?"
+  ]
+}
