@@ -1,0 +1,81 @@
+{
+  "artifactVersion": "s12.s12-f-11.full-stage-a-decision.v1",
+  "status": "COMPLETED_REJECTED_NO_STAGE_B",
+  "experimentId": "s12-f-11",
+  "decisionType": "STAGE_A_GOVERNANCE_DECISION",
+  "decisionRule": "registered-hard-and-semantic-gates",
+  "decisionDate": "2026-08-20",
+  "decisionBasis": {
+    "reportPath": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-report.v3.json",
+    "reportDigest": "sha256:09d9da6102f85f4ac9061389849d7e0e30c2b5c82332b2432e118e5e0b0af07d",
+    "authorizationPath": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-authorization.v2.json",
+    "authorizationDigest": "sha256:c0dcbef8924c5cb0cd6ab18ebdbde8eea4248b5db7bf400f9e91ace269961445",
+    "executionPackagePath": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-execution-package.v3.json",
+    "executionPackageDigest": "sha256:503c899700315a156178711e9ab2d4140de4cd140ed6bab4b3d2888d34c5e344",
+    "freezePath": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-freeze.v3.json",
+    "freezeDigest": "sha256:e40f04ae1f570412a74e81cf602cff440dcfaab80361d98307fb4b9426117e1d",
+    "frozenCommit": "0efab09"
+  },
+  "execution": {
+    "status": "EXECUTED_ONCE",
+    "providerCalls": 48,
+    "branchOutputs": 96,
+    "schemaValidResponses": 48,
+    "usageValidResponses": 48,
+    "providerCallsPriced": 48,
+    "retryCount": 0,
+    "oneAttemptPerCasePair": true,
+    "outputOverwritten": false,
+    "failureCounts": {"invalid_evidence": 53},
+    "rawSensitiveDataIncluded": false,
+    "heldOutInspected": false
+  },
+  "accounting": {
+    "pricingArtifact": "evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json",
+    "pricingArtifactDigest": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+    "totalCostUsd": 0.0069410656,
+    "costCeilingUsd": "10.00",
+    "withinCostCeiling": true,
+    "pricingFailures": 0
+  },
+  "gateResults": {
+    "providerCalls": true,
+    "branchOutputs": true,
+    "schemaFailures": true,
+    "usageValidResponses": true,
+    "pricing": true,
+    "costCeiling": true,
+    "retryCount": true,
+    "sharedResponseDigest": true,
+    "invalidEvidence": false,
+    "materializerFailures": false,
+    "missingOutputs": true,
+    "semanticSliceGates": false,
+    "comparisonSliceGates": true
+  },
+  "primaryMetrics": {
+    "control": {"relationSemanticMicroF1": 0.0, "relationSemanticMacroF1": 0.0, "entityMacroF1": 0.14791666666666667, "abstentionF1": 0.0, "hallucinationRate": 0.8513888888888889},
+    "candidate": {"relationSemanticMicroF1": 0.0, "relationSemanticMacroF1": 0.0, "entityMacroF1": 0.14791666666666667, "abstentionF1": 0.0, "hallucinationRate": 0.8020833333333334}
+  },
+  "governance": {
+    "candidateAvailable": false,
+    "candidateSelectionAuthorized": false,
+    "stageBAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "validationAccessAuthorized": false,
+    "promotionAuthorized": false,
+    "retryAuthorized": false,
+    "nextProviderExecutionAuthorized": false,
+    "humanReviewRequiredForNextAction": true
+  },
+  "conclusion": {
+    "summary": "The corrected full Stage A executed once with complete transport, schema, usage and pricing accounting, but the registered invalid-evidence and semantic slice gates failed closed.",
+    "preserveReport": true,
+    "doNotRetryThisAuthorization": true,
+    "stageBRemainsClosed": true,
+    "selectionRemainsClosed": true,
+    "promotionRemainsClosed": true,
+    "anyRerunRequiresSupersedingPackageAndNewOwnerAuthorization": true
+  },
+  "rawSensitiveDataIncluded": false
+}

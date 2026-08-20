@@ -1,0 +1,4013 @@
+{
+  "artifactVersion": "s12.s12-f-11.full-stage-a-report.v3",
+  "authorizationPath": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-authorization.v2.json",
+  "boundDigests": {
+    "apps/api/src/projecta_api/extraction/contracts.py": "sha256:f889260141f70753b255ccb813c9d9ce6fc57cd41c2deece4b027b739dc76b34",
+    "apps/api/src/projecta_api/extraction/relation_evidence.py": "sha256:d697f4651fa2f5b00c650d3a11a25b9d9dc6a4bae49ad232e4ac89f99e322d2c",
+    "apps/api/src/projecta_api/extraction/relation_evidence_envelope.py": "sha256:63fca079c2c2060984e5efd64ec3533fe113c5d605ec5a510b05f62c17a2b21b",
+    "evaluation/sprint-12/corpus/v3-frozen/atomic-manifest.v1.json": "sha256:4d0c08a2812db4d35dfd4058873ad1f0c5728c1b05640542c7cdab1fda98710d",
+    "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json": "sha256:0c3795c4ff38e19c7e3ea11d3e16474cced87939a37cc00ff759dd3d39541045",
+    "evaluation/sprint-12/corpus/v3-frozen/scenario-v3.frozen.v1.json": "sha256:7d1ae95647d8d88a74ee027e21a7fd3a54f69cb288d3709bb32e63e1387ef715",
+    "evaluation/sprint-12/harness/metric-contract.v2.json": "sha256:3168fce54a189773e9c181915348e4c2d022031ba31900412fa7485ed26ff51b",
+    "evaluation/sprint-12/harness/relation-evidence-envelope.schema.v2.json": "sha256:6155c564515e3632ae5f12ee1ac4863592e7dfa0ae191f9cf44d2a2cfd61bdab",
+    "evaluation/sprint-12/harness/relation-trigger-contract.v1.json": "sha256:bdfc4e62dd73da690578aa1c9fd816bd4dba153951e7c8081b8d0ae82adc6253",
+    "evaluation/sprint-12/harness/s12-f-11-full-stage-a-authorization.schema.v1.json": "sha256:e17c1d1cd97678fd52870bb094fca13b0bbc97d6eed3a8e284360688d341f23c",
+    "evaluation/sprint-12/harness/s12-f-11-full-stage-a-runtime-configuration.v1.json": "sha256:ed167917be6b429f364111c602d1bfaaa473ff2ebb1edbbb6d41d34244ac3cd2",
+    "evaluation/sprint-12/harness/slice-threshold-contract.v1.json": "sha256:84ab739af415e26465f58733a82a43731d671ae17e5b4043982f862a4e456cbc",
+    "evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+    "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json": "sha256:54ab4640d3ef4c2e4879370c3497006638b4f60c932995f7c34b5c06d395cc8c",
+    "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-preregistration.v2.json": "sha256:89ae8e95390f6283808d9ac4c457b05658d498bddc6d54d74daa4a54ab3c8bcd",
+    "evaluation/sprint-12/optimization/s12-f-11-m3-prompt-v7-relation-trigger-envelope-examples.v2.txt": "sha256:a5d1373f85e13c0323aceaab9767c6edba43bd8c77c9d5257978cb2b20cc7161",
+    "scripts/preflight_sprint12_f11_full_stage_a_v2.py": "sha256:341f8dd5e12aed546d4faac946f86491f30afb220de70f8af265fc46335f92e9",
+    "scripts/run_sprint12_f11_full_stage_a.py": "sha256:31ec81a705156487d058b933cca27655a996e2989cf746894a311120d6e739a9",
+    "scripts/run_sprint12_f11_full_stage_a_v2.py": "sha256:c27705c3b3433e64dcbed52ba462d11ffd52585896db6a118ef6084ad9ccbd6f",
+    "scripts/run_sprint12_next_tool_experiment.py": "sha256:1e23a9b9373dcc7420c20d8acb20754d67004bc66e1b6d4d79c6523300475dfc",
+    "scripts/shared_response_pairing.py": "sha256:c163e0d05cc12630f59f8a6d24b4d7efc975cdbba3ab4658155e4daa1405e338",
+    "scripts/sprint12_evaluator.py": "sha256:2d97704e3109588a608db5e544e1e7b742002ea32a7d8380972ddf0e45fd0810",
+    "scripts/sprint12_pricing.py": "sha256:babc33da52788e65e031b56d89464bbc4a4360edcb14b1cc5cd5d33a2109486b",
+    "scripts/sprint12_provider_adapter.py": "sha256:724ad2e19113e71fc2e18b08960673c09b41b200efc23d44f649027ab31bf4e6"
+  },
+  "branchOutputCount": 96,
+  "caseCount": 16,
+  "caseSelectionProfile": {
+    "abstention-required": 4,
+    "hard-negative": 4,
+    "relation-negative": 8,
+    "relation-positive": 8
+  },
+  "comparisonGates": {
+    "slices": {
+      "abstention-not-required": {
+        "checks": {
+          "abstentionF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "entityMacroF1": {
+            "candidate": 0.19722222222222224,
+            "control": 0.19722222222222224,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.7361111111111112,
+            "control": 0.8018518518518518,
+            "delta": -0.06574074074074066,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "abstention-required": {
+        "checks": {
+          "abstentionF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "entityMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 1.0,
+            "control": 1.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "all-development": {
+        "checks": {
+          "abstentionF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "entityMacroF1": {
+            "candidate": 0.14791666666666667,
+            "control": 0.14791666666666667,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.8020833333333334,
+            "control": 0.8513888888888889,
+            "delta": -0.04930555555555549,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "journey:J1": {
+        "checks": {
+          "entityMacroF1": {
+            "candidate": 0.20000000000000004,
+            "control": 0.20000000000000004,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.8333333333333334,
+            "control": 0.9,
+            "delta": -0.06666666666666665,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "journey:J2": {
+        "checks": {
+          "abstentionF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "entityMacroF1": {
+            "candidate": 0.225,
+            "control": 0.225,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.7916666666666666,
+            "control": 0.8666666666666667,
+            "delta": -0.07500000000000007,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "journey:J3": {
+        "checks": {
+          "abstentionF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "entityMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.75,
+            "control": 0.75,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "journey:J4": {
+        "checks": {
+          "abstentionF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "entityMacroF1": {
+            "candidate": 0.21666666666666667,
+            "control": 0.21666666666666667,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.8055555555555555,
+            "control": 0.8777777777777778,
+            "delta": -0.0722222222222223,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "journey:J5": {
+        "checks": {
+          "abstentionF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "entityMacroF1": {
+            "candidate": 0.06666666666666667,
+            "control": 0.06666666666666667,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.9444444444444445,
+            "control": 0.9666666666666667,
+            "delta": -0.022222222222222143,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "journey:J6": {
+        "checks": {
+          "entityMacroF1": {
+            "candidate": 0.25,
+            "control": 0.25,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.75,
+            "control": 0.8333333333333334,
+            "delta": -0.08333333333333337,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "language:en": {
+        "checks": {
+          "entityMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 1.0,
+            "control": 1.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "language:ja": {
+        "checks": {
+          "abstentionF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "entityMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.5,
+            "control": 0.5,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "language:mixed": {
+        "checks": {
+          "abstentionF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "entityMacroF1": {
+            "candidate": 0.18666666666666668,
+            "control": 0.18666666666666668,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.8333333333333334,
+            "control": 0.8955555555555555,
+            "delta": -0.06222222222222218,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "language:vi": {
+        "checks": {
+          "entityMacroF1": {
+            "candidate": 0.25,
+            "control": 0.25,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.75,
+            "control": 0.8333333333333334,
+            "delta": -0.08333333333333337,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "relation-negative": {
+        "checks": {
+          "abstentionF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "entityMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.875,
+            "control": 0.875,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      },
+      "relation-positive": {
+        "checks": {
+          "entityMacroF1": {
+            "candidate": 0.29583333333333334,
+            "control": 0.29583333333333334,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "hallucinationRate": {
+            "candidate": 0.7291666666666666,
+            "control": 0.8277777777777778,
+            "delta": -0.0986111111111112,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMacroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          },
+          "relationSemanticMicroF1": {
+            "candidate": 0.0,
+            "control": 0.0,
+            "delta": 0.0,
+            "minimumDelta": -0.01,
+            "pass": true
+          }
+        },
+        "status": "PASS"
+      }
+    },
+    "status": "PASS"
+  },
+  "executionPackagePath": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-execution-package.v3.json",
+  "experimentId": "s12-f-11",
+  "failureCounts": {
+    "invalid_evidence": 53
+  },
+  "freezePath": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-freeze.v3.json",
+  "hardGates": {
+    "branchOutputs": true,
+    "comparisonSliceGates": true,
+    "costCeiling": true,
+    "invalidEvidence": false,
+    "materializerFailures": false,
+    "missingOutputs": true,
+    "pricing": true,
+    "providerCalls": true,
+    "retryCount": true,
+    "schemaFailures": true,
+    "semanticSliceGates": false,
+    "sharedResponseDigest": true
+  },
+  "heldOutInspected": false,
+  "metricContract": {
+    "digest": "sha256:3168fce54a189773e9c181915348e4c2d022031ba31900412fa7485ed26ff51b",
+    "path": "evaluation/sprint-12/harness/metric-contract.v2.json",
+    "version": "s12.metric-contract.v2"
+  },
+  "metrics": {
+    "candidate": {
+      "primary": {
+        "abstentionF1": 0.0,
+        "caseRuns": 48,
+        "denominators": {
+          "abstentionGold": 12,
+          "allAttemptedCaseRuns": 48,
+          "relationEvidenceExactTruePositive": 0,
+          "relationEvidenceSupportTruePositive": 0,
+          "relationGold": 24,
+          "relationPredicted": 1,
+          "relationSemanticTruePositive": 0
+        },
+        "entityMacroF1": 0.14791666666666667,
+        "hallucinationRate": 0.8020833333333334,
+        "relationCaseRuns": 25,
+        "relationEvidenceExact": "not-applicable",
+        "relationEvidenceSupport": "not-applicable",
+        "relationSemanticMacroF1": 0.0,
+        "relationSemanticMicroF1": 0.0,
+        "status": "SCORED"
+      },
+      "slices": {
+        "abstention-not-required": {
+          "abstentionF1": 0.0,
+          "caseRuns": 36,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 36,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 24,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.19722222222222224,
+          "hallucinationRate": 0.7361111111111112,
+          "relationCaseRuns": 24,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "abstention-required": {
+          "abstentionF1": 0.0,
+          "caseRuns": 12,
+          "denominators": {
+            "abstentionGold": 12,
+            "allAttemptedCaseRuns": 12,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 0,
+            "relationPredicted": 1,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 1.0,
+          "relationCaseRuns": 1,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "all-development": {
+          "abstentionF1": 0.0,
+          "caseRuns": 48,
+          "denominators": {
+            "abstentionGold": 12,
+            "allAttemptedCaseRuns": 48,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 24,
+            "relationPredicted": 1,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.14791666666666667,
+          "hallucinationRate": 0.8020833333333334,
+          "relationCaseRuns": 25,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J1": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 3,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.20000000000000004,
+          "hallucinationRate": 0.8333333333333334,
+          "relationCaseRuns": 3,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J2": {
+          "abstentionF1": 0.0,
+          "caseRuns": 12,
+          "denominators": {
+            "abstentionGold": 3,
+            "allAttemptedCaseRuns": 12,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 6,
+            "relationPredicted": 1,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.225,
+          "hallucinationRate": 0.7916666666666666,
+          "relationCaseRuns": 7,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J3": {
+          "abstentionF1": 0.0,
+          "caseRuns": 12,
+          "denominators": {
+            "abstentionGold": 3,
+            "allAttemptedCaseRuns": 12,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 6,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 0.75,
+          "relationCaseRuns": 6,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J4": {
+          "abstentionF1": 0.0,
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 3,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 3,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.21666666666666667,
+          "hallucinationRate": 0.8055555555555555,
+          "relationCaseRuns": 3,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J5": {
+          "abstentionF1": 0.0,
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 3,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 3,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.06666666666666667,
+          "hallucinationRate": 0.9444444444444445,
+          "relationCaseRuns": 3,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J6": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 3,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.25,
+          "hallucinationRate": 0.75,
+          "relationCaseRuns": 3,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "language:en": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 0,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 1.0,
+          "relationCaseRuns": 0,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": "not-applicable",
+          "relationSemanticMicroF1": "not-applicable",
+          "status": "SCORED"
+        },
+        "language:ja": {
+          "abstentionF1": 0.0,
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 0,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 0.5,
+          "relationCaseRuns": 0,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": "not-applicable",
+          "relationSemanticMicroF1": "not-applicable",
+          "status": "SCORED"
+        },
+        "language:mixed": {
+          "abstentionF1": 0.0,
+          "caseRuns": 30,
+          "denominators": {
+            "abstentionGold": 12,
+            "allAttemptedCaseRuns": 30,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 18,
+            "relationPredicted": 1,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.18666666666666668,
+          "hallucinationRate": 0.8333333333333334,
+          "relationCaseRuns": 19,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "language:vi": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 6,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.25,
+          "hallucinationRate": 0.75,
+          "relationCaseRuns": 6,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "relation-negative": {
+          "abstentionF1": 0.0,
+          "caseRuns": 24,
+          "denominators": {
+            "abstentionGold": 12,
+            "allAttemptedCaseRuns": 24,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 0,
+            "relationPredicted": 1,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 0.875,
+          "relationCaseRuns": 1,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "relation-positive": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 24,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 24,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 24,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.29583333333333334,
+          "hallucinationRate": 0.7291666666666666,
+          "relationCaseRuns": 24,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        }
+      }
+    },
+    "control": {
+      "primary": {
+        "abstentionF1": 0.0,
+        "caseRuns": 48,
+        "denominators": {
+          "abstentionGold": 12,
+          "allAttemptedCaseRuns": 48,
+          "relationEvidenceExactTruePositive": 0,
+          "relationEvidenceSupportTruePositive": 0,
+          "relationGold": 24,
+          "relationPredicted": 54,
+          "relationSemanticTruePositive": 0
+        },
+        "entityMacroF1": 0.14791666666666667,
+        "hallucinationRate": 0.8513888888888889,
+        "relationCaseRuns": 42,
+        "relationEvidenceExact": "not-applicable",
+        "relationEvidenceSupport": "not-applicable",
+        "relationSemanticMacroF1": 0.0,
+        "relationSemanticMicroF1": 0.0,
+        "status": "SCORED"
+      },
+      "slices": {
+        "abstention-not-required": {
+          "abstentionF1": 0.0,
+          "caseRuns": 36,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 36,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 24,
+            "relationPredicted": 42,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.19722222222222224,
+          "hallucinationRate": 0.8018518518518518,
+          "relationCaseRuns": 30,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "abstention-required": {
+          "abstentionF1": 0.0,
+          "caseRuns": 12,
+          "denominators": {
+            "abstentionGold": 12,
+            "allAttemptedCaseRuns": 12,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 0,
+            "relationPredicted": 12,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 1.0,
+          "relationCaseRuns": 12,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "all-development": {
+          "abstentionF1": 0.0,
+          "caseRuns": 48,
+          "denominators": {
+            "abstentionGold": 12,
+            "allAttemptedCaseRuns": 48,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 24,
+            "relationPredicted": 54,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.14791666666666667,
+          "hallucinationRate": 0.8513888888888889,
+          "relationCaseRuns": 42,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J1": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 3,
+            "relationPredicted": 6,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.20000000000000004,
+          "hallucinationRate": 0.9,
+          "relationCaseRuns": 3,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J2": {
+          "abstentionF1": 0.0,
+          "caseRuns": 12,
+          "denominators": {
+            "abstentionGold": 3,
+            "allAttemptedCaseRuns": 12,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 6,
+            "relationPredicted": 15,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.225,
+          "hallucinationRate": 0.8666666666666667,
+          "relationCaseRuns": 12,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J3": {
+          "abstentionF1": 0.0,
+          "caseRuns": 12,
+          "denominators": {
+            "abstentionGold": 3,
+            "allAttemptedCaseRuns": 12,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 6,
+            "relationPredicted": 10,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 0.75,
+          "relationCaseRuns": 9,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J4": {
+          "abstentionF1": 0.0,
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 3,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 3,
+            "relationPredicted": 8,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.21666666666666667,
+          "hallucinationRate": 0.8777777777777778,
+          "relationCaseRuns": 6,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J5": {
+          "abstentionF1": 0.0,
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 3,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 3,
+            "relationPredicted": 9,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.06666666666666667,
+          "hallucinationRate": 0.9666666666666667,
+          "relationCaseRuns": 6,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "journey:J6": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 3,
+            "relationPredicted": 6,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.25,
+          "hallucinationRate": 0.8333333333333334,
+          "relationCaseRuns": 6,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "language:en": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 0,
+            "relationPredicted": 6,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 1.0,
+          "relationCaseRuns": 6,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "language:ja": {
+          "abstentionF1": 0.0,
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 0,
+            "relationPredicted": 0,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 0.5,
+          "relationCaseRuns": 0,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": "not-applicable",
+          "relationSemanticMicroF1": "not-applicable",
+          "status": "SCORED"
+        },
+        "language:mixed": {
+          "abstentionF1": 0.0,
+          "caseRuns": 30,
+          "denominators": {
+            "abstentionGold": 12,
+            "allAttemptedCaseRuns": 30,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 18,
+            "relationPredicted": 42,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.18666666666666668,
+          "hallucinationRate": 0.8955555555555555,
+          "relationCaseRuns": 30,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "language:vi": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 6,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 6,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 6,
+            "relationPredicted": 6,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.25,
+          "hallucinationRate": 0.8333333333333334,
+          "relationCaseRuns": 6,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "relation-negative": {
+          "abstentionF1": 0.0,
+          "caseRuns": 24,
+          "denominators": {
+            "abstentionGold": 12,
+            "allAttemptedCaseRuns": 24,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 0,
+            "relationPredicted": 18,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.0,
+          "hallucinationRate": 0.875,
+          "relationCaseRuns": 18,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        },
+        "relation-positive": {
+          "abstentionF1": "not-applicable",
+          "caseRuns": 24,
+          "denominators": {
+            "abstentionGold": 0,
+            "allAttemptedCaseRuns": 24,
+            "relationEvidenceExactTruePositive": 0,
+            "relationEvidenceSupportTruePositive": 0,
+            "relationGold": 24,
+            "relationPredicted": 36,
+            "relationSemanticTruePositive": 0
+          },
+          "entityMacroF1": 0.29583333333333334,
+          "hallucinationRate": 0.8277777777777778,
+          "relationCaseRuns": 24,
+          "relationEvidenceExact": "not-applicable",
+          "relationEvidenceSupport": "not-applicable",
+          "relationSemanticMacroF1": 0.0,
+          "relationSemanticMicroF1": 0.0,
+          "status": "SCORED"
+        }
+      }
+    }
+  },
+  "pairCount": 3,
+  "preregistrationDigest": "sha256:89ae8e95390f6283808d9ac4c457b05658d498bddc6d54d74daa4a54ab3c8bcd",
+  "pricing": {
+    "artifactDigest": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+    "cacheClasses": [
+      "inputCacheHit",
+      "inputCacheMiss",
+      "output"
+    ],
+    "costCeilingGate": true,
+    "costCeilingUsd": "10.00",
+    "pricingFailures": 0,
+    "providerCallsPriced": 48,
+    "totalCostUsd": 0.0069410656
+  },
+  "providerCallCount": 48,
+  "rawSensitiveDataIncluded": false,
+  "retryCount": 0,
+  "sliceGates": {
+    "candidate": {
+      "slices": {
+        "abstention-not-required": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.19722222222222224,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.7361111111111112,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "abstention-required": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 1.0,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "all-development": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.14791666666666667,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.8020833333333334,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J1": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.20000000000000004,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.8333333333333334,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J2": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.225,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.7916666666666666,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J3": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.75,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J4": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.21666666666666667,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.8055555555555555,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J5": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.06666666666666667,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.9444444444444445,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J6": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.25,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.75,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "language:en": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 1.0,
+              "pass": false,
+              "threshold": 0.05
+            }
+          },
+          "status": "FAIL"
+        },
+        "language:ja": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.5,
+              "pass": false,
+              "threshold": 0.05
+            }
+          },
+          "status": "FAIL"
+        },
+        "language:mixed": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.18666666666666668,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.8333333333333334,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "language:vi": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.25,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.75,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "relation-negative": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.875,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "relation-positive": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.29583333333333334,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.7291666666666666,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        }
+      },
+      "status": "FAIL"
+    },
+    "control": {
+      "slices": {
+        "abstention-not-required": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.19722222222222224,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.8018518518518518,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "abstention-required": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 1.0,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "all-development": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.14791666666666667,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.8513888888888889,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J1": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.20000000000000004,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.9,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J2": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.225,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.8666666666666667,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J3": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.75,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J4": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.21666666666666667,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.8777777777777778,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J5": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.06666666666666667,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.9666666666666667,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "journey:J6": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.25,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.8333333333333334,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "language:en": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 1.0,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "language:ja": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.5,
+              "pass": false,
+              "threshold": 0.05
+            }
+          },
+          "status": "FAIL"
+        },
+        "language:mixed": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.18666666666666668,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.8955555555555555,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "language:vi": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.25,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.8333333333333334,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "relation-negative": {
+          "checks": {
+            "abstentionF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.9
+            },
+            "entityMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.875,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        },
+        "relation-positive": {
+          "checks": {
+            "entityMacroF1": {
+              "observed": 0.29583333333333334,
+              "pass": false,
+              "threshold": 0.85
+            },
+            "hallucinationRate": {
+              "observed": 0.8277777777777778,
+              "pass": false,
+              "threshold": 0.05
+            },
+            "relationSemanticMacroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            },
+            "relationSemanticMicroF1": {
+              "observed": 0.0,
+              "pass": false,
+              "threshold": 0.8
+            }
+          },
+          "status": "FAIL"
+        }
+      },
+      "status": "FAIL"
+    }
+  },
+  "status": "OFFLINE_RUNNER_EXECUTED",
+  "trace": [
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:cbfe94075a9774330245305eaea05e5951a9fa7e532591c185a902802859c896",
+        "control": "sha256:cbfe94075a9774330245305eaea05e5951a9fa7e532591c185a902802859c896"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 2,
+          "predictionDigest": "sha256:bc15fe95617af3b4208ec2ec27c575afb25725e815ee826a1892bebaac18ca13",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:840d4b94fd2046dcfaa92295923690f984537be775cf90718f4fb196030f4f90",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4003",
+      "costUsd": 0.00056952,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 1,
+      "sourceResponseDigest": "sha256:cbfe94075a9774330245305eaea05e5951a9fa7e532591c185a902802859c896",
+      "usage": {
+        "inputTokens": 2910,
+        "outputTokens": 579,
+        "promptCacheHitTokens": 0,
+        "promptCacheMissTokens": 2910
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:c5bc328071e89492aca4117593dd2c08c14fe712db3a7f5b670989445ee5f311",
+        "control": "sha256:c5bc328071e89492aca4117593dd2c08c14fe712db3a7f5b670989445ee5f311"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:ee32aaa69bf4010c6593eab026a12db52640512a366eed2871b88f8f86c3b5c2",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:3003d6df9cb361f9408b80bf5981d562fb5cf48e6615287c8aec58d5cd3ad171",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4007",
+      "costUsd": 0.0001357048,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 2,
+      "sourceResponseDigest": "sha256:c5bc328071e89492aca4117593dd2c08c14fe712db3a7f5b670989445ee5f311",
+      "usage": {
+        "inputTokens": 2919,
+        "outputTokens": 405,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 103
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:dc6e95749f6701bcfa9196e7e028f159951ddb4876ba34e9335495333421608f",
+        "control": "sha256:dc6e95749f6701bcfa9196e7e028f159951ddb4876ba34e9335495333421608f"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 2,
+          "predictionDigest": "sha256:20d93d6d8425efc9519e2a096adab10f97086f9fd33c00ed78bafb9c524d41fb",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:3b4aa2fc89a0d41825c8974340e70b275b9b3ea5fdad135a2bca5e8a43e2db4c",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4011",
+      "costUsd": 0.0001841448,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 3,
+      "sourceResponseDigest": "sha256:dc6e95749f6701bcfa9196e7e028f159951ddb4876ba34e9335495333421608f",
+      "usage": {
+        "inputTokens": 2911,
+        "outputTokens": 582,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 95
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:104fc8cc6a2f0b9ed970ab3476e3442e9883abe8e50e4b539c51295b834def6a",
+        "control": "sha256:104fc8cc6a2f0b9ed970ab3476e3442e9883abe8e50e4b539c51295b834def6a"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:da7b009e8ddc5645eba7f69c845229dde29b3c65bbe85b408083efb9a0af26f6",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:f65a5238076358386c4d7861b332aeabbd7968113d285486e521249ccc97b590",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4015",
+      "costUsd": 0.0001357048,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 4,
+      "sourceResponseDigest": "sha256:104fc8cc6a2f0b9ed970ab3476e3442e9883abe8e50e4b539c51295b834def6a",
+      "usage": {
+        "inputTokens": 2919,
+        "outputTokens": 405,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 103
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:5b66c5390c59d694ef399b08dc5360d1b5deed4670932a8561c86cadc574ccd5",
+        "control": "sha256:5b66c5390c59d694ef399b08dc5360d1b5deed4670932a8561c86cadc574ccd5"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 2,
+          "predictionDigest": "sha256:d3e35beee0296267145b967d220aa40f7a4a36354bffef4209a9fd5658fa68cb",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:e1225ba0285c5d0685d5966f48da381fe63975d81f2e74095aad5067cc2c8778",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4019",
+      "costUsd": 0.0001852648,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 5,
+      "sourceResponseDigest": "sha256:5b66c5390c59d694ef399b08dc5360d1b5deed4670932a8561c86cadc574ccd5",
+      "usage": {
+        "inputTokens": 2911,
+        "outputTokens": 586,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 95
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:012af7d08fcbf75d7c43ab2bbc5de1aa7c70cdf3aa586d54bc85674b5fa91bff",
+        "control": "sha256:012af7d08fcbf75d7c43ab2bbc5de1aa7c70cdf3aa586d54bc85674b5fa91bff"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 2,
+          "predictionDigest": "sha256:8bc1ef59f47145923869112f674f795f00b6c22db96c5444360ea8d24e8736f6",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:3c609a85a8d6d48b4e319e954c3b841f9ab823f28ceb513fa130edba3f416b6c",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4027",
+      "costUsd": 0.0001838648,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 6,
+      "sourceResponseDigest": "sha256:012af7d08fcbf75d7c43ab2bbc5de1aa7c70cdf3aa586d54bc85674b5fa91bff",
+      "usage": {
+        "inputTokens": 2911,
+        "outputTokens": 581,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 95
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:5cccb3cf7ac01a0aab5d19a0ac9d2a59fcda8feff198a1fd1a1601cbf70d1da7",
+        "control": "sha256:5cccb3cf7ac01a0aab5d19a0ac9d2a59fcda8feff198a1fd1a1601cbf70d1da7"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:cf3063dc2be535ac474aba6a041954fe12fd35570a66c30ef6e7891545f0ae85",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:1788c68dbf2fe9e9bdd837a2decdf78e77195062c5ad70fe977a3d3410e1ea7c",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4035",
+      "costUsd": 0.0001275848,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 7,
+      "sourceResponseDigest": "sha256:5cccb3cf7ac01a0aab5d19a0ac9d2a59fcda8feff198a1fd1a1601cbf70d1da7",
+      "usage": {
+        "inputTokens": 2911,
+        "outputTokens": 380,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 95
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:2ae6d5375f7e58c70b11aceec0cff5d4ca81d68fe6bffecef39544f1590df058",
+        "control": "sha256:2ae6d5375f7e58c70b11aceec0cff5d4ca81d68fe6bffecef39544f1590df058"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 2,
+          "predictionDigest": "sha256:c1191fc3a8d8af9b2f105bd7eb4cbddb5d44e9ffb3693b1d3f430f818daf3498",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:70df73ffa89bcc91af798fa538c3734ab3a5760e20ae2a04bd67451f68bbe985",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4043",
+      "costUsd": 0.0001847048,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 8,
+      "sourceResponseDigest": "sha256:2ae6d5375f7e58c70b11aceec0cff5d4ca81d68fe6bffecef39544f1590df058",
+      "usage": {
+        "inputTokens": 2911,
+        "outputTokens": 584,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 95
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:989f05d39dcdfd27a2c36f399b9212c703ebe7a41d46238e9bd1b110dba77fd2",
+        "control": "sha256:989f05d39dcdfd27a2c36f399b9212c703ebe7a41d46238e9bd1b110dba77fd2"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:a42ccdceffc92cb4491d0d5fc42b9cdc878d049fec0c7111ff36917dcc4f07f8",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:a42ccdceffc92cb4491d0d5fc42b9cdc878d049fec0c7111ff36917dcc4f07f8",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4008",
+      "costUsd": 0.0001343048,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 9,
+      "sourceResponseDigest": "sha256:989f05d39dcdfd27a2c36f399b9212c703ebe7a41d46238e9bd1b110dba77fd2",
+      "usage": {
+        "inputTokens": 2913,
+        "outputTokens": 403,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 97
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:c5ead17586c483aa8e841f354aad18b29a7448d1da3218c072138a78663afb68",
+        "control": "sha256:c5ead17586c483aa8e841f354aad18b29a7448d1da3218c072138a78663afb68"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:c083aed4bf8f5111b148a2fda71e260f451a050c0a818ad2d06ea57cbf33b899",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:0a83314e8c4867ebb41ca1dd8d884250e444970ffd8457ce84738fc5b97fc6ae",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4016",
+      "costUsd": 0.0001371048,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 10,
+      "sourceResponseDigest": "sha256:c5ead17586c483aa8e841f354aad18b29a7448d1da3218c072138a78663afb68",
+      "usage": {
+        "inputTokens": 2913,
+        "outputTokens": 413,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 97
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:d9818b3404b02790913b7b0eabc33610b0143af587b330a9f3b3490213b39200",
+        "control": "sha256:d9818b3404b02790913b7b0eabc33610b0143af587b330a9f3b3490213b39200"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:b54adee8b9f2461bed46d4a82d1582512430679b69577a9ea80a63fd06768e5f",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:7fb817afba0575831a849d8cf46db4ce564a6d1d92d57712e0607e28bf01e186",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4024",
+      "costUsd": 0.0001343048,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 11,
+      "sourceResponseDigest": "sha256:d9818b3404b02790913b7b0eabc33610b0143af587b330a9f3b3490213b39200",
+      "usage": {
+        "inputTokens": 2913,
+        "outputTokens": 403,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 97
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:1c1fdd5743047cc12a7758aa923b905192c1bd99d1ec0b924a923ccf130ad7a5",
+        "control": "sha256:1c1fdd5743047cc12a7758aa923b905192c1bd99d1ec0b924a923ccf130ad7a5"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:39f9a825bd1d6e7bddc4bf7ba2a71f31dfbe29f63372de5548c773effc42ea83",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:b4876213f391a2c85f672c71bc1958d23bd8f7abf01398dae7a7a8cf932fa4bf",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4032",
+      "costUsd": 0.0001485848,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 12,
+      "sourceResponseDigest": "sha256:1c1fdd5743047cc12a7758aa923b905192c1bd99d1ec0b924a923ccf130ad7a5",
+      "usage": {
+        "inputTokens": 2913,
+        "outputTokens": 454,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 97
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:db3c0ec0cb1fee330fa5da95e10bcda289abf3916c57a24cbf76c6b97c60be6f",
+        "control": "sha256:db3c0ec0cb1fee330fa5da95e10bcda289abf3916c57a24cbf76c6b97c60be6f"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:34fb0244892aaffc8e267316382b6f812982ab2cc814091d138269415471aa29",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:a5543d5e7c64f16e4259a1be2660e6e4ee81e323fb2c52e7a6cc637ca6b2ea2b",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4002",
+      "costUsd": 0.0001218448,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 13,
+      "sourceResponseDigest": "sha256:db3c0ec0cb1fee330fa5da95e10bcda289abf3916c57a24cbf76c6b97c60be6f",
+      "usage": {
+        "inputTokens": 2902,
+        "outputTokens": 364,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 86
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:5a82264e1def8e3c4879155753beacc4c9cf50f3ac9a9c5a3807bb5a4da9fa1e",
+        "control": "sha256:5a82264e1def8e3c4879155753beacc4c9cf50f3ac9a9c5a3807bb5a4da9fa1e"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:d8f5445ff8f0ac1d3ce6860e01e4deeccfce3fecc784cb36f53c21214f6c4097",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:d8f5445ff8f0ac1d3ce6860e01e4deeccfce3fecc784cb36f53c21214f6c4097",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4013",
+      "costUsd": 4.83448e-05,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 14,
+      "sourceResponseDigest": "sha256:5a82264e1def8e3c4879155753beacc4c9cf50f3ac9a9c5a3807bb5a4da9fa1e",
+      "usage": {
+        "inputTokens": 2901,
+        "outputTokens": 102,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 85
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:3adf312fb5082bf9f5e404b91fbbc9632dc99e3ed02e416393af23a6e1b6f3ef",
+        "control": "sha256:3adf312fb5082bf9f5e404b91fbbc9632dc99e3ed02e416393af23a6e1b6f3ef"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:9f2efe65315df46195a7e48997848259d525a2dfab09e7e65ff62bfc03c7ad45",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:a3b2e7322cbc16c6cd93a1d58bcdd844c9f3e94c1cb9ccaffd74b927f4e05bed",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4034",
+      "costUsd": 0.0001225448,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 15,
+      "sourceResponseDigest": "sha256:3adf312fb5082bf9f5e404b91fbbc9632dc99e3ed02e416393af23a6e1b6f3ef",
+      "usage": {
+        "inputTokens": 2899,
+        "outputTokens": 368,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 83
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:10add8201652521489224397a5215db4cea9bd0c87b6d9fec593e6b95b21b587",
+        "control": "sha256:10add8201652521489224397a5215db4cea9bd0c87b6d9fec593e6b95b21b587"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:c71cdfe0fbab2745c277e83bf251953884ef54f499b4b429d6c30109598b0657",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:c71cdfe0fbab2745c277e83bf251953884ef54f499b4b429d6c30109598b0657",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4045",
+      "costUsd": 6.85048e-05,
+      "pairId": "pair-1",
+      "providerCallCount": 1,
+      "runNumber": 1,
+      "sequence": 16,
+      "sourceResponseDigest": "sha256:10add8201652521489224397a5215db4cea9bd0c87b6d9fec593e6b95b21b587",
+      "usage": {
+        "inputTokens": 2901,
+        "outputTokens": 174,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 85
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:499881ccfdbe58afc64a605175a51ca1a9d5242840e2bf6a3e24607fdf537a39",
+        "control": "sha256:499881ccfdbe58afc64a605175a51ca1a9d5242840e2bf6a3e24607fdf537a39"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 2,
+          "predictionDigest": "sha256:551b952dd122389fed973ed2c17e756505796b312b7ad760eaca587eb520d81c",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:f70476e4f9e516e094d8441b43b222c7e5cf64bdefc549b80d0db3e61c9da263",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4003",
+      "costUsd": 0.0001831648,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 17,
+      "sourceResponseDigest": "sha256:499881ccfdbe58afc64a605175a51ca1a9d5242840e2bf6a3e24607fdf537a39",
+      "usage": {
+        "inputTokens": 2910,
+        "outputTokens": 579,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 94
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:c5bc328071e89492aca4117593dd2c08c14fe712db3a7f5b670989445ee5f311",
+        "control": "sha256:c5bc328071e89492aca4117593dd2c08c14fe712db3a7f5b670989445ee5f311"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:ee32aaa69bf4010c6593eab026a12db52640512a366eed2871b88f8f86c3b5c2",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:3003d6df9cb361f9408b80bf5981d562fb5cf48e6615287c8aec58d5cd3ad171",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4007",
+      "costUsd": 0.0001357048,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 18,
+      "sourceResponseDigest": "sha256:c5bc328071e89492aca4117593dd2c08c14fe712db3a7f5b670989445ee5f311",
+      "usage": {
+        "inputTokens": 2919,
+        "outputTokens": 405,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 103
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:451432e9465ffc1b469fd3889db90201b0e43e096be37dced0441f556ebf39bf",
+        "control": "sha256:451432e9465ffc1b469fd3889db90201b0e43e096be37dced0441f556ebf39bf"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:b66e324bc9a3106503e6b2e75e823c673fe24110b01ccb3cc84ad17afb9a4e50",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:d83e486c7d196abe489e9003dc71e3860f171f4b97c48c657ec7b6a60c73a37c",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4011",
+      "costUsd": 0.0001281448,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 19,
+      "sourceResponseDigest": "sha256:451432e9465ffc1b469fd3889db90201b0e43e096be37dced0441f556ebf39bf",
+      "usage": {
+        "inputTokens": 2911,
+        "outputTokens": 382,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 95
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:104fc8cc6a2f0b9ed970ab3476e3442e9883abe8e50e4b539c51295b834def6a",
+        "control": "sha256:104fc8cc6a2f0b9ed970ab3476e3442e9883abe8e50e4b539c51295b834def6a"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:da7b009e8ddc5645eba7f69c845229dde29b3c65bbe85b408083efb9a0af26f6",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:f65a5238076358386c4d7861b332aeabbd7968113d285486e521249ccc97b590",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4015",
+      "costUsd": 0.0001357048,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 20,
+      "sourceResponseDigest": "sha256:104fc8cc6a2f0b9ed970ab3476e3442e9883abe8e50e4b539c51295b834def6a",
+      "usage": {
+        "inputTokens": 2919,
+        "outputTokens": 405,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 103
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:ef627633a752f146f96d151d99976c4efc057cc39aa69fa01ce0d000ee686588",
+        "control": "sha256:ef627633a752f146f96d151d99976c4efc057cc39aa69fa01ce0d000ee686588"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 2,
+          "predictionDigest": "sha256:148cda02a1a9368756ec7851b2b08b2b3d2c6a7f701f1fa239f76c8ebbc84e57",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:6cea5202191a28d2202995513e8b40d65682a56e52c0f7f57dd81359e6029223",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4019",
+      "costUsd": 0.0001852648,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 21,
+      "sourceResponseDigest": "sha256:ef627633a752f146f96d151d99976c4efc057cc39aa69fa01ce0d000ee686588",
+      "usage": {
+        "inputTokens": 2911,
+        "outputTokens": 586,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 95
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:5a60aca7c025e27932752aa2c56124c62087fdca9044c0148c71272ec2429cb8",
+        "control": "sha256:5a60aca7c025e27932752aa2c56124c62087fdca9044c0148c71272ec2429cb8"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 2,
+          "predictionDigest": "sha256:39109fc272b8dc6d33e4fd2137aa771bfc6ba58a1e0e7cebb2512c691a9d8d59",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:81bf5f965c41bd8017126244c8ed708a701c1fc5645d702f909422f51653acc0",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4027",
+      "costUsd": 0.0001838648,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 22,
+      "sourceResponseDigest": "sha256:5a60aca7c025e27932752aa2c56124c62087fdca9044c0148c71272ec2429cb8",
+      "usage": {
+        "inputTokens": 2911,
+        "outputTokens": 581,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 95
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:acf0beef4017fa5a909f8f0a8728744cc82e82129db64df6878da5c2cfbf134f",
+        "control": "sha256:acf0beef4017fa5a909f8f0a8728744cc82e82129db64df6878da5c2cfbf134f"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:7c7e920f4cff95867dcae3a175f504265fb1b5a28a5193bc75cfe000396b5069",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:cca6f329ac77f8b26d7504f85ab907126d5854bfc5cbb2bf58c1cf4568220095",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4035",
+      "costUsd": 0.0001275848,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 23,
+      "sourceResponseDigest": "sha256:acf0beef4017fa5a909f8f0a8728744cc82e82129db64df6878da5c2cfbf134f",
+      "usage": {
+        "inputTokens": 2911,
+        "outputTokens": 380,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 95
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:f74c4979c95b54b47522de2f8063ec538f724bb14663471bbb9474c401f06a3d",
+        "control": "sha256:f74c4979c95b54b47522de2f8063ec538f724bb14663471bbb9474c401f06a3d"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 2,
+          "predictionDigest": "sha256:c89e08ed67ecc06194b28f6ed6f95f4bb148f4ad96a19a6858bc9d053c6c17ec",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:872f45f0cecba9093b83be205e03d11147fc539c860f54539dc773b5d4c9dac0",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4043",
+      "costUsd": 0.0001847048,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 24,
+      "sourceResponseDigest": "sha256:f74c4979c95b54b47522de2f8063ec538f724bb14663471bbb9474c401f06a3d",
+      "usage": {
+        "inputTokens": 2911,
+        "outputTokens": 584,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 95
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:49879d22204eed28c94df054f8998c52442a9380781fa7e5b58be37a92cd64a6",
+        "control": "sha256:49879d22204eed28c94df054f8998c52442a9380781fa7e5b58be37a92cd64a6"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:c41b9cff75fd1553c8ec10e03deca048708f722f5fff0adedc9b1b3815bfc45a",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:f2d8cb44fb1fbb08c06b26124faa725cb99501c21e417178c7b11bbf678ac320",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4008",
+      "costUsd": 0.0001348648,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 25,
+      "sourceResponseDigest": "sha256:49879d22204eed28c94df054f8998c52442a9380781fa7e5b58be37a92cd64a6",
+      "usage": {
+        "inputTokens": 2913,
+        "outputTokens": 405,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 97
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:c5ead17586c483aa8e841f354aad18b29a7448d1da3218c072138a78663afb68",
+        "control": "sha256:c5ead17586c483aa8e841f354aad18b29a7448d1da3218c072138a78663afb68"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:c083aed4bf8f5111b148a2fda71e260f451a050c0a818ad2d06ea57cbf33b899",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:0a83314e8c4867ebb41ca1dd8d884250e444970ffd8457ce84738fc5b97fc6ae",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4016",
+      "costUsd": 0.0001371048,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 26,
+      "sourceResponseDigest": "sha256:c5ead17586c483aa8e841f354aad18b29a7448d1da3218c072138a78663afb68",
+      "usage": {
+        "inputTokens": 2913,
+        "outputTokens": 413,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 97
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:943aacce09768485aba69eb7a186a33ca1c97af80414aa3ca836bd213408d886",
+        "control": "sha256:943aacce09768485aba69eb7a186a33ca1c97af80414aa3ca836bd213408d886"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:de69591987de85a4498c51a435bbe63489e6ccce9da0c493c0ad0f482358b39c",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:1f35cb7890f2d02412a61f189ee2ae3d43d11227552874a8356009a4267d98e0",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4024",
+      "costUsd": 0.0001530648,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 27,
+      "sourceResponseDigest": "sha256:943aacce09768485aba69eb7a186a33ca1c97af80414aa3ca836bd213408d886",
+      "usage": {
+        "inputTokens": 2913,
+        "outputTokens": 470,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 97
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:1c1fdd5743047cc12a7758aa923b905192c1bd99d1ec0b924a923ccf130ad7a5",
+        "control": "sha256:1c1fdd5743047cc12a7758aa923b905192c1bd99d1ec0b924a923ccf130ad7a5"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:39f9a825bd1d6e7bddc4bf7ba2a71f31dfbe29f63372de5548c773effc42ea83",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:b4876213f391a2c85f672c71bc1958d23bd8f7abf01398dae7a7a8cf932fa4bf",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4032",
+      "costUsd": 0.0001485848,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 28,
+      "sourceResponseDigest": "sha256:1c1fdd5743047cc12a7758aa923b905192c1bd99d1ec0b924a923ccf130ad7a5",
+      "usage": {
+        "inputTokens": 2913,
+        "outputTokens": 454,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 97
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:a1844c704646a599e20cd8f0e6683fb8f2484064c3c6591f1d24b9448881b986",
+        "control": "sha256:a1844c704646a599e20cd8f0e6683fb8f2484064c3c6591f1d24b9448881b986"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:f7b78547824d47e56fc414eece808755d40f0f7af1a7ab991ee74201c3d1b025",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:3a87d03b06d62c60eba65986d5309c0dcfd9868173b0866b211bd50b9fedbf5c",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4002",
+      "costUsd": 0.0001218448,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 29,
+      "sourceResponseDigest": "sha256:a1844c704646a599e20cd8f0e6683fb8f2484064c3c6591f1d24b9448881b986",
+      "usage": {
+        "inputTokens": 2902,
+        "outputTokens": 364,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 86
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:5a82264e1def8e3c4879155753beacc4c9cf50f3ac9a9c5a3807bb5a4da9fa1e",
+        "control": "sha256:5a82264e1def8e3c4879155753beacc4c9cf50f3ac9a9c5a3807bb5a4da9fa1e"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:d8f5445ff8f0ac1d3ce6860e01e4deeccfce3fecc784cb36f53c21214f6c4097",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:d8f5445ff8f0ac1d3ce6860e01e4deeccfce3fecc784cb36f53c21214f6c4097",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4013",
+      "costUsd": 4.83448e-05,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 30,
+      "sourceResponseDigest": "sha256:5a82264e1def8e3c4879155753beacc4c9cf50f3ac9a9c5a3807bb5a4da9fa1e",
+      "usage": {
+        "inputTokens": 2901,
+        "outputTokens": 102,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 85
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:c0d07d5a6e26b3cb2bf4ec9c76b29710c5250521cb37eb4d95533bef4404cbef",
+        "control": "sha256:c0d07d5a6e26b3cb2bf4ec9c76b29710c5250521cb37eb4d95533bef4404cbef"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:35480a916008aaca0aafe9d7851e912f7889e4222305475d40a2a15c6dea7886",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:f4e440c336dd8a8a6e8741f94c2d9137234318d9c3301b1873328ddcbbe59841",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4034",
+      "costUsd": 0.0001225448,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 31,
+      "sourceResponseDigest": "sha256:c0d07d5a6e26b3cb2bf4ec9c76b29710c5250521cb37eb4d95533bef4404cbef",
+      "usage": {
+        "inputTokens": 2899,
+        "outputTokens": 368,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 83
+      }
+    },
+    {
+      "armOrder": [
+        "candidate",
+        "control"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:10add8201652521489224397a5215db4cea9bd0c87b6d9fec593e6b95b21b587",
+        "control": "sha256:10add8201652521489224397a5215db4cea9bd0c87b6d9fec593e6b95b21b587"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:c71cdfe0fbab2745c277e83bf251953884ef54f499b4b429d6c30109598b0657",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:c71cdfe0fbab2745c277e83bf251953884ef54f499b4b429d6c30109598b0657",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4045",
+      "costUsd": 6.85048e-05,
+      "pairId": "pair-2",
+      "providerCallCount": 1,
+      "runNumber": 2,
+      "sequence": 32,
+      "sourceResponseDigest": "sha256:10add8201652521489224397a5215db4cea9bd0c87b6d9fec593e6b95b21b587",
+      "usage": {
+        "inputTokens": 2901,
+        "outputTokens": 174,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 85
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:508415a1893408b071fc0f8902d1430d492af33fc07ea9da63d5739d495a8784",
+        "control": "sha256:508415a1893408b071fc0f8902d1430d492af33fc07ea9da63d5739d495a8784"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 2,
+          "predictionDigest": "sha256:930f66e93bfe7c802cfb3fda32e34af3c934874b87a9079a5835cac126f34956",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:2cf5ab596da89f774c2a02ad4c3b0928d8cf4bb5d9cff5ef14dfdd2792f7d5a1",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4003",
+      "costUsd": 0.0001831648,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 33,
+      "sourceResponseDigest": "sha256:508415a1893408b071fc0f8902d1430d492af33fc07ea9da63d5739d495a8784",
+      "usage": {
+        "inputTokens": 2910,
+        "outputTokens": 579,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 94
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:4c1537d4038af1ed68889e630a10b30c58dee81ccf36e7a659dd2773b8880e0e",
+        "control": "sha256:4c1537d4038af1ed68889e630a10b30c58dee81ccf36e7a659dd2773b8880e0e"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:27abdfcb8c79445a4c8e5572f5020a46949436dd7a0cf745972c651203a7247f",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:f87f885b3336589320dd1c7c5b34f132c5a1e7736623e1e47ba5cbc9dc4f175e",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4007",
+      "costUsd": 0.0001357048,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 34,
+      "sourceResponseDigest": "sha256:4c1537d4038af1ed68889e630a10b30c58dee81ccf36e7a659dd2773b8880e0e",
+      "usage": {
+        "inputTokens": 2919,
+        "outputTokens": 405,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 103
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:451432e9465ffc1b469fd3889db90201b0e43e096be37dced0441f556ebf39bf",
+        "control": "sha256:451432e9465ffc1b469fd3889db90201b0e43e096be37dced0441f556ebf39bf"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:b66e324bc9a3106503e6b2e75e823c673fe24110b01ccb3cc84ad17afb9a4e50",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:d83e486c7d196abe489e9003dc71e3860f171f4b97c48c657ec7b6a60c73a37c",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4011",
+      "costUsd": 0.0001281448,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 35,
+      "sourceResponseDigest": "sha256:451432e9465ffc1b469fd3889db90201b0e43e096be37dced0441f556ebf39bf",
+      "usage": {
+        "inputTokens": 2911,
+        "outputTokens": 382,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 95
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:104fc8cc6a2f0b9ed970ab3476e3442e9883abe8e50e4b539c51295b834def6a",
+        "control": "sha256:104fc8cc6a2f0b9ed970ab3476e3442e9883abe8e50e4b539c51295b834def6a"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:da7b009e8ddc5645eba7f69c845229dde29b3c65bbe85b408083efb9a0af26f6",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:f65a5238076358386c4d7861b332aeabbd7968113d285486e521249ccc97b590",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4015",
+      "costUsd": 0.0001357048,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 36,
+      "sourceResponseDigest": "sha256:104fc8cc6a2f0b9ed970ab3476e3442e9883abe8e50e4b539c51295b834def6a",
+      "usage": {
+        "inputTokens": 2919,
+        "outputTokens": 405,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 103
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:4259f9897c6b48f78e891743993504bd6af476c2ea1b0f83b05a9ca0d8a5c16a",
+        "control": "sha256:4259f9897c6b48f78e891743993504bd6af476c2ea1b0f83b05a9ca0d8a5c16a"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:a93b97e904090c533941f364aac6ab4729dfdd0cb17fd9d78d74e0a37fdab9ab",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:7807d7c13e8951c4e980309d1a7d4cec005fc90cc09cf85a0492b7bec03c8f88",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4019",
+      "costUsd": 0.0001284248,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 37,
+      "sourceResponseDigest": "sha256:4259f9897c6b48f78e891743993504bd6af476c2ea1b0f83b05a9ca0d8a5c16a",
+      "usage": {
+        "inputTokens": 2911,
+        "outputTokens": 383,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 95
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:012af7d08fcbf75d7c43ab2bbc5de1aa7c70cdf3aa586d54bc85674b5fa91bff",
+        "control": "sha256:012af7d08fcbf75d7c43ab2bbc5de1aa7c70cdf3aa586d54bc85674b5fa91bff"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 2,
+          "predictionDigest": "sha256:8bc1ef59f47145923869112f674f795f00b6c22db96c5444360ea8d24e8736f6",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:3c609a85a8d6d48b4e319e954c3b841f9ab823f28ceb513fa130edba3f416b6c",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4027",
+      "costUsd": 0.0001838648,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 38,
+      "sourceResponseDigest": "sha256:012af7d08fcbf75d7c43ab2bbc5de1aa7c70cdf3aa586d54bc85674b5fa91bff",
+      "usage": {
+        "inputTokens": 2911,
+        "outputTokens": 581,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 95
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:ac3a3b25b5c93613a3e20906c46ecc4edc2eb47d49c49107be83e82809e2ad4d",
+        "control": "sha256:ac3a3b25b5c93613a3e20906c46ecc4edc2eb47d49c49107be83e82809e2ad4d"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:7c7e920f4cff95867dcae3a175f504265fb1b5a28a5193bc75cfe000396b5069",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:5202adcfce2f528a0b3db043007025700dab648b1dfe3ae0c73d124f2ddc8ae0",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4035",
+      "costUsd": 0.0001275848,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 39,
+      "sourceResponseDigest": "sha256:ac3a3b25b5c93613a3e20906c46ecc4edc2eb47d49c49107be83e82809e2ad4d",
+      "usage": {
+        "inputTokens": 2911,
+        "outputTokens": 380,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 95
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:f74c4979c95b54b47522de2f8063ec538f724bb14663471bbb9474c401f06a3d",
+        "control": "sha256:f74c4979c95b54b47522de2f8063ec538f724bb14663471bbb9474c401f06a3d"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 2,
+          "predictionDigest": "sha256:c89e08ed67ecc06194b28f6ed6f95f4bb148f4ad96a19a6858bc9d053c6c17ec",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:872f45f0cecba9093b83be205e03d11147fc539c860f54539dc773b5d4c9dac0",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4043",
+      "costUsd": 0.0001847048,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 40,
+      "sourceResponseDigest": "sha256:f74c4979c95b54b47522de2f8063ec538f724bb14663471bbb9474c401f06a3d",
+      "usage": {
+        "inputTokens": 2911,
+        "outputTokens": 584,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 95
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:e4334b410c0beee4665e040095206036eefbeac5cdb33bcb37e15368cd920204",
+        "control": "sha256:e4334b410c0beee4665e040095206036eefbeac5cdb33bcb37e15368cd920204"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:fd2d540fd9f9aafd99b62e3e6dc54de748651a34a13f8bf234eb4bf8ca58aedf",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:4cbba1d903a3eaffb5d2db90018389cecdc2de4bed18cd2e74eeb07f89e52240",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4008",
+      "costUsd": 0.0001345848,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 41,
+      "sourceResponseDigest": "sha256:e4334b410c0beee4665e040095206036eefbeac5cdb33bcb37e15368cd920204",
+      "usage": {
+        "inputTokens": 2913,
+        "outputTokens": 404,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 97
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:c5ead17586c483aa8e841f354aad18b29a7448d1da3218c072138a78663afb68",
+        "control": "sha256:c5ead17586c483aa8e841f354aad18b29a7448d1da3218c072138a78663afb68"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:c083aed4bf8f5111b148a2fda71e260f451a050c0a818ad2d06ea57cbf33b899",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:0a83314e8c4867ebb41ca1dd8d884250e444970ffd8457ce84738fc5b97fc6ae",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4016",
+      "costUsd": 0.0001371048,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 42,
+      "sourceResponseDigest": "sha256:c5ead17586c483aa8e841f354aad18b29a7448d1da3218c072138a78663afb68",
+      "usage": {
+        "inputTokens": 2913,
+        "outputTokens": 413,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 97
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:0434d4b941d4ecda326c24d865784f4235cc2a1a93f1afc36639659e929b0faa",
+        "control": "sha256:0434d4b941d4ecda326c24d865784f4235cc2a1a93f1afc36639659e929b0faa"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:fcf1a6134ca561a0caed68128f9a386394892e805e9617358bd29907eeac059a",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:d5a268b5a907ff15c4c58dde95ce5e86b926bec6546e5607973711f1315d0ed3",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4024",
+      "costUsd": 0.0001343048,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 43,
+      "sourceResponseDigest": "sha256:0434d4b941d4ecda326c24d865784f4235cc2a1a93f1afc36639659e929b0faa",
+      "usage": {
+        "inputTokens": 2913,
+        "outputTokens": 403,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 97
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:f2896a95811cc2eadabd70c81d30876b0a5c8478cdd9d7d45be91e65fc29d0f9",
+        "control": "sha256:f2896a95811cc2eadabd70c81d30876b0a5c8478cdd9d7d45be91e65fc29d0f9"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:10c6e0d459d29092a0c11f97929f3fc00fbda9e22c437866150d289149aae021",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:a8aa70670bd06eafa652e9da6b4b635cdf7093efafef0abdb35591532412fd3c",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4032",
+      "costUsd": 0.0001455048,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 44,
+      "sourceResponseDigest": "sha256:f2896a95811cc2eadabd70c81d30876b0a5c8478cdd9d7d45be91e65fc29d0f9",
+      "usage": {
+        "inputTokens": 2913,
+        "outputTokens": 443,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 97
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:0031206d4b6a9ce0e9fa2c52a0bf3343fec15abbe833e407eab09cbe85b5863f",
+        "control": "sha256:0031206d4b6a9ce0e9fa2c52a0bf3343fec15abbe833e407eab09cbe85b5863f"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:6ac49c1bcd00be721cd214c16bccff9cc8cfc1214335bbebeafca181085f168a",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:c82125ef55bfd21f6b4a2233710b8c69b9d65f604805d96a7137cfae5f4c57d8",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4002",
+      "costUsd": 0.0001218448,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 45,
+      "sourceResponseDigest": "sha256:0031206d4b6a9ce0e9fa2c52a0bf3343fec15abbe833e407eab09cbe85b5863f",
+      "usage": {
+        "inputTokens": 2902,
+        "outputTokens": 364,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 86
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:5a82264e1def8e3c4879155753beacc4c9cf50f3ac9a9c5a3807bb5a4da9fa1e",
+        "control": "sha256:5a82264e1def8e3c4879155753beacc4c9cf50f3ac9a9c5a3807bb5a4da9fa1e"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:d8f5445ff8f0ac1d3ce6860e01e4deeccfce3fecc784cb36f53c21214f6c4097",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:d8f5445ff8f0ac1d3ce6860e01e4deeccfce3fecc784cb36f53c21214f6c4097",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4013",
+      "costUsd": 4.83448e-05,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 46,
+      "sourceResponseDigest": "sha256:5a82264e1def8e3c4879155753beacc4c9cf50f3ac9a9c5a3807bb5a4da9fa1e",
+      "usage": {
+        "inputTokens": 2901,
+        "outputTokens": 102,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 85
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:3adf312fb5082bf9f5e404b91fbbc9632dc99e3ed02e416393af23a6e1b6f3ef",
+        "control": "sha256:3adf312fb5082bf9f5e404b91fbbc9632dc99e3ed02e416393af23a6e1b6f3ef"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 1,
+          "predictionDigest": "sha256:9f2efe65315df46195a7e48997848259d525a2dfab09e7e65ff62bfc03c7ad45",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:a3b2e7322cbc16c6cd93a1d58bcdd844c9f3e94c1cb9ccaffd74b927f4e05bed",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4034",
+      "costUsd": 0.0001225448,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 47,
+      "sourceResponseDigest": "sha256:3adf312fb5082bf9f5e404b91fbbc9632dc99e3ed02e416393af23a6e1b6f3ef",
+      "usage": {
+        "inputTokens": 2899,
+        "outputTokens": 368,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 83
+      }
+    },
+    {
+      "armOrder": [
+        "control",
+        "candidate"
+      ],
+      "branchCount": 2,
+      "branchInputDigestMatch": true,
+      "branchInputDigests": {
+        "candidate": "sha256:10add8201652521489224397a5215db4cea9bd0c87b6d9fec593e6b95b21b587",
+        "control": "sha256:10add8201652521489224397a5215db4cea9bd0c87b6d9fec593e6b95b21b587"
+      },
+      "branches": {
+        "candidate": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:c71cdfe0fbab2745c277e83bf251953884ef54f499b4b429d6c30109598b0657",
+          "status": "ready"
+        },
+        "control": {
+          "branchOutputSchema": "m3.v2",
+          "materializerFailureCount": 0,
+          "predictionDigest": "sha256:c71cdfe0fbab2745c277e83bf251953884ef54f499b4b429d6c30109598b0657",
+          "status": "ready"
+        }
+      },
+      "caseId": "s12-a-4045",
+      "costUsd": 6.85048e-05,
+      "pairId": "pair-3",
+      "providerCallCount": 1,
+      "runNumber": 3,
+      "sequence": 48,
+      "sourceResponseDigest": "sha256:10add8201652521489224397a5215db4cea9bd0c87b6d9fec593e6b95b21b587",
+      "usage": {
+        "inputTokens": 2901,
+        "outputTokens": 174,
+        "promptCacheHitTokens": 2816,
+        "promptCacheMissTokens": 85
+      }
+    }
+  ]
+}

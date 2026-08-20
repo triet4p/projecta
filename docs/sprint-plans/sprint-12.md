@@ -652,11 +652,14 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   commit `55540e4`, the live non-secret runtime digest, fixed output, no retry
   and exact `$10.00` ceiling. Issuance performs no provider call and does not
   authorize validation, held-out, Stage B, selection or promotion.
-- [ ] **S12-RM-17 — Execute and review f11 full Stage A v2 once:** Use the new
-  RM-16 authorization exactly once for 48 shared development calls and 96
-  branch outputs. Preserve all hard/semantic/slice failures and actual cost;
-  do not retry or overwrite. A separate owner decision is required before
-  Stage B or candidate selection.
+- [x] **S12-RM-17 — Execute and review f11 full Stage A once:** The corrected
+  v3 lineage was executed exactly once under authorization v2: 48 shared
+  provider calls and 96 branches, with no retry or overwrite. The report
+  records complete usage/pricing and all hard, semantic and slice results;
+  invalid-evidence and semantic slice gates failed closed. Decision artifact
+  `s12-f-11-full-stage-a-decision.v1.json` records
+  `COMPLETED_REJECTED_NO_STAGE_B`; Stage B, selection, validation, held-out and
+  promotion remain closed pending a separate owner decision.
 
 #### Phase F-S — Candidate Selection Resume Path
 
