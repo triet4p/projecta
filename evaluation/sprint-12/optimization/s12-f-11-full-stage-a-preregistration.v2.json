@@ -1,0 +1,103 @@
+{
+  "artifactVersion": "s12.s12-f-11.full-stage-a-preregistration.v2",
+  "supersedes": "s12-f-11-full-stage-a-preregistration.v1.json",
+  "status": "PREPARED_PENDING_FULL_STAGE_A_AUTHORIZATION",
+  "experimentId": "s12-f-11",
+  "providerExecutionAuthorized": false,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false,
+  "sharedProviderResponse": {
+    "schemaVersion": "relation-evidence-envelope.v1",
+    "providerResponseSchema": "evaluation/sprint-12/harness/relation-evidence-envelope.schema.v2.json",
+    "branchOutputSchema": "m3.v2",
+    "promptVersion": "m3.prompt.v7.relation-trigger-envelope-examples",
+    "sameResponseDigestRequired": true,
+    "controlPostProcessing": "envelope.extraction-legacy-evidence",
+    "candidatePostProcessing": "trigger-aware-server-owned-materialization"
+  },
+  "execution": {
+    "caseCount": 16,
+    "independentPairedRuns": 3,
+    "providerCalls": 48,
+    "branchOutputs": 96,
+    "oneAttemptPerCasePair": true,
+    "retryPolicy": "none",
+    "outputOverwrite": false
+  },
+  "measurementContract": {
+    "metricContract": "evaluation/sprint-12/harness/metric-contract.v2.json",
+    "sliceThresholdContract": "evaluation/sprint-12/harness/slice-threshold-contract.v1.json",
+    "triggerContract": "evaluation/sprint-12/harness/relation-trigger-contract.v1.json",
+    "allNamedSlicesRequired": true,
+    "aggregateFromPerCaseRecordsOnly": true
+  },
+  "hardGates": {
+    "schemaInvalid": 0,
+    "invalidEvidence": 0,
+    "missingOutput": 0,
+    "sharedResponseDigestMismatch": 0,
+    "providerCallsPerCasePair": 1,
+    "retryCount": 0,
+    "pricingFailure": 0,
+    "providerCalls": 48,
+    "branchOutputs": 96,
+    "requiredSchemaValidResponses": 48,
+    "requiredUsageValidResponses": 48,
+    "expectedPricedCalls": 48,
+    "costCeilingUsd": "10.00"
+  },
+  "providerRuntime": {
+    "configurationPath": "evaluation/sprint-12/harness/s12-f-11-full-stage-a-runtime-configuration.v1.json",
+    "providerType": "openai-response",
+    "transport": "deepseek-chat-completions",
+    "model": "deepseek-v4-flash",
+    "promptVersion": "m3.prompt.v7.relation-trigger-envelope-examples",
+    "providerSchema": "relation-evidence-envelope.v1",
+    "sampling": {"temperature": 0.0, "topP": 1.0},
+    "timeoutSeconds": 60.0,
+    "maxOutputTokens": 4096,
+    "maxInputTokensPerCall": 50000,
+    "retryPolicy": "none",
+    "providerCalls": 48,
+    "worstCaseCostUsd": "0.39105024",
+    "costCeilingUsd": "10.00"
+  },
+  "diagnostics": {
+    "sanitizedOnly": true,
+    "allowedFields": ["errorType", "errorPath", "topLevelKeySignature", "arrayCounts"],
+    "rawProviderPayloadStored": false,
+    "rawSourceTextStored": false
+  },
+  "fixedArtifacts": {
+    "atomicCorpusPath": "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json",
+    "scenarioCorpusPath": "evaluation/sprint-12/corpus/v3-frozen/scenario-v3.frozen.v1.json",
+    "datasetManifestPath": "evaluation/sprint-12/corpus/v3-frozen/atomic-manifest.v1.json",
+    "caseSelectionPath": "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json",
+    "sliceThresholdContract": "evaluation/sprint-12/harness/slice-threshold-contract.v1.json",
+    "metricContract": "evaluation/sprint-12/harness/metric-contract.v2.json",
+    "triggerContract": "evaluation/sprint-12/harness/relation-trigger-contract.v1.json",
+    "providerResponseSchema": "evaluation/sprint-12/harness/relation-evidence-envelope.schema.v2.json",
+    "authorizationSchema": "evaluation/sprint-12/harness/s12-f-11-full-stage-a-authorization.schema.v1.json",
+    "runtimeConfiguration": "evaluation/sprint-12/harness/s12-f-11-full-stage-a-runtime-configuration.v1.json",
+    "promptArtifact": "evaluation/sprint-12/optimization/s12-f-11-m3-prompt-v7-relation-trigger-envelope-examples.v2.txt",
+    "runner": "scripts/run_sprint12_f11_full_stage_a_v2.py",
+    "providerAdapter": "scripts/sprint12_provider_adapter.py",
+    "evaluator": "scripts/sprint12_evaluator.py",
+    "pricing": "evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json"
+  },
+  "pricingContract": {
+    "artifact": "evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json",
+    "costCeilingUsd": "10.00",
+    "costMustUseProviderCalls": 48,
+    "totalCostMustNotExceedCeiling": true
+  },
+  "authorization": {
+    "status": "NOT_ISSUED",
+    "providerExecutionAuthorized": false,
+    "requiresSeparateOwnerAuthorization": true,
+    "canaryAuthorizationReuse": false
+  },
+  "rawSensitiveDataIncluded": false
+}

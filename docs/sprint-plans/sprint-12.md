@@ -638,13 +638,14 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   or overwrite, and an exact freeze commit. Package/freeze v1 are bound to the
   exact preparation commit and zero-call preflight passes. No authorization is
   issued here.
-- [ ] **S12-RM-15A — Remediate the f11 full Stage A execution contract:** The
-  owner authorization review withheld RM-16 because package/freeze v1 is not
-  executable under its frozen preregistration field contract, the wrapper
-  writes the final report twice, and preflight does not prove commit-bound blob
-  reproducibility. Preserve v1 and publish a superseding preregistration,
-  package and freeze with mocked authorized end-to-end coverage; perform no
-  provider call during remediation.
+- [x] **S12-RM-15A — Remediate the f11 full Stage A execution contract:**
+  Preserved v1 as historical evidence and published superseding v2
+  preregistration/package/freeze artifacts with one canonical top-level
+  `hardGates.invalidEvidence` contract. The v2 guarded runner stages the
+  legacy report and persists the final report once; a mocked authorized test
+  reaches exactly 48 provider captures and 96 branches without network access.
+  Exact-commit, ancestor and bound-Git-blob preflight is required and remains
+  zero-call; no provider authorization is issued.
 - [ ] **S12-RM-16 — Review and authorize full Stage A separately:** After RM-15
   and RM-15A pass reproducibility and zero-call preflight, owner may issue a new
   exact package/freeze/runtime-bound authorization. Review v1 is recorded as

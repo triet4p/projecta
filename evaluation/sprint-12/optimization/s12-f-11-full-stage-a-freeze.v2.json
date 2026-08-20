@@ -1,0 +1,19 @@
+{
+  "artifactVersion": "s12.s12-f-11.full-stage-a.freeze.v2",
+  "supersedes": "s12-f-11-full-stage-a-freeze.v1.json",
+  "status": "FROZEN_PENDING_FULL_STAGE_A_AUTHORIZATION",
+  "experimentId": "s12-f-11",
+  "commitSha": null,
+  "executionPackage": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-execution-package.v2.json",
+  "executionPackageDigest": "sha256:b578d6f41614afd4ce70aded396acecc46306c4063c08420b622fc7628bc2761",
+  "preregistration": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-preregistration.v2.json",
+  "preregistrationDigest": "sha256:89ae8e95390f6283808d9ac4c457b05658d498bddc6d54d74daa4a54ab3c8bcd",
+  "runtimeConfigurationDigest": "sha256:ed167917be6b429f364111c602d1bfaaa473ff2ebb1edbbb6d41d34244ac3cd2",
+  "providerExecutionAuthorized": false,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false,
+  "authorization": {"status": "NOT_ISSUED", "requiresSeparateOwnerAuthorization": true, "mustBindExactCommitSha": true, "mustBindExactPackageDigest": true, "canaryAuthorizationReuse": false},
+  "constraints": ["This freeze supersedes v1 and does not authorize provider execution.", "Exact-commit and exact-blob preflight is mandatory before RM-16 review.", "Stage B, selection, validation and held-out access remain sealed."]
+}
