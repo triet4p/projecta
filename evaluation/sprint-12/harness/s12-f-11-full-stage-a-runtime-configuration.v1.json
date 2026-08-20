@@ -1,0 +1,32 @@
+{
+  "artifactVersion": "s12.s12-f-11.full-stage-a.runtime-configuration.v1",
+  "status": "FROZEN_NON_SECRET_FULL_STAGE_A_RUNTIME_CONTRACT",
+  "providerType": "openai-response",
+  "transport": "deepseek-chat-completions",
+  "baseUrlEnv": "PROJECTA_LLM_BASE_URL",
+  "apiKeyEnv": "PROJECTA_LLM_API_KEY",
+  "model": "deepseek-v4-flash",
+  "promptVersion": "m3.prompt.v7.relation-trigger-envelope-examples",
+  "promptPath": "evaluation/sprint-12/optimization/s12-f-11-m3-prompt-v7-relation-trigger-envelope-examples.v2.txt",
+  "providerSchema": "relation-evidence-envelope.v1",
+  "schemaArtifactPath": "evaluation/sprint-12/harness/relation-evidence-envelope.schema.v2.json",
+  "timeoutSeconds": 60.0,
+  "maxOutputTokens": 4096,
+  "maxInputTokensPerCall": 50000,
+  "temperature": 0.0,
+  "topP": 1.0,
+  "retryPolicy": "none",
+  "expectedProviderCalls": 48,
+  "expectedBranchOutputs": 96,
+  "requiredSchemaValidResponses": 48,
+  "requiredUsageValidResponses": 48,
+  "requiredPricedCalls": 48,
+  "worstCaseCostUsd": "0.39105024",
+  "costProof": {
+    "formula": "48 * ((50000 * 0.14 + 4096 * 0.28) / 1000000)",
+    "ceilingUsd": "10.00",
+    "strictlyBelowCeiling": true
+  },
+  "apiKeyStored": false,
+  "providerPayloadStored": false
+}

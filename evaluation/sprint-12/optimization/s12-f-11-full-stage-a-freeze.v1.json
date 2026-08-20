@@ -1,0 +1,30 @@
+{
+  "artifactVersion": "s12.s12-f-11.full-stage-a.freeze.v1",
+  "status": "FROZEN_PENDING_FULL_STAGE_A_AUTHORIZATION",
+  "experimentId": "s12-f-11",
+  "commitSha": null,
+  "executionPackage": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-execution-package.v1.json",
+  "executionPackageDigest": "sha256:TO_BE_FILLED",
+  "preregistration": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-preregistration.v1.json",
+  "preregistrationDigest": "sha256:TO_BE_FILLED",
+  "runtimeConfigurationDigest": "sha256:TO_BE_FILLED",
+  "promptDigest": "sha256:a5d1373f85e13c0323aceaab9767c6edba43bd8c77c9d5257978cb2b20cc7161",
+  "schemaDigest": "sha256:6155c564515e3632ae5f12ee1ac4863592e7dfa0ae191f9cf44d2a2cfd61bdab",
+  "providerExecutionAuthorized": false,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false,
+  "authorization": {
+    "status": "NOT_ISSUED",
+    "requiresSeparateOwnerAuthorization": true,
+    "mustBindExactCommitSha": true,
+    "mustBindExactPackageDigest": true,
+    "canaryAuthorizationReuse": false
+  },
+  "constraints": [
+    "This freeze prepares full Stage A only and does not authorize provider execution.",
+    "The run, if separately authorized, is exactly 48 shared calls and 96 branch outputs.",
+    "Stage B, selection, validation and held-out access remain sealed."
+  ]
+}
