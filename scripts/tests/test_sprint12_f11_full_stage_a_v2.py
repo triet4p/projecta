@@ -19,7 +19,7 @@ from sprint12_provider_adapter import ProviderAdapterError
 AUTHORIZATION = (
     ROOT
     / "evaluation/sprint-12/optimization/"
-    "s12-f-11-full-stage-a-authorization.v1.json"
+    "s12-f-11-full-stage-a-authorization.v2.json"
 )
 
 
