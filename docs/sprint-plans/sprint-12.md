@@ -660,6 +660,14 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   `s12-f-11-full-stage-a-decision.v1.json` records
   `COMPLETED_REJECTED_NO_STAGE_B`; Stage B, selection, validation, held-out and
   promotion remain closed pending a separate owner decision.
+- [x] **S12-RM-18 — Offline f11 relation root-cause analysis:** Recomputed the
+  frozen gold profile and structural oracle relation ceiling without reading
+  raw provider payloads or held-out data. The RCA confirms an entity bottleneck
+  signal, zero relation semantic true positives, 53 candidate
+  materializer/evidence failures, and a sanitized-report limitation that
+  prevents exact predicate/endpoint/evidence attribution. It recommends
+  offline design of a two-step extractor; no f11 rerun or new preregistration
+  is authorized by this task.
 
 #### Phase F-S — Candidate Selection Resume Path
 

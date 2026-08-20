@@ -1,0 +1,105 @@
+{
+  "architectureAssessment": {
+    "preregistrationNow": false,
+    "providerRerunNow": false,
+    "reason": "The current report supports the architecture hypothesis but lacks the per-response predictions needed to preregister thresholds or claim a causal decomposition.",
+    "recommendation": "PREPARE_OFFLINE_TWO_STEP_EXTRACTION_DESIGN",
+    "requiredOracleAblation": "For any future offline replay, run step two once with gold entities and once with predicted entities; persist only sanitized per-case error buckets and digests.",
+    "stepOne": "Entity detection and typed span normalization, scored independently with entity precision/recall/F1 and abstention behavior.",
+    "stepTwo": "Relation predicate and endpoint decoding over frozen entity candidates, followed by server-owned trigger/evidence validation."
+  },
+  "artifactVersion": "s12.s12-f-11.offline-relation-rca.v1",
+  "errorDecomposition": {
+    "abstention": {
+      "interpretation": "Abstention behavior is independently failing and should be measured as its own decision head in a two-step design.",
+      "signal": "abstentionF1=0 in both arms"
+    },
+    "entityDetection": {
+      "interpretation": "Entity detection is a strong bottleneck signal, but its exact causal contribution to each relation miss cannot be recovered from this sanitized report.",
+      "signal": "entityMacroF1=0.14791666666666667 in both arms"
+    },
+    "evidenceMaterialization": {
+      "interpretation": "This is a failure count across branch materialization/evidence handling, not a provider-call count; it is downstream of the response and does not identify the upstream entity or predicate error by itself.",
+      "signal": "candidate materializer/evidence failures=53"
+    },
+    "exactBucketDecompositionAvailable": false,
+    "limitation": "The committed report stores response digests, aggregate metrics and sanitized materializer counts, but no raw payload, prediction, or per-relation bucket record. Exact entity-vs-predicate-vs-endpoint-vs-evidence attribution is therefore not identifiable retrospectively.",
+    "predicateEndpoint": {
+      "interpretation": "Predicate/endpoint correctness cannot be separated into predicate, reversed endpoint, missing endpoint and wrong endpoint buckets without per-relation sanitized instrumentation or predictions.",
+      "signal": "relation semantic true positives are 0 in both arms"
+    }
+  },
+  "experimentId": "s12-f-11",
+  "frozenProfile": {
+    "abstentionRequiredCases": 4,
+    "caseCount": 16,
+    "caseRuns": 48,
+    "goldEntitiesPerRun": 20,
+    "goldEntityInstancesAcrossRuns": 60,
+    "goldRelationInstancesAcrossRuns": 24,
+    "goldRelationsPerRun": 8,
+    "hardNegativeCases": 4,
+    "relationPositiveCases": 8,
+    "runs": 3
+  },
+  "governance": {
+    "candidateSelectionAuthorized": false,
+    "f11RerunAuthorized": false,
+    "heldOutAccess": false,
+    "nextAction": "offline design and oracle-ablation specification only",
+    "promotionAuthorized": false,
+    "stageBAuthorized": false
+  },
+  "inputs": {
+    "atomicCorpusDigest": "sha256:0c3795c4ff38e19c7e3ea11d3e16474cced87939a37cc00ff759dd3d39541045",
+    "atomicCorpusPath": "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json",
+    "caseSelectionDigest": "sha256:54ab4640d3ef4c2e4879370c3497006638b4f60c932995f7c34b5c06d395cc8c",
+    "caseSelectionPath": "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json",
+    "heldOutAccess": false,
+    "rawProviderPayloadRead": false,
+    "reportDigest": "sha256:09d9da6102f85f4ac9061389849d7e0e30c2b5c82332b2432e118e5e0b0af07d",
+    "reportPath": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-report.v3.json"
+  },
+  "observedExecutionSignals": {
+    "branchOutputs": 96,
+    "candidate": {
+      "abstentionF1": 0.0,
+      "entityMacroF1": 0.14791666666666667,
+      "hallucinationRate": 0.8020833333333334,
+      "relationGold": 24,
+      "relationPredicted": 1,
+      "relationSemanticMicroF1": 0.0,
+      "relationSemanticTruePositive": 0
+    },
+    "candidateMaterializerEvidenceFailures": 53,
+    "control": {
+      "abstentionF1": 0.0,
+      "entityMacroF1": 0.14791666666666667,
+      "hallucinationRate": 0.8513888888888889,
+      "relationGold": 24,
+      "relationPredicted": 54,
+      "relationSemanticMicroF1": 0.0,
+      "relationSemanticTruePositive": 0
+    },
+    "providerCalls": 48,
+    "retryCount": 0,
+    "totalCostUsd": 0.0069410656
+  },
+  "oracleRelationCeiling": {
+    "goldEntityEndpointResolution": {
+      "denominator": 8,
+      "numerator": 8,
+      "rate": 1.0
+    },
+    "goldEvidenceSpanValidity": {
+      "denominator": 8,
+      "numerator": 8,
+      "rate": 1.0
+    },
+    "interpretation": "With gold entities and a perfect second-stage predicate/endpoint/evidence decoder, the frozen gold labels permit a 1.0 relation ceiling. This is a structural counterfactual, not an observed model score.",
+    "perfectTwoStepRelationSemanticMacroF1": 1.0,
+    "perfectTwoStepRelationSemanticMicroF1": 1.0
+  },
+  "rawSensitiveDataIncluded": false,
+  "status": "OFFLINE_RCA_COMPLETE_WITH_SANITIZED_REPORT_LIMITATION"
+}
