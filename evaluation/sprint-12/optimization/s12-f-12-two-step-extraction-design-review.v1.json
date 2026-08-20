@@ -1,0 +1,147 @@
+{
+  "artifactVersion": "s12.s12-f-12.two-step-extraction-design-review.v1",
+  "status": "APPROVED_WITH_REQUIRED_PREPREREGISTRATION_CONDITIONS",
+  "experimentId": "s12-f-12",
+  "decisionType": "OWNER_ARCHITECTURE_AND_MEASUREMENT_REVIEW",
+  "decisionDate": "2026-08-20",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedArtifacts": {
+    "rca": {
+      "path": "evaluation/sprint-12/optimization/s12-f-11-offline-relation-rca.v1.json",
+      "digest": "sha256:dc0a1f0a66a268ee45f634f72f688ebd3fd7166c63559c700a597d07da3ba5e9",
+      "commit": "c7b13dd"
+    },
+    "proposal": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-two-step-extraction-design-proposal.v1.json",
+      "digest": "sha256:bc64c804938ee44fe3b627bc4858499b24e754a92b266d6a0c5a80f07e8098c2",
+      "commit": "9142d9d"
+    }
+  },
+  "architectureDecision": {
+    "twoStepDirectionApproved": true,
+    "stage1": "Detect typed entity spans and abstention independently; candidateId must be unique and all labels/evidence text are server-materialized from validated half-open spans.",
+    "stage2": "Decode an allowlisted predicate and directed endpoints only over a server-owned immutable candidate table. Source text may be provided at runtime as bounded server-owned context, but stage 2 cannot create, resize, retype or rename entity candidates.",
+    "postProcessing": "Trigger/evidence materialization and all endpoint, clause, allowlist and span checks remain server-owned and fail closed.",
+    "stage2DirectSourceAccessApproved": true,
+    "stage2DirectSourceAccessConditions": [
+      "The source is runtime-only and is not persisted in evaluation artifacts.",
+      "The candidate table and predicate allowlist are authoritative; source text cannot be used to invent endpoints.",
+      "Predicted-entity and gold-entity arms receive the same context policy and differ only in the candidate table."
+    ]
+  },
+  "oracleDecision": {
+    "armsApproved": [
+      "predicted-entities",
+      "gold-entities",
+      "gold-relations"
+    ],
+    "predictedAndGoldEntityCallsShareResponse": false,
+    "pairedControls": [
+      "same development cases and run order",
+      "same model, prompt template, schema, sampling, timeout and token bounds",
+      "same source-context policy and scoring contract",
+      "candidate table is the only intended arm difference"
+    ],
+    "goldRelationsArm": "Deterministic zero-provider evaluator/materializer integrity control; it is not a model score.",
+    "eligibilityRule": "A strong gold-entities arm cannot promote a weak predicted-entities arm; both applicable arm thresholds must pass."
+  },
+  "requiredMeasurementContract": {
+    "bucketModel": {
+      "requireMutuallyExclusiveAxes": true,
+      "semanticAxis": [
+        "exactMatch",
+        "wrongPredicate",
+        "reversedEndpoint",
+        "wrongEndpoint",
+        "missingRelation",
+        "extraRelation"
+      ],
+      "evidenceAxis": [
+        "exact",
+        "supportedNonExact",
+        "unsupported",
+        "missing",
+        "notApplicable"
+      ],
+      "requirements": [
+        "Version a deterministic matching and precedence algorithm before preregistration.",
+        "Each semantic prediction/gold disposition appears in exactly one semantic bucket.",
+        "Evidence buckets use the registered semantic-true-positive denominator and reconcile independently.",
+        "Per-case counts must sum to their registered denominators; aggregate only from per-case records."
+      ]
+    },
+    "minimumDenominators": {
+      "goldRelationInstancesPerArm": 24,
+      "goldAbstentionInstancesPerArm": 12,
+      "zeroDenominatorPolicy": "not-applicable-and-not-a-pass",
+      "namedSlicePolicy": "Every required named slice must have its preregistered minimum denominator or the experiment is ineligible."
+    }
+  },
+  "approvedThresholds": {
+    "hardGates": {
+      "schemaInvalid": 0,
+      "invalidEvidence": 0,
+      "missingOutput": 0,
+      "endpointContractFailure": 0,
+      "sharedConfigurationMismatch": 0,
+      "retryCount": 0,
+      "pricingFailure": 0,
+      "rawSensitiveDataIncluded": false,
+      "heldOutInspected": false
+    },
+    "stage1PredictedEntities": {
+      "entityMacroF1Min": 0.85,
+      "entitySpanExactMin": 0.95,
+      "entityHallucinationRateMax": 0.05,
+      "abstentionPrecisionMin": 0.90,
+      "abstentionRecallMin": 0.90,
+      "abstentionF1Min": 0.90
+    },
+    "stage2GoldEntities": {
+      "relationSemanticMicroF1Min": 0.80,
+      "relationSemanticMacroF1Min": 0.80,
+      "predicateAccuracyMin": 0.85,
+      "endpointDirectionAccuracyMin": 0.90,
+      "missingEndpointRateMax": 0.05,
+      "reversedEndpointRateMax": 0.05,
+      "relationEvidenceSupportMin": 0.85,
+      "relationEvidenceExactMin": 0.85,
+      "relationHallucinationRateMax": 0.05
+    },
+    "endToEndPredictedEntities": {
+      "relationSemanticMicroF1Min": 0.80,
+      "relationSemanticMacroF1Min": 0.80,
+      "relationEvidenceSupportMin": 0.85,
+      "relationEvidenceExactMin": 0.85,
+      "relationHallucinationRateMax": 0.05
+    },
+    "goldRelationsIntegrityControl": {
+      "relationSemanticMicroF1": 1.0,
+      "relationSemanticMacroF1": 1.0,
+      "endpointResolutionRate": 1.0,
+      "evidenceSpanValidityRate": 1.0,
+      "materializerFailures": 0
+    },
+    "sliceRule": "All applicable preregistered named slices must pass with no material regression; pooled metrics cannot compensate for a failed eligible slice."
+  },
+  "requiredBeforePreregistration": [
+    "Version the stage-1 entity envelope and stage-2 relation-decoding envelope.",
+    "Implement the mutually exclusive semantic/evidence bucket scorer and denominator reconciliation tests.",
+    "Implement deterministic gold-relations integrity fixtures and both gold-/predicted-entity oracle fixtures offline.",
+    "Freeze case selection, paired arm schedule, provider-call accounting, sanitized report schema and cost proof.",
+    "Demonstrate unauthorized and invalid-contract paths perform zero provider calls.",
+    "Issue a separate owner review of the completed offline package before preregistration or execution."
+  ],
+  "governance": {
+    "proposalApprovedAsDirection": true,
+    "preregistrationAuthorized": false,
+    "providerExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "f11RerunAuthorized": false,
+    "nextPermittedAction": "offline-stage-contracts-instrumentation-and-fixtures-only"
+  }
+}

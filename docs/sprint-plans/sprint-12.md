@@ -668,12 +668,19 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   prevents exact predicate/endpoint/evidence attribution. It recommends
   offline design of a two-step extractor; no f11 rerun or new preregistration
   is authorized by this task.
-- [ ] **S12-RM-19 — Owner review of the f12 two-step design proposal:** Review
-  `s12-f-12-two-step-extraction-design-proposal.v1.json`, including the
-  predicted-entities/gold-entities/gold-relations oracle arms, stage interfaces,
-  sanitized per-case relation buckets and pending thresholds. No new
-  preregistration or provider authorization exists until this review is
-  explicitly accepted.
+- [x] **S12-RM-19 — Owner review of the f12 two-step design proposal:** Approved
+  the two-step direction with required pre-preregistration conditions. Stage 2
+  receives runtime-only source context plus an authoritative server-owned
+  candidate table; gold-/predicted-entity arms use separate paired calls, while
+  gold-relations is a zero-provider integrity control. The review versions
+  mutually exclusive semantic/evidence buckets, denominators and hard/semantic
+  thresholds. It does not authorize preregistration or provider execution.
+- [ ] **S12-RM-20 — Implement f12 offline contracts and diagnostic fixtures:**
+  Version both stage envelopes, deterministic bucket matching/precedence,
+  denominator reconciliation, gold-relations integrity control, gold- and
+  predicted-entity oracle fixtures, sanitized report schema, paired schedule
+  and zero-call guards. Freeze no execution package and issue no preregistration
+  until a separate owner review accepts this offline evidence.
 
 #### Phase F-S — Candidate Selection Resume Path
 
