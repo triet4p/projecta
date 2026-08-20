@@ -255,14 +255,10 @@ def run_full_stage_a(
     )
     if output_path.exists():
         raise FullStageAV2Error("refusing to overwrite final report")
-    with tempfile.NamedTemporaryFile(
-        prefix="s12-f-11-stage-a-",
-        suffix=".staging.json",
-        dir=output_path.parent,
-        delete=False,
-    ) as staging_file:
-        staging_path = Path(staging_file.name)
-    try:
+    with tempfile.TemporaryDirectory(
+        prefix="s12-f-11-stage-a-", dir=output_path.parent
+    ) as staging_directory:
+        staging_path = Path(staging_directory) / "report.staging.json"
         legacy.validate_final_execution_package = (
             lambda package_path, output_path=None: package
         )
@@ -300,8 +296,6 @@ def run_full_stage_a(
             encoding="utf-8",
         )
         return staged
-    finally:
-        staging_path.unlink(missing_ok=True)
 
 
 def main(argv: Sequence[str] | None = None) -> int:

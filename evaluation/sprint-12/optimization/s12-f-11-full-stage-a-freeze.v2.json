@@ -5,7 +5,7 @@
   "experimentId": "s12-f-11",
   "commitSha": null,
   "executionPackage": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-execution-package.v2.json",
-  "executionPackageDigest": "sha256:b578d6f41614afd4ce70aded396acecc46306c4063c08420b622fc7628bc2761",
+  "executionPackageDigest": "sha256:80133853125d1fb90fb71dbf5640dca40f709a414c854ed83b1f6a854e98908d",
   "preregistration": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-preregistration.v2.json",
   "preregistrationDigest": "sha256:89ae8e95390f6283808d9ac4c457b05658d498bddc6d54d74daa4a54ab3c8bcd",
   "runtimeConfigurationDigest": "sha256:ed167917be6b429f364111c602d1bfaaa473ff2ebb1edbbb6d41d34244ac3cd2",

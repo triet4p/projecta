@@ -9,7 +9,7 @@
   "candidateSelectionAuthorized": false,
   "promotionAuthorized": false,
   "executionRunnerImplemented": true,
-  "executionRunner": {"path": "scripts/run_sprint12_f11_full_stage_a_v2.py", "digest": "sha256:b2d069bdb956557debc464e6ac89d31336da8a7b2f654cce7f780426cb275a5e"},
+  "executionRunner": {"path": "scripts/run_sprint12_f11_full_stage_a_v2.py", "digest": "sha256:742bc8fafb6e4a04fb14b571e9c0f47416f920a634ebc63e71a2c81f40920aaa"},
   "providerAdapter": {"path": "scripts/sprint12_provider_adapter.py", "digest": "sha256:724ad2e19113e71fc2e18b08960673c09b41b200efc23d44f649027ab31bf4e6", "class": "DeepSeekProviderAdapter", "transport": "deepseek-chat-completions", "retryPolicy": "none"},
   "runtimeConfiguration": {"path": "evaluation/sprint-12/harness/s12-f-11-full-stage-a-runtime-configuration.v1.json", "digest": "sha256:ed167917be6b429f364111c602d1bfaaa473ff2ebb1edbbb6d41d34244ac3cd2"},
   "authorizationContract": "evaluation/sprint-12/harness/s12-f-11-full-stage-a-authorization.schema.v1.json",
@@ -41,7 +41,7 @@
   "diagnostics": {"sanitizedOnly": true, "rawProviderPayloadStored": false, "rawSourceTextStored": false},
   "authorization": {"status": "NOT_ISSUED", "mustBindExactPackage": true, "mustBindExactFreeze": true, "mustBindExactCommit": true, "canaryAuthorizationReuse": false},
   "boundDigests": {
-    "scripts/run_sprint12_f11_full_stage_a_v2.py": "sha256:b2d069bdb956557debc464e6ac89d31336da8a7b2f654cce7f780426cb275a5e",
+    "scripts/run_sprint12_f11_full_stage_a_v2.py": "sha256:742bc8fafb6e4a04fb14b571e9c0f47416f920a634ebc63e71a2c81f40920aaa",
     "scripts/run_sprint12_f11_full_stage_a.py": "sha256:31ec81a705156487d058b933cca27655a996e2989cf746894a311120d6e739a9",
     "scripts/preflight_sprint12_f11_full_stage_a_v2.py": "sha256:341f8dd5e12aed546d4faac946f86491f30afb220de70f8af265fc46335f92e9",
     "scripts/run_sprint12_next_tool_experiment.py": "sha256:1e23a9b9373dcc7420c20d8acb20754d67004bc66e1b6d4d79c6523300475dfc",
