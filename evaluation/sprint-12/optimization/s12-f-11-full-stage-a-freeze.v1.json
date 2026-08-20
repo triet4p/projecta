@@ -2,7 +2,7 @@
   "artifactVersion": "s12.s12-f-11.full-stage-a.freeze.v1",
   "status": "FROZEN_PENDING_FULL_STAGE_A_AUTHORIZATION",
   "experimentId": "s12-f-11",
-  "commitSha": "c4682fa",
+  "commitSha": "fca61ed",
   "executionPackage": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-execution-package.v1.json",
   "executionPackageDigest": "sha256:23f8c5d594f2cfa844b07e6d8444f9579bc792b8a895d8f43798a0aec7cd4c31",
   "preregistration": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-preregistration.v1.json",
