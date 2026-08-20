@@ -91,11 +91,9 @@ def _authorization(
     }
 
 
-def test_mocked_authorized_run_reaches_exactly_48_calls_and_96_branches(
-    tmp_path: Path,
-) -> None:
+def test_mocked_authorized_run_reaches_exactly_48_calls_and_96_branches() -> None:
     output_path = ROOT / "evaluation/sprint-12/optimization/.tmp-f11-v2-report.json"
-    authorization_path = tmp_path / "authorization.json"
+    authorization_path = ROOT / "evaluation/sprint-12/optimization/.tmp-f11-v2-authorization.json"
     output_path.unlink(missing_ok=True)
     transport = MockTransport()
     adapter = runner.build_adapter(
@@ -130,6 +128,7 @@ def test_mocked_authorized_run_reaches_exactly_48_calls_and_96_branches(
         assert not list(output_path.parent.glob("s12-f-11-stage-a-*.staging.json"))
     finally:
         output_path.unlink(missing_ok=True)
+        authorization_path.unlink(missing_ok=True)
 
 
 def test_v2_adapter_rejects_wrong_model_before_transport_call() -> None:

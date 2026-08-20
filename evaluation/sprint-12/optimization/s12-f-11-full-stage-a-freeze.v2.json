@@ -3,7 +3,7 @@
   "supersedes": "s12-f-11-full-stage-a-freeze.v1.json",
   "status": "FROZEN_PENDING_FULL_STAGE_A_AUTHORIZATION",
   "experimentId": "s12-f-11",
-  "commitSha": null,
+  "commitSha": "55540e4",
   "executionPackage": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-execution-package.v2.json",
   "executionPackageDigest": "sha256:80133853125d1fb90fb71dbf5640dca40f709a414c854ed83b1f6a854e98908d",
   "preregistration": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-preregistration.v2.json",
