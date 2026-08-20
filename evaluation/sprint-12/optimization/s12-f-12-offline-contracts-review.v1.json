@@ -1,0 +1,91 @@
+{
+  "artifactVersion": "s12.s12-f-12.offline-contracts-review.v1",
+  "status": "OWNER_REVIEW_WITHHELD_MEASUREMENT_CONTRACT_BLOCKERS",
+  "experimentId": "s12-f-12",
+  "decisionType": "RM-21_OWNER_REVIEW",
+  "decisionDate": "2026-08-20",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedArtifact": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v1.json",
+    "commit": "1cedf28"
+  },
+  "verifiedEvidence": {
+    "existingTests": "7 passed",
+    "reportedPreflightStatus": "OFFLINE_CONTRACTS_READY_ZERO_CALL",
+    "providerCalls": 0,
+    "providerExecutionAuthorized": false,
+    "preregistrationIssued": false,
+    "heldOutAccess": false,
+    "stageSchemasRejectAdditionalProperties": true,
+    "semanticBucketsPresent": true,
+    "evidenceBucketsPresent": true
+  },
+  "blockingFindings": [
+    {
+      "id": "F12-OFFLINE-01",
+      "severity": "P1",
+      "summary": "Stage contracts are candidate-item schemas, not complete response envelopes.",
+      "evidence": "Stage 1 has no response-level entities collection or abstention decision, and Stage 2 has no response-level relations collection or explicit no-relation/abstention state.",
+      "impact": "The approved abstention precision/recall/F1 gates and response-level cardinality/fail-closed rules cannot be represented or validated.",
+      "requiredRemediation": "Version response envelopes around both item schemas, including explicit abstention/no-relation semantics, bounded collection sizes, schema version and additionalProperties=false."
+    },
+    {
+      "id": "F12-OFFLINE-02",
+      "severity": "P1",
+      "summary": "The scorer cannot compute the approved eligibility metrics.",
+      "evidence": "Entity scoring emits one pooled entityF1 rather than macro-by-type F1; abstention emits only per-case correctness; relation scoring omits macro-by-predicate F1, predicate accuracy, endpoint-direction accuracy, missing/reversed endpoint rates and relation hallucination rate.",
+      "impact": "A future preregistration could bind thresholds that the evaluator cannot calculate or reconcile from per-case records.",
+      "requiredRemediation": "Implement every approved threshold metric with explicit numerators, denominators, zero-denominator states, per-case records and aggregate reconciliation tests."
+    },
+    {
+      "id": "F12-OFFLINE-03",
+      "severity": "P1",
+      "summary": "The fixture set does not implement all three approved oracle arms.",
+      "evidence": "The three fixture IDs are gold-relations-integrity, semantic-buckets and evidence-buckets; there is no paired predicted-entities versus gold-entities fixture whose only changed input is the candidate table.",
+      "impact": "The package does not yet demonstrate that the planned ablation isolates stage-1 entity quality from stage-2 decoding.",
+      "requiredRemediation": "Add paired gold-/predicted-entity fixtures with identical context, prompt contract and gold relations, plus a separate deterministic gold-relations integrity control. Distinguish oracle fixtures from scorer unit fixtures in accounting."
+    },
+    {
+      "id": "F12-OFFLINE-04",
+      "severity": "P1",
+      "summary": "Evidence support is measured as endpoint-span containment rather than registered trigger/evidence support.",
+      "evidence": "supportedNonExact is assigned when the predicted evidence span covers both endpoint entity spans; no trigger, clause or gold-evidence support relation is checked.",
+      "impact": "A broad span containing endpoints can pass relationEvidenceSupport even when it does not support the predicate, invalidating the approved evidence threshold.",
+      "requiredRemediation": "Bind support to the versioned trigger/evidence contract and add adversarial fixtures where endpoint coverage exists without predicate support."
+    },
+    {
+      "id": "F12-OFFLINE-05",
+      "severity": "P2",
+      "summary": "The zero-call preflight can report readiness without validating the offline package.",
+      "evidence": "Preflight does not load s12-f-12-offline-contracts.v1.json, verify its declared digests, import/run the scorer fixtures, or reconcile the approved thresholds. It checks only artifact presence and a few governance flags.",
+      "impact": "OFFLINE_CONTRACTS_READY_ZERO_CALL is a false-positive-prone custody statement rather than a reproducibility proof.",
+      "requiredRemediation": "Bind the exact review, schemas, scorer, fixtures and tests by digest/commit; execute deterministic fixtures and threshold-coverage checks inside preflight; add tamper and missing-artifact tests."
+    },
+    {
+      "id": "F12-OFFLINE-06",
+      "severity": "P2",
+      "summary": "The threshold binding is incomplete.",
+      "evidence": "The offline-contract artifact omits the approved missingEndpointRateMax and reversedEndpointRateMax values and collapses distinct entity/relation hallucination thresholds into one generic hallucinationRateMax field.",
+      "impact": "A later preregistration could silently weaken or ambiguously apply the owner-approved gates.",
+      "requiredRemediation": "Bind the complete threshold tree from the RM-19 review without renaming or collapsing metrics, then validate exact equality in preflight."
+    }
+  ],
+  "decision": {
+    "rm20ImplementationRecorded": true,
+    "rm21Approved": false,
+    "preregistrationPreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "providerExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "offline-rm20a-measurement-contract-remediation-only"
+  },
+  "constraints": [
+    "Preserve offline contracts v1 and its seven passing tests as historical evidence.",
+    "Do not preregister, freeze an execution package or call a provider from RM-20A.",
+    "A superseding offline package requires a separate RM-21 owner re-review."
+  ]
+}
