@@ -34,10 +34,10 @@ from sprint12_provider_adapter import (
 
 FULL_PACKAGE = (
     ROOT
-    / "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-execution-package.v2.json"
+    / "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-execution-package.v3.json"
 )
 FULL_FREEZE = (
-    ROOT / "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-freeze.v2.json"
+    ROOT / "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-freeze.v3.json"
 )
 FULL_PREREGISTRATION = (
     ROOT
@@ -56,7 +56,7 @@ PROMPT = (
     / "evaluation/sprint-12/optimization/s12-f-11-m3-prompt-v7-relation-trigger-envelope-examples.v2.txt"
 )
 SCHEMA = ROOT / "evaluation/sprint-12/harness/relation-evidence-envelope.schema.v2.json"
-OUTPUT = ROOT / "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-report.v2.json"
+OUTPUT = ROOT / "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-report.v3.json"
 EXPECTED_PROMPT = "m3.prompt.v7.relation-trigger-envelope-examples"
 EXPECTED_SCHEMA = "relation-evidence-envelope.v1"
 
@@ -77,7 +77,7 @@ def _digest(path: Path) -> str:
 
 
 def _relative(path: Path) -> str:
-    return path.relative_to(ROOT).as_posix()
+    return path.resolve().relative_to(ROOT).as_posix()
 
 
 def validate_full_package(
@@ -275,7 +275,7 @@ def run_full_stage_a(
         staged = _load(staging_path)
         staged.update(
             {
-                "artifactVersion": "s12.s12-f-11.full-stage-a-report.v2",
+                "artifactVersion": "s12.s12-f-11.full-stage-a-report.v3",
                 "experimentId": "s12-f-11",
                 "executionPackagePath": _relative(package_path),
                 "freezePath": _relative(FULL_FREEZE),
@@ -308,9 +308,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parser.parse_args(argv)
     run_full_stage_a(
         provider_adapter=build_adapter(merged_environment()),
-        authorization_path=args.authorization,
-        output_path=args.output,
-        package_path=args.package,
+        authorization_path=args.authorization.resolve(),
+        output_path=args.output.resolve(),
+        package_path=args.package.resolve(),
     )
     return 0
 

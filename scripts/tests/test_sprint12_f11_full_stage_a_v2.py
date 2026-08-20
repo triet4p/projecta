@@ -130,7 +130,7 @@ def test_mocked_authorized_run_reaches_exactly_48_calls_and_96_branches() -> Non
         assert len(transport.calls) == 48
         assert report["providerCallCount"] == 48
         assert report["branchOutputCount"] == 96
-        assert report["artifactVersion"] == "s12.s12-f-11.full-stage-a-report.v2"
+        assert report["artifactVersion"] == "s12.s12-f-11.full-stage-a-report.v3"
         assert output_path.is_file()
         assert not list(output_path.parent.glob("s12-f-11-stage-a-*.staging.json"))
     finally:
