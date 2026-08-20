@@ -675,12 +675,16 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   gold-relations is a zero-provider integrity control. The review versions
   mutually exclusive semantic/evidence buckets, denominators and hard/semantic
   thresholds. It does not authorize preregistration or provider execution.
-- [ ] **S12-RM-20 — Implement f12 offline contracts and diagnostic fixtures:**
-  Version both stage envelopes, deterministic bucket matching/precedence,
-  denominator reconciliation, gold-relations integrity control, gold- and
-  predicted-entity oracle fixtures, sanitized report schema, paired schedule
-  and zero-call guards. Freeze no execution package and issue no preregistration
-  until a separate owner review accepts this offline evidence.
+- [x] **S12-RM-20 — Implement f12 offline contracts and diagnostic fixtures:**
+  Versioned both stage envelopes, deterministic semantic/evidence bucket
+  matching, denominator reconciliation, gold-relations integrity fixtures,
+  gold-/predicted-entity oracle fixtures and zero-call preflight. Validation is
+  offline (`7 passed`, Ruff and diff-check pass); no execution package,
+  preregistration or authorization was issued.
+- [ ] **S12-RM-21 — Owner review of the completed f12 offline package:** Review
+  `s12-f-12-offline-contracts.v1.json`, stage schemas, scorer precedence,
+  oracle fixtures and zero-call preflight before any f12 preregistration or
+  provider execution is considered.
 
 #### Phase F-S — Candidate Selection Resume Path
 

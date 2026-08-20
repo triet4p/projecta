@@ -1,0 +1,74 @@
+{
+  "artifactVersion": "s12.s12-f-12.oracle-fixtures.v1",
+  "status": "OFFLINE_TEST_FIXTURE",
+  "rawSourceTextIncluded": false,
+  "fixtures": [
+    {
+      "id": "gold-relations-integrity",
+      "sourceLength": 40,
+      "goldEntities": [
+        {"id": "e1", "type": "Task", "startOffset": 0, "endOffset": 5},
+        {"id": "e2", "type": "Requirement", "startOffset": 20, "endOffset": 30}
+      ],
+      "candidateTable": [
+        {"candidateId": "e1", "type": "Task", "startOffset": 0, "endOffset": 5, "confidence": 1.0},
+        {"candidateId": "e2", "type": "Requirement", "startOffset": 20, "endOffset": 30, "confidence": 1.0}
+      ],
+      "goldRelations": [{"predicate": "supports", "sourceEntityId": "e1", "targetEntityId": "e2", "startOffset": 0, "endOffset": 30}],
+      "predictedRelations": [{"predicate": "supports", "sourceEntityId": "e1", "targetEntityId": "e2", "confidence": 1.0, "evidence": {"startOffset": 0, "endOffset": 30}}]
+    },
+    {
+      "id": "semantic-buckets",
+      "sourceLength": 100,
+      "goldEntities": [
+        {"id": "e1", "type": "Task", "startOffset": 0, "endOffset": 5},
+        {"id": "e2", "type": "Requirement", "startOffset": 20, "endOffset": 30},
+        {"id": "e3", "type": "Decision", "startOffset": 40, "endOffset": 48},
+        {"id": "e4", "type": "Risk", "startOffset": 60, "endOffset": 65}
+      ],
+      "candidateTable": [
+        {"candidateId": "e1", "type": "Task", "startOffset": 0, "endOffset": 5, "confidence": 1.0},
+        {"candidateId": "e2", "type": "Requirement", "startOffset": 20, "endOffset": 30, "confidence": 1.0},
+        {"candidateId": "e3", "type": "Decision", "startOffset": 40, "endOffset": 48, "confidence": 1.0},
+        {"candidateId": "e4", "type": "Risk", "startOffset": 60, "endOffset": 65, "confidence": 1.0}
+      ],
+      "goldRelations": [
+        {"predicate": "supports", "sourceEntityId": "e1", "targetEntityId": "e2", "startOffset": 0, "endOffset": 30},
+        {"predicate": "blocks", "sourceEntityId": "e1", "targetEntityId": "e3", "startOffset": 0, "endOffset": 48},
+        {"predicate": "answers", "sourceEntityId": "e2", "targetEntityId": "e4", "startOffset": 20, "endOffset": 65},
+        {"predicate": "resolves", "sourceEntityId": "e3", "targetEntityId": "e4", "startOffset": 40, "endOffset": 65}
+      ],
+      "predictedRelations": [
+        {"predicate": "supports", "sourceEntityId": "e1", "targetEntityId": "e2", "confidence": 1.0, "evidence": {"startOffset": 0, "endOffset": 30}},
+        {"predicate": "supports", "sourceEntityId": "e1", "targetEntityId": "e3", "confidence": 1.0, "evidence": {"startOffset": 0, "endOffset": 48}},
+        {"predicate": "answers", "sourceEntityId": "e4", "targetEntityId": "e2", "confidence": 1.0, "evidence": {"startOffset": 20, "endOffset": 65}},
+        {"predicate": "resolves", "sourceEntityId": "e3", "targetEntityId": "e1", "confidence": 1.0, "evidence": {"startOffset": 0, "endOffset": 48}},
+        {"predicate": "implements", "sourceEntityId": "e1", "targetEntityId": "e4", "confidence": 1.0, "evidence": {"startOffset": 0, "endOffset": 65}}
+      ]
+    },
+    {
+      "id": "evidence-buckets",
+      "sourceLength": 100,
+      "goldEntities": [
+        {"id": "e1", "type": "Task", "startOffset": 10, "endOffset": 15},
+        {"id": "e2", "type": "Requirement", "startOffset": 40, "endOffset": 48}
+      ],
+      "candidateTable": [
+        {"candidateId": "e1", "type": "Task", "startOffset": 10, "endOffset": 15, "confidence": 1.0},
+        {"candidateId": "e2", "type": "Requirement", "startOffset": 40, "endOffset": 48, "confidence": 1.0}
+      ],
+      "goldRelations": [
+        {"predicate": "supports", "sourceEntityId": "e1", "targetEntityId": "e2", "startOffset": 10, "endOffset": 48},
+        {"predicate": "implements", "sourceEntityId": "e1", "targetEntityId": "e2", "startOffset": 10, "endOffset": 48},
+        {"predicate": "answers", "sourceEntityId": "e1", "targetEntityId": "e2", "startOffset": 10, "endOffset": 48},
+        {"predicate": "resolves", "sourceEntityId": "e1", "targetEntityId": "e2", "startOffset": 10, "endOffset": 48}
+      ],
+      "predictedRelations": [
+        {"predicate": "supports", "sourceEntityId": "e1", "targetEntityId": "e2", "confidence": 1.0, "evidence": {"startOffset": 10, "endOffset": 48}},
+        {"predicate": "implements", "sourceEntityId": "e1", "targetEntityId": "e2", "confidence": 1.0, "evidence": {"startOffset": 5, "endOffset": 55}},
+        {"predicate": "answers", "sourceEntityId": "e1", "targetEntityId": "e2", "confidence": 1.0, "evidence": {"startOffset": 20, "endOffset": 30}},
+        {"predicate": "resolves", "sourceEntityId": "e1", "targetEntityId": "e2", "confidence": 1.0}
+      ]
+    }
+  ]
+}

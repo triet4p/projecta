@@ -1,0 +1,82 @@
+{
+  "artifactVersion": "s12.s12-f-12.offline-contracts.v1",
+  "status": "OFFLINE_CONTRACTS_IMPLEMENTED_PENDING_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "implementationScope": "RM-20",
+  "reviewBasis": {
+    "designReviewPath": "evaluation/sprint-12/optimization/s12-f-12-two-step-extraction-design-review.v1.json",
+    "designReviewDigest": "sha256:e2329f8e3aa5a9f280e01b2fcca8fc15f4ce89470ad72f5f3e9efb368419a5df",
+    "conditionalApproval": true
+  },
+  "stageContracts": {
+    "stage1Path": "evaluation/sprint-12/harness/s12-f-12-stage-1-entity-candidate.schema.v1.json",
+    "stage1Digest": "sha256:c2525e94164694f6bc69223d55d718e71788537c9e32a1d1df23bebb7dabea2a",
+    "stage2Path": "evaluation/sprint-12/harness/s12-f-12-stage-2-relation-candidate.schema.v1.json",
+    "stage2Digest": "sha256:bc676d48f716850db749780869c2e8370673d3869b54e5d8d59f1a453ca17938",
+    "serverOwnedCandidateTable": true,
+    "stage2MayCreateOrMutateEntities": false,
+    "sourceContext": "runtime-only"
+  },
+  "scorer": {
+    "implementationPath": "scripts/sprint12_f12_two_step_contracts.py",
+    "implementationDigest": "sha256:f2514d2f8e5c38684093e8f6e9a4f7c15a5706c10245874a6c9ca102f66ae7ea",
+    "semanticAxis": ["exactMatch", "wrongPredicate", "reversedEndpoint", "wrongEndpoint", "missingRelation", "extraRelation"],
+    "evidenceAxis": ["exact", "supportedNonExact", "unsupported", "missing", "notApplicable"],
+    "axesMutuallyExclusive": true,
+    "aggregateFromPerCaseRecordsOnly": true,
+    "zeroDenominator": "not-applicable-and-not-a-pass"
+  },
+  "oracleFixtures": {
+    "path": "evaluation/sprint-12/harness/s12-f-12-oracle-fixtures.v1.json",
+    "digest": "sha256:4d379bd411c372b95da2d49e37ed33e41690266f99ee03dcfdd2a8a8d7ca49f2",
+    "fixtureCount": 3,
+    "goldRelationsIntegrityControl": true,
+    "rawSourceTextIncluded": false
+  },
+  "zeroCallPreflight": {
+    "path": "scripts/preflight_sprint12_f12_offline_contracts.py",
+    "digest": "sha256:7ac15befd2468de742bb53eaa2894750b78a385d199e5c77f94f8e0d8726f56a",
+    "status": "OFFLINE_CONTRACTS_READY_ZERO_CALL",
+    "providerCalls": 0,
+    "providerExecutionAuthorized": false,
+    "preregistrationIssued": false,
+    "heldOutAccess": false
+  },
+  "approvedThresholdsBoundForFuturePreregistration": {
+    "entityMacroF1Min": 0.85,
+    "entitySpanExactMin": 0.95,
+    "abstentionPrecisionMin": 0.9,
+    "abstentionRecallMin": 0.9,
+    "abstentionF1Min": 0.9,
+    "relationSemanticMicroF1Min": 0.8,
+    "relationSemanticMacroF1Min": 0.8,
+    "predicateAccuracyMin": 0.85,
+    "endpointDirectionAccuracyMin": 0.9,
+    "relationEvidenceSupportMin": 0.85,
+    "relationEvidenceExactMin": 0.85,
+    "hallucinationRateMax": 0.05,
+    "hardFailureCount": 0,
+    "retryCount": 0,
+    "pricingFailureCount": 0,
+    "goldRelationsIntegrityScore": 1.0,
+    "goldRelationsMaterializerFailures": 0
+  },
+  "validation": {
+    "tests": "7 passed",
+    "ruff": "pass",
+    "gitDiffCheck": "pass",
+    "providerCalls": 0,
+    "newPreregistration": false,
+    "newAuthorization": false
+  },
+  "governance": {
+    "f11RerunAuthorized": false,
+    "f12PreregistrationAuthorized": false,
+    "f12ProviderExecutionAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextAction": "owner review of completed RM-20 offline package"
+  },
+  "rawSensitiveDataIncluded": false
+}
