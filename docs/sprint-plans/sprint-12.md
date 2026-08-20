@@ -681,12 +681,13 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   gold-/predicted-entity oracle fixtures and zero-call preflight. Validation is
   offline (`7 passed`, Ruff and diff-check pass); no execution package,
   preregistration or authorization was issued.
-- [ ] **S12-RM-20A — Remediate f12 measurement-contract blockers:** Preserve v1
+- [x] **S12-RM-20A — Remediate f12 measurement-contract blockers:** Preserve v1
   and add complete response envelopes with abstention, every approved metric
   and denominator, true paired gold-/predicted-entity oracle fixtures,
   trigger-aware evidence support, exact threshold binding and a digest-bound
-  deterministic preflight with tamper tests. This task is offline-only and may
-  not preregister, freeze an execution package or call a provider.
+  deterministic preflight with tamper tests. V2 validation is offline (`7
+  passed`, Ruff and diff-check pass); no preregistration, execution freeze or
+  provider call was issued.
 - [ ] **S12-RM-21 — Owner review of the completed f12 offline package:** Review
   the superseding offline package after RM-20A. Review v1 is recorded as
   `OWNER_REVIEW_WITHHELD_MEASUREMENT_CONTRACT_BLOCKERS`; no f12

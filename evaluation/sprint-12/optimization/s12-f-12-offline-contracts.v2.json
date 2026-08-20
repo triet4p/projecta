@@ -1,0 +1,96 @@
+{
+  "artifactVersion": "s12.s12-f-12.offline-contracts.v2",
+  "status": "OFFLINE_CONTRACTS_IMPLEMENTED_PENDING_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "implementationScope": "RM-20A",
+  "supersedes": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v1.json",
+    "digest": "sha256:47e122de1b6cc90d1fc181d658d7be44dad737556d03eb01289f9f9bdbf9180d"
+  },
+  "stageContracts": {
+    "stage1Path": "evaluation/sprint-12/harness/s12-f-12-stage-1-entity-envelope.schema.v2.json",
+    "stage1SchemaId": "s12-f-12.stage1.entity-envelope.v2",
+    "stage2Path": "evaluation/sprint-12/harness/s12-f-12-stage-2-relation-envelope.schema.v2.json",
+    "stage2SchemaId": "s12-f-12.stage2.relation-envelope.v2",
+    "responseLevelAbstention": true,
+    "serverOwnedCandidateTable": true,
+    "stage2MayCreateOrMutateEntities": false,
+    "sourceContext": "runtime-only",
+    "requiredTriggerQuote": true
+  },
+  "measurementContract": {
+    "semanticBuckets": ["exactMatch", "wrongPredicate", "reversedEndpoint", "wrongEndpoint", "missingRelation", "extraRelation"],
+    "evidenceBuckets": ["exact", "supportedNonExact", "unsupported", "missing", "notApplicable"],
+    "entityMetrics": ["entityMacroF1", "spanExact", "hallucinationRate", "byType"],
+    "abstentionMetrics": ["precision", "recall", "f1"],
+    "relationMetrics": ["microF1", "macroF1", "predicateAccuracy", "endpointDirectionAccuracy", "missingEndpointRate", "reversedEndpointRate", "hallucinationRate"],
+    "evidenceSupportRequires": ["endpointContainment", "predicateTriggerDigestMatch"],
+    "hardGates": {"schemaInvalid": 0, "invalidEvidence": 0, "missingOutput": 0, "endpointContractFailure": 0, "sharedConfigurationMismatch": 0, "retryCount": 0, "pricingFailure": 0, "rawSensitiveDataIncluded": false, "heldOutInspected": false}
+  },
+  "oracleFixtures": {
+    "path": "evaluation/sprint-12/harness/s12-f-12-oracle-fixtures.v2.json",
+    "fixtureCount": 3,
+    "arms": ["gold-relations", "predicted-entities", "gold-entities"],
+    "pairedContextDigest": "sha256:offline-context-v2",
+    "pairedConfigurationDigest": "sha256:offline-config-v2",
+    "goldRelationsIntegrityControl": true,
+    "rawSourceTextIncluded": false
+  },
+  "scorer": {
+    "implementationPath": "scripts/sprint12_f12_two_step_contracts_v2.py",
+    "deterministic": true,
+    "providerCalls": 0,
+    "zeroRetry": true,
+    "zeroOverwrite": true
+  },
+  "approvedThresholds": {
+    "entityMacroF1Min": 0.85,
+    "entitySpanExactMin": 0.95,
+    "entityHallucinationRateMax": 0.05,
+    "abstentionPrecisionMin": 0.90,
+    "abstentionRecallMin": 0.90,
+    "abstentionF1Min": 0.90,
+    "relationSemanticMicroF1Min": 0.80,
+    "relationSemanticMacroF1Min": 0.80,
+    "predicateAccuracyMin": 0.85,
+    "endpointDirectionAccuracyMin": 0.90,
+    "missingEndpointRateMax": 0.05,
+    "reversedEndpointRateMax": 0.05,
+    "relationEvidenceSupportMin": 0.85,
+    "relationEvidenceExactMin": 0.85,
+    "relationHallucinationRateMax": 0.05,
+    "hardFailureCount": 0,
+    "retryCount": 0,
+    "pricingFailureCount": 0,
+    "goldRelationsIntegrityScore": 1.0,
+    "goldRelationsMaterializerFailures": 0
+  },
+  "boundDigests": {
+    "evaluation/sprint-12/optimization/s12-f-12-two-step-extraction-design-proposal.v1.json": "sha256:bc64c804938ee44fe3b627bc4858499b24e754a92b266d6a0c5a80f07e8098c2",
+    "evaluation/sprint-12/optimization/s12-f-12-two-step-extraction-design-review.v1.json": "sha256:e2329f8e3aa5a9f280e01b2fcca8fc15f4ce89470ad72f5f3e9efb368419a5df",
+    "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v1.json": "sha256:47e122de1b6cc90d1fc181d658d7be44dad737556d03eb01289f9f9bdbf9180d",
+    "evaluation/sprint-12/harness/s12-f-12-stage-1-entity-envelope.schema.v2.json": "sha256:53144aeddbcdf53d7c23d59d123eb92ead7afd7f4087e3763125b456923f52d4",
+    "evaluation/sprint-12/harness/s12-f-12-stage-2-relation-envelope.schema.v2.json": "sha256:0d0dc18829d3fc205d92b3c17ae70e4fb846858f756b3ea788b549587a90f34d",
+    "evaluation/sprint-12/harness/s12-f-12-oracle-fixtures.v2.json": "sha256:083e4eace360be5125e41f5c1e4599fc612b55bd12c2ce214776091e33b130d6",
+    "evaluation/sprint-12/harness/relation-trigger-contract.v1.json": "sha256:bdfc4e62dd73da690578aa1c9fd816bd4dba153951e7c8081b8d0ae82adc6253",
+    "scripts/sprint12_f12_two_step_contracts_v2.py": "sha256:cca6d34b810bc2d77e313159ef6df232011e755716b7d1c313a7411a56221948",
+    "scripts/preflight_sprint12_f12_offline_contracts_v2.py": "sha256:52797959980d8fee22f5a789e370d817df6bf048521fc3f8b20e2435680a5898"
+  },
+  "zeroCallPreflight": {
+    "path": "scripts/preflight_sprint12_f12_offline_contracts_v2.py",
+    "status": "OFFLINE_CONTRACTS_READY_ZERO_CALL_V2",
+    "providerCalls": 0,
+    "providerExecutionAuthorized": false,
+    "preregistrationIssued": false,
+    "heldOutAccess": false
+  },
+  "governance": {
+    "providerExecutionAuthorized": false,
+    "preregistrationAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextAction": "owner review of superseding RM-20A offline package"
+  },
+  "rawSensitiveDataIncluded": false
+}
