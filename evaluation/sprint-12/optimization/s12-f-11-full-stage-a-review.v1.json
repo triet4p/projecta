@@ -1,0 +1,88 @@
+{
+  "artifactVersion": "s12.s12-f-11.full-stage-a-review.v1",
+  "status": "APPROVED_TO_PREPARE_FULL_STAGE_A_PACKAGE",
+  "experimentId": "s12-f-11",
+  "decisionType": "OWNER_REVIEW_AFTER_CANARY",
+  "decisionDate": "2026-08-20",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "decisionBasis": {
+    "canaryReport": {
+      "path": "evaluation/sprint-12/optimization/s12-f-11-canary-report.v2.json",
+      "committedBlobDigest": "sha256:cf4f3d4daa01754c9a95a1e56c17a8f1cb42a6f2d3c8b6eea64ec0b8e4d022c5",
+      "commit": "f25ede8"
+    },
+    "canaryDecision": {
+      "path": "evaluation/sprint-12/optimization/s12-f-11-canary-decision.v1.json",
+      "digest": "sha256:2ec47b9b8d552e8f158d387eb67ada55c00957c0098a59137348118ab1a73ec4",
+      "status": "CANARY_PASS_READY_FOR_FULL_STAGE_A_REVIEW"
+    },
+    "canaryAuthorization": {
+      "path": "evaluation/sprint-12/optimization/s12-f-11-canary-authorization.v1.json",
+      "digest": "sha256:a4ea8d046d937dc8dd5ec6bf22aee70704b701d5363a91cd27afe24a2b80135a",
+      "reusable": false
+    }
+  },
+  "canaryEvidence": {
+    "providerCallsAttempted": 4,
+    "responsesReceived": 4,
+    "schemaValidResponses": 4,
+    "usageValidResponses": 4,
+    "providerCallsPriced": 4,
+    "branchOutputs": 8,
+    "retryCount": 0,
+    "failureCounts": {},
+    "totalCostUsd": 0.0008742944,
+    "costCeilingUsd": "10.00",
+    "rawSensitiveDataIncluded": false,
+    "heldOutInspected": false
+  },
+  "reviewConclusion": {
+    "schemaContractRemediationProven": true,
+    "fullStageAPackageAvailable": false,
+    "fullStageAAuthorizationIssued": false,
+    "providerExecutionAuthorized": false,
+    "nextPermittedAction": "prepare-and-freeze-separate-full-stage-a-package"
+  },
+  "requiredFullStageAPackage": {
+    "developmentOnly": true,
+    "caseCount": 16,
+    "pairedRuns": 3,
+    "sharedProviderCalls": 48,
+    "branchOutputs": 96,
+    "retryPolicy": "none",
+    "outputOverwrite": false,
+    "requiredBindings": [
+      "prompt-v7-v2",
+      "relation-evidence-envelope-schema-v2",
+      "full-stage-a-runner-and-evaluator",
+      "16-case-development-selection",
+      "runtime-configuration-for-48-calls",
+      "pricing-and-exact-cost-ceiling",
+      "semantic-and-hard-gate-contracts",
+      "sanitized-diagnostics",
+      "exact-freeze-commit-and-digests"
+    ],
+    "requiredExecutionGates": {
+      "responsesReceived": "48/48",
+      "schemaValidResponses": "48/48",
+      "usageValidResponses": "48/48",
+      "providerCallsPriced": "48/48",
+      "retryCount": 0,
+      "sharedResponseDigestMismatch": 0,
+      "rawSensitiveDataIncluded": false,
+      "heldOutInspected": false,
+      "costWithinCeiling": true,
+      "semanticAndSliceGates": "use-versioned-preregistered-contract"
+    }
+  },
+  "governance": {
+    "canaryAuthorizationReusable": false,
+    "fullStageAAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "promotionAuthorized": false,
+    "separateOwnerReviewRequiredAfterFreeze": true
+  }
+}

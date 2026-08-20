@@ -626,9 +626,20 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   All responses were schema-valid, usage-valid and priced; total cost was
   `$0.0008742944`, with zero retries, no overwrite, no raw payload/source text,
   and no held-out, Stage B, selection or promotion access.
-- [ ] **S12-RM-14 — Owner review for full Stage A:** The passing canary only
-  permits a separate review. Full Stage A requires a new authorization bound to
-  the full preregistration/package/freeze and does not inherit canary authority.
+- [x] **S12-RM-14 — Owner review for full Stage A preparation:** The canary
+  evidence is accepted as proof that the remediated schema/runtime contract is
+  executable. Review status is `APPROVED_TO_PREPARE_FULL_STAGE_A_PACKAGE`, not
+  execution authorization; canary authority is not reusable and no full Stage A
+  package/freeze currently exists.
+- [ ] **S12-RM-15 — Prepare and freeze the f11 full Stage A package:** Bind a
+  development-only 16-case × 3-run shared-response experiment: 48 provider
+  calls, 96 branch outputs, prompt/schema v2 lineage, full semantic evaluator,
+  hard/slice gates, sanitized diagnostics, 48-call runtime/cost proof, no retry
+  or overwrite, and an exact freeze commit. Do not issue authorization here.
+- [ ] **S12-RM-16 — Review and authorize full Stage A separately:** After RM-15
+  passes reproducibility and zero-call preflight, owner may issue a new exact
+  package/freeze/runtime-bound authorization. Canary authorization v1 remains
+  spent and cannot be reused; Stage B, selection and held-out remain closed.
 
 #### Phase F-S — Candidate Selection Resume Path
 

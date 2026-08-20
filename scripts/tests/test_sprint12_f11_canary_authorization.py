@@ -21,6 +21,7 @@ AUTHORIZATION = OPTIMIZATION / "s12-f-11-canary-authorization.v1.json"
 PACKAGE = OPTIMIZATION / "s12-f-11-canary-execution-package.v2.json"
 FREEZE = OPTIMIZATION / "s12-f-11-canary-freeze.v2.json"
 OUTPUT = OPTIMIZATION / "s12-f-11-canary-report.v2.json"
+REVIEW = OPTIMIZATION / "s12-f-11-full-stage-a-review.v1.json"
 
 
 def _read(path: Path) -> dict[str, object]:
@@ -62,7 +63,15 @@ def test_authorization_binds_exact_v2_lineage_and_remains_canary_only() -> None:
     assert authorization["fullStageAAuthorized"] is False
     assert authorization["providerCallsPerformedAtIssuance"] is False
     assert authorization["canaryExecutedAtIssuance"] is False
-    assert not OUTPUT.exists()
+    assert OUTPUT.exists()
+    report = _read(OUTPUT)
+    assert report["providerCallsAttempted"] == 4
+    assert report["schemaValidResponses"] == 4
+    assert report["usageValidResponses"] == 4
+    assert report["providerCallsPriced"] == 4
+    assert report["retryCount"] == 0
+    assert report["heldOutInspected"] is False
+    assert report["stageBAuthorized"] is False
 
 
 class _NoCallTransport:
@@ -98,3 +107,32 @@ def test_invalid_authorization_fails_before_transport(tmp_path: Path) -> None:
             output_path=tmp_path / "report.json",
         )
     assert transport.calls == 0
+
+
+def test_post_canary_review_opens_preparation_only() -> None:
+    review = _read(REVIEW)
+    committed_report = subprocess.check_output(
+        (
+            "git",
+            "show",
+            (
+                "f25ede8:evaluation/sprint-12/optimization/"
+                "s12-f-11-canary-report.v2.json"
+            ),
+        ),
+        cwd=ROOT,
+    )
+    committed_digest = "sha256:" + hashlib.sha256(committed_report).hexdigest()
+
+    assert review["status"] == "APPROVED_TO_PREPARE_FULL_STAGE_A_PACKAGE"
+    assert (
+        review["decisionBasis"]["canaryReport"]["committedBlobDigest"]
+        == committed_digest
+    )
+    assert review["reviewConclusion"]["fullStageAPackageAvailable"] is False
+    assert review["reviewConclusion"]["fullStageAAuthorizationIssued"] is False
+    assert review["reviewConclusion"]["providerExecutionAuthorized"] is False
+    assert review["governance"]["canaryAuthorizationReusable"] is False
+    assert review["governance"]["stageBAuthorized"] is False
+    assert review["requiredFullStageAPackage"]["sharedProviderCalls"] == 48
+    assert review["requiredFullStageAPackage"]["branchOutputs"] == 96
