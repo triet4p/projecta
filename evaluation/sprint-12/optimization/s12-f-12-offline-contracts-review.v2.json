@@ -1,0 +1,72 @@
+{
+  "artifactVersion": "s12.s12-f-12.offline-contracts-review.v2",
+  "status": "OWNER_REVIEW_WITHHELD_METRIC_AND_CUSTODY_BLOCKERS",
+  "experimentId": "s12-f-12",
+  "decisionType": "RM-21_OWNER_REREVIEW",
+  "decisionDate": "2026-08-20",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedArtifact": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v2.json",
+    "commit": "d0a5851"
+  },
+  "verifiedEvidence": {
+    "targetedTests": "15 passed",
+    "preflightStatus": "OFFLINE_CONTRACTS_READY_ZERO_CALL_V2",
+    "ruff": "pass",
+    "gitDiffCheck": "pass",
+    "providerCalls": 0,
+    "providerExecutionAuthorized": false,
+    "preregistrationIssued": false,
+    "heldOutAccess": false,
+    "historicalV1Preserved": true,
+    "responseEnvelopesPresent": true,
+    "abstentionContractPresent": true,
+    "pairedOracleArmsPresent": true,
+    "approvedThresholdNamesBound": true
+  },
+  "blockingFindings": [
+    {
+      "id": "F12-OFFLINE-07",
+      "severity": "P1",
+      "summary": "missingEndpointRate is computed from the wrongEndpoint bucket.",
+      "evidence": "scripts/sprint12_f12_two_step_contracts_v2.py computes missingEndpointRate as semantic[wrongEndpoint] / semantic_gold. The predicted-entities oracle contains both endpoints with one drifted span, yet the preflight reports missingEndpointRate=1.0.",
+      "impact": "The approved missing-endpoint threshold can reject ordinary endpoint mismatch as endpoint absence and cannot distinguish a missing candidate from an incorrectly resolved candidate.",
+      "requiredRemediation": "Define an explicit missing-endpoint numerator from candidate-table-to-gold endpoint resolution, keep wrongEndpoint separate, document both denominators, and add drifted, absent, reversed and wrong-entity adversarial reconciliation tests."
+    },
+    {
+      "id": "F12-OFFLINE-08",
+      "severity": "P1",
+      "summary": "Trigger-aware evidence scoring does not enforce the frozen trigger-clause contract.",
+      "evidence": "The scorer accepts evidence when SHA-256(triggerQuote) matches triggerDigest and the evidence span contains both endpoints. It receives no source context, trigger occurrence or clause boundary, so it cannot enforce that triggerQuote occurs inside the selected sentence and clause as required by relation-trigger-contract.v1.",
+      "impact": "A fabricated or out-of-clause trigger with a matching registered string can receive supported or exact evidence credit, weakening the core evidence-quality gate.",
+      "requiredRemediation": "Pass server-derived trigger occurrence and clause boundaries into the scorer, fail closed on occurrence/clause mismatch, and add adversarial tests for matching digest outside clause, endpoint-only broad spans, repeated trigger occurrence and missing trigger."
+    },
+    {
+      "id": "F12-OFFLINE-09",
+      "severity": "P2",
+      "summary": "Digest preflight is not closed over the required binding set.",
+      "evidence": "_verify_bound_digests iterates only entries supplied by the package; an empty boundDigests object is accepted without error. Existing tamper tests cover a wrong digest and a missing path but not removal of required bindings.",
+      "impact": "A superseding package can drop scorer, schema, fixture or review bindings and still report OFFLINE_CONTRACTS_READY_ZERO_CALL_V2.",
+      "requiredRemediation": "Declare and validate the exact required path set, reject missing or extra bindings, bind the package/review lineage at freeze time, and add deletion, substitution and unexpected-artifact tamper tests."
+    }
+  ],
+  "decision": {
+    "rm20aImplementationRecorded": true,
+    "rm21ReviewCompleted": true,
+    "rm21Approved": false,
+    "preregistrationPreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "providerExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "offline-rm20b-metric-and-preflight-remediation-only"
+  },
+  "constraints": [
+    "Preserve v1 and v2 packages, review v1 and all existing execution evidence as immutable history.",
+    "Do not preregister, freeze an execution package, authorize provider execution or inspect held-out data from RM-20B.",
+    "A superseding offline package requires a separate owner re-review."
+  ]
+}

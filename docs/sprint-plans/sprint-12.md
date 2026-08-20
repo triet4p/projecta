@@ -688,10 +688,20 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   deterministic preflight with tamper tests. V2 validation is offline (`7
   passed`, Ruff and diff-check pass); no preregistration, execution freeze or
   provider call was issued.
-- [ ] **S12-RM-21 — Owner review of the completed f12 offline package:** Review
-  the superseding offline package after RM-20A. Review v1 is recorded as
-  `OWNER_REVIEW_WITHHELD_MEASUREMENT_CONTRACT_BLOCKERS`; no f12
-  preregistration or provider execution may be prepared until re-review passes.
+- [x] **S12-RM-21 — Owner review of the completed f12 offline package:** Review
+  v2 is recorded as `OWNER_REVIEW_WITHHELD_METRIC_AND_CUSTODY_BLOCKERS` after
+  reproducing three blockers: missing-endpoint mismeasurement, incomplete
+  trigger/clause enforcement and a non-closed digest binding set. No f12
+  preregistration or provider execution is authorized.
+- [x] **S12-RM-20B — Remediate f12 v2 metric and custody blockers:** Separate
+  missing endpoint from wrong endpoint, enforce server-derived trigger
+  occurrence and clause boundaries, and require the exact digest binding set
+  with adversarial and tamper tests. V3 validation is offline (`6 passed`, Ruff
+  and diff-check pass); all historical artifacts are preserved and provider
+  calls remain at zero.
+- [ ] **S12-RM-21A — Owner re-review of the superseding f12 package:** Review the
+  RM-20B package independently. Preregistration preparation, execution freeze
+  and provider execution remain closed until this review passes.
 
 #### Phase F-S — Candidate Selection Resume Path
 

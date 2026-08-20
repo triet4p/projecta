@@ -1,0 +1,52 @@
+{
+  "artifactVersion": "s12.s12-f-12.oracle-fixtures.v3",
+  "status": "OFFLINE_TEST_FIXTURE",
+  "rawSourceTextIncluded": false,
+  "triggerQuotesAreSyntheticTestTokens": true,
+  "pairedContextDigest": "sha256:offline-context-v3",
+  "pairedConfigurationDigest": "sha256:offline-config-v3",
+  "oracleArms": [
+    {
+      "id": "gold-relations",
+      "kind": "zero-provider-integrity-control",
+      "providerCalls": 0,
+      "contextDigest": "sha256:offline-context-v3",
+      "configurationDigest": "sha256:offline-config-v3",
+      "sourceLength": 80,
+      "goldEntities": [{"id": "e1", "type": "Task", "startOffset": 0, "endOffset": 5}, {"id": "e2", "type": "Requirement", "startOffset": 20, "endOffset": 30}],
+      "candidateTable": [{"candidateId": "e1", "type": "Task", "startOffset": 0, "endOffset": 5, "confidence": 1.0}, {"candidateId": "e2", "type": "Requirement", "startOffset": 20, "endOffset": 30, "confidence": 1.0}],
+      "stage1Response": {"schemaVersion": "s12-f-12.stage1.entity-envelope.v2", "entities": [{"candidateId": "e1", "type": "Task", "startOffset": 0, "endOffset": 5, "confidence": 1.0}, {"candidateId": "e2", "type": "Requirement", "startOffset": 20, "endOffset": 30, "confidence": 1.0}], "abstention": {"required": false, "reason": null}},
+      "goldRelations": [{"predicate": "supports", "sourceEntityId": "e1", "targetEntityId": "e2", "startOffset": 0, "endOffset": 30, "triggerDigest": "sha256:66312e5e57ebd0b4fff4ef544c5a4abd86f89a0e2f003d9209dad1a641694bca"}],
+      "stage2Response": {"schemaVersion": "s12-f-12.stage2.relation-envelope.v2", "relations": [{"predicate": "supports", "sourceEntityId": "e1", "targetEntityId": "e2", "confidence": 1.0, "triggerQuote": "supports", "evidence": {"startOffset": 0, "endOffset": 30}}], "abstention": {"required": false, "reason": null}},
+      "evidenceContexts": {"supports|e1|e2": {"triggerOccurrences": [[10, 18]], "sentence": [0, 40], "clause": [0, 30]}}
+    },
+    {
+      "id": "predicted-entities",
+      "kind": "paired-provider-ablation",
+      "providerCalls": 1,
+      "contextDigest": "sha256:offline-context-v3",
+      "configurationDigest": "sha256:offline-config-v3",
+      "sourceLength": 80,
+      "goldEntities": [{"id": "e1", "type": "Task", "startOffset": 0, "endOffset": 5}, {"id": "e2", "type": "Requirement", "startOffset": 20, "endOffset": 30}],
+      "candidateTable": [{"candidateId": "e1", "type": "Task", "startOffset": 0, "endOffset": 5, "confidence": 1.0}, {"candidateId": "e2", "type": "Requirement", "startOffset": 20, "endOffset": 29, "confidence": 0.8}],
+      "stage1Response": {"schemaVersion": "s12-f-12.stage1.entity-envelope.v2", "entities": [{"candidateId": "e1", "type": "Task", "startOffset": 0, "endOffset": 5, "confidence": 1.0}, {"candidateId": "e2", "type": "Requirement", "startOffset": 20, "endOffset": 29, "confidence": 0.8}], "abstention": {"required": false, "reason": null}},
+      "goldRelations": [{"predicate": "supports", "sourceEntityId": "e1", "targetEntityId": "e2", "startOffset": 0, "endOffset": 30, "triggerDigest": "sha256:66312e5e57ebd0b4fff4ef544c5a4abd86f89a0e2f003d9209dad1a641694bca"}],
+      "stage2Response": {"schemaVersion": "s12-f-12.stage2.relation-envelope.v2", "relations": [{"predicate": "supports", "sourceEntityId": "e1", "targetEntityId": "e2", "confidence": 1.0, "triggerQuote": "supports", "evidence": {"startOffset": 0, "endOffset": 30}}], "abstention": {"required": false, "reason": null}},
+      "evidenceContexts": {"supports|e1|e2": {"triggerOccurrences": [[10, 18]], "sentence": [0, 40], "clause": [0, 30]}}
+    },
+    {
+      "id": "gold-entities",
+      "kind": "paired-provider-ablation",
+      "providerCalls": 1,
+      "contextDigest": "sha256:offline-context-v3",
+      "configurationDigest": "sha256:offline-config-v3",
+      "sourceLength": 80,
+      "goldEntities": [{"id": "e1", "type": "Task", "startOffset": 0, "endOffset": 5}, {"id": "e2", "type": "Requirement", "startOffset": 20, "endOffset": 30}],
+      "candidateTable": [{"candidateId": "e1", "type": "Task", "startOffset": 0, "endOffset": 5, "confidence": 1.0}, {"candidateId": "e2", "type": "Requirement", "startOffset": 20, "endOffset": 30, "confidence": 1.0}],
+      "stage1Response": {"schemaVersion": "s12-f-12.stage1.entity-envelope.v2", "entities": [{"candidateId": "e1", "type": "Task", "startOffset": 0, "endOffset": 5, "confidence": 1.0}, {"candidateId": "e2", "type": "Requirement", "startOffset": 20, "endOffset": 30, "confidence": 1.0}], "abstention": {"required": false, "reason": null}},
+      "goldRelations": [{"predicate": "supports", "sourceEntityId": "e1", "targetEntityId": "e2", "startOffset": 0, "endOffset": 30, "triggerDigest": "sha256:66312e5e57ebd0b4fff4ef544c5a4abd86f89a0e2f003d9209dad1a641694bca"}],
+      "stage2Response": {"schemaVersion": "s12-f-12.stage2.relation-envelope.v2", "relations": [{"predicate": "supports", "sourceEntityId": "e1", "targetEntityId": "e2", "confidence": 1.0, "triggerQuote": "supports", "evidence": {"startOffset": 0, "endOffset": 30}}], "abstention": {"required": false, "reason": null}},
+      "evidenceContexts": {"supports|e1|e2": {"triggerOccurrences": [[10, 18]], "sentence": [0, 40], "clause": [0, 30]}}
+    }
+  ]
+}
