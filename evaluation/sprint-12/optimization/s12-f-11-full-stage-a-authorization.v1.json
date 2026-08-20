@@ -1,0 +1,61 @@
+{
+  "artifactVersion": "s12.s12-f-11.full-stage-a-authorization.v1",
+  "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A",
+  "experimentId": "s12-f-11",
+  "authorizationSource": "explicit-owner-delegation-after-rm-15a-review",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "decisionDate": "2026-08-20",
+  "authorizationScope": [
+    "one-48-call-development-full-stage-a-v2-execution"
+  ],
+  "executionPackage": {
+    "path": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-execution-package.v2.json",
+    "digest": "sha256:80133853125d1fb90fb71dbf5640dca40f709a414c854ed83b1f6a854e98908d"
+  },
+  "freezeRecord": {
+    "path": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-freeze.v2.json",
+    "digest": "sha256:5185e3eccb432195f52d2afe396c2881a1d97e00203d117c969b004f5ae5d76d"
+  },
+  "commitSha": "55540e4",
+  "providerAdapter": {
+    "path": "scripts/sprint12_provider_adapter.py",
+    "class": "DeepSeekProviderAdapter",
+    "digest": "sha256:724ad2e19113e71fc2e18b08960673c09b41b200efc23d44f649027ab31bf4e6"
+  },
+  "runtimeConfiguration": {
+    "path": "evaluation/sprint-12/harness/s12-f-11-full-stage-a-runtime-configuration.v1.json",
+    "digest": "sha256:b82518811129685e417fc6e7c94308097ac399ee669011dfcea055c1be2b258b",
+    "artifactDigest": "sha256:ed167917be6b429f364111c602d1bfaaa473ff2ebb1edbbb6d41d34244ac3cd2",
+    "apiKeyStored": false
+  },
+  "providerExecutionAuthorized": true,
+  "providerCallsPerformedAtIssuance": false,
+  "stageAExecutedAtIssuance": false,
+  "providerCalls": 48,
+  "branchOutputs": 96,
+  "requiredSchemaValidResponses": 48,
+  "requiredUsageValidResponses": 48,
+  "expectedPricedCalls": 48,
+  "oneAttemptPerCasePair": true,
+  "retryPolicy": "none",
+  "retryAuthorized": false,
+  "outputPath": "evaluation/sprint-12/optimization/s12-f-11-full-stage-a-report.v2.json",
+  "outputOverwriteAuthorized": false,
+  "costCeilingUsd": "10.00",
+  "runtimeWorstCaseCostUsd": "0.39105024",
+  "heldOutInspected": false,
+  "heldOutAccessAuthorized": false,
+  "validationAccessAuthorized": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false,
+  "canaryAuthorizationReusable": false,
+  "constraints": [
+    "Authorization is limited to one execution of the 16-case x 3-run S12-f-11 development full Stage A v2 package against the exact freeze, runtime digest and output path.",
+    "Any change to commit, package, preregistration, prompt, schema, adapter, runtime, case selection, evaluator, retry policy or cost ceiling invalidates this authorization.",
+    "No retry, output overwrite, validation access, held-out access, Stage B, candidate selection or promotion is authorized.",
+    "Execution must stop before provider capture if any exact binding fails or if the final output path already exists.",
+    "The resulting report must preserve all failures and actual usage/cost. Authorization does not imply semantic gate passage or candidate promotion.",
+    "Canary authorization v1 is spent and cannot be reused or treated as authority for this execution."
+  ]
+}

@@ -13,7 +13,14 @@ sys.path.insert(0, str(ROOT / "apps" / "api" / "src"))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import run_sprint12_f11_full_stage_a_v2 as runner
+from sprint12_pricing import merged_environment
 from sprint12_provider_adapter import ProviderAdapterError
+
+AUTHORIZATION = (
+    ROOT
+    / "evaluation/sprint-12/optimization/"
+    "s12-f-11-full-stage-a-authorization.v1.json"
+)
 
 
 class MockTransport:
@@ -144,3 +151,30 @@ def test_v2_adapter_rejects_wrong_model_before_transport_call() -> None:
             transport=transport,
         )
     assert transport.calls == []
+
+
+def test_issued_authorization_binds_exact_v2_lineage_without_execution() -> None:
+    package = runner.validate_full_package(output_path=runner.OUTPUT)
+    adapter = runner.build_adapter(merged_environment())
+    authorization = runner.validate_authorization(
+        package,
+        authorization_path=AUTHORIZATION,
+        package_path=runner.FULL_PACKAGE,
+        output_path=runner.OUTPUT,
+        adapter_digest=adapter.adapter_digest,
+        runtime_digest=adapter.runtime_configuration_digest,
+    )
+
+    assert authorization["providerExecutionAuthorized"] is True
+    assert authorization["providerCallsPerformedAtIssuance"] is False
+    assert authorization["stageAExecutedAtIssuance"] is False
+    assert authorization["providerCalls"] == 48
+    assert authorization["branchOutputs"] == 96
+    assert authorization["retryAuthorized"] is False
+    assert authorization["outputOverwriteAuthorized"] is False
+    assert authorization["heldOutAccessAuthorized"] is False
+    assert authorization["validationAccessAuthorized"] is False
+    assert authorization["stageBAuthorized"] is False
+    assert authorization["candidateSelectionAuthorized"] is False
+    assert authorization["promotionAuthorized"] is False
+    assert not runner.OUTPUT.exists()

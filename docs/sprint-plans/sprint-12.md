@@ -646,12 +646,17 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   reaches exactly 48 provider captures and 96 branches without network access.
   Exact-commit, ancestor and bound-Git-blob preflight is required and remains
   zero-call; no provider authorization is issued.
-- [ ] **S12-RM-16 — Review and authorize full Stage A separately:** After RM-15
-  and RM-15A pass reproducibility and zero-call preflight, owner may issue a new
-  exact package/freeze/runtime-bound authorization. Review v1 is recorded as
-  `AUTHORIZATION_WITHHELD_EXECUTION_CONTRACT_BLOCKERS`; canary authorization v1
-  remains spent and cannot be reused; Stage B, selection and held-out remain
-  closed.
+- [x] **S12-RM-16 — Review and authorize full Stage A separately:** Owner review
+  accepts the superseding v2 package after exact-commit/blob preflight and the
+  48-call/96-branch mocked E2E pass. Authorization v1 binds package/freeze v2,
+  commit `55540e4`, the live non-secret runtime digest, fixed output, no retry
+  and exact `$10.00` ceiling. Issuance performs no provider call and does not
+  authorize validation, held-out, Stage B, selection or promotion.
+- [ ] **S12-RM-17 — Execute and review f11 full Stage A v2 once:** Use the new
+  RM-16 authorization exactly once for 48 shared development calls and 96
+  branch outputs. Preserve all hard/semantic/slice failures and actual cost;
+  do not retry or overwrite. A separate owner decision is required before
+  Stage B or candidate selection.
 
 #### Phase F-S — Candidate Selection Resume Path
 
