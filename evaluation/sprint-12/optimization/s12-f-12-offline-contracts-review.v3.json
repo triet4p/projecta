@@ -1,0 +1,64 @@
+{
+  "artifactVersion": "s12.s12-f-12.offline-contracts-review.v3",
+  "status": "OWNER_REVIEW_WITHHELD_IDENTITY_AND_OCCURRENCE_BLOCKERS",
+  "experimentId": "s12-f-12",
+  "decisionType": "RM-21A_OWNER_REREVIEW",
+  "decisionDate": "2026-08-20",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedArtifact": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v3.json",
+    "commit": "f99b168"
+  },
+  "verifiedEvidence": {
+    "regressionTests": "21 passed",
+    "preflightStatus": "OFFLINE_CONTRACTS_READY_ZERO_CALL_V3",
+    "ruff": "pass",
+    "gitDiffCheck": "pass",
+    "providerCalls": 0,
+    "providerExecutionAuthorized": false,
+    "preregistrationIssued": false,
+    "heldOutAccess": false,
+    "historicalPackagesPreserved": true,
+    "exactNonEmptyBindingSetEnforced": true,
+    "missingAndWrongEndpointCountersSeparated": true,
+    "sentenceAndClauseContainmentChecked": true
+  },
+  "blockingFindings": [
+    {
+      "id": "F12-OFFLINE-10",
+      "severity": "P1",
+      "summary": "Endpoint absence is resolved by gold/local identifier equality rather than entity identity.",
+      "evidence": "_endpoint_resolution looks up predicted_entities.get(goldEntityId). In an adversarial review case, gold endpoints g1/g2 and predicted candidates c17/c42 had identical type/span signatures; relation semantic TP was 1, but endpointResolution.missing was 2 and missingEndpointRate was 1.0.",
+      "impact": "Correct predicted entities receive a 100% missing-endpoint rate whenever local candidate IDs differ from gold IDs, which local stage-1 IDs are allowed to do. The approved endpoint threshold is therefore not execution-safe.",
+      "requiredRemediation": "Resolve each gold endpoint against the immutable candidate table by the registered typed-span identity or an explicit server-owned gold-to-candidate mapping, enforce one-to-one matching, and test arbitrary local-ID renaming, duplicate semantic candidates, absent candidates, drift and wrong type."
+    },
+    {
+      "id": "F12-OFFLINE-11",
+      "severity": "P1",
+      "summary": "Trigger occurrence metadata is not materialized strongly enough to prove the quoted trigger.",
+      "evidence": "_trigger_supported checks digest, containment and occurrence count but never binds occurrence width/content to triggerQuote. An adversarial review case supplied triggerQuote='supports' with occurrence span [10,11]; it still received evidence exact=1 although the quote is eight code points long.",
+      "impact": "Malformed or incorrectly materialized occurrence metadata can pass the evidence hard gate and inflate exact/support rates despite not identifying the quoted predicate trigger.",
+      "requiredRemediation": "Use a server-owned occurrence record bound to quote digest and validated source slice, require half-open span width/content to match triggerQuote under the registered Unicode policy, validate sentence/clause/source bounds, and add width mismatch, content mismatch, repeated occurrence and Unicode adversarial tests."
+    }
+  ],
+  "decision": {
+    "rm20bImplementationRecorded": true,
+    "rm21aReviewCompleted": true,
+    "rm21aApproved": false,
+    "preregistrationPreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "executionFreezeAuthorized": false,
+    "providerExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "offline-rm20c-identity-and-occurrence-remediation-only"
+  },
+  "constraints": [
+    "Preserve all v1-v3 packages and review artifacts as immutable history.",
+    "Do not preregister, freeze an execution package, authorize provider execution or inspect held-out data from RM-20C.",
+    "A superseding offline package requires a separate owner re-review."
+  ]
+}

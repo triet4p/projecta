@@ -699,8 +699,18 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   with adversarial and tamper tests. V3 validation is offline (`6 passed`, Ruff
   and diff-check pass); all historical artifacts are preserved and provider
   calls remain at zero.
-- [ ] **S12-RM-21A — Owner re-review of the superseding f12 package:** Review the
-  RM-20B package independently. Preregistration preparation, execution freeze
+- [x] **S12-RM-21A — Owner re-review of the superseding f12 package:** Review v3
+  is recorded as `OWNER_REVIEW_WITHHELD_IDENTITY_AND_OCCURRENCE_BLOCKERS` after
+  reproducing local-ID-dependent missing-endpoint scoring and trigger occurrence
+  spans that are not bound to quote width/content. Provider calls remain zero.
+- [x] **S12-RM-20C — Remediate endpoint identity and trigger occurrence:** Resolve
+  gold endpoints against predicted typed spans or an explicit one-to-one server
+  mapping independent of local candidate IDs. Bind occurrence spans to the
+  source slice and trigger quote under the Unicode offset policy. Add adversarial
+  rename, duplicate, width/content mismatch and Unicode tests; V4 validation is
+  offline (`5 passed`, Ruff and diff-check pass), with zero provider calls.
+- [ ] **S12-RM-21B — Owner re-review of the superseding f12 package:** Review the
+  RM-20C package independently. Preregistration preparation, execution freeze
   and provider execution remain closed until this review passes.
 
 #### Phase F-S — Candidate Selection Resume Path
