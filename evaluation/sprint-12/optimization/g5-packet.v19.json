@@ -1,0 +1,76 @@
+{
+  "packetVersion": "s12.g5.packet.v19",
+  "status": "G5_F12_SUPERSEDING_LINEAGE_PREPARATION_APPROVED_OFFLINE_ONLY",
+  "packetRole": "authoritative-current-g5-packet",
+  "asOf": "2026-08-22",
+  "supersedesForCurrentState": {
+    "path": "evaluation/sprint-12/optimization/g5-packet.v17.json",
+    "digest": "sha256:c8d09763b5830cba2e55c50831dfc2dcbc0c1248655a2f8575b2797f2e18321a"
+  },
+  "ownerDecision": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm31-owner-review.v1.json",
+    "digest": "sha256:f6e67673013e324556096537ca6b97093edcff4d3655dce893c2773cec0e721e",
+    "status": "OWNER_REVIEW_APPROVED_SUPERSEDING_LINEAGE_PREPARATION_ONLY"
+  },
+  "approvalTransition": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm31-approval-transition.v1.json",
+    "digest": "sha256:7e2fd2f781a069625cd514a9c970ebb66a8d0d995017f4650571cc8f3b64f181",
+    "status": "SUPERSEDING_LINEAGE_PREPARATION_APPROVED_OFFLINE_ONLY"
+  },
+  "approvedImplementation": {
+    "package": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-remediation.v1.json",
+      "digest": "sha256:32c9339320a4c8a6919525a06fed99af87fd61af6d0873f2511015c7f39e8231"
+    },
+    "diagnosticReport": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-diagnostic-report.v1.json",
+      "digest": "sha256:e03a632b9ff593d0764dc3ea1479366c6f2642c34dafe7818fa09269e3321f13"
+    },
+    "diagnosticReportSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-offline-diagnostic-report.schema.v1.json",
+      "digest": "sha256:f7f8efa30c5fb259fcb603ad4eb176db366427609eed945a8c06685353db138f"
+    },
+    "unknownsPreserved": true,
+    "qualityImprovementEstablished": false
+  },
+  "historicalLineage": {
+    "lineageVersion": "v7",
+    "preregistrationIssued": true,
+    "technicalFreezeIssued": true,
+    "authorizedExecutions": 1,
+    "authorizedProviderCalls": 144,
+    "providerCallsPerformed": 144,
+    "retryCount": 0,
+    "stageAReportDigest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+  },
+  "selection": {
+    "status": "NO_SELECTION",
+    "candidateAvailable": false,
+    "candidateFreezeAuthorized": false
+  },
+  "authorizationBoundary": {
+    "nextPermittedTask": "PREPARE_SUPERSEDING_F12_PREREGISTRATION_EXECUTION_PACKAGE_AND_TECHNICAL_FREEZE_OFFLINE",
+    "offlineDiagnosticImplementationAuthorized": true,
+    "offlineSchemaEvidenceRemediationAuthorized": true,
+    "supersedingLineagePreparationAuthorized": true,
+    "preregistrationPreparationAuthorized": true,
+    "technicalFreezePreparationAuthorized": true,
+    "executionPackagePreparationAuthorized": true,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "validationAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "claimBoundary": {
+    "accuracyImprovementEstablished": false,
+    "businessQualityEstablished": false,
+    "tenantReadinessEstablished": false,
+    "humanEvidence": false
+  }
+}

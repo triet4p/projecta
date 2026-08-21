@@ -557,7 +557,7 @@ def test_phase_f_plan_stops_at_g5_approval_gate() -> None:
 
 def test_phase_f_plan_inserts_g31_remediation_before_candidate_selection() -> None:
     plan = (ROOT / "docs/sprint-plans/sprint-12.md").read_text(encoding="utf-8")
-    assert "Status: `G5_F12_OFFLINE_REMEDIATION_APPROVED_IMPLEMENTATION_ONLY`" in plan
+    assert "Status: `G5_F12_SUPERSEDING_LINEAGE_PREPARATION_APPROVED_OFFLINE_ONLY`" in plan
     assert "[x] **S12-R01" in plan
     assert "[x] **S12-R02" in plan
     assert "[x] **S12-R03" in plan
