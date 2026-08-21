@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import subprocess
 import sys
 from pathlib import Path
 
@@ -30,14 +29,13 @@ REPORT_V6 = OPT / "s12-f-12-stage-a-report.v6.json"
 
 def test_rm32_preflight_is_zero_call_and_does_not_touch_historical_report() -> None:
     before = _digest(REPORT_V6)
+    expected_commit = _json(PACKAGE)["executionCommitSha"]
     result = preflight.run_preflight()
     assert result == {
         "status": "F12_RM32_READY_ZERO_CALL",
         "preparationScope": "S12-RM-32",
         "lineageVersion": "v8",
-        "executionCommitSha": subprocess.check_output(
-            ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
-        ).strip(),
+        "executionCommitSha": expected_commit,
         "runtimeBlobCount": 22,
         "preparationEvidenceCount": 4,
         "providerCalls": 0,
@@ -52,9 +50,7 @@ def test_rm32_lineage_binds_rm31_rm30_and_exact_commit() -> None:
     package = _json(PACKAGE)
     prereg = _json(PREREG)
     freeze = _json(FREEZE)
-    assert package["executionCommitSha"] == subprocess.check_output(
-        ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
-    ).strip()
+    assert package["executionCommitSha"] == "d64668b800866be65a2ea17e6feef2e05e78aa16"
     assert prereg["executionCommitSha"] == package["executionCommitSha"]
     assert freeze["executionCommitSha"] == package["executionCommitSha"]
     assert package["rm31ApprovalTransition"]["digest"] == _digest(

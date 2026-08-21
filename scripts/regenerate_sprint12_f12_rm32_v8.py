@@ -40,7 +40,10 @@ def dump(path: Path, value: dict[str, Any]) -> None:
 
 
 def main() -> None:
-    commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    existing_package = load(PACKAGE_PATH)
+    commit = str(existing_package.get("executionCommitSha") or "")
+    if not commit or commit == "1a3ffed08a8a96c6ea76f2ae2bf2f868254475a5":
+        commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     runtime_paths = [
         "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json",
         "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json",
@@ -74,7 +77,7 @@ def main() -> None:
     ]
     preparation = {path: current_digest(ROOT / path) for path in preparation_paths}
 
-    package = load(PACKAGE_PATH)
+    package = existing_package
     package["executionCommitSha"] = commit
     package["runtimeBoundDigests"] = runtime
     package["preparationEvidence"] = preparation

@@ -63,9 +63,9 @@
   },
   "preparationEvidence": {
     "scripts/preflight_sprint12_f12_rm32.py": "sha256:492cc4c9815c168233039c096d5f7bc6121773a2b7f6f84443ed587fea1f8d3e",
-    "scripts/regenerate_sprint12_f12_rm32_v8.py": "sha256:5a040a4a755b83cfecf0a073d5f559b4239ac87ca22dc2673a04b6d2edccd73e",
+    "scripts/regenerate_sprint12_f12_rm32_v8.py": "sha256:57618fecad19c080b6d3069f1de4668b40ea17876dc27d931ea1b78c58f0120d",
     "scripts/tests/test_sprint12_f12_v8_runtime_diagnostics.py": "sha256:7e1d9814a5a7cdd2c22a9963a176015681ed5d5540bbb3764fd4d50ea0668478",
-    "scripts/tests/test_sprint12_rm32_offline_preparation.py": "sha256:f0479dbb031402462ade20cca4a173ba840b7bd5ac1d931388f4fd3e635ecfd5"
+    "scripts/tests/test_sprint12_rm32_offline_preparation.py": "sha256:15d045a61c8324c29356a05fc96d51bf018c9a2993940ffbbcca09fdabe78873"
   },
   "preparationScope": "S12-RM-32",
   "preregistrationIssued": false,
