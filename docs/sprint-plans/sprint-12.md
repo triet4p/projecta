@@ -863,10 +863,15 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   sanitized diagnostic contract and offline implementation only. No
   preregistration, freeze, provider execution or superseding lineage
   preparation is authorized.
-- [ ] **S12-RM-30 — Implement offline f12 diagnostic remediation:** Version the
+- [x] **S12-RM-30 — Implement offline f12 diagnostic remediation:** Version the
   future schema/evidence diagnostic path, preserve typed-span identity and
-  denominator reconciliation, and prove it with deterministic mock tests. Stop
-  for separate owner review before preparing any execution lineage.
+  denominator reconciliation, and prove it with deterministic mock tests. The
+  RM-30 package is implementation-complete offline and stops for separate owner
+  review before preparing any execution lineage.
+- [ ] **S12-RM-31 — Owner-review RM-30 implementation:** Review the versioned
+  diagnostic/report schema, finite reason classifiers, sanitized report and
+  deterministic mock evidence. This gate does not authorize lineage
+  preparation, preregistration, freeze, provider execution or downstream use.
 
 #### Phase F-S — Candidate Selection Resume Path
 

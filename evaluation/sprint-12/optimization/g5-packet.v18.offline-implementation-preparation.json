@@ -1,0 +1,37 @@
+{
+  "packetVersion": "s12.g5.packet.v18.offline-implementation-preparation",
+  "packetRole": "non-authoritative-offline-next-state-preparation",
+  "status": "OFFLINE_DIAGNOSTIC_IMPLEMENTATION_COMPLETED_PENDING_OWNER_REVIEW",
+  "currentOwnerState": "G5_F12_OFFLINE_REMEDIATION_APPROVED_IMPLEMENTATION_ONLY",
+  "experimentId": "s12-f-12",
+  "sourceReport": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+    "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "providerCalls": 144,
+    "retryCount": 0
+  },
+  "rm30Implementation": {
+    "package": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-remediation.v1.json",
+      "digest": "sha256:04cc4cc07f2c4293fcd51d58f305ed7554f916e67cc90d392bba1e81a34846a1"
+    },
+    "report": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-diagnostic-report.v1.json",
+    "schema": "evaluation/sprint-12/harness/s12-f-12-offline-diagnostic-report.schema.v1.json",
+    "mockTests": 24,
+    "historicalReportMutated": false
+  },
+  "nextPermittedTask": "OWNER_REVIEW_RM30_OFFLINE_DIAGNOSTIC_IMPLEMENTATION",
+  "governance": {
+    "offlineImplementationAuthorized": true,
+    "providerExecutionAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "newAuthorizationIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  }
+}

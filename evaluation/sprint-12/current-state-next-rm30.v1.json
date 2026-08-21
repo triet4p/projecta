@@ -1,0 +1,42 @@
+{
+  "artifactVersion": "s12.current-state-next.rm30-offline-implementation.v1",
+  "role": "non-authoritative-offline-next-state-preparation",
+  "currentStatePath": "evaluation/sprint-12/current-state.v1.json",
+  "currentStateStatus": "G5_F12_OFFLINE_REMEDIATION_APPROVED_IMPLEMENTATION_ONLY",
+  "nextStateStatus": "OFFLINE_DIAGNOSTIC_IMPLEMENTATION_COMPLETED_PENDING_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "sourceReport": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+    "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "providerCalls": 144,
+    "retryCount": 0
+  },
+  "rm30Package": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-remediation.v1.json",
+    "digest": "sha256:04cc4cc07f2c4293fcd51d58f305ed7554f916e67cc90d392bba1e81a34846a1",
+    "status": "OFFLINE_REMEDIATION_IMPLEMENTED_PENDING_OWNER_REVIEW"
+  },
+  "implementationEvidence": {
+    "schemaFailureReasonCodes": 9,
+    "evidenceFailureReasonCodes": 10,
+    "historicalSchemaUnknownCount": 6,
+    "historicalEvidenceUnknownCount": 17,
+    "goldRelationsControlFailures": 0,
+    "mockTests": "24 passed"
+  },
+  "nextGate": "owner review of RM-30 offline implementation before any lineage preparation",
+  "governance": {
+    "offlineImplementationAuthorized": true,
+    "providerExecutionAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "newAuthorizationIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "claimBoundary": "No accuracy improvement, candidate selection, business quality or tenant readiness may be claimed."
+}

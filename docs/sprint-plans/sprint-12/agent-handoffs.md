@@ -92,6 +92,15 @@ unknown. RM-29 approved offline implementation only; any execution-lineage
 preparation still requires a separate owner review, and any run requires a new
 authorization.
 
+## Handoff F — RM-30 offline diagnostic implementation
+
+**Status:** complete pending RM-31 owner review.
+
+RM-30 adds a versioned sanitized diagnostic/report schema, finite schema and
+evidence reason classifiers, runtime-only materializer diagnostics and mock
+tests. Historical unknowns remain fail-closed; no execution lineage is
+prepared. RM-31 must review the implementation before any future lineage work.
+
 ## External-only work — custody and G6
 
 S12-55/S12-85 and the G6 blinded review still require a real external

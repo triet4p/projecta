@@ -49,8 +49,8 @@ only through `s12-f-12-rm29-approval-transition.v1.json`.
 
 ## Next work
 
-1. Implement the approved finite schema/evidence diagnostic contract and
-   deterministic mock regressions offline.
+1. Owner-review the completed RM-30 finite schema/evidence diagnostic contract,
+   report and deterministic mock regressions.
 2. Keep superseding lineage preparation, provider execution, validation,
    held-out access, Stage B, selection and promotion closed.
 3. Do not claim accuracy improvement, candidate quality, business quality or
@@ -77,3 +77,17 @@ The package and diagnostic contract are:
 RM-29 approved this preparation for offline implementation only. No
 preregistration, technical freeze, authorization, provider call, validation,
 held-out access, Stage B or selection is open.
+
+## RM-30 offline implementation
+
+RM-30 completed the approved implementation-only scope in a new versioned
+diagnostic/report path. Historical schema and evidence findings remain
+`validation_detail_unavailable` and `materializer_detail_unavailable`; no exact
+historical cause was inferred. The implementation preserves typed-span identity,
+endpoint denominators, reconciliation and raw-data exclusion, with 24
+deterministic mock tests passing.
+
+The non-authoritative next-state snapshot is
+`evaluation/sprint-12/current-state-next-rm30.v1.json`; the next gate is RM-31
+owner review. The authoritative current-state status remains
+`G5_F12_OFFLINE_REMEDIATION_APPROVED_IMPLEMENTATION_ONLY`.
