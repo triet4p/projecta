@@ -1,0 +1,51 @@
+{
+  "packetVersion": "s12.g5.packet.v34.rm48-preparation",
+  "status": "OFFLINE_ERROR_ANALYSIS_PREPARED_PENDING_RM49_OWNER_REVIEW",
+  "experimentId": "S12-f-12",
+  "taskId": "S12-RM-48",
+  "comparison": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm48-error-comparison.v1.json",
+    "digest": "sha256:d0795993c2a47f88d450d30fb80177ee4ba9d864cc403a8cf0311969e29b6ec7"
+  },
+  "inputs": {
+    "v6Report": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+      "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+    },
+    "v9Report": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json",
+      "digest": "sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e"
+    },
+    "priorClosure": "evaluation/sprint-12/optimization/g5-packet.v33.rm47-closure.json"
+  },
+  "executionTransition": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm46-execution-transition.v1.json",
+    "digest": "sha256:948a2f1aa1015e339692e113feb878949eb0a9b080174d0ef9cfabeca378ea95"
+  },
+  "permittedWork": [
+    "RM-49 independent owner review of the RM-48 comparison and options"
+  ],
+  "blockedWork": [
+    "remediation implementation",
+    "superseding lineage preparation",
+    "preregistration or technical freeze issuance",
+    "provider execution, rerun or retry",
+    "validation, held-out access, Stage B, selection or promotion"
+  ],
+  "governance": {
+    "offlineComparisonPrepared": true,
+    "remediationImplementationAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "claimBoundary": "This is a non-authoritative G5 preparation snapshot. The v6 and v9 reports remain immutable and the comparison does not establish quality improvement or causality.",
+  "nextGate": "S12-RM-49_OWNER_REVIEW_OFFLINE_ERROR_ANALYSIS_PREPARATION"
+}

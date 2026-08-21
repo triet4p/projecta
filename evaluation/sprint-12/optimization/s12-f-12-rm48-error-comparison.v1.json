@@ -1,0 +1,3111 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm48-error-comparison.v1",
+  "status": "OFFLINE_ERROR_COMPARISON_AND_REMEDIATION_OPTIONS_PREPARED_PENDING_RM49_OWNER_REVIEW",
+  "taskId": "S12-RM-48",
+  "experimentId": "S12-f-12",
+  "preparedDate": "2026-08-22",
+  "sources": {
+    "v6": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+      "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+      "immutable": true,
+      "providerCalls": 144
+    },
+    "v9": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json",
+      "digest": "sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e",
+      "immutable": true,
+      "providerCalls": 144
+    }
+  },
+  "authorityBindings": {
+    "rm46ExecutionTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm46-execution-transition.v1.json",
+      "digest": "sha256:948a2f1aa1015e339692e113feb878949eb0a9b080174d0ef9cfabeca378ea95"
+    },
+    "rm47OwnerDecision": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm47-owner-decision.v1.json",
+      "digest": "sha256:bbb10126bf61fe0272c2421bc02d45af28ec9d9f4b9abb920258280385dd9ca5"
+    },
+    "rm47DecisionTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm47-decision-transition.v1.json",
+      "digest": "sha256:262b090d8b55c46dfeb1730d1235513a57fc1db68452839f900aad2f842a76fb"
+    },
+    "authoritativeG5Packet": {
+      "path": "evaluation/sprint-12/optimization/g5-packet.v33.rm47-closure.json",
+      "digest": "sha256:a0973bfa97bab65ef763dc0b2a0397f0f1ad859c7aa59482ee4cbaa7cfcc9605"
+    }
+  },
+  "analysisBoundary": {
+    "sanitizedReportsOnly": true,
+    "rawProviderPayloadIncluded": false,
+    "rawSourceTextIncluded": false,
+    "rawTriggerQuoteIncluded": false,
+    "rawValidationDetailIncluded": false,
+    "providerExecutionPerformed": false,
+    "runtimeOrLineageModified": false,
+    "causalityClaim": "unknown unless proven by a later governed experiment"
+  },
+  "accountingComparison": {
+    "v6": {
+      "providerCallsAttempted": 144,
+      "responsesReceived": 144,
+      "schemaValidResponses": 138,
+      "retryCount": 0,
+      "totalCostUsd": "0.00592500",
+      "schemaInvalid": 6
+    },
+    "v9": {
+      "providerCallsAttempted": 144,
+      "responsesReceived": 144,
+      "schemaValidResponses": 139,
+      "retryCount": 0,
+      "totalCostUsd": "0.00599700",
+      "schemaInvalid": 5
+    },
+    "deltaV9MinusV6": {
+      "providerCallsAttempted": 0,
+      "responsesReceived": 0,
+      "schemaValidResponses": 1,
+      "retryCount": 0,
+      "totalCostUsd": "0.00007200",
+      "schemaInvalid": -1
+    },
+    "reconciled": true
+  },
+  "failureComparison": {
+    "schemaInvalid": {
+      "v6Total": 6,
+      "v9Total": 5,
+      "deltaV9MinusV6": -1,
+      "v6ByArmStage": {
+        "gold-entities/stage2": 1,
+        "predicted-entities/stage1": 5
+      },
+      "v9ByArmStage": {
+        "predicted-entities/stage1": 5
+      },
+      "caseRunClusters": {
+        "byArmStage": {
+          "gold-entities/stage2": {
+            "v6Count": 1,
+            "v9Count": 0,
+            "overlapCaseRuns": [],
+            "newInV9CaseRuns": [],
+            "resolvedFromV6CaseRuns": [
+              "s12-a-4035#run-1"
+            ]
+          },
+          "predicted-entities/stage1": {
+            "v6Count": 5,
+            "v9Count": 5,
+            "overlapCaseRuns": [
+              "s12-a-4016#run-1",
+              "s12-a-4016#run-2",
+              "s12-a-4016#run-3"
+            ],
+            "newInV9CaseRuns": [
+              "s12-a-4027#run-1",
+              "s12-a-4032#run-1"
+            ],
+            "resolvedFromV6CaseRuns": [
+              "s12-a-4024#run-3",
+              "s12-a-4032#run-3"
+            ]
+          }
+        },
+        "overlapCaseRuns": [
+          "s12-a-4016#run-1",
+          "s12-a-4016#run-2",
+          "s12-a-4016#run-3"
+        ],
+        "newInV9CaseRuns": [
+          "s12-a-4027#run-1",
+          "s12-a-4032#run-1"
+        ],
+        "resolvedFromV6CaseRuns": [
+          "s12-a-4024#run-3",
+          "s12-a-4032#run-3",
+          "s12-a-4035#run-1"
+        ],
+        "note": "Case-run overlap is descriptive; it does not establish provider or prompt causality."
+      },
+      "v6ReasonObservability": "historical detail unavailable",
+      "v9ReasonCounts": {
+        "entity_span_out_of_source": 5
+      }
+    },
+    "invalidEvidence": {
+      "v6Total": 17,
+      "v9Total": 20,
+      "deltaV9MinusV6": 3,
+      "v6ByArm": {
+        "gold-entities": 17
+      },
+      "v9ByArm": {
+        "gold-entities": 20
+      },
+      "caseRunClusters": {
+        "byArmStage": {
+          "gold-entities": {
+            "v6Count": 17,
+            "v9Count": 20,
+            "overlapCaseRuns": [
+              "s12-a-4007#run-1",
+              "s12-a-4007#run-2",
+              "s12-a-4007#run-3",
+              "s12-a-4011#run-1",
+              "s12-a-4011#run-2",
+              "s12-a-4011#run-3",
+              "s12-a-4015#run-1",
+              "s12-a-4015#run-2",
+              "s12-a-4015#run-3",
+              "s12-a-4019#run-1",
+              "s12-a-4019#run-2",
+              "s12-a-4019#run-3",
+              "s12-a-4027#run-1",
+              "s12-a-4027#run-2",
+              "s12-a-4027#run-3",
+              "s12-a-4035#run-2",
+              "s12-a-4035#run-3"
+            ],
+            "newInV9CaseRuns": [
+              "s12-a-4035#run-1",
+              "s12-a-4043#run-2",
+              "s12-a-4043#run-3"
+            ],
+            "resolvedFromV6CaseRuns": []
+          }
+        },
+        "overlapCaseRuns": [
+          "s12-a-4007#run-1",
+          "s12-a-4007#run-2",
+          "s12-a-4007#run-3",
+          "s12-a-4011#run-1",
+          "s12-a-4011#run-2",
+          "s12-a-4011#run-3",
+          "s12-a-4015#run-1",
+          "s12-a-4015#run-2",
+          "s12-a-4015#run-3",
+          "s12-a-4019#run-1",
+          "s12-a-4019#run-2",
+          "s12-a-4019#run-3",
+          "s12-a-4027#run-1",
+          "s12-a-4027#run-2",
+          "s12-a-4027#run-3",
+          "s12-a-4035#run-2",
+          "s12-a-4035#run-3"
+        ],
+        "newInV9CaseRuns": [
+          "s12-a-4035#run-1",
+          "s12-a-4043#run-2",
+          "s12-a-4043#run-3"
+        ],
+        "resolvedFromV6CaseRuns": [],
+        "note": "Case-run overlap is descriptive; it does not establish provider or prompt causality."
+      },
+      "v6ReasonObservability": "historical detail unavailable",
+      "v9ReasonCounts": {
+        "evidence_does_not_contain_endpoints": 6,
+        "evidence_does_not_contain_trigger": 14
+      }
+    }
+  },
+  "goldRelationsControl": {
+    "v6": {
+      "integrityPass": true,
+      "invalidEvidence": 0,
+      "thresholdsPass": true
+    },
+    "v9": {
+      "integrityPass": true,
+      "invalidEvidence": 0,
+      "thresholdsPass": true
+    },
+    "interpretation": "The control remains clean; this does not waive candidate hard gates or identify sole causality."
+  },
+  "overallThresholdComparison": {
+    "predicted-entities": {
+      "v6ThresholdsPass": false,
+      "v9ThresholdsPass": false,
+      "newFailuresInV9": [],
+      "resolvedInV9": [],
+      "registeredMetricDelta": {
+        "entityMacroF1": 0.0,
+        "entitySpanExact": -0.016666666666666666,
+        "relationSemanticMicroF1": 0.0,
+        "relationSemanticMacroF1": 0.0,
+        "relationEvidenceSupport": "not-applicable",
+        "relationEvidenceExact": "not-applicable"
+      }
+    },
+    "gold-entities": {
+      "v6ThresholdsPass": false,
+      "v9ThresholdsPass": false,
+      "newFailuresInV9": [],
+      "resolvedInV9": [
+        "relationSemanticMicroF1"
+      ],
+      "registeredMetricDelta": {
+        "entityMacroF1": 0.0,
+        "entitySpanExact": 0.0,
+        "relationSemanticMicroF1": 0.07833655705996134,
+        "relationSemanticMacroF1": 0.1166666666666667,
+        "relationEvidenceSupport": 0.0,
+        "relationEvidenceExact": 0.0
+      }
+    },
+    "gold-relations": {
+      "v6ThresholdsPass": true,
+      "v9ThresholdsPass": true,
+      "newFailuresInV9": [],
+      "resolvedInV9": [],
+      "registeredMetricDelta": {
+        "entityMacroF1": 0.0,
+        "entitySpanExact": 0.0,
+        "relationSemanticMicroF1": 0.0,
+        "relationSemanticMacroF1": 0.0,
+        "relationEvidenceSupport": 0.0,
+        "relationEvidenceExact": 0.0
+      }
+    }
+  },
+  "thresholdAndSliceComparison": [
+    {
+      "label": "all-development",
+      "denominator": 48,
+      "arms": {
+        "predicted-entities": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 5,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "abstentionPrecision",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "missingEndpointRate",
+              "relationHallucinationRate"
+            ],
+            "v9": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "abstentionPrecision",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "missingEndpointRate",
+              "relationHallucinationRate"
+            ],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": -0.016666666666666666,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        },
+        "gold-entities": {
+          "invalidEvidenceCount": {
+            "v6": 17,
+            "v9": 20,
+            "delta": 3
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 6,
+              "evidence_does_not_contain_trigger": 14,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "abstentionPrecision",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "relationEvidenceSupport",
+              "relationEvidenceExact",
+              "relationHallucinationRate"
+            ],
+            "v9": [
+              "abstentionPrecision",
+              "abstentionF1",
+              "relationSemanticMacroF1",
+              "relationEvidenceSupport",
+              "relationEvidenceExact",
+              "relationHallucinationRate"
+            ],
+            "newInV9": [],
+            "resolvedInV9": [
+              "relationSemanticMicroF1"
+            ]
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.07833655705996134,
+            "relationSemanticMacroF1": 0.1166666666666667
+          }
+        },
+        "gold-relations": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [],
+            "v9": [],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        }
+      }
+    },
+    {
+      "label": "relation-positive",
+      "denominator": 24,
+      "arms": {
+        "predicted-entities": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 1,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "missingEndpointRate",
+              "relationHallucinationRate"
+            ],
+            "v9": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "missingEndpointRate",
+              "relationHallucinationRate"
+            ],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": -0.020833333333333332,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        },
+        "gold-entities": {
+          "invalidEvidenceCount": {
+            "v6": 17,
+            "v9": 20,
+            "delta": 3
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 6,
+              "evidence_does_not_contain_trigger": 14,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "relationEvidenceSupport",
+              "relationEvidenceExact",
+              "relationHallucinationRate"
+            ],
+            "v9": [
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1",
+              "relationSemanticMacroF1",
+              "relationEvidenceSupport",
+              "relationEvidenceExact",
+              "relationHallucinationRate"
+            ],
+            "newInV9": [],
+            "resolvedInV9": [
+              "relationSemanticMicroF1"
+            ]
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.07833655705996134,
+            "relationSemanticMacroF1": 0.1166666666666667
+          }
+        },
+        "gold-relations": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [],
+            "v9": [],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        }
+      }
+    },
+    {
+      "label": "relation-negative",
+      "denominator": 12,
+      "arms": {
+        "predicted-entities": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "relationHallucinationRate"
+            ],
+            "v9": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "relationHallucinationRate"
+            ],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        },
+        "gold-entities": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1"
+            ],
+            "v9": [
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1"
+            ],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": "not-applicable",
+            "relationSemanticMacroF1": "not-applicable"
+          }
+        },
+        "gold-relations": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [],
+            "v9": [],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": "not-applicable",
+            "relationSemanticMacroF1": "not-applicable"
+          }
+        }
+      }
+    },
+    {
+      "label": "abstention-required",
+      "denominator": 12,
+      "arms": {
+        "predicted-entities": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 4,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "entityMacroF1",
+              "entityHallucinationRate",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "relationHallucinationRate"
+            ],
+            "v9": [
+              "entityMacroF1",
+              "entityHallucinationRate"
+            ],
+            "newInV9": [],
+            "resolvedInV9": [
+              "relationHallucinationRate",
+              "relationSemanticMacroF1",
+              "relationSemanticMicroF1"
+            ]
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": "not-applicable",
+            "relationSemanticMicroF1": "not-applicable",
+            "relationSemanticMacroF1": "not-applicable"
+          }
+        },
+        "gold-entities": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [],
+            "v9": [],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": "not-applicable",
+            "entitySpanExact": "not-applicable",
+            "relationSemanticMicroF1": "not-applicable",
+            "relationSemanticMacroF1": "not-applicable"
+          }
+        },
+        "gold-relations": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [],
+            "v9": [],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": "not-applicable",
+            "entitySpanExact": "not-applicable",
+            "relationSemanticMicroF1": "not-applicable",
+            "relationSemanticMacroF1": "not-applicable"
+          }
+        }
+      }
+    },
+    {
+      "label": "abstention-not-required",
+      "denominator": 36,
+      "arms": {
+        "predicted-entities": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 1,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "missingEndpointRate",
+              "relationHallucinationRate"
+            ],
+            "v9": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "missingEndpointRate",
+              "relationHallucinationRate"
+            ],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": -0.016666666666666666,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        },
+        "gold-entities": {
+          "invalidEvidenceCount": {
+            "v6": 17,
+            "v9": 20,
+            "delta": 3
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 6,
+              "evidence_does_not_contain_trigger": 14,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "relationEvidenceSupport",
+              "relationEvidenceExact",
+              "relationHallucinationRate"
+            ],
+            "v9": [
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1",
+              "relationSemanticMacroF1",
+              "relationEvidenceSupport",
+              "relationEvidenceExact",
+              "relationHallucinationRate"
+            ],
+            "newInV9": [],
+            "resolvedInV9": [
+              "relationSemanticMicroF1"
+            ]
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.07833655705996134,
+            "relationSemanticMacroF1": 0.1166666666666667
+          }
+        },
+        "gold-relations": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [],
+            "v9": [],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        }
+      }
+    },
+    {
+      "label": "J1",
+      "denominator": 6,
+      "arms": {
+        "predicted-entities": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "missingEndpointRate",
+              "relationHallucinationRate"
+            ],
+            "v9": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "missingEndpointRate",
+              "relationHallucinationRate"
+            ],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": -0.1111111111111111,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        },
+        "gold-entities": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 2,
+            "delta": 2
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 2,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1"
+            ],
+            "v9": [
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1",
+              "relationEvidenceSupport",
+              "relationEvidenceExact"
+            ],
+            "newInV9": [
+              "relationEvidenceExact",
+              "relationEvidenceSupport"
+            ],
+            "resolvedInV9": [
+              "relationSemanticMacroF1",
+              "relationSemanticMicroF1"
+            ]
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.8,
+            "relationSemanticMacroF1": 0.8
+          }
+        },
+        "gold-relations": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [],
+            "v9": [],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        }
+      }
+    },
+    {
+      "label": "J2",
+      "denominator": 12,
+      "arms": {
+        "predicted-entities": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "missingEndpointRate",
+              "relationHallucinationRate"
+            ],
+            "v9": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "missingEndpointRate",
+              "relationHallucinationRate"
+            ],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        },
+        "gold-entities": {
+          "invalidEvidenceCount": {
+            "v6": 3,
+            "v9": 3,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 3,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "abstentionPrecision",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "relationEvidenceSupport",
+              "relationEvidenceExact"
+            ],
+            "v9": [
+              "abstentionPrecision",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "relationEvidenceSupport",
+              "relationEvidenceExact"
+            ],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        },
+        "gold-relations": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [],
+            "v9": [],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        }
+      }
+    },
+    {
+      "label": "J3",
+      "denominator": 12,
+      "arms": {
+        "predicted-entities": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 3,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "abstentionPrecision",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "missingEndpointRate",
+              "relationHallucinationRate"
+            ],
+            "v9": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "abstentionPrecision",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "missingEndpointRate",
+              "relationHallucinationRate"
+            ],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        },
+        "gold-entities": {
+          "invalidEvidenceCount": {
+            "v6": 6,
+            "v9": 6,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 3,
+              "evidence_does_not_contain_trigger": 3,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "abstentionPrecision",
+              "abstentionF1",
+              "relationSemanticMacroF1",
+              "relationEvidenceSupport",
+              "relationEvidenceExact",
+              "relationHallucinationRate"
+            ],
+            "v9": [
+              "abstentionPrecision",
+              "abstentionF1",
+              "relationSemanticMacroF1",
+              "relationEvidenceSupport",
+              "relationEvidenceExact",
+              "relationHallucinationRate"
+            ],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        },
+        "gold-relations": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [],
+            "v9": [],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        }
+      }
+    },
+    {
+      "label": "J4",
+      "denominator": 6,
+      "arms": {
+        "predicted-entities": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "abstentionRecall",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "missingEndpointRate",
+              "relationHallucinationRate"
+            ],
+            "v9": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "missingEndpointRate",
+              "relationHallucinationRate"
+            ],
+            "newInV9": [],
+            "resolvedInV9": [
+              "abstentionF1",
+              "abstentionRecall"
+            ]
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        },
+        "gold-entities": {
+          "invalidEvidenceCount": {
+            "v6": 3,
+            "v9": 3,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 3,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "relationEvidenceSupport",
+              "relationEvidenceExact"
+            ],
+            "v9": [
+              "relationEvidenceSupport",
+              "relationEvidenceExact"
+            ],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        },
+        "gold-relations": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [],
+            "v9": [],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        }
+      }
+    },
+    {
+      "label": "J5",
+      "denominator": 6,
+      "arms": {
+        "predicted-entities": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 2,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "missingEndpointRate",
+              "relationHallucinationRate"
+            ],
+            "v9": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "abstentionPrecision",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "missingEndpointRate",
+              "relationHallucinationRate"
+            ],
+            "newInV9": [
+              "abstentionF1",
+              "abstentionPrecision"
+            ],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        },
+        "gold-entities": {
+          "invalidEvidenceCount": {
+            "v6": 3,
+            "v9": 3,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 3,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "relationEvidenceSupport",
+              "relationEvidenceExact"
+            ],
+            "v9": [
+              "relationEvidenceSupport",
+              "relationEvidenceExact"
+            ],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        },
+        "gold-relations": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [],
+            "v9": [],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        }
+      }
+    },
+    {
+      "label": "J6",
+      "denominator": 6,
+      "arms": {
+        "predicted-entities": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "missingEndpointRate",
+              "relationHallucinationRate"
+            ],
+            "v9": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "missingEndpointRate",
+              "relationHallucinationRate"
+            ],
+            "newInV9": [
+              "abstentionF1",
+              "abstentionPrecision",
+              "abstentionRecall"
+            ],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        },
+        "gold-entities": {
+          "invalidEvidenceCount": {
+            "v6": 2,
+            "v9": 3,
+            "delta": 1
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 3,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1",
+              "relationEvidenceSupport",
+              "relationEvidenceExact"
+            ],
+            "v9": [
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1",
+              "relationEvidenceSupport",
+              "relationEvidenceExact"
+            ],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.19999999999999996,
+            "relationSemanticMacroF1": 0.19999999999999996
+          }
+        },
+        "gold-relations": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [],
+            "v9": [],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        }
+      }
+    },
+    {
+      "label": "en",
+      "denominator": 6,
+      "arms": {
+        "predicted-entities": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "relationHallucinationRate"
+            ],
+            "v9": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "relationHallucinationRate"
+            ],
+            "newInV9": [
+              "abstentionF1",
+              "abstentionPrecision",
+              "abstentionRecall"
+            ],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        },
+        "gold-entities": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1"
+            ],
+            "v9": [
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1"
+            ],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": "not-applicable",
+            "relationSemanticMacroF1": "not-applicable"
+          }
+        },
+        "gold-relations": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [],
+            "v9": [],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": "not-applicable",
+            "relationSemanticMacroF1": "not-applicable"
+          }
+        }
+      }
+    },
+    {
+      "label": "ja",
+      "denominator": 6,
+      "arms": {
+        "predicted-entities": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1"
+            ],
+            "v9": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1"
+            ],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": "not-applicable",
+            "relationSemanticMacroF1": "not-applicable"
+          }
+        },
+        "gold-entities": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1"
+            ],
+            "v9": [
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1"
+            ],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": "not-applicable",
+            "relationSemanticMacroF1": "not-applicable"
+          }
+        },
+        "gold-relations": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [],
+            "v9": [],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": "not-applicable",
+            "relationSemanticMacroF1": "not-applicable"
+          }
+        }
+      }
+    },
+    {
+      "label": "mixed",
+      "denominator": 30,
+      "arms": {
+        "predicted-entities": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 5,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "missingEndpointRate",
+              "relationHallucinationRate"
+            ],
+            "v9": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "abstentionPrecision",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "missingEndpointRate",
+              "relationHallucinationRate"
+            ],
+            "newInV9": [
+              "abstentionPrecision"
+            ],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": -0.027777777777777776,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        },
+        "gold-entities": {
+          "invalidEvidenceCount": {
+            "v6": 11,
+            "v9": 14,
+            "delta": 3
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 14,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "abstentionPrecision",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "relationEvidenceSupport",
+              "relationEvidenceExact",
+              "relationHallucinationRate"
+            ],
+            "v9": [
+              "abstentionPrecision",
+              "abstentionF1",
+              "relationSemanticMacroF1",
+              "relationEvidenceSupport",
+              "relationEvidenceExact",
+              "relationHallucinationRate"
+            ],
+            "newInV9": [],
+            "resolvedInV9": [
+              "relationSemanticMicroF1"
+            ]
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.11250000000000004,
+            "relationSemanticMacroF1": 0.1166666666666667
+          }
+        },
+        "gold-relations": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [],
+            "v9": [],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        }
+      }
+    },
+    {
+      "label": "vi",
+      "denominator": 6,
+      "arms": {
+        "predicted-entities": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "abstentionPrecision",
+              "abstentionRecall",
+              "abstentionF1",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "relationHallucinationRate"
+            ],
+            "v9": [
+              "entityMacroF1",
+              "entitySpanExact",
+              "entityHallucinationRate",
+              "relationSemanticMicroF1",
+              "relationSemanticMacroF1",
+              "endpointDirectionAccuracy",
+              "relationHallucinationRate"
+            ],
+            "newInV9": [],
+            "resolvedInV9": [
+              "abstentionF1",
+              "abstentionPrecision",
+              "abstentionRecall"
+            ]
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        },
+        "gold-entities": {
+          "invalidEvidenceCount": {
+            "v6": 6,
+            "v9": 6,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 6,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [
+              "relationEvidenceSupport",
+              "relationEvidenceExact"
+            ],
+            "v9": [
+              "relationEvidenceSupport",
+              "relationEvidenceExact"
+            ],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        },
+        "gold-relations": {
+          "invalidEvidenceCount": {
+            "v6": 0,
+            "v9": 0,
+            "delta": 0
+          },
+          "schemaInvalidReasonCounts": {
+            "v6": {},
+            "v9": {
+              "entity_candidate_identity_duplicate": 0,
+              "entity_candidate_invalid": 0,
+              "entity_span_out_of_source": 0,
+              "envelope_unbound_field": 0,
+              "envelope_version_mismatch": 0,
+              "relation_candidate_invalid": 0,
+              "relation_endpoint_not_in_server_table": 0,
+              "relation_evidence_invalid": 0,
+              "validation_detail_unavailable": 0
+            }
+          },
+          "evidenceReasonCounts": {
+            "v6": {},
+            "v9": {
+              "evidence_does_not_contain_endpoints": 0,
+              "evidence_does_not_contain_trigger": 0,
+              "evidence_span_missing": 0,
+              "evidence_span_out_of_source": 0,
+              "materializer_detail_unavailable": 0,
+              "trigger_occurrence_missing": 0,
+              "trigger_occurrence_outside_clause": 0,
+              "trigger_occurrence_outside_sentence": 0,
+              "trigger_quote_digest_mismatch": 0,
+              "trigger_quote_missing": 0
+            }
+          },
+          "thresholdFailures": {
+            "v6": [],
+            "v9": [],
+            "newInV9": [],
+            "resolvedInV9": []
+          },
+          "registeredMetricDelta": {
+            "entityMacroF1": 0.0,
+            "entitySpanExact": 0.0,
+            "relationSemanticMicroF1": 0.0,
+            "relationSemanticMacroF1": 0.0
+          }
+        }
+      }
+    }
+  ],
+  "interpretation": {
+    "observedBehaviorChanges": [
+      "schema-invalid total decreased 6 to 5",
+      "invalid-evidence total increased 17 to 20",
+      "v9 records finite reasons for 14 trigger-containment and 6 endpoint-containment failures"
+    ],
+    "observabilityOrContractChanges": [
+      "v6 did not retain finite failure reasons; v9 exposes registered sanitized reason codes",
+      "the reason labels localize validation/materialization boundaries but do not prove provider, prompt or runtime causality"
+    ],
+    "notEstablished": [
+      "quality improvement",
+      "candidate suitability",
+      "business quality",
+      "tenant readiness",
+      "provider or prompt causality"
+    ]
+  },
+  "remediationOptions": [
+    {
+      "id": "A",
+      "name": "Offline finite-diagnostic and contract hardening",
+      "scope": "Implement only a new offline runtime/report contract that keeps closed reason allowlists, exact count reconciliation, and raw-data exclusion.",
+      "expectedEvidence": "Deterministic fixtures prove one-to-one schema/evidence counts, unknowns fail closed, and no raw fields escape.",
+      "risks": [
+        "Cannot explain historical provider payloads that were not retained",
+        "may improve observability without changing model behavior"
+      ],
+      "offlineAcceptanceTests": [
+        "schema validates",
+        "all registered reason totals reconcile",
+        "unknown reason is not pass",
+        "raw provider/source/trigger/validation fields are absent"
+      ],
+      "stopCriteria": [
+        "any reconciliation mismatch",
+        "any raw-data leak",
+        "any inferred causal claim"
+      ],
+      "authorization": "not authorized"
+    },
+    {
+      "id": "B",
+      "name": "Offline materializer/scorer parity fixture",
+      "scope": "Build deterministic local fixtures covering trigger and endpoint containment, schema boundaries, slices, and gold-relations control; compare scorer and diagnostics without provider calls.",
+      "expectedEvidence": "Known synthetic failures map to exactly one finite reason and preserve registered metric domains across slices.",
+      "risks": [
+        "Synthetic parity cannot establish external-provider behavior",
+        "fixture drift can mask a live integration defect"
+      ],
+      "offlineAcceptanceTests": [
+        "case/arm/stage mapping is deterministic",
+        "gold-relations control stays clean",
+        "slice and threshold deltas are reproducible"
+      ],
+      "stopCriteria": [
+        "fixture cannot reproduce the observed boundary",
+        "a live rerun is proposed before owner review"
+      ],
+      "authorization": "not authorized"
+    },
+    {
+      "id": "C",
+      "name": "Stop provider experimentation",
+      "scope": "Retain immutable v6/v9 evidence, close the remediation track, and require a separately approved product or research decision before any new Stage A.",
+      "expectedEvidence": "A signed owner decision records no new lineage, no authorization, and no downstream access.",
+      "risks": [
+        "Leaves provider causality unresolved",
+        "may defer potential contract improvements"
+      ],
+      "offlineAcceptanceTests": [
+        "reports and digests remain unchanged",
+        "current state remains fail-closed",
+        "no provider call or lineage artifact is issued"
+      ],
+      "stopCriteria": [
+        "any request for provider execution without a new owner gate"
+      ],
+      "authorization": "not authorized"
+    }
+  ],
+  "recommendation": "Prefer A followed by B only after RM-49 review; choose C if finite offline parity cannot be demonstrated without reconstructing withheld payload/source or if the next hypothesis cannot be preregistered with a measurable acceptance boundary.",
+  "governance": {
+    "offlineComparisonPrepared": true,
+    "remediationImplementationAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "nextGate": "S12-RM-49_OWNER_REVIEW_OFFLINE_ERROR_ANALYSIS_PREPARATION"
+}

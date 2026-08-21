@@ -1,0 +1,52 @@
+{
+  "artifactVersion": "s12.current-state-next-rm48.v1",
+  "role": "NON_AUTHORITATIVE_PREPARATION_SNAPSHOT",
+  "status": "OFFLINE_ERROR_COMPARISON_AND_REMEDIATION_OPTIONS_PREPARED_PENDING_RM49_OWNER_REVIEW",
+  "experimentId": "S12-f-12",
+  "taskId": "S12-RM-48",
+  "comparison": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm48-error-comparison.v1.json",
+    "digest": "sha256:d0795993c2a47f88d450d30fb80177ee4ba9d864cc403a8cf0311969e29b6ec7",
+    "immutableInputs": [
+      {
+        "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+        "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+      },
+      {
+        "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json",
+        "digest": "sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e"
+      }
+    ]
+  },
+  "authority": {
+    "executionTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm46-execution-transition.v1.json",
+      "digest": "sha256:948a2f1aa1015e339692e113feb878949eb0a9b080174d0ef9cfabeca378ea95"
+    },
+    "priorOwnerDecision": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm47-owner-decision.v1.json",
+      "digest": "sha256:bbb10126bf61fe0272c2421bc02d45af28ec9d9f4b9abb920258280385dd9ca5"
+    },
+    "priorTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm47-decision-transition.v1.json",
+      "digest": "sha256:262b090d8b55c46dfeb1730d1235513a57fc1db68452839f900aad2f842a76fb"
+    },
+    "authoritativeG5Packet": "evaluation/sprint-12/optimization/g5-packet.v33.rm47-closure.json"
+  },
+  "governance": {
+    "offlineComparisonPrepared": true,
+    "remediationImplementationAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "nextGate": "S12-RM-49_OWNER_REVIEW_OFFLINE_ERROR_ANALYSIS_PREPARATION",
+  "claimBoundary": "RM-48 is descriptive offline preparation only. It establishes no quality improvement, candidate, business-quality, tenant-readiness or provider/prompt/runtime causality claim."
+}
