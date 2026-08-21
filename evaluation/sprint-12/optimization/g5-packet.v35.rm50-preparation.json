@@ -9,7 +9,7 @@
   },
   "package": {
     "path": "evaluation/sprint-12/optimization/s12-f-12-rm50-offline-remediation.v1.json",
-    "digest": "sha256:129952dc44db157d6d67d0c17b59e60291209de2c7d4f2fe31ff2c6a3ad831c8"
+    "digest": "sha256:f7c730f5a2520793a32c9a0ea3bfce29d84400a57dd23320ff929ba6e94a9b79"
   },
   "evidence": {
     "optionAStopCriteriaPassed": true,
