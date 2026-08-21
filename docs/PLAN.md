@@ -44,9 +44,10 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   atomic and longitudinal datasets, leakage-resistant splits,
   ontology/graph/retrieval metrics, controlled optimization, sealed held-out
   evaluation, and target-role business acceptance. The historical synthetic
-  corpus and rejected prompt experiments are retained as evidence; M8 now
-  includes a G3.1 dataset-and-measurement remediation track before candidate
-  selection can resume.
+  corpus and rejected prompt experiments are retained as evidence. G3.1-A/B/C
+  are complete with scope limits; M8 is now at the issued f12 two-step package,
+  awaiting a separate bounded Stage A authorization before candidate selection
+  can resume.
 
 ## Completed Sprints
 
@@ -97,7 +98,8 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   candidate selection has occurred. A separate authorization remains required
   before the one bounded development Stage A run. Validation and held-out data
   remain sealed, no business-quality claim is made, and new connector/outbound
-  breadth remains deferred.*
+  breadth remains deferred. The authoritative dashboard is the
+  [Sprint 12 current-state index](sprint-plans/sprint-12/current-state.md).*
 
 ## Planned Sprints
 

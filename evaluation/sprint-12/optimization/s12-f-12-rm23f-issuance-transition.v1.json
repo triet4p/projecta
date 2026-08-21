@@ -1,0 +1,52 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm23f-issuance-transition.v1",
+  "status": "PREREGISTRATION_AND_FREEZE_ISSUED_PROVIDER_AUTHORIZATION_PENDING",
+  "experimentId": "s12-f-12",
+  "transitionDate": "2026-08-21",
+  "transitionAuthority": "project-owner-delegated-codex-reviewer",
+  "precedenceRule": "This later explicit transition is authoritative for current governance state. It does not mutate or relabel the immutable preparation-state fields in the bound v7 artifacts.",
+  "ownerReview": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm23f-owner-review.v1.json",
+    "digest": "sha256:8439b584ebf775230820f57e00e6ff9b9757787f3f47e7be537720ee97a5493b",
+    "status": "OWNER_ISSUANCE_REVIEW_APPROVED_ISSUANCE_ONLY"
+  },
+  "issuedLineage": {
+    "lineageCommit": "909995ebbb3c8a8f8f6f2168fd5d721481925f23",
+    "executionCommit": "e047911e2e2d513f2b8751965dd702b2c1fe9d5a",
+    "preregistration": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22d-issuance-draft.v7.json",
+      "digest": "sha256:9e52308abb73fa7a0696f8bd8ae11c1eed064bd63fcdc7266e1c1b3bd7844808"
+    },
+    "executionPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22d-execution-package.v7.json",
+      "digest": "sha256:22c47dd77ea4a348b479a21d5d42b97684c6f04a1fa54b06857bd82f2c9bc641"
+    },
+    "technicalFreeze": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22d-technical-freeze.v7.json",
+      "digest": "sha256:20bf9ed82b629c9e26067b42acbb9efdf2b78de243ffd40cc0a707f46901a772"
+    }
+  },
+  "fromPreparationSnapshot": {
+    "preregistrationIssued": false,
+    "executionFreezeIssued": false,
+    "providerExecutionAuthorized": false
+  },
+  "currentDecisionState": {
+    "preregistrationIssued": true,
+    "executionFreezeIssued": true,
+    "providerExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "stageAReportExists": false,
+    "nextPermittedAction": "S12-RM-24_PREPARE_EXACT_STAGE_A_AUTHORIZATION"
+  },
+  "constraints": [
+    "Issuance does not authorize a provider call.",
+    "RM-24 must bind this transition, the owner review, exact execution commit, package, freeze, runtime, output path and cost ceiling.",
+    "RM-25 must independently review and authorize one bounded execution before the runner is invoked.",
+    "Validation, held-out data, Stage B, candidate selection and promotion remain closed."
+  ]
+}

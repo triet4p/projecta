@@ -1,0 +1,56 @@
+{
+  "artifactVersion": "s12.current-state.v1",
+  "asOf": "2026-08-21",
+  "status": "G5_F12_ISSUED_PROVIDER_AUTHORIZATION_PENDING",
+  "sourcePrecedence": [
+    "this current-state index",
+    "latest explicit owner decision or transition record",
+    "current Sprint 12 plan and current gate packet",
+    "immutable preparation and execution artifacts",
+    "historical gate snapshots"
+  ],
+  "currentEvidence": {
+    "issuanceTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm23f-issuance-transition.v1.json",
+      "expectedStatus": "PREREGISTRATION_AND_FREEZE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
+    },
+    "g5Packet": {
+      "path": "evaluation/sprint-12/optimization/g5-packet.v12.json",
+      "version": "s12.g5.packet.v12"
+    },
+    "humanSummary": "docs/sprint-plans/sprint-12/current-state.md"
+  },
+  "gates": {
+    "G0": "APPROVED",
+    "G1": "APPROVED",
+    "G2": "APPROVED_WITH_LIMITATIONS",
+    "G3": "APPROVED_WITH_LIMITATIONS",
+    "G3.1-A": "APPROVED",
+    "G3.1-B": "APPROVED_WITH_SCOPE_LIMITS",
+    "G3.1-C": "APPROVED_WITH_SCOPE_LIMITS",
+    "G4": "RUNTIME_BACKED_BASELINE_WITH_FAILURES",
+    "G4.1": "CONTRACT_ALIGNED_STABILITY_FAILED",
+    "G5": "F12_ISSUED_PROVIDER_AUTHORIZATION_PENDING",
+    "G6": "BLOCKED_CUSTODY_OR_CANDIDATE",
+    "G7": "NOT_STARTED"
+  },
+  "experimentState": {
+    "experimentId": "s12-f-12",
+    "preregistrationIssued": true,
+    "executionFreezeIssued": true,
+    "providerExecutionAuthorized": false,
+    "providerCallsPerformed": 0,
+    "stageAReportExists": false,
+    "stageBAuthorized": false,
+    "candidateSelection": "NO_SELECTION",
+    "candidateFrozen": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "heldOutInspected": false
+  },
+  "nextTasks": [
+    "S12-RM-24_PREPARE_EXACT_STAGE_A_AUTHORIZATION",
+    "S12-RM-25_OWNER_REVIEW_AND_OPTIONAL_ONE_RUN_AUTHORIZATION"
+  ],
+  "claimBoundary": "No accuracy improvement, candidate selection, tenant readiness or business-quality result may be claimed before new execution evidence passes its registered gates."
+}

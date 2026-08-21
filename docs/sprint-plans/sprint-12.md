@@ -2,6 +2,8 @@
 
 Status: `G5_F12_ISSUED_PROVIDER_AUTHORIZATION_PENDING`
 
+Current state: [Sprint 12 Current State](sprint-12/current-state.md)
+
 G0 packet: [Business Scope Review Packet](sprint-12/g0-business-scope.md)
 
 Remaining-agent handoffs: [Sprint 12 Remaining-Agent Handoffs](sprint-12/agent-handoffs.md)
@@ -10,7 +12,7 @@ G4 packet: [Baseline Evaluation Review Packet](sprint-12/g4-baseline.md)
 
 G4.1 packet: [Contract Alignment and Failure Diagnosis](sprint-12/g4.1-contract-alignment.md)
 
-G5 packet: [Controlled Optimization Review Packet](sprint-12/g5-optimization.md)
+G5 packet: [Controlled Optimization Review Packet v12](sprint-12/g5-optimization.v12.md)
 
 G6 packet: [Held-out Business Evaluation Packet](sprint-12/g6-business-evaluation.md)
 
@@ -393,11 +395,12 @@ unchanged and blocking.
 
 ### Phase F — Controlled Optimization and G5
 
-S12-f-07 and S12-f-08 are immutable rejected experiments. The remaining
-generic context, workflow, and tool experiments plus S12-78 through S12-81 are
-paused until the G3.1 remediation track below passes. This pause does not
-rewrite the historical G3 or G5 approvals and does not authorize held-out
-access.
+S12-f-07 through S12-f-11 are immutable rejected experiments. G3.1-A/B/C have
+passed with their recorded scope limits. The active path is now the issued f12
+two-step extraction package: RM-24 must prepare an exact authorization and
+RM-25 must independently approve it before one bounded Stage A run. Generic
+context/workflow experiments, selection, validation and held-out access remain
+deferred; this does not rewrite historical G3 or G5 decisions.
 
 - [x] **S12-72 — Create the experiment registry:** Require a hypothesis,
   permitted split, configuration digest, metric target, and stopping rule.
@@ -827,6 +830,10 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   preregistration and freeze are issued, while provider execution, validation,
   held-out, Stage B, selection and promotion remain unauthorized. See
   `artifacts/task_S12-RM-23F_summary.md`.
+  The later
+  `evaluation/sprint-12/optimization/s12-f-12-rm23f-issuance-transition.v1.json`
+  is authoritative for current issuance state without mutating the v7
+  preparation snapshots.
 - [ ] **S12-RM-24 — Prepare exact f12 Stage A authorization:** Bind the RM-23F
   owner-review digest, execution commit `e047911e`, v7 package/freeze digests,
   runtime configuration, report-v6 path, no-retry/no-overwrite policy and exact

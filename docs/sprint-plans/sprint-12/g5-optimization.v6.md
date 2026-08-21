@@ -1,5 +1,8 @@
 # Sprint 12 G5 Optimization Packet v6
 
+> Historical gate snapshot. For current state, see
+> [G5 Optimization Packet v12](g5-optimization.v12.md).
+
 Status: `G5_PREPARATION_DEVELOPMENT_OPEN_PENDING_S12_F07_AUTHORIZATION`
 
 S12-f-07 is registered as a prompt-only development experiment. Its execution authorization is pending; no provider call, Stage A result or candidate selection exists. Pricing is required before selection, not before Stage A execution, and the denominator contract is fail-closed on the full 48 case-runs per arm with paired common-valid sensitivity analysis.

@@ -1,14 +1,16 @@
 # Sprint 12 Dataset Contract
 
-**Contract version:** `s12.v1`
+**Base contract version:** `s12.v1`; current visible corpus: `v3-frozen`
 
-**Status:** `G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE`
+**Current Sprint status:** `G5_F12_ISSUED_PROVIDER_AUTHORIZATION_PENDING`
 
 The repository-visible pilot and development/validation gold now have
 owner-delegated AI semantic review. They remain agent-authored synthetic data
-with `humanEvidence: false`; the runtime-backed baseline currently fails schema
-validity, while test custody, frozen candidate and held-out business evidence
-remain blocking.
+with `humanEvidence: false`. G3.1-A/B/C are complete with scope limits. The f12
+preregistration/freeze lineage is issued, but provider execution is not
+authorized and no candidate is selected. G6 separately remains blocked by test
+custody and candidate quality. See `current-state.v1.json` for the authoritative
+current-state index.
 
 This directory contains the governed contract for the Sprint 12 business
 semantic benchmark. It does not contain the held-out test cases or gold. Test
@@ -22,7 +24,9 @@ procedure permits one blinded run.
 - `schema/scenario-case.schema.json` defines one ordered project episode,
   graph checkpoints, review decisions and grounded competency answers.
 - `coverage-matrix.v1.json` binds the G0 journeys to minimum quotas and slices.
-- `annotation-guide.v1.md` defines gold-label decisions and counterexamples.
+- `annotation-guide.v1.md` is the base guide;
+  `pilot/annotation-guide.v1.1.md` records the pilot clarification used by the
+  owner-delegated synthetic review track.
 - `data-governance.v1.md` defines provenance, licensing, privacy, retention,
   leakage, split and custody controls.
 - `metrics.v1.md` defines deterministic scoring and reporting behavior.
@@ -42,17 +46,18 @@ procedure permits one blinded run.
   evaluator, diagnostic validators, test evidence and residual limitations for
   G3.1-A while keeping provider execution explicitly unauthorized.
 - `corpus/v3/atomic-deep-pilot.v1.json` and its manifest contain the new 48-case
-  R09 pilot across six lineages; this version is additive and pending R12–R13
-  QA gates.
+  R09 pilot across six lineages; R12 quality and R13 scoped approval are
+  complete.
 - `corpus/v3/scenario-deep-pilot.v1.json` and its manifest contain the R10
   longitudinal pilot: six unique eight-event episodes, split 4 development / 2
   validation by lineage, with independent checkpoints, contradiction tracking
-  and competency-answer fixtures; it remains pending R12–R13 quality and
-  quality gates.
+  and competency-answer fixtures; R12 quality and R13 scoped approval are
+  complete.
 - `corpus/v3/gold-adjudication.v1.json` records the R11 owner-delegated AI
   annotation/adjudication packet for all 48 atomic cases and six scenarios,
   including rule IDs, explicit coverage, digests and zero material disputes;
-  qualified human evidence remains false and R13 approval remains pending.
+  qualified human evidence remains false; R13 approved only the bounded
+  owner-delegated synthetic track.
 - `gates/g3.1-b-v3-pilot-quality.v1.json` records the R12 offline quality gate:
   schema, provenance, spans, language, scenario consistency and visible split
   leakage all pass, while test custody remains uninspected.
@@ -62,11 +67,11 @@ procedure permits one blinded run.
   `ResearchFinding` are explicit.
 - `corpus/v3-scale/` contains the additive R14 scale track: 208 atomic cases
   across 26 unique lineages and 26 scenarios, split 160 development / 48
-  validation with zero test payload; it remains pending R15 freeze and QA.
+  validation with zero test payload; R15 freeze and QA are complete.
 - `corpus/v3-frozen/` is the R15 frozen development/validation bundle with
   immutable payload/manifests, coverage, provenance, leakage and QA evidence;
-  it is pending the separate G3.1-C readiness approval and contains no test
-  payload.
+  G3.1-C readiness is approved with scope limits and the bundle contains no
+  test payload.
 - `gates/g3.1-c-v3-readiness.v1.json` approves one scoped validation run and
   controlled development for represented J1–J6 extraction slices only; it does
   not claim full benchmark completeness or authorize provider/held-out access.
@@ -102,6 +107,12 @@ procedure permits one blinded run.
   shared-response comparison, versioned slice thresholds, a decided
   trigger-quote contract, and a complete authorization-bound execution package.
   It does not authorize a provider call or reopen f09.
+- `optimization/s12-f-12-rm23f-issuance-transition.v1.json` records the later
+  issuance of the exact f12 v7 preparation lineage without mutating its
+  historical `PREPARED` fields.
+- `optimization/g5-packet.v12.json` is the current G5 machine packet. It keeps
+  selection at `NO_SELECTION` and requires separate RM-24/RM-25 authorization
+  before any provider call.
 
 ## Dataset contract rules
 
@@ -120,8 +131,10 @@ procedure permits one blinded run.
 
 ## Current gate
 
-G0, G1, G2 and G3 are approved with the evidence limitations recorded in the
-G2 and G3 packets. G4 is approved only as a truthful no-run measurement
-boundary. G5 registry preparation is complete and approved with a no-go
-limitation. G6 preparation is now blocked by missing test custody and a frozen
-candidate; held-out inputs/gold remain outside the repository.
+G0 and G1 are approved; G2 and G3 are approved with recorded limitations;
+G3.1-A/B/C are complete with scope limits. G4 now has a runtime-backed baseline
+with failures and G4.1 is contract-aligned but stability-failed. G5 has issued
+the exact f12 preregistration/freeze lineage, while provider authorization,
+Stage A output and candidate selection remain absent. G6 is blocked by missing
+external test custody and a frozen passing candidate; held-out inputs/gold
+remain outside the repository.

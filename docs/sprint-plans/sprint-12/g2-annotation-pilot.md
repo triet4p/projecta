@@ -1,5 +1,8 @@
 # Sprint 12 G2 Annotation Pilot Review Packet
 
+> Historical gate snapshot. Do not use this packet as the current Sprint 12
+> dashboard; see [Sprint 12 Current State](current-state.md).
+
 **Status:** `G2_APPROVED_G3_PENDING`
 
 **Gate:** G2 — Annotation Pilot

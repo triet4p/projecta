@@ -1,5 +1,8 @@
 # Sprint 12 G4 Baseline Evaluation Review Packet
 
+> Historical gate snapshot. Do not use this packet as the current Sprint 12
+> dashboard; see [Sprint 12 Current State](current-state.md).
+
 **Status:** `G4_APPROVED_WITH_LIMITATIONS_G5_PENDING`
 
 **Gate:** G4 — Baseline Evaluation

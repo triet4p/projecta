@@ -1,5 +1,8 @@
 # Sprint 12 G5 Optimization Packet v7
 
+> Historical gate snapshot. For current state, see
+> [G5 Optimization Packet v12](g5-optimization.v12.md).
+
 Status: `G5_PREPARATION_DEVELOPMENT_OPEN_S12_F07_STAGE_A_AUTHORIZED`
 
 S12-f-07 is authorized for one interleaved Stage A only: 16 development cases × 3 paired runs per arm, six total model invocations, no retry. Authorization v1 remains historical and immutable. Pricing is required before selection and Stage B, not before Stage A execution.

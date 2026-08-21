@@ -456,3 +456,10 @@ next highest-value work.
 **Alternatives considered:** Add an optional field directly to m3.v2, rerun f09 after changing the historical contract, or leave trigger context optional for the next candidate.
 **Reason:** Adding a field to m3.v2 changes the historical f08 execution-package digest without improving the already-closed f09 evidence. The next tool experiment needs an explicit trigger contract while prior experiment artifacts remain immutable.
 **Consequences:** The next preregistration must bind the new envelope/schema, materializer, scorer, and tests together. f08/f09 history remains unchanged; no provider execution is authorized by this decision.
+
+## [2026-08-21] Resolve Sprint 12 state through explicit transitions
+
+**Decision:** Use a current-state index and later explicit decision or transition records to determine current Sprint 12 governance state, while preserving preparation and gate artifacts as immutable historical snapshots.
+**Alternatives considered:** Rewrite issued v7 preparation artifacts in place; infer current state from the newest filename; or allow every gate packet and README to act as an equal source of truth.
+**Reason:** RM-23F legitimately issued an exact lineage after the v7 artifacts were frozen with `NOT_ISSUED` preparation fields. Rewriting those fields would break their recorded digests and custody, while leaving precedence implicit causes documents and agents to report contradictory authorization states.
+**Consequences:** Current-state consumers must follow `evaluation/sprint-12/current-state.v1.json`, the latest explicit transition, and the current gate packet in that order. Historical packet statuses remain valid only for their decision time. A transition never broadens authority beyond its explicit fields; provider execution, validation, held-out access, Stage B and promotion still require separate authorization.

@@ -1,5 +1,8 @@
 # Sprint 12 G3 Dataset Freeze Review Packet
 
+> Historical gate snapshot. Do not use this packet as the current Sprint 12
+> dashboard; see [Sprint 12 Current State](current-state.md).
+
 **Status:** `G3_APPROVED_G4_PENDING`
 
 **Gate:** G3 — Dataset Freeze

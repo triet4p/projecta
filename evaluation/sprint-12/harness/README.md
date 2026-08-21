@@ -2,7 +2,11 @@
 
 **Version:** `s12.evaluator.v4`
 
-**Status:** `G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE`
+**Current Sprint status:** `G5_F12_ISSUED_PROVIDER_AUTHORIZATION_PENDING`
+
+The harness is also prepared for G6, but G6 remains separately blocked by
+external custody and the absence of a frozen passing candidate. Current state
+is indexed in `evaluation/sprint-12/current-state.v1.json`.
 
 The harness in `scripts/sprint12_evaluator.py` is a deterministic, stdlib-only
 boundary around the frozen development/validation fixture. It validates source
@@ -29,6 +33,7 @@ The baseline command is:
 uv run --script scripts/sprint12_evaluator.py
 ```
 
-With no approved runtime configuration, this command deliberately emits
-`NOT_EXECUTED_MISSING_RUNTIME_CONFIGURATION`. Fixture replay is not presented
-as a `v0.6.0` baseline result.
+The historical baseline has since run and remains immutable at 105 valid
+outputs out of 160, with 55 fail-explicit failures. The command's behavior is
+configuration-dependent; a missing runtime configuration must still fail
+explicitly and must never be presented as a model-quality result.
