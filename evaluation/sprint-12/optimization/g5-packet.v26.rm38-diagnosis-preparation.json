@@ -1,0 +1,43 @@
+{
+  "packetVersion": "s12.g5.packet.v26.rm38-diagnosis-preparation",
+  "status": "G5_F12_RM38_OFFLINE_DIAGNOSIS_COMPLETE_PENDING_RM39_OWNER_REVIEW",
+  "packetRole": "non-authoritative-rm38-preparation-snapshot",
+  "asOf": "2026-08-22",
+  "supersedesForPreparation": {
+    "path": "evaluation/sprint-12/optimization/g5-packet.v25.rm37-closure.json",
+    "digest": "sha256:e419ccc113c6f412cc8bd2867f8527b2137de6adc89a80a306ef5a01bcf5749c"
+  },
+  "diagnosis": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm38-reconciliation-diagnosis.v1.json",
+    "digest": "sha256:cdb9309ab914072a9b66a676cf24a99aa9b314fc32963ddeb079224e2e21a0f4",
+    "rootCause": "The runtime diagnostic loop counts all predicted relations, while the arm invalid-evidence denominator counts only evidence buckets on semantically exact pairs.",
+    "historicalAttribution": "unknown because raw provider payload was not retained"
+  },
+  "remediationProposal": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm38-remediation-proposal.v1.json",
+    "digest": "sha256:211c088078787e9b0678cdd731388f7862e4b69b67f19564f11b214c82f7f2aa",
+    "status": "OFFLINE_REMEDIATION_PROPOSAL_PENDING_RM39_OWNER_REVIEW"
+  },
+  "executionEvidence": {
+    "rm36ProviderCallsAttempted": 3,
+    "rm36ReportExists": false,
+    "rm36AccountingComplete": false,
+    "rm36AuthorizationSpent": true,
+    "historicalV6ReportDigest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+  },
+  "authorizationBoundary": {
+    "providerExecutionAuthorized": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "runtimeImplementationAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "issuanceAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedTask": "S12-RM-39_OWNER_REVIEW_RM38_DIAGNOSIS_AND_REMEDIATION_PROPOSAL"
+  },
+  "claimBoundary": "This packet is a non-authoritative offline preparation snapshot; it does not authorize runtime implementation or any provider activity."
+}

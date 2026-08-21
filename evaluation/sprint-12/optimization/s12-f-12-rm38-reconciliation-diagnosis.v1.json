@@ -1,0 +1,91 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm38-reconciliation-diagnosis.v1",
+  "status": "OFFLINE_DIAGNOSIS_COMPLETE_PENDING_RM39_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-38",
+  "diagnosisDate": "2026-08-22",
+  "sourceBoundary": {
+    "rm36ExecutionTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm36-execution-transition.v1.json",
+      "digest": "sha256:738d3bdada83af5f152a2a5974af1a73e856247d88c226cafd3d5d60d6899d45"
+    },
+    "rm37DecisionTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm37-decision-transition.v1.json",
+      "digest": "sha256:87b1abbba0323c72dd73152305beeac696113a5238514af5a1a9e53eecf03098"
+    },
+    "historicalV6Report": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+      "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+    },
+    "rawProviderPayloadInspected": false,
+    "rawSourceTextPersisted": false,
+    "providerCalls": 0
+  },
+  "reproduction": {
+    "caseId": "s12-a-4003",
+    "arm": "predicted-entities",
+    "capturesBeforeFailure": [
+      "stage1:predicted-entities",
+      "stage2:predicted-entities",
+      "stage2:gold-entities"
+    ],
+    "mockProviderCalls": 0,
+    "mockRelationCount": 1,
+    "mockSemanticPairing": {
+      "exactMatch": 0,
+      "nonExactRelation": 1,
+      "evidenceApplicable": 0
+    },
+    "armMaterializerInvalidEvidenceCount": 0,
+    "diagnosticReasonCounts": {
+      "trigger_quote_missing": 1,
+      "trigger_quote_digest_mismatch": 0,
+      "trigger_occurrence_missing": 0,
+      "trigger_occurrence_outside_sentence": 0,
+      "trigger_occurrence_outside_clause": 0,
+      "evidence_span_missing": 0,
+      "evidence_span_out_of_source": 0,
+      "evidence_does_not_contain_trigger": 0,
+      "evidence_does_not_contain_endpoints": 0,
+      "materializer_detail_unavailable": 0
+    },
+    "diagnosticFailureTotal": 1,
+    "exception": "evidence reason counts do not reconcile with arm materializer failures",
+    "endpointSpanShapeObservedByOldLoop": "(start,end,type) passed to a (start,end)-only classifier"
+  },
+  "rootCause": {
+    "primary": "_arm_record_v8 derives armMaterializerInvalidEvidenceCount from score_relations evidence buckets, which apply only to semantically exact pairs; _evidence_reasons iterates every predicted relation, including non-exact and extra relations.",
+    "divergence": "A non-exact relation contributes 0 to invalidEvidenceCount but contributes 1 diagnostic reason when its evidence is missing or unsupported.",
+    "secondary": "_entity_spans returns (start,end,type) triples while diagnose_evidence_failure accepts only (start,end); this can degrade a valid finite reason to materializer_detail_unavailable.",
+    "historicalAttributionBoundary": "The RM-36 payload was not retained. The mock proves the code defect and matching exception, but does not claim the hidden provider relation took this exact semantic branch."
+  },
+  "impact": {
+    "failureBoundary": "first_case_predicted_entities_arm_diagnostic_reconciliation",
+    "callsAttemptedBeforeHistoricalFailure": 3,
+    "reportPersisted": false,
+    "accountingComplete": false,
+    "retryOrRerun": false,
+    "authorizationSpent": true,
+    "qualityResultAvailable": false
+  },
+  "earlierTestGap": {
+    "missedBecause": "Existing deterministic diagnostics used an exact relation with missing evidence, so both counters were 1; they did not include a non-exact relation with invalid evidence.",
+    "newRegressionRequired": "Cover exact-invalid, non-exact-invalid, extra-invalid and endpoint span projection cases separately."
+  },
+  "governance": {
+    "offlineDiagnosisPreparationAuthorized": true,
+    "offlineRemediationPreparationAuthorized": true,
+    "providerExecutionAuthorized": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextOwnerGate": "S12-RM-39_OWNER_REVIEW_RM38_DIAGNOSIS_AND_REMEDIATION_PROPOSAL"
+  }
+}

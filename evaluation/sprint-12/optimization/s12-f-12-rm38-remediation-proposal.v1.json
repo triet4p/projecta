@@ -1,0 +1,48 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm38-remediation-proposal.v1",
+  "status": "OFFLINE_REMEDIATION_PROPOSAL_PENDING_RM39_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-38",
+  "diagnosisPath": "evaluation/sprint-12/optimization/s12-f-12-rm38-reconciliation-diagnosis.v1.json",
+  "implementationScope": {
+    "authorizedNow": "offline proposal and deterministic regression design only",
+    "notAuthorizedNow": [
+      "runtime implementation",
+      "provider execution",
+      "retry",
+      "rerun",
+      "superseding lineage",
+      "issuance",
+      "validation",
+      "held-out",
+      "Stage B",
+      "selection",
+      "promotion"
+    ]
+  },
+  "finiteRemediation": {
+    "pairingRule": "derive diagnostic candidates from the exact semantic pairs used by score_relations; never diagnose nonApplicable, wrong, extra or missing semantic relations against the arm invalid-evidence total",
+    "endpointRule": "project entity spans to two-tuples (start,end) before calling diagnose_evidence_failure",
+    "reconciliationRule": "sum finite reason counts exactly equals unsupported+missing for the same exact semantic pair set",
+    "failClosedRule": "unknown or malformed runtime detail maps to materializer_detail_unavailable and never passes reconciliation by omission"
+  },
+  "acceptanceTests": [
+    "exact semantic match with missing evidence counts once",
+    "non-exact relation with invalid evidence does not inflate arm invalidEvidence",
+    "extra relation with invalid evidence does not inflate arm invalidEvidence",
+    "three-tuple entity metadata is projected to a two-tuple classifier span",
+    "historical RM-36 transition and v6 digest remain unchanged",
+    "no provider adapter is instantiated or called"
+  ],
+  "governance": {
+    "providerExecutionAuthorized": false,
+    "runtimeImplementationAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "newAuthorizationIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  }
+}

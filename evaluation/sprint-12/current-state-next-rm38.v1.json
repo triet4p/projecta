@@ -1,0 +1,54 @@
+{
+  "artifactVersion": "s12.current-state-next.rm38-diagnosis.v1",
+  "asOf": "2026-08-22",
+  "status": "G5_F12_RM38_OFFLINE_DIAGNOSIS_COMPLETE_PENDING_RM39_OWNER_REVIEW",
+  "nonAuthoritative": true,
+  "authoritativeState": {
+    "path": "evaluation/sprint-12/current-state.v1.json",
+    "status": "G5_F12_V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY",
+    "rm37Transition": "evaluation/sprint-12/optimization/s12-f-12-rm37-decision-transition.v1.json"
+  },
+  "rm38Artifacts": {
+    "diagnosis": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm38-reconciliation-diagnosis.v1.json",
+      "digest": "sha256:cdb9309ab914072a9b66a676cf24a99aa9b314fc32963ddeb079224e2e21a0f4"
+    },
+    "remediationProposal": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm38-remediation-proposal.v1.json",
+      "digest": "sha256:211c088078787e9b0678cdd731388f7862e4b69b67f19564f11b214c82f7f2aa"
+    },
+    "reproducer": {
+      "path": "scripts/s12_f12_rm38_reconciliation_diagnosis.py",
+      "digest": "sha256:3a2b68cff828e6e2cf0f29f16f68e925e110c1f3e36a2d0a6d702902cfc525a6"
+    },
+    "tests": {
+      "path": "scripts/tests/test_sprint12_rm38_reconciliation_diagnosis.py",
+      "digest": "sha256:77640c1da692c1d91d0a6e68e38639dd80e6c9f925e7e57525d97ba40f0c7804"
+    }
+  },
+  "verifiedOfflineFinding": {
+    "caseId": "s12-a-4003",
+    "arm": "predicted-entities",
+    "materializerInvalidEvidenceCount": 0,
+    "diagnosticReasonCount": 1,
+    "exception": "evidence reason counts do not reconcile with arm materializer failures",
+    "historicalPayloadAttribution": "unknown"
+  },
+  "governanceLocks": {
+    "providerExecutionAuthorized": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "runtimeImplementationAuthorized": false,
+    "issuanceAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "nextTasks": [
+    "S12-RM-39_OWNER_REVIEW_RM38_DIAGNOSIS_AND_REMEDIATION_PROPOSAL"
+  ],
+  "claimBoundary": "RM-38 proves a deterministic code-path defect with mocks; it does not reconstruct the hidden RM-36 provider payload or establish a v8 quality result."
+}
