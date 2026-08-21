@@ -1,0 +1,38 @@
+{
+  "artifactVersion": "s12.s12-f-12.technical-freeze.v4",
+  "status": "TECHNICAL_FREEZE_PREPARED_PENDING_RM23C_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "supersedes": "evaluation/sprint-12/optimization/s12-f-12-rm22b-technical-freeze.v3.json",
+  "commitSha": "de1589e7d67249ddbcbb48dc6bde6edf7fa03362",
+  "executionPackage": "evaluation/sprint-12/optimization/s12-f-12-rm22c-execution-package.v4.json",
+  "executionPackageDigest": "sha256:83286ade4cd897efcb8a315d7e9495099d54abc459608f9e3b5d349573071fa2",
+  "preregistration": "evaluation/sprint-12/optimization/s12-f-12-rm22c-issuance-draft.v4.json",
+  "preregistrationDigest": "sha256:801d5f2b92ae81f10226893a0bfd2f412e92d6fc637f4ea2ba58ac0ac5bf4756",
+  "runnerDigest": "sha256:52c8e054a1e385b58ebbc13fcf16a8ba927ef4b6678b4937ec7d1c36371720b0",
+  "adapterDigest": "sha256:af20e7fd9f717ec319cf8ba321880d3a0b2f6152139873c4bf1eb3e814da5a96",
+  "preflightDigest": "sha256:e7843070194fb14695bc8ef1181b2bdc397da5c39f53230b6ff1273d8b778d6f",
+  "reportSchemaDigest": "sha256:8da51754fc126525599f881cfdf45f3686646550d2bf2477e2c8c6afd73a73e3",
+  "providerExecutionAuthorized": false,
+  "preregistrationIssued": false,
+  "executionFreezeIssued": false,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false,
+  "issuance": {
+    "status": "NOT_ISSUED",
+    "requiresRM23COwnerReview": true,
+    "requiresSeparateExactCommitAuthorization": true,
+    "exactCommitValidated": true,
+    "mustBindExactPackageDigest": true,
+    "mustBindExactPreregistrationDigest": true
+  },
+  "constraints": [
+    "RM-22C offline remediation only.",
+    "No provider call or Stage A output is permitted before RM-23C issuance review and separate exact-commit authorization.",
+    "RM-22, RM-22A and RM-22B remain historical evidence and are not mutated.",
+    "Gold-relations oracle evidence is source-derived and must have zero materializer failures.",
+    "Slice thresholds are evaluated only for metrics with a non-zero applicable denominator.",
+    "Report persistence is fail-closed on the closed v4 JSON Schema and never falls back to permissive validation."
+  ]
+}

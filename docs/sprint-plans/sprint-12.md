@@ -761,10 +761,28 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   validation before one final persist, and adversarial zero-call/mock E2E tests.
   Preflight returns `F12_RM22B_READY_ZERO_CALL_V3`; no provider or held-out access.
   See `artifacts/task_S12-RM-22B_summary.md`.
-- [ ] **S12-RM-23B — Owner issuance review of RM-22B:** Independently verify the
-  superseding artifacts and execution evidence. A passing review may issue the
-  preregistration/freeze only; provider execution still requires a separate
-  authorization.
+- [x] **S12-RM-23B — Owner issuance review of RM-22B:** Completed with
+  `OWNER_ISSUANCE_REVIEW_WITHHELD_ORACLE_SLICE_AND_GUARD_BLOCKERS`. Exact-commit
+  custody, global denominators and the 144-call mock schedule pass, but the
+  deterministic gold oracle has six evidence failures, relation-negative emits
+  denominator zero instead of twelve, metric applicability is not respected,
+  report validation has open/permissive paths, and the authorization guard does
+  not close downstream authority. No issuance or execution authorization was
+  granted. See `artifacts/task_S12-RM-23B_summary.md`.
+- [x] **S12-RM-22C — Remediate f12 oracle, slices, schema and authorization
+  offline:** Published superseding v4 preregistration, execution package and
+  technical freeze while preserving v1-v3 history. The source-derived gold
+  oracle now has zero materializer failures; relation-negative is separated from
+  abstention-required at denominator `12` each; metric thresholds are
+  applicability-aware; report validation is closed-schema and fail-closed; and
+  experiment identity plus held-out/Stage B/selection/promotion locks are
+  mandatory. Targeted tests `3 passed`, f12 regression `47 passed`, and
+  preflight returns `F12_RM22C_READY_ZERO_CALL_V4`; provider calls remain zero.
+  See `artifacts/task_S12-RM-22C_summary.md`.
+- [ ] **S12-RM-23C — Owner issuance review of RM-22C:** Independently verify the
+  superseding artifacts, deterministic oracle, applicability-aware slices,
+  closed report and authorization guard. Provider execution remains subject to
+  a later separate exact-commit authorization even if issuance passes.
 
 #### Phase F-S — Candidate Selection Resume Path
 
