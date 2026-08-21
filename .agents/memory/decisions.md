@@ -504,3 +504,23 @@ issue or execute it.
 bind the corrected diagnostic contracts. Preregistration issuance, technical
 freeze issuance, provider execution, validation, held-out access, Stage B,
 candidate selection and promotion remain closed behind separate owner gates.
+
+## [2026-08-22] Issue the superseding S12-f-12 v8 lineage without execution authority
+
+**Decision:** Issue the exact RM-32 v8 preregistration and technical freeze
+after independent RM-33 review, while withholding provider authorization and
+all downstream access.
+**Alternatives considered:** Issue the first RM-32 preparation despite audit
+findings; keep the corrected lineage unissued; authorize execution in the same
+decision; or reuse the spent v7 authorization.
+**Reason:** Three audit findings were resolved before issuance: the live runner
+now records finite diagnostics with exact reconciliation, the report schema
+closes nested raw-data boundaries including dynamic-map keys, and the freeze
+binds 22 exact git blobs at execution commit `005a35e3`. Independent fuzzing of
+3,654 object nodes and 384 dynamic-map nodes rejected all registered raw-data
+aliases, while zero-call preflight and mocked custody proved the 144-call,
+96-branch, one-persist, no-retry and no-overwrite boundaries.
+**Consequences:** RM-34 may prepare a separate exact v8 authorization. No
+provider call is authorized until a later independent owner decision; the v6
+report, closed v7 lineage, validation and held-out custody, Stage B, selection
+and promotion remain unchanged.

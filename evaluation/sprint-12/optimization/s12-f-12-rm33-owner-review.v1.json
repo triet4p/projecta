@@ -1,0 +1,103 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm33-owner-review.v1",
+  "status": "OWNER_ISSUANCE_REVIEW_APPROVED_ISSUANCE_ONLY",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-33",
+  "decisionType": "RM33_OWNER_ISSUANCE_REVIEW_OF_SUPERSEDING_V8_LINEAGE",
+  "decisionDate": "2026-08-22",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedLineage": {
+    "lineageCommit": "30f9fbff64eb02964b2661b7f468b27a81abb82e",
+    "executionCommit": "005a35e3be3fbff40fcdae02dfdf79145c76934b",
+    "preregistration": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm32-preregistration.v8.json",
+      "digest": "sha256:ec2ced60f927e7e8c016b6d2a1d5ed0b5cf52875d3d25c8778626cc75673ccb6"
+    },
+    "executionPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm32-execution-package.v8.json",
+      "digest": "sha256:59a42669692c9c4a5460a44643167c17c68d5449a4b9d8de2e35adad0f0f524c"
+    },
+    "technicalFreeze": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm32-technical-freeze.v8.json",
+      "digest": "sha256:2fc20e806ce4a046c10719e9360cc69938325e1963562b730d02b8138f8dfdc1"
+    },
+    "runner": {
+      "path": "scripts/run_sprint12_f12_stage_a_v8.py",
+      "digest": "sha256:91caf611f6fc3d999827864ee1a8fa4a0ecda197b6ecae1b5f12a52f5147006c"
+    },
+    "authorizationSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v8.json",
+      "digest": "sha256:dc98750a95d353a9e469d174eca528458d4e7421fda77e51e1bece99b1a38569"
+    },
+    "reportSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v8.json",
+      "digest": "sha256:662e36911f16aa01c7eda920ec57c4fa9890ad47a4c4e4da2ef9a526482a17fc"
+    },
+    "preflight": {
+      "path": "scripts/preflight_sprint12_f12_rm32.py",
+      "digest": "sha256:492cc4c9815c168233039c096d5f7bc6121773a2b7f6f84443ed587fea1f8d3e"
+    }
+  },
+  "verifiedEvidence": {
+    "preflightStatus": "F12_RM32_READY_ZERO_CALL",
+    "safeRegression": "85 passed",
+    "finalFocusedIndependentAudit": "13 passed",
+    "exactRuntimeGitBlobs": "22/22",
+    "preparationEvidenceDigests": "4/4",
+    "lineageDigestChain": "pass",
+    "jsonSchemaValidation": "pass",
+    "reportSchemaRawBoundaryFuzz": {
+      "objectNodes": 3654,
+      "dynamicMapNodes": 384,
+      "forbiddenAliasVariants": 18,
+      "result": "all rejected while legitimate dynamic keys remained valid"
+    },
+    "diagnosticReconciliation": "pass",
+    "allValidDiagnosticTotals": {
+      "schemaFailureTotal": 0,
+      "evidenceFailureTotal": 0
+    },
+    "providerCalls": 0,
+    "retryCount": 0,
+    "heldOutAccess": false,
+    "reportPathExists": false,
+    "historicalReportDigestUnchanged": true,
+    "mockExecution": {
+      "unauthorizedProviderCalls": 0,
+      "authorizedProviderCalls": 144,
+      "relationBranches": 96,
+      "retryCount": 0,
+      "outputPersistCount": 1,
+      "overwriteRejected": true
+    }
+  },
+  "ownerAssessment": {
+    "initialDiagnosticOvercountResolved": true,
+    "nestedRawDataBoundaryResolved": true,
+    "dynamicMapRawKeyBoundaryResolved": true,
+    "exactCommitCustodyApproved": true,
+    "qualityImprovementEstablished": false,
+    "blockingFindings": []
+  },
+  "decision": {
+    "rm33ReviewCompleted": true,
+    "rm32LineageApproved": true,
+    "preregistrationIssued": true,
+    "technicalFreezeIssued": true,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "PREPARE_SEPARATE_EXACT_V8_STAGE_A_PROVIDER_AUTHORIZATION"
+  },
+  "constraints": [
+    "This decision issues only the reviewed v8 preregistration and technical freeze lineage through a separate transition.",
+    "A separate authorization artifact must bind this owner-review digest, the v8 issuance transition, exact execution commit, package and freeze digests, output v8, runtime configuration and exact cost ceiling before provider capture.",
+    "The spent RM-25 authorization and closed v7 lineage cannot be reused.",
+    "No retry or output overwrite may be authorized.",
+    "Validation, held-out access, Stage B, candidate selection and promotion remain closed."
+  ]
+}
