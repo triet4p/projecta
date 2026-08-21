@@ -834,7 +834,7 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   `evaluation/sprint-12/optimization/s12-f-12-rm23f-issuance-transition.v1.json`
   is authoritative for current issuance state without mutating the v7
   preparation snapshots.
-- [ ] **S12-RM-24 — Prepare exact f12 Stage A authorization:** Bind the RM-23F
+- [x] **S12-RM-24 — Prepare exact f12 Stage A authorization:** Bind the RM-23F
   owner-review digest, execution commit `e047911e`, v7 package/freeze digests,
   runtime configuration, report-v6 path, no-retry/no-overwrite policy and exact
   cost ceiling. Preparation is offline and performs zero provider calls.
