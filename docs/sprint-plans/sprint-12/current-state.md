@@ -2,7 +2,7 @@
 
 **As of:** 2026-08-22
 
-**Status:** `G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING`
+**Status:** `G5_F12_CORRECTED_V9_LINEAGE_AUTHORIZED_ONE_STAGE_A_PENDING_EXECUTION`
 
 RM-37 accepted the RM-36 execution fact and closed v8 as failed before report
 persistence. RM-39 subsequently approved only offline runtime remediation and
@@ -12,10 +12,10 @@ preregistration and technical freeze. The authoritative machine state is
 `evaluation/sprint-12/current-state.v1.json`.
 
 The latest authoritative G5 packet is
-`evaluation/sprint-12/optimization/g5-packet.v29.rm43-issuance.json`. RM-43's
-immutable owner review and issuance transition issue only the corrected v9
-preregistration and technical freeze. Provider execution remains behind the
-separate RM-44/RM-45 authorization path.
+`evaluation/sprint-12/optimization/g5-packet.v31.rm45-authorization.json`.
+RM-45's immutable owner review, authorization and transition permit exactly
+one bounded v9 development Stage A execution. Provider calls performed remain
+zero until RM-46 executes the authorized lineage.
 
 This is the human-readable current-state index for Sprint 12. Machine consumers
 must use `evaluation/sprint-12/current-state.v1.json`.
@@ -74,12 +74,12 @@ new lineage.
 ## Next work
 
 1. RM-41 approved offline preparation of a corrected superseding lineage only.
-2. RM-42 prepared the guarded exact-commit v9 runtime and RM-43 issued its
-   preregistration and technical freeze through a separate transition. RM-44
-   may prepare exact v9 authorization offline; RM-45 must review and issue it
-   before any provider call.
-3. Keep provider execution, new authorization, retry, overwrite, validation,
-   held-out access, Stage B, selection and promotion closed.
+2. RM-42 prepared the guarded exact-commit v9 runtime, RM-43 issued its
+   preregistration and technical freeze, and RM-45 issued one exact v9 Stage A
+   authorization. RM-46 may execute it exactly once; RM-47 must review the
+   immutable post-run fact.
+3. Keep retry, overwrite, validation, held-out access, Stage B, selection and
+   promotion closed.
 4. Do not claim accuracy improvement, candidate quality, business quality or
    tenant readiness from this rejected run or the offline preparation.
 
@@ -299,7 +299,32 @@ non-authoritative artifact
 Its zero-call preflight binds the RM-43 issuance, RM-42 package/preregistration/
 freeze chain, exact execution commit and 19 Git-blob runtime bindings. The
 prospective mock is 144/96 with one persist, zero retries and overwrite
-rejection; no provider or live runner was called. This preparation does not
-change the authoritative RM-43 state: provider execution and new
-authorization remain false, v9 output remains absent, and RM-45 must
-independently review and issue authorization before any provider execution.
+rejection; no provider or live runner was called. Its preparation-only fields
+remain immutable historical custody; RM-45 later issued the separate
+authorization recorded below.
+
+## RM-45 exact v9 authorization
+
+RM-45 is complete. The owner review, authorization and transition are separate
+immutable records:
+
+- `evaluation/sprint-12/optimization/s12-f-12-rm45-owner-review.v1.json`
+  (`sha256:8f5e8f55d7893756a764e334915de7317038016ee25b87afbd80884a4c75d1bf`)
+- `evaluation/sprint-12/optimization/s12-f-12-rm45-authorization.v9.json`
+  (`sha256:ad84eaad496458cc2f5064be59016d7e2497aa4d3ad898e807cf8d496d77a0c8`)
+- `evaluation/sprint-12/optimization/s12-f-12-rm45-authorization-transition.v1.json`
+  (`sha256:68a69e313e203aa7d5e88209efacf3d7b8eab293a2d015810f0953fdb0dc6234`)
+
+The authorization binds execution commit
+`f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e`, the RM-42 package/freeze, 19
+exact Git-blob runtime bindings, output v9 and the `$10.00` ceiling. It
+permits exactly one 144-call development Stage A execution with 96 relation
+branches, no retry and no overwrite. Issuance and the read-only preflight
+performed zero provider calls; the v9 report remains absent.
+
+The authoritative G5 packet is
+`evaluation/sprint-12/optimization/g5-packet.v31.rm45-authorization.json`
+(`sha256:e2d2818913447fc20eb6268a94f6ff7fe4cc28fa518dac37b52e4d5b67b7c5e0`).
+The next tasks are RM-46 execution exactly once and RM-47 owner post-run
+decision. The failed v8 three-call pre-report fact and immutable v6 report
+remain preserved; no quality or tenant-readiness claim is established.

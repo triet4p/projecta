@@ -2,15 +2,16 @@
 
 **Base contract version:** `s12.v1`; current visible corpus: `v3-frozen`
 
-**Current Sprint status:** `G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING`
+**Current Sprint status:** `G5_F12_CORRECTED_V9_LINEAGE_AUTHORIZED_ONE_STAGE_A_PENDING_EXECUTION`
 
 RM-36 consumed the single RM-35-authorized v8 invocation and failed after
 three provider captures before persisting a report or aggregate accounting.
 RM-37 closed that execution as failed, RM-40 implemented the offline
-remediation, RM-42 prepared corrected v9, and RM-43 issued only the corrected
-v9 preregistration and technical freeze. The authoritative packet is
-`optimization/g5-packet.v29.rm43-issuance.json`; RM35/RM36 and RM42 snapshots
-remain immutable custody history.
+remediation, RM-42 prepared corrected v9, RM-43 issued only the corrected v9
+preregistration and technical freeze, and RM-45 issued one bounded v9 Stage A
+authorization. The authoritative packet is
+`optimization/g5-packet.v31.rm45-authorization.json`; RM35/RM36 and RM42
+snapshots remain immutable custody history.
 
 The repository-visible pilot and development/validation gold now have
 owner-delegated AI semantic review. They remain agent-authored synthetic data
@@ -124,17 +125,19 @@ procedure permits one blinded run.
 - `optimization/s12-f-12-rm23f-issuance-transition.v1.json` records the later
   issuance of the exact f12 v7 preparation lineage without mutating its
   historical `PREPARED` fields.
-- `optimization/g5-packet.v29.rm43-issuance.json` is the authoritative current G5 machine
-  packet. It records RM-43 issuance of only the corrected v9 preregistration
-  and technical freeze; provider authorization, output, validation, held-out,
-  Stage B, promotion, retry and overwrite remain closed.
+- `optimization/g5-packet.v29.rm43-issuance.json` is an immutable RM-43
+  issuance snapshot. The authoritative current packet is
+  `optimization/g5-packet.v31.rm45-authorization.json`, which records one
+  bounded v9 Stage A authorization; output, validation, held-out, Stage B,
+  promotion, retry and overwrite remain closed.
 - `optimization/s12-f-12-rm44-authorization-preparation.v1.json` is the
   non-authoritative RM-44 exact v9 authorization preparation. Its zero-call
   preflight binds 19 exact Git blobs and the 144/96 prospective default-path
   mock, while provider/new authorization and the v9 output remain absent.
 - `optimization/g5-packet.v30.rm44-authorization-preparation.json` and
-  `current-state-next-rm44.v1.json` are non-authoritative next-state snapshots;
-  RM-45 must independently review and issue authorization.
+  `current-state-next-rm44.v1.json` are immutable non-authoritative RM-44
+  preparation snapshots. RM-45's owner review, authorization and transition
+  are the separate authority records for the current v9 execution boundary.
 - `optimization/g5-packet.v20.rm32-offline-preparation.json` and the RM32 v8
   artifacts are immutable preparation snapshots; their unissued fields are not
   rewritten by the separate RM-33 transition and they performed zero provider
@@ -166,8 +169,9 @@ procedure permits one blinded run.
   execution and open only offline RM36 reconciliation diagnosis and runtime
   remediation preparation. RM-39 approved offline implementation; RM-40
 prepared the versioned remediation path; RM-43 issued corrected v9, RM-44
-prepared exact authorization offline, and RM-45 is the next authorization
-review gate.
+prepared exact authorization offline, and RM-45 issued exactly one bounded
+authorization. RM-46 is the next exact execution task and RM-47 must make the
+separate post-run owner decision.
 
 ## Dataset contract rules
 
@@ -189,7 +193,7 @@ review gate.
 G0 and G1 are approved; G2 and G3 are approved with recorded limitations;
 G3.1-A/B/C are complete with scope limits. G4 now has a runtime-backed baseline
 with failures and G4.1 is contract-aligned but stability-failed. G5 has issued
-the corrected f12 v9 preregistration/freeze lineage; RM-44 prepared the
-separate provider authorization offline and RM-45 must review/issue it, while
-v9 output and candidate selection remain absent. G6 is blocked by missing external test custody and a
+the corrected f12 v9 preregistration/freeze lineage and RM-45 has authorized one
+exact v9 Stage A execution; v9 output and candidate selection remain absent.
+G6 is blocked by missing external test custody and a
 frozen passing candidate; held-out inputs/gold remain outside the repository.

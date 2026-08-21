@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING`
+Status: `G5_F12_CORRECTED_V9_LINEAGE_AUTHORIZED_ONE_STAGE_A_PENDING_EXECUTION`
 
 Current state: [Sprint 12 Current State](sprint-12/current-state.md)
 
@@ -14,11 +14,11 @@ G4.1 packet: [Contract Alignment and Failure Diagnosis](sprint-12/g4.1-contract-
 
 G5 packet: [Controlled Optimization Review Packet v25 — RM-37 closure](sprint-12/g5-optimization.v25.rm37-closure.md)
 
-Current G5 packet: [Controlled Optimization Review Packet v29 — RM-43 v9
-issuance](sprint-12/g5-optimization.v29.rm43-issuance.md)
+Current G5 packet: [Controlled Optimization Review Packet v31 — RM-45 v9
+authorization](sprint-12/g5-optimization.v31.rm45-authorization.md)
 
-Next non-authoritative preparation snapshot: [Controlled Optimization Review
-Packet v30 — RM-44 exact v9 authorization preparation](sprint-12/g5-optimization.v30.rm44-authorization-preparation.md)
+Historical preparation snapshot: [Controlled Optimization Review Packet v30 —
+RM-44 exact v9 authorization preparation](sprint-12/g5-optimization.v30.rm44-authorization-preparation.md)
 
 Authoritative pre-execution packet: [Controlled Optimization Review Packet
 v23 — RM-35 authorization](sprint-12/g5-optimization.v23.rm35-authorization.md).
@@ -945,9 +945,21 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   no-retry/no-overwrite boundary offline. The zero-call preflight and tamper
   tests pass; the prospective default-path mock records 144/96, one persist,
   retry zero and overwrite rejection. This is preparation only; no provider
-  or live runner was called and RM-45 must issue authorization.
-- [ ] **S12-RM-45 — Owner review exact v9 Stage A authorization:** Independently
-  review and issue the new authorization before any v9 provider capture.
+  or live runner was called; RM-45 later issued the separate authorization.
+- [x] **S12-RM-45 — Owner review exact v9 Stage A authorization:** Independently
+  reviewed and issued exactly one bounded v9 development Stage A authorization.
+  The authorization binds the RM-44 preparation, exact v9 package/freeze,
+  execution commit `f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e`, 19 runtime blobs,
+  output v9 and `$10.00` ceiling. It performs zero calls at issuance; retry,
+  overwrite, validation, held-out, Stage B, selection and promotion remain
+  closed.
+- [ ] **S12-RM-46 — Execute exact v9 Stage A once:** Run the guarded v9
+  lineage exactly once under RM-45 authorization, preserving the report or
+  immutable pre-report failure fact. No retry, overwrite or downstream access.
+- [ ] **S12-RM-47 — Owner post-run decision:** Review the immutable v9 report or
+  pre-report execution fact and close the run without inferring quality from
+  incomplete evidence; Stage B, validation, held-out access, selection and
+  promotion remain separately gated.
 
 #### Phase F-S — Candidate Selection Resume Path
 

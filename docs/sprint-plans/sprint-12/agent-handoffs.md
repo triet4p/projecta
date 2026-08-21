@@ -229,7 +229,7 @@ held-out, Stage B, selection or promotion was authorized.
 
 ## Handoff O — RM-43 v9 issuance to RM-44/RM-45 authorization path
 
-**Status:** RM-43 and RM-44 complete; RM-45 pending owner authorization review.
+**Status:** Historical handoff; RM-43 issuance and RM-44 preparation are complete.
 
 The authoritative current G5 packet is
 `evaluation/sprint-12/optimization/g5-packet.v29.rm43-issuance.json`. RM-43
@@ -254,7 +254,7 @@ promotion remain closed.
 
 ## Handoff P — RM-44 preparation to RM-45 owner authorization review
 
-**Status:** RM-44 complete; RM-45 pending.
+**Status:** Historical handoff; RM-44 complete and RM-45 review is complete.
 
 The RM-44 artifact is preparation-only and intentionally does not validate as
 an issued v9 authorization because `providerExecutionAuthorized` and
@@ -262,10 +262,31 @@ an issued v9 authorization because `providerExecutionAuthorized` and
 external `working_tree_sha256` preparation evidence, so a one-character
 preflight tamper fails without circular self-hashing. The non-authoritative
 next-state snapshot and v30 packet must not replace the authoritative RM-43
-current-state index. RM-45 is the sole next gate: independently review all
-bindings and issue one bounded authorization or record a block. Until then,
-the v9 report is absent and every provider, retry, overwrite, validation,
-held-out, Stage B, selection and promotion permission remains false.
+current-state index. RM-45 independently reviewed all bindings and issued one
+bounded authorization. The v9 report remains absent until RM-46, and retry,
+overwrite, validation, held-out, Stage B, selection and promotion permission
+remain false.
+
+## Handoff Q — RM-45 authorization to RM-46/RM-47 execution path
+
+**Status:** RM-45 complete; RM-46 pending exact v9 Stage A execution.
+
+The authoritative current G5 packet is
+`evaluation/sprint-12/optimization/g5-packet.v31.rm45-authorization.json`, and
+the authoritative machine state is `evaluation/sprint-12/current-state.v1.json`.
+RM-45 issued exactly one v9 development Stage A authorization through
+`s12-f-12-rm45-authorization-transition.v1.json`. It binds execution commit
+`f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e`, the RM-42 package/freeze, 19 exact
+Git-blob runtime bindings, output v9 and the `$10.00` ceiling.
+
+The read-only preflight
+`scripts/preflight_sprint12_f12_rm45.py` returns
+`F12_RM45_AUTHORIZED_ZERO_CALL_PRECHECK`: one authorized execution, 144
+provider calls, 96 relation branches, zero calls performed, zero retries and
+absent output. RM-46 may invoke the exact runner once. RM-47 must make a
+separate owner post-run decision from the immutable report or pre-report
+execution fact. Do not retry, overwrite output, inspect held-out data, open
+Stage B, select a candidate or promote.
 
 ## External-only work — custody and G6
 
