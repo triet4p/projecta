@@ -101,7 +101,7 @@ def test_rm22d_schema_rejects_slice_and_threshold_tampering() -> None:
         ):
             tampered = copy.deepcopy(report)
             mutate(tampered)
-            with pytest.raises(RuntimeError, match="schema validation failed"):
+            with pytest.raises(RuntimeError, match="Schema validation failed"):
                 v5._validate_report_schema(tampered)
     finally:
         output.unlink(missing_ok=True)
