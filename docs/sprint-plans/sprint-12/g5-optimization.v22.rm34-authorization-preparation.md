@@ -30,15 +30,16 @@ the unauthorized path makes zero calls and the prospective authorized path
 would make 144 calls/96 branches, persist once, retry zero times and reject
 overwrite. No real provider or live runner was invoked.
 
-## Reconciliation required before RM35
+## Custody reconciliation and RM35
 
 The immutable RM-33 owner review records report-schema digest
 `sha256:662e36911f16aa01c7eda920ec57c4fa9890ad47a4c4e4da2ef9a526482a17fc`,
-but the exact execution-commit blob is
+and the exact execution-commit blob is
 `sha256:c65a4f039d948e6f3a59750001e58199bfc98e57e2f2f3ac838070ef5f6f6ad5`.
-RM-34 binds the exact execution blob and exposes this mismatch; it does not
-silently authorize around it. RM-35 must reconcile the binding before issuing
-any v8 authorization.
+The accepted RM33 custody erratum records that the difference is CRLF-to-LF
+normalization only and that normalized content is equal. RM-34 binds the
+canonical execution blob; provider execution and new authorization remain
+false until RM-35 independently reviews and acts.
 
 Non-authoritative snapshots:
 

@@ -885,9 +885,10 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   execution still requires a separate exact-commit authorization.
 - [x] **S12-RM-34 — Prepare exact v8 Stage A authorization offline:** Bind the
   RM-33 owner review and issuance transition, exact execution commit, package,
-  freeze, runtime, output path, bounds and cost ceiling. The preparation is
-  zero-call only and records a report-schema digest reconciliation item for
-  RM-35; no provider was called and the live runner was not invoked.
+  freeze, runtime, output path, bounds and cost ceiling. The preparation binds
+  the accepted RM33 custody erratum and canonical report-schema git blob; it
+  remains zero-call only. No provider was called and the live runner was not
+  invoked.
 - [ ] **S12-RM-35 — Owner authorization review:** Independently review RM-34
   and authorize at most one bounded v8 Stage A execution, with retry,
   overwrite, validation, held-out, Stage B, selection and promotion closed.

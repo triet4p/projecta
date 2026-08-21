@@ -39,12 +39,14 @@ held-out access, Stage B, selection and promotion remain false.
   144 calls and zero retries;
 - no provider/live runner call.
 
-## Reconciliation and next gate
+## Custody reconciliation and next gate
 
 The immutable RM33 owner review declares report-schema digest
 `sha256:662e36911f16aa01c7eda920ec57c4fa9890ad47a4c4e4da2ef9a526482a17fc`,
 while the exact execution commit contains
 `sha256:c65a4f039d948e6f3a59750001e58199bfc98e57e2f2f3ac838070ef5f6f6ad5`.
-This discrepancy is explicitly recorded and blocks provider execution. RM-35
-must reconcile the exact schema binding and independently review any future
-issued authorization. RM-34 itself issues nothing.
+The accepted RM33 custody erratum records CRLF-to-LF normalization only,
+`normalizedContentEqual=true`, and canonical runtime digest `c65a...`.
+RM-34 now binds the canonical exact blob; provider execution and new
+authorization remain false. RM-35 must independently review the preparation
+and any future issued authorization. RM-34 itself issues nothing.

@@ -165,10 +165,12 @@ It proves zero calls at preparation and preserves the exact prospective mock
 bounds of 144 calls, 96 relation branches, one persist, no retry and rejected
 overwrite. Provider execution and new authorization remain false.
 
-RM-34 also found a reconciliation item that must remain visible to RM-35:
-the immutable RM-33 review records report-schema digest
-`sha256:662e36911f16aa01c7eda920ec57c4fa9890ad47a4c4e4da2ef9a526482a17fc`,
-while the exact execution-commit blob is
+The RM33 owner custody erratum
+`evaluation/sprint-12/optimization/s12-f-12-rm33-owner-custody-erratum.v1.json`
+now reconciles the report-schema digest: the reviewed working-tree digest
+`sha256:662e36911f16aa01c7eda920ec57c4fa9890ad47a4c4e4da2ef9a526482a17fc`
+is CRLF-normalized content-equivalent to the canonical exact-commit blob
 `sha256:c65a4f039d948e6f3a59750001e58199bfc98e57e2f2f3ac838070ef5f6f6ad5`.
-The preparation binds the exact commit blob and blocks provider execution
-until RM-35 reconciles this discrepancy. No authorization is issued by RM-34.
+RM-34 now records `ownerReviewReconciliationRequired=false` and binds the
+canonical blob. Provider execution and new authorization remain false until
+RM-35 independently reviews and acts; RM-34 itself issues nothing.

@@ -141,10 +141,11 @@ calls, 96 relation branches, zero retries).
 RM-34 prepared the exact v8 Stage A authorization offline at
 `evaluation/sprint-12/optimization/s12-f-12-rm34-authorization-preparation.v1.json`.
 Its preflight is `F12_RM34_PREPARED_ZERO_CALL`; it binds both RM-33 records,
-exact runtime commit and all package/freeze/runtime/output/cost digests. The
-preparation records a report-schema digest discrepancy between the immutable
-RM-33 review and the exact execution blob, so RM-35 must reconcile it before
-issuing authorization. No provider call or live runner invocation is allowed.
+the accepted RM33 custody erratum, exact runtime commit and all
+package/freeze/runtime/output/cost digests. The CRLF/LF report-schema
+discrepancy is reconciled to the canonical exact git blob; provider execution
+and new authorization remain false. RM-35 must independently review and act.
+No provider call or live runner invocation is allowed.
 
 ## External-only work — custody and G6
 

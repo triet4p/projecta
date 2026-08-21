@@ -128,10 +128,10 @@ procedure permits one blinded run.
   authorization offline; RM-35 owner authorization review is pending.
 - `optimization/s12-f-12-rm34-authorization-preparation.v1.json` records the
   exact v8 authorization preparation only. Its zero-call preflight binds 22
-  exact runtime blobs and the prospective 144/96 mock bounds. It also records
-  a report-schema digest reconciliation item between the immutable RM-33
-  review and the exact execution commit; provider execution remains blocked
-  pending RM-35.
+  exact runtime blobs and the prospective 144/96 mock bounds. The accepted
+  RM33 custody erratum reconciles the report-schema CRLF/LF digest to the
+  canonical exact execution blob. Provider execution and new authorization
+  remain false pending RM-35.
 
 ## Dataset contract rules
 
