@@ -2,16 +2,16 @@
 
 **Base contract version:** `s12.v1`; current visible corpus: `v3-frozen`
 
-**Current Sprint status:** `G5_F12_V9_STAGE_A_EXECUTED_COMPLETED_REJECTED_HARD_GATE_PENDING_RM47_OWNER_DECISION`
+**Current Sprint status:** `G5_F12_V9_STAGE_A_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY`
 
 RM-36 consumed the single RM-35-authorized v8 invocation and failed after
 three provider captures before persisting a report or aggregate accounting.
 RM-37 closed that execution as failed, RM-40 implemented the offline
 remediation, RM-42 prepared corrected v9, RM-43 issued only the corrected v9
 preregistration and technical freeze, and RM-45 issued one bounded v9 Stage A
-authorization. RM-46 then consumed that authorization once. The post-run
-packet is non-authoritative pending RM-47; RM35/RM36 and RM42
-snapshots remain immutable custody history.
+authorization. RM-46 then consumed that authorization once, and RM-47 closed
+the completed rejected v9 run with no Stage B. RM35/RM36 and RM42 snapshots,
+the v6/v9 reports and RM47 decision records remain immutable custody history.
 
 The repository-visible pilot and development/validation gold now have
 owner-delegated AI semantic review. They remain agent-authored synthetic data
@@ -127,10 +127,10 @@ procedure permits one blinded run.
   historical `PREPARED` fields.
 - `optimization/g5-packet.v29.rm43-issuance.json` is an immutable RM-43
   issuance snapshot. The authoritative current packet is
-  `optimization/g5-packet.v31.rm45-authorization.json`, which recorded one
-  bounded v9 Stage A authorization. RM-46 consumed it once and preserved the
-  schema-valid hard-gate-rejected report; output overwrite, validation,
-  held-out, Stage B, promotion and retry remain closed.
+  `optimization/g5-packet.v33.rm47-closure.json`, which records RM-47 closure
+  of the one bounded v9 Stage A as rejected with no Stage B. Output overwrite,
+  validation, held-out, Stage B, promotion, retry, remediation implementation
+  and new lineage preparation remain closed.
 - `optimization/s12-f-12-rm44-authorization-preparation.v1.json` is the
   non-authoritative RM-44 exact v9 authorization preparation. Its zero-call
   preflight binds 19 exact Git blobs and the 144/96 prospective default-path
@@ -171,9 +171,10 @@ procedure permits one blinded run.
   execution and open only offline RM36 reconciliation diagnosis and runtime
   remediation preparation. RM-39 approved offline implementation; RM-40
 prepared the versioned remediation path; RM-43 issued corrected v9, RM-44
-prepared exact authorization offline, and RM-45 issued exactly one bounded
-authorization. RM-46 is the next exact execution task and RM-47 must make the
-separate post-run owner decision.
+prepared exact authorization offline, RM-45 issued exactly one bounded
+authorization, RM-46 executed once, and RM-47 closed v9 rejected with no Stage
+B. RM-48 may prepare only a sanitized v6/v9 error comparison and remediation
+options; RM-49 owner review is pending.
 
 ## Dataset contract rules
 
@@ -195,10 +196,11 @@ separate post-run owner decision.
 G0 and G1 are approved; G2 and G3 are approved with recorded limitations;
 G3.1-A/B/C are complete with scope limits. G4 now has a runtime-backed baseline
 with failures and G4.1 is contract-aligned but stability-failed. G5 has issued
-the corrected f12 v9 preregistration/freeze lineage and RM-45 authorized one
-exact v9 Stage A execution. RM-46 consumed it once; the v9 report is
-schema-valid but rejected by schema-invalid, invalid-evidence, threshold and
-slice gates. Candidate selection remains absent and RM-47 must make the
-separate owner decision.
+the corrected f12 v9 preregistration/freeze lineage, RM-45 authorized one
+exact v9 Stage A execution, RM-46 consumed it once, and RM-47 closed it
+rejected with no Stage B. The v9 report is schema-valid but rejected by
+schema-invalid, invalid-evidence, threshold and slice gates; its comparison to
+v6 establishes no quality improvement. Only offline error-analysis preparation
+is open; RM-48/RM-49 are pending.
 G6 is blocked by missing external test custody and a
 frozen passing candidate; held-out inputs/gold remain outside the repository.

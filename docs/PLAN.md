@@ -91,7 +91,7 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 ## Active Sprints
 
 - [Sprint 12 — Business Semantic Quality and Evaluation](sprint-plans/sprint-12.md)
-  — *In progress at `G5_F12_CORRECTED_V9_LINEAGE_AUTHORIZED_ONE_STAGE_A_PENDING_EXECUTION`.
+  — *In progress at `G5_F12_V9_STAGE_A_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY`.
   Dataset v3,
   measurement remediation and the two-step f12 development execution package
   are frozen. RM-23F issued the preregistration/freeze and RM-25 authorized one
@@ -111,8 +111,12 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   v9 preregistration and technical freeze. RM-44 prepared the exact v9
   authorization offline and RM-45 issued exactly one bounded v9 Stage A
   authorization. RM-46 executed exactly once and preserved the schema-valid but
-  hard-gate-rejected v9 report; RM-47 owner review is pending. Validation,
-  held-out access, Stage B, selection and promotion remain closed.
+  hard-gate-rejected v9 report; RM-47 closed the experiment rejected with no
+  Stage B and opened only offline v6/v9 error-analysis preparation. The v6/v9
+  comparison does not establish quality improvement. RM-48 preparation and
+  RM-49 owner review are pending. Validation, held-out access, remediation
+  implementation, lineage preparation, provider execution, Stage B, selection
+  and promotion remain closed.
   No business-quality claim is made, and new connector/outbound breadth remains
   deferred. The authoritative dashboard is the
   [Sprint 12 current-state index](sprint-plans/sprint-12/current-state.md).*

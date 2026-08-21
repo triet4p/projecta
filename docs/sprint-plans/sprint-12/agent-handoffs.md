@@ -271,7 +271,8 @@ remain false.
 
 ## Handoff Q — RM-45 authorization to RM-46/RM-47 execution path
 
-**Status:** RM-45 and RM-46 complete; RM-47 pending owner post-run decision.
+**Status:** historical execution handoff; RM-45 and RM-46 complete, RM-47
+closure recorded below.
 
 The authoritative current G5 packet is
 `evaluation/sprint-12/optimization/g5-packet.v31.rm45-authorization.json`, and
@@ -287,13 +288,14 @@ The read-only preflight
 and preserved the immutable v9 report with 144 calls, 96 relation branches,
 zero retries and `$0.00599700` cost. The report is schema-valid but
 hard-gate-rejected with 5 schema-invalid and 20 invalid-evidence findings.
-The RM-46 transition and post-run state/G5 packet are non-authoritative until
-RM-47 makes a separate owner post-run decision. Do not retry, overwrite
-output, inspect held-out data, open Stage B, select a candidate or promote.
+The RM-46 transition and report were non-authoritative until RM-47 made the
+separate owner post-run decision recorded in Handoff S. Do not retry,
+overwrite output, inspect held-out data, open Stage B, select a candidate or
+promote.
 
 ## Handoff R — RM-46 v9 execution to RM-47 owner decision
 
-**Status:** RM-46 complete; RM-47 pending.
+**Status:** complete; RM-47 closed v9 rejected with no Stage B.
 
 The exact RM-45-authorized v9 command ran once against commit
 `f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e`. The persisted report is
@@ -301,10 +303,28 @@ schema-valid and immutable at
 `evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json`, digest
 `sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e`.
 Its status is `COMPLETED_REJECTED_HARD_GATE` with failed schema-invalid,
-invalid-evidence, threshold and slice gates. RM-47 alone may decide whether
-offline remediation or another separately governed action is permissible.
-Authorization is spent; rerun, retry, overwrite, validation, held-out,
-Stage B, selection, promotion and downstream access are all closed.
+invalid-evidence, threshold and slice gates. RM-47 accepted the immutable
+execution evidence and closed the experiment rejected with no Stage B. The
+schema-invalid count is 5 versus v6's 6, but invalid evidence is 20 versus
+v6's 17; no quality-improvement claim follows. Authorization is spent; rerun,
+retry, overwrite, validation, held-out, Stage B, selection, promotion and
+downstream access are all closed.
+
+## Handoff S — RM-47 closure to RM-48/RM-49 offline error analysis
+
+**Status:** RM-47 complete; RM-48 and RM-49 pending.
+
+The authoritative current G5 packet is
+`evaluation/sprint-12/optimization/g5-packet.v33.rm47-closure.json`, and the
+authoritative machine state is `evaluation/sprint-12/current-state.v1.json`.
+RM-47's owner decision and transition are immutable and close v9 as
+`COMPLETED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY`.
+Only offline v6/v9 error comparison and remediation-option preparation is
+permitted. RM-48 may inspect sanitized immutable reports and deterministic
+repository code; it may not implement remediation, prepare a new lineage,
+call a provider, rerun, retry, overwrite or open downstream gates. RM-49 must
+independently review the RM-48 preparation. The v6/v9 reports remain immutable,
+v8 remains absent and no quality-improvement claim is established.
 
 ## External-only work — custody and G6
 

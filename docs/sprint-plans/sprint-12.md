@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G5_F12_V9_STAGE_A_EXECUTED_COMPLETED_REJECTED_HARD_GATE_PENDING_RM47_OWNER_DECISION`
+Status: `G5_F12_V9_STAGE_A_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY`
 
 Current state: [Sprint 12 Current State](sprint-12/current-state.md)
 
@@ -14,8 +14,8 @@ G4.1 packet: [Contract Alignment and Failure Diagnosis](sprint-12/g4.1-contract-
 
 G5 packet: [Controlled Optimization Review Packet v25 — RM-37 closure](sprint-12/g5-optimization.v25.rm37-closure.md)
 
-Current G5 packet: [Controlled Optimization Review Packet v32 — RM-46 v9
-execution](sprint-12/g5-optimization.v32.rm46-execution.md)
+Current G5 packet: [Controlled Optimization Review Packet v33 — RM-47 v9
+closure](sprint-12/g5-optimization.v33.rm47-closure.md)
 
 Historical preparation snapshot: [Controlled Optimization Review Packet v30 —
 RM-44 exact v9 authorization preparation](sprint-12/g5-optimization.v30.rm44-authorization-preparation.md)
@@ -957,12 +957,22 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   lineage exactly once under RM-45 authorization. The schema-valid report is
   preserved as `COMPLETED_REJECTED_HARD_GATE` with 144 calls, 96 relation
   branches, zero retries and `$0.00599700`; no retry, overwrite or downstream
-  access occurred. RM-46's post-run state and G5 packet are non-authoritative
-  pending RM-47.
-- [ ] **S12-RM-47 — Owner post-run decision:** Review the immutable v9 report or
-  pre-report execution fact and close the run without inferring quality from
-  incomplete evidence; Stage B, validation, held-out access, selection and
-  promotion remain separately gated.
+  access occurred. RM-46's post-run state was non-authoritative until the
+  separate RM-47 owner decision, which is now recorded in the v33 closure.
+- [x] **S12-RM-47 — Owner post-run decision:** Reviewed the immutable v9
+  report and RM-46 transition; closed v9 as rejected with no Stage B. The run
+  records 144/144 responses, 96 relation branches, 139 schema-valid responses,
+  zero retries and `$0.00599700`; schema-invalid is 5 and invalid evidence is
+  20 (14 trigger, 6 endpoint). The schema-invalid count improved by one versus
+  v6 but invalid evidence increased by three, so no quality-improvement claim
+  follows. Only offline error-analysis preparation is open.
+- [ ] **S12-RM-48 — Prepare offline v6/v9 error comparison and remediation
+  options:** Use sanitized immutable reports and deterministic repository code
+  only. Do not implement remediation, prepare a lineage, call a provider or
+  open downstream gates.
+- [ ] **S12-RM-49 — Owner review offline error-analysis preparation:**
+  Independently review the RM-48 packet before any remediation implementation,
+  lineage preparation or new authorization.
 
 #### Phase F-S — Candidate Selection Resume Path
 

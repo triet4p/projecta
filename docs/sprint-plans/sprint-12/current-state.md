@@ -2,7 +2,7 @@
 
 **As of:** 2026-08-22
 
-**Status:** `G5_F12_CORRECTED_V9_LINEAGE_AUTHORIZED_ONE_STAGE_A_PENDING_EXECUTION`
+**Status:** `G5_F12_V9_STAGE_A_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY`
 
 RM-37 accepted the RM-36 execution fact and closed v8 as failed before report
 persistence. RM-39 subsequently approved only offline runtime remediation and
@@ -12,13 +12,12 @@ preregistration and technical freeze. The authoritative machine state is
 `evaluation/sprint-12/current-state.v1.json`.
 
 The latest authoritative G5 packet is
-`evaluation/sprint-12/optimization/g5-packet.v31.rm45-authorization.json`.
-RM-45's immutable owner review, authorization and transition permit exactly
-one bounded v9 development Stage A execution. Provider calls performed remain
-zero in the authoritative pre-execution index; RM-46 has since consumed that
-single authorization and recorded a separate immutable post-run execution
-fact. The RM-46 next-state and G5 packet are explicitly non-authoritative
-until RM-47 reviews the report.
+`evaluation/sprint-12/optimization/g5-packet.v33.rm47-closure.json`.
+RM-47's immutable owner decision and transition close the single RM-45-
+authorized v9 Stage A as rejected with no Stage B. The v9 report is immutable;
+only offline v6/v9 error-analysis preparation is permitted. Remediation
+implementation, new lineage preparation, provider execution, rerun, retry,
+validation, held-out access, selection and promotion remain closed.
 
 This is the human-readable current-state index for Sprint 12. Machine consumers
 must use `evaluation/sprint-12/current-state.v1.json`.
@@ -79,8 +78,8 @@ new lineage.
 1. RM-41 approved offline preparation of a corrected superseding lineage only.
 2. RM-42 prepared the guarded exact-commit v9 runtime, RM-43 issued its
    preregistration and technical freeze, and RM-45 issued one exact v9 Stage A
-   authorization. RM-46 may execute it exactly once; RM-47 must review the
-   immutable post-run fact.
+   authorization. RM-46 executed it exactly once; RM-47 reviewed the immutable
+   post-run fact and closed the run rejected with no Stage B.
 3. Keep retry, overwrite, validation, held-out access, Stage B, selection and
    promotion closed.
 4. Do not claim accuracy improvement, candidate quality, business quality or
@@ -323,19 +322,24 @@ The authorization binds execution commit
 exact Git-blob runtime bindings, output v9 and the `$10.00` ceiling. It
 permits exactly one 144-call development Stage A execution with 96 relation
 branches, no retry and no overwrite. Issuance and the read-only preflight
-performed zero provider calls; the v9 report remains absent.
+performed zero provider calls; the v9 report was absent before RM-46 consumed
+the authorization.
 
 The authoritative G5 packet is
-`evaluation/sprint-12/optimization/g5-packet.v31.rm45-authorization.json`
-(`sha256:e2d2818913447fc20eb6268a94f6ff7fe4cc28fa518dac37b52e4d5b67b7c5e0`).
-RM-46 has now executed the exact v9 command once and preserved the
-schema-valid but hard-gate-rejected report at
-`evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json` with
-digest `sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e`.
-The immutable execution transition is
-`evaluation/sprint-12/optimization/s12-f-12-rm46-execution-transition.v1.json`;
-its post-run current-state and G5 packet remain non-authoritative. The report
-records 144 calls, 96 branches, zero retries and `$0.00599700`, but fails
-schema-invalid, invalid-evidence, threshold and slice gates. RM-47 must make
-the separate owner decision; no quality or tenant-readiness claim is
+`evaluation/sprint-12/optimization/g5-packet.v33.rm47-closure.json`.
+RM-47 has closed the exact v9 command's schema-valid but hard-gate-rejected
+report at `evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json`
+with digest `sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e`.
+The immutable RM-46 execution transition and RM-47 owner decision/transition
+bind 144/144 responses, 96 branches, zero retries and `$0.00599700`; five
+schema-invalid and 20 invalid-evidence findings fail hard, threshold and
+slice gates. Compared with v6, schema-invalid decreased from 6 to 5 while
+invalid evidence increased from 17 to 20, so no quality-improvement claim is
 established.
+
+Only offline v6/v9 error-analysis preparation is permitted. RM-48 may prepare
+sanitized comparison and remediation options; RM-49 must review that packet.
+Remediation implementation, lineage preparation, provider/new authorization,
+rerun, retry, validation, held-out access, Stage B, selection, promotion and
+downstream access remain closed. The v6 and v9 reports remain immutable and
+the failed v8 report remains absent.
