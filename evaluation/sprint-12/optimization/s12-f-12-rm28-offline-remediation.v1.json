@@ -1,0 +1,74 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm28-offline-remediation.v1",
+  "status": "OFFLINE_REMEDIATION_PREPARED_PENDING_OWNER_REVIEW",
+  "taskId": "S12-RM-28",
+  "experimentId": "s12-f-12",
+  "preparedBy": "gpt-5.6-luna",
+  "sourceEvidence": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+    "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "providerCallsAttempted": 144,
+    "retryCount": 0,
+    "rawProviderPayloadsAvailable": false,
+    "heldOutDataInspected": false
+  },
+  "provenFindings": {
+    "schemaInvalidTotal": 6,
+    "schemaInvalidByArmStage": {
+      "predicted-entities:stage1": 5,
+      "gold-entities:stage2": 1
+    },
+    "schemaInvalidResponseLocations": [
+      {"caseId": "s12-a-4016", "runs": [1, 2, 3], "arm": "predicted-entities", "stage": "stage1"},
+      {"caseId": "s12-a-4024", "runs": [3], "arm": "predicted-entities", "stage": "stage1"},
+      {"caseId": "s12-a-4032", "runs": [3], "arm": "predicted-entities", "stage": "stage1"},
+      {"caseId": "s12-a-4035", "runs": [1], "arm": "gold-entities", "stage": "stage2"}
+    ],
+    "invalidEvidenceTotal": 17,
+    "invalidEvidenceBucket": "unsupported",
+    "invalidEvidenceSemanticBucket": "exactMatch",
+    "invalidEvidenceEndpointResolution": {"resolved": 34, "wrong": 0, "missing": 0},
+    "goldRelationsControl": {"invalidEvidence": 0, "materializerFailures": 0},
+    "candidateIdentityBottleneck": "predicted entity stage-1 failures and downstream identity dependence are implicated; exact provider cause is not observable"
+  },
+  "unknownsPreserved": [
+    "exact malformed field or JSON Schema path for each schema-invalid response",
+    "whether a schema-invalid response failed envelope shape or semantic parser constraints",
+    "exact triggerQuote/evidence offsets and source slice for each unsupported finding",
+    "sole provider, model, prompt or sampling causality"
+  ],
+  "offlineRemediation": {
+    "diagnosticContract": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm28-diagnostic-contract.v1.json",
+      "digest": "sha256:0b7b90bbe3ddc94ef66769e04d23c851e8ac491372518445edad62b494d20582"
+    },
+    "implementation": {
+      "path": "scripts/s12_f12_rm28_offline_diagnostics.py",
+      "digest": "sha256:8f878e1830748c6d79c7c92cb0b35e668973ed42be546418577c40187e506b63"
+    },
+    "changes": [
+      "classify schema failures using finite sanitized reason codes before report redaction",
+      "classify evidence rejection using runtime-only trigger/source checks and counts",
+      "retain typed span identity mapping and explicit endpoint denominators",
+      "preserve raw-payload and raw-source exclusion"
+    ],
+    "finiteBacklog": [
+      {"id": "RM28-SCHEMA-01", "status": "pending_owner_review"},
+      {"id": "RM28-EVIDENCE-01", "status": "pending_owner_review"},
+      {"id": "RM28-IDENTITY-01", "status": "implemented_offline"},
+      {"id": "RM28-EXEC-01", "status": "closed_until_new_authorization"}
+    ]
+  },
+  "governance": {
+    "providerExecutionAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "newAuthorizationIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextGate": "owner review of RM-28 offline remediation package"
+  }
+}

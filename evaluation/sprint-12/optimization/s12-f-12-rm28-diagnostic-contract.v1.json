@@ -1,0 +1,75 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm28-diagnostic-contract.v1",
+  "status": "OFFLINE_CONTRACT_PREPARED_PENDING_OWNER_REVIEW",
+  "taskId": "S12-RM-28",
+  "experimentId": "s12-f-12",
+  "purpose": "Bounded sanitized diagnostics for schema and evidence failures in a future superseding development run.",
+  "inputPolicy": {
+    "reportPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+    "reportIsImmutable": true,
+    "rawProviderPayloadAllowed": false,
+    "rawSourceTextAllowed": false,
+    "heldOutDataAllowed": false,
+    "providerCalls": 0
+  },
+  "schemaFailureRecord": {
+    "required": ["arm", "stage", "reasonCode", "responseDigest"],
+    "arm": ["predicted-entities", "gold-entities", "gold-relations"],
+    "stage": ["stage1", "stage2"],
+    "reasonCode": [
+      "envelope_unbound_field",
+      "envelope_version_mismatch",
+      "entity_candidate_invalid",
+      "entity_candidate_identity_duplicate",
+      "entity_span_out_of_source",
+      "relation_candidate_invalid",
+      "relation_endpoint_not_in_server_table",
+      "relation_evidence_invalid",
+      "validation_detail_unavailable"
+    ],
+    "forbiddenFields": ["rawPayload", "rawSourceText", "validationMessageWithPayload"]
+  },
+  "evidenceFailureRecord": {
+    "required": ["semanticDisposition", "reasonCode", "count"],
+    "semanticDisposition": ["exactMatch", "notApplicable"],
+    "reasonCode": [
+      "trigger_quote_missing",
+      "trigger_quote_digest_mismatch",
+      "trigger_occurrence_missing",
+      "trigger_occurrence_outside_sentence",
+      "trigger_occurrence_outside_clause",
+      "evidence_span_missing",
+      "evidence_span_out_of_source",
+      "evidence_does_not_contain_trigger",
+      "evidence_does_not_contain_endpoints",
+      "materializer_detail_unavailable"
+    ],
+    "requiredDenominator": "semanticTruePositive",
+    "forbiddenFields": ["triggerQuote", "rawSourceText", "rawEvidenceText"]
+  },
+  "invariants": [
+    "schema failure counts reconcile to response accounting",
+    "evidence bucket counts reconcile to semantic true positives",
+    "gold-relations remains a deterministic materializer control and is not a model score",
+    "candidate endpoint identity is resolved from typed spans, never local IDs alone",
+    "unknown diagnostics fail closed and cannot be treated as passing evidence"
+  ],
+  "implementation": {
+    "path": "scripts/s12_f12_rm28_offline_diagnostics.py",
+    "deterministic": true,
+    "providerCalls": 0,
+    "overwriteHistoricalReport": false
+  },
+  "governance": {
+    "providerExecutionAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "newAuthorizationIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextGate": "owner review before any superseding package or execution lineage"
+  }
+}
