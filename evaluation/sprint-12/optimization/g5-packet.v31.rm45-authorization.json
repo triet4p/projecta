@@ -1,0 +1,127 @@
+{
+  "packetVersion": "s12.g5.packet.v31.rm45-authorization",
+  "status": "G5_F12_CORRECTED_V9_LINEAGE_AUTHORIZED_ONE_STAGE_A_PENDING_EXECUTION",
+  "packetRole": "authoritative-current-g5-packet",
+  "asOf": "2026-08-22",
+  "supersedesForCurrentState": {
+    "path": "evaluation/sprint-12/optimization/g5-packet.v30.rm44-authorization-preparation.json",
+    "digest": "sha256:5ed8d946cd4d6acd34c8124bd247fa51543616018823c7ba529c6063bdd49c3e"
+  },
+  "rm44Preparation": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm44-authorization-preparation.v1.json",
+    "digest": "sha256:fe7f74f02e51489d0d68d997df2824705d2c52885ccf88857eec35fc79621285",
+    "status": "PREPARED_PENDING_RM45_OWNER_AUTHORIZATION_REVIEW"
+  },
+  "ownerReview": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm45-owner-review.v1.json",
+    "digest": "sha256:8f5e8f55d7893756a764e334915de7317038016ee25b87afbd80884a4c75d1bf",
+    "status": "OWNER_REVIEW_APPROVED_ONE_BOUNDED_V9_STAGE_A"
+  },
+  "authorization": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm45-authorization.v9.json",
+    "digest": "sha256:ad84eaad496458cc2f5064be59016d7e2497aa4d3ad898e807cf8d496d77a0c8",
+    "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A"
+  },
+  "authorizationTransition": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm45-authorization-transition.v1.json",
+    "digest": "sha256:68a69e313e203aa7d5e88209efacf3d7b8eab293a2d015810f0953fdb0dc6234",
+    "status": "ONE_BOUNDED_V9_DEVELOPMENT_STAGE_A_AUTHORIZED_PENDING_EXECUTION"
+  },
+  "preflight": {
+    "path": "scripts/preflight_sprint12_f12_rm45.py",
+    "digest": "sha256:b8d03c4c04fd8e78841b7132bd561dedc928b5022ac05a9939e79dfd6cc50b6f",
+    "result": "F12_RM45_AUTHORIZED_ZERO_CALL_PRECHECK",
+    "providerCallsPerformed": 0,
+    "authorizedProviderCalls": 144,
+    "relationBranchOutputs": 96,
+    "retryCount": 0,
+    "outputExists": false
+  },
+  "authorizedLineage": {
+    "lineageVersion": "v9",
+    "lineageCommit": "6537f6b79f1f5326a9d8362b09af7e52df74819f",
+    "executionCommit": "f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e",
+    "preregistration": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm42-preregistration.v9.json",
+      "digest": "sha256:147503146accb6462548b9a4ce238bee989aacc63884e67a15a217304bfa03c4"
+    },
+    "executionPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm42-execution-package.v9.json",
+      "digest": "sha256:cdaad8ebdce34115c8853067245ed6e5ef4107e271de5ce073a1cbdef20b05d2"
+    },
+    "technicalFreeze": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm42-technical-freeze.v9.json",
+      "digest": "sha256:f595730955848c76d0399706d5f2f32c367a6e88b62a5b3c3986bf2ccc3dfe32"
+    },
+    "runtime": {
+      "digestMode": "git_blob_sha256",
+      "runtimeBlobCount": 19,
+      "runnerPath": "scripts/run_sprint12_f12_stage_a_v9.py",
+      "runnerDigest": "sha256:523106bf38a2da3acdd6cf6be6dcb299e1763174d41d0e1f4438f5c1fefd92dd",
+      "reportSchemaDigest": "sha256:262822030197e36cbabe9d7cb734c794385fa8b6d8d4bf3a63eb5ce82f864bea",
+      "authorizationSchemaDigest": "sha256:47b52efd42849e436f757cdcedc12989d6a64820a0049db5c33e14cb8523a2b9"
+    }
+  },
+  "executionEvidencePreserved": {
+    "historicalV6ReportDigest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "rm36ProviderCallsAttempted": 3,
+    "rm36ReportExists": false,
+    "rm36AuthorizationSpent": true,
+    "failedV8ReportExists": false,
+    "newV9ReportExists": false
+  },
+  "currentLineage": {
+    "lineageVersion": "v9",
+    "preregistrationIssued": true,
+    "technicalFreezeIssued": true,
+    "authorizedExecutions": 1,
+    "authorizedProviderCalls": 144,
+    "providerCallsPerformed": 0,
+    "providerResponsesReceived": 0,
+    "relationBranchOutputs": null,
+    "retryCount": 0,
+    "accountingComplete": false,
+    "aggregateCostAvailable": false,
+    "stageAReportExists": false,
+    "providerExecutionAuthorized": true,
+    "newAuthorizationIssued": true,
+    "authorizationSpent": false
+  },
+  "authorizationBoundary": {
+    "preregistrationIssued": true,
+    "technicalFreezeIssued": true,
+    "providerExecutionAuthorized": true,
+    "newAuthorizationIssued": true,
+    "authorizedExecutions": 1,
+    "authorizedProviderCalls": 144,
+    "providerCallsPerformed": 0,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "outputOverwriteAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "downstreamAccessAuthorized": false,
+    "outputPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json",
+    "costCeilingUsd": "10.00",
+    "nextPermittedTask": "S12-RM-46_EXECUTE_EXACT_V9_STAGE_A_ONCE"
+  },
+  "nextTasks": [
+    "S12-RM-46_EXECUTE_EXACT_V9_STAGE_A_ONCE",
+    "S12-RM-47_OWNER_POST_RUN_DECISION"
+  ],
+  "claimBoundary": {
+    "v9AuthorizationIssued": true,
+    "v9ExecutionPerformed": false,
+    "v9QualityResultAvailable": false,
+    "candidateEvaluationAvailable": false,
+    "accuracyImprovementEstablished": false,
+    "businessQualityEstablished": false,
+    "tenantReadinessEstablished": false,
+    "humanEvidence": false,
+    "retryAuthorized": false,
+    "downstreamAccessAuthorized": false
+  }
+}

@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -27,8 +28,20 @@ def _digest(path: Path) -> str:
     return "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def test_rm44_preflight_is_zero_call_and_exactly_bound() -> None:
-    result = preflight.run_preflight()
+def test_rm44_preflight_is_zero_call_and_exactly_bound(tmp_path: Path) -> None:
+    historical_state = tmp_path / "current-state.v1.json"
+    historical_state.write_bytes(
+        subprocess.check_output(
+            ["git", "show", "HEAD:evaluation/sprint-12/current-state.v1.json"],
+            cwd=ROOT,
+        )
+    )
+    original_current = preflight.CURRENT
+    preflight.CURRENT = historical_state
+    try:
+        result = preflight.run_preflight()
+    finally:
+        preflight.CURRENT = original_current
     preparation = _json(PREPARATION)
     package = _json(PACKAGE)
     assert result["status"] == "F12_RM44_PREPARED_ZERO_CALL"

@@ -1,7 +1,7 @@
 {
   "artifactVersion": "s12.current-state.v1",
   "asOf": "2026-08-22",
-  "status": "G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING",
+  "status": "G5_F12_CORRECTED_V9_LINEAGE_AUTHORIZED_ONE_STAGE_A_PENDING_EXECUTION",
   "sourcePrecedence": [
     "this current-state index",
     "latest explicit owner decision or transition record",
@@ -102,15 +102,30 @@
       "digest": "sha256:d57f040293ff0be4573d49e97a20cea9c838152b47945ee3fc01af2568637fdb",
       "expectedStatus": "CORRECTED_V9_PREREGISTRATION_AND_FREEZE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
     },
+    "rm45OwnerReview": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm45-owner-review.v1.json",
+      "digest": "sha256:8f5e8f55d7893756a764e334915de7317038016ee25b87afbd80884a4c75d1bf",
+      "expectedStatus": "OWNER_REVIEW_APPROVED_ONE_BOUNDED_V9_STAGE_A"
+    },
+    "rm45Authorization": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm45-authorization.v9.json",
+      "digest": "sha256:ad84eaad496458cc2f5064be59016d7e2497aa4d3ad898e807cf8d496d77a0c8",
+      "expectedStatus": "APPROVED_FOR_DEVELOPMENT_STAGE_A"
+    },
+    "rm45AuthorizationTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm45-authorization-transition.v1.json",
+      "digest": "sha256:68a69e313e203aa7d5e88209efacf3d7b8eab293a2d015810f0953fdb0dc6234",
+      "expectedStatus": "ONE_BOUNDED_V9_DEVELOPMENT_STAGE_A_AUTHORIZED_PENDING_EXECUTION"
+    },
     "stageAReport": {
       "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
       "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
       "status": "COMPLETED_REJECTED_HARD_GATE"
     },
     "g5Packet": {
-      "path": "evaluation/sprint-12/optimization/g5-packet.v29.rm43-issuance.json",
-      "digest": "sha256:12273faba085c8f811317a6d0d7774432c760c2487c3d36c0795e5a683710f38",
-      "version": "s12.g5.packet.v29.rm43-issuance"
+      "path": "evaluation/sprint-12/optimization/g5-packet.v31.rm45-authorization.json",
+      "digest": "sha256:e2d2818913447fc20eb6268a94f6ff7fe4cc28fa518dac37b52e4d5b67b7c5e0",
+      "version": "s12.g5.packet.v31.rm45-authorization"
     },
     "humanSummary": "docs/sprint-plans/sprint-12/current-state.md"
   },
@@ -165,8 +180,8 @@
       "lineageVersion": "v9",
       "preregistrationIssued": true,
       "technicalFreezeIssued": true,
-      "authorizedExecutions": 0,
-      "authorizedProviderCalls": 0,
+      "authorizedExecutions": 1,
+      "authorizedProviderCalls": 144,
       "providerCallsPerformed": 0,
       "providerResponsesReceived": 0,
       "relationBranchOutputs": null,
@@ -174,8 +189,8 @@
       "accountingComplete": false,
       "aggregateCostAvailable": false,
       "stageAReportExists": false,
-      "providerExecutionAuthorized": false,
-      "newAuthorizationIssued": false,
+      "providerExecutionAuthorized": true,
+      "newAuthorizationIssued": true,
       "authorizationSpent": false
     },
     "currentGovernance": {
@@ -185,8 +200,8 @@
       "executionPackagePreparationAuthorized": false,
       "preregistrationIssued": true,
       "technicalFreezeIssued": true,
-      "providerExecutionAuthorized": false,
-      "newAuthorizationIssued": false,
+      "providerExecutionAuthorized": true,
+      "newAuthorizationIssued": true,
       "validationAccessAuthorized": false,
       "heldOutAccessAuthorized": false,
       "stageBAuthorized": false,
@@ -213,9 +228,9 @@
       "rerunAuthorized": false,
       "retryAuthorized": false
   },
-  "nextTasks": [
-    "S12-RM-44_PREPARE_EXACT_V9_STAGE_A_AUTHORIZATION",
-    "S12-RM-45_OWNER_REVIEW_EXACT_V9_STAGE_A_AUTHORIZATION"
+    "nextTasks": [
+    "S12-RM-46_EXECUTE_EXACT_V9_STAGE_A_ONCE",
+    "S12-RM-47_OWNER_POST_RUN_DECISION"
   ],
-  "claimBoundary": "RM-43 issued only the corrected v9 preregistration and technical freeze. No v9 provider authorization, report, quality result, candidate selection, tenant readiness or business-quality result exists. The failed v8 execution and immutable v6 report remain historical evidence; RM-44 may prepare exact authorization offline and RM-45 must review it before any provider call."
+  "claimBoundary": "RM-45 issued one bounded v9 development Stage A authorization against the exact frozen lineage. No v9 provider call has yet occurred, no v9 report or quality result exists, and no retry, overwrite, validation, held-out, Stage B, selection, promotion or tenant-readiness access is authorized. The failed v8 three-call invocation and immutable v6 report remain historical evidence."
 }
