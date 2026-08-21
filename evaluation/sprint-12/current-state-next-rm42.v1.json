@@ -1,0 +1,74 @@
+{
+  "artifactVersion": "s12.current-state-next.rm42-v9-preparation.v1",
+  "asOf": "2026-08-22",
+  "status": "G5_F12_SUPERSEDING_V9_RUNTIME_LINEAGE_PREPARED_PENDING_RM43_OWNER_ISSUANCE_REVIEW",
+  "nonAuthoritative": true,
+  "authoritativeState": {
+    "path": "evaluation/sprint-12/current-state.v1.json",
+    "status": "G5_F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY"
+  },
+  "rm41Approval": {
+    "ownerReviewPath": "evaluation/sprint-12/optimization/s12-f-12-rm41-owner-review.v1.json",
+    "ownerReviewDigest": "sha256:384f7580cfa22b77dffbfac50da5d8dc16ddcfa508abf0a2f15d02bd5977b2eb",
+    "transitionPath": "evaluation/sprint-12/optimization/s12-f-12-rm41-approval-transition.v1.json",
+    "transitionDigest": "sha256:bca16c784e35872034d168b653b3b491dba85583ee721a21db4e629e1982931a"
+  },
+  "rm42Preparation": {
+    "executionPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm42-execution-package.v9.json",
+      "digest": "sha256:45ace79f692799f1750f23f632d0bd43237e6f5b0d9a2fc791e3d4504f3c2a21"
+    },
+    "preregistration": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm42-preregistration.v9.json",
+      "digest": "sha256:0e3f9363d36b28bdeb77dde832a310b3141f3ec0c11d3667685b631723ddbdb3"
+    },
+    "technicalFreeze": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm42-technical-freeze.v9.json",
+      "digest": "sha256:31966809f6248ff4ccd2cbb6d466db8a466de0b5d11146f2e623561934d15dac"
+    },
+    "runtimeCommit": "2464022dc2cc7fb7c13565accaa648c242e0ec16",
+    "preflight": {
+      "path": "scripts/preflight_sprint12_f12_rm42.py",
+      "digest": "sha256:4351400831d8ae58ee3406c3127169bd0766f7cbd3ba9746ecde753fd38af8cd",
+      "result": "F12_RM42_READY_ZERO_CALL"
+    },
+    "safeTests": {
+      "path": "scripts/tests/test_sprint12_rm42_preparation.py",
+      "digest": "sha256:00f689a03a6d1bddeb57cc90b5f6a39dae1fd15e2508cd1cd5fea795f76b034b",
+      "result": "4 passed"
+    }
+  },
+  "custody": {
+    "providerCalls": 0,
+    "plannedProviderCalls": 144,
+    "plannedRelationBranchOutputs": 96,
+    "retryCount": 0,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "newV9ReportExists": false,
+    "historicalV6ReportDigest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "historicalEvidenceMutated": false,
+    "failedV8ReportExists": false
+  },
+  "governanceLocks": {
+    "supersedingLineagePreparationAuthorized": true,
+    "preregistrationPreparationAuthorized": true,
+    "technicalFreezePreparationAuthorized": true,
+    "executionPackagePreparationAuthorized": true,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "nextTasks": [
+    "S12-RM-43_OWNER_ISSUANCE_REVIEW_V9_LINEAGE"
+  ],
+  "claimBoundary": "RM-42 is a non-authoritative offline v9 runtime-lineage preparation fact only. No preregistration, technical freeze, authorization, provider call, quality result, candidate, validation, held-out, Stage B, selection or promotion claim exists."
+}

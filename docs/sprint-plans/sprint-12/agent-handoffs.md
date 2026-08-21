@@ -211,6 +211,21 @@ RM-41 may review the package and safe tests. No lineage preparation, issuance,
 provider execution, retry/rerun, validation, held-out, Stage B, selection or
 promotion is authorized.
 
+## Handoff N — RM-42 v9 lineage preparation to RM-43 issuance review
+
+**Status:** RM-42 complete; RM-43 pending.
+
+RM-42 integrated RM-40 into the guarded v9 runtime at exact commit
+`2464022dc2cc7fb7c13565accaa648c242e0ec16`. The closed v9 report and
+authorization schemas, deterministic mocked E2E, and exact Git-blob runtime
+binding are present. The unissued preregistration, execution package and
+technical freeze are preparation-only artifacts; the zero-call preflight passes
+with 144/96 prospective custody, zero calls, zero retries and absent v9 output.
+
+RM-43 must review and issue the v9 preregistration/freeze before any separate
+exact-commit provider authorization review. No provider execution, rerun,
+retry, validation, held-out, Stage B, selection or promotion is authorized.
+
 ## External-only work — custody and G6
 
 S12-55/S12-85 and the G6 blinded review still require a real external

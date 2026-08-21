@@ -10,6 +10,12 @@ deterministic regressions; RM-40 implemented them in a non-authoritative
 versioned path pending RM-41 review. The authoritative machine state is
 `evaluation/sprint-12/current-state.v1.json`.
 
+The latest non-authoritative preparation snapshot is
+`evaluation/sprint-12/current-state-next-rm42.v1.json`. RM-41 approved only
+offline superseding-lineage preparation; RM-42 prepared an exact-commit v9
+runtime lineage pending the separate RM-43 issuance review. This snapshot does
+not replace the authoritative machine state or authorize provider execution.
+
 This is the human-readable current-state index for Sprint 12. Machine consumers
 must use `evaluation/sprint-12/current-state.v1.json`.
 
@@ -66,15 +72,14 @@ new lineage.
 
 ## Next work
 
-1. RM-39 approved offline runtime remediation and deterministic regressions;
-   RM-40 has implemented them in a non-authoritative versioned path pending
-   RM-41 owner review.
-2. RM-41 must review the implementation before any lineage preparation,
-   issuance or provider execution. Keep provider execution, retry, overwrite,
-   superseding-lineage preparation, validation, held-out access, Stage B,
-   selection and promotion closed.
-3. Do not claim accuracy improvement, candidate quality, business quality or
-   tenant readiness from this rejected run.
+1. RM-41 approved offline preparation of a corrected superseding lineage only.
+2. RM-42 prepared the guarded exact-commit v9 runtime, unissued
+   preregistration/package/freeze and zero-call preflight. RM-43 must review
+   issuance before any separate provider authorization review.
+3. Keep provider execution, retry, overwrite, validation, held-out access,
+   Stage B, selection and promotion closed.
+4. Do not claim accuracy improvement, candidate quality, business quality or
+   tenant readiness from this rejected run or the offline preparation.
 
 Historical gate packets remain valid evidence of what was decided at their
 time; they are not current-state dashboards.

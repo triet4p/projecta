@@ -921,9 +921,18 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   the exact semantic-pair set shared with scoring, projects entity spans to
   `(start,end)`, fails closed on malformed detail and preserves prospective
   144/96 custody invariants. No provider or v8 runner was invoked.
-- [ ] **S12-RM-41 — Owner review RM40 offline runtime remediation:** Review the
-  implementation package and safe regressions before any lineage preparation,
-  issuance or provider authorization.
+- [x] **S12-RM-41 — Owner review RM40 offline runtime remediation:** Independently
+  approved offline preparation of a corrected superseding runtime lineage only;
+  issuance, provider authorization and downstream access remain closed.
+- [x] **S12-RM-42 — Prepare corrected v9 runtime lineage offline:** Integrate
+  RM-40 into a guarded exact-commit v9 runner, close report and authorization
+  schemas, exercise the mocked 144/96 path, and prepare unissued v9
+  preregistration/package/freeze artifacts with Git-blob custody. No provider
+  call, rerun, retry, validation, held-out, Stage B, selection or promotion is
+  authorized.
+- [ ] **S12-RM-43 — Owner issuance review for corrected v9 lineage:** Review the
+  exact-commit package, preregistration and technical freeze before issuance;
+  separate provider authorization remains required after issuance.
 
 #### Phase F-S — Candidate Selection Resume Path
 

@@ -1,0 +1,89 @@
+{
+  "artifactVersion": "s12.s12-f-12.technical-freeze.v9",
+  "status": "TECHNICAL_FREEZE_PREPARED_PENDING_RM43_OWNER_ISSUANCE_REVIEW",
+  "experimentId": "s12-f-12",
+  "lineageVersion": "v9",
+  "executionCommitSha": "2464022dc2cc7fb7c13565accaa648c242e0ec16",
+  "executionPackage": "evaluation/sprint-12/optimization/s12-f-12-rm42-execution-package.v9.json",
+  "executionPackageDigest": "sha256:45ace79f692799f1750f23f632d0bd43237e6f5b0d9a2fc791e3d4504f3c2a21",
+  "preregistration": "evaluation/sprint-12/optimization/s12-f-12-rm42-preregistration.v9.json",
+  "preregistrationDigest": "sha256:0e3f9363d36b28bdeb77dde832a310b3141f3ec0c11d3667685b631723ddbdb3",
+  "runner": {
+    "path": "scripts/run_sprint12_f12_stage_a_v9.py",
+    "gitBlobDigest": "sha256:c99afc305221432ec1893071a6b2372f04699c9ce73d161513fec21e6a171dfd",
+    "guarded": true,
+    "providerExecutionAuthorized": false
+  },
+  "schemas": {
+    "reportPath": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v9.json",
+    "reportDigest": "sha256:262822030197e36cbabe9d7cb734c794385fa8b6d8d4bf3a63eb5ce82f864bea",
+    "authorizationPath": "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v9.json",
+    "authorizationDigest": "sha256:47b52efd42849e436f757cdcedc12989d6a64820a0049db5c33e14cb8523a2b9"
+  },
+  "runtimeBinding": {
+    "digestMode": "git_blob_sha256",
+    "preparationEvidenceExcludedFromExecutionCommit": true,
+    "runtimeBlobCount": 19,
+    "preflightPath": "scripts/preflight_sprint12_f12_rm42.py"
+  },
+  "governance": {
+    "supersedingLineagePreparationAuthorized": true,
+    "preregistrationPreparationAuthorized": true,
+    "technicalFreezePreparationAuthorized": true,
+    "executionPackagePreparationAuthorized": true,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "providerCalls": 0,
+    "nextGate": "RM-43 owner issuance review; separate v9 exact-commit authorization remains required"
+  },
+  "preregistrationIssued": false,
+  "technicalFreezeIssued": false,
+  "providerExecutionAuthorized": false,
+  "newAuthorizationIssued": false,
+  "rerunAuthorized": false,
+  "retryAuthorized": false,
+  "validationAccessAuthorized": false,
+  "heldOutAccessAuthorized": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false,
+  "issuance": {
+    "status": "NOT_ISSUED",
+    "requiresRM43OwnerIssuanceReview": true,
+    "requiresSeparateExactCommitAuthorization": true,
+    "mustBindExactPackageDigest": true,
+    "mustBindExactPreregistrationDigest": true
+  },
+  "output": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json",
+    "exists": false,
+    "mustNotOverwrite": [
+      "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+      "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json"
+    ],
+    "historicalV6Digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+  },
+  "historicalCustody": {
+    "rm36ExecutionTransition": "evaluation/sprint-12/optimization/s12-f-12-rm36-execution-transition.v1.json",
+    "rm37DecisionTransition": "evaluation/sprint-12/optimization/s12-f-12-rm37-decision-transition.v1.json",
+    "historicalEvidenceMutated": false,
+    "authorizationReused": false
+  },
+  "preparationScope": "S12-RM-42",
+  "preparationScopeConstraints": [
+    "This freeze is a non-authoritative offline preparation artifact.",
+    "No preregistration, technical freeze, authorization or provider execution is issued.",
+    "The v8 lineage, spent RM-35 authorization, RM-36 execution fact and historical v6 report remain immutable.",
+    "The v9 runtime must be integrated through the guarded exact-commit path; the standalone RM-40 module is not an executable lineage substitute.",
+    "Validation, held-out access, Stage B, candidate selection and promotion remain closed."
+  ]
+}

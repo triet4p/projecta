@@ -1,0 +1,66 @@
+{
+  "packetVersion": "s12.g5.packet.v28.rm42-v9-preparation",
+  "status": "G5_F12_SUPERSEDING_V9_RUNTIME_LINEAGE_PREPARED_PENDING_RM43_OWNER_ISSUANCE_REVIEW",
+  "packetRole": "non-authoritative-rm42-v9-preparation-snapshot",
+  "asOf": "2026-08-22",
+  "experimentId": "s12-f-12",
+  "rm41Approval": {
+    "ownerReviewPath": "evaluation/sprint-12/optimization/s12-f-12-rm41-owner-review.v1.json",
+    "ownerReviewDigest": "sha256:384f7580cfa22b77dffbfac50da5d8dc16ddcfa508abf0a2f15d02bd5977b2eb",
+    "transitionPath": "evaluation/sprint-12/optimization/s12-f-12-rm41-approval-transition.v1.json",
+    "transitionDigest": "sha256:bca16c784e35872034d168b653b3b491dba85583ee721a21db4e629e1982931a"
+  },
+  "rm42Preparation": {
+    "executionPackagePath": "evaluation/sprint-12/optimization/s12-f-12-rm42-execution-package.v9.json",
+    "executionPackageDigest": "sha256:45ace79f692799f1750f23f632d0bd43237e6f5b0d9a2fc791e3d4504f3c2a21",
+    "preregistrationPath": "evaluation/sprint-12/optimization/s12-f-12-rm42-preregistration.v9.json",
+    "preregistrationDigest": "sha256:0e3f9363d36b28bdeb77dde832a310b3141f3ec0c11d3667685b631723ddbdb3",
+    "technicalFreezePath": "evaluation/sprint-12/optimization/s12-f-12-rm42-technical-freeze.v9.json",
+    "technicalFreezeDigest": "sha256:31966809f6248ff4ccd2cbb6d466db8a466de0b5d11146f2e623561934d15dac",
+    "runtimeCommit": "2464022dc2cc7fb7c13565accaa648c242e0ec16",
+    "runnerPath": "scripts/run_sprint12_f12_stage_a_v9.py",
+    "reportSchemaPath": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v9.json",
+    "authorizationSchemaPath": "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v9.json",
+    "preflightPath": "scripts/preflight_sprint12_f12_rm42.py",
+    "preflightDigest": "sha256:4351400831d8ae58ee3406c3127169bd0766f7cbd3ba9746ecde753fd38af8cd",
+    "preflightResult": "F12_RM42_READY_ZERO_CALL",
+    "safePreparationTests": 4
+  },
+  "executionEvidencePreserved": {
+    "historicalV6ReportDigest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "rm36ProviderCallsAttempted": 3,
+    "rm36ReportExists": false,
+    "rm36AuthorizationSpent": true,
+    "failedV8ReportExists": false,
+    "newV9ReportExists": false
+  },
+  "runtimeBinding": {
+    "digestMode": "git_blob_sha256",
+    "runtimeBlobCount": 19,
+    "preparationEvidenceExcludedFromExecutionCommit": true,
+    "exactCommitValidated": true,
+    "providerCalls": 0,
+    "retryCount": 0,
+    "plannedProviderCalls": 144,
+    "plannedRelationBranchOutputs": 96
+  },
+  "authorizationBoundary": {
+    "supersedingLineagePreparationAuthorized": true,
+    "preregistrationPreparationAuthorized": true,
+    "technicalFreezePreparationAuthorized": true,
+    "executionPackagePreparationAuthorized": true,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedTask": "S12-RM-43_OWNER_ISSUANCE_REVIEW_V9_LINEAGE"
+  },
+  "claimBoundary": "This non-authoritative G5 packet records corrected v9 runtime-lineage preparation only. It does not issue preregistration or freeze, authorize provider execution, or establish quality, candidate or downstream results."
+}
