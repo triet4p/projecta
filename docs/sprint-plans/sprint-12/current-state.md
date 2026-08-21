@@ -15,7 +15,10 @@ The latest authoritative G5 packet is
 `evaluation/sprint-12/optimization/g5-packet.v31.rm45-authorization.json`.
 RM-45's immutable owner review, authorization and transition permit exactly
 one bounded v9 development Stage A execution. Provider calls performed remain
-zero until RM-46 executes the authorized lineage.
+zero in the authoritative pre-execution index; RM-46 has since consumed that
+single authorization and recorded a separate immutable post-run execution
+fact. The RM-46 next-state and G5 packet are explicitly non-authoritative
+until RM-47 reviews the report.
 
 This is the human-readable current-state index for Sprint 12. Machine consumers
 must use `evaluation/sprint-12/current-state.v1.json`.
@@ -325,6 +328,14 @@ performed zero provider calls; the v9 report remains absent.
 The authoritative G5 packet is
 `evaluation/sprint-12/optimization/g5-packet.v31.rm45-authorization.json`
 (`sha256:e2d2818913447fc20eb6268a94f6ff7fe4cc28fa518dac37b52e4d5b67b7c5e0`).
-The next tasks are RM-46 execution exactly once and RM-47 owner post-run
-decision. The failed v8 three-call pre-report fact and immutable v6 report
-remain preserved; no quality or tenant-readiness claim is established.
+RM-46 has now executed the exact v9 command once and preserved the
+schema-valid but hard-gate-rejected report at
+`evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json` with
+digest `sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e`.
+The immutable execution transition is
+`evaluation/sprint-12/optimization/s12-f-12-rm46-execution-transition.v1.json`;
+its post-run current-state and G5 packet remain non-authoritative. The report
+records 144 calls, 96 branches, zero retries and `$0.00599700`, but fails
+schema-invalid, invalid-evidence, threshold and slice gates. RM-47 must make
+the separate owner decision; no quality or tenant-readiness claim is
+established.

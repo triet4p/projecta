@@ -2,15 +2,15 @@
 
 **Base contract version:** `s12.v1`; current visible corpus: `v3-frozen`
 
-**Current Sprint status:** `G5_F12_CORRECTED_V9_LINEAGE_AUTHORIZED_ONE_STAGE_A_PENDING_EXECUTION`
+**Current Sprint status:** `G5_F12_V9_STAGE_A_EXECUTED_COMPLETED_REJECTED_HARD_GATE_PENDING_RM47_OWNER_DECISION`
 
 RM-36 consumed the single RM-35-authorized v8 invocation and failed after
 three provider captures before persisting a report or aggregate accounting.
 RM-37 closed that execution as failed, RM-40 implemented the offline
 remediation, RM-42 prepared corrected v9, RM-43 issued only the corrected v9
 preregistration and technical freeze, and RM-45 issued one bounded v9 Stage A
-authorization. The authoritative packet is
-`optimization/g5-packet.v31.rm45-authorization.json`; RM35/RM36 and RM42
+authorization. RM-46 then consumed that authorization once. The post-run
+packet is non-authoritative pending RM-47; RM35/RM36 and RM42
 snapshots remain immutable custody history.
 
 The repository-visible pilot and development/validation gold now have
@@ -127,13 +127,15 @@ procedure permits one blinded run.
   historical `PREPARED` fields.
 - `optimization/g5-packet.v29.rm43-issuance.json` is an immutable RM-43
   issuance snapshot. The authoritative current packet is
-  `optimization/g5-packet.v31.rm45-authorization.json`, which records one
-  bounded v9 Stage A authorization; output, validation, held-out, Stage B,
-  promotion, retry and overwrite remain closed.
+  `optimization/g5-packet.v31.rm45-authorization.json`, which recorded one
+  bounded v9 Stage A authorization. RM-46 consumed it once and preserved the
+  schema-valid hard-gate-rejected report; output overwrite, validation,
+  held-out, Stage B, promotion and retry remain closed.
 - `optimization/s12-f-12-rm44-authorization-preparation.v1.json` is the
   non-authoritative RM-44 exact v9 authorization preparation. Its zero-call
   preflight binds 19 exact Git blobs and the 144/96 prospective default-path
-  mock, while provider/new authorization and the v9 output remain absent.
+  mock, while provider/new authorization and the v9 output remain absent at
+  the preparation snapshot.
 - `optimization/g5-packet.v30.rm44-authorization-preparation.json` and
   `current-state-next-rm44.v1.json` are immutable non-authoritative RM-44
   preparation snapshots. RM-45's owner review, authorization and transition
@@ -193,7 +195,10 @@ separate post-run owner decision.
 G0 and G1 are approved; G2 and G3 are approved with recorded limitations;
 G3.1-A/B/C are complete with scope limits. G4 now has a runtime-backed baseline
 with failures and G4.1 is contract-aligned but stability-failed. G5 has issued
-the corrected f12 v9 preregistration/freeze lineage and RM-45 has authorized one
-exact v9 Stage A execution; v9 output and candidate selection remain absent.
+the corrected f12 v9 preregistration/freeze lineage and RM-45 authorized one
+exact v9 Stage A execution. RM-46 consumed it once; the v9 report is
+schema-valid but rejected by schema-invalid, invalid-evidence, threshold and
+slice gates. Candidate selection remains absent and RM-47 must make the
+separate owner decision.
 G6 is blocked by missing external test custody and a
 frozen passing candidate; held-out inputs/gold remain outside the repository.

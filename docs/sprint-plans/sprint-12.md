@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G5_F12_CORRECTED_V9_LINEAGE_AUTHORIZED_ONE_STAGE_A_PENDING_EXECUTION`
+Status: `G5_F12_V9_STAGE_A_EXECUTED_COMPLETED_REJECTED_HARD_GATE_PENDING_RM47_OWNER_DECISION`
 
 Current state: [Sprint 12 Current State](sprint-12/current-state.md)
 
@@ -14,8 +14,8 @@ G4.1 packet: [Contract Alignment and Failure Diagnosis](sprint-12/g4.1-contract-
 
 G5 packet: [Controlled Optimization Review Packet v25 — RM-37 closure](sprint-12/g5-optimization.v25.rm37-closure.md)
 
-Current G5 packet: [Controlled Optimization Review Packet v31 — RM-45 v9
-authorization](sprint-12/g5-optimization.v31.rm45-authorization.md)
+Current G5 packet: [Controlled Optimization Review Packet v32 — RM-46 v9
+execution](sprint-12/g5-optimization.v32.rm46-execution.md)
 
 Historical preparation snapshot: [Controlled Optimization Review Packet v30 —
 RM-44 exact v9 authorization preparation](sprint-12/g5-optimization.v30.rm44-authorization-preparation.md)
@@ -953,9 +953,12 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   output v9 and `$10.00` ceiling. It performs zero calls at issuance; retry,
   overwrite, validation, held-out, Stage B, selection and promotion remain
   closed.
-- [ ] **S12-RM-46 — Execute exact v9 Stage A once:** Run the guarded v9
-  lineage exactly once under RM-45 authorization, preserving the report or
-  immutable pre-report failure fact. No retry, overwrite or downstream access.
+- [x] **S12-RM-46 — Execute exact v9 Stage A once:** Ran the guarded v9
+  lineage exactly once under RM-45 authorization. The schema-valid report is
+  preserved as `COMPLETED_REJECTED_HARD_GATE` with 144 calls, 96 relation
+  branches, zero retries and `$0.00599700`; no retry, overwrite or downstream
+  access occurred. RM-46's post-run state and G5 packet are non-authoritative
+  pending RM-47.
 - [ ] **S12-RM-47 — Owner post-run decision:** Review the immutable v9 report or
   pre-report execution fact and close the run without inferring quality from
   incomplete evidence; Stage B, validation, held-out access, selection and

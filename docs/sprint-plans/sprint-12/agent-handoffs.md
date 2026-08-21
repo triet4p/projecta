@@ -1,6 +1,8 @@
 # Sprint 12 Current Handoffs
 
-**Status:** `CURRENT_F12_V9_ISSUED_AUTHORIZATION_HANDOFF`
+**Status:** `CURRENT_F12_V9_EXECUTED_POST_RUN_OWNER_DECISION_HANDOFF`
+
+Historical predecessor status: `CURRENT_F12_V9_ISSUED_AUTHORIZATION_HANDOFF`.
 
 This revision supersedes the old baseline and generic-optimization handoffs.
 Those tasks are complete or historically closed. Use
@@ -269,7 +271,7 @@ remain false.
 
 ## Handoff Q — RM-45 authorization to RM-46/RM-47 execution path
 
-**Status:** RM-45 complete; RM-46 pending exact v9 Stage A execution.
+**Status:** RM-45 and RM-46 complete; RM-47 pending owner post-run decision.
 
 The authoritative current G5 packet is
 `evaluation/sprint-12/optimization/g5-packet.v31.rm45-authorization.json`, and
@@ -280,13 +282,29 @@ RM-45 issued exactly one v9 development Stage A authorization through
 Git-blob runtime bindings, output v9 and the `$10.00` ceiling.
 
 The read-only preflight
-`scripts/preflight_sprint12_f12_rm45.py` returns
-`F12_RM45_AUTHORIZED_ZERO_CALL_PRECHECK`: one authorized execution, 144
-provider calls, 96 relation branches, zero calls performed, zero retries and
-absent output. RM-46 may invoke the exact runner once. RM-47 must make a
-separate owner post-run decision from the immutable report or pre-report
-execution fact. Do not retry, overwrite output, inspect held-out data, open
-Stage B, select a candidate or promote.
+`scripts/preflight_sprint12_f12_rm45.py` returned
+`F12_RM45_AUTHORIZED_ZERO_CALL_PRECHECK`. RM-46 invoked the exact runner once
+and preserved the immutable v9 report with 144 calls, 96 relation branches,
+zero retries and `$0.00599700` cost. The report is schema-valid but
+hard-gate-rejected with 5 schema-invalid and 20 invalid-evidence findings.
+The RM-46 transition and post-run state/G5 packet are non-authoritative until
+RM-47 makes a separate owner post-run decision. Do not retry, overwrite
+output, inspect held-out data, open Stage B, select a candidate or promote.
+
+## Handoff R — RM-46 v9 execution to RM-47 owner decision
+
+**Status:** RM-46 complete; RM-47 pending.
+
+The exact RM-45-authorized v9 command ran once against commit
+`f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e`. The persisted report is
+schema-valid and immutable at
+`evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json`, digest
+`sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e`.
+Its status is `COMPLETED_REJECTED_HARD_GATE` with failed schema-invalid,
+invalid-evidence, threshold and slice gates. RM-47 alone may decide whether
+offline remediation or another separately governed action is permissible.
+Authorization is spent; rerun, retry, overwrite, validation, held-out,
+Stage B, selection, promotion and downstream access are all closed.
 
 ## External-only work — custody and G6
 

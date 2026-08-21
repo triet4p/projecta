@@ -45,8 +45,9 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   ontology/graph/retrieval metrics, controlled optimization, sealed held-out
   evaluation, and target-role business acceptance. The historical synthetic
   corpus and rejected prompt experiments are retained as evidence. G3.1-A/B/C
-  are complete with scope limits; M8 is now at the exact f12 two-step package
-  with one bounded development Stage A execution authorized and not yet run.
+  are complete with scope limits; M8 has completed the single bounded v9
+  development Stage A execution, which is preserved as a hard-gate-rejected
+  report pending the separate RM-47 owner decision.
 
 ## Completed Sprints
 
@@ -109,8 +110,9 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   RM-40 implemented the versioned remediation path; RM-43 issued the corrected
   v9 preregistration and technical freeze. RM-44 prepared the exact v9
   authorization offline and RM-45 issued exactly one bounded v9 Stage A
-  authorization. RM-46 execution is pending; validation, held-out access,
-  Stage B, selection and promotion remain closed.
+  authorization. RM-46 executed exactly once and preserved the schema-valid but
+  hard-gate-rejected v9 report; RM-47 owner review is pending. Validation,
+  held-out access, Stage B, selection and promotion remain closed.
   No business-quality claim is made, and new connector/outbound breadth remains
   deferred. The authoritative dashboard is the
   [Sprint 12 current-state index](sprint-plans/sprint-12/current-state.md).*
