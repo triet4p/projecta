@@ -470,3 +470,10 @@ next highest-value work.
 **Alternatives considered:** Withhold authorization after RM-24; broaden authorization to retries or Stage B; or authorize a mutable current-HEAD execution package instead of the exact frozen lineage.
 **Reason:** Independent RM-25 review found the RM-24 digests, exact-commit blobs, runtime, schemas, output custody and cost boundary consistent, and the targeted regression suite passed after the preparation artifact was distinguished from a provider authorization without changing frozen evidence.
 **Consequences:** The exact authorization is single-use and permits at most 144 provider calls and 96 relation-branch outputs. Validation, held-out access, Stage B, candidate selection and promotion remain closed, and authorization establishes no quality improvement or tenant-readiness claim.
+
+## [2026-08-21] Close S12-f-12 rejected and open offline remediation preparation only
+
+**Decision:** Close S12-f-12 as `COMPLETED_REJECTED_NO_STAGE_B` and permit only offline preparation of a superseding schema/evidence remediation.
+**Alternatives considered:** Open Stage B despite failed gates; reuse the spent RM-25 authorization; close Sprint 12 without diagnosis; or authorize an immediate rerun against the existing v7 lineage.
+**Reason:** The immutable Stage A report is complete and schema-valid as evidence, but the candidate produced six schema-invalid responses, 17 invalid-evidence findings and failed registered threshold and slice gates. The passing gold-relations control does not waive candidate hard failures, while sanitized evidence is insufficient to attribute sole causality to one provider, prompt or runtime component.
+**Consequences:** The v6 report and RM-25 authorization remain immutable and non-reusable. Provider execution, validation, held-out access, Stage B, selection, freeze and promotion stay closed. Any future run requires offline remediation, a superseding governed lineage, exact-commit review and new owner authorization.

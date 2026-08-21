@@ -1,7 +1,7 @@
 # Sprint 12 G5 Optimization Packet v6
 
 > Historical gate snapshot. For current state, see
-> [G5 Optimization Packet v13](g5-optimization.v13.md).
+> [G5 Optimization Packet v15](g5-optimization.v15.md).
 
 Status: `G5_PREPARATION_DEVELOPMENT_OPEN_PENDING_S12_F07_AUTHORIZATION`
 

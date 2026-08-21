@@ -1,5 +1,8 @@
 # Sprint 12 G5 Optimization Packet v14
 
+> Historical gate snapshot. The authoritative current packet is
+> [G5 Optimization Packet v15](g5-optimization.v15.md).
+
 **Status:** `G5_F12_STAGE_A_COMPLETED_REJECTED_HARD_GATE_PENDING_OWNER_DECISION`
 
 The single RM-25-authorized S12-f-12 development Stage A execution completed

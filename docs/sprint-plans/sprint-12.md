@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G5_F12_STAGE_A_COMPLETED_REJECTED_HARD_GATE_PENDING_OWNER_DECISION`
+Status: `G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY`
 
 Current state: [Sprint 12 Current State](sprint-12/current-state.md)
 
@@ -12,7 +12,7 @@ G4 packet: [Baseline Evaluation Review Packet](sprint-12/g4-baseline.md)
 
 G4.1 packet: [Contract Alignment and Failure Diagnosis](sprint-12/g4.1-contract-alignment.md)
 
-G5 packet: [Controlled Optimization Review Packet v14](sprint-12/g5-optimization.v14.md)
+G5 packet: [Controlled Optimization Review Packet v15](sprint-12/g5-optimization.v15.md)
 
 G6 packet: [Held-out Business Evaluation Packet](sprint-12/g6-business-evaluation.md)
 
@@ -847,10 +847,14 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   local runtime source, run the guarded v6 runner exactly once, preserve the
   schema-valid report and record the rejected hard/semantic gates. No retry,
   overwrite, validation, held-out access, Stage B or selection is permitted.
-- [ ] **S12-RM-27 — Decide the f12 Stage A result:** Owner reviews the immutable
+- [x] **S12-RM-27 — Decide the f12 Stage A result:** Owner reviews the immutable
   v6 report and decides whether to close the experiment or authorize a
   separately prepared superseding remediation; this task does not authorize a
   rerun by itself.
+- [ ] **S12-RM-28 — Prepare offline f12 schema/evidence remediation:** Analyze
+  the six schema-invalid responses and 17 invalid-evidence findings using only
+  repository-visible development evidence and sanitized diagnostics. Any new
+  run requires a superseding governed lineage and separate owner authorization.
 
 #### Phase F-S — Candidate Selection Resume Path
 

@@ -2,7 +2,7 @@
 
 **As of:** 2026-08-21
 
-**Status:** `G5_F12_STAGE_A_COMPLETED_REJECTED_HARD_GATE_PENDING_OWNER_DECISION`
+**Status:** `G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY`
 
 This is the human-readable current-state index for Sprint 12. Machine consumers
 must use `evaluation/sprint-12/current-state.v1.json`.
@@ -25,6 +25,8 @@ one bounded Stage A execution through
 is now recorded by
 `s12-f-12-stage-a-execution-transition.v1.json`; these transitions change
 current governance state without rewriting history or mutating the report.
+RM-27 subsequently closed the experiment as rejected through
+`s12-f-12-rm27-decision-transition.v1.json`.
 
 ## Current boundary
 
@@ -35,6 +37,8 @@ current governance state without rewriting history or mutating the report.
 - The report is schema-valid but rejected by hard gates (`schemaInvalid=6`,
   `invalidEvidence=17`), registered thresholds and slice gates. It records 144
   calls, 96 relation branches, 0 retries and `$0.00592500` cost.
+- RM-27 closes f12 as `COMPLETED_REJECTED_NO_STAGE_B`; offline remediation
+  preparation is the only newly authorized scope.
 - Retry and output overwrite were not authorized and were not attempted. The
   authorization is spent and cannot be reused.
 - No candidate is selected or frozen; no accuracy improvement is established.
@@ -43,9 +47,11 @@ current governance state without rewriting history or mutating the report.
 
 ## Next work
 
-1. Obtain a separate owner post-run decision on the immutable Stage A report.
-2. Keep validation, held-out access, Stage B, selection and promotion closed;
-   any rerun requires a superseding package and new authorization.
+1. Prepare an offline schema/evidence remediation using repository-visible
+   development evidence and sanitized diagnostics only.
+2. Keep provider execution, validation, held-out access, Stage B, selection and
+   promotion closed; any rerun requires a superseding governed lineage and new
+   authorization.
 3. Do not claim accuracy improvement, candidate quality, business quality or
    tenant readiness from this rejected run.
 

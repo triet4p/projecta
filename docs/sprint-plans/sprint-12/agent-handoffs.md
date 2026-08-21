@@ -1,6 +1,6 @@
 # Sprint 12 Current Handoffs
 
-**Status:** `CURRENT_POST_RUN_OWNER_DECISION_HANDOFF`
+**Status:** `CURRENT_OFFLINE_F12_REMEDIATION_PREPARATION_HANDOFF`
 
 This revision supersedes the old baseline and generic-optimization handoffs.
 Those tasks are complete or historically closed. Use
@@ -65,10 +65,22 @@ new owner authorization.
 
 ## Handoff D — Post-run decision
 
-Review the immutable Stage A report against preregistered thresholds. The
-current report fails hard, threshold and slice gates, so no rerun, Stage B,
-selection, validation or held-out access is allowed until a separate owner
-decision is recorded.
+**Status:** complete. RM-27 closed f12 as `COMPLETED_REJECTED_NO_STAGE_B`.
+
+The owner decision preserves the immutable report, records the spent
+authorization and keeps rerun, Stage B, selection, validation and held-out
+access closed.
+
+## Handoff E — Offline schema/evidence remediation preparation
+
+Analyze the six schema-invalid responses and 17 invalid-evidence findings from
+sanitized development evidence. Distinguish candidate extraction/identity
+failures from the passing gold-relations control and preserve the limits of the
+sanitized report: exact malformed fields and sole provider/prompt causality are
+not established.
+
+This handoff may prepare a superseding design only. It does not authorize a
+provider call, rerun, validation, held-out access, Stage B or selection.
 
 ## External-only work — custody and G6
 

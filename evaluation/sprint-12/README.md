@@ -2,16 +2,16 @@
 
 **Base contract version:** `s12.v1`; current visible corpus: `v3-frozen`
 
-**Current Sprint status:** `G5_F12_STAGE_A_AUTHORIZED_PENDING_EXECUTION`
+**Current Sprint status:** `G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY`
 
 The repository-visible pilot and development/validation gold now have
 owner-delegated AI semantic review. They remain agent-authored synthetic data
 with `humanEvidence: false`. G3.1-A/B/C are complete with scope limits. The f12
-preregistration/freeze lineage is issued and one exact 144-call development
-Stage A execution is authorized, but no provider call has occurred and no
+preregistration/freeze lineage was issued and one exact 144-call development
+Stage A execution completed. RM-27 closed f12 rejected after hard, threshold
+and slice failures; only offline remediation preparation is open and no
 candidate is selected. G6 separately remains blocked by test custody and
-candidate quality. See `current-state.v1.json` for the authoritative
-current-state index.
+candidate quality. See `current-state.v1.json` for the authoritative index.
 
 This directory contains the governed contract for the Sprint 12 business
 semantic benchmark. It does not contain the held-out test cases or gold. Test
@@ -111,9 +111,9 @@ procedure permits one blinded run.
 - `optimization/s12-f-12-rm23f-issuance-transition.v1.json` records the later
   issuance of the exact f12 v7 preparation lineage without mutating its
   historical `PREPARED` fields.
-- `optimization/g5-packet.v13.json` is the current G5 machine packet. It keeps
-  selection at `NO_SELECTION` and records the single-use RM-25 authorization
-  for one exact development Stage A execution.
+- `optimization/g5-packet.v15.json` is the current G5 machine packet. It keeps
+  selection at `NO_SELECTION`, closes f12 rejected and permits offline
+  schema/evidence remediation preparation only.
 
 ## Dataset contract rules
 
