@@ -224,6 +224,15 @@ def _arm_record(*args: Any, **kwargs: Any) -> dict[str, Any]:
     result["abstention"] = v3.score_abstention_records(
         [(result["abstention"]["gold"], result["abstention"]["predicted"])]
     )
+    relation = result["relation"]
+    relation["invalidEvidenceCount"] = sum(
+        int(relation["evidence"]["counts"].get(key, 0))
+        for key in ("unsupported", "missing")
+    )
+    relation["endpointContractFailure"] = (
+        0 if relation["endpointResolution"]["reconciled"] else 1
+    )
+    relation["configurationMismatch"] = 0
     return result
 
 
