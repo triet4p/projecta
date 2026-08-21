@@ -211,6 +211,101 @@ def test_v9_prospective_custody_is_144_96_once_no_retry_no_overwrite() -> None:
         rm40.prospective_custody(output_exists_before=True)
 
 
+def test_v9_default_rm42_lineage_runs_without_lineage_monkeypatch(
+    tmp_path: Path,
+) -> None:
+    """Exercise the real RM-42 defaults, exact commit custody and mock boundary."""
+
+    package_path = v9.PACKAGE
+    prereg_path = v9.PREREG
+    freeze_path = v9.FREEZE
+    output_path = v9.OUTPUT
+    assert package_path.name == "s12-f-12-rm42-execution-package.v9.json"
+    assert prereg_path.name == "s12-f-12-rm42-preregistration.v9.json"
+    assert freeze_path.name == "s12-f-12-rm42-technical-freeze.v9.json"
+    package = json.loads(package_path.read_text())
+    assert isinstance(package["executionCommitSha"], str)
+    assert len(package["executionCommitSha"]) == 40
+    v9.validate_preparation_v9()
+    assert not output_path.exists()
+
+    class SpyAdapter:
+        def __init__(self) -> None:
+            self.calls = 0
+
+        def capture_stage(self, **_: object) -> ProviderCapture:
+            self.calls += 1
+            raise AssertionError("provider must not be called before authorization")
+
+    unauthorized = SpyAdapter()
+    with pytest.raises(Exception, match="authorization"):
+        v9.run_stage_a(provider_adapter=unauthorized, authorization_path=None)
+    assert unauthorized.calls == 0
+
+    authorization = json.loads(
+        (ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm35-authorization.v8.json").read_text()
+    )
+    authorization.update(
+        {
+            "artifactVersion": "s12-f-12.authorization.v9",
+            "executionCommitSha": package["executionCommitSha"],
+            "executionPackageDigest": "sha256:"
+            + hashlib.sha256(package_path.read_bytes()).hexdigest(),
+            "technicalFreezeDigest": "sha256:"
+            + hashlib.sha256(freeze_path.read_bytes()).hexdigest(),
+            "outputPath": output_path.relative_to(ROOT).as_posix(),
+        }
+    )
+    authorization_path = tmp_path / "rm43-mock-authorization.json"
+    authorization_path.write_text(json.dumps(authorization), encoding="utf-8")
+
+    class MockAdapter:
+        def __init__(self) -> None:
+            self.calls = 0
+
+        def capture_stage(self, **kwargs: object) -> ProviderCapture:
+            self.calls += 1
+            if kwargs["stage"] == "stage1":
+                payload = {
+                    "schemaVersion": "s12-f-12.stage1.entity-envelope.v2",
+                    "entities": [],
+                    "abstention": {"required": True, "reason": "mock"},
+                }
+            else:
+                payload = {
+                    "schemaVersion": "s12-f-12.stage2.relation-envelope.v2",
+                    "relations": [],
+                    "abstention": {"required": True, "reason": "mock"},
+                }
+            return ProviderCapture(
+                payload=payload,
+                usage={
+                    "promptCacheHitTokens": 0,
+                    "promptCacheMissTokens": 1,
+                    "outputTokens": 1,
+                },
+                retry_count=0,
+            )
+
+    adapter = MockAdapter()
+    try:
+        report = v9.run_stage_a(
+            provider_adapter=adapter,
+            authorization_path=authorization_path,
+        )
+        assert adapter.calls == 144
+        assert report["accounting"]["providerCallsAttempted"] == 144
+        assert report["accounting"]["retryCount"] == 0
+        assert report["diagnostics"]["evidenceFailureTotal"] == 0
+        assert output_path.exists()
+        assert json.loads(output_path.read_text())["artifactVersion"] == (
+            "s12-f-12.stage-a-report.v9"
+        )
+    finally:
+        if output_path.exists():
+            output_path.unlink()
+
+
 def _git_blob_digest(commit: str, path: str) -> str:
     blob = subprocess.run(
         ["git", "show", f"{commit}:{path}"],
@@ -317,6 +412,7 @@ def test_v9_guarded_mock_e2e_reaches_schema_and_persists_once() -> None:
         _write_json(authorization_path, auth_source)
 
         old_relative = v9._relative
+        old_lineage = (v9.PACKAGE, v9.PREREG, v9.FREEZE, v9.OUTPUT)
 
         def relative(path: Path) -> str:
             try:
@@ -375,5 +471,7 @@ def test_v9_guarded_mock_e2e_reaches_schema_and_persists_once() -> None:
             assert json.loads(output.read_text())["artifactVersion"] == "s12-f-12.stage-a-report.v9"
         finally:
             v9._relative = old_relative
+            v9.PACKAGE, v9.PREREG, v9.FREEZE, v9.OUTPUT = old_lineage
+            v9._configure()
             if output.exists():
                 output.unlink()

@@ -35,9 +35,9 @@ from s12_f12_rm30_diagnostic_remediation import (
 )
 from sprint12_f12_two_step_contracts_v5 import validate_stage1_response, validate_stage2_response
 
-PACKAGE = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm32-execution-package.v9.json"
-PREREG = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm32-preregistration.v9.json"
-FREEZE = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm32-technical-freeze.v9.json"
+PACKAGE = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm42-execution-package.v9.json"
+PREREG = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm42-preregistration.v9.json"
+FREEZE = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm42-technical-freeze.v9.json"
 REPORT_SCHEMA = ROOT / "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v9.json"
 AUTHORIZATION_SCHEMA = ROOT / "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v9.json"
 OUTPUT = ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json"
