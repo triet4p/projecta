@@ -440,7 +440,7 @@ def _slice_groups(
     groups: list[tuple[str, str, list[Mapping[str, Any]], str]] = [
         ("all-development", "all-development", list(records), "cases")
     ]
-    groups.extend(
+    groups.append(
         (
             "relation-positive",
             "relation-positive",
@@ -448,7 +448,7 @@ def _slice_groups(
             "relations",
         )
     )
-    groups.extend(
+    groups.append(
         (
             "relation-negative",
             "relation-negative",
@@ -456,7 +456,7 @@ def _slice_groups(
             "relations",
         )
     )
-    groups.extend(
+    groups.append(
         (
             "abstention-required",
             "abstention-required",
@@ -464,7 +464,7 @@ def _slice_groups(
             "cases",
         )
     )
-    groups.extend(
+    groups.append(
         (
             "abstention-not-required",
             "abstention-not-required",
