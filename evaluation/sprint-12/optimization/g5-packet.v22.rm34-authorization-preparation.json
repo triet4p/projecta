@@ -10,8 +10,13 @@
   },
   "authorizationPreparation": {
     "path": "evaluation/sprint-12/optimization/s12-f-12-rm34-authorization-preparation.v1.json",
-    "digest": "sha256:a0058e558cfd90b67afbed5f4aa1a7ee38272bd94f5fb2f7bc58c81198160f9c",
+    "digest": "sha256:fda11a139dd473ef0f260d4fa47e406b2ce27a74b48b2aabc134f5dec349303a",
     "status": "PREPARED_PENDING_RM35_OWNER_AUTHORIZATION"
+  },
+  "ownerCustodyErratum": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm33-owner-custody-erratum.v1.json",
+    "digest": "sha256:c72867583a722c928db1a76ebb633afdaedad73abb762397b45ca3db8a782296",
+    "status": "OWNER_CUSTODY_ERRATUM_ACCEPTED_NO_EXECUTION_AUTHORITY"
   },
   "lineage": {
     "lineageVersion": "v8",
@@ -36,7 +41,8 @@
     "retryAuthorized": false,
     "outputOverwriteAuthorized": false,
     "providerCallAllowed": false,
-    "ownerReviewReconciliationRequired": true
+    "ownerReviewReconciliationRequired": false,
+    "ownerReviewReconciled": true
   },
   "mockEvidence": {
     "unauthorizedProviderCalls": 0,

@@ -14,6 +14,7 @@ CURRENT = ROOT / "evaluation/sprint-12/current-state.v1.json"
 PACKET = ROOT / "evaluation/sprint-12/optimization/g5-packet.v21.json"
 OWNER = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm33-owner-review.v1.json"
 TRANSITION = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm33-issuance-transition.v1.json"
+ERRATUM = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm33-owner-custody-erratum.v1.json"
 PACKAGE = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm32-execution-package.v8.json"
 PREREG = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm32-preregistration.v8.json"
 FREEZE = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm32-technical-freeze.v8.json"
@@ -48,6 +49,7 @@ def run_preflight() -> dict[str, object]:
     packet = load(PACKET)
     owner = load(OWNER)
     transition = load(TRANSITION)
+    erratum = load(ERRATUM)
     package = load(PACKAGE)
     prereg = load(PREREG)
     freeze = load(FREEZE)
@@ -77,6 +79,7 @@ def run_preflight() -> dict[str, object]:
         (PACKET, preparation["g5Packet"]["digest"]),
         (OWNER, preparation["rm33OwnerReview"]["digest"]),
         (TRANSITION, preparation["rm33IssuanceTransition"]["digest"]),
+        (ERRATUM, preparation["rm33CustodyErratum"]["digest"]),
         (PREREG, preparation["preparedLineage"]["preregistration"]["digest"]),
         (PACKAGE, preparation["preparedLineage"]["executionPackage"]["digest"]),
         (FREEZE, preparation["preparedLineage"]["technicalFreeze"]["digest"]),
@@ -85,6 +88,17 @@ def run_preflight() -> dict[str, object]:
 
     if transition["ownerReview"]["digest"] != digest(OWNER):
         raise ValueError("RM-33 owner-review digest is not internally bound")
+    if erratum["immutableReferences"]["rm33OwnerReview"]["digest"] != digest(OWNER):
+        raise ValueError("RM-33 erratum owner-review reference is not bound")
+    if erratum["immutableReferences"]["rm33IssuanceTransition"]["digest"] != digest(TRANSITION):
+        raise ValueError("RM-33 erratum transition reference is not bound")
+    reconciliation = erratum["reconciliation"]
+    if reconciliation["canonicalRuntimeDigest"] != preparation["exactRuntimeBindings"]["reportSchema"]["digest"]:
+        raise ValueError("RM-33 erratum canonical schema digest mismatch")
+    if reconciliation["normalizedContentEqual"] is not True or reconciliation["semanticContentChanged"] is not False:
+        raise ValueError("RM-33 erratum does not establish newline-only reconciliation")
+    if erratum["ownerDisposition"]["providerExecutionAuthorized"] is not False:
+        raise ValueError("RM-33 erratum opens provider execution")
     if transition["currentDecisionState"] != {
         "preregistrationIssued": True,
         "technicalFreezeIssued": True,
@@ -111,13 +125,12 @@ def run_preflight() -> dict[str, object]:
         binding = preparation["exactRuntimeBindings"][name]
         if git_blob_digest(commit, binding["path"]) != binding["digest"]:
             raise ValueError(f"named runtime binding mismatch: {name}")
-    if not preparation["exactRuntimeBindings"]["reportSchema"][
-        "rm33DigestMatchesExactExecutionBlob"
-    ]:
-        if not preparation["integrityFindings"]["ownerReviewReconciliationRequired"]:
-            raise ValueError("RM-33 report-schema digest discrepancy was suppressed")
-        if not preparation["integrityFindings"]["providerExecutionBlockedUntilReconciled"]:
-            raise ValueError("provider execution is not blocked for schema reconciliation")
+    if preparation["integrityFindings"]["ownerReviewReconciliationRequired"] is not False:
+        raise ValueError("RM-33 custody reconciliation remains open")
+    if preparation["integrityFindings"]["ownerReviewReconciled"] is not True:
+        raise ValueError("RM-33 custody erratum is not marked reconciled")
+    if preparation["integrityFindings"]["providerExecutionBlockedUntilReconciled"] is not False:
+        raise ValueError("provider execution remains incorrectly blocked after erratum")
 
     if current["status"] != "G5_F12_V8_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING":
         raise ValueError("authoritative current state changed")
@@ -148,9 +161,8 @@ def run_preflight() -> dict[str, object]:
         "historicalReportDigest": digest(REPORT_V6),
         "outputPath": OUTPUT_V8.relative_to(ROOT).as_posix(),
         "nextGate": "S12-RM-35_OWNER_AUTHORIZATION_REVIEW",
-        "ownerReviewReconciliationRequired": preparation["integrityFindings"][
-            "ownerReviewReconciliationRequired"
-        ],
+        "ownerReviewReconciliationRequired": preparation["integrityFindings"]["ownerReviewReconciliationRequired"],
+        "ownerReviewReconciled": preparation["integrityFindings"]["ownerReviewReconciled"],
     }
 
 

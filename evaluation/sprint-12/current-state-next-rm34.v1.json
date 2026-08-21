@@ -10,7 +10,7 @@
   "preparation": {
     "taskId": "S12-RM-34",
     "path": "evaluation/sprint-12/optimization/s12-f-12-rm34-authorization-preparation.v1.json",
-    "digest": "sha256:a0058e558cfd90b67afbed5f4aa1a7ee38272bd94f5fb2f7bc58c81198160f9c",
+    "digest": "sha256:fda11a139dd473ef0f260d4fa47e406b2ce27a74b48b2aabc134f5dec349303a",
     "status": "PREPARED_PENDING_RM35_OWNER_AUTHORIZATION"
   },
   "lineage": {
@@ -41,7 +41,8 @@
     "candidateSelectionAuthorized": false,
     "promotionAuthorized": false,
     "providerCallAllowed": false,
-    "ownerReviewReconciliationRequired": true
+    "ownerReviewReconciliationRequired": false,
+    "ownerReviewReconciled": true
   },
   "nextTasks": [
     "S12-RM-35_OWNER_AUTHORIZATION_REVIEW"

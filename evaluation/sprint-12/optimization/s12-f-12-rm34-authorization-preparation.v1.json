@@ -29,6 +29,11 @@
     "digest": "sha256:62fb2d8a9b9acec0bd07440ea13943c1e81cf98bb38793392aa97110250b7025",
     "status": "SUPERSEDING_V8_PREREGISTRATION_AND_FREEZE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
   },
+  "rm33CustodyErratum": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm33-owner-custody-erratum.v1.json",
+    "digest": "sha256:c72867583a722c928db1a76ebb633afdaedad73abb762397b45ca3db8a782296",
+    "status": "OWNER_CUSTODY_ERRATUM_ACCEPTED_NO_EXECUTION_AUTHORITY"
+  },
   "preparedLineage": {
     "lineageVersion": "v8",
     "lineageCommit": "30f9fbff64eb02964b2661b7f468b27a81abb82e",
@@ -66,7 +71,9 @@
       "path": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v8.json",
       "digest": "sha256:c65a4f039d948e6f3a59750001e58199bfc98e57e2f2f3ac838070ef5f6f6ad5",
       "rm33ReviewedDigest": "sha256:662e36911f16aa01c7eda920ec57c4fa9890ad47a4c4e4da2ef9a526482a17fc",
-      "rm33DigestMatchesExactExecutionBlob": false
+      "rm33DigestMatchesExactExecutionBlob": false,
+      "ownerCustodyErratumReconciled": true,
+      "canonicalRuntimeDigest": "sha256:c65a4f039d948e6f3a59750001e58199bfc98e57e2f2f3ac838070ef5f6f6ad5"
     },
     "preflight": {
       "path": "scripts/preflight_sprint12_f12_rm32.py",
@@ -145,8 +152,10 @@
   "integrityFindings": {
     "rm33ReportSchemaDigest": "sha256:662e36911f16aa01c7eda920ec57c4fa9890ad47a4c4e4da2ef9a526482a17fc",
     "exactExecutionCommitReportSchemaDigest": "sha256:c65a4f039d948e6f3a59750001e58199bfc98e57e2f2f3ac838070ef5f6f6ad5",
-    "ownerReviewReconciliationRequired": true,
-    "providerExecutionBlockedUntilReconciled": true
+    "ownerCustodyErratumDigest": "sha256:c72867583a722c928db1a76ebb633afdaedad73abb762397b45ca3db8a782296",
+    "ownerReviewReconciliationRequired": false,
+    "ownerReviewReconciled": true,
+    "providerExecutionBlockedUntilReconciled": false
   },
   "nextGate": "S12-RM-35_OWNER_AUTHORIZATION_REVIEW",
   "constraints": [

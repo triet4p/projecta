@@ -40,8 +40,12 @@ def test_rm34_preparation_is_exactly_bound_and_zero_call() -> None:
     assert preparation["exactRuntimeBindings"]["reportSchema"]["digest"] == (
         "sha256:c65a4f039d948e6f3a59750001e58199bfc98e57e2f2f3ac838070ef5f6f6ad5"
     )
-    assert preparation["integrityFindings"]["ownerReviewReconciliationRequired"] is True
-    assert preparation["integrityFindings"]["providerExecutionBlockedUntilReconciled"] is True
+    assert preparation["integrityFindings"]["ownerReviewReconciliationRequired"] is False
+    assert preparation["integrityFindings"]["ownerReviewReconciled"] is True
+    assert preparation["integrityFindings"]["providerExecutionBlockedUntilReconciled"] is False
+    assert preparation["rm33CustodyErratum"]["digest"] == (
+        "sha256:c72867583a722c928db1a76ebb633afdaedad73abb762397b45ca3db8a782296"
+    )
     assert preparation["preparedLineage"]["outputPath"].endswith(
         "s12-f-12-stage-a-report.v8.json"
     )
