@@ -166,16 +166,24 @@ def _fixture_data() -> dict[str, Any]:
     cluster_schema = [
         "s12-a-4027#run-1", "s12-a-4016#run-1", "s12-a-4032#run-1", "s12-a-4016#run-2", "s12-a-4016#run-3"
     ]
-    cluster_evidence = [
+    cluster_trigger = [
         "s12-a-4007#run-1", "s12-a-4011#run-1", "s12-a-4015#run-1", "s12-a-4019#run-1", "s12-a-4027#run-1",
         "s12-a-4035#run-1", "s12-a-4007#run-2", "s12-a-4011#run-2", "s12-a-4015#run-2", "s12-a-4019#run-2",
-        "s12-a-4027#run-2", "s12-a-4035#run-2", "s12-a-4043#run-2", "s12-a-4007#run-3", "s12-a-4011#run-3",
+        "s12-a-4027#run-2", "s12-a-4035#run-2", "s12-a-4043#run-2", "s12-a-4007#run-3"
+    ]
+    cluster_endpoint = [
+        "s12-a-4011#run-3",
         "s12-a-4015#run-3", "s12-a-4019#run-3", "s12-a-4027#run-3", "s12-a-4035#run-3", "s12-a-4043#run-3"
     ]
+    cluster_evidence = cluster_trigger + cluster_endpoint
     cluster_cases = (
         [{"kind": "schema", "caseRun": case_run, "arm": "predicted-entities", "stage": "stage1", "reason": "entity_span_out_of_source", "slice": "all-development"} for case_run in cluster_schema]
-        + [{"kind": "evidence", "caseRun": case_run, "arm": "gold-entities", "stage": "stage2", "reason": "evidence_does_not_contain_trigger" if index < 14 else "evidence_does_not_contain_endpoints", "slice": "relation-positive"} for index, case_run in enumerate(cluster_evidence)]
+        + [{"kind": "evidence", "caseRun": case_run, "arm": "gold-entities", "stage": "stage2", "reason": "evidence_does_not_contain_trigger", "slice": "relation-positive"} for case_run in cluster_trigger]
+        + [{"kind": "evidence", "caseRun": case_run, "arm": "gold-entities", "stage": "stage2", "reason": "evidence_does_not_contain_endpoints", "slice": "relation-positive"} for case_run in cluster_endpoint]
     )
+    schema_cluster_cases = [item for item in cluster_cases if item["kind"] == "schema"]
+    evidence_cluster_cases = [item for item in cluster_cases if item["kind"] == "evidence"]
+    evidence_reason_counts = Counter(item["reason"] for item in evidence_cluster_cases)
     return {
         "artifactVersion": "s12.s12-f-12.rm50-parity-fixtures.v1",
         "status": "OFFLINE_PARITY_FIXTURES_READY_PENDING_OWNER_REVIEW",
@@ -189,8 +197,8 @@ def _fixture_data() -> dict[str, Any]:
         "fixtureMatrix": schema + evidence + scorer_fixtures,
         "v9ClusterCases": cluster_cases,
         "v9SanitizedClusters": {
-            "schemaInvalid": {"total": 5, "armStage": "predicted-entities/stage1", "reason": "entity_span_out_of_source", "caseRuns": cluster_schema},
-            "invalidEvidence": {"total": 20, "arm": "gold-entities", "reasonCounts": {"evidence_does_not_contain_trigger": 14, "evidence_does_not_contain_endpoints": 6}, "caseRuns": cluster_evidence},
+            "schemaInvalid": {"total": len(schema_cluster_cases), "armStage": "predicted-entities/stage1", "reason": "entity_span_out_of_source", "caseRuns": [item["caseRun"] for item in schema_cluster_cases]},
+            "invalidEvidence": {"total": len(evidence_cluster_cases), "arm": "gold-entities", "reasonCounts": dict(evidence_reason_counts), "caseRuns": [item["caseRun"] for item in evidence_cluster_cases]},
         },
         "goldRelationsControl": {"fixtureArm": "gold-relations", "invalidEvidence": 0, "integrityPass": True},
     }
