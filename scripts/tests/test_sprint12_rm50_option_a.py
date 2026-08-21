@@ -99,11 +99,13 @@ def test_option_a_rejects_v6_invalid_evidence_count_mutation() -> None:
         build_report(v6, v9)
 
 
+@pytest.mark.parametrize("source", ["v6", "v9"])
 @pytest.mark.parametrize("mutation", ["caseId", "runId", "arm", "stage"])
-def test_option_a_rejects_source_identity_mutations(mutation: str) -> None:
+def test_option_a_rejects_source_identity_mutations(source: str, mutation: str) -> None:
     v6 = json.loads(V6.read_text(encoding="utf-8"))
     v9 = json.loads(V9.read_text(encoding="utf-8"))
-    case = v6["caseRecords"][0]
+    report = v6 if source == "v6" else v9
+    case = report["caseRecords"][0]
     if mutation == "caseId":
         case["caseId"] = "s12-a-9999"
     elif mutation == "runId":
@@ -116,27 +118,31 @@ def test_option_a_rejects_source_identity_mutations(mutation: str) -> None:
         build_report(v6, v9)
 
 
+@pytest.mark.parametrize("source", ["v6", "v9"])
 @pytest.mark.parametrize("operation", ["duplicate", "delete", "add"])
-def test_option_a_rejects_source_case_matrix_set_mutations(operation: str) -> None:
+def test_option_a_rejects_source_case_matrix_set_mutations(source: str, operation: str) -> None:
     v6 = json.loads(V6.read_text(encoding="utf-8"))
     v9 = json.loads(V9.read_text(encoding="utf-8"))
+    report = v6 if source == "v6" else v9
     if operation == "duplicate":
-        v6["caseRecords"].append(deepcopy(v6["caseRecords"][0]))
+        report["caseRecords"].append(deepcopy(report["caseRecords"][0]))
     elif operation == "delete":
-        v6["caseRecords"].pop()
+        report["caseRecords"].pop()
     else:
-        added = deepcopy(v6["caseRecords"][0])
+        added = deepcopy(report["caseRecords"][0])
         added["caseId"] = "s12-a-9999"
         added["runId"] = 1
-        v6["caseRecords"].append(added)
+        report["caseRecords"].append(added)
     with pytest.raises(ValueError, match="matrix|identity"):
         build_report(v6, v9)
 
 
-def test_option_a_rejects_cross_swapped_stage_identity() -> None:
+@pytest.mark.parametrize("source", ["v6", "v9"])
+def test_option_a_rejects_cross_swapped_stage_identity(source: str) -> None:
     v6 = json.loads(V6.read_text(encoding="utf-8"))
     v9 = json.loads(V9.read_text(encoding="utf-8"))
-    case = next(case for case in v6["caseRecords"] if case["arms"]["predicted-entities"]["stage1"].get("failureClass"))
+    report = v6 if source == "v6" else v9
+    case = next(case for case in report["caseRecords"] if case["arms"]["predicted-entities"]["stage1"].get("failureClass"))
     arm = case["arms"]["predicted-entities"]
     arm["stage1"], arm["stage2"] = arm["stage2"], arm["stage1"]
     with pytest.raises(ValueError, match="matrix|identity"):
