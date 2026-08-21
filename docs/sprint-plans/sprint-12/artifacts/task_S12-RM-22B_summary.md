@@ -5,7 +5,7 @@ Status: `COMPLETED_OFFLINE_READY_PENDING_RM23B_OWNER_REVIEW`
 RM-22B remediation is complete without provider execution. The superseding v3
 lineage preserves the historical v1/v2 artifacts and binds the execution
 package and freeze to exact committed blobs at commit
-`2239d1e7e9d66be4801161fc9f971d84f395813c`.
+`99423f8116ba1aa6f56c68f01f5055c609cff883`.
 
 Completed controls:
 
@@ -17,6 +17,9 @@ Completed controls:
   threshold, integrity, accounting, and all 15 required slice records;
 - closed report JSON Schema validation immediately before the single staged
   persist, with no overwrite/retry behavior;
+- `invalidEvidenceCount` is derived from `unsupported + missing` evidence
+  outcomes, with a regression assertion preventing hard-coded zero or a
+  semantic-match proxy;
 - zero-call preflight and mocked authorized E2E proving `144` adapter calls,
   exact denominators, all slices, and rejection of a wrong exact commit.
 
