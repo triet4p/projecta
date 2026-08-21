@@ -1,0 +1,86 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm39-owner-review.v1",
+  "status": "OWNER_REVIEW_APPROVED_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_ONLY",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-39",
+  "decisionType": "OWNER_REVIEW_OF_RM38_RECONCILIATION_DIAGNOSIS",
+  "decisionDate": "2026-08-22",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedEvidence": {
+    "rm36ExecutionTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm36-execution-transition.v1.json",
+      "digest": "sha256:738d3bdada83af5f152a2a5974af1a73e856247d88c226cafd3d5d60d6899d45"
+    },
+    "rm37DecisionTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm37-decision-transition.v1.json",
+      "digest": "sha256:87b1abbba0323c72dd73152305beeac696113a5238514af5a1a9e53eecf03098"
+    },
+    "diagnosis": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm38-reconciliation-diagnosis.v1.json",
+      "digest": "sha256:cdb9309ab914072a9b66a676cf24a99aa9b314fc32963ddeb079224e2e21a0f4",
+      "status": "OFFLINE_DIAGNOSIS_COMPLETE_PENDING_RM39_OWNER_REVIEW"
+    },
+    "remediationProposal": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm38-remediation-proposal.v1.json",
+      "digest": "sha256:211c088078787e9b0678cdd731388f7862e4b69b67f19564f11b214c82f7f2aa",
+      "status": "OFFLINE_REMEDIATION_PROPOSAL_PENDING_RM39_OWNER_REVIEW"
+    },
+    "reproducer": {
+      "path": "scripts/s12_f12_rm38_reconciliation_diagnosis.py",
+      "digest": "sha256:3a2b68cff828e6e2cf0f29f16f68e925e110c1f3e36a2d0a6d702902cfc525a6"
+    },
+    "tests": {
+      "path": "scripts/tests/test_sprint12_rm38_reconciliation_diagnosis.py",
+      "digest": "sha256:77640c1da692c1d91d0a6e68e38639dd80e6c9f925e7e57525d97ba40f0c7804"
+    }
+  },
+  "verifiedEvidence": {
+    "reproducedCaseId": "s12-a-4003",
+    "reproducedArm": "predicted-entities",
+    "semanticExactMatches": 0,
+    "materializerInvalidEvidenceCount": 0,
+    "diagnosticReasonCount": 1,
+    "reproducedExceptionMatchesRm36": true,
+    "primaryDenominatorMismatchProven": true,
+    "secondaryEntitySpanShapeDefectProven": true,
+    "historicalProviderPayloadInspected": false,
+    "historicalProviderAttributionClaimed": false,
+    "providerCalls": 0,
+    "safeOfflineTests": "26 passed",
+    "historicalReportDigestUnchanged": true
+  },
+  "ownerAssessment": {
+    "diagnosisApproved": true,
+    "finitePairingRuleApproved": true,
+    "endpointProjectionRuleApproved": true,
+    "reconciliationInvariantApproved": true,
+    "unknownFailClosedRuleApproved": true,
+    "qualityResultEstablished": false,
+    "blockingFindings": []
+  },
+  "decision": {
+    "rm38DiagnosisApproved": true,
+    "offlineRuntimeRemediationImplementationAuthorized": true,
+    "deterministicRegressionImplementationAuthorized": true,
+    "supersedingLineagePreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "IMPLEMENT_OFFLINE_RM36_RECONCILIATION_REMEDIATION_AND_REGRESSIONS"
+  },
+  "constraints": [
+    "Implementation must use the exact semantic-pair domain shared with score_relations and must not diagnose non-applicable, wrong, extra or missing semantic relations against the exact-pair invalid-evidence total.",
+    "Entity metadata must be projected to (start,end) spans before evidence classification.",
+    "Finite evidence reasons must reconcile exactly with unsupported+missing for the same pair set, with malformed detail failing closed to materializer_detail_unavailable.",
+    "The frozen v8 runtime, issued lineage, spent authorization, RM-36 execution fact and historical v6 report remain immutable.",
+    "A separate owner review is required before any new lineage preparation, issuance or provider execution."
+  ]
+}

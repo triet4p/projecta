@@ -562,3 +562,23 @@ no candidate-quality result. Offline code diagnosis and deterministic mocks may
 proceed, but every future provider attempt requires corrected evidence, a new
 exact lineage, issuance review and owner authorization; all downstream gates
 remain closed.
+
+## [2026-08-22] Approve offline implementation of the RM-36 reconciliation fix
+
+**Decision:** Approve RM-38's finite reconciliation remediation for offline
+runtime implementation and deterministic regression testing only.
+**Alternatives considered:** Reject the diagnosis because the hidden provider
+payload was not retained; diagnose every predicted relation against the
+exact-pair total; remove the reconciliation guard; or immediately prepare and
+authorize another execution lineage.
+**Reason:** The deterministic reproducer proves that scoring counts invalid
+evidence only for semantic exact pairs while diagnostics scanned every
+predicted relation, allowing extra or non-exact relations to inflate reason
+counts. It also proves an entity-span adapter passed three-tuples to a two-tuple
+classifier. Aligning both paths to the same exact-pair domain and projecting
+endpoint spans preserves the fail-closed invariant without inventing the hidden
+RM-36 payload.
+**Consequences:** RM-40 may implement the fix and regressions in a new offline
+runtime version. The frozen v8 lineage, spent authorization and execution fact
+remain immutable; superseding-lineage preparation, provider execution and all
+downstream gates require later owner decisions.

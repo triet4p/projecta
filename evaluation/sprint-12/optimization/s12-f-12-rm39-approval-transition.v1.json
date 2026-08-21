@@ -1,0 +1,42 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm39-approval-transition.v1",
+  "status": "OFFLINE_RUNTIME_REMEDIATION_APPROVED_IMPLEMENTATION_ONLY",
+  "experimentId": "s12-f-12",
+  "transitionDate": "2026-08-22",
+  "transitionAuthority": "project-owner-delegated-codex-reviewer",
+  "precedenceRule": "This RM-39 transition authorizes offline runtime remediation implementation against the approved RM-38 diagnosis without reopening the spent v8 lineage or authorizing provider execution.",
+  "ownerReview": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm39-owner-review.v1.json",
+    "digest": "sha256:e7716923fecc2075f4dab3d4e5454a785aab7cdd255ddcbc873da7fc428062be",
+    "status": "OWNER_REVIEW_APPROVED_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_ONLY"
+  },
+  "approvedDiagnosis": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm38-reconciliation-diagnosis.v1.json",
+    "digest": "sha256:cdb9309ab914072a9b66a676cf24a99aa9b314fc32963ddeb079224e2e21a0f4"
+  },
+  "approvedProposal": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm38-remediation-proposal.v1.json",
+    "digest": "sha256:211c088078787e9b0678cdd731388f7862e4b69b67f19564f11b214c82f7f2aa"
+  },
+  "fromState": "G5_F12_V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY",
+  "currentDecisionState": {
+    "offlineRuntimeRemediationImplementationAuthorized": true,
+    "deterministicRegressionImplementationAuthorized": true,
+    "supersedingLineagePreparationAuthorized": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "IMPLEMENT_OFFLINE_RM36_RECONCILIATION_REMEDIATION_AND_REGRESSIONS"
+  },
+  "constraints": [
+    "Only offline runtime remediation and deterministic regressions are authorized.",
+    "The v8 lineage and RM-36 execution evidence remain immutable and non-reusable.",
+    "No new lineage, provider call or downstream access may occur before another owner review."
+  ]
+}
