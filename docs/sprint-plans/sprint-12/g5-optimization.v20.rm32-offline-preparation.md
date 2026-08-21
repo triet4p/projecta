@@ -2,8 +2,13 @@
 
 **Role:** non-authoritative offline next-state preparation
 
-**Current authoritative packet remains:**
-`evaluation/sprint-12/optimization/g5-packet.v19.json`
+**Current authoritative packet:**
+`evaluation/sprint-12/optimization/g5-packet.v21.json`
+
+This v20 document is an immutable RM-32 preparation snapshot. RM-33 later
+issued the reviewed v8 preregistration and technical freeze through a separate
+transition; the unissued fields in the RM-32 files and this historical account
+are not rewritten.
 
 RM-32 prepared a new versioned v8 f12 preregistration, execution package,
 technical freeze and provider-neutral zero-call preflight under the RM-31
@@ -35,7 +40,8 @@ immutable v6 report remains untouched.
 
 ## Governance boundary
 
-Preparation flags are true, but `preregistrationIssued=false`,
+At RM-32 preparation time, preparation flags were true and
+`preregistrationIssued=false`,
 `technicalFreezeIssued=false`, `providerExecutionAuthorized=false`,
 `newAuthorizationIssued=false`, and validation, held-out access, Stage B,
 selection and promotion remain false. RM-33 must review and issue the prepared

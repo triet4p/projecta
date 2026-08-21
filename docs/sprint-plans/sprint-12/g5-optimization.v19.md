@@ -1,6 +1,6 @@
-# Sprint 12 G5 Superseding Lineage Preparation v19
+# Sprint 12 G5 Superseding Lineage Preparation v19 (Historical Snapshot)
 
-**Role:** authoritative current G5 state
+**Role:** historical authoritative G5 state at RM-31
 
 **Status:** `G5_F12_SUPERSEDING_LINEAGE_PREPARATION_APPROVED_OFFLINE_ONLY`
 
@@ -40,6 +40,6 @@ and separate execution authorization is required before any provider call.
 No accuracy improvement, business-quality result or candidate selection is
 established.
 
-Authoritative machine packet:
+Historical machine packet:
 
 `evaluation/sprint-12/optimization/g5-packet.v19.json`

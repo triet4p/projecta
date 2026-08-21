@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G5_F12_SUPERSEDING_LINEAGE_PREPARATION_APPROVED_OFFLINE_ONLY`
+Status: `G5_F12_V8_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING`
 
 Current state: [Sprint 12 Current State](sprint-12/current-state.md)
 
@@ -12,7 +12,7 @@ G4 packet: [Baseline Evaluation Review Packet](sprint-12/g4-baseline.md)
 
 G4.1 packet: [Contract Alignment and Failure Diagnosis](sprint-12/g4.1-contract-alignment.md)
 
-G5 packet: [Controlled Optimization Review Packet v19](sprint-12/g5-optimization.v19.md)
+G5 packet: [Controlled Optimization Review Packet v21](sprint-12/g5-optimization.v21.md)
 
 G6 packet: [Held-out Business Evaluation Packet](sprint-12/g6-business-evaluation.md)
 
@@ -875,12 +875,21 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   remain closed.
 - [x] **S12-RM-32 — Prepare superseding f12 lineage offline:** Bind a new exact
   commit, preregistration, execution package and technical-freeze packet to the
-  corrected RM-30 implementation. The v8 package is non-authoritative and
-  unissued; no provider call or new authorization was created.
-- [ ] **S12-RM-33 — Owner issuance review:** Review the RM-32 v8
+  corrected RM-30 implementation. Its preparation snapshots remain immutable;
+  the separate RM-33 transition now records their issuance without changing
+  those snapshot fields. No provider call or new execution authorization was
+  created.
+- [x] **S12-RM-33 — Owner issuance review:** Review the RM-32 v8
   preregistration, execution package, technical freeze and zero-call preflight.
-  This review may issue only the reviewed preparation artifacts; provider
+  Issue only the reviewed v8 preregistration and technical freeze; provider
   execution still requires a separate exact-commit authorization.
+- [ ] **S12-RM-34 — Prepare exact v8 Stage A authorization offline:** Bind the
+  RM-33 owner review and issuance transition, exact execution commit, package,
+  freeze, runtime, output path, bounds and cost ceiling. Do not call the
+  provider or invoke the live runner.
+- [ ] **S12-RM-35 — Owner authorization review:** Independently review RM-34
+  and authorize at most one bounded v8 Stage A execution, with retry,
+  overwrite, validation, held-out, Stage B, selection and promotion closed.
 
 #### Phase F-S — Candidate Selection Resume Path
 

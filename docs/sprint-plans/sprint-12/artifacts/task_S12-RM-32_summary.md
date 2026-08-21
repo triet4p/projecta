@@ -34,12 +34,13 @@ invoked.
 * `evaluation/sprint-12/current-state-next-rm32.v1.json` and non-authoritative
   G5 v20 preparation snapshot.
 
-## Governance
+## Governance at RM-32 completion
 
-Preparation flags are true. Preregistration issuance, technical-freeze
-issuance, provider execution, new authorization, validation, held-out access,
-Stage B, selection and promotion are all false. RM-33 owner issuance review is
-the next gate, followed by separate exact-commit execution authorization.
+Preparation flags were true. The RM-32 preparation snapshots retain
+preregistration and technical-freeze issuance as false; RM-33 subsequently
+issued those two permissions through its separate digest-bound transition.
+Provider execution, new authorization, validation, held-out access, Stage B,
+selection and promotion remain false.
 
 ## Validation
 
@@ -59,8 +60,9 @@ the next gate, followed by separate exact-commit execution authorization.
 * Historical accounting remains 144 calls and 0 retries.
 * No provider/live runner calls; `git diff --check` required before commit.
 
-## Next Gate
+## Next Gate at RM-32 completion
 
 RM-33 owner issuance review of the v8 preregistration, execution package,
-technical freeze and zero-call preflight. This task does not issue or execute
-the new lineage; a separate v8 authorization artifact remains required.
+technical freeze and zero-call preflight (now complete). RM-34 must prepare a
+separate exact v8 authorization artifact, followed by RM-35 owner review; this
+task did not issue or execute the new lineage.

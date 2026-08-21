@@ -90,7 +90,7 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 ## Active Sprints
 
 - [Sprint 12 — Business Semantic Quality and Evaluation](sprint-plans/sprint-12.md)
-  — *In progress at `G5_F12_SUPERSEDING_LINEAGE_PREPARATION_APPROVED_OFFLINE_ONLY`.
+  — *In progress at `G5_F12_V8_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING`.
   Dataset v3,
   measurement remediation and the two-step f12 development execution package
   are frozen. RM-23F issued the preregistration/freeze and RM-25 authorized one
@@ -98,8 +98,10 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   the immutable report is schema-valid but rejected by hard, threshold and
   slice gates. RM-27 closed f12 rejected with no Stage B; RM-29 approved the
   finite schema/evidence remediation for offline implementation and mock tests
-  only. Retry, lineage preparation, validation, held-out access, Stage B,
-  selection and promotion remain closed.
+  only. RM-31 prepared the superseding lineage and RM-33 issued its v8
+  preregistration and technical freeze only. Provider authorization, output,
+  validation, held-out access, Stage B, selection and promotion remain closed;
+  RM-34 preparation and RM-35 owner authorization review are next.
   No business-quality claim is made, and new connector/outbound breadth remains
   deferred. The authoritative dashboard is the
   [Sprint 12 current-state index](sprint-plans/sprint-12/current-state.md).*

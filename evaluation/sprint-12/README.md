@@ -2,7 +2,7 @@
 
 **Base contract version:** `s12.v1`; current visible corpus: `v3-frozen`
 
-**Current Sprint status:** `G5_F12_SUPERSEDING_LINEAGE_PREPARATION_APPROVED_OFFLINE_ONLY`
+**Current Sprint status:** `G5_F12_V8_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING`
 
 The repository-visible pilot and development/validation gold now have
 owner-delegated AI semantic review. They remain agent-authored synthetic data
@@ -10,9 +10,11 @@ with `humanEvidence: false`. G3.1-A/B/C are complete with scope limits. The f12
 preregistration/freeze lineage was issued and one exact 144-call development
 Stage A execution completed. RM-27 closed f12 rejected after hard, threshold
 and slice failures; RM-29 permitted offline diagnostic/remediation
-implementation and RM-31 now permits preparation of a new superseding lineage
-only. No new preregistration or freeze is issued, and no candidate is selected.
-G6 separately remains blocked by test custody and candidate quality. See
+implementation, RM-31 permitted preparation of a new superseding lineage and
+RM-33 issued only the exact v8 preregistration and technical freeze. Current
+v8 provider authorization remains false, its report is absent, and no
+candidate is selected. G6 separately remains blocked by test custody and
+candidate quality. See
 `current-state.v1.json` for the authoritative index.
 
 This directory contains the governed contract for the Sprint 12 business
@@ -113,12 +115,17 @@ procedure permits one blinded run.
 - `optimization/s12-f-12-rm23f-issuance-transition.v1.json` records the later
   issuance of the exact f12 v7 preparation lineage without mutating its
   historical `PREPARED` fields.
-- `optimization/g5-packet.v19.json` is the current G5 machine packet. It keeps
-  selection at `NO_SELECTION`, permits offline preparation of a new
-  superseding lineage, and leaves issuance and provider execution closed.
+- `optimization/g5-packet.v21.json` is the current G5 machine packet. It records
+  RM-33 issuance of the v8 preregistration and technical freeze, keeps
+  selection at `NO_SELECTION`, and leaves provider execution closed.
 - `optimization/g5-packet.v20.rm32-offline-preparation.json` and the RM32 v8
-  artifacts are non-authoritative preparation snapshots pending RM-33 owner
-  issuance review; they issue nothing and perform zero provider calls.
+  artifacts are immutable preparation snapshots; their unissued fields are not
+  rewritten by the separate RM-33 transition and they performed zero provider
+  calls. The current issuance state is in the RM-33 transition and v21 packet.
+- `optimization/s12-f-12-rm33-owner-review.v1.json` and
+  `optimization/s12-f-12-rm33-issuance-transition.v1.json` record the
+  digest-bound v8 issuance-only decision. RM-34 may prepare exact v8
+  authorization offline; RM-35 owner authorization review is pending.
 
 ## Dataset contract rules
 
@@ -140,7 +147,7 @@ procedure permits one blinded run.
 G0 and G1 are approved; G2 and G3 are approved with recorded limitations;
 G3.1-A/B/C are complete with scope limits. G4 now has a runtime-backed baseline
 with failures and G4.1 is contract-aligned but stability-failed. G5 has issued
-the exact f12 preregistration/freeze lineage, while provider authorization,
+the exact f12 v8 preregistration/freeze lineage, while provider authorization,
 Stage A output and candidate selection remain absent. G6 is blocked by missing
 external test custody and a frozen passing candidate; held-out inputs/gold
 remain outside the repository.

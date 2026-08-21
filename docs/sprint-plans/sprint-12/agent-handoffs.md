@@ -1,6 +1,6 @@
 # Sprint 12 Current Handoffs
 
-**Status:** `CURRENT_OFFLINE_F12_REMEDIATION_IMPLEMENTATION_HANDOFF`
+**Status:** `CURRENT_F12_V8_ISSUED_PROVIDER_AUTHORIZATION_HANDOFF`
 
 This revision supersedes the old baseline and generic-optimization handoffs.
 Those tasks are complete or historically closed. Use
@@ -118,12 +118,30 @@ review.
 
 ## Handoff H — RM-32 prepared v8 lineage
 
-**Status:** complete pending RM-33 owner issuance review.
+**Status:** complete; superseded by the RM-33 issuance transition.
 
 The non-authoritative v8 preregistration, execution package, technical freeze
 and zero-call preflight are ready for review. No provider adapter or live
-runner was invoked. RM-33 must review exact commit/blob bindings before any
-issuance; a separate authorization remains mandatory before execution.
+runner was invoked. The immutable preparation fields remain unissued in their
+own snapshots; RM-33 separately issued the reviewed v8 preregistration and
+freeze. A separate authorization remains mandatory before execution.
+
+## Handoff I — RM-33 v8 issuance and RM-34/RM-35 authorization path
+
+**Status:** RM-33 complete; RM-34 and RM-35 pending.
+
+RM-33 owner review and the digest-bound issuance transition are authoritative
+for current v8 issuance only. `preregistrationIssued=true` and
+`technicalFreezeIssued=true`; `providerExecutionAuthorized=false`,
+`newAuthorizationIssued=false`, the v8 report is absent, and all validation,
+held-out, Stage B, selection and promotion permissions remain false. The
+historical v7 execution remains the sole issued/spent execution (144 provider
+calls, 96 relation branches, zero retries).
+
+RM-34 may prepare the exact v8 Stage A authorization offline, binding both
+RM-33 records, exact runtime commit and all package/freeze/runtime/output/cost
+digests. RM-35 must perform the separate owner authorization review. No
+provider call or live runner invocation is allowed before that review.
 
 ## External-only work — custody and G6
 
