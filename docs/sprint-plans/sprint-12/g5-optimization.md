@@ -1,7 +1,7 @@
 # Sprint 12 G5 Optimization Packet
 
 > Historical gate snapshot, superseded for current state by
-> [G5 Optimization Packet v12](g5-optimization.v12.md). Do not rewrite this
+> [G5 Optimization Packet v13](g5-optimization.v13.md). Do not rewrite this
 > packet's original decision.
 
 **Status:** `G5_PREPARATION_DEVELOPMENT_OPEN`

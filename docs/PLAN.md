@@ -45,9 +45,8 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   ontology/graph/retrieval metrics, controlled optimization, sealed held-out
   evaluation, and target-role business acceptance. The historical synthetic
   corpus and rejected prompt experiments are retained as evidence. G3.1-A/B/C
-  are complete with scope limits; M8 is now at the issued f12 two-step package,
-  awaiting a separate bounded Stage A authorization before candidate selection
-  can resume.
+  are complete with scope limits; M8 is now at the exact f12 two-step package
+  with one bounded development Stage A execution authorized and not yet run.
 
 ## Completed Sprints
 
@@ -91,14 +90,14 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 ## Active Sprints
 
 - [Sprint 12 — Business Semantic Quality and Evaluation](sprint-plans/sprint-12.md)
-  — *In progress at `G5_F12_ISSUED_PROVIDER_AUTHORIZATION_PENDING`. Dataset v3,
+  — *In progress at `G5_F12_STAGE_A_AUTHORIZED_PENDING_EXECUTION`. Dataset v3,
   measurement remediation and the two-step f12 development execution package
-  are frozen. RM-23F issued the preregistration/freeze only after exact custody,
-  closed schemas and mocked 144-call execution passed; no provider run or
-  candidate selection has occurred. A separate authorization remains required
-  before the one bounded development Stage A run. Validation and held-out data
-  remain sealed, no business-quality claim is made, and new connector/outbound
-  breadth remains deferred. The authoritative dashboard is the
+  are frozen. RM-23F issued the preregistration/freeze and RM-25 authorized one
+  exact 144-call development Stage A execution after independent owner review;
+  no provider run or candidate selection has occurred. Retry, overwrite,
+  validation, held-out access, Stage B, selection and promotion remain closed.
+  No business-quality claim is made, and new connector/outbound breadth remains
+  deferred. The authoritative dashboard is the
   [Sprint 12 current-state index](sprint-plans/sprint-12/current-state.md).*
 
 ## Planned Sprints

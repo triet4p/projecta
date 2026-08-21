@@ -1,6 +1,6 @@
 # Sprint 12 Current Handoffs
 
-**Status:** `CURRENT_RM24_RM25_AUTHORIZATION_AND_EXECUTION_HANDOFFS`
+**Status:** `CURRENT_AUTHORIZED_STAGE_A_EXECUTION_HANDOFF`
 
 This revision supersedes the old baseline and generic-optimization handoffs.
 Those tasks are complete or historically closed. Use
@@ -14,14 +14,15 @@ Those tasks are complete or historically closed. Use
    registered experiment passes.
 3. Never persist credentials, raw source/provider payloads, held-out inputs or
    held-out gold.
-4. Do not call the provider before a separate exact RM-25 authorization exists.
+4. Use only the exact RM-25 authorization for the single bounded Stage A run;
+   it cannot be reused after execution starts.
 5. Do not retry, overwrite output, open validation/held-out data, Stage B,
    selection or promotion unless a later owner decision explicitly permits it.
 6. Update the task summary and plan only after executable evidence passes.
 
 ## Handoff A — RM-24 exact authorization preparation
 
-**Provider calls:** zero.
+**Status:** complete; provider calls were zero.
 
 Prepare a new authorization artifact that binds all of the following exactly:
 
@@ -38,13 +39,14 @@ RM-24 prepares evidence only and does not authorize execution.
 
 ## Handoff B — RM-25 owner authorization review
 
-**Owner:** project owner or explicitly delegated reviewer.
+**Status:** complete; one exact run authorized and provider calls remain zero.
 
 Independently verify RM-24 against the issued lineage and current-state index.
 If every binding and boundary is exact, issue one new authorization for one
 bounded development Stage A execution. Record all other permissions as false.
-If any check fails, withhold authorization and return to RM-24 without calling
-the provider.
+The issued authorization is
+`evaluation/sprint-12/optimization/s12-f-12-rm25-authorization.v1.json`; its
+owner review and current-state transition remain separate digest-bound records.
 
 ## Handoff C — One f12 Stage A execution
 

@@ -463,3 +463,10 @@ next highest-value work.
 **Alternatives considered:** Rewrite issued v7 preparation artifacts in place; infer current state from the newest filename; or allow every gate packet and README to act as an equal source of truth.
 **Reason:** RM-23F legitimately issued an exact lineage after the v7 artifacts were frozen with `NOT_ISSUED` preparation fields. Rewriting those fields would break their recorded digests and custody, while leaving precedence implicit causes documents and agents to report contradictory authorization states.
 **Consequences:** Current-state consumers must follow `evaluation/sprint-12/current-state.v1.json`, the latest explicit transition, and the current gate packet in that order. Historical packet statuses remain valid only for their decision time. A transition never broadens authority beyond its explicit fields; provider execution, validation, held-out access, Stage B and promotion still require separate authorization.
+
+## [2026-08-21] Authorize one exact S12-f-12 development Stage A execution
+
+**Decision:** Authorize exactly one 144-call S12-f-12 development Stage A execution against commit `e047911e`, the frozen v7 package and technical freeze, report-v6 output path, no-retry/no-overwrite policy, and `$10.00` ceiling.
+**Alternatives considered:** Withhold authorization after RM-24; broaden authorization to retries or Stage B; or authorize a mutable current-HEAD execution package instead of the exact frozen lineage.
+**Reason:** Independent RM-25 review found the RM-24 digests, exact-commit blobs, runtime, schemas, output custody and cost boundary consistent, and the targeted regression suite passed after the preparation artifact was distinguished from a provider authorization without changing frozen evidence.
+**Consequences:** The exact authorization is single-use and permits at most 144 provider calls and 96 relation-branch outputs. Validation, held-out access, Stage B, candidate selection and promotion remain closed, and authorization establishes no quality improvement or tenant-readiness claim.

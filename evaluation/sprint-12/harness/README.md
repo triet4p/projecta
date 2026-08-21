@@ -2,7 +2,7 @@
 
 **Version:** `s12.evaluator.v4`
 
-**Current Sprint status:** `G5_F12_ISSUED_PROVIDER_AUTHORIZATION_PENDING`
+**Current Sprint status:** `G5_F12_STAGE_A_AUTHORIZED_PENDING_EXECUTION`
 
 The harness is also prepared for G6, but G6 remains separately blocked by
 external custody and the absence of a frozen passing candidate. Current state

@@ -1,10 +1,12 @@
 # Sprint 12 G5 Optimization Packet v12
 
+> Historical gate snapshot. The authoritative current packet is
+> [G5 Optimization Packet v13](g5-optimization.v13.md).
+
 **Status:** `G5_F12_ISSUED_PROVIDER_AUTHORIZATION_PENDING`
 
-This is the current G5 packet. Earlier G5 documents and
-`evaluation/sprint-12/optimization/g5-packet.v11.json` remain immutable
-historical evidence.
+This packet captured the issued-pending-authorization state. It and earlier G5
+documents remain immutable historical evidence; version 13 is current.
 
 ## Current decision
 

@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G5_F12_ISSUED_PROVIDER_AUTHORIZATION_PENDING`
+Status: `G5_F12_STAGE_A_AUTHORIZED_PENDING_EXECUTION`
 
 Current state: [Sprint 12 Current State](sprint-12/current-state.md)
 
@@ -12,7 +12,7 @@ G4 packet: [Baseline Evaluation Review Packet](sprint-12/g4-baseline.md)
 
 G4.1 packet: [Contract Alignment and Failure Diagnosis](sprint-12/g4.1-contract-alignment.md)
 
-G5 packet: [Controlled Optimization Review Packet v12](sprint-12/g5-optimization.v12.md)
+G5 packet: [Controlled Optimization Review Packet v13](sprint-12/g5-optimization.v13.md)
 
 G6 packet: [Held-out Business Evaluation Packet](sprint-12/g6-business-evaluation.md)
 
@@ -397,8 +397,8 @@ unchanged and blocking.
 
 S12-f-07 through S12-f-11 are immutable rejected experiments. G3.1-A/B/C have
 passed with their recorded scope limits. The active path is now the issued f12
-two-step extraction package: RM-24 must prepare an exact authorization and
-RM-25 must independently approve it before one bounded Stage A run. Generic
+two-step extraction package with RM-24 preparation and RM-25 owner authorization
+complete; one exact bounded Stage A run is the next permitted action. Generic
 context/workflow experiments, selection, validation and held-out access remain
 deferred; this does not rewrite historical G3 or G5 decisions.
 
@@ -838,7 +838,7 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   owner-review digest, execution commit `e047911e`, v7 package/freeze digests,
   runtime configuration, report-v6 path, no-retry/no-overwrite policy and exact
   cost ceiling. Preparation is offline and performs zero provider calls.
-- [ ] **S12-RM-25 — Authorize one bounded f12 Stage A execution:** Independently
+- [x] **S12-RM-25 — Authorize one bounded f12 Stage A execution:** Independently
   review RM-24 and, only if every binding remains exact, authorize one
   development execution of 144 calls. This gate does not authorize validation,
   held-out access, Stage B, selection or promotion.
