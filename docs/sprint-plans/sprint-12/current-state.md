@@ -165,6 +165,13 @@ It proves zero calls at preparation and preserves the exact prospective mock
 bounds of 144 calls, 96 relation branches, one persist, no retry and rejected
 overwrite. Provider execution and new authorization remain false.
 
+The RM32 preflight binding is the exact Git-blob digest
+`sha256:492cc4c9815c168233039c096d5f7bc6121773a2b7f6f84443ed587fea1f8d3e`.
+RM-34's own preflight is excluded from the 22 runtime blobs and is bound by
+external preparation evidence using `working_tree_sha256`; its digest is
+`sha256:ed78c94f97f9ed866a58779541d2bac6178adc0ab58741c40909c5c6413c5e63`.
+The preflight fails closed on the former typo and on one-character tampering.
+
 The RM33 owner custody erratum
 `evaluation/sprint-12/optimization/s12-f-12-rm33-owner-custody-erratum.v1.json`
 now reconciles the report-schema digest: the reviewed working-tree digest

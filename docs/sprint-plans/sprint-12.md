@@ -887,8 +887,9 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   RM-33 owner review and issuance transition, exact execution commit, package,
   freeze, runtime, output path, bounds and cost ceiling. The preparation binds
   the accepted RM33 custody erratum and canonical report-schema git blob; it
-  remains zero-call only. No provider was called and the live runner was not
-  invoked.
+  remains zero-call only. Its RM32 preflight blob digest is corrected and its
+  own preflight is separately tamper-bound through preparation evidence. No
+  provider was called and the live runner was not invoked.
 - [ ] **S12-RM-35 — Owner authorization review:** Independently review RM-34
   and authorize at most one bounded v8 Stage A execution, with retry,
   overwrite, validation, held-out, Stage B, selection and promotion closed.

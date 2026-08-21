@@ -22,6 +22,12 @@ preregistration/package/freeze, lineage commit
 authorization/report schemas, runtime configuration, model, prompt, provider
 adapter, dataset, output path and `$10.00` ceiling.
 
+The RM32 preflight runtime binding is the exact Git-blob digest
+`sha256:492cc4c9815c168233039c096d5f7bc6121773a2b7f6f84443ed587fea1f8d3e`.
+RM-34's own preflight is kept outside those 22 execution blobs and is bound
+through preparation evidence using `working_tree_sha256`:
+`sha256:ed78c94f97f9ed866a58779541d2bac6178adc0ab58741c40909c5c6413c5e63`.
+
 Execution bounds are exactly 144 planned provider calls and 96 relation
 branches, with no retry and no output overwrite. RM-25 authorization is not
 reused. Provider execution and new authorization are false; validation,
@@ -38,6 +44,8 @@ held-out access, Stage B, selection and promotion remain false.
   `sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233`,
   144 calls and zero retries;
 - no provider/live runner call.
+- regression coverage rejects the previous one-character RM32 preflight
+  digest typo and any one-character RM34 preflight tamper.
 
 ## Custody reconciliation and next gate
 

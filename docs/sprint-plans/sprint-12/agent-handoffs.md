@@ -145,6 +145,9 @@ the accepted RM33 custody erratum, exact runtime commit and all
 package/freeze/runtime/output/cost digests. The CRLF/LF report-schema
 discrepancy is reconciled to the canonical exact git blob; provider execution
 and new authorization remain false. RM-35 must independently review and act.
+The RM32 preflight binding is `sha256:492cc4c9815c168233039c096d5f7bc6121773a2b7f6f84443ed587fea1f8d3e`;
+RM-34's own preflight is separately bound by working-tree preparation
+evidence so a one-character tamper fails without self-referential hashing.
 No provider call or live runner invocation is allowed.
 
 ## External-only work — custody and G6

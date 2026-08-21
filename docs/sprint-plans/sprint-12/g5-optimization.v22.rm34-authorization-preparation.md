@@ -24,11 +24,21 @@ The artifact binds:
 - exactly 144 planned provider calls, 96 relation branches, no retry, no
   overwrite and a strict `$10.00` ceiling.
 
+The RM32 preflight binding is corrected to its exact Git-blob digest
+`sha256:492cc4c9815c168233039c096d5f7bc6121773a2b7f6f84443ed587fea1f8d3e`.
+RM-34's own preflight is intentionally excluded from the 22 runtime blobs and
+is checked through external preparation evidence with digest mode
+`working_tree_sha256` and digest
+`sha256:ed78c94f97f9ed866a58779541d2bac6178adc0ab58741c40909c5c6413c5e63`.
+This avoids a self-referential preparation digest while making one-character
+tampering fail closed.
+
 The zero-call preflight is
 `F12_RM34_PREPARED_ZERO_CALL`. Existing deterministic mocked coverage proves
 the unauthorized path makes zero calls and the prospective authorized path
 would make 144 calls/96 branches, persist once, retry zero times and reject
-overwrite. No real provider or live runner was invoked.
+overwrite. Regression tests reject both the prior RM32 preflight digest typo
+and an RM34 preflight tamper. No real provider or live runner was invoked.
 
 ## Custody reconciliation and RM35
 
