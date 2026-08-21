@@ -96,16 +96,16 @@ def test_mock_authorized_v3_run_emits_all_slices_and_rejects_low_quality() -> No
             output_path=output,
         )
         assert len(adapter.calls) == 144
-            assert report["accounting"]["denominators"] == {
-                "caseRuns": 48,
-                "relationInstances": 24,
-                "abstentionInstances": 12,
-            }
-            assert report["metrics"]["goldRelationsMaterializerFailures"] > 0
-            assert report["metrics"]["goldRelationsMaterializerFailures"] == sum(
-                record["arms"]["gold-relations"]["invalidEvidenceCount"]
-                for record in report["caseRecords"]
-            )
+        assert report["accounting"]["denominators"] == {
+            "caseRuns": 48,
+            "relationInstances": 24,
+            "abstentionInstances": 12,
+        }
+        assert report["metrics"]["goldRelationsMaterializerFailures"] > 0
+        assert report["metrics"]["goldRelationsMaterializerFailures"] == sum(
+            record["arms"]["gold-relations"]["invalidEvidenceCount"]
+            for record in report["caseRecords"]
+        )
         assert [
             item["label"] for item in report["sliceRecords"]
         ] == list(REQUIRED_SLICE_LABELS)
