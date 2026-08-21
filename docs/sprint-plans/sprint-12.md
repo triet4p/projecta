@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G5_F12_V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY`
+Status: `G5_F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY`
 
 Current state: [Sprint 12 Current State](sprint-12/current-state.md)
 
@@ -912,11 +912,18 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   remediation:** Deterministically reproduced the first-case predicted-
   entities reconciliation defect, prepared the finite remediation proposal and
   focused regression tests without provider calls or runtime implementation.
-- [ ] **S12-RM-39 — Owner review RM38 diagnosis and remediation proposal:**
-  Review the sanitized finding and decide whether runtime implementation may
-  proceed. Provider execution, retry/rerun, superseding-lineage preparation,
-  issuance, validation, held-out, Stage B, selection and promotion remain
-  closed until explicitly authorized.
+- [x] **S12-RM-39 — Owner review RM38 diagnosis and remediation proposal:**
+  Approved offline runtime remediation and deterministic regressions only.
+  Provider execution, retry/rerun, superseding-lineage preparation, issuance,
+  validation, held-out, Stage B, selection and promotion remain closed.
+- [x] **S12-RM-40 — Implement offline RM36 reconciliation remediation:**
+  Added a new versioned offline runtime path whose diagnostic denominator is
+  the exact semantic-pair set shared with scoring, projects entity spans to
+  `(start,end)`, fails closed on malformed detail and preserves prospective
+  144/96 custody invariants. No provider or v8 runner was invoked.
+- [ ] **S12-RM-41 — Owner review RM40 offline runtime remediation:** Review the
+  implementation package and safe regressions before any lineage preparation,
+  issuance or provider authorization.
 
 #### Phase F-S — Candidate Selection Resume Path
 

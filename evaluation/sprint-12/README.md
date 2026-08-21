@@ -2,7 +2,7 @@
 
 **Base contract version:** `s12.v1`; current visible corpus: `v3-frozen`
 
-**Current Sprint status:** `G5_F12_V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY`
+**Current Sprint status:** `G5_F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY`
 
 RM-36 consumed the single RM-35-authorized v8 invocation and failed after
 three provider captures before persisting a report or aggregate accounting.
@@ -156,7 +156,8 @@ procedure permits one blinded run.
 - `optimization/s12-f-12-rm37-owner-decision.v1.json` and
   `optimization/s12-f-12-rm37-decision-transition.v1.json` close the failed v8
   execution and open only offline RM36 reconciliation diagnosis and runtime
-  remediation preparation. RM-38 is the next permitted task.
+  remediation preparation. RM-39 approved offline implementation; RM-40 has
+  prepared the versioned remediation path and RM-41 is the next owner review.
 
 ## Dataset contract rules
 

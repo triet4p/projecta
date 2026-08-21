@@ -198,6 +198,19 @@ offline runtime implementation is allowed. No provider execution, retry,
 rerun, superseding lineage, issuance, validation, held-out, Stage B, selection
 or promotion is authorized by RM-38.
 
+## Handoff M — RM-40 implementation to RM-41 owner review
+
+**Status:** RM-40 complete; RM-41 pending.
+
+RM-40 implemented the approved offline remediation in a new versioned module.
+The implementation shares the exact semantic-pair domain with scoring,
+projects entity spans to two coordinates and fails closed on malformed detail.
+Its deterministic custody path performs zero provider calls while proving the
+prospective 144-call/96-branch, one-persist, no-retry and no-overwrite rules.
+RM-41 may review the package and safe tests. No lineage preparation, issuance,
+provider execution, retry/rerun, validation, held-out, Stage B, selection or
+promotion is authorized.
+
 ## External-only work — custody and G6
 
 S12-55/S12-85 and the G6 blinded review still require a real external

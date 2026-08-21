@@ -2,12 +2,13 @@
 
 **As of:** 2026-08-22
 
-**Status:** `G5_F12_V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY`
+**Status:** `G5_F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY`
 
-RM-37 has accepted the RM-36 execution fact and closed v8 as failed before
-report persistence. The authoritative machine state is
-`evaluation/sprint-12/current-state.v1.json`; only offline reconciliation
-diagnosis and deterministic remediation preparation are open.
+RM-37 accepted the RM-36 execution fact and closed v8 as failed before report
+persistence. RM-39 subsequently approved only offline runtime remediation and
+deterministic regressions; RM-40 implemented them in a non-authoritative
+versioned path pending RM-41 review. The authoritative machine state is
+`evaluation/sprint-12/current-state.v1.json`.
 
 This is the human-readable current-state index for Sprint 12. Machine consumers
 must use `evaluation/sprint-12/current-state.v1.json`.
@@ -36,7 +37,10 @@ RM-29 approved the RM-28 package for offline implementation and mock testing
 only through `s12-f-12-rm29-approval-transition.v1.json`. RM-31 then approved
 offline preparation of a new superseding lineage through
 `s12-f-12-rm31-approval-transition.v1.json`; it did not issue a new
-preregistration or technical freeze.
+preregistration or technical freeze. RM-39 approved implementation of the
+offline RM-38 remediation through
+`s12-f-12-rm39-approval-transition.v1.json`; RM-40 did not prepare or issue a
+new lineage.
 
 ## Current boundary
 
@@ -62,12 +66,13 @@ preregistration or technical freeze.
 
 ## Next work
 
-1. RM-38 has prepared the offline RM36 reconciliation diagnosis and finite
-   remediation proposal; its non-authoritative artifacts await RM-39 owner
-   review.
-2. RM-39 must decide whether offline runtime implementation may proceed. Keep
-   provider execution, retry, overwrite, superseding-lineage preparation,
-   validation, held-out access, Stage B, selection and promotion closed.
+1. RM-39 approved offline runtime remediation and deterministic regressions;
+   RM-40 has implemented them in a non-authoritative versioned path pending
+   RM-41 owner review.
+2. RM-41 must review the implementation before any lineage preparation,
+   issuance or provider execution. Keep provider execution, retry, overwrite,
+   superseding-lineage preparation, validation, held-out access, Stage B,
+   selection and promotion closed.
 3. Do not claim accuracy improvement, candidate quality, business quality or
    tenant readiness from this rejected run.
 
@@ -239,8 +244,9 @@ The post-run current-state and G5 packet are explicitly non-authoritative:
 - `evaluation/sprint-12/current-state-next-rm36.v1.json`
 - `evaluation/sprint-12/optimization/g5-packet.v24.rm36-execution-failure.json`
 
-The authorization is spent and non-reusable. RM-37 is complete; RM-38 is the
-next permitted offline task. No provider call, retry, overwrite,
+The authorization is spent and non-reusable. RM-37 is complete; RM-39 approved
+offline implementation, RM-40 prepared the versioned remediation path and
+RM-41 is the next owner review. No provider call, retry, overwrite,
 superseding-lineage preparation, validation, held-out access, Stage B,
 selection or promotion is authorized.
 

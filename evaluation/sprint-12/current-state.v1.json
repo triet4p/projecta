@@ -1,7 +1,7 @@
 {
   "artifactVersion": "s12.current-state.v1",
   "asOf": "2026-08-22",
-  "status": "G5_F12_V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY",
+  "status": "G5_F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY",
   "sourcePrecedence": [
     "this current-state index",
     "latest explicit owner decision or transition record",
@@ -82,6 +82,16 @@
       "digest": "sha256:87b1abbba0323c72dd73152305beeac696113a5238514af5a1a9e53eecf03098",
       "expectedStatus": "V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY"
     },
+    "rm39OwnerReview": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm39-owner-review.v1.json",
+      "digest": "sha256:e7716923fecc2075f4dab3d4e5454a785aab7cdd255ddcbc873da7fc428062be",
+      "expectedStatus": "OWNER_REVIEW_APPROVED_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_ONLY"
+    },
+    "rm39ApprovalTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm39-approval-transition.v1.json",
+      "digest": "sha256:aa65539834d58e1a7b72cbeee7825f4209d14afb15fbfa7f6d4e81d98e293114",
+      "expectedStatus": "OFFLINE_RUNTIME_REMEDIATION_APPROVED_IMPLEMENTATION_ONLY"
+    },
     "stageAReport": {
       "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
       "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
@@ -104,7 +114,7 @@
     "G3.1-C": "APPROVED_WITH_SCOPE_LIMITS",
     "G4": "RUNTIME_BACKED_BASELINE_WITH_FAILURES",
     "G4.1": "CONTRACT_ALIGNED_STABILITY_FAILED",
-    "G5": "F12_V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY",
+    "G5": "F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY",
     "G6": "BLOCKED_CUSTODY_OR_CANDIDATE",
     "G7": "NOT_STARTED"
   },
@@ -153,7 +163,9 @@
       "candidateSelectionAuthorized": false,
       "promotionAuthorized": false,
       "offlineFailureDiagnosisPreparationAuthorized": true,
-      "offlineRuntimeRemediationPreparationAuthorized": true
+      "offlineRuntimeRemediationPreparationAuthorized": true,
+      "offlineRuntimeRemediationImplementationAuthorized": true,
+      "deterministicRegressionImplementationAuthorized": true
     },
     "stageAReportExists": true,
     "currentStageAReportExists": false,
@@ -172,7 +184,7 @@
       "retryAuthorized": false
   },
   "nextTasks": [
-    "S12-RM-38_OFFLINE_RM36_RECONCILIATION_FAILURE_DIAGNOSIS_AND_REMEDIATION_PREPARATION"
+    "S12-RM-40_OFFLINE_RM36_RECONCILIATION_REMEDIATION_AND_REGRESSIONS"
   ],
-  "claimBoundary": "The v8 execution closed failed before report persistence; no quality result, candidate selection, tenant readiness or business-quality result may be claimed. Offline diagnosis and deterministic remediation preparation are the only newly permitted activities."
+  "claimBoundary": "The v8 execution closed failed before report persistence; no quality result, candidate selection, tenant readiness or business-quality result may be claimed. Only offline runtime remediation and deterministic regression implementation are newly permitted."
 }
