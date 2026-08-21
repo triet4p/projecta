@@ -37,11 +37,17 @@ def test_rm44_preflight_is_zero_call_and_exactly_bound(tmp_path: Path) -> None:
         )
     )
     original_current = preflight.CURRENT
+    original_v8 = preflight.OUTPUT_V8
+    original_v9 = preflight.OUTPUT_V9
     preflight.CURRENT = historical_state
+    preflight.OUTPUT_V8 = ROOT / ".rm44-preflight-output.v8.json"
+    preflight.OUTPUT_V9 = ROOT / ".rm44-preflight-output.v9.json"
     try:
         result = preflight.run_preflight()
     finally:
         preflight.CURRENT = original_current
+        preflight.OUTPUT_V8 = original_v8
+        preflight.OUTPUT_V9 = original_v9
     preparation = _json(PREPARATION)
     package = _json(PACKAGE)
     assert result["status"] == "F12_RM44_PREPARED_ZERO_CALL"
@@ -108,7 +114,7 @@ def test_rm44_prospective_default_path_mock_is_144_96_once_no_retry_no_overwrite
         "liveRunnerInvocations": 0,
     }
     assert not (ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json").exists()
-    assert not (ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json").exists()
+    assert (ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json").exists()
 
 
 def test_rm44_preserves_v6_and_does_not_reuse_v8() -> None:
