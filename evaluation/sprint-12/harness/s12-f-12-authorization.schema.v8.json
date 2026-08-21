@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "s12-f-12.authorization.v8",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifactVersion", "status", "experimentId", "providerExecutionAuthorized", "providerCalls", "retryPolicy", "executionCommitSha", "executionPackageDigest", "technicalFreezeDigest", "outputPath", "costCeilingUsd", "heldOutInspected", "heldOutAccessAuthorized", "validationAccessAuthorized", "stageBAuthorized", "candidateSelectionAuthorized", "promotionAuthorized"],
+  "properties": {
+    "artifactVersion": {"const": "s12-f-12.authorization.v8"},
+    "status": {"const": "APPROVED_FOR_DEVELOPMENT_STAGE_A"},
+    "experimentId": {"const": "s12-f-12"},
+    "providerExecutionAuthorized": {"const": true},
+    "providerCalls": {"const": 144},
+    "retryPolicy": {"const": "none"},
+    "executionCommitSha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "executionPackageDigest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "technicalFreezeDigest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "outputPath": {"const": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json"},
+    "costCeilingUsd": {"const": "10.00"},
+    "heldOutInspected": {"const": false},
+    "heldOutAccessAuthorized": {"const": false},
+    "validationAccessAuthorized": {"const": false},
+    "stageBAuthorized": {"const": false},
+    "candidateSelectionAuthorized": {"const": false},
+    "promotionAuthorized": {"const": false}
+  }
+}

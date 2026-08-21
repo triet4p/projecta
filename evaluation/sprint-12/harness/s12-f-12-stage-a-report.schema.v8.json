@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "s12-f-12.stage-a-report.v8",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifactVersion", "experimentId", "custody", "configuration", "accounting", "metrics", "caseRecords", "sliceRecords", "decision", "diagnostics"],
+  "properties": {
+    "artifactVersion": {"const": "s12-f-12.stage-a-report.v8"},
+    "experimentId": {"const": "s12-f-12"},
+    "custody": {"type": "object"},
+    "configuration": {"type": "object"},
+    "accounting": {"type": "object"},
+    "metrics": {"type": "object"},
+    "caseRecords": {"type": "array"},
+    "sliceRecords": {"type": "array"},
+    "decision": {"type": "object"},
+    "diagnostics": {"$ref": "#/$defs/diagnostics"}
+  },
+  "$defs": {
+    "schemaCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["envelope_unbound_field", "envelope_version_mismatch", "entity_candidate_invalid", "entity_candidate_identity_duplicate", "entity_span_out_of_source", "relation_candidate_invalid", "relation_endpoint_not_in_server_table", "relation_evidence_invalid", "validation_detail_unavailable"],
+      "properties": {
+        "envelope_unbound_field": {"type": "integer", "minimum": 0},
+        "envelope_version_mismatch": {"type": "integer", "minimum": 0},
+        "entity_candidate_invalid": {"type": "integer", "minimum": 0},
+        "entity_candidate_identity_duplicate": {"type": "integer", "minimum": 0},
+        "entity_span_out_of_source": {"type": "integer", "minimum": 0},
+        "relation_candidate_invalid": {"type": "integer", "minimum": 0},
+        "relation_endpoint_not_in_server_table": {"type": "integer", "minimum": 0},
+        "relation_evidence_invalid": {"type": "integer", "minimum": 0},
+        "validation_detail_unavailable": {"type": "integer", "minimum": 0}
+      }
+    },
+    "evidenceCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["trigger_quote_missing", "trigger_quote_digest_mismatch", "trigger_occurrence_missing", "trigger_occurrence_outside_sentence", "trigger_occurrence_outside_clause", "evidence_span_missing", "evidence_span_out_of_source", "evidence_does_not_contain_trigger", "evidence_does_not_contain_endpoints", "materializer_detail_unavailable"],
+      "properties": {
+        "trigger_quote_missing": {"type": "integer", "minimum": 0},
+        "trigger_quote_digest_mismatch": {"type": "integer", "minimum": 0},
+        "trigger_occurrence_missing": {"type": "integer", "minimum": 0},
+        "trigger_occurrence_outside_sentence": {"type": "integer", "minimum": 0},
+        "trigger_occurrence_outside_clause": {"type": "integer", "minimum": 0},
+        "evidence_span_missing": {"type": "integer", "minimum": 0},
+        "evidence_span_out_of_source": {"type": "integer", "minimum": 0},
+        "evidence_does_not_contain_trigger": {"type": "integer", "minimum": 0},
+        "evidence_does_not_contain_endpoints": {"type": "integer", "minimum": 0},
+        "materializer_detail_unavailable": {"type": "integer", "minimum": 0}
+      }
+    },
+    "diagnostics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaReasonCounts", "evidenceReasonCounts", "schemaFailureTotal", "evidenceFailureTotal", "reasonCountsReconciled", "rawDataPolicy"],
+      "properties": {
+        "schemaReasonCounts": {"type": "object", "additionalProperties": false, "required": ["predicted-entities", "gold-entities", "gold-relations"], "properties": {"predicted-entities": {"$ref": "#/$defs/schemaCounts"}, "gold-entities": {"$ref": "#/$defs/schemaCounts"}, "gold-relations": {"$ref": "#/$defs/schemaCounts"}}},
+        "evidenceReasonCounts": {"type": "object", "additionalProperties": false, "required": ["predicted-entities", "gold-entities", "gold-relations"], "properties": {"predicted-entities": {"$ref": "#/$defs/evidenceCounts"}, "gold-entities": {"$ref": "#/$defs/evidenceCounts"}, "gold-relations": {"$ref": "#/$defs/evidenceCounts"}}},
+        "schemaFailureTotal": {"type": "integer", "minimum": 0},
+        "evidenceFailureTotal": {"type": "integer", "minimum": 0},
+        "reasonCountsReconciled": {"const": true},
+        "rawDataPolicy": {"type": "object", "additionalProperties": false, "required": ["rawSourceTextIncluded", "rawProviderPayloadIncluded", "rawValidationDetailIncluded", "rawTriggerQuoteIncluded"], "properties": {"rawSourceTextIncluded": {"const": false}, "rawProviderPayloadIncluded": {"const": false}, "rawValidationDetailIncluded": {"const": false}, "rawTriggerQuoteIncluded": {"const": false}}}
+      }
+    }
+  }
+}
