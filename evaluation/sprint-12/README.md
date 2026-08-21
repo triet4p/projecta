@@ -2,14 +2,15 @@
 
 **Base contract version:** `s12.v1`; current visible corpus: `v3-frozen`
 
-**Current Sprint status:** `G5_F12_V8_EXECUTION_FAILED_PENDING_RM37_OWNER_DECISION`
+**Current Sprint status:** `G5_F12_V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY`
 
 RM-36 consumed the single RM-35-authorized v8 invocation and failed after
 three provider captures before persisting a report or aggregate accounting.
-The post-run machine state is explicitly non-authoritative pending RM-37 owner
-review; see `current-state-next-rm36.v1.json` and
-`optimization/g5-packet.v24.rm36-execution-failure.json`. The authoritative
-RM-35 records remain immutable custody history.
+RM-37 closed that execution as failed and authorized only offline
+reconciliation-failure diagnosis and deterministic runtime-remediation
+preparation. The authoritative packet is
+`optimization/g5-packet.v25.rm37-closure.json`; RM35/RM36 snapshots remain
+immutable custody history.
 
 The repository-visible pilot and development/validation gold now have
 owner-delegated AI semantic review. They remain agent-authored synthetic data
@@ -140,17 +141,22 @@ procedure permits one blinded run.
   preflight blob digest is exact; RM-34's own preflight is separately bound by
   external preparation evidence and rejects tampering. The accepted RM33
   custody erratum reconciles the report-schema CRLF/LF digest to the canonical
-  exact execution blob. The v8 output remains absent and provider calls
-  performed remain zero pending RM-36.
+  exact execution blob. The v8 output remains absent; RM-36 later consumed the
+  authorization and recorded a three-call pre-report failure.
 - `optimization/s12-f-12-rm35-owner-review.v1.json`,
   `optimization/s12-f-12-rm35-authorization.v8.json` and
   `optimization/s12-f-12-rm35-authorization-transition.v1.json` are immutable
   RM-35 authority records. `scripts/preflight_sprint12_f12_rm35.py` is the
-  safe zero-call pre-execution gate; RM-37 remains required after execution.
+  safe zero-call pre-execution gate; the authorization is now spent and the
+  RM-37 closure is immutable.
 - `optimization/s12-f-12-rm36-execution-transition.v1.json` records the one
   RM-36 invocation and its pre-report failure. The v8 output is absent, the
   authorization is spent and non-reusable, and no retry or downstream action
-  is authorized. RM-37 is the next owner gate.
+  is authorized. RM-37 has closed the failure.
+- `optimization/s12-f-12-rm37-owner-decision.v1.json` and
+  `optimization/s12-f-12-rm37-decision-transition.v1.json` close the failed v8
+  execution and open only offline RM36 reconciliation diagnosis and runtime
+  remediation preparation. RM-38 is the next permitted task.
 
 ## Dataset contract rules
 

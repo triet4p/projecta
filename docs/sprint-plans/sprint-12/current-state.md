@@ -2,11 +2,12 @@
 
 **As of:** 2026-08-22
 
-**Status:** `G5_F12_V8_EXECUTION_FAILED_PENDING_RM37_OWNER_DECISION`
+**Status:** `G5_F12_V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY`
 
-The RM-36 execution fact is preserved in a non-authoritative post-run
-snapshot. The authoritative current-state machine artifact remains the RM-35
-pre-execution state until RM-37 records the next owner decision.
+RM-37 has accepted the RM-36 execution fact and closed v8 as failed before
+report persistence. The authoritative machine state is
+`evaluation/sprint-12/current-state.v1.json`; only offline reconciliation
+diagnosis and deterministic remediation preparation are open.
 
 This is the human-readable current-state index for Sprint 12. Machine consumers
 must use `evaluation/sprint-12/current-state.v1.json`.
@@ -49,8 +50,9 @@ preregistration or technical freeze.
   calls, 96 relation branches, 0 retries and `$0.00592500` cost.
 - RM-27 closes the v7 execution as `COMPLETED_REJECTED_NO_STAGE_B`; RM-29
   approved finite diagnostic/remediation implementation, RM-31 approved
-  lineage preparation, RM-33 issued v8 preregistration/freeze, and RM-35
-  authorized exactly one v8 execution.
+  lineage preparation, RM-33 issued v8 preregistration/freeze, RM-35
+  authorized exactly one v8 execution, and RM-37 closed that invocation as
+  failed before report persistence.
 - Retry and output overwrite were not authorized and were not attempted. The
   RM-35 authorization was consumed by the single RM-36 invocation and cannot be
   reused.
@@ -60,10 +62,10 @@ preregistration or technical freeze.
 
 ## Next work
 
-1. RM-37 must review the RM-36 execution fact and record the next owner
-   decision.
-2. Keep retry, overwrite, validation, held-out access, Stage B, selection and
-   promotion closed pending RM-37 owner post-run decision.
+1. RM-38 must prepare offline RM36 reconciliation-failure diagnosis and
+   deterministic runtime remediation.
+2. Keep provider execution, retry, overwrite, superseding-lineage preparation,
+   validation, held-out access, Stage B, selection and promotion closed.
 3. Do not claim accuracy improvement, candidate quality, business quality or
    tenant readiness from this rejected run.
 
@@ -202,7 +204,8 @@ are:
 - `evaluation/sprint-12/optimization/s12-f-12-rm35-authorization.v8.json`
 - `evaluation/sprint-12/optimization/s12-f-12-rm35-authorization-transition.v1.json`
 
-Current v8 state is `providerExecutionAuthorized=true`,
+The RM-35 pre-execution authorization snapshot recorded
+`providerExecutionAuthorized=true`,
 `newAuthorizationIssued=true`, `authorizedExecutions=1`,
 `authorizedProviderCalls=144`, `providerCallsPerformed=0`, and
 `stageAReportExists=false`. Retry, overwrite, validation, held-out, Stage B,
@@ -213,8 +216,8 @@ returns `F12_RM35_AUTHORIZED_ZERO_CALL_PRECHECK`.
 The historical v7 execution remains separately spent and immutable at 144
 provider calls, 96 relation branches and zero retries. No v7 authorization is
 reused. RM-36 consumed the one v8 authorization with a single failed
-invocation; RM-37 must now perform the owner post-run decision. No quality or
-tenant-readiness claim is established by authorization.
+invocation; RM-37 closed it as failed before report persistence. No quality or
+tenant-readiness claim is established.
 
 ## RM-36 exact v8 execution
 
@@ -234,6 +237,20 @@ The post-run current-state and G5 packet are explicitly non-authoritative:
 - `evaluation/sprint-12/current-state-next-rm36.v1.json`
 - `evaluation/sprint-12/optimization/g5-packet.v24.rm36-execution-failure.json`
 
-The authorization is spent and non-reusable. RM-37 is the sole next owner gate;
-no retry, overwrite, validation, held-out access, Stage B, selection or
-promotion is authorized.
+The authorization is spent and non-reusable. RM-37 is complete; RM-38 is the
+next permitted offline task. No provider call, retry, overwrite,
+superseding-lineage preparation, validation, held-out access, Stage B,
+selection or promotion is authorized.
+
+## RM-37 owner closure
+
+RM-37 independently accepted the immutable RM-36 failure fact and closed the
+v8 execution as `COMPLETED_FAILED_BEFORE_REPORT_NO_RERUN_OFFLINE_REMEDIATION_PREPARATION_ONLY`.
+The decision and transition are:
+
+- `evaluation/sprint-12/optimization/s12-f-12-rm37-owner-decision.v1.json`
+- `evaluation/sprint-12/optimization/s12-f-12-rm37-decision-transition.v1.json`
+
+Only offline RM36 reconciliation-failure diagnosis and deterministic runtime
+remediation preparation are permitted. Any future provider attempt requires a
+corrected exact lineage, issuance review and separate owner authorization.

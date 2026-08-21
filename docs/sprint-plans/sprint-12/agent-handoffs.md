@@ -128,11 +128,12 @@ freeze. A separate authorization remains mandatory before execution.
 
 ## Handoff I — RM-33/RM-34/RM-35 v8 authorization path
 
-**Status:** RM-33, RM-34, RM-35 and RM-36 complete; RM-36 failed before report
-persistence after one invocation; RM-37 post-run owner decision pending.
+**Status:** RM-33 through RM-37 complete; RM-36 failed before report
+persistence after one invocation; RM-37 closed v8 and opened offline diagnosis
+and deterministic remediation preparation only.
 
 RM-33 owner review and the digest-bound issuance transition remain immutable
-history. RM-35 is now authoritative for current v8 execution authority:
+history. RM-35 was authoritative for pre-execution v8 authority:
 `preregistrationIssued=true`, `technicalFreezeIssued=true`,
 `providerExecutionAuthorized=true`, `newAuthorizationIssued=true`,
 `authorizedExecutions=1`, `authorizedProviderCalls=144`,
@@ -157,8 +158,8 @@ freeze/runtime/output/cost boundary. RM-36 consumed that authority with the
 single documented invocation; the runner failed after three captures before
 persisting a v8 report. The exact execution fact is recorded in
 `s12-f-12-rm36-execution-transition.v1.json`; its post-run current-state and
-G5 packet are explicitly non-authoritative. RM-37 must perform a separate owner
-post-run decision, and no retry or rerun is permitted.
+G5 packet were explicitly non-authoritative until RM-37 closure. RM-37 has now
+closed the failed invocation; no retry or rerun is permitted.
 
 ## Handoff J — RM-36 execution and RM-37 post-run decision
 
@@ -166,9 +167,22 @@ RM-36 is complete. It ran the safe pre-execution preflight, then invoked the
 exact v8 runner once using the immutable RM-35 authorization. The runner
 failed at first-arm diagnostic reconciliation after three completed captures;
 no v8 report or aggregate accounting was persisted. The authorization is
-spent and non-reusable. RM-37 must review the immutable execution fact before
-any Stage B, selection, validation or promotion consideration; no retry or
-rerun is allowed by RM-36.
+spent and non-reusable. RM-37 accepted the immutable execution fact and closed
+v8 as failed before report persistence. Only offline reconciliation-failure
+diagnosis and deterministic runtime-remediation preparation are permitted.
+
+## Handoff K — RM-37 closure to RM-38 offline diagnosis
+
+**Status:** RM-37 complete; RM-38 pending.
+
+The authoritative current G5 packet is
+`evaluation/sprint-12/optimization/g5-packet.v25.rm37-closure.json`. RM-37
+accepts 3 calls and 3 responses as partial execution facts, preserves the
+absent v8 report and incomplete accounting, and records the spent,
+non-reusable authorization. RM-38 may inspect repository-visible runtime code,
+sanitized execution facts and deterministic mocks to diagnose and prepare a
+remediation. It may not call a provider, rerun v8, create a superseding
+lineage, or open validation, held-out, Stage B, selection or promotion.
 
 ## External-only work — custody and G6
 

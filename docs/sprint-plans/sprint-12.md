@@ -1,8 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G5_F12_V8_EXECUTION_FAILED_PENDING_RM37_OWNER_DECISION` (RM-36
-execution fact is recorded in a non-authoritative snapshot; RM-37 owner review
-is pending)
+Status: `G5_F12_V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY`
 
 Current state: [Sprint 12 Current State](sprint-12/current-state.md)
 
@@ -14,7 +12,7 @@ G4 packet: [Baseline Evaluation Review Packet](sprint-12/g4-baseline.md)
 
 G4.1 packet: [Contract Alignment and Failure Diagnosis](sprint-12/g4.1-contract-alignment.md)
 
-G5 packet: [Controlled Optimization Review Packet v24 — RM-36 execution failure snapshot](sprint-12/g5-optimization.v24.rm36-execution-failure.md)
+G5 packet: [Controlled Optimization Review Packet v25 — RM-37 closure](sprint-12/g5-optimization.v25.rm37-closure.md)
 
 Authoritative pre-execution packet: [Controlled Optimization Review Packet
 v23 — RM-35 authorization](sprint-12/g5-optimization.v23.rm35-authorization.md).
@@ -905,9 +903,15 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   aggregate accounting persistence. No retry, overwrite, validation, held-out,
   Stage B, selection or promotion occurred. See the non-authoritative
   [RM-36 execution-failure snapshot](sprint-12/g5-optimization.v24.rm36-execution-failure.md).
-- [ ] **S12-RM-37 — Owner post-run decision:** Independently review the RM-36
-  execution fact and decide whether any separately governed action may be
-  considered. No report, quality gate or downstream decision exists yet.
+- [x] **S12-RM-37 — Owner post-run decision:** Independently review the RM-36
+  execution fact and close v8 as failed before report persistence. Only offline
+  reconciliation-failure diagnosis and deterministic runtime-remediation
+  preparation are permitted; no report, quality gate or downstream decision
+  exists.
+- [ ] **S12-RM-38 — Prepare offline RM36 reconciliation-failure diagnosis and
+  remediation:** Inspect repository-visible runtime code and deterministic mocks
+  only. Do not invoke a provider, rerun v8, create a superseding lineage, or
+  open validation, held-out, Stage B, selection or promotion.
 
 #### Phase F-S — Candidate Selection Resume Path
 
