@@ -174,8 +174,10 @@ prepared the versioned remediation path; RM-43 issued corrected v9, RM-44
 prepared exact authorization offline, RM-45 issued exactly one bounded
 authorization, RM-46 executed once, and RM-47 closed v9 rejected with no Stage
 B. RM-48 has prepared a sanitized v6/v9 error comparison and remediation
-options in `optimization/s12-f-12-rm48-error-comparison.v1.json`; RM-49 owner
-review is pending. No remediation, lineage or provider work is authorized.
+options in `optimization/s12-f-12-rm48-error-comparison.v1.json`; RM-49 approved
+the sequential offline path and RM-50 completed diagnostics/parity fixtures.
+RM-51 owner review is pending. No runtime remediation, lineage or provider work
+is authorized.
 
 ## Dataset contract rules
 
@@ -202,6 +204,6 @@ exact v9 Stage A execution, RM-46 consumed it once, and RM-47 closed it
 rejected with no Stage B. The v9 report is schema-valid but rejected by
 schema-invalid, invalid-evidence, threshold and slice gates; its comparison to
 v6 establishes no quality improvement. Only offline error-analysis preparation
-is open; RM-49 review of the RM-48 preparation is pending.
+is open; RM-51 review of the RM-50 preparation is pending.
 G6 is blocked by missing external test custody and a
 frozen passing candidate; held-out inputs/gold remain outside the repository.

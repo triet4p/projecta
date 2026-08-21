@@ -1,0 +1,48 @@
+{
+  "artifactVersion": "s12.current-state-next-rm50.v1",
+  "role": "NON_AUTHORITATIVE_PREPARATION_SNAPSHOT",
+  "status": "OFFLINE_DIAGNOSTICS_AND_PARITY_FIXTURES_IMPLEMENTED_PENDING_RM51_OWNER_REVIEW",
+  "experimentId": "S12-f-12",
+  "taskId": "S12-RM-50",
+  "rm49Approval": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm49-approval-transition.v1.json",
+    "digest": "sha256:07927a952e32d0f805403c87672dc3a7a84af155149553f681260c0dd1976fe5"
+  },
+  "package": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm50-offline-remediation.v1.json",
+    "digest": "sha256:02231a9627860066248b6248f058dbb06bc56dda6483b6b57d32cb361d47e3af"
+  },
+  "optionA": {
+    "report": "evaluation/sprint-12/optimization/s12-f-12-rm50-offline-diagnostic-report.v1.json",
+    "digest": "sha256:62a660e80e37b05e5b8cf7ec471610e5237d9c5cc30d966d44f76c7027c17a16",
+    "stopCriteriaPassed": true
+  },
+  "optionB": {
+    "fixtures": "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-fixtures.v1.json",
+    "report": "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-report.v1.json",
+    "fixtureCount": 26,
+    "v9ClustersReproduced": true
+  },
+  "historicalCustody": {
+    "v6Digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "v9Digest": "sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e",
+    "v8ReportPresent": false
+  },
+  "governance": {
+    "offlineOnly": true,
+    "providerCalls": 0,
+    "runtimeRemediationAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "newAuthorizationIssued": false,
+    "providerExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "nextGate": "S12-RM-51_OWNER_REVIEW_RM50_OFFLINE_DIAGNOSTICS_AND_PARITY_FIXTURES",
+  "claimBoundary": "RM-50 is offline implementation and deterministic fixture evidence only. It establishes no provider, prompt, runtime, quality, candidate, business-quality or tenant-readiness claim."
+}

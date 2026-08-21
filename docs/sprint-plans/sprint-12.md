@@ -971,9 +971,19 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   options. Schema-invalid is 6→5, but invalid evidence is 17→20; no quality or
   causality claim follows. No remediation, lineage, provider or downstream gate
   was opened. RM-49 owner review is now required.
-- [ ] **S12-RM-49 — Owner review offline error-analysis preparation:**
-  Independently review the RM-48 packet before any remediation implementation,
-  lineage preparation or new authorization.
+- [x] **S12-RM-49 — Owner review offline error-analysis preparation:**
+  Approved Option A followed conditionally by Option B. Option C remains the
+  stop-provider fallback; runtime remediation, lineage, provider and
+  downstream gates remain closed.
+- [x] **S12-RM-50 — Implement offline diagnostics and parity fixtures:**
+  Option A passed first: finite closed allowlists, exact reconciliation,
+  unknown fail-closed, recursive raw-data exclusion and J1/gold-entities
+  `not-applicable → 0.0` transition. Option B then passed 26 deterministic
+  fixtures across schema/evidence/scorer boundaries and reproduced v9's
+  sanitized 5/20 failure clusters without provider/raw reconstruction.
+- [ ] **S12-RM-51 — Owner review RM-50 offline diagnostics and parity fixtures:**
+  Independently review RM-50 artifacts before any runtime remediation, lineage
+  preparation, authorization or provider execution.
 
 #### Phase F-S — Candidate Selection Resume Path
 

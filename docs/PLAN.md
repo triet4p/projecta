@@ -114,8 +114,9 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   hard-gate-rejected v9 report; RM-47 closed the experiment rejected with no
   Stage B and opened only offline v6/v9 error-analysis preparation. The v6/v9
   comparison does not establish quality improvement. RM-48 has prepared the
-  sanitized comparison/options packet; RM-49 owner review is pending.
-  Validation, held-out access, remediation
+  sanitized comparison/options packet; RM-49 approved sequential offline
+  diagnostics then parity-fixture work, and RM-50 completed it. RM-51 owner
+  review is pending. Validation, held-out access, remediation
   implementation, lineage preparation, provider execution, Stage B, selection
   and promotion remain closed.
   No business-quality claim is made, and new connector/outbound breadth remains

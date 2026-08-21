@@ -1,0 +1,42 @@
+{
+  "packetVersion": "s12.g5.packet.v35.rm50-preparation",
+  "status": "OFFLINE_DIAGNOSTICS_AND_PARITY_FIXTURES_PREPARED_PENDING_RM51_OWNER_REVIEW",
+  "experimentId": "S12-f-12",
+  "taskId": "S12-RM-50",
+  "rm49Transition": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm49-approval-transition.v1.json",
+    "digest": "sha256:07927a952e32d0f805403c87672dc3a7a84af155149553f681260c0dd1976fe5"
+  },
+  "package": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm50-offline-remediation.v1.json",
+    "digest": "sha256:02231a9627860066248b6248f058dbb06bc56dda6483b6b57d32cb361d47e3af"
+  },
+  "evidence": {
+    "optionAStopCriteriaPassed": true,
+    "optionBExecutedAfterA": true,
+    "v9SchemaInvalidReproduced": 5,
+    "v9InvalidEvidenceReproduced": 20,
+    "triggerContainment": 14,
+    "endpointContainment": 6,
+    "goldRelationsControlClean": true
+  },
+  "permittedWork": ["S12-RM-51 independent owner review"],
+  "blockedWork": ["runtime remediation", "new lineage", "preregistration or freeze issuance", "provider execution, rerun or retry", "validation, held-out, Stage B, selection or promotion"],
+  "governance": {
+    "offlineOnly": true,
+    "providerCalls": 0,
+    "runtimeRemediationAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "newAuthorizationIssued": false,
+    "providerExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "nextGate": "S12-RM-51_OWNER_REVIEW_RM50_OFFLINE_DIAGNOSTICS_AND_PARITY_FIXTURES",
+  "claimBoundary": "Non-authoritative preparation snapshot; v6/v9 remain immutable and v8 remains absent."
+}
