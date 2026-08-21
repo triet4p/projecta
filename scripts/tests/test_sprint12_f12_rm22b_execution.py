@@ -103,7 +103,7 @@ def test_mock_authorized_v3_run_emits_all_slices_and_rejects_low_quality() -> No
         }
         assert [
             item["label"] for item in report["sliceRecords"]
-        ] == REQUIRED_SLICE_LABELS
+        ] == list(REQUIRED_SLICE_LABELS)
         assert report["decision"]["status"] == "COMPLETED_REJECTED_HARD_GATE"
         assert report["metrics"]["hardGates"]["sharedConfigurationMismatch"] == 0
     finally:
