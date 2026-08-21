@@ -94,6 +94,8 @@ def test_rm22c_mock_run_has_zero_gold_oracle_failures_and_applicable_slices() ->
         abstention = next(item for item in report["sliceRecords"] if item["label"] == "abstention-required")
         assert negative["denominator"] == 12
         assert abstention["denominator"] == 12
+        assert negative["metrics"]["gate"]["predicted-entities"] is True
+        assert abstention["metrics"]["gate"]["predicted-entities"] is True
         assert report["decision"]["status"] == "COMPLETED_REJECTED_HARD_GATE"
     finally:
         output.unlink(missing_ok=True)

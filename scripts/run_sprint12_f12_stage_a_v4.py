@@ -36,6 +36,8 @@ OUTPUT = ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v4.js
 
 _ORACLE_TRIGGER_BY_PREDICATE = {"constrainedBy": "bị giới hạn bởi"}
 _ORIGINAL_VALIDATE_AUTHORIZATION = v3.validate_authorization
+_ORIGINAL_AGGREGATE_ARM = v3._aggregate_arm
+digest = v3.digest
 
 
 def _trigger(source: str, predicate: str) -> tuple[int, str] | None:
@@ -177,6 +179,44 @@ def _slice_groups(
     return groups
 
 
+def _aggregate_arm(
+    records: Sequence[Mapping[str, Any]], thresholds: Mapping[str, float]
+) -> dict[str, Any]:
+    """Apply approved thresholds only where the aggregate is applicable.
+
+    The historical v3 scorer correctly computes the metrics, but treats the
+    literal ``not-applicable`` marker as a threshold failure.  RM-22C keeps
+    that scorer intact and narrows only the gate evaluation: a metric with no
+    denominator is excluded from the gate, while numeric values remain bound
+    to the preregistered threshold.
+    """
+    result = _ORIGINAL_AGGREGATE_ARM(records, thresholds)
+    metric_values = {
+        "entityMacroF1": result["entity"]["entityMacroF1"],
+        "entitySpanExact": result["entity"]["spanExact"],
+        "entityHallucinationRate": result["entity"]["hallucinationRate"],
+        "abstentionPrecision": result["abstention"]["precision"],
+        "abstentionRecall": result["abstention"]["recall"],
+        "abstentionF1": result["abstention"]["f1"],
+        "relationSemanticMicroF1": result["relation"]["semantic"]["microF1"],
+        "relationSemanticMacroF1": result["relation"]["semantic"]["macroF1"],
+        "predicateAccuracy": result["relation"]["semantic"]["predicateAccuracy"],
+        "endpointDirectionAccuracy": result["relation"]["semantic"]["endpointDirectionAccuracy"],
+        "missingEndpointRate": result["relation"]["semantic"]["missingEndpointRate"],
+        "reversedEndpointRate": result["relation"]["semantic"]["reversedEndpointRate"],
+        "relationEvidenceSupport": result["relation"]["evidence"]["supportRate"],
+        "relationEvidenceExact": result["relation"]["evidence"]["exactRate"],
+        "relationHallucinationRate": result["relation"]["semantic"]["hallucinationRate"],
+    }
+    result["thresholdFailures"] = [
+        name
+        for name in result["thresholdFailures"]
+        if metric_values.get(name) != "not-applicable"
+    ]
+    result["thresholdsPass"] = not result["thresholdFailures"]
+    return result
+
+
 def _validate_report_schema(report: dict[str, Any]) -> None:
     report["artifactVersion"] = "s12-f-12.stage-a-report.v4"
     try:
@@ -231,6 +271,7 @@ def _configure() -> None:
     v3.OUTPUT = OUTPUT
     v3._gold_relation_candidates = _gold_relation_candidates
     v3._slice_groups = _slice_groups
+    v3._aggregate_arm = _aggregate_arm
     v3._validate_report_schema = _validate_report_schema
     v3.validate_authorization = validate_authorization
     v2._normalize_gold_relations = _normalize_gold_relations
@@ -238,8 +279,29 @@ def _configure() -> None:
 
 
 def run_stage_a(**kwargs: Any) -> dict[str, Any]:
+    v3_names = (
+        "PACKAGE",
+        "PREREG",
+        "FREEZE",
+        "REPORT_SCHEMA",
+        "OUTPUT",
+        "_gold_relation_candidates",
+        "_slice_groups",
+        "_aggregate_arm",
+        "_validate_report_schema",
+        "validate_authorization",
+    )
+    v2_names = ("_normalize_gold_relations", "_contexts")
+    old_v3 = {name: getattr(v3, name) for name in v3_names}
+    old_v2 = {name: getattr(v2, name) for name in v2_names}
     _configure()
-    return v3.run_stage_a(**kwargs)
+    try:
+        return v3.run_stage_a(**kwargs)
+    finally:
+        for name, value in old_v3.items():
+            setattr(v3, name, value)
+        for name, value in old_v2.items():
+            setattr(v2, name, value)
 
 
 def main(argv: Sequence[str] | None = None) -> int:
