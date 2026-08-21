@@ -653,3 +653,23 @@ improvement does not establish candidate or business-quality improvement.
 bounded remediation options offline. Runtime implementation, new lineage,
 provider execution, validation, held-out access, Stage B, selection and
 promotion remain closed pending another owner review.
+
+## [2026-08-22] Harden diagnostics before building offline parity fixtures
+
+**Decision:** Approve RM-48 Option A followed conditionally by Option B: first
+harden finite offline diagnostics, then build deterministic scorer/materializer
+parity fixtures only after all diagnostic stop criteria pass. Retain Option C,
+stopping provider experimentation, as the mandatory fallback.
+**Alternatives considered:** Stop immediately under Option C; authorize live
+runtime remediation; build parity fixtures before closing diagnostic contracts;
+or infer provider/prompt causality from v6/v9 case-run differences.
+**Reason:** Independent recomputation confirms the descriptive comparison,
+including three overlapping schema failures, 17 overlapping evidence failures,
+clean gold-relations controls and all 15 slices. The v9 reason codes improve
+observability but do not establish causality. Closed finite diagnostics and
+local parity fixtures can test measurable boundaries without spending provider
+calls or reconstructing withheld payloads.
+**Consequences:** RM-50 may implement Option A and, only after its schema,
+reconciliation, unknown and raw-data stop criteria pass, Option B. Live runtime
+changes, new lineage, provider execution and downstream gates remain closed;
+failure of the offline criteria returns the track to owner review under Option C.

@@ -1,0 +1,82 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm49-owner-review.v1",
+  "status": "OWNER_REVIEW_APPROVED_OFFLINE_DIAGNOSTIC_HARDENING_THEN_PARITY_FIXTURES_ONLY",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-49",
+  "decisionType": "OWNER_REVIEW_OF_RM48_V6_V9_ERROR_COMPARISON",
+  "decisionDate": "2026-08-22",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedEvidence": {
+    "comparison": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm48-error-comparison.v1.json",
+      "digest": "sha256:d0795993c2a47f88d450d30fb80177ee4ba9d864cc403a8cf0311969e29b6ec7",
+      "status": "OFFLINE_ERROR_COMPARISON_AND_REMEDIATION_OPTIONS_PREPARED_PENDING_RM49_OWNER_REVIEW"
+    },
+    "analysis": {
+      "path": "scripts/s12_f12_rm48_error_comparison.py",
+      "digest": "sha256:4a98397ba4dc6ff5a95d8502c2dfbea7f6c1e97e8540b0a9c10dcc520d665358"
+    },
+    "tests": {
+      "path": "scripts/tests/test_sprint12_rm48_error_comparison.py",
+      "digest": "sha256:2d883fe615b02e9ae57b06ef8a3a7aab382a34e6ef1151f26a9c3b7757daa09d"
+    },
+    "reportV6": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+      "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+    },
+    "reportV9": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json",
+      "digest": "sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e"
+    }
+  },
+  "verifiedEvidence": {
+    "accountingReconciled": true,
+    "providerCallsEach": 144,
+    "retryCountEach": 0,
+    "costDeltaUsd": "0.00007200",
+    "schemaInvalidDelta": -1,
+    "invalidEvidenceDelta": 3,
+    "schemaCaseRunOverlap": 3,
+    "evidenceCaseRunOverlap": 17,
+    "goldRelationsControlCleanBoth": true,
+    "allRegisteredSlicesChecked": 15,
+    "causalityEstablished": false,
+    "safeIndependentTests": "14 passed"
+  },
+  "ownerAssessment": {
+    "rm48ComparisonApproved": true,
+    "optionAApproved": true,
+    "optionBApprovedConditionallyAfterOptionA": true,
+    "optionCKeptAsStopFallback": true,
+    "qualityImprovementEstablished": false,
+    "completenessCarryForward": [
+      "Record the J1/gold-entities evidence support and exact transition from not-applicable in v6 to 0.0 in v9 explicitly in the next offline artifact."
+    ],
+    "blockingFindings": []
+  },
+  "decision": {
+    "offlineFiniteDiagnosticHardeningAuthorized": true,
+    "offlineParityFixtureImplementationAuthorized": true,
+    "parityFixturesConditionalOnDiagnosticStopCriteria": true,
+    "runtimeRemediationImplementationAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "IMPLEMENT_OFFLINE_FINITE_DIAGNOSTIC_HARDENING_THEN_DETERMINISTIC_PARITY_FIXTURES"
+  },
+  "constraints": [
+    "Option A must pass closed-schema, exact-reconciliation, unknown-fail-closed and raw-data-exclusion stop criteria before Option B begins.",
+    "Option B fixtures must reproduce materializer/scorer parity across case, arm, stage and slice boundaries without provider calls or withheld payload reconstruction.",
+    "If either option requires raw payload/source, cannot form a measurable offline hypothesis or violates a stop criterion, stop provider experimentation under Option C and return to owner review.",
+    "No live runtime remediation, lineage preparation, provider call or downstream access is authorized."
+  ]
+}
