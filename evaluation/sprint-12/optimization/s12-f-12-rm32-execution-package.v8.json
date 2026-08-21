@@ -1,0 +1,154 @@
+{
+  "artifactVersion": "s12.s12-f-12.execution-package.v8",
+  "status": "EXECUTION_PACKAGE_PREPARED_PENDING_RM33_OWNER_ISSUANCE_REVIEW",
+  "experimentId": "s12-f-12",
+  "lineageVersion": "v8",
+  "preparationScope": "S12-RM-32",
+  "supersedes": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm22d-execution-package.v7.json",
+    "digest": "sha256:22c47dd77ea4a348b479a21d5d42b97684c6f04a1fa54b06857bd82f2c9bc641"
+  },
+  "executionCommitSha": "1a3ffed08a8a96c6ea76f2ae2bf2f868254475a5",
+  "preregistrationIssued": false,
+  "technicalFreezeIssued": false,
+  "providerExecutionAuthorized": false,
+  "newAuthorizationIssued": false,
+  "validationAccessAuthorized": false,
+  "heldOutAccessAuthorized": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false,
+  "rm31OwnerReview": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm31-owner-review.v1.json",
+    "digest": "sha256:f6e67673013e324556096537ca6b97093edcff4d3655dce893c2773cec0e721e"
+  },
+  "rm31ApprovalTransition": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm31-approval-transition.v1.json",
+    "digest": "sha256:7e2fd2f781a069625cd514a9c970ebb66a8d0d995017f4650571cc8f3b64f181"
+  },
+  "rm30Diagnostic": {
+    "packagePath": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-remediation.v1.json",
+    "packageDigest": "sha256:32c9339320a4c8a6919525a06fed99af87fd61af6d0873f2511015c7f39e8231",
+    "reportPath": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-diagnostic-report.v1.json",
+    "reportDigest": "sha256:e03a632b9ff593d0764dc3ea1479366c6f2642c34dafe7818fa09269e3321f13",
+    "schemaPath": "evaluation/sprint-12/harness/s12-f-12-offline-diagnostic-report.schema.v1.json",
+    "schemaDigest": "sha256:f7f8efa30c5fb259fcb603ad4eb176db366427609eed945a8c06685353db138f",
+    "implementationPath": "scripts/s12_f12_rm30_diagnostic_remediation.py",
+    "implementationDigest": "sha256:ac01698dbf4e12dadeb8a1d7858e7de06bdfd4772b31536df917b4906d2d601b",
+    "mockTestPath": "scripts/tests/test_sprint12_rm30_offline_diagnostics.py",
+    "mockTestDigest": "sha256:e9ec282f5ed2088492aabb22df7f181dcaf76bd9fc4d74371fbc91646b7676b9"
+  },
+  "executionRunnerImplemented": true,
+  "executionRunner": {
+    "path": "scripts/run_sprint12_f12_stage_a_v6.py",
+    "digest": "sha256:f572254610653edf0510e3a8a67c017bacdacad44336fc7bdbd3d3db7bd582da",
+    "guarded": true,
+    "liveIntegrationOpened": false
+  },
+  "providerAdapter": {
+    "path": "scripts/sprint12_f12_provider_adapter_v2.py",
+    "digest": "sha256:af20e7fd9f717ec319cf8ba321880d3a0b2f6152139873c4bf1eb3e814da5a96",
+    "class": "F12ProviderAdapterV2",
+    "retryPolicy": "none"
+  },
+  "runtimeConfiguration": {
+    "path": "evaluation/sprint-12/harness/s12-f-12-runtime-configuration.v1.json",
+    "digest": "sha256:a672d1c17a174c5c2697859118e2394b89007c3877a270e82ee5db25b357dd0b"
+  },
+  "prompt": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-m3-prompt-v7-v2-two-step-extraction.v1.txt",
+    "digest": "sha256:e2dad79c2483da65f14726dc7964eb2963e3a3f1ea1135559713613c6c418fb2"
+  },
+  "stageSchemas": {
+    "stage1": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-stage-1-entity-envelope.schema.v2.json",
+      "digest": "sha256:53144aeddbcdf53d7c23d59d123eb92ead7afd7f4087e3763125b456923f52d4"
+    },
+    "stage2": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-stage-2-relation-envelope.schema.v2.json",
+      "digest": "sha256:0d0dc18829d3fc205d92b3c17ae70e4fb846858f756b3ea788b549587a90f34d"
+    }
+  },
+  "preflight": {
+    "path": "scripts/preflight_sprint12_f12_rm32.py",
+    "digest": "sha256:990ec93de342e2480abfd6d2c37f671d6bf5dd6469ecbfeeb8243182df434e39",
+    "providerCalls": 0
+  },
+  "mockE2ETest": {
+    "path": "scripts/tests/test_sprint12_rm32_offline_preparation.py",
+    "digest": "sha256:7988781b04f5c2c0a49ccb4a63476b1c796d1d3d5d6875223fd6cb3e75718295"
+  },
+  "reportSchema": {
+    "path": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v6.json",
+    "digest": "sha256:22f0b96df89bc65d7d290e46879ea9d13092e98b47c1694bbe9a4102bf054346"
+  },
+  "authorizationSchema": {
+    "path": "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v2.json",
+    "digest": "sha256:452cbddf0af489b21c21b0fa97f4147d0672c8a8f840c1df33c74b292f0987ea"
+  },
+  "plannedProviderCalls": 144,
+  "providerCallsPerformed": 0,
+  "stage1ProviderCalls": 48,
+  "stage2ProviderCalls": 96,
+  "relationBranchOutputs": 96,
+  "retryCount": 0,
+  "retryPolicy": "none",
+  "outputOverwrite": false,
+  "outputPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json",
+  "costCeilingUsd": "10.00",
+  "historicalReport": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+    "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "mutated": false
+  },
+  "closedV7Lineage": {
+    "preregistrationPath": "evaluation/sprint-12/optimization/s12-f-12-rm22d-issuance-draft.v7.json",
+    "executionPackagePath": "evaluation/sprint-12/optimization/s12-f-12-rm22d-execution-package.v7.json",
+    "technicalFreezePath": "evaluation/sprint-12/optimization/s12-f-12-rm22d-technical-freeze.v7.json",
+    "rm25AuthorizationPath": "evaluation/sprint-12/optimization/s12-f-12-rm25-authorization-transition.v1.json",
+    "immutable": true
+  },
+  "governance": {
+    "supersedingLineagePreparationAuthorized": true,
+    "preregistrationPreparationAuthorized": true,
+    "technicalFreezePreparationAuthorized": true,
+    "executionPackagePreparationAuthorized": true,
+    "providerExecutionAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "newAuthorizationIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextGate": "RM-33 owner issuance review; separate exact-commit execution authorization remains required"
+  },
+  "boundDigests": {
+    "evaluation/sprint-12/optimization/s12-f-12-rm31-owner-review.v1.json": "sha256:f6e67673013e324556096537ca6b97093edcff4d3655dce893c2773cec0e721e",
+    "evaluation/sprint-12/optimization/s12-f-12-rm31-approval-transition.v1.json": "sha256:7e2fd2f781a069625cd514a9c970ebb66a8d0d995017f4650571cc8f3b64f181",
+    "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-remediation.v1.json": "sha256:32c9339320a4c8a6919525a06fed99af87fd61af6d0873f2511015c7f39e8231",
+    "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-diagnostic-report.v1.json": "sha256:e03a632b9ff593d0764dc3ea1479366c6f2642c34dafe7818fa09269e3321f13",
+    "evaluation/sprint-12/harness/s12-f-12-offline-diagnostic-report.schema.v1.json": "sha256:f7f8efa30c5fb259fcb603ad4eb176db366427609eed945a8c06685353db138f",
+    "scripts/s12_f12_rm30_diagnostic_remediation.py": "sha256:ac01698dbf4e12dadeb8a1d7858e7de06bdfd4772b31536df917b4906d2d601b",
+    "scripts/tests/test_sprint12_rm30_offline_diagnostics.py": "sha256:e9ec282f5ed2088492aabb22df7f181dcaf76bd9fc4d74371fbc91646b7676b9",
+    "scripts/run_sprint12_f12_stage_a_v6.py": "sha256:f572254610653edf0510e3a8a67c017bacdacad44336fc7bdbd3d3db7bd582da",
+    "scripts/sprint12_f12_provider_adapter_v2.py": "sha256:af20e7fd9f717ec319cf8ba321880d3a0b2f6152139873c4bf1eb3e814da5a96",
+    "scripts/preflight_sprint12_f12_rm22d_v7.py": "sha256:27ccffe3dd55f7432505d7fb2bd4cafa44e04668fcce2ecb156b110ee877c9d1",
+    "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v6.json": "sha256:22f0b96df89bc65d7d290e46879ea9d13092e98b47c1694bbe9a4102bf054346",
+    "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v2.json": "sha256:452cbddf0af489b21c21b0fa97f4147d0672c8a8f840c1df33c74b292f0987ea",
+    "evaluation/sprint-12/harness/s12-f-12-runtime-configuration.v1.json": "sha256:a672d1c17a174c5c2697859118e2394b89007c3877a270e82ee5db25b357dd0b",
+    "evaluation/sprint-12/optimization/s12-f-12-m3-prompt-v7-v2-two-step-extraction.v1.txt": "sha256:e2dad79c2483da65f14726dc7964eb2963e3a3f1ea1135559713613c6c418fb2",
+    "evaluation/sprint-12/harness/s12-f-12-stage-1-entity-envelope.schema.v2.json": "sha256:53144aeddbcdf53d7c23d59d123eb92ead7afd7f4087e3763125b456923f52d4",
+    "evaluation/sprint-12/harness/s12-f-12-stage-2-relation-envelope.schema.v2.json": "sha256:0d0dc18829d3fc205d92b3c17ae70e4fb846858f756b3ea788b549587a90f34d",
+    "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json": "sha256:54ab4640d3ef4c2e4879370c3497006638b4f60c932995f7c34b5c06d395cc8c",
+    "scripts/sprint12_f12_two_step_contracts_v5.py": "sha256:b556ca0de34757815d5a1b9dd0f8034ab2174d860261c0bda8c1297d4c3b1f0f",
+    "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v5.json": "sha256:692579bd7586110120f2f65a3747249536da0656e7be373da953c64ef5462cd9",
+    "evaluation/sprint-12/harness/metric-contract.v2.json": "sha256:3168fce54a189773e9c181915348e4c2d022031ba31900412fa7485ed26ff51b",
+    "evaluation/sprint-12/harness/slice-threshold-contract.v1.json": "sha256:84ab739af415e26465f58733a82a43731d671ae17e5b4043982f862a4e456cbc",
+    "evaluation/sprint-12/harness/relation-trigger-contract.v1.json": "sha256:bdfc4e62dd73da690578aa1c9fd816bd4dba153951e7c8081b8d0ae82adc6253",
+    "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json": "sha256:dd535a4ae4ad9888a1dcb041dfd781426fa2d584ef6720a366a58becd0f25841",
+    "scripts/preflight_sprint12_f12_rm32.py": "sha256:990ec93de342e2480abfd6d2c37f671d6bf5dd6469ecbfeeb8243182df434e39",
+    "scripts/tests/test_sprint12_rm32_offline_preparation.py": "sha256:7988781b04f5c2c0a49ccb4a63476b1c796d1d3d5d6875223fd6cb3e75718295"
+  }
+}

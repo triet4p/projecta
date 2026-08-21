@@ -1,0 +1,61 @@
+{
+  "artifactVersion": "s12.current-state-next.rm32-offline-preparation.v1",
+  "role": "non-authoritative-offline-next-state-preparation",
+  "currentStatePath": "evaluation/sprint-12/current-state.v1.json",
+  "currentStateDigest": "sha256:4e33b62a5d6ac6625dab157b4de39e3b4fb0396f205c99404fb3dfd9b38663f8",
+  "currentStateStatus": "G5_F12_SUPERSEDING_LINEAGE_PREPARATION_APPROVED_OFFLINE_ONLY",
+  "nextStateStatus": "RM32_SUPERSEDING_LINEAGE_PREPARED_PENDING_RM33_OWNER_ISSUANCE_REVIEW",
+  "experimentId": "s12-f-12",
+  "historicalReport": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+    "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "providerCalls": 144,
+    "retryCount": 0,
+    "mutated": false
+  },
+  "currentG5Packet": {
+    "path": "evaluation/sprint-12/optimization/g5-packet.v19.json",
+    "digest": "sha256:53457844b7f34a197f69e202aabccad2e3ab2c907344b58b1835df49cb1f5582"
+  },
+  "rm32Preparation": {
+    "preregistration": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm32-preregistration.v8.json",
+      "digest": "sha256:c16a92509703fe11a78d5acb0dc77400f5a815633de27798279c0f6fe01df5f6"
+    },
+    "executionPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm32-execution-package.v8.json",
+      "digest": "sha256:e37877675d7d4b4ccd5e9ceabd29550ddcb1a9b638efeeb000a35f84934e7e84"
+    },
+    "technicalFreeze": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm32-technical-freeze.v8.json",
+      "digest": "sha256:e2f6df1532b7168aafa6502fb58b8e47d62e4b3280ba908f57e390cd695edb57"
+    },
+    "preflight": {
+      "path": "scripts/preflight_sprint12_f12_rm32.py",
+      "digest": "sha256:990ec93de342e2480abfd6d2c37f671d6bf5dd6469ecbfeeb8243182df434e39"
+    },
+    "mockTests": {
+      "path": "scripts/tests/test_sprint12_rm32_offline_preparation.py",
+      "digest": "sha256:7988781b04f5c2c0a49ccb4a63476b1c796d1d3d5d6875223fd6cb3e75718295",
+      "result": "4 passed"
+    }
+  },
+  "governance": {
+    "supersedingLineagePreparationAuthorized": true,
+    "preregistrationPreparationAuthorized": true,
+    "technicalFreezePreparationAuthorized": true,
+    "executionPackagePreparationAuthorized": true,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "providerCalls": 0
+  },
+  "nextGate": "RM-33 owner issuance review; separate execution authorization remains required",
+  "claimBoundary": "No new preregistration, freeze, provider call, quality improvement or candidate claim is established by this offline preparation."
+}

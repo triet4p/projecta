@@ -112,3 +112,20 @@ RM-32 may prepare the preregistration, execution package and technical-freeze
 artifacts offline. A separate owner issuance review is required before either
 issuance, followed by a separate execution authorization before any provider
 call. No quality improvement or candidate claim is established.
+
+## RM-32 non-authoritative lineage preparation
+
+RM-32 prepared a new v8 preregistration, execution package, technical freeze
+and provider-neutral zero-call preflight. These artifacts are explicitly
+non-authoritative and pending RM-33 owner issuance review:
+
+- `evaluation/sprint-12/optimization/s12-f-12-rm32-preregistration.v8.json`
+- `evaluation/sprint-12/optimization/s12-f-12-rm32-execution-package.v8.json`
+- `evaluation/sprint-12/optimization/s12-f-12-rm32-technical-freeze.v8.json`
+- `scripts/preflight_sprint12_f12_rm32.py`
+
+The v8 package binds the RM-31 transition, corrected RM-30 implementation and
+closed v6 runner/schema contracts at exact digests. It reserves a new v8
+report output and cannot overwrite the immutable v6 report. Preregistration,
+technical freeze, provider execution, validation, held-out access, Stage B,
+selection and promotion remain false.

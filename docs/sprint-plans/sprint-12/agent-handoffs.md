@@ -103,7 +103,7 @@ prepared. RM-31 reviewed and approved only the next offline preparation gate.
 
 ## Handoff G — RM-31 approved superseding lineage preparation
 
-**Status:** complete; RM-32 pending.
+**Status:** complete; RM-32 preparation complete, pending RM-33 owner issuance review.
 
 RM-31 approved the corrected RM-30 implementation and authorized offline
 preparation of a new exact-commit f12 preregistration, execution package and
@@ -111,9 +111,19 @@ technical-freeze packet. The historical v7 preregistration/freeze and its
 144-call, zero-retry execution remain immutable facts. No new preregistration,
 freeze, provider authorization or provider call exists.
 
-RM-32 may prepare the new versioned lineage only. It must preserve the RM-30
-package/report/schema digests, keep issuance and downstream locks false, and
-stop for separate owner issuance and execution-authorization reviews.
+RM-32 prepared the new versioned v8 lineage only. It preserved the RM-30
+package/report/schema digests, reserved a distinct v8 report output, kept
+issuance and downstream locks false, and stopped for RM-33 owner issuance
+review.
+
+## Handoff H — RM-32 prepared v8 lineage
+
+**Status:** complete pending RM-33 owner issuance review.
+
+The non-authoritative v8 preregistration, execution package, technical freeze
+and zero-call preflight are ready for review. No provider adapter or live
+runner was invoked. RM-33 must review exact commit/blob bindings before any
+issuance; a separate authorization remains mandatory before execution.
 
 ## External-only work — custody and G6
 

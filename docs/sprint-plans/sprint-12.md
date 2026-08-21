@@ -873,10 +873,14 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   deterministic mock evidence. RM-31 approves only offline preparation of a
   new superseding lineage; issuance, provider execution and downstream use
   remain closed.
-- [ ] **S12-RM-32 — Prepare superseding f12 lineage offline:** Bind a new exact
+- [x] **S12-RM-32 — Prepare superseding f12 lineage offline:** Bind a new exact
   commit, preregistration, execution package and technical-freeze packet to the
-  corrected RM-30 implementation. Do not issue, authorize or execute the new
-  lineage; separate owner reviews remain required.
+  corrected RM-30 implementation. The v8 package is non-authoritative and
+  unissued; no provider call or new authorization was created.
+- [ ] **S12-RM-33 — Owner issuance review:** Review the RM-32 v8
+  preregistration, execution package, technical freeze and zero-call preflight.
+  This review may issue only the reviewed preparation artifacts; provider
+  execution still requires a separate exact-commit authorization.
 
 #### Phase F-S — Candidate Selection Resume Path
 

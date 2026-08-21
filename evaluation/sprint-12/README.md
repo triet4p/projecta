@@ -116,6 +116,9 @@ procedure permits one blinded run.
 - `optimization/g5-packet.v19.json` is the current G5 machine packet. It keeps
   selection at `NO_SELECTION`, permits offline preparation of a new
   superseding lineage, and leaves issuance and provider execution closed.
+- `optimization/g5-packet.v20.rm32-offline-preparation.json` and the RM32 v8
+  artifacts are non-authoritative preparation snapshots pending RM-33 owner
+  issuance review; they issue nothing and perform zero provider calls.
 
 ## Dataset contract rules
 

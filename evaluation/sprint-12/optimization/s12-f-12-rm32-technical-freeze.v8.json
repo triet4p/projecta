@@ -1,0 +1,63 @@
+{
+  "artifactVersion": "s12.s12-f-12.technical-freeze.v8",
+  "status": "TECHNICAL_FREEZE_PREPARED_PENDING_RM33_OWNER_ISSUANCE_REVIEW",
+  "experimentId": "s12-f-12",
+  "lineageVersion": "v8",
+  "preparationScope": "S12-RM-32",
+  "supersedes": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm22d-technical-freeze.v7.json",
+    "digest": "sha256:20bf9ed82b629c9e26067b42acbb9efdf2b78de243ffd40cc0a707f46901a772"
+  },
+  "executionCommitSha": "1a3ffed08a8a96c6ea76f2ae2bf2f868254475a5",
+  "executionPackage": "evaluation/sprint-12/optimization/s12-f-12-rm32-execution-package.v8.json",
+  "executionPackageDigest": "sha256:e37877675d7d4b4ccd5e9ceabd29550ddcb1a9b638efeeb000a35f84934e7e84",
+  "preregistration": "evaluation/sprint-12/optimization/s12-f-12-rm32-preregistration.v8.json",
+  "preregistrationDigest": "sha256:c16a92509703fe11a78d5acb0dc77400f5a815633de27798279c0f6fe01df5f6",
+  "rm31ApprovalTransitionPath": "evaluation/sprint-12/optimization/s12-f-12-rm31-approval-transition.v1.json",
+  "rm31ApprovalTransitionDigest": "sha256:7e2fd2f781a069625cd514a9c970ebb66a8d0d995017f4650571cc8f3b64f181",
+  "runnerDigest": "sha256:f572254610653edf0510e3a8a67c017bacdacad44336fc7bdbd3d3db7bd582da",
+  "adapterDigest": "sha256:af20e7fd9f717ec319cf8ba321880d3a0b2f6152139873c4bf1eb3e814da5a96",
+  "preflightDigest": "sha256:990ec93de342e2480abfd6d2c37f671d6bf5dd6469ecbfeeb8243182df434e39",
+  "diagnosticImplementationDigest": "sha256:ac01698dbf4e12dadeb8a1d7858e7de06bdfd4772b31536df917b4906d2d601b",
+  "diagnosticReportSchemaDigest": "sha256:f7f8efa30c5fb259fcb603ad4eb176db366427609eed945a8c06685353db138f",
+  "reportSchemaDigest": "sha256:22f0b96df89bc65d7d290e46879ea9d13092e98b47c1694bbe9a4102bf054346",
+  "providerExecutionAuthorized": false,
+  "preregistrationIssued": false,
+  "technicalFreezeIssued": false,
+  "newAuthorizationIssued": false,
+  "heldOutInspected": false,
+  "heldOutAccessAuthorized": false,
+  "validationAccessAuthorized": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false,
+  "issuance": {
+    "status": "NOT_ISSUED",
+    "requiresRM33OwnerIssuanceReview": true,
+    "requiresSeparateExactCommitAuthorization": true,
+    "exactCommitValidated": true,
+    "mustBindExactPackageDigest": true,
+    "mustBindExactPreregistrationDigest": true
+  },
+  "output": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json",
+    "mustNotOverwrite": [
+      "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json"
+    ],
+    "historicalReportDigest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+  },
+  "governance": {
+    "supersedingLineagePreparationAuthorized": true,
+    "preregistrationPreparationAuthorized": true,
+    "technicalFreezePreparationAuthorized": true,
+    "executionPackagePreparationAuthorized": true,
+    "providerCalls": 0,
+    "nextGate": "RM-33 owner issuance review; no provider call is authorized by preparation"
+  },
+  "preparationScopeConstraints": [
+    "This freeze is a non-authoritative offline preparation artifact.",
+    "No preregistration, technical freeze, authorization or provider execution is issued.",
+    "The closed v7 lineage, spent RM25 authorization and immutable Stage A v6 report remain unchanged.",
+    "Validation, held-out access, Stage B, candidate selection and promotion remain closed."
+  ]
+}
