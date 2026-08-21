@@ -1,0 +1,77 @@
+{
+  "artifactVersion": "s12.s12-f-12.stage-a.execution-transition.v1",
+  "status": "ONE_BOUNDED_STAGE_A_EXECUTED_COMPLETED_REJECTED_HARD_GATE_PENDING_OWNER_DECISION",
+  "experimentId": "s12-f-12",
+  "transitionDate": "2026-08-21",
+  "transitionAuthority": "project-owner-delegated-codex-execution-agent",
+  "authorization": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm25-authorization.v1.json",
+    "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A",
+    "spent": true,
+    "authorizedExecutions": 1,
+    "authorizedProviderCalls": 144,
+    "retryPolicy": "none",
+    "outputOverwrite": false
+  },
+  "execution": {
+    "command": "uv run --env-file .env --script scripts/run_sprint12_f12_stage_a_v6.py --authorization evaluation/sprint-12/optimization/s12-f-12-rm25-authorization.v1.json --output evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+    "executionCommit": "e047911e2e2d513f2b8751965dd702b2c1fe9d5a",
+    "providerCallsAttempted": 144,
+    "responsesReceived": 144,
+    "relationBranchOutputs": 96,
+    "schemaValidResponses": 138,
+    "usageValidResponses": 144,
+    "pricedCalls": 144,
+    "retryCount": 0,
+    "pricingFailureCount": 0,
+    "totalCostUsd": "0.00592500",
+    "costCeilingUsd": "10.00",
+    "failureClasses": {
+      "schemaInvalid": 6,
+      "invalidEvidence": 17,
+      "missingOutput": 0,
+      "endpointContractFailure": 0,
+      "sharedConfigurationMismatch": 0
+    }
+  },
+  "report": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+    "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "schema": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v6.json",
+    "schemaValid": true,
+    "status": "COMPLETED_REJECTED_HARD_GATE",
+    "rawSourceTextStored": false,
+    "rawProviderPayloadStored": false,
+    "heldOutAccess": false,
+    "immutable": true
+  },
+  "gateResults": {
+    "costCeilingPass": true,
+    "goldRelationsIntegrityPass": true,
+    "hardGatesPass": false,
+    "thresholdsPass": false,
+    "sliceGatesPass": false,
+    "failedGates": [
+      "schemaInvalid",
+      "invalidEvidence",
+      "thresholds",
+      "sliceGates"
+    ]
+  },
+  "governance": {
+    "providerExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "heldOutInspected": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "SEPARATE_POST_RUN_OWNER_DECISION_ON_IMMUTABLE_F12_STAGE_A_REPORT"
+  },
+  "constraints": [
+    "The report is preserved without overwrite or retry.",
+    "This execution does not establish accuracy improvement, candidate quality, business quality or tenant readiness.",
+    "A separate owner decision is required before any Stage B, selection, validation or held-out action.",
+    "Any future rerun requires a superseding package and new owner authorization."
+  ]
+}

@@ -2,7 +2,7 @@
 
 **As of:** 2026-08-21
 
-**Status:** `G5_F12_STAGE_A_AUTHORIZED_PENDING_EXECUTION`
+**Status:** `G5_F12_STAGE_A_COMPLETED_REJECTED_HARD_GATE_PENDING_OWNER_DECISION`
 
 This is the human-readable current-state index for Sprint 12. Machine consumers
 must use `evaluation/sprint-12/current-state.v1.json`.
@@ -21,28 +21,33 @@ The v7 f12 preregistration and technical freeze correctly retain their original
 `PREPARED` and `NOT_ISSUED` fields because they are immutable preparation
 snapshots. RM-23F issued that exact lineage, and RM-25 subsequently authorized
 one bounded Stage A execution through
-`s12-f-12-rm25-authorization-transition.v1.json`. These transitions change
-current governance state without rewriting history.
+`s12-f-12-rm25-authorization-transition.v1.json`. The one authorized execution
+is now recorded by
+`s12-f-12-stage-a-execution-transition.v1.json`; these transitions change
+current governance state without rewriting history or mutating the report.
 
 ## Current boundary
 
 - G3.1-A, G3.1-B and G3.1-C are complete with their recorded scope limits.
 - The f12 preregistration and freeze are issued for the exact v7 lineage.
-- Exactly one 144-call f12 development Stage A execution is authorized against
-  execution commit `e047911e`; no provider call has occurred yet.
-- Retry and output overwrite are not authorized. The authorization is
-  single-use and is spent when execution starts.
+- Exactly one 144-call f12 development Stage A execution ran against execution
+  commit `e047911e` and produced the immutable report v6.
+- The report is schema-valid but rejected by hard gates (`schemaInvalid=6`,
+  `invalidEvidence=17`), registered thresholds and slice gates. It records 144
+  calls, 96 relation branches, 0 retries and `$0.00592500` cost.
+- Retry and output overwrite were not authorized and were not attempted. The
+  authorization is spent and cannot be reused.
 - No candidate is selected or frozen; no accuracy improvement is established.
 - Validation and held-out data remain sealed. G6 is blocked by both candidate
   quality and external held-out custody.
 
 ## Next work
 
-1. Execute the exact authorized f12 development Stage A once, with at most 144
-   provider calls and 96 relation-branch outputs.
-2. Preserve the report without retry or overwrite and record actual failures,
-   usage and cost truthfully.
-3. Only a passing, immutable Stage A report may open a separate Stage B review.
+1. Obtain a separate owner post-run decision on the immutable Stage A report.
+2. Keep validation, held-out access, Stage B, selection and promotion closed;
+   any rerun requires a superseding package and new authorization.
+3. Do not claim accuracy improvement, candidate quality, business quality or
+   tenant readiness from this rejected run.
 
 Historical gate packets remain valid evidence of what was decided at their
 time; they are not current-state dashboards.

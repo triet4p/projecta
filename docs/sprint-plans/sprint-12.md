@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G5_F12_STAGE_A_AUTHORIZED_PENDING_EXECUTION`
+Status: `G5_F12_STAGE_A_COMPLETED_REJECTED_HARD_GATE_PENDING_OWNER_DECISION`
 
 Current state: [Sprint 12 Current State](sprint-12/current-state.md)
 
@@ -12,7 +12,7 @@ G4 packet: [Baseline Evaluation Review Packet](sprint-12/g4-baseline.md)
 
 G4.1 packet: [Contract Alignment and Failure Diagnosis](sprint-12/g4.1-contract-alignment.md)
 
-G5 packet: [Controlled Optimization Review Packet v13](sprint-12/g5-optimization.v13.md)
+G5 packet: [Controlled Optimization Review Packet v14](sprint-12/g5-optimization.v14.md)
 
 G6 packet: [Held-out Business Evaluation Packet](sprint-12/g6-business-evaluation.md)
 
@@ -396,11 +396,12 @@ unchanged and blocking.
 ### Phase F — Controlled Optimization and G5
 
 S12-f-07 through S12-f-11 are immutable rejected experiments. G3.1-A/B/C have
-passed with their recorded scope limits. The active path is now the issued f12
-two-step extraction package with RM-24 preparation and RM-25 owner authorization
-complete; one exact bounded Stage A run is the next permitted action. Generic
-context/workflow experiments, selection, validation and held-out access remain
-deferred; this does not rewrite historical G3 or G5 decisions.
+passed with their recorded scope limits. The issued f12 two-step extraction
+package has now completed its one RM-25-authorized Stage A run; the immutable
+report is rejected by hard, threshold and slice gates. A separate owner
+post-run decision is pending. Generic context/workflow experiments, selection,
+validation and held-out access remain deferred; this does not rewrite
+historical G3 or G5 decisions.
 
 - [x] **S12-72 — Create the experiment registry:** Require a hypothesis,
   permitted split, configuration digest, metric target, and stopping rule.
@@ -842,6 +843,14 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   review RM-24 and, only if every binding remains exact, authorize one
   development execution of 144 calls. This gate does not authorize validation,
   held-out access, Stage B, selection or promotion.
+- [x] **S12-RM-26 — Execute one authorized f12 Stage A:** Load the documented
+  local runtime source, run the guarded v6 runner exactly once, preserve the
+  schema-valid report and record the rejected hard/semantic gates. No retry,
+  overwrite, validation, held-out access, Stage B or selection is permitted.
+- [ ] **S12-RM-27 — Decide the f12 Stage A result:** Owner reviews the immutable
+  v6 report and decides whether to close the experiment or authorize a
+  separately prepared superseding remediation; this task does not authorize a
+  rerun by itself.
 
 #### Phase F-S — Candidate Selection Resume Path
 

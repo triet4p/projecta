@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -16,6 +17,12 @@ def _json(path: Path) -> dict:
 
 def _digest(path: Path) -> str:
     return "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _index_digest(path: Path) -> str:
+    relative = path.relative_to(ROOT).as_posix()
+    blob = subprocess.check_output(["git", "show", f":{relative}"], cwd=ROOT)
+    return "sha256:" + hashlib.sha256(blob).hexdigest()
 
 
 def test_rm23f_transition_preserves_history_and_sets_current_state() -> None:
@@ -47,23 +54,41 @@ def test_rm23f_transition_preserves_history_and_sets_current_state() -> None:
 
 def test_rm25_transition_and_current_state_agree() -> None:
     current = _json(EVAL / "current-state.v1.json")
-    g5 = _json(OPT / "g5-packet.v13.json")
+    g5 = _json(OPT / "g5-packet.v14.json")
     transition = _json(OPT / "s12-f-12-rm25-authorization-transition.v1.json")
     authorization_path = OPT / "s12-f-12-rm25-authorization.v1.json"
     review_path = OPT / "s12-f-12-rm25-owner-review.v1.json"
 
-    expected = "G5_F12_STAGE_A_AUTHORIZED_PENDING_EXECUTION"
+    expected = "G5_F12_STAGE_A_COMPLETED_REJECTED_HARD_GATE_PENDING_OWNER_DECISION"
     assert current["status"] == expected
     assert g5["status"] == expected
     assert transition["authorization"]["digest"] == _digest(authorization_path)
     assert transition["ownerReview"]["digest"] == _digest(review_path)
     assert current["experimentState"]["candidateSelection"] == "NO_SELECTION"
     assert g5["selection"]["status"] == "NO_SELECTION"
-    assert current["experimentState"]["providerExecutionAuthorized"] is True
-    assert g5["activeExperiment"]["providerExecutionAuthorized"] is True
-    assert current["experimentState"]["providerCallsPerformed"] == 0
+    assert current["experimentState"]["providerExecutionAuthorized"] is False
+    assert g5["activeExperiment"]["providerExecutionAuthorized"] is False
+    assert current["experimentState"]["providerCallsPerformed"] == 144
+    assert current["experimentState"]["stageAReportExists"] is True
+    assert current["experimentState"]["stageAStatus"] == "COMPLETED_REJECTED_HARD_GATE"
     assert current["experimentState"]["heldOutInspected"] is False
     assert g5["authorizationBoundary"]["heldOutAccessAuthorized"] is False
+
+
+def test_f12_stage_a_execution_transition_and_report_are_immutable_evidence() -> None:
+    transition = _json(OPT / "s12-f-12-stage-a-execution-transition.v1.json")
+    report_path = OPT / "s12-f-12-stage-a-report.v6.json"
+    report = _json(report_path)
+    assert transition["report"]["digest"] == _index_digest(report_path)
+    assert transition["report"]["status"] == report["decision"]["status"]
+    assert report["accounting"]["providerCallsAttempted"] == 144
+    assert report["accounting"]["responsesReceived"] == 144
+    assert report["accounting"]["retryCount"] == 0
+    assert report["custody"]["rawProviderPayloadStored"] is False
+    assert report["custody"]["rawSourceTextStored"] is False
+    assert transition["governance"]["stageBAuthorized"] is False
+    assert transition["governance"]["candidateSelectionAuthorized"] is False
+    assert transition["governance"]["heldOutAccessAuthorized"] is False
 
 
 def test_current_documents_do_not_repeat_superseded_statuses() -> None:
@@ -73,9 +98,9 @@ def test_current_documents_do_not_repeat_superseded_statuses() -> None:
     handoffs = (DOCS / "agent-handoffs.md").read_text(encoding="utf-8")
 
     assert "sprint-12/current-state.md" in sprint_plan
-    assert "sprint-12/g5-optimization.v13.md" in sprint_plan
-    assert "G5_F12_STAGE_A_AUTHORIZED_PENDING_EXECUTION" in global_plan
-    assert "CURRENT_AUTHORIZED_STAGE_A_EXECUTION_HANDOFF" in handoffs
+    assert "sprint-12/g5-optimization.v14.md" in sprint_plan
+    assert "G5_F12_STAGE_A_COMPLETED_REJECTED_HARD_GATE_PENDING_OWNER_DECISION" in global_plan
+    assert "CURRENT_POST_RUN_OWNER_DECISION_HANDOFF" in handoffs
     assert "Handoff A — Runtime-backed" not in handoffs
 
     stale_phrases = (

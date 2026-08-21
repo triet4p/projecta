@@ -1,0 +1,71 @@
+{
+  "packetVersion": "s12.g5.packet.v14",
+  "status": "G5_F12_STAGE_A_COMPLETED_REJECTED_HARD_GATE_PENDING_OWNER_DECISION",
+  "asOf": "2026-08-21",
+  "supersedesForCurrentState": {
+    "path": "evaluation/sprint-12/optimization/g5-packet.v13.json",
+    "digest": "sha256:b968aecb4c26898bf4e78affa91d3d6b36fd855b4af14c5f2f9e8c9c70881444"
+  },
+  "activeExperiment": {
+    "experimentId": "s12-f-12",
+    "design": "two-step entity-then-relation extraction with predicted-entity and gold-entity diagnostic arms",
+    "executionTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-execution-transition.v1.json",
+      "status": "ONE_BOUNDED_STAGE_A_EXECUTED_COMPLETED_REJECTED_HARD_GATE_PENDING_OWNER_DECISION"
+    },
+    "report": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+      "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+      "status": "COMPLETED_REJECTED_HARD_GATE"
+    },
+    "executionCommit": "e047911e2e2d513f2b8751965dd702b2c1fe9d5a",
+    "providerExecutionAuthorized": false,
+    "authorizedProviderCalls": 144,
+    "providerCallsPerformed": 144,
+    "stageAReportExists": true,
+    "stageAReportSchemaValid": true,
+    "retryCount": 0,
+    "totalCostUsd": "0.00592500",
+    "costCeilingUsd": "10.00"
+  },
+  "gateResults": {
+    "hardGatesPass": false,
+    "thresholdsPass": false,
+    "sliceGatesPass": false,
+    "goldRelationsIntegrityPass": true,
+    "failedGates": ["schemaInvalid", "invalidEvidence", "thresholds", "sliceGates"],
+    "failureCounts": {
+      "schemaInvalid": 6,
+      "invalidEvidence": 17,
+      "missingOutput": 0,
+      "endpointContractFailure": 0,
+      "sharedConfigurationMismatch": 0,
+      "retryCount": 0,
+      "pricingFailureCount": 0
+    }
+  },
+  "selection": {
+    "status": "NO_SELECTION",
+    "candidateAvailable": false,
+    "candidateFreezeAuthorized": false,
+    "reason": "S12-f-12 failed registered Stage A hard, threshold and slice gates; separate owner post-run decision is pending."
+  },
+  "authorizationBoundary": {
+    "nextPermittedTask": "SEPARATE_POST_RUN_OWNER_DECISION_ON_IMMUTABLE_F12_STAGE_A_REPORT",
+    "authorizedExecutions": 1,
+    "authorizedProviderCalls": 144,
+    "authorizationSpent": true,
+    "retryAuthorized": false,
+    "outputOverwriteAuthorized": false,
+    "validationAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "claimBoundary": {
+    "accuracyImprovementEstablished": false,
+    "businessQualityEstablished": false,
+    "tenantReadinessEstablished": false,
+    "humanEvidence": false
+  }
+}

@@ -1,6 +1,6 @@
 # Sprint 12 Current Handoffs
 
-**Status:** `CURRENT_AUTHORIZED_STAGE_A_EXECUTION_HANDOFF`
+**Status:** `CURRENT_POST_RUN_OWNER_DECISION_HANDOFF`
 
 This revision supersedes the old baseline and generic-optimization handoffs.
 Those tasks are complete or historically closed. Use
@@ -18,7 +18,8 @@ Those tasks are complete or historically closed. Use
    it cannot be reused after execution starts.
 5. Do not retry, overwrite output, open validation/held-out data, Stage B,
    selection or promotion unless a later owner decision explicitly permits it.
-6. Update the task summary and plan only after executable evidence passes.
+6. Preserve the immutable report and update the task summary/state only from
+   executable evidence; a rejected run never opens downstream gates.
 
 ## Handoff A — RM-24 exact authorization preparation
 
@@ -39,7 +40,7 @@ RM-24 prepares evidence only and does not authorize execution.
 
 ## Handoff B — RM-25 owner authorization review
 
-**Status:** complete; one exact run authorized and provider calls remain zero.
+**Status:** complete; one exact run authorized and subsequently spent.
 
 Independently verify RM-24 against the issued lineage and current-state index.
 If every binding and boundary is exact, issue one new authorization for one
@@ -50,19 +51,24 @@ owner review and current-state transition remain separate digest-bound records.
 
 ## Handoff C — One f12 Stage A execution
 
-Start only after RM-25 issues a valid authorization. Run the guarded v6 runner
-once: 144 provider calls, 96 relation branches, no retry and one final persist.
-Score every declared denominator and slice, keep missing/invalid outcomes
-fail-explicit, bind usage/pricing and retain sanitized diagnostics only.
+**Status:** complete; the guarded v6 runner ran once and the immutable report
+was preserved.
 
-The run itself does not authorize Stage B or selection. Close it as rejected if
-any hard or semantic gate fails.
+The execution recorded 144 provider calls, 96 relation branches, 138
+schema-valid responses, 144 usage-valid responses, zero retries, zero pricing
+failures and `$0.00592500` cost. It failed closed on six schema-invalid
+responses, 17 invalid-evidence findings, thresholds and slice gates.
+
+The run did not authorize Stage B or selection and is rejected pending a
+separate owner post-run decision. Any rerun requires a superseding package and
+new owner authorization.
 
 ## Handoff D — Post-run decision
 
-Review the immutable Stage A report against preregistered thresholds. A passing
-result may only open a separate owner review for Stage B. A failing result must
-be closed without rerun. No held-out access is allowed in either case.
+Review the immutable Stage A report against preregistered thresholds. The
+current report fails hard, threshold and slice gates, so no rerun, Stage B,
+selection, validation or held-out access is allowed until a separate owner
+decision is recorded.
 
 ## External-only work — custody and G6
 

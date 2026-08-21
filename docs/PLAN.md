@@ -90,12 +90,15 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 ## Active Sprints
 
 - [Sprint 12 — Business Semantic Quality and Evaluation](sprint-plans/sprint-12.md)
-  — *In progress at `G5_F12_STAGE_A_AUTHORIZED_PENDING_EXECUTION`. Dataset v3,
+  — *In progress at `G5_F12_STAGE_A_COMPLETED_REJECTED_HARD_GATE_PENDING_OWNER_DECISION`.
+  Dataset v3,
   measurement remediation and the two-step f12 development execution package
   are frozen. RM-23F issued the preregistration/freeze and RM-25 authorized one
   exact 144-call development Stage A execution after independent owner review;
-  no provider run or candidate selection has occurred. Retry, overwrite,
-  validation, held-out access, Stage B, selection and promotion remain closed.
+  the immutable report is schema-valid but rejected by hard, threshold and
+  slice gates. Retry, overwrite, validation, held-out access, Stage B,
+  selection and promotion remain closed pending a separate owner post-run
+  decision.
   No business-quality claim is made, and new connector/outbound breadth remains
   deferred. The authoritative dashboard is the
   [Sprint 12 current-state index](sprint-plans/sprint-12/current-state.md).*
