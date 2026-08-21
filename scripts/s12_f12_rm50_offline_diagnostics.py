@@ -67,6 +67,7 @@ ALLOWED_POLICY_KEYS = {
     "rawtriggerquoteincluded",
     "rawvalidationdetailincluded",
     "recursivedynamickeyrawdataexclusion",
+    "reproducedwithoutproviderorrawreconstruction",
 }
 ALLOWED_REASON_KEYS = set(SCHEMA_REASON_CODES) | set(EVIDENCE_REASON_CODES)
 

@@ -1,0 +1,82 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm50-offline-remediation.v1",
+  "status": "OFFLINE_DIAGNOSTICS_AND_PARITY_FIXTURES_IMPLEMENTED_PENDING_RM51_OWNER_REVIEW",
+  "taskId": "S12-RM-50",
+  "experimentId": "s12-f-12",
+  "implementationScope": "Option A closed offline diagnostics followed by Option B deterministic scorer/materializer parity fixtures only",
+  "authorization": {
+    "source": "evaluation/sprint-12/optimization/s12-f-12-rm49-approval-transition.v1.json",
+    "optionAAuthorized": true,
+    "optionBAuthorizedAfterOptionAPass": true,
+    "optionAStopCriteriaPassed": true,
+    "optionBExecuted": true,
+    "runtimeRemediationAuthorized": false,
+    "lineagePreparationAuthorized": false,
+    "providerExecutionAuthorized": false,
+    "downstreamAccessAuthorized": false
+  },
+  "boundDigests": {
+    "evaluation/sprint-12/optimization/s12-f-12-rm49-owner-review.v1.json": "sha256:67287ae699ed86bf2ad414a3feb7977c3294a174bc6725ca8557ee7778475711",
+    "evaluation/sprint-12/optimization/s12-f-12-rm49-approval-transition.v1.json": "sha256:07927a952e32d0f805403c87672dc3a7a84af155149553f681260c0dd1976fe5",
+    "evaluation/sprint-12/optimization/s12-f-12-rm48-error-comparison.v1.json": "sha256:d0795993c2a47f88d450d30fb80177ee4ba9d864cc403a8cf0311969e29b6ec7",
+    "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json": "sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e",
+    "evaluation/sprint-12/optimization/s12-f-12-rm50-offline-diagnostic-report.v1.json": "sha256:62a660e80e37b05e5b8cf7ec471610e5237d9c5cc30d966d44f76c7027c17a16",
+    "evaluation/sprint-12/harness/s12-f-12-rm50-offline-diagnostic-report.schema.v1.json": "sha256:c8a47c266975aec04e467c812513d115f0d49e571fcfe657ea8039944fb93221",
+    "scripts/s12_f12_rm50_offline_diagnostics.py": "sha256:3b3352a94402cc64ecf4db215db87e32afff696cb956186040f9e42faf98cb5c",
+    "scripts/tests/test_sprint12_rm50_option_a.py": "sha256:4d64e77a3b4507739510acef5fbcdcda43c4e648d103e6a2ac4b9249baff70c2",
+    "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-fixtures.v1.json": "sha256:efe693c19c7f78c5929fdf9a392ba168c8ae7bf5cae40a6115ab16efd0e93cae",
+    "evaluation/sprint-12/harness/s12-f-12-rm50-parity-fixtures.schema.v1.json": "sha256:65bde491472002884115f3e09afcec4173ceb6622b7e67d9f990aa39bc932454",
+    "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-report.v1.json": "sha256:506875a6cd5de157eab06fcf577fcc2520683869e0e02124d68963a908f02b86",
+    "evaluation/sprint-12/harness/s12-f-12-rm50-parity-report.schema.v1.json": "sha256:27393e413edda23e085da101ba03a6b95b26b4c9981c6180e111b93df8f4410b",
+    "scripts/s12_f12_rm50_parity_fixtures.py": "sha256:b166b689289f509547b38293338b450ee8071d4e12631d008444d9143234ee3f",
+    "scripts/tests/test_sprint12_rm50_option_b.py": "sha256:f1c72d985643244cc3e8bf6ba9a4f7108de36bcc0edcd43e7b5d6b76a2c2f423"
+  },
+  "optionA": {
+    "reportPath": "evaluation/sprint-12/optimization/s12-f-12-rm50-offline-diagnostic-report.v1.json",
+    "finiteReasonAllowListsClosed": true,
+    "exactCountReconciliation": true,
+    "unknownFailClosed": true,
+    "recursiveDynamicKeyRawDataExclusion": true,
+    "j1GoldEntitiesSupportTransition": "not-applicable_to_zero",
+    "safeTestsPassed": 4
+  },
+  "optionB": {
+    "fixturePath": "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-fixtures.v1.json",
+    "reportPath": "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-report.v1.json",
+    "fixtureCount": 26,
+    "schemaBoundaryCount": 9,
+    "evidenceBoundaryCount": 10,
+    "scorerScenarioCount": 7,
+    "v9SchemaInvalidReproduced": 5,
+    "v9InvalidEvidenceReproduced": 20,
+    "v9TriggerContainmentFailures": 14,
+    "v9EndpointContainmentFailures": 6,
+    "goldRelationsControlClean": true,
+    "providerCalls": 0,
+    "rawReconstruction": false,
+    "safeTestsPassed": 5
+  },
+  "historicalCustody": {
+    "v6ReportImmutable": true,
+    "v9ReportImmutable": true,
+    "v8ReportPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json",
+    "v8ReportPresent": false
+  },
+  "governance": {
+    "offlineOnly": true,
+    "providerCalls": 0,
+    "runtimeRemediationAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "newAuthorizationIssued": false,
+    "providerExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "nextGate": "S12-RM-51_OWNER_REVIEW_RM50_OFFLINE_DIAGNOSTICS_AND_PARITY_FIXTURES"
+}

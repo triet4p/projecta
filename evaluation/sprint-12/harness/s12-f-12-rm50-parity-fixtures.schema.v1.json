@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "s12-f-12.rm50-parity-fixtures.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifactVersion", "status", "experimentId", "taskId", "sanitizedOnly", "rawProviderPayloadIncluded", "rawSourceTextIncluded", "rawTriggerQuoteIncluded", "rawValidationDetailIncluded", "fixtureMatrix", "v9SanitizedClusters", "goldRelationsControl"],
+  "properties": {
+    "artifactVersion": {"const": "s12.s12-f-12.rm50-parity-fixtures.v1"},
+    "status": {"const": "OFFLINE_PARITY_FIXTURES_READY_PENDING_OWNER_REVIEW"},
+    "experimentId": {"const": "s12-f-12"}, "taskId": {"const": "S12-RM-50"}, "sanitizedOnly": {"const": true},
+    "rawProviderPayloadIncluded": {"const": false}, "rawSourceTextIncluded": {"const": false}, "rawTriggerQuoteIncluded": {"const": false}, "rawValidationDetailIncluded": {"const": false},
+    "fixtureMatrix": {"type": "array", "minItems": 26, "items": {"oneOf": [{"$ref": "#/$defs/schemaFixture"}, {"$ref": "#/$defs/evidenceFixture"}, {"$ref": "#/$defs/scorerFixture"}]}},
+    "v9SanitizedClusters": {
+      "type": "object", "additionalProperties": false, "required": ["schemaInvalid", "invalidEvidence"],
+      "properties": {
+        "schemaInvalid": {"$ref": "#/$defs/schemaCluster"}, "invalidEvidence": {"$ref": "#/$defs/evidenceCluster"}
+      }
+    },
+    "goldRelationsControl": {
+      "type": "object", "additionalProperties": false, "required": ["fixtureArm", "invalidEvidence", "integrityPass"],
+      "properties": {"fixtureArm": {"const": "gold-relations"}, "invalidEvidence": {"const": 0}, "integrityPass": {"const": true}}
+    }
+  },
+  "$defs": {
+    "common": {
+      "type": "object", "required": ["fixtureId", "kind", "caseRun", "arm", "stage", "slice"],
+      "properties": {
+        "fixtureId": {"type": "string"}, "caseRun": {"type": "string", "pattern": "^(?:fixture|s12-a)-[A-Za-z0-9-]+#run-[0-9]+$"},
+        "arm": {"enum": ["predicted-entities", "gold-entities", "gold-relations"]}, "stage": {"enum": ["stage1", "stage2"]}, "slice": {"type": "string"}
+      }
+    },
+    "schemaFixture": {
+      "allOf": [{"$ref": "#/$defs/common"}, {"type": "object", "additionalProperties": false, "required": ["fixtureId", "kind", "caseRun", "arm", "stage", "slice", "expectedReason"], "properties": {"fixtureId": {"type": "string"}, "kind": {"const": "schema"}, "caseRun": {"type": "string"}, "arm": {"enum": ["predicted-entities", "gold-entities", "gold-relations"]}, "stage": {"enum": ["stage1", "stage2"]}, "slice": {"type": "string"}, "expectedReason": {"type": "string"}}}],
+      "unevaluatedProperties": false
+    },
+    "evidenceFixture": {
+      "allOf": [{"$ref": "#/$defs/common"}, {"type": "object", "additionalProperties": false, "required": ["fixtureId", "kind", "caseRun", "arm", "stage", "slice", "expectedReason"], "properties": {"fixtureId": {"type": "string"}, "kind": {"const": "evidence"}, "caseRun": {"type": "string"}, "arm": {"enum": ["predicted-entities", "gold-entities", "gold-relations"]}, "stage": {"enum": ["stage1", "stage2"]}, "slice": {"type": "string"}, "expectedReason": {"type": "string"}}}],
+      "unevaluatedProperties": false
+    },
+    "scorerFixture": {
+      "allOf": [{"$ref": "#/$defs/common"}, {"type": "object", "additionalProperties": false, "required": ["fixtureId", "kind", "caseRun", "arm", "stage", "slice", "scenario"], "properties": {"fixtureId": {"type": "string"}, "kind": {"const": "scorer"}, "caseRun": {"type": "string"}, "arm": {"enum": ["predicted-entities", "gold-entities", "gold-relations"]}, "stage": {"enum": ["stage1", "stage2"]}, "slice": {"type": "string"}, "scenario": {"enum": ["duplicate", "order", "tie", "wrong-predicate", "reversed-endpoint", "extra", "missing"]}}}],
+      "unevaluatedProperties": false
+    },
+    "schemaCluster": {
+      "type": "object", "additionalProperties": false, "required": ["total", "armStage", "reason", "caseRuns"],
+      "properties": {"total": {"const": 5}, "armStage": {"const": "predicted-entities/stage1"}, "reason": {"const": "entity_span_out_of_source"}, "caseRuns": {"type": "array", "minItems": 5, "items": {"type": "string"}}}
+    },
+    "evidenceCluster": {
+      "type": "object", "additionalProperties": false, "required": ["total", "arm", "reasonCounts", "caseRuns"],
+      "properties": {"total": {"const": 20}, "arm": {"const": "gold-entities"}, "reasonCounts": {"type": "object", "additionalProperties": false, "required": ["evidence_does_not_contain_trigger", "evidence_does_not_contain_endpoints"], "properties": {"evidence_does_not_contain_trigger": {"const": 14}, "evidence_does_not_contain_endpoints": {"const": 6}}}, "caseRuns": {"type": "array", "minItems": 20, "items": {"type": "string"}}}
+    }
+  }
+}

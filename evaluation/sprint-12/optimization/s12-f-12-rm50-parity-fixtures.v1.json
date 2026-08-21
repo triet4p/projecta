@@ -1,0 +1,296 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm50-parity-fixtures.v1",
+  "status": "OFFLINE_PARITY_FIXTURES_READY_PENDING_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-50",
+  "sanitizedOnly": true,
+  "rawProviderPayloadIncluded": false,
+  "rawSourceTextIncluded": false,
+  "rawTriggerQuoteIncluded": false,
+  "rawValidationDetailIncluded": false,
+  "fixtureMatrix": [
+    {
+      "fixtureId": "schema-unbound",
+      "kind": "schema",
+      "caseRun": "fixture-schema#run-1",
+      "arm": "predicted-entities",
+      "stage": "stage1",
+      "slice": "J1",
+      "expectedReason": "envelope_unbound_field"
+    },
+    {
+      "fixtureId": "schema-version",
+      "kind": "schema",
+      "caseRun": "fixture-schema#run-1",
+      "arm": "predicted-entities",
+      "stage": "stage1",
+      "slice": "J1",
+      "expectedReason": "envelope_version_mismatch"
+    },
+    {
+      "fixtureId": "schema-entity-invalid",
+      "kind": "schema",
+      "caseRun": "fixture-schema#run-1",
+      "arm": "predicted-entities",
+      "stage": "stage1",
+      "slice": "J1",
+      "expectedReason": "entity_candidate_invalid"
+    },
+    {
+      "fixtureId": "schema-duplicate",
+      "kind": "schema",
+      "caseRun": "fixture-schema#run-1",
+      "arm": "predicted-entities",
+      "stage": "stage1",
+      "slice": "J1",
+      "expectedReason": "entity_candidate_identity_duplicate"
+    },
+    {
+      "fixtureId": "schema-span",
+      "kind": "schema",
+      "caseRun": "fixture-schema#run-1",
+      "arm": "predicted-entities",
+      "stage": "stage1",
+      "slice": "J1",
+      "expectedReason": "entity_span_out_of_source"
+    },
+    {
+      "fixtureId": "schema-relation-invalid",
+      "kind": "schema",
+      "caseRun": "fixture-schema#run-1",
+      "arm": "predicted-entities",
+      "stage": "stage1",
+      "slice": "J1",
+      "expectedReason": "relation_candidate_invalid"
+    },
+    {
+      "fixtureId": "schema-endpoint-table",
+      "kind": "schema",
+      "caseRun": "fixture-schema#run-1",
+      "arm": "predicted-entities",
+      "stage": "stage1",
+      "slice": "J1",
+      "expectedReason": "relation_endpoint_not_in_server_table"
+    },
+    {
+      "fixtureId": "schema-evidence-invalid",
+      "kind": "schema",
+      "caseRun": "fixture-schema#run-1",
+      "arm": "predicted-entities",
+      "stage": "stage1",
+      "slice": "J1",
+      "expectedReason": "relation_evidence_invalid"
+    },
+    {
+      "fixtureId": "schema-unknown",
+      "kind": "schema",
+      "caseRun": "fixture-schema#run-1",
+      "arm": "predicted-entities",
+      "stage": "stage1",
+      "slice": "J1",
+      "expectedReason": "validation_detail_unavailable"
+    },
+    {
+      "fixtureId": "evidence-1",
+      "kind": "evidence",
+      "caseRun": "fixture-evidence#run-1",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "slice": "relation-positive",
+      "expectedReason": "trigger_quote_missing"
+    },
+    {
+      "fixtureId": "evidence-2",
+      "kind": "evidence",
+      "caseRun": "fixture-evidence#run-1",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "slice": "relation-positive",
+      "expectedReason": "trigger_quote_digest_mismatch"
+    },
+    {
+      "fixtureId": "evidence-3",
+      "kind": "evidence",
+      "caseRun": "fixture-evidence#run-1",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "slice": "relation-positive",
+      "expectedReason": "trigger_occurrence_missing"
+    },
+    {
+      "fixtureId": "evidence-4",
+      "kind": "evidence",
+      "caseRun": "fixture-evidence#run-1",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "slice": "relation-positive",
+      "expectedReason": "trigger_occurrence_outside_sentence"
+    },
+    {
+      "fixtureId": "evidence-5",
+      "kind": "evidence",
+      "caseRun": "fixture-evidence#run-1",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "slice": "relation-positive",
+      "expectedReason": "trigger_occurrence_outside_clause"
+    },
+    {
+      "fixtureId": "evidence-6",
+      "kind": "evidence",
+      "caseRun": "fixture-evidence#run-1",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "slice": "relation-positive",
+      "expectedReason": "evidence_span_missing"
+    },
+    {
+      "fixtureId": "evidence-7",
+      "kind": "evidence",
+      "caseRun": "fixture-evidence#run-1",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "slice": "relation-positive",
+      "expectedReason": "evidence_span_out_of_source"
+    },
+    {
+      "fixtureId": "evidence-8",
+      "kind": "evidence",
+      "caseRun": "fixture-evidence#run-1",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "slice": "relation-positive",
+      "expectedReason": "evidence_does_not_contain_trigger"
+    },
+    {
+      "fixtureId": "evidence-9",
+      "kind": "evidence",
+      "caseRun": "fixture-evidence#run-1",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "slice": "relation-positive",
+      "expectedReason": "evidence_does_not_contain_endpoints"
+    },
+    {
+      "fixtureId": "evidence-10",
+      "kind": "evidence",
+      "caseRun": "fixture-evidence#run-1",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "slice": "relation-positive",
+      "expectedReason": "materializer_detail_unavailable"
+    },
+    {
+      "fixtureId": "scorer-duplicate",
+      "kind": "scorer",
+      "caseRun": "fixture-scorer#run-1",
+      "arm": "gold-relations",
+      "stage": "stage2",
+      "slice": "J1",
+      "scenario": "duplicate"
+    },
+    {
+      "fixtureId": "scorer-order",
+      "kind": "scorer",
+      "caseRun": "fixture-scorer#run-1",
+      "arm": "gold-relations",
+      "stage": "stage2",
+      "slice": "J1",
+      "scenario": "order"
+    },
+    {
+      "fixtureId": "scorer-tie",
+      "kind": "scorer",
+      "caseRun": "fixture-scorer#run-1",
+      "arm": "gold-relations",
+      "stage": "stage2",
+      "slice": "J1",
+      "scenario": "tie"
+    },
+    {
+      "fixtureId": "scorer-wrong-predicate",
+      "kind": "scorer",
+      "caseRun": "fixture-scorer#run-1",
+      "arm": "gold-relations",
+      "stage": "stage2",
+      "slice": "J1",
+      "scenario": "wrong-predicate"
+    },
+    {
+      "fixtureId": "scorer-reversed-endpoint",
+      "kind": "scorer",
+      "caseRun": "fixture-scorer#run-1",
+      "arm": "gold-relations",
+      "stage": "stage2",
+      "slice": "J1",
+      "scenario": "reversed-endpoint"
+    },
+    {
+      "fixtureId": "scorer-extra",
+      "kind": "scorer",
+      "caseRun": "fixture-scorer#run-1",
+      "arm": "gold-relations",
+      "stage": "stage2",
+      "slice": "J1",
+      "scenario": "extra"
+    },
+    {
+      "fixtureId": "scorer-missing",
+      "kind": "scorer",
+      "caseRun": "fixture-scorer#run-1",
+      "arm": "gold-relations",
+      "stage": "stage2",
+      "slice": "J1",
+      "scenario": "missing"
+    }
+  ],
+  "v9SanitizedClusters": {
+    "schemaInvalid": {
+      "total": 5,
+      "armStage": "predicted-entities/stage1",
+      "reason": "entity_span_out_of_source",
+      "caseRuns": [
+        "s12-a-4027#run-1",
+        "s12-a-4016#run-1",
+        "s12-a-4032#run-1",
+        "s12-a-4016#run-2",
+        "s12-a-4016#run-3"
+      ]
+    },
+    "invalidEvidence": {
+      "total": 20,
+      "arm": "gold-entities",
+      "reasonCounts": {
+        "evidence_does_not_contain_trigger": 14,
+        "evidence_does_not_contain_endpoints": 6
+      },
+      "caseRuns": [
+        "s12-a-4007#run-1",
+        "s12-a-4011#run-1",
+        "s12-a-4015#run-1",
+        "s12-a-4019#run-1",
+        "s12-a-4027#run-1",
+        "s12-a-4035#run-1",
+        "s12-a-4007#run-2",
+        "s12-a-4011#run-2",
+        "s12-a-4015#run-2",
+        "s12-a-4019#run-2",
+        "s12-a-4027#run-2",
+        "s12-a-4035#run-2",
+        "s12-a-4043#run-2",
+        "s12-a-4007#run-3",
+        "s12-a-4011#run-3",
+        "s12-a-4015#run-3",
+        "s12-a-4019#run-3",
+        "s12-a-4027#run-3",
+        "s12-a-4035#run-3",
+        "s12-a-4043#run-3"
+      ]
+    }
+  },
+  "goldRelationsControl": {
+    "fixtureArm": "gold-relations",
+    "invalidEvidence": 0,
+    "integrityPass": true
+  }
+}

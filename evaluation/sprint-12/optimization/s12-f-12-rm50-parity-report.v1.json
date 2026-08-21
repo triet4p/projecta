@@ -1,0 +1,204 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm50-parity-report.v1",
+  "status": "OFFLINE_PARITY_FIXTURES_VERIFIED_PENDING_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-50",
+  "diagnosticContract": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm50-offline-diagnostic-report.v1.json",
+    "digest": "sha256:62a660e80e37b05e5b8cf7ec471610e5237d9c5cc30d966d44f76c7027c17a16",
+    "optionAStopCriteriaPassed": true
+  },
+  "fixtureContract": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-fixtures.v1.json",
+    "fixtureCount": 26,
+    "caseArmStageSliceCoverage": true,
+    "schemaBoundaryCoverage": [
+      "entity_candidate_identity_duplicate",
+      "entity_candidate_invalid",
+      "entity_span_out_of_source",
+      "envelope_unbound_field",
+      "envelope_version_mismatch",
+      "relation_candidate_invalid",
+      "relation_endpoint_not_in_server_table",
+      "relation_evidence_invalid",
+      "validation_detail_unavailable"
+    ],
+    "evidenceBoundaryCoverage": [
+      "evidence_does_not_contain_endpoints",
+      "evidence_does_not_contain_trigger",
+      "evidence_span_missing",
+      "evidence_span_out_of_source",
+      "materializer_detail_unavailable",
+      "trigger_occurrence_missing",
+      "trigger_occurrence_outside_clause",
+      "trigger_occurrence_outside_sentence",
+      "trigger_quote_digest_mismatch",
+      "trigger_quote_missing"
+    ],
+    "scorerScenarioCoverage": [
+      "duplicate",
+      "extra",
+      "missing",
+      "order",
+      "reversed-endpoint",
+      "tie",
+      "wrong-predicate"
+    ]
+  },
+  "scorerScenarioResults": {
+    "duplicate": {
+      "gold": 1,
+      "predicted": 2,
+      "exactMatch": 1,
+      "missingRelation": 0,
+      "extraRelation": 1,
+      "reversedEndpoint": 0,
+      "wrongEndpoint": 0,
+      "wrongPredicate": 0,
+      "goldReconciled": true,
+      "predictedReconciled": true,
+      "tieOrderDeterministic": true,
+      "unusedGoldKeys": [],
+      "unusedPredictedKeys": []
+    },
+    "order": {
+      "gold": 2,
+      "predicted": 2,
+      "exactMatch": 2,
+      "missingRelation": 0,
+      "extraRelation": 0,
+      "reversedEndpoint": 0,
+      "wrongEndpoint": 0,
+      "wrongPredicate": 0,
+      "goldReconciled": true,
+      "predictedReconciled": true,
+      "tieOrderDeterministic": true,
+      "unusedGoldKeys": [],
+      "unusedPredictedKeys": []
+    },
+    "tie": {
+      "gold": 1,
+      "predicted": 2,
+      "exactMatch": 1,
+      "missingRelation": 0,
+      "extraRelation": 1,
+      "reversedEndpoint": 0,
+      "wrongEndpoint": 1,
+      "wrongPredicate": 0,
+      "goldReconciled": true,
+      "predictedReconciled": true,
+      "tieOrderDeterministic": true,
+      "unusedGoldKeys": [],
+      "unusedPredictedKeys": [
+        "supports:a:c"
+      ]
+    },
+    "wrong-predicate": {
+      "gold": 1,
+      "predicted": 1,
+      "exactMatch": 0,
+      "missingRelation": 1,
+      "extraRelation": 1,
+      "reversedEndpoint": 0,
+      "wrongEndpoint": 0,
+      "wrongPredicate": 1,
+      "goldReconciled": true,
+      "predictedReconciled": true,
+      "tieOrderDeterministic": true,
+      "unusedGoldKeys": [
+        "supports:a:b"
+      ],
+      "unusedPredictedKeys": [
+        "blocks:a:b"
+      ]
+    },
+    "reversed-endpoint": {
+      "gold": 1,
+      "predicted": 1,
+      "exactMatch": 0,
+      "missingRelation": 1,
+      "extraRelation": 1,
+      "reversedEndpoint": 1,
+      "wrongEndpoint": 0,
+      "wrongPredicate": 0,
+      "goldReconciled": true,
+      "predictedReconciled": true,
+      "tieOrderDeterministic": true,
+      "unusedGoldKeys": [
+        "supports:a:b"
+      ],
+      "unusedPredictedKeys": [
+        "supports:b:a"
+      ]
+    },
+    "extra": {
+      "gold": 1,
+      "predicted": 2,
+      "exactMatch": 1,
+      "missingRelation": 0,
+      "extraRelation": 1,
+      "reversedEndpoint": 0,
+      "wrongEndpoint": 1,
+      "wrongPredicate": 0,
+      "goldReconciled": true,
+      "predictedReconciled": true,
+      "tieOrderDeterministic": true,
+      "unusedGoldKeys": [],
+      "unusedPredictedKeys": [
+        "supports:a:c"
+      ]
+    },
+    "missing": {
+      "gold": 2,
+      "predicted": 1,
+      "exactMatch": 1,
+      "missingRelation": 1,
+      "extraRelation": 0,
+      "reversedEndpoint": 0,
+      "wrongEndpoint": 0,
+      "wrongPredicate": 0,
+      "goldReconciled": true,
+      "predictedReconciled": true,
+      "tieOrderDeterministic": true,
+      "unusedGoldKeys": [
+        "supports:b:c"
+      ],
+      "unusedPredictedKeys": []
+    }
+  },
+  "v9ClusterReproduction": {
+    "schemaInvalidTotal": 5,
+    "invalidEvidenceTotal": 20,
+    "triggerContainment": 14,
+    "endpointContainment": 6,
+    "reproducedWithoutProviderOrRawReconstruction": true
+  },
+  "goldRelationsControl": {
+    "fixtureArm": "gold-relations",
+    "invalidEvidence": 0,
+    "integrityPass": true
+  },
+  "rawDataPolicy": {
+    "rawProviderPayloadIncluded": false,
+    "rawSourceTextIncluded": false,
+    "rawTriggerQuoteIncluded": false,
+    "rawValidationDetailIncluded": false,
+    "recursiveDynamicKeyExclusion": true
+  },
+  "governance": {
+    "offlineOnly": true,
+    "providerCalls": 0,
+    "runtimeRemediationAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "newAuthorizationIssued": false,
+    "providerExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "nextGate": "S12-RM-51_OWNER_REVIEW_RM50_OFFLINE_DIAGNOSTICS_AND_PARITY_FIXTURES"
+}
