@@ -1,0 +1,66 @@
+{
+  "artifactVersion": "s12.s12-f-12.offline-contracts-review.v4",
+  "status": "OWNER_REVIEW_WITHHELD_ENDPOINT_REUSE_AND_SOURCE_PROOF",
+  "experimentId": "s12-f-12",
+  "decisionType": "RM-21B_OWNER_REREVIEW",
+  "decisionDate": "2026-08-21",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedArtifact": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v4.json",
+    "commit": "2b9f8c3"
+  },
+  "verifiedEvidence": {
+    "regressionTests": "26 passed",
+    "targetedV4Tests": "5 passed",
+    "preflightStatus": "OFFLINE_CONTRACTS_READY_ZERO_CALL_V4",
+    "ruff": "pass",
+    "gitDiffCheck": "pass",
+    "providerCalls": 0,
+    "providerExecutionAuthorized": false,
+    "preregistrationIssued": false,
+    "heldOutAccess": false,
+    "historicalPackagesPreserved": true,
+    "localIdRenameResolved": true,
+    "duplicateAbsentDriftWrongTypeCasesPresent": true,
+    "unicodeCodePointWidthChecked": true,
+    "exactNonEmptyBindingSetEnforced": true
+  },
+  "blockingFindings": [
+    {
+      "id": "F12-OFFLINE-12",
+      "severity": "P1",
+      "summary": "One-to-one entity matching incorrectly consumes a valid candidate across relation endpoint slots.",
+      "evidence": "_endpoint_resolution stores matched candidate IDs in a global used set while iterating relation endpoints. In the review case g1->g2 and g1->g3 with three exact typed-span candidates, the scorer returned resolved=3 and wrong=1 instead of resolved=4 and wrong=0.",
+      "impact": "Any entity participating in more than one relation is misclassified after its first use. The gold-relations integrity control and endpoint denominators can fail on ordinary graph topology even when every candidate and relation is correct.",
+      "requiredRemediation": "Build a one-to-one mapping once between distinct gold entities and predicted candidates, then reuse that mapping for every relation endpoint occurrence. Add shared-source, shared-target, relation-cycle and repeated-endpoint denominator tests."
+    },
+    {
+      "id": "F12-OFFLINE-13",
+      "severity": "P2",
+      "summary": "Occurrence content is asserted by metadata but not proven from the runtime source slice.",
+      "evidence": "EvidenceContext contains sourceLength and TriggerOccurrence.quoteDigest, but neither the scorer nor an offline materializer derives a digest from source[start:end]. The content-mismatch test changes the supplied quoteDigest; it does not test a source slice whose content disagrees with otherwise valid metadata.",
+      "impact": "Malformed server-owned occurrence metadata can still claim a valid quote digest for an unrelated in-bounds span, so source-to-occurrence custody is not yet demonstrated before preregistration.",
+      "requiredRemediation": "Implement and test a server-owned runtime-only occurrence materializer that derives the occurrence digest from the Unicode code-point source slice, passes only sanitized span/digest metadata to reports, and fails closed on source-slice, normalization, boundary or digest mismatch."
+    }
+  ],
+  "decision": {
+    "rm20cImplementationRecorded": true,
+    "rm21bReviewCompleted": true,
+    "rm21bApproved": false,
+    "preregistrationPreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "executionFreezeAuthorized": false,
+    "providerExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "offline-rm20d-endpoint-reuse-and-source-materialization-only"
+  },
+  "constraints": [
+    "Preserve all v1-v4 packages and review artifacts as immutable history.",
+    "Do not preregister, freeze an execution package, authorize provider execution or inspect held-out data from RM-20D.",
+    "A superseding offline package requires a separate owner re-review."
+  ]
+}

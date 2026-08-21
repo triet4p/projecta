@@ -1,0 +1,42 @@
+{
+  "artifactVersion": "s12.s12-f-12.offline-contracts.v5",
+  "status": "OFFLINE_CONTRACTS_IMPLEMENTED_PENDING_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "implementationScope": "RM-20D",
+  "supersedes": {"path": "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v4.json", "digest": "sha256:b913abd633907ddb3dfcecc7c462fc60902b075841debc9d3e6ef1c26fa37076"},
+  "measurementContract": {
+    "identityPolicy": "map-distinct-gold-entities-once-by-typed-span-then-reuse-across-all-relation-slots",
+    "endpointReuse": true,
+    "missingEndpointDefinition": "count relation endpoint slots whose mapped gold entity is absent; a reused source/target mapping counts once per relation slot",
+    "sourceCustodyPolicy": "runtime-only-materializer-derives-quoteDigest-from-source-start-end",
+    "unicodeOffsetPolicy": "unicode-code-point-half-open",
+    "evidenceSupportRequires": ["sourceSliceDigestMatch", "sourceSliceEqualsTriggerQuote", "occurrenceWidthMatchesTriggerQuote", "occurrenceInsideSelectedSentence", "occurrenceInsideSelectedClause", "evidenceContainsTrigger", "endpointContainment"],
+    "semanticBuckets": ["exactMatch", "wrongPredicate", "reversedEndpoint", "wrongEndpoint", "missingRelation", "extraRelation"],
+    "evidenceBuckets": ["exact", "supportedNonExact", "unsupported", "missing", "notApplicable"],
+    "hardGates": {"schemaInvalid": 0, "invalidEvidence": 0, "missingOutput": 0, "endpointContractFailure": 0, "sharedConfigurationMismatch": 0, "retryCount": 0, "pricingFailure": 0, "rawSensitiveDataIncluded": false, "heldOutInspected": false}
+  },
+  "stageContracts": {"stage1Path": "evaluation/sprint-12/harness/s12-f-12-stage-1-entity-envelope.schema.v2.json", "stage2Path": "evaluation/sprint-12/harness/s12-f-12-stage-2-relation-envelope.schema.v2.json", "responseLevelAbstention": true, "serverOwnedCandidateTable": true, "sourceContext": "runtime-only", "rawSourceTextPersisted": false},
+  "oracleFixtures": {"path": "evaluation/sprint-12/harness/s12-f-12-oracle-fixtures.v5.json", "fixtureCount": 3, "arms": ["gold-relations", "predicted-entities", "gold-entities"], "sharedEndpointReuseGraph": ["g1->g2", "g1->g3"], "rawSourceTextIncluded": false},
+  "scorer": {"implementationPath": "scripts/sprint12_f12_two_step_contracts_v5.py", "deterministic": true, "providerCalls": 0, "zeroRetry": true, "zeroOverwrite": true},
+  "approvedThresholds": {"entityMacroF1Min": 0.85, "entitySpanExactMin": 0.95, "entityHallucinationRateMax": 0.05, "abstentionPrecisionMin": 0.90, "abstentionRecallMin": 0.90, "abstentionF1Min": 0.90, "relationSemanticMicroF1Min": 0.80, "relationSemanticMacroF1Min": 0.80, "predicateAccuracyMin": 0.85, "endpointDirectionAccuracyMin": 0.90, "missingEndpointRateMax": 0.05, "reversedEndpointRateMax": 0.05, "relationEvidenceSupportMin": 0.85, "relationEvidenceExactMin": 0.85, "relationHallucinationRateMax": 0.05, "hardFailureCount": 0, "retryCount": 0, "pricingFailureCount": 0, "goldRelationsIntegrityScore": 1.0, "goldRelationsMaterializerFailures": 0},
+  "boundDigests": {
+    "evaluation/sprint-12/optimization/s12-f-12-two-step-extraction-design-proposal.v1.json": "sha256:bc64c804938ee44fe3b627bc4858499b24e754a92b266d6a0c5a80f07e8098c2",
+    "evaluation/sprint-12/optimization/s12-f-12-two-step-extraction-design-review.v1.json": "sha256:e2329f8e3aa5a9f280e01b2fcca8fc15f4ce89470ad72f5f3e9efb368419a5df",
+    "evaluation/sprint-12/optimization/s12-f-12-offline-contracts-review.v2.json": "sha256:edee491c0bc1d191228f6216ba1ea3430d6722a21e3f4d79865ad333d58a59cf",
+    "evaluation/sprint-12/optimization/s12-f-12-offline-contracts-review.v3.json": "sha256:0243d68dc2cfb8c8a1dfadc2cb89b085924abbf58721c22c0e166e34a25ce590",
+    "evaluation/sprint-12/optimization/s12-f-12-offline-contracts-review.v4.json": "sha256:8f26c6f47af6bfd4fbdd85ac38846b0308f3d13f0fbfa4b96d2af8de1789d98e",
+    "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v1.json": "sha256:47e122de1b6cc90d1fc181d658d7be44dad737556d03eb01289f9f9bdbf9180d",
+    "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v2.json": "sha256:d6828e577e08dadfea45a564a0498582632484909610e573a4ea29fef3a8ec65",
+    "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v3.json": "sha256:efaebf0772b84e0c48e33f31f16970bba2faddc783e71c495cef1764bb8fa81f",
+    "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v4.json": "sha256:b913abd633907ddb3dfcecc7c462fc60902b075841debc9d3e6ef1c26fa37076",
+    "evaluation/sprint-12/harness/s12-f-12-stage-1-entity-envelope.schema.v2.json": "sha256:53144aeddbcdf53d7c23d59d123eb92ead7afd7f4087e3763125b456923f52d4",
+    "evaluation/sprint-12/harness/s12-f-12-stage-2-relation-envelope.schema.v2.json": "sha256:0d0dc18829d3fc205d92b3c17ae70e4fb846858f756b3ea788b549587a90f34d",
+    "evaluation/sprint-12/harness/relation-trigger-contract.v1.json": "sha256:bdfc4e62dd73da690578aa1c9fd816bd4dba153951e7c8081b8d0ae82adc6253",
+    "evaluation/sprint-12/harness/s12-f-12-oracle-fixtures.v5.json": "sha256:e71fa4d1683de5893de3a65e082f5a3168fd52f1d77efe026d06b86b353570b6",
+    "scripts/sprint12_f12_two_step_contracts_v5.py": "sha256:b556ca0de34757815d5a1b9dd0f8034ab2174d860261c0bda8c1297d4c3b1f0f",
+    "scripts/preflight_sprint12_f12_offline_contracts_v5.py": "sha256:3e277031a4646e4ed56385aaa187e88bfb65ab88208e71eed6d8bd2d51f0567a"
+  },
+  "zeroCallPreflight": {"path": "scripts/preflight_sprint12_f12_offline_contracts_v5.py", "status": "OFFLINE_CONTRACTS_READY_ZERO_CALL_V5", "providerCalls": 0, "providerExecutionAuthorized": false, "preregistrationIssued": false, "heldOutAccess": false},
+  "governance": {"providerExecutionAuthorized": false, "preregistrationAuthorized": false, "stageBAuthorized": false, "candidateSelectionAuthorized": false, "promotionAuthorized": false, "nextAction": "owner re-review of superseding RM-20D offline package"},
+  "rawSensitiveDataIncluded": false
+}

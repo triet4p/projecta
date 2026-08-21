@@ -709,8 +709,19 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   source slice and trigger quote under the Unicode offset policy. Add adversarial
   rename, duplicate, width/content mismatch and Unicode tests; V4 validation is
   offline (`5 passed`, Ruff and diff-check pass), with zero provider calls.
-- [ ] **S12-RM-21B — Owner re-review of the superseding f12 package:** Review the
-  RM-20C package independently. Preregistration preparation, execution freeze
+- [x] **S12-RM-21B — Owner re-review of the superseding f12 package:** Review v4
+  is recorded as `OWNER_REVIEW_WITHHELD_ENDPOINT_REUSE_AND_SOURCE_PROOF` after
+  reproducing candidate consumption across repeated endpoint slots and finding
+  no materialized proof from runtime source slice to occurrence digest.
+- [x] **S12-RM-20D — Remediate endpoint reuse and source-slice custody:** Build a
+  one-to-one gold-entity/candidate map once and reuse it across relation slots.
+  Add a runtime-only server materializer that derives occurrence digest from the
+  Unicode source slice, while persisting only sanitized metadata. Cover shared
+  source/target, cycles, normalization and source-content mismatch with zero
+  provider calls. V5 validation is offline (`5 passed`, Ruff and diff-check
+  pass); no provider call was issued.
+- [ ] **S12-RM-21C — Owner re-review of the superseding f12 package:** Review the
+  RM-20D package independently. Preregistration preparation, execution freeze
   and provider execution remain closed until this review passes.
 
 #### Phase F-S — Candidate Selection Resume Path

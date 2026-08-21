@@ -1,0 +1,51 @@
+{
+  "artifactVersion": "s12.s12-f-12.oracle-fixtures.v5",
+  "status": "OFFLINE_TEST_FIXTURE",
+  "rawSourceTextIncluded": false,
+  "unicodeOffsetPolicy": "unicode-code-point-half-open",
+  "pairedContextDigest": "sha256:offline-context-v5",
+  "pairedConfigurationDigest": "sha256:offline-config-v5",
+  "sourceDigest": "sha256:8c3fed1d757e9ef5601a842adf8127489cc00d94721abc3c66f90cee37271eca",
+  "sourceLength": 80,
+  "oracleArms": [
+    {
+      "id": "gold-relations",
+      "kind": "zero-provider-integrity-control",
+      "providerCalls": 0,
+      "contextDigest": "sha256:offline-context-v5",
+      "configurationDigest": "sha256:offline-config-v5",
+      "goldEntities": [{"id": "g1", "type": "Task", "startOffset": 0, "endOffset": 5}, {"id": "g2", "type": "Requirement", "startOffset": 20, "endOffset": 30}, {"id": "g3", "type": "Decision", "startOffset": 40, "endOffset": 48}],
+      "candidateTable": [{"candidateId": "g1", "type": "Task", "startOffset": 0, "endOffset": 5, "confidence": 1.0}, {"candidateId": "g2", "type": "Requirement", "startOffset": 20, "endOffset": 30, "confidence": 1.0}, {"candidateId": "g3", "type": "Decision", "startOffset": 40, "endOffset": 48, "confidence": 1.0}],
+      "stage1Response": {"schemaVersion": "s12-f-12.stage1.entity-envelope.v2", "entities": [{"candidateId": "g1", "type": "Task", "startOffset": 0, "endOffset": 5, "confidence": 1.0}, {"candidateId": "g2", "type": "Requirement", "startOffset": 20, "endOffset": 30, "confidence": 1.0}, {"candidateId": "g3", "type": "Decision", "startOffset": 40, "endOffset": 48, "confidence": 1.0}], "abstention": {"required": false, "reason": null}},
+      "goldRelations": [{"predicate": "supports", "sourceEntityId": "g1", "targetEntityId": "g2", "startOffset": 0, "endOffset": 30, "triggerDigest": "sha256:66312e5e57ebd0b4fff4ef544c5a4abd86f89a0e2f003d9209dad1a641694bca"}, {"predicate": "supports", "sourceEntityId": "g1", "targetEntityId": "g3", "startOffset": 0, "endOffset": 48, "triggerDigest": "sha256:66312e5e57ebd0b4fff4ef544c5a4abd86f89a0e2f003d9209dad1a641694bca"}],
+      "stage2Response": {"schemaVersion": "s12-f-12.stage2.relation-envelope.v2", "relations": [{"predicate": "supports", "sourceEntityId": "g1", "targetEntityId": "g2", "confidence": 1.0, "triggerQuote": "supports", "evidence": {"startOffset": 0, "endOffset": 30}}, {"predicate": "supports", "sourceEntityId": "g1", "targetEntityId": "g3", "confidence": 1.0, "triggerQuote": "supports", "evidence": {"startOffset": 0, "endOffset": 48}}], "abstention": {"required": false, "reason": null}},
+      "evidenceContexts": {"supports|g1|g2": {"sourceDigest": "sha256:8c3fed1d757e9ef5601a842adf8127489cc00d94721abc3c66f90cee37271eca", "triggerOccurrences": [{"startOffset": 10, "endOffset": 18, "quoteDigest": "sha256:66312e5e57ebd0b4fff4ef544c5a4abd86f89a0e2f003d9209dad1a641694bca"}], "sentence": [0, 60], "clause": [0, 48]}, "supports|g1|g3": {"sourceDigest": "sha256:8c3fed1d757e9ef5601a842adf8127489cc00d94721abc3c66f90cee37271eca", "triggerOccurrences": [{"startOffset": 30, "endOffset": 38, "quoteDigest": "sha256:66312e5e57ebd0b4fff4ef544c5a4abd86f89a0e2f003d9209dad1a641694bca"}], "sentence": [0, 60], "clause": [0, 48]}}
+    },
+    {
+      "id": "predicted-entities",
+      "kind": "paired-provider-ablation-local-id-rename",
+      "providerCalls": 1,
+      "contextDigest": "sha256:offline-context-v5",
+      "configurationDigest": "sha256:offline-config-v5",
+      "goldEntities": [{"id": "g1", "type": "Task", "startOffset": 0, "endOffset": 5}, {"id": "g2", "type": "Requirement", "startOffset": 20, "endOffset": 30}, {"id": "g3", "type": "Decision", "startOffset": 40, "endOffset": 48}],
+      "candidateTable": [{"candidateId": "c1", "type": "Task", "startOffset": 0, "endOffset": 5, "confidence": 1.0}, {"candidateId": "c2", "type": "Requirement", "startOffset": 20, "endOffset": 30, "confidence": 1.0}, {"candidateId": "c3", "type": "Decision", "startOffset": 40, "endOffset": 48, "confidence": 1.0}],
+      "stage1Response": {"schemaVersion": "s12-f-12.stage1.entity-envelope.v2", "entities": [{"candidateId": "c1", "type": "Task", "startOffset": 0, "endOffset": 5, "confidence": 1.0}, {"candidateId": "c2", "type": "Requirement", "startOffset": 20, "endOffset": 30, "confidence": 1.0}, {"candidateId": "c3", "type": "Decision", "startOffset": 40, "endOffset": 48, "confidence": 1.0}], "abstention": {"required": false, "reason": null}},
+      "goldRelations": [{"predicate": "supports", "sourceEntityId": "g1", "targetEntityId": "g2", "startOffset": 0, "endOffset": 30, "triggerDigest": "sha256:66312e5e57ebd0b4fff4ef544c5a4abd86f89a0e2f003d9209dad1a641694bca"}, {"predicate": "supports", "sourceEntityId": "g1", "targetEntityId": "g3", "startOffset": 0, "endOffset": 48, "triggerDigest": "sha256:66312e5e57ebd0b4fff4ef544c5a4abd86f89a0e2f003d9209dad1a641694bca"}],
+      "stage2Response": {"schemaVersion": "s12-f-12.stage2.relation-envelope.v2", "relations": [{"predicate": "supports", "sourceEntityId": "c1", "targetEntityId": "c2", "confidence": 1.0, "triggerQuote": "supports", "evidence": {"startOffset": 0, "endOffset": 30}}, {"predicate": "supports", "sourceEntityId": "c1", "targetEntityId": "c3", "confidence": 1.0, "triggerQuote": "supports", "evidence": {"startOffset": 0, "endOffset": 48}}], "abstention": {"required": false, "reason": null}},
+      "evidenceContexts": {"supports|c1|c2": {"sourceDigest": "sha256:8c3fed1d757e9ef5601a842adf8127489cc00d94721abc3c66f90cee37271eca", "triggerOccurrences": [{"startOffset": 10, "endOffset": 18, "quoteDigest": "sha256:66312e5e57ebd0b4fff4ef544c5a4abd86f89a0e2f003d9209dad1a641694bca"}], "sentence": [0, 60], "clause": [0, 48]}, "supports|c1|c3": {"sourceDigest": "sha256:8c3fed1d757e9ef5601a842adf8127489cc00d94721abc3c66f90cee37271eca", "triggerOccurrences": [{"startOffset": 30, "endOffset": 38, "quoteDigest": "sha256:66312e5e57ebd0b4fff4ef544c5a4abd86f89a0e2f003d9209dad1a641694bca"}], "sentence": [0, 60], "clause": [0, 48]}}
+    },
+    {
+      "id": "gold-entities",
+      "kind": "paired-provider-ablation",
+      "providerCalls": 1,
+      "contextDigest": "sha256:offline-context-v5",
+      "configurationDigest": "sha256:offline-config-v5",
+      "goldEntities": [{"id": "g1", "type": "Task", "startOffset": 0, "endOffset": 5}, {"id": "g2", "type": "Requirement", "startOffset": 20, "endOffset": 30}, {"id": "g3", "type": "Decision", "startOffset": 40, "endOffset": 48}],
+      "candidateTable": [{"candidateId": "g1", "type": "Task", "startOffset": 0, "endOffset": 5, "confidence": 1.0}, {"candidateId": "g2", "type": "Requirement", "startOffset": 20, "endOffset": 30, "confidence": 1.0}, {"candidateId": "g3", "type": "Decision", "startOffset": 40, "endOffset": 48, "confidence": 1.0}],
+      "stage1Response": {"schemaVersion": "s12-f-12.stage1.entity-envelope.v2", "entities": [{"candidateId": "g1", "type": "Task", "startOffset": 0, "endOffset": 5, "confidence": 1.0}, {"candidateId": "g2", "type": "Requirement", "startOffset": 20, "endOffset": 30, "confidence": 1.0}, {"candidateId": "g3", "type": "Decision", "startOffset": 40, "endOffset": 48, "confidence": 1.0}], "abstention": {"required": false, "reason": null}},
+      "goldRelations": [{"predicate": "supports", "sourceEntityId": "g1", "targetEntityId": "g2", "startOffset": 0, "endOffset": 30, "triggerDigest": "sha256:66312e5e57ebd0b4fff4ef544c5a4abd86f89a0e2f003d9209dad1a641694bca"}, {"predicate": "supports", "sourceEntityId": "g1", "targetEntityId": "g3", "startOffset": 0, "endOffset": 48, "triggerDigest": "sha256:66312e5e57ebd0b4fff4ef544c5a4abd86f89a0e2f003d9209dad1a641694bca"}],
+      "stage2Response": {"schemaVersion": "s12-f-12.stage2.relation-envelope.v2", "relations": [{"predicate": "supports", "sourceEntityId": "g1", "targetEntityId": "g2", "confidence": 1.0, "triggerQuote": "supports", "evidence": {"startOffset": 0, "endOffset": 30}}, {"predicate": "supports", "sourceEntityId": "g1", "targetEntityId": "g3", "confidence": 1.0, "triggerQuote": "supports", "evidence": {"startOffset": 0, "endOffset": 48}}], "abstention": {"required": false, "reason": null}},
+      "evidenceContexts": {"supports|g1|g2": {"sourceDigest": "sha256:8c3fed1d757e9ef5601a842adf8127489cc00d94721abc3c66f90cee37271eca", "triggerOccurrences": [{"startOffset": 10, "endOffset": 18, "quoteDigest": "sha256:66312e5e57ebd0b4fff4ef544c5a4abd86f89a0e2f003d9209dad1a641694bca"}], "sentence": [0, 60], "clause": [0, 48]}, "supports|g1|g3": {"sourceDigest": "sha256:8c3fed1d757e9ef5601a842adf8127489cc00d94721abc3c66f90cee37271eca", "triggerOccurrences": [{"startOffset": 30, "endOffset": 38, "quoteDigest": "sha256:66312e5e57ebd0b4fff4ef544c5a4abd86f89a0e2f003d9209dad1a641694bca"}], "sentence": [0, 60], "clause": [0, 48]}}
+    }
+  ]
+}
