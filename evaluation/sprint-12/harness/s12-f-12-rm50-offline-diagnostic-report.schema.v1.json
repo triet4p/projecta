@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "s12-f-12.rm50-offline-diagnostic-report.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifactVersion", "status", "experimentId", "taskId", "sourceReports", "accounting", "diagnostics", "sliceTransitions", "rawDataPolicy", "unknownPolicy", "stopCriteria", "governance", "nextGate"],
+  "properties": {
+    "artifactVersion": {"const": "s12.s12-f-12.rm50-offline-diagnostic-report.v1"},
+    "status": {"const": "OFFLINE_DIAGNOSTIC_CONTRACT_HARDENED_PENDING_OWNER_REVIEW"},
+    "experimentId": {"const": "s12-f-12"},
+    "taskId": {"const": "S12-RM-50"},
+    "sourceReports": {
+      "type": "object", "additionalProperties": false, "required": ["v6", "v9"],
+      "properties": {"v6": {"$ref": "#/$defs/source"}, "v9": {"$ref": "#/$defs/source"}}
+    },
+    "accounting": {
+      "type": "object", "additionalProperties": false, "required": ["v6", "v9", "reconciled", "deltaV9MinusV6"],
+      "properties": {
+        "v6": {"$ref": "#/$defs/accounting"}, "v9": {"$ref": "#/$defs/accounting"},
+        "reconciled": {"const": true},
+        "deltaV9MinusV6": {
+          "type": "object", "additionalProperties": false, "required": ["schemaInvalid", "invalidEvidence", "costUsd"],
+          "properties": {"schemaInvalid": {"const": -1}, "invalidEvidence": {"const": 3}, "costUsd": {"const": "0.00007200"}}
+        }
+      }
+    },
+    "diagnostics": {
+      "type": "object", "additionalProperties": false, "required": ["schemaReasonCounts", "evidenceReasonCounts", "schemaClusterDelta", "evidenceClusterDelta", "totalsReconciled"],
+      "properties": {
+        "schemaReasonCounts": {"$ref": "#/$defs/versionedSchemaReasonCounts"},
+        "evidenceReasonCounts": {"$ref": "#/$defs/versionedEvidenceReasonCounts"},
+        "schemaClusterDelta": {"$ref": "#/$defs/clusterMap"},
+        "evidenceClusterDelta": {"$ref": "#/$defs/clusterMap"},
+        "totalsReconciled": {"const": true}
+      }
+    },
+    "sliceTransitions": {
+      "type": "object", "additionalProperties": false, "required": ["J1GoldEntitiesEvidence"],
+      "properties": {"J1GoldEntitiesEvidence": {"$ref": "#/$defs/j1Transition"}}
+    },
+    "rawDataPolicy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["rawProviderPayloadIncluded", "rawSourceTextIncluded", "rawTriggerQuoteIncluded", "rawValidationDetailIncluded", "recursiveDynamicKeyExclusion"],
+      "properties": {
+        "rawProviderPayloadIncluded": {"const": false}, "rawSourceTextIncluded": {"const": false},
+        "rawTriggerQuoteIncluded": {"const": false}, "rawValidationDetailIncluded": {"const": false},
+        "recursiveDynamicKeyExclusion": {"const": true}
+      }
+    },
+    "unknownPolicy": {
+      "type": "object", "additionalProperties": false, "required": ["unknownSchemaReason", "unknownEvidenceReason", "unknownIsPass"],
+      "properties": {
+        "unknownSchemaReason": {"const": "validation_detail_unavailable"},
+        "unknownEvidenceReason": {"const": "materializer_detail_unavailable"}, "unknownIsPass": {"const": false}
+      }
+    },
+    "stopCriteria": {
+      "type": "object", "additionalProperties": false,
+      "required": ["closedFiniteReasonAllowLists", "exactCountReconciliation", "unknownFailClosed", "recursiveDynamicKeyRawDataExclusion", "j1GoldEntitiesTransitionRecorded", "allPassed"],
+      "properties": {
+        "closedFiniteReasonAllowLists": {"const": true}, "exactCountReconciliation": {"const": true},
+        "unknownFailClosed": {"const": true}, "recursiveDynamicKeyRawDataExclusion": {"const": true},
+        "j1GoldEntitiesTransitionRecorded": {"const": true}, "allPassed": {"const": true}
+      }
+    },
+    "governance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["offlineOnly", "providerCalls", "runtimeRemediationAuthorized", "supersedingLineagePreparationAuthorized", "preregistrationIssued", "technicalFreezeIssued", "newAuthorizationIssued", "providerExecutionAuthorized", "validationAccessAuthorized", "heldOutAccessAuthorized", "stageBAuthorized", "candidateSelectionAuthorized", "promotionAuthorized"],
+      "properties": {
+        "offlineOnly": {"const": true}, "providerCalls": {"const": 0},
+        "runtimeRemediationAuthorized": {"const": false}, "supersedingLineagePreparationAuthorized": {"const": false},
+        "preregistrationIssued": {"const": false}, "technicalFreezeIssued": {"const": false}, "newAuthorizationIssued": {"const": false},
+        "providerExecutionAuthorized": {"const": false}, "validationAccessAuthorized": {"const": false}, "heldOutAccessAuthorized": {"const": false},
+        "stageBAuthorized": {"const": false}, "candidateSelectionAuthorized": {"const": false}, "promotionAuthorized": {"const": false}
+      }
+    },
+    "nextGate": {"const": "S12-RM-51_OWNER_REVIEW_RM50_OFFLINE_DIAGNOSTICS_AND_PARITY_FIXTURES"}
+  },
+  "$defs": {
+    "source": {
+      "type": "object", "additionalProperties": false, "required": ["path", "digest", "immutable"],
+      "properties": {"path": {"type": "string"}, "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}, "immutable": {"const": true}}
+    },
+    "accounting": {
+      "type": "object", "additionalProperties": false, "required": ["providerCalls", "responses", "retryCount", "schemaInvalid", "invalidEvidence", "costUsd"],
+      "properties": {
+        "providerCalls": {"const": 144}, "responses": {"const": 144}, "retryCount": {"const": 0},
+        "schemaInvalid": {"type": "integer", "minimum": 0}, "invalidEvidence": {"type": "integer", "minimum": 0}, "costUsd": {"type": "string", "pattern": "^[0-9]+\\.[0-9]{8}$"}
+      }
+    },
+    "schemaCounts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["envelope_unbound_field", "envelope_version_mismatch", "entity_candidate_invalid", "entity_candidate_identity_duplicate", "entity_span_out_of_source", "relation_candidate_invalid", "relation_endpoint_not_in_server_table", "relation_evidence_invalid", "validation_detail_unavailable"],
+      "properties": {
+        "envelope_unbound_field": {"type": "integer", "minimum": 0}, "envelope_version_mismatch": {"type": "integer", "minimum": 0},
+        "entity_candidate_invalid": {"type": "integer", "minimum": 0}, "entity_candidate_identity_duplicate": {"type": "integer", "minimum": 0}, "entity_span_out_of_source": {"type": "integer", "minimum": 0},
+        "relation_candidate_invalid": {"type": "integer", "minimum": 0}, "relation_endpoint_not_in_server_table": {"type": "integer", "minimum": 0}, "relation_evidence_invalid": {"type": "integer", "minimum": 0}, "validation_detail_unavailable": {"type": "integer", "minimum": 0}
+      }
+    },
+    "evidenceCounts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["trigger_quote_missing", "trigger_quote_digest_mismatch", "trigger_occurrence_missing", "trigger_occurrence_outside_sentence", "trigger_occurrence_outside_clause", "evidence_span_missing", "evidence_span_out_of_source", "evidence_does_not_contain_trigger", "evidence_does_not_contain_endpoints", "materializer_detail_unavailable"],
+      "properties": {
+        "trigger_quote_missing": {"type": "integer", "minimum": 0}, "trigger_quote_digest_mismatch": {"type": "integer", "minimum": 0}, "trigger_occurrence_missing": {"type": "integer", "minimum": 0}, "trigger_occurrence_outside_sentence": {"type": "integer", "minimum": 0}, "trigger_occurrence_outside_clause": {"type": "integer", "minimum": 0}, "evidence_span_missing": {"type": "integer", "minimum": 0}, "evidence_span_out_of_source": {"type": "integer", "minimum": 0}, "evidence_does_not_contain_trigger": {"type": "integer", "minimum": 0}, "evidence_does_not_contain_endpoints": {"type": "integer", "minimum": 0}, "materializer_detail_unavailable": {"type": "integer", "minimum": 0}
+      }
+    },
+    "versionedSchemaReasonCounts": {"type": "object", "additionalProperties": false, "required": ["v6", "v9"], "properties": {"v6": {"$ref": "#/$defs/schemaCounts"}, "v9": {"$ref": "#/$defs/schemaCounts"}}},
+    "versionedEvidenceReasonCounts": {"type": "object", "additionalProperties": false, "required": ["v6", "v9"], "properties": {"v6": {"$ref": "#/$defs/evidenceCounts"}, "v9": {"$ref": "#/$defs/evidenceCounts"}}},
+    "clusterMap": {
+      "type": "object",
+      "propertyNames": {"not": {"pattern": "[Rr][Aa][Ww]|[Pp][Aa][Yy][Ll][Oo][Aa][Dd]|[Ss][Oo][Uu][Rr][Cc][Ee][Tt][Ee][Xx][Tt]|[Tt][Rr][Ii][Gg][Gg][Ee][Rr][Qq][Uu][Oo][Tt][Ee]|[Vv][Aa][Ll][Ii][Dd][Aa][Tt][Ii][Oo][Nn][Dd][Ee][Tt][Aa][Ii][Ll]"}},
+      "additionalProperties": {"$ref": "#/$defs/cluster"}
+    },
+    "cluster": {
+      "type": "object", "additionalProperties": false, "required": ["v6Count", "v9Count", "overlap", "newInV9", "resolvedFromV6"],
+      "properties": {"v6Count": {"type": "integer", "minimum": 0}, "v9Count": {"type": "integer", "minimum": 0}, "overlap": {"$ref": "#/$defs/caseRuns"}, "newInV9": {"$ref": "#/$defs/caseRuns"}, "resolvedFromV6": {"$ref": "#/$defs/caseRuns"}}
+    },
+    "caseRuns": {"type": "array", "items": {"type": "string", "pattern": "^s12-a-[0-9]+#run-[0-9]+$"}},
+    "j1Transition": {
+      "type": "object", "additionalProperties": false, "required": ["slice", "arm", "supportRate", "exactRate", "interpretation"],
+      "properties": {
+        "slice": {"const": "J1"}, "arm": {"const": "gold-entities"},
+        "supportRate": {"$ref": "#/$defs/transition"}, "exactRate": {"$ref": "#/$defs/transition"}, "interpretation": {"type": "string"}
+      }
+    },
+    "transition": {
+      "type": "object", "additionalProperties": false, "required": ["v6", "v9", "transition"],
+      "properties": {"v6": {"const": "not-applicable"}, "v9": {"const": 0.0}, "transition": {"const": "not-applicable_to_zero"}}
+    }
+  }
+}

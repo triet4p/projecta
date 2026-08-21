@@ -1,0 +1,207 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm50-offline-diagnostic-report.v1",
+  "status": "OFFLINE_DIAGNOSTIC_CONTRACT_HARDENED_PENDING_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-50",
+  "sourceReports": {
+    "v6": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+      "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+      "immutable": true
+    },
+    "v9": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json",
+      "digest": "sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e",
+      "immutable": true
+    }
+  },
+  "accounting": {
+    "v6": {
+      "providerCalls": 144,
+      "responses": 144,
+      "retryCount": 0,
+      "schemaInvalid": 6,
+      "invalidEvidence": 17,
+      "costUsd": "0.00592500"
+    },
+    "v9": {
+      "providerCalls": 144,
+      "responses": 144,
+      "retryCount": 0,
+      "schemaInvalid": 5,
+      "invalidEvidence": 20,
+      "costUsd": "0.00599700"
+    },
+    "reconciled": true,
+    "deltaV9MinusV6": {
+      "schemaInvalid": -1,
+      "invalidEvidence": 3,
+      "costUsd": "0.00007200"
+    }
+  },
+  "diagnostics": {
+    "schemaReasonCounts": {
+      "v6": {
+        "envelope_unbound_field": 0,
+        "envelope_version_mismatch": 0,
+        "entity_candidate_invalid": 0,
+        "entity_candidate_identity_duplicate": 0,
+        "entity_span_out_of_source": 0,
+        "relation_candidate_invalid": 0,
+        "relation_endpoint_not_in_server_table": 0,
+        "relation_evidence_invalid": 0,
+        "validation_detail_unavailable": 6
+      },
+      "v9": {
+        "envelope_unbound_field": 0,
+        "envelope_version_mismatch": 0,
+        "entity_candidate_invalid": 0,
+        "entity_candidate_identity_duplicate": 0,
+        "entity_span_out_of_source": 5,
+        "relation_candidate_invalid": 0,
+        "relation_endpoint_not_in_server_table": 0,
+        "relation_evidence_invalid": 0,
+        "validation_detail_unavailable": 0
+      }
+    },
+    "evidenceReasonCounts": {
+      "v6": {
+        "trigger_quote_missing": 0,
+        "trigger_quote_digest_mismatch": 0,
+        "trigger_occurrence_missing": 0,
+        "trigger_occurrence_outside_sentence": 0,
+        "trigger_occurrence_outside_clause": 0,
+        "evidence_span_missing": 0,
+        "evidence_span_out_of_source": 0,
+        "evidence_does_not_contain_trigger": 0,
+        "evidence_does_not_contain_endpoints": 0,
+        "materializer_detail_unavailable": 17
+      },
+      "v9": {
+        "trigger_quote_missing": 0,
+        "trigger_quote_digest_mismatch": 0,
+        "trigger_occurrence_missing": 0,
+        "trigger_occurrence_outside_sentence": 0,
+        "trigger_occurrence_outside_clause": 0,
+        "evidence_span_missing": 0,
+        "evidence_span_out_of_source": 0,
+        "evidence_does_not_contain_trigger": 14,
+        "evidence_does_not_contain_endpoints": 6,
+        "materializer_detail_unavailable": 0
+      }
+    },
+    "schemaClusterDelta": {
+      "gold-entities/stage2": {
+        "v6Count": 1,
+        "v9Count": 0,
+        "overlap": [],
+        "newInV9": [],
+        "resolvedFromV6": [
+          "s12-a-4035#run-1"
+        ]
+      },
+      "predicted-entities/stage1": {
+        "v6Count": 5,
+        "v9Count": 5,
+        "overlap": [
+          "s12-a-4016#run-1",
+          "s12-a-4016#run-2",
+          "s12-a-4016#run-3"
+        ],
+        "newInV9": [
+          "s12-a-4027#run-1",
+          "s12-a-4032#run-1"
+        ],
+        "resolvedFromV6": [
+          "s12-a-4024#run-3",
+          "s12-a-4032#run-3"
+        ]
+      }
+    },
+    "evidenceClusterDelta": {
+      "gold-entities": {
+        "v6Count": 17,
+        "v9Count": 20,
+        "overlap": [
+          "s12-a-4007#run-1",
+          "s12-a-4007#run-2",
+          "s12-a-4007#run-3",
+          "s12-a-4011#run-1",
+          "s12-a-4011#run-2",
+          "s12-a-4011#run-3",
+          "s12-a-4015#run-1",
+          "s12-a-4015#run-2",
+          "s12-a-4015#run-3",
+          "s12-a-4019#run-1",
+          "s12-a-4019#run-2",
+          "s12-a-4019#run-3",
+          "s12-a-4027#run-1",
+          "s12-a-4027#run-2",
+          "s12-a-4027#run-3",
+          "s12-a-4035#run-2",
+          "s12-a-4035#run-3"
+        ],
+        "newInV9": [
+          "s12-a-4035#run-1",
+          "s12-a-4043#run-2",
+          "s12-a-4043#run-3"
+        ],
+        "resolvedFromV6": []
+      }
+    },
+    "totalsReconciled": true
+  },
+  "sliceTransitions": {
+    "J1GoldEntitiesEvidence": {
+      "slice": "J1",
+      "arm": "gold-entities",
+      "supportRate": {
+        "v6": "not-applicable",
+        "v9": 0.0,
+        "transition": "not-applicable_to_zero"
+      },
+      "exactRate": {
+        "v6": "not-applicable",
+        "v9": 0.0,
+        "transition": "not-applicable_to_zero"
+      },
+      "interpretation": "This is an explicit registered denominator transition, not a causal or quality claim."
+    }
+  },
+  "rawDataPolicy": {
+    "rawProviderPayloadIncluded": false,
+    "rawSourceTextIncluded": false,
+    "rawTriggerQuoteIncluded": false,
+    "rawValidationDetailIncluded": false,
+    "recursiveDynamicKeyExclusion": true
+  },
+  "unknownPolicy": {
+    "unknownSchemaReason": "validation_detail_unavailable",
+    "unknownEvidenceReason": "materializer_detail_unavailable",
+    "unknownIsPass": false
+  },
+  "stopCriteria": {
+    "closedFiniteReasonAllowLists": true,
+    "exactCountReconciliation": true,
+    "unknownFailClosed": true,
+    "recursiveDynamicKeyRawDataExclusion": true,
+    "j1GoldEntitiesTransitionRecorded": true,
+    "allPassed": true
+  },
+  "governance": {
+    "offlineOnly": true,
+    "providerCalls": 0,
+    "runtimeRemediationAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "newAuthorizationIssued": false,
+    "providerExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "nextGate": "S12-RM-51_OWNER_REVIEW_RM50_OFFLINE_DIAGNOSTICS_AND_PARITY_FIXTURES"
+}
