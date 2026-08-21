@@ -294,6 +294,7 @@ def run_stage_a(**kwargs: Any) -> dict[str, Any]:
     v2_names = ("_normalize_gold_relations", "_contexts")
     old_v3 = {name: getattr(v3, name) for name in v3_names}
     old_v2 = {name: getattr(v2, name) for name in v2_names}
+    kwargs.setdefault("package_path", PACKAGE)
     _configure()
     try:
         return v3.run_stage_a(**kwargs)

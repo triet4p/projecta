@@ -9,9 +9,11 @@ from typing import Any
 import preflight_sprint12_f12_rm22b as base
 import run_sprint12_f12_stage_a_v4 as v4
 
+_ORIGINAL_DERIVE_DENOMINATORS = base._derive_denominators_at_commit
+
 
 def _derive_denominators_at_commit(commit_sha: str) -> dict[str, Any]:
-    derived = base._derive_denominators_at_commit(commit_sha)
+    derived = _ORIGINAL_DERIVE_DENOMINATORS(commit_sha)
     corpus = base._json_at_commit(
         commit_sha, "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json"
     )
