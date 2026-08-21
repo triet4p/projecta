@@ -1,0 +1,86 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm47-owner-decision.v1",
+  "status": "COMPLETED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-47",
+  "decisionType": "OWNER_POST_RUN_DECISION_FOR_V9_STAGE_A",
+  "decisionDate": "2026-08-22",
+  "decisionAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedExecution": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm46-execution-transition.v1.json",
+    "digest": "sha256:948a2f1aa1015e339692e113feb878949eb0a9b080174d0ef9cfabeca378ea95",
+    "status": "ONE_BOUNDED_V9_DEVELOPMENT_STAGE_A_EXECUTED_COMPLETED_REJECTED_HARD_GATE_PENDING_RM47_OWNER_DECISION"
+  },
+  "reviewedReport": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json",
+    "digest": "sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e",
+    "status": "COMPLETED_REJECTED_HARD_GATE",
+    "schemaValid": true,
+    "immutable": true
+  },
+  "verifiedFacts": {
+    "providerCallsAttempted": 144,
+    "responsesReceived": 144,
+    "relationBranchOutputs": 96,
+    "schemaValidResponses": 139,
+    "retryCount": 0,
+    "pricingFailureCount": 0,
+    "totalCostUsd": "0.00599700",
+    "authorizationSpent": true,
+    "hardGatesPass": false,
+    "thresholdsPass": false,
+    "sliceGatesPass": false,
+    "schemaInvalid": 5,
+    "invalidEvidence": 20,
+    "schemaFailureReason": "predicted-entities:entity_span_out_of_source",
+    "evidenceFailureReasons": {
+      "gold-entities:evidence_does_not_contain_trigger": 14,
+      "gold-entities:evidence_does_not_contain_endpoints": 6
+    },
+    "goldRelationsIntegrityPass": true,
+    "reasonCountsReconciled": true,
+    "heldOutInspected": false
+  },
+  "ownerAssessment": {
+    "executionEvidenceAccepted": true,
+    "candidatePassesHardGates": false,
+    "candidatePassesThresholds": false,
+    "candidatePassesSlices": false,
+    "qualityImprovementEstablished": false,
+    "stageBJustified": false,
+    "historicalComparison": {
+      "v6SchemaInvalid": 6,
+      "v9SchemaInvalid": 5,
+      "v6InvalidEvidence": 17,
+      "v9InvalidEvidence": 20,
+      "interpretation": "The schema-failure count decreased by one while invalid evidence increased by three; both runs failed hard, threshold and slice gates, so no promotion claim follows."
+    },
+    "blockingFindings": [
+      "Five predicted-entity responses contain out-of-source entity spans.",
+      "Twenty gold-entity exact-pair relations have evidence that fails trigger or endpoint containment.",
+      "Registered thresholds and slice gates remain failed."
+    ]
+  },
+  "decision": {
+    "experimentV9ClosedRejected": true,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "offlineErrorAnalysisPreparationAuthorized": true,
+    "offlineRemediationImplementationAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "nextPermittedAction": "PREPARE_OFFLINE_V6_V9_ERROR_COMPARISON_AND_REMEDIATION_OPTIONS"
+  },
+  "constraints": [
+    "The v9 report and RM-46 execution transition are immutable; the RM-45 authorization is spent and cannot be reused.",
+    "Offline analysis may use sanitized repository-visible v6/v9 reports and deterministic code only; it may not infer raw provider payload or sole model/prompt causality.",
+    "No remediation implementation, lineage preparation, provider call, validation, held-out access, Stage B, selection or promotion is authorized.",
+    "Any future action beyond analysis preparation requires a separate owner review."
+  ]
+}

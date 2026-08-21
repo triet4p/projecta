@@ -1,0 +1,44 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm47-decision-transition.v1",
+  "status": "V9_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY",
+  "experimentId": "s12-f-12",
+  "transitionDate": "2026-08-22",
+  "transitionAuthority": "project-owner-delegated-codex-reviewer",
+  "precedenceRule": "This RM-47 transition closes the completed rejected v9 Stage A and permits offline error-analysis preparation only; it does not restore spent authorization or authorize another lineage or provider call.",
+  "executionTransition": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm46-execution-transition.v1.json",
+    "digest": "sha256:948a2f1aa1015e339692e113feb878949eb0a9b080174d0ef9cfabeca378ea95"
+  },
+  "ownerDecision": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm47-owner-decision.v1.json",
+    "digest": "sha256:bbb10126bf61fe0272c2421bc02d45af28ec9d9f4b9abb920258280385dd9ca5",
+    "status": "COMPLETED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY"
+  },
+  "report": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json",
+    "digest": "sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e"
+  },
+  "fromState": "G5_F12_V9_STAGE_A_EXECUTED_COMPLETED_REJECTED_HARD_GATE_PENDING_RM47_OWNER_DECISION",
+  "currentDecisionState": {
+    "v9ExperimentClosedRejected": true,
+    "authorizationSpent": true,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "offlineErrorAnalysisPreparationAuthorized": true,
+    "offlineRemediationImplementationAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "PREPARE_OFFLINE_V6_V9_ERROR_COMPARISON_AND_REMEDIATION_OPTIONS"
+  },
+  "constraints": [
+    "Only offline error-comparison and remediation-option preparation are authorized.",
+    "No provider call, rerun, retry, remediation implementation, lineage preparation or downstream access is authorized.",
+    "The v6 and v9 reports, RM-36 failure fact and all spent authorizations remain immutable."
+  ]
+}

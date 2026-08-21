@@ -634,3 +634,22 @@ absent and all RM-43 issuance bindings remain exact.
 spent when execution starts. Validation, held-out access, Stage B, candidate
 selection and promotion remain closed; a separate owner decision must review
 the immutable result or failure fact.
+
+## [2026-08-22] Reject S12-f-12 v9 and open offline error analysis only
+
+**Decision:** Close the completed v9 Stage A as rejected with no Stage B and
+permit only offline preparation of a v6/v9 error comparison and remediation
+options.
+**Alternatives considered:** Open Stage B despite failed hard gates; select v9
+because schema-invalid responses decreased from six to five; reuse the spent
+authorization; authorize immediate remediation implementation; or stop without
+preserving the newly available finite diagnostics.
+**Reason:** The schema-valid immutable report accounts for all 144 calls and 96
+branches with zero retries, but fails hard gates with five out-of-source entity
+spans and 20 invalid-evidence relations, plus registered thresholds and slices.
+Invalid evidence increased from 17 in v6 to 20 in v9, so the one-response schema
+improvement does not establish candidate or business-quality improvement.
+**Consequences:** RM-48 may compare sanitized v6/v9 failure clusters and prepare
+bounded remediation options offline. Runtime implementation, new lineage,
+provider execution, validation, held-out access, Stage B, selection and
+promotion remain closed pending another owner review.
