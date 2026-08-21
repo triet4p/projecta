@@ -24,7 +24,7 @@
     "evaluation/sprint-12/optimization/s12-f-12-rm50-offline-diagnostic-report.v1.json": "sha256:62a660e80e37b05e5b8cf7ec471610e5237d9c5cc30d966d44f76c7027c17a16",
     "evaluation/sprint-12/harness/s12-f-12-rm50-offline-diagnostic-report.schema.v1.json": "sha256:c8a47c266975aec04e467c812513d115f0d49e571fcfe657ea8039944fb93221",
     "scripts/s12_f12_rm50_offline_diagnostics.py": "sha256:48c9bab92c223f195b0478a02aa87868ee3ca63858dc492f0674462fecf65eb6",
-    "scripts/tests/test_sprint12_rm50_option_a.py": "sha256:32d6216f84d866d4e7f37c27d8e93c11c67dd371b36faa2034b3f87d2a3b99ba",
+    "scripts/tests/test_sprint12_rm50_option_a.py": "sha256:f717bd8d5a043a829e223b6949bfce9e81fed89e7ffba828b9b2b5776fc4ec07",
     "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-fixtures.v1.json": "sha256:988cb21c0b8d18845fdf0f0400ad5aadc3d90d782309bf2358b431ea44fe3095",
     "evaluation/sprint-12/harness/s12-f-12-rm50-parity-fixtures.schema.v1.json": "sha256:c27c977e9ea9078020ccfcc64dcbc3d88104e94136280585eaaee7b342dc4d81",
     "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-report.v1.json": "sha256:69b422aa195dbf4f3b479ea1deb8f70fe82a80e5e32069c4693b173f6c00cc6d",
@@ -39,7 +39,7 @@
     "unknownFailClosed": true,
     "recursiveDynamicKeyRawDataExclusion": true,
     "j1GoldEntitiesSupportTransition": "not-applicable_to_zero",
-    "safeTestsPassed": 19
+    "safeTestsPassed": 27
   },
   "optionB": {
     "fixturePath": "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-fixtures.v1.json",
