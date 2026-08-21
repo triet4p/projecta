@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 import pytest
+from jsonschema import Draft202012Validator
 
 from scripts import run_sprint12_f12_stage_a_v6 as runner
 
@@ -15,6 +16,7 @@ PREPARATION = OPT / "s12-f-12-rm24-preparation.v1.json"
 REVIEW = OPT / "s12-f-12-rm25-owner-review.v1.json"
 TRANSITION = OPT / "s12-f-12-rm25-authorization-transition.v1.json"
 OUTPUT = OPT / "s12-f-12-stage-a-report.v6.json"
+AUTHORIZATION_SCHEMA = ROOT / "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v2.json"
 
 
 def _json(path: Path) -> dict:
@@ -25,13 +27,19 @@ def _digest(path: Path) -> str:
     return "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def test_rm25_authorization_is_schema_valid_and_runner_accepted() -> None:
-    authorization = runner.validate_authorization(AUTHORIZATION)
+def test_rm25_authorization_is_schema_valid_and_spent_authorization_is_not_reusable() -> None:
+    authorization = _json(AUTHORIZATION)
+    schema = _json(AUTHORIZATION_SCHEMA)
+    assert list(Draft202012Validator(schema).iter_errors(authorization)) == []
     assert authorization["providerExecutionAuthorized"] is True
     assert authorization["providerCalls"] == 144
     assert authorization["retryPolicy"] == "none"
     assert authorization["commitSha"] == "e047911e2e2d513f2b8751965dd702b2c1fe9d5a"
-    assert OUTPUT.exists() is False
+    assert OUTPUT.exists() is True
+    with pytest.raises(
+        runner.v3.F12StageAV3Error, match="authorization output path is unsafe"
+    ):
+        runner.validate_authorization(AUTHORIZATION)
 
 
 def test_rm25_owner_review_and_transition_bind_exact_artifacts() -> None:

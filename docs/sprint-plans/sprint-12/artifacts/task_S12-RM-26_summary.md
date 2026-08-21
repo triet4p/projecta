@@ -26,6 +26,7 @@ threshold and slice gates. No retry or overwrite was attempted.
 * **Report validation:** JSON Schema v6 passed; accounting and digest/custody checks passed.
 * **Execution evidence:** 144 calls, 144 responses, 96 relation branches, 138 schema-valid responses, 144 usage-valid responses, 0 retries, 0 pricing failures.
 * **Gate result:** `COMPLETED_REJECTED_HARD_GATE`; `schemaInvalid=6`, `invalidEvidence=17`, cost `$0.00592500` under `$10.00`.
+* **Post-run regression:** RM-25 authorization schema remains valid, while the runner rejects reuse after the immutable report exists.
 * **Diff hygiene:** `git diff --check` passed.
 
 ## Additional Notes
