@@ -1,0 +1,19 @@
+{
+  "artifactVersion": "s12-f-12.authorization.v9",
+  "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A",
+  "experimentId": "s12-f-12",
+  "providerExecutionAuthorized": true,
+  "providerCalls": 144,
+  "retryPolicy": "none",
+  "executionCommitSha": "f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e",
+  "executionPackageDigest": "sha256:cdaad8ebdce34115c8853067245ed6e5ef4107e271de5ce073a1cbdef20b05d2",
+  "technicalFreezeDigest": "sha256:f595730955848c76d0399706d5f2f32c367a6e88b62a5b3c3986bf2ccc3dfe32",
+  "outputPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json",
+  "costCeilingUsd": "10.00",
+  "heldOutInspected": false,
+  "heldOutAccessAuthorized": false,
+  "validationAccessAuthorized": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false
+}

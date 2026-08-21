@@ -1,0 +1,86 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm45-owner-review.v1",
+  "status": "OWNER_REVIEW_APPROVED_ONE_BOUNDED_V9_STAGE_A",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-45",
+  "decisionType": "INDEPENDENT_OWNER_REVIEW_BEFORE_CORRECTED_V9_STAGE_A",
+  "decisionDate": "2026-08-22",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewBaseCommit": "f61f33dbccedd5de931244da0b2e8917bfe92cda",
+  "reviewedPreparation": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm44-authorization-preparation.v1.json",
+    "digest": "sha256:fe7f74f02e51489d0d68d997df2824705d2c52885ccf88857eec35fc79621285",
+    "status": "PREPARED_PENDING_RM45_OWNER_AUTHORIZATION_REVIEW"
+  },
+  "issuedAuthorization": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm45-authorization.v9.json",
+    "digest": "sha256:ad84eaad496458cc2f5064be59016d7e2497aa4d3ad898e807cf8d496d77a0c8",
+    "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A"
+  },
+  "reviewedLineage": {
+    "executionCommit": "f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e",
+    "executionPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm42-execution-package.v9.json",
+      "digest": "sha256:cdaad8ebdce34115c8853067245ed6e5ef4107e271de5ce073a1cbdef20b05d2"
+    },
+    "technicalFreeze": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm42-technical-freeze.v9.json",
+      "digest": "sha256:f595730955848c76d0399706d5f2f32c367a6e88b62a5b3c3986bf2ccc3dfe32"
+    },
+    "runner": {
+      "path": "scripts/run_sprint12_f12_stage_a_v9.py",
+      "exactGitBlobDigest": "sha256:523106bf38a2da3acdd6cf6be6dcb299e1763174d41d0e1f4438f5c1fefd92dd"
+    },
+    "reportSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v9.json",
+      "exactGitBlobDigest": "sha256:262822030197e36cbabe9d7cb734c794385fa8b6d8d4bf3a63eb5ce82f864bea"
+    },
+    "authorizationSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v9.json",
+      "exactGitBlobDigest": "sha256:47b52efd42849e436f757cdcedc12989d6a64820a0049db5c33e14cb8523a2b9"
+    }
+  },
+  "verifiedEvidence": {
+    "rm44PreflightStatus": "F12_RM44_PREPARED_ZERO_CALL",
+    "independentScopedTests": "30 passed",
+    "authorizationSchemaValidation": "pass",
+    "exactRuntimeGitBlobs": "19/19",
+    "runtimeProviderModelPromptDatasetBindings": "pass",
+    "preflightSelfBinding": "pass",
+    "preflightTamperRejection": "pass",
+    "stageAReportV9Exists": false,
+    "providerCallsPerformed": 0,
+    "heldOutInspected": false,
+    "mockExecution": {
+      "unauthorizedProviderCalls": 0,
+      "authorizedProviderCalls": 144,
+      "relationBranches": 96,
+      "retryCount": 0,
+      "outputPersistCount": 1,
+      "overwriteRejected": true
+    }
+  },
+  "blockingFindings": [],
+  "decision": {
+    "rm45ReviewCompleted": true,
+    "authorizationIssued": true,
+    "providerExecutionAuthorized": true,
+    "authorizedProviderCalls": 144,
+    "authorizedExecutions": 1,
+    "retryAuthorized": false,
+    "outputOverwriteAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "EXECUTE_EXACT_S12_F12_V9_DEVELOPMENT_STAGE_A_ONCE"
+  },
+  "constraints": [
+    "This authorization permits exactly one 144-call development Stage A execution against the exact v9 lineage and execution commit.",
+    "The runner must fail before provider capture if any digest, commit, schema, runtime, provider, model, prompt, dataset, output or cost binding differs.",
+    "No retry or output overwrite is authorized; authorization becomes spent when execution starts and cannot be reused.",
+    "The failed v8 lineage and spent RM-35 authorization cannot be reused.",
+    "Validation, held-out access, Stage B, candidate selection and promotion remain unauthorized."
+  ]
+}

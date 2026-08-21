@@ -616,3 +616,21 @@ and default-path mocks prove unauthorized zero calls plus bounded 144-call,
 **Consequences:** A separate task may prepare an exact v9 authorization. No
 provider call is authorized until another independent owner decision; v6
 custody, failed v8 evidence and all downstream gates remain unchanged.
+
+## [2026-08-22] Authorize one exact S12-f-12 v9 development Stage A execution
+
+**Decision:** Authorize exactly one 144-call S12-f-12 v9 development Stage A
+execution against execution commit `f81103b`, the issued RM-42 v9 package and
+freeze, report-v9 output, no-retry/no-overwrite policy and `$10.00` ceiling.
+**Alternatives considered:** Withhold authorization after RM-44; authorize a
+mutable working-tree lineage; reuse the spent RM-35 authorization; or broaden
+authority to retries or downstream data.
+**Reason:** Independent RM-45 review verified 19 exact runtime Git blobs, the
+provider/model/prompt/dataset contract, self-bound zero-call preflight, closed
+authorization/report schemas, and default-path mocked custody of 144 calls,
+96 branches, one persist, zero retries and rejected overwrite. The v9 output is
+absent and all RM-43 issuance bindings remain exact.
+**Consequences:** The exact v9 runner may execute once and the authorization is
+spent when execution starts. Validation, held-out access, Stage B, candidate
+selection and promotion remain closed; a separate owner decision must review
+the immutable result or failure fact.
