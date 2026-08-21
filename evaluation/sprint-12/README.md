@@ -124,10 +124,17 @@ procedure permits one blinded run.
 - `optimization/s12-f-12-rm23f-issuance-transition.v1.json` records the later
   issuance of the exact f12 v7 preparation lineage without mutating its
   historical `PREPARED` fields.
-- `optimization/g5-packet.v29.rm43-issuance.json` is the current G5 machine
+- `optimization/g5-packet.v29.rm43-issuance.json` is the authoritative current G5 machine
   packet. It records RM-43 issuance of only the corrected v9 preregistration
   and technical freeze; provider authorization, output, validation, held-out,
   Stage B, promotion, retry and overwrite remain closed.
+- `optimization/s12-f-12-rm44-authorization-preparation.v1.json` is the
+  non-authoritative RM-44 exact v9 authorization preparation. Its zero-call
+  preflight binds 19 exact Git blobs and the 144/96 prospective default-path
+  mock, while provider/new authorization and the v9 output remain absent.
+- `optimization/g5-packet.v30.rm44-authorization-preparation.json` and
+  `current-state-next-rm44.v1.json` are non-authoritative next-state snapshots;
+  RM-45 must independently review and issue authorization.
 - `optimization/g5-packet.v20.rm32-offline-preparation.json` and the RM32 v8
   artifacts are immutable preparation snapshots; their unissued fields are not
   rewritten by the separate RM-33 transition and they performed zero provider
@@ -158,8 +165,9 @@ procedure permits one blinded run.
   `optimization/s12-f-12-rm37-decision-transition.v1.json` close the failed v8
   execution and open only offline RM36 reconciliation diagnosis and runtime
   remediation preparation. RM-39 approved offline implementation; RM-40
-  prepared the versioned remediation path; RM-43 issued corrected v9 and
-  RM-44/RM-45 are the next authorization preparation/review gates.
+prepared the versioned remediation path; RM-43 issued corrected v9, RM-44
+prepared exact authorization offline, and RM-45 is the next authorization
+review gate.
 
 ## Dataset contract rules
 
@@ -181,7 +189,7 @@ procedure permits one blinded run.
 G0 and G1 are approved; G2 and G3 are approved with recorded limitations;
 G3.1-A/B/C are complete with scope limits. G4 now has a runtime-backed baseline
 with failures and G4.1 is contract-aligned but stability-failed. G5 has issued
-the corrected f12 v9 preregistration/freeze lineage; RM-44/RM-45 must prepare
-and review the separate provider authorization, while v9 output and candidate
-selection remain absent. G6 is blocked by missing external test custody and a
+the corrected f12 v9 preregistration/freeze lineage; RM-44 prepared the
+separate provider authorization offline and RM-45 must review/issue it, while
+v9 output and candidate selection remain absent. G6 is blocked by missing external test custody and a
 frozen passing candidate; held-out inputs/gold remain outside the repository.

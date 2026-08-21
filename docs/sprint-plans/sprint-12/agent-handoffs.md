@@ -229,8 +229,7 @@ held-out, Stage B, selection or promotion was authorized.
 
 ## Handoff O — RM-43 v9 issuance to RM-44/RM-45 authorization path
 
-**Status:** RM-43 complete; RM-44 pending authorization preparation; RM-45
-pending owner authorization review.
+**Status:** RM-43 and RM-44 complete; RM-45 pending owner authorization review.
 
 The authoritative current G5 packet is
 `evaluation/sprint-12/optimization/g5-packet.v29.rm43-issuance.json`. RM-43
@@ -240,12 +239,33 @@ review and issuance transition remain immutable and bind execution commit
 The RM-43 preflight is provider-neutral and reports zero calls; the v9 report
 does not exist.
 
-RM-44 may prepare an exact v9 Stage A authorization offline, binding the issued
-lineage, exact runtime blobs, output path, cost ceiling and no-retry /
-no-overwrite policy. RM-45 must independently review and issue that
-authorization before any provider call. Do not reuse the spent RM-35 v8
-authorization or revive the failed v8 lineage. Validation, held-out access,
-Stage B, selection and promotion remain closed.
+RM-44 prepared an exact v9 Stage A authorization offline at
+`evaluation/sprint-12/optimization/s12-f-12-rm44-authorization-preparation.v1.json`.
+Its `F12_RM44_PREPARED_ZERO_CALL` preflight binds the RM-43 owner/transition,
+the RM-42 package/preregistration/freeze chain, exact execution commit
+`f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e`, 19 Git-blob runtime bindings and
+the runtime/provider/model/prompt/dataset contract. The prospective default
+path mock is 144 calls and 96 relation branches, one persist, zero retries and
+overwrite rejection; unauthorized provider calls and live invocations are
+zero. RM-45 must independently review and issue that authorization before any
+provider call. Do not reuse the spent RM-35 v8 authorization or revive the
+failed v8 lineage. Validation, held-out access, Stage B, selection and
+promotion remain closed.
+
+## Handoff P — RM-44 preparation to RM-45 owner authorization review
+
+**Status:** RM-44 complete; RM-45 pending.
+
+The RM-44 artifact is preparation-only and intentionally does not validate as
+an issued v9 authorization because `providerExecutionAuthorized` and
+`newAuthorizationIssued` remain false. Its own preflight is bound through
+external `working_tree_sha256` preparation evidence, so a one-character
+preflight tamper fails without circular self-hashing. The non-authoritative
+next-state snapshot and v30 packet must not replace the authoritative RM-43
+current-state index. RM-45 is the sole next gate: independently review all
+bindings and issue one bounded authorization or record a block. Until then,
+the v9 report is absent and every provider, retry, overwrite, validation,
+held-out, Stage B, selection and promotion permission remains false.
 
 ## External-only work — custody and G6
 

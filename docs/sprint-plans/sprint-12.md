@@ -17,6 +17,9 @@ G5 packet: [Controlled Optimization Review Packet v25 — RM-37 closure](sprint-
 Current G5 packet: [Controlled Optimization Review Packet v29 — RM-43 v9
 issuance](sprint-12/g5-optimization.v29.rm43-issuance.md)
 
+Next non-authoritative preparation snapshot: [Controlled Optimization Review
+Packet v30 — RM-44 exact v9 authorization preparation](sprint-12/g5-optimization.v30.rm44-authorization-preparation.md)
+
 Authoritative pre-execution packet: [Controlled Optimization Review Packet
 v23 — RM-35 authorization](sprint-12/g5-optimization.v23.rm35-authorization.md).
 
@@ -936,9 +939,13 @@ provider, inspect validation/held-out data, or authorize candidate selection.
 - [x] **S12-RM-43 — Owner issuance review for corrected v9 lineage:** Review
   and issue only the exact corrected v9 preregistration and technical freeze;
   provider authorization remains a separate gate.
-- [ ] **S12-RM-44 — Prepare exact v9 Stage A authorization:** Bind the issued
-  RM-43 lineage, exact runtime commit, output path, cost ceiling and no-retry /
-  no-overwrite boundary offline without calling a provider.
+- [x] **S12-RM-44 — Prepare exact v9 Stage A authorization:** Bind the issued
+  RM-43 lineage, exact runtime commit, 19 Git-blob runtime bindings, output
+  path, runtime/provider/model/prompt/dataset contract, $10.00 ceiling and
+  no-retry/no-overwrite boundary offline. The zero-call preflight and tamper
+  tests pass; the prospective default-path mock records 144/96, one persist,
+  retry zero and overwrite rejection. This is preparation only; no provider
+  or live runner was called and RM-45 must issue authorization.
 - [ ] **S12-RM-45 — Owner review exact v9 Stage A authorization:** Independently
   review and issue the new authorization before any v9 provider capture.
 

@@ -107,8 +107,8 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   RM-37 closed the failed execution and opened only offline reconciliation
   diagnosis/remediation preparation. RM-39 approved offline implementation;
   RM-40 implemented the versioned remediation path; RM-43 issued the corrected
-  v9 preregistration and technical freeze. RM-44 authorization preparation and
-  RM-45 owner review are pending. Provider execution, new authorization,
+  v9 preregistration and technical freeze. RM-44 prepared the exact v9
+  authorization offline; RM-45 owner review is pending. Provider execution, new authorization,
   validation, held-out access, Stage B, selection and promotion remain closed.
   No business-quality claim is made, and new connector/outbound breadth remains
   deferred. The authoritative dashboard is the

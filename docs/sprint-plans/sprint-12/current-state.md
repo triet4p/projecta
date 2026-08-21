@@ -293,6 +293,13 @@ digest is
 No quality improvement, candidate, validation, held-out, Stage B, selection,
 promotion or tenant-readiness claim is established.
 
-RM-44 is the next task to prepare exact v9 Stage A authorization offline. RM-45
-must independently review and issue that authorization before any provider
-execution.
+RM-44 has prepared the exact v9 Stage A authorization offline in the
+non-authoritative artifact
+`evaluation/sprint-12/optimization/s12-f-12-rm44-authorization-preparation.v1.json`.
+Its zero-call preflight binds the RM-43 issuance, RM-42 package/preregistration/
+freeze chain, exact execution commit and 19 Git-blob runtime bindings. The
+prospective mock is 144/96 with one persist, zero retries and overwrite
+rejection; no provider or live runner was called. This preparation does not
+change the authoritative RM-43 state: provider execution and new
+authorization remain false, v9 output remains absent, and RM-45 must
+independently review and issue authorization before any provider execution.
