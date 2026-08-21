@@ -50,9 +50,9 @@ the next gate, followed by separate exact-commit execution authorization.
   preparation-evidence files; provider calls remain zero.
 * Runtime implementation commit: `d64668b800866be65a2ea17e6feef2e05e78aa16`.
   Regenerated package/preregistration/freeze digests are respectively
-  `sha256:37e9d30724aeb82604988005238c9a19d1f9674850667d470bc42157cf332263`,
+  `sha256:5138a4466337040effff358174f95d8f76d9ee7c3d35f32463846164f9bdd8b3`,
   `sha256:bec703fce55931641c1767985609fb09f36f931af1d90cbf3b873435199fe600`,
-  and `sha256:5a56a3ff6bd04b1f078070abb955f647593b8466474c3dd05196f512b6a16ffb`.
+  and `sha256:dbacb64d2c6807ec9499ec2d5b9dbb8d697c18631e27dd2aa49d1ee8850931a6`.
 * Immutable report digest remains
   `sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233`.
 * Historical accounting remains 144 calls and 0 retries.
