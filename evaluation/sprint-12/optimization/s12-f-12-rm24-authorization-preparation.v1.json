@@ -1,0 +1,113 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm24-authorization-preparation.v1",
+  "status": "PREPARED_PENDING_RM25_OWNER_AUTHORIZATION",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-24",
+  "decisionType": "EXACT_STAGE_A_AUTHORIZATION_PREPARATION",
+  "preparationDate": "2026-08-21",
+  "preparedBy": "gpt-5.6-luna",
+  "providerExecutionAuthorized": false,
+  "providerCallsPerformedAtPreparation": 0,
+  "currentState": {
+    "path": "evaluation/sprint-12/current-state.v1.json",
+    "digest": "sha256:737a0275b8659367c0120aa2474ea3197fcaf232b215e4568e7a24049766eed9"
+  },
+  "g5Packet": {
+    "path": "evaluation/sprint-12/optimization/g5-packet.v12.json",
+    "digest": "sha256:f4b908d3b71caeee3c2a4e44927e06e639061a5f8837aadd70c074f30c0fbf74"
+  },
+  "issuanceTransition": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm23f-issuance-transition.v1.json",
+    "digest": "sha256:cc9d3989aede729f2be57f4aee465f61e6a23d5f3bb92ab644f98b0bef318026",
+    "status": "PREREGISTRATION_AND_FREEZE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
+  },
+  "ownerReview": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm23f-owner-review.v1.json",
+    "digest": "sha256:8439b584ebf775230820f57e00e6ff9b9757787f3f47e7be537720ee97a5493b",
+    "status": "OWNER_ISSUANCE_REVIEW_APPROVED_ISSUANCE_ONLY"
+  },
+  "issuedLineage": {
+    "lineageCommit": "909995ebbb3c8a8f8f6f2168fd5d721481925f23",
+    "executionCommit": "e047911e2e2d513f2b8751965dd702b2c1fe9d5a",
+    "preregistration": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22d-issuance-draft.v7.json",
+      "digest": "sha256:9e52308abb73fa7a0696f8bd8ae11c1eed064bd63fcdc7266e1c1b3bd7844808"
+    },
+    "executionPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22d-execution-package.v7.json",
+      "digest": "sha256:22c47dd77ea4a348b479a21d5d42b97684c6f04a1fa54b06857bd82f2c9bc641"
+    },
+    "technicalFreeze": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22d-technical-freeze.v7.json",
+      "digest": "sha256:20bf9ed82b629c9e26067b42acbb9efdf2b78de243ffd40cc0a707f46901a772"
+    }
+  },
+  "exactBindings": {
+    "authorizationSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v2.json",
+      "digest": "sha256:452cbddf0af489b21c21b0fa97f4147d0672c8a8f840c1df33c74b292f0987ea"
+    },
+    "reportSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v6.json",
+      "digest": "sha256:22f0b96df89bc65d7d290e46879ea9d13092e98b47c1694bbe9a4102bf054346"
+    },
+    "runner": {
+      "path": "scripts/run_sprint12_f12_stage_a_v6.py",
+      "digest": "sha256:f572254610653edf0510e3a8a67c017bacdacad44336fc7bdbd3d3db7bd582da"
+    },
+    "runtimeConfiguration": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-runtime-configuration.v1.json",
+      "digest": "sha256:a672d1c17a174c5c2697859118e2394b89007c3877a270e82ee5db25b357dd0b",
+      "apiKeyStored": false,
+      "providerPayloadStored": false
+    },
+    "providerAdapter": {
+      "path": "scripts/sprint12_f12_provider_adapter_v2.py",
+      "digest": "sha256:af20e7fd9f717ec319cf8ba321880d3a0b2f6152139873c4bf1eb3e814da5a96"
+    },
+    "zeroCallPreflight": {
+      "path": "scripts/preflight_sprint12_f12_rm22d_v7.py",
+      "digest": "sha256:27ccffe3dd55f7432505d7fb2bd4cafa44e04668fcce2ecb156b110ee877c9d1"
+    }
+  },
+  "executionBounds": {
+    "providerCalls": 144,
+    "stage1ProviderCalls": 48,
+    "stage2ProviderCalls": 96,
+    "relationBranchOutputs": 96,
+    "requiredSchemaValidResponses": 144,
+    "requiredUsageValidResponses": 144,
+    "expectedPricedCalls": 144,
+    "retryPolicy": "none",
+    "retryAuthorized": false,
+    "outputPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+    "outputOverwrite": false,
+    "outputOverwriteAuthorized": false,
+    "worstCaseCostUsd": "1.17315072",
+    "costCeilingUsd": "10.00"
+  },
+  "governanceLocks": {
+    "heldOutInspected": false,
+    "heldOutAccessAuthorized": false,
+    "validationAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "offlineEvidence": {
+    "preflightStatus": "F12_RM22D_READY_ZERO_CALL_V7",
+    "providerCalls": 0,
+    "reportPathMustBeAbsent": true,
+    "workingTreeMustBeClean": true,
+    "executionCommitMustBeAncestorOfCurrentHead": true,
+    "heldOutInspected": false
+  },
+  "nextGate": "S12-RM-25_OWNER_REVIEW_AND_OPTIONAL_ONE_RUN_AUTHORIZATION",
+  "constraints": [
+    "RM-24 preparation is offline evidence only and does not authorize provider execution.",
+    "RM-25 must independently review every binding and issue a separate authorization before any provider capture.",
+    "The exact execution commit, v7 package, v7 preregistration and v7 technical freeze are immutable lineage inputs.",
+    "No retry, output overwrite, validation access, held-out access, Stage B, candidate selection or promotion is authorized.",
+    "No credentials, raw source text, raw provider payloads, held-out inputs or held-out gold may be persisted."
+  ]
+}
