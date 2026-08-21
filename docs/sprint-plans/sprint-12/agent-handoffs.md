@@ -128,15 +128,15 @@ freeze. A separate authorization remains mandatory before execution.
 
 ## Handoff I — RM-33/RM-34/RM-35 v8 authorization path
 
-**Status:** RM-33, RM-34 and RM-35 complete; RM-36 execution pending; RM-37
-post-run owner decision pending.
+**Status:** RM-33, RM-34, RM-35 and RM-36 complete; RM-36 failed before report
+persistence after one invocation; RM-37 post-run owner decision pending.
 
 RM-33 owner review and the digest-bound issuance transition remain immutable
 history. RM-35 is now authoritative for current v8 execution authority:
 `preregistrationIssued=true`, `technicalFreezeIssued=true`,
 `providerExecutionAuthorized=true`, `newAuthorizationIssued=true`,
 `authorizedExecutions=1`, `authorizedProviderCalls=144`,
-`providerCallsPerformed=0`, and the v8 report is absent. Retry, overwrite,
+`providerCallsPerformed=0` before RM-36, and the v8 report is absent. Retry, overwrite,
 validation, held-out, Stage B, selection and promotion permissions remain
 false. The historical v7 execution remains separately issued/spent (144
 provider calls, 96 relation branches, zero retries).
@@ -153,19 +153,22 @@ The RM32 preflight binding is `sha256:492cc4c9815c168233039c096d5f7bc6121773a2b7
 RM-34's own preflight is separately bound by working-tree preparation
 evidence so a one-character tamper fails without self-referential hashing.
 RM-35 authorized exactly one execution against the exact v8 commit/package/
-freeze/runtime/output/cost boundary. RM-36 may invoke that execution once;
-until then no provider call or live runner invocation has occurred. RM-37 must
-perform a separate owner post-run decision after the immutable v8 report is
-preserved.
+freeze/runtime/output/cost boundary. RM-36 consumed that authority with the
+single documented invocation; the runner failed after three captures before
+persisting a v8 report. The exact execution fact is recorded in
+`s12-f-12-rm36-execution-transition.v1.json`; its post-run current-state and
+G5 packet are explicitly non-authoritative. RM-37 must perform a separate owner
+post-run decision, and no retry or rerun is permitted.
 
 ## Handoff J — RM-36 execution and RM-37 post-run decision
 
-RM-36 is the sole next execution task. It must run the safe pre-execution
-preflight `scripts/preflight_sprint12_f12_rm35.py`, then invoke the exact v8
-runner once using the immutable RM-35 authorization. It must preserve the v8
-report, reject retries and overwrite, keep validation/held-out data sealed,
-and record provider accounting. RM-37 must review the resulting immutable
-report before any Stage B, selection, validation or promotion consideration.
+RM-36 is complete. It ran the safe pre-execution preflight, then invoked the
+exact v8 runner once using the immutable RM-35 authorization. The runner
+failed at first-arm diagnostic reconciliation after three completed captures;
+no v8 report or aggregate accounting was persisted. The authorization is
+spent and non-reusable. RM-37 must review the immutable execution fact before
+any Stage B, selection, validation or promotion consideration; no retry or
+rerun is allowed by RM-36.
 
 ## External-only work — custody and G6
 

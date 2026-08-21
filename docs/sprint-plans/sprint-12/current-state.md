@@ -2,7 +2,11 @@
 
 **As of:** 2026-08-22
 
-**Status:** `G5_F12_V8_AUTHORIZED_PENDING_EXECUTION`
+**Status:** `G5_F12_V8_EXECUTION_FAILED_PENDING_RM37_OWNER_DECISION`
+
+The RM-36 execution fact is preserved in a non-authoritative post-run
+snapshot. The authoritative current-state machine artifact remains the RM-35
+pre-execution state until RM-37 records the next owner decision.
 
 This is the human-readable current-state index for Sprint 12. Machine consumers
 must use `evaluation/sprint-12/current-state.v1.json`.
@@ -48,14 +52,16 @@ preregistration or technical freeze.
   lineage preparation, RM-33 issued v8 preregistration/freeze, and RM-35
   authorized exactly one v8 execution.
 - Retry and output overwrite were not authorized and were not attempted. The
-  authorization is spent and cannot be reused.
+  RM-35 authorization was consumed by the single RM-36 invocation and cannot be
+  reused.
 - No candidate is selected or frozen; no accuracy improvement is established.
 - Validation and held-out data remain sealed. G6 is blocked by both candidate
   quality and external held-out custody.
 
 ## Next work
 
-1. Execute the exact v8 Stage A once under RM-36.
+1. RM-37 must review the RM-36 execution fact and record the next owner
+   decision.
 2. Keep retry, overwrite, validation, held-out access, Stage B, selection and
    promotion closed pending RM-37 owner post-run decision.
 3. Do not claim accuracy improvement, candidate quality, business quality or
@@ -206,5 +212,28 @@ returns `F12_RM35_AUTHORIZED_ZERO_CALL_PRECHECK`.
 
 The historical v7 execution remains separately spent and immutable at 144
 provider calls, 96 relation branches and zero retries. No v7 authorization is
-reused. RM-36 must execute v8 once; RM-37 must then perform the owner post-run
-decision. No quality or tenant-readiness claim is established by authorization.
+reused. RM-36 consumed the one v8 authorization with a single failed
+invocation; RM-37 must now perform the owner post-run decision. No quality or
+tenant-readiness claim is established by authorization.
+
+## RM-36 exact v8 execution
+
+RM-36 is complete as an execution fact. After the documented zero-call
+preflight, the exact runner was invoked once with the RM-35 authorization. It
+exited with `F12StageAV8Error: evidence reason counts do not reconcile with arm
+materializer failures` after three completed captures (3 calls attempted and 3
+responses received), before the first arm record could persist aggregate
+accounting or a report. The v8 output remains absent, so report schema and
+quality-gate validation are not applicable. Cost and relation-branch totals are
+unknown rather than zero; no retry occurred.
+
+The immutable execution transition is
+`evaluation/sprint-12/optimization/s12-f-12-rm36-execution-transition.v1.json`.
+The post-run current-state and G5 packet are explicitly non-authoritative:
+
+- `evaluation/sprint-12/current-state-next-rm36.v1.json`
+- `evaluation/sprint-12/optimization/g5-packet.v24.rm36-execution-failure.json`
+
+The authorization is spent and non-reusable. RM-37 is the sole next owner gate;
+no retry, overwrite, validation, held-out access, Stage B, selection or
+promotion is authorized.

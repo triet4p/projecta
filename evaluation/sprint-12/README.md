@@ -2,7 +2,14 @@
 
 **Base contract version:** `s12.v1`; current visible corpus: `v3-frozen`
 
-**Current Sprint status:** `G5_F12_V8_AUTHORIZED_PENDING_EXECUTION`
+**Current Sprint status:** `G5_F12_V8_EXECUTION_FAILED_PENDING_RM37_OWNER_DECISION`
+
+RM-36 consumed the single RM-35-authorized v8 invocation and failed after
+three provider captures before persisting a report or aggregate accounting.
+The post-run machine state is explicitly non-authoritative pending RM-37 owner
+review; see `current-state-next-rm36.v1.json` and
+`optimization/g5-packet.v24.rm36-execution-failure.json`. The authoritative
+RM-35 records remain immutable custody history.
 
 The repository-visible pilot and development/validation gold now have
 owner-delegated AI semantic review. They remain agent-authored synthetic data
@@ -140,6 +147,10 @@ procedure permits one blinded run.
   `optimization/s12-f-12-rm35-authorization-transition.v1.json` are immutable
   RM-35 authority records. `scripts/preflight_sprint12_f12_rm35.py` is the
   safe zero-call pre-execution gate; RM-37 remains required after execution.
+- `optimization/s12-f-12-rm36-execution-transition.v1.json` records the one
+  RM-36 invocation and its pre-report failure. The v8 output is absent, the
+  authorization is spent and non-reusable, and no retry or downstream action
+  is authorized. RM-37 is the next owner gate.
 
 ## Dataset contract rules
 

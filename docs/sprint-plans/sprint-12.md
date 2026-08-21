@@ -1,6 +1,8 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G5_F12_V8_AUTHORIZED_PENDING_EXECUTION`
+Status: `G5_F12_V8_EXECUTION_FAILED_PENDING_RM37_OWNER_DECISION` (RM-36
+execution fact is recorded in a non-authoritative snapshot; RM-37 owner review
+is pending)
 
 Current state: [Sprint 12 Current State](sprint-12/current-state.md)
 
@@ -12,7 +14,10 @@ G4 packet: [Baseline Evaluation Review Packet](sprint-12/g4-baseline.md)
 
 G4.1 packet: [Contract Alignment and Failure Diagnosis](sprint-12/g4.1-contract-alignment.md)
 
-G5 packet: [Controlled Optimization Review Packet v23 — RM-35 authorization](sprint-12/g5-optimization.v23.rm35-authorization.md)
+G5 packet: [Controlled Optimization Review Packet v24 — RM-36 execution failure snapshot](sprint-12/g5-optimization.v24.rm36-execution-failure.md)
+
+Authoritative pre-execution packet: [Controlled Optimization Review Packet
+v23 — RM-35 authorization](sprint-12/g5-optimization.v23.rm35-authorization.md).
 
 G6 packet: [Held-out Business Evaluation Packet](sprint-12/g6-business-evaluation.md)
 
@@ -895,13 +900,14 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   binds the exact commit/package/freeze/runtime/output/cost boundary; retry,
   overwrite, validation, held-out, Stage B, selection and promotion remain
   closed.
-- [ ] **S12-RM-36 — Execute exact v8 Stage A once:** Run the authorized v8
-  development Stage A exactly once, preserving the report and immutable v6
-  history. No retry, overwrite, validation, held-out, Stage B, selection or
-  promotion is permitted.
-- [ ] **S12-RM-37 — Owner post-run decision:** Independently review the
-  immutable v8 execution report and decide whether the experiment remains
-  rejected or any separately governed downstream action may be considered.
+- [x] **S12-RM-36 — Execute exact v8 Stage A once:** The authorized runner was
+  invoked exactly once. It failed after three captures, before report and
+  aggregate accounting persistence. No retry, overwrite, validation, held-out,
+  Stage B, selection or promotion occurred. See the non-authoritative
+  [RM-36 execution-failure snapshot](sprint-12/g5-optimization.v24.rm36-execution-failure.md).
+- [ ] **S12-RM-37 — Owner post-run decision:** Independently review the RM-36
+  execution fact and decide whether any separately governed action may be
+  considered. No report, quality gate or downstream decision exists yet.
 
 #### Phase F-S — Candidate Selection Resume Path
 

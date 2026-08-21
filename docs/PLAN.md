@@ -90,7 +90,7 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 ## Active Sprints
 
 - [Sprint 12 — Business Semantic Quality and Evaluation](sprint-plans/sprint-12.md)
-  — *In progress at `G5_F12_V8_AUTHORIZED_PENDING_EXECUTION`.
+  — *In progress at `G5_F12_V8_EXECUTION_FAILED_PENDING_RM37_OWNER_DECISION`.
   Dataset v3,
   measurement remediation and the two-step f12 development execution package
   are frozen. RM-23F issued the preregistration/freeze and RM-25 authorized one
@@ -102,8 +102,12 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   preregistration and technical freeze only. Provider authorization, output,
   validation, held-out access, Stage B, selection and promotion remain closed;
   RM-34 preparation and custody reconciliation are complete; RM-35 authorized
-  exactly one new v8 execution. RM-36 execution and RM-37 post-run owner
-  decision remain pending.
+  exactly one new v8 execution. RM-36 invoked it once and failed before v8
+  report persistence; the authorization is spent and no retry is permitted.
+  RM-37 post-run owner decision remains pending. The post-run snapshot is
+  non-authoritative until that decision. The authoritative machine state before
+  RM-36 remains `G5_F12_V8_AUTHORIZED_PENDING_EXECUTION` until RM-37 records
+  the next owner transition.
   No business-quality claim is made, and new connector/outbound breadth remains
   deferred. The authoritative dashboard is the
   [Sprint 12 current-state index](sprint-plans/sprint-12/current-state.md).*
