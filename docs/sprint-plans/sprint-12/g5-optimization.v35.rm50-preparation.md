@@ -32,8 +32,8 @@ The correction additionally binds every v6/v9 caseId/runId/arm/stage record,
 rejects v6 invalid-evidence count mutation, and derives every fixture and
 cluster-case semantic field from the bound source/contracts. Cross-swaps,
 duplicates, deletions, additions and field mutations are fail-closed. Option A
-now passes 19 tests, Option B 43 tests, and the combined safe regression suite
-passes 80.
+now passes 27 tests, Option B 43 tests, and the combined safe regression suite
+passes 88.
 
 The package is
 `evaluation/sprint-12/optimization/s12-f-12-rm50-offline-remediation.v1.json`;

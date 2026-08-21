@@ -42,9 +42,9 @@ addition).
 The authoritative task package is
 `evaluation/sprint-12/optimization/s12-f-12-rm50-offline-remediation.v1.json`.
 Option A and B each have versioned modules, reports, schemas and tests. Tests
-passed: Option A `19`, Option B `43` (including exhaustive mutation and
-package digest custody), for `62` RM-50 tests. The combined safe regression
-suite passed `80` tests. The known `.pytest_cache` permission warning is
+passed: Option A `27`, Option B `43` (including exhaustive mutation and
+package digest custody), for `70` RM-50 tests. The combined safe regression
+suite passed `88` tests. The known `.pytest_cache` permission warning is
 environment-only.
 
 The immutable v6/v9 digests remain bound and the v8 report remains absent.
