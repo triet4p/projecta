@@ -1,0 +1,96 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm23-owner-review.v1",
+  "status": "OWNER_ISSUANCE_REVIEW_WITHHELD_EXECUTION_CONTRACT_BLOCKERS",
+  "experimentId": "s12-f-12",
+  "decisionType": "RM-23_OWNER_ISSUANCE_REVIEW",
+  "decisionDate": "2026-08-21",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedLineage": {
+    "commit": "f1a92e3",
+    "preregistrationDraft": "evaluation/sprint-12/optimization/s12-f-12-rm22-prereg-draft.v1.json",
+    "executionPackage": "evaluation/sprint-12/optimization/s12-f-12-rm22-execution-package.v1.json",
+    "technicalFreeze": "evaluation/sprint-12/optimization/s12-f-12-rm22-technical-freeze.v1.json"
+  },
+  "verifiedEvidence": {
+    "fullF12Regression": "37 passed",
+    "rm22PreflightStatus": "F12_RM22_READY_ZERO_CALL_V1",
+    "ruff": "pass",
+    "gitDiffCheck": "pass",
+    "providerCalls": 0,
+    "heldOutAccess": false,
+    "reportPathExists": false,
+    "preparedSchedule": {
+      "stage1PredictedEntities": 48,
+      "stage2PredictedEntities": 48,
+      "stage2GoldEntities": 48,
+      "totalProviderCalls": 144,
+      "relationBranchOutputs": 96
+    },
+    "corpusDerivedDenominators": {
+      "selectedDevelopmentCases": 16,
+      "positiveRelationCases": 8,
+      "goldRelationInstancesPerRun": 8,
+      "goldRelationInstancesPerArmAcrossThreeRuns": 24,
+      "abstentionRequiredCases": 4,
+      "goldAbstentionInstancesPerArmAcrossThreeRuns": 12
+    },
+    "worstCaseCostUsd": "1.17315072",
+    "costCeilingUsd": "10.00",
+    "costBoundPasses": true,
+    "unauthorizedPathProviderCalls": 0
+  },
+  "blockingFindings": [
+    {
+      "id": "F12-RM23-01",
+      "severity": "P1",
+      "summary": "The package claims an implemented execution runner, but the runner cannot execute an authorized run.",
+      "evidence": "The execution package sets executionRunnerImplemented=true. run_stage_a validates a possible authorization and adapter, then unconditionally raises 'live case execution is intentionally not enabled by RM-22 preparation'; main also always exits NO-GO.",
+      "impact": "There is no frozen implementation that can perform the registered 144-call schedule, enforce exact call accounting, score records or persist the final report. Issuing the freeze would bind a non-executable package.",
+      "requiredRemediation": "Implement the complete guarded execution loop with deterministic case/run/arm order, exactly 144 attempted calls, no retry, fail-explicit records, immutable staging, single final persist, no overwrite, scoring, pricing and hard-gate decision. Prove it with a mocked 144-call end-to-end test and zero-call unauthorized/tampered tests."
+    },
+    {
+      "id": "F12-RM23-02",
+      "severity": "P1",
+      "summary": "Stage 2 cannot receive the immutable candidate table required to distinguish the oracle arms.",
+      "evidence": "F12ProviderAdapter.capture_stage accepts only stage, case_id, run_id and raw_text. Its user message contains only raw_text; no candidate table or arm identifier is supplied even though the prompt says the server supplies an immutable table and the preregistration requires separate predicted-entities and gold-entities calls whose only intended difference is that table.",
+      "impact": "The two Stage-2 arms would receive equivalent inputs and cannot measure the causal effect of predicted versus gold entities, invalidating the central f12 experiment.",
+      "requiredRemediation": "Version the adapter input contract to require a validated immutable candidate table and explicit arm for Stage 2, serialize it deterministically into the provider context, reject candidate tables for Stage 1, and add mock-transport tests proving the two arms differ only by candidate table."
+    },
+    {
+      "id": "F12-RM23-03",
+      "severity": "P1",
+      "summary": "The report schema cannot represent the preregistered accounting, metrics or sanitized records.",
+      "evidence": "accounting and metrics are closed objects with no declared properties. caseRecords and sliceRecords contain closed objects with no declared properties. Consequently any required provider counts, usage, cost, failures, case identity, denominators, buckets or slice metrics are schema-invalid; only empty objects and empty-field records are permitted.",
+      "impact": "Even a correctly executed run cannot produce schema-valid evidence for hard gates, semantic thresholds, denominator reconciliation, pricing or custody.",
+      "requiredRemediation": "Publish a complete versioned report schema with required accounting, usage/pricing, configuration digests, failure classes, per-case arm/run records, metric numerators/denominators, semantic/evidence buckets, named slices and final gate decision. Add positive full-report and adversarial missing/tampered-field validation tests."
+    },
+    {
+      "id": "F12-RM23-04",
+      "severity": "P2",
+      "summary": "The preparation preflight trusts declared selection profile and denominators instead of deriving all of them from frozen gold.",
+      "evidence": "_check_case_and_denominators filters manifest rows, compares selectionProfile and checks declared denominator constants. The manifest rows contain split/language/journey metadata but not gold relations or abstention; the preflight does not load atomic-v3.frozen.v1.json to recompute the 8 relation and 4 abstention cases.",
+      "impact": "A stale or tampered selection profile can preserve READY status while the actual frozen-gold denominators fall below preregistered minima.",
+      "requiredRemediation": "Derive relation instances, abstention instances and all named-slice counts directly from the digest-bound frozen corpus, reconcile them against the preregistration and reject any mismatch."
+    }
+  ],
+  "decision": {
+    "rm22PreparationRecorded": true,
+    "rm23ReviewCompleted": true,
+    "rm23Approved": false,
+    "preregistrationIssued": false,
+    "executionFreezeIssued": false,
+    "providerExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "offline-rm22a-execution-contract-remediation-only"
+  },
+  "constraints": [
+    "Preserve the RM-22 v1 draft/package/freeze as historical preparation evidence.",
+    "Do not mutate or issue the v1 freeze; publish a superseding lineage after remediation.",
+    "Do not call the provider, create Stage A output, inspect held-out data or authorize execution during RM-22A.",
+    "A superseding package requires a new independent owner issuance review and later separate provider authorization."
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "s12-f-12.stage-a-report.v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifactVersion", "experimentId", "custody", "configuration", "accounting", "metrics", "caseRecords", "sliceRecords", "decision"],
+  "properties": {
+    "artifactVersion": {"const": "s12-f-12.stage-a-report.v2"},
+    "experimentId": {"const": "s12-f-12"},
+    "custody": {
+      "type": "object", "additionalProperties": false,
+      "required": ["rawSourceTextStored", "rawProviderPayloadStored", "heldOutAccess", "overwrite", "retryPolicy"],
+      "properties": {
+        "rawSourceTextStored": {"const": false}, "rawProviderPayloadStored": {"const": false},
+        "heldOutAccess": {"const": false}, "overwrite": {"const": false}, "retryPolicy": {"const": "none"}
+      }
+    },
+    "configuration": {
+      "type": "object", "additionalProperties": false,
+      "required": ["runtimeDigest", "promptDigest", "stage1SchemaDigest", "stage2SchemaDigest", "model", "sampling", "timeoutSeconds", "maxOutputTokens"],
+      "properties": {
+        "runtimeDigest": {"type": "string", "pattern": "^sha256:"}, "promptDigest": {"type": "string", "pattern": "^sha256:"},
+        "stage1SchemaDigest": {"type": "string", "pattern": "^sha256:"}, "stage2SchemaDigest": {"type": "string", "pattern": "^sha256:"},
+        "model": {"const": "deepseek-v4-flash"}, "sampling": {"type": "object", "required": ["temperature", "topP"]},
+        "timeoutSeconds": {"type": "number", "exclusiveMinimum": 0}, "maxOutputTokens": {"type": "integer", "minimum": 1}
+      }
+    },
+    "accounting": {
+      "type": "object", "additionalProperties": false,
+      "required": ["providerCallsAttempted", "responsesReceived", "schemaValidResponses", "usageValidResponses", "pricedCalls", "retryCount", "pricingFailureCount", "totalCostUsd", "costCeilingUsd", "callSchedule"],
+      "properties": {
+        "providerCallsAttempted": {"const": 144}, "responsesReceived": {"type": "integer", "minimum": 0},
+        "schemaValidResponses": {"type": "integer", "minimum": 0}, "usageValidResponses": {"type": "integer", "minimum": 0},
+        "pricedCalls": {"type": "integer", "minimum": 0}, "retryCount": {"const": 0}, "pricingFailureCount": {"type": "integer", "minimum": 0},
+        "totalCostUsd": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+$"}, "costCeilingUsd": {"const": "10.00"},
+        "callSchedule": {"type": "object", "additionalProperties": false, "required": ["stage1PredictedEntities", "stage2PredictedEntities", "stage2GoldEntities"], "properties": {"stage1PredictedEntities": {"const": 48}, "stage2PredictedEntities": {"const": 48}, "stage2GoldEntities": {"const": 48}}}
+      }
+    },
+    "metrics": {
+      "type": "object", "additionalProperties": false,
+      "required": ["arms", "hardGates"],
+      "properties": {
+        "arms": {"type": "object", "additionalProperties": false, "required": ["predicted-entities", "gold-entities", "gold-relations"], "properties": {"predicted-entities": {"$ref": "#/$defs/armMetrics"}, "gold-entities": {"$ref": "#/$defs/armMetrics"}, "gold-relations": {"$ref": "#/$defs/armMetrics"}}},
+        "hardGates": {"type": "object", "additionalProperties": false, "required": ["schemaInvalid", "invalidEvidence", "missingOutput", "retryCount", "pricingFailure", "rawSensitiveDataIncluded", "heldOutInspected"], "properties": {"schemaInvalid": {"type": "integer", "minimum": 0}, "invalidEvidence": {"type": "integer", "minimum": 0}, "missingOutput": {"type": "integer", "minimum": 0}, "retryCount": {"const": 0}, "pricingFailure": {"type": "integer", "minimum": 0}, "rawSensitiveDataIncluded": {"const": false}, "heldOutInspected": {"const": false}}}
+      }
+    },
+    "caseRecords": {"type": "array", "minItems": 48, "items": {"$ref": "#/$defs/caseRecord"}},
+    "sliceRecords": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/sliceRecord"}},
+    "decision": {"type": "object", "additionalProperties": false, "required": ["status", "hardGatesPass", "outputPath"], "properties": {"status": {"type": "string"}, "hardGatesPass": {"type": "boolean"}, "outputPath": {"type": "string"}}}
+  },
+  "$defs": {
+    "armMetrics": {"type": "object", "additionalProperties": false, "required": ["caseRuns", "goldRelationInstances", "goldAbstentionInstances", "entity", "abstention", "relation"], "properties": {"caseRuns": {"type": "integer", "minimum": 0}, "goldRelationInstances": {"type": "integer", "minimum": 0}, "goldAbstentionInstances": {"type": "integer", "minimum": 0}, "entity": {"type": "object"}, "abstention": {"type": "object"}, "relation": {"type": "object"}}},
+    "caseRecord": {"type": "object", "additionalProperties": false, "required": ["caseId", "runId", "journeyId", "language", "goldRelationCount", "goldAbstentionRequired", "arms"], "properties": {"caseId": {"type": "string"}, "runId": {"type": "integer", "minimum": 1, "maximum": 3}, "journeyId": {"type": "string"}, "language": {"type": "string"}, "goldRelationCount": {"type": "integer", "minimum": 0}, "goldAbstentionRequired": {"type": "boolean"}, "arms": {"type": "object"}}},
+    "sliceRecord": {"type": "object", "additionalProperties": false, "required": ["dimension", "label", "denominator", "metrics"], "properties": {"dimension": {"type": "string"}, "label": {"type": "string"}, "denominator": {"type": "integer", "minimum": 0}, "metrics": {"type": "object"}}}
+  }
+}

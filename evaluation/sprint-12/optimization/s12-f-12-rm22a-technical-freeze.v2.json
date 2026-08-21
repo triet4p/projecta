@@ -1,0 +1,23 @@
+{
+  "artifactVersion": "s12.s12-f-12.technical-freeze.v2",
+  "status": "TECHNICAL_FREEZE_PREPARED_PENDING_RM23A_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "supersedes": "evaluation/sprint-12/optimization/s12-f-12-rm22-technical-freeze.v1.json",
+  "commitSha": null,
+  "executionPackage": "evaluation/sprint-12/optimization/s12-f-12-rm22a-execution-package.v2.json",
+  "executionPackageDigest": "sha256:f80c6ea8e3180290b786970475fd1a0db4aa780bc6a32eb8030c9bf46e36ea44",
+  "preregistration": "evaluation/sprint-12/optimization/s12-f-12-rm22a-issuance-draft.v2.json",
+  "preregistrationDigest": "sha256:9c32c4dcbfb472131495df042114b7e509b759257b0d20a1e36b5f522db85979",
+  "runnerDigest": "sha256:d211de99191d7f403b4344d876ad143e6b34cb02244b928cf2c6044dc5ed81cd",
+  "adapterDigest": "sha256:af20e7fd9f717ec319cf8ba321880d3a0b2f6152139873c4bf1eb3e814da5a96",
+  "preflightDigest": "sha256:5f0e99e412d6ea121c0e84a557f0f7732aa0f4863cdd41ec20a52487d6ef9853",
+  "reportSchemaDigest": "sha256:3619136f3192a63b5b6f729e54956a2ce632d59a385f8896ccd9bd7d69b73669",
+  "providerExecutionAuthorized": false,
+  "preregistrationIssued": false,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false,
+  "issuance": {"status": "NOT_ISSUED", "requiresRM23AOwnerReview": true, "requiresSeparateProviderAuthorization": true, "mustBindExactCommitSha": true, "mustBindExactPackageDigest": true},
+  "constraints": ["RM-22A offline remediation only.", "No provider call or Stage A output is permitted before a separate exact authorization.", "RM-22 v1 remains historical evidence and is not mutated."]
+}
