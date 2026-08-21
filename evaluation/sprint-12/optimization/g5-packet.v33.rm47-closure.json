@@ -1,0 +1,97 @@
+{
+  "packetVersion": "s12.g5.packet.v33.rm47-closure",
+  "status": "G5_F12_V9_STAGE_A_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY",
+  "packetRole": "authoritative-current-g5-packet",
+  "authoritative": true,
+  "asOf": "2026-08-22",
+  "supersedes": {
+    "path": "evaluation/sprint-12/optimization/g5-packet.v32.rm46-execution.json",
+    "status": "G5_F12_V9_STAGE_A_EXECUTED_COMPLETED_REJECTED_HARD_GATE_PENDING_RM47_OWNER_DECISION"
+  },
+  "execution": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm46-execution-transition.v1.json",
+    "digest": "sha256:948a2f1aa1015e339692e113feb878949eb0a9b080174d0ef9cfabeca378ea95",
+    "status": "ONE_BOUNDED_V9_DEVELOPMENT_STAGE_A_EXECUTED_COMPLETED_REJECTED_HARD_GATE_PENDING_RM47_OWNER_DECISION"
+  },
+  "ownerDecision": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm47-owner-decision.v1.json",
+    "digest": "sha256:bbb10126bf61fe0272c2421bc02d45af28ec9d9f4b9abb920258280385dd9ca5",
+    "status": "COMPLETED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY"
+  },
+  "decisionTransition": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm47-decision-transition.v1.json",
+    "digest": "sha256:262b090d8b55c46dfeb1730d1235513a57fc1db68452839f900aad2f842a76fb",
+    "status": "V9_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY"
+  },
+  "lineage": {
+    "lineageVersion": "v9",
+    "executionCommit": "f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e",
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "authorizationSpent": true,
+    "report": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json",
+      "digest": "sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e",
+      "status": "COMPLETED_REJECTED_HARD_GATE",
+      "schemaValid": true,
+      "immutable": true
+    },
+    "accounting": {
+      "providerCallsAttempted": 144,
+      "responsesReceived": 144,
+      "relationBranchOutputs": 96,
+      "schemaValidResponses": 139,
+      "retryCount": 0,
+      "pricingFailureCount": 0,
+      "totalCostUsd": "0.00599700",
+      "schemaInvalid": 5,
+      "invalidEvidence": 20,
+      "invalidEvidenceReasons": {
+        "gold-entities:evidence_does_not_contain_trigger": 14,
+        "gold-entities:evidence_does_not_contain_endpoints": 6
+      }
+    }
+  },
+  "gateResults": {
+    "costCeilingPass": true,
+    "goldRelationsIntegrityPass": true,
+    "hardGatesPass": false,
+    "thresholdsPass": false,
+    "sliceGatesPass": false,
+    "failedGates": ["schemaInvalid", "invalidEvidence", "thresholds", "sliceGates"]
+  },
+  "historicalCustody": {
+    "v6ReportPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+    "v6ReportDigest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "v6SchemaInvalid": 6,
+    "v6InvalidEvidence": 17,
+    "v8ReportPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json",
+    "v8ReportExists": false,
+    "v8AuthorizationReused": false,
+    "v9ReportExists": true,
+    "qualityImprovementEstablished": false,
+    "interpretation": "v9 schema-invalid decreased by one versus v6, while invalid evidence increased by three; both runs failed hard, threshold and slice gates, so no quality-improvement or promotion claim follows."
+  },
+  "governance": {
+    "v9ExperimentClosedRejected": true,
+    "authorizationSpent": true,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "offlineErrorAnalysisPreparationAuthorized": true,
+    "offlineRemediationImplementationAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "downstreamAccessAuthorized": false,
+    "nextTasks": [
+      "S12-RM-48_PREPARE_OFFLINE_V6_V9_ERROR_COMPARISON_AND_REMEDIATION_OPTIONS",
+      "S12-RM-49_OWNER_REVIEW_OFFLINE_ERROR_ANALYSIS_PREPARATION"
+    ]
+  },
+  "claimBoundary": "RM-47 closes the completed rejected v9 Stage A with no Stage B and permits only offline v6/v9 error-comparison and remediation-option preparation. It establishes no quality improvement, candidate, business-quality, tenant-readiness or downstream claim."
+}

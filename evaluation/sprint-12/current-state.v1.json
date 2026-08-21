@@ -1,7 +1,7 @@
 {
   "artifactVersion": "s12.current-state.v1",
   "asOf": "2026-08-22",
-  "status": "G5_F12_CORRECTED_V9_LINEAGE_AUTHORIZED_ONE_STAGE_A_PENDING_EXECUTION",
+  "status": "G5_F12_V9_STAGE_A_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY",
   "sourcePrecedence": [
     "this current-state index",
     "latest explicit owner decision or transition record",
@@ -117,15 +117,30 @@
       "digest": "sha256:68a69e313e203aa7d5e88209efacf3d7b8eab293a2d015810f0953fdb0dc6234",
       "expectedStatus": "ONE_BOUNDED_V9_DEVELOPMENT_STAGE_A_AUTHORIZED_PENDING_EXECUTION"
     },
+    "rm47OwnerDecision": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm47-owner-decision.v1.json",
+      "digest": "sha256:bbb10126bf61fe0272c2421bc02d45af28ec9d9f4b9abb920258280385dd9ca5",
+      "expectedStatus": "COMPLETED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY"
+    },
+    "rm47DecisionTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm47-decision-transition.v1.json",
+      "digest": "sha256:262b090d8b55c46dfeb1730d1235513a57fc1db68452839f900aad2f842a76fb",
+      "expectedStatus": "V9_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY"
+    },
     "stageAReport": {
       "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
       "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
       "status": "COMPLETED_REJECTED_HARD_GATE"
     },
+    "v9StageAReport": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json",
+      "digest": "sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e",
+      "status": "COMPLETED_REJECTED_HARD_GATE"
+    },
     "g5Packet": {
-      "path": "evaluation/sprint-12/optimization/g5-packet.v31.rm45-authorization.json",
-      "digest": "sha256:e2d2818913447fc20eb6268a94f6ff7fe4cc28fa518dac37b52e4d5b67b7c5e0",
-      "version": "s12.g5.packet.v31.rm45-authorization"
+      "path": "evaluation/sprint-12/optimization/g5-packet.v33.rm47-closure.json",
+      "digest": "sha256:a0973bfa97bab65ef763dc0b2a0397f0f1ad859c7aa59482ee4cbaa7cfcc9605",
+      "version": "s12.g5.packet.v33.rm47-closure"
     },
     "humanSummary": "docs/sprint-plans/sprint-12/current-state.md"
   },
@@ -139,7 +154,7 @@
     "G3.1-C": "APPROVED_WITH_SCOPE_LIMITS",
     "G4": "RUNTIME_BACKED_BASELINE_WITH_FAILURES",
     "G4.1": "CONTRACT_ALIGNED_STABILITY_FAILED",
-    "G5": "F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING",
+    "G5": "F12_V9_STAGE_A_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY",
     "G6": "BLOCKED_CUSTODY_OR_CANDIDATE",
     "G7": "NOT_STARTED"
   },
@@ -182,16 +197,20 @@
       "technicalFreezeIssued": true,
       "authorizedExecutions": 1,
       "authorizedProviderCalls": 144,
-      "providerCallsPerformed": 0,
-      "providerResponsesReceived": 0,
-      "relationBranchOutputs": null,
+      "providerCallsPerformed": 144,
+      "providerResponsesReceived": 144,
+      "relationBranchOutputs": 96,
       "retryCount": 0,
-      "accountingComplete": false,
-      "aggregateCostAvailable": false,
-      "stageAReportExists": false,
-      "providerExecutionAuthorized": true,
-      "newAuthorizationIssued": true,
-      "authorizationSpent": false
+      "accountingComplete": true,
+      "aggregateCostAvailable": true,
+      "totalCostUsd": "0.00599700",
+      "schemaValidResponses": 139,
+      "schemaInvalid": 5,
+      "invalidEvidence": 20,
+      "stageAReportExists": true,
+      "providerExecutionAuthorized": false,
+      "newAuthorizationIssued": false,
+      "authorizationSpent": true
     },
     "currentGovernance": {
       "supersedingLineagePreparationAuthorized": false,
@@ -200,37 +219,41 @@
       "executionPackagePreparationAuthorized": false,
       "preregistrationIssued": true,
       "technicalFreezeIssued": true,
-      "providerExecutionAuthorized": true,
-      "newAuthorizationIssued": true,
+      "providerExecutionAuthorized": false,
+      "newAuthorizationIssued": false,
       "validationAccessAuthorized": false,
       "heldOutAccessAuthorized": false,
       "stageBAuthorized": false,
       "candidateSelectionAuthorized": false,
       "promotionAuthorized": false,
-      "offlineFailureDiagnosisPreparationAuthorized": true,
-      "offlineRuntimeRemediationPreparationAuthorized": true,
-      "offlineRuntimeRemediationImplementationAuthorized": true,
-      "deterministicRegressionImplementationAuthorized": true
+      "offlineErrorAnalysisPreparationAuthorized": true,
+      "offlineRemediationImplementationAuthorized": false,
+      "supersedingLineagePreparationAuthorized": false,
+      "rerunAuthorized": false,
+      "retryAuthorized": false,
+      "downstreamAccessAuthorized": false
     },
     "stageAReportExists": true,
-    "currentStageAReportExists": false,
+    "currentStageAReportExists": true,
     "stageAReportSchemaValid": true,
     "stageAStatus": "COMPLETED_REJECTED_NO_STAGE_B",
     "experimentClosedRejected": true,
     "candidateSelection": "NO_SELECTION",
     "candidateFrozen": false,
     "heldOutInspected": false,
-      "offlineRemediationPreparationAuthorized": true,
-      "offlineDiagnosticImplementationAuthorized": true,
-      "offlineFailureDiagnosisPreparationAuthorized": true,
-      "offlineRuntimeRemediationPreparationAuthorized": true,
+      "offlineErrorAnalysisPreparationAuthorized": true,
+      "offlineRemediationImplementationAuthorized": false,
+      "supersedingLineagePreparationAuthorized": false,
       "authorizationSpent": true,
+      "providerExecutionAuthorized": false,
+      "newAuthorizationIssued": false,
       "rerunAuthorized": false,
-      "retryAuthorized": false
+      "retryAuthorized": false,
+      "downstreamAccessAuthorized": false
   },
     "nextTasks": [
-    "S12-RM-46_EXECUTE_EXACT_V9_STAGE_A_ONCE",
-    "S12-RM-47_OWNER_POST_RUN_DECISION"
+    "S12-RM-48_PREPARE_OFFLINE_V6_V9_ERROR_COMPARISON_AND_REMEDIATION_OPTIONS",
+    "S12-RM-49_OWNER_REVIEW_OFFLINE_ERROR_ANALYSIS_PREPARATION"
   ],
-  "claimBoundary": "RM-45 issued one bounded v9 development Stage A authorization against the exact frozen lineage. No v9 provider call has yet occurred, no v9 report or quality result exists, and no retry, overwrite, validation, held-out, Stage B, selection, promotion or tenant-readiness access is authorized. The failed v8 three-call invocation and immutable v6 report remain historical evidence."
+  "claimBoundary": "RM-47 closes the completed rejected v9 Stage A with no Stage B and permits only offline v6/v9 error-comparison and remediation-option preparation. It establishes no quality improvement, candidate, business-quality, tenant-readiness or downstream claim. The v6 and v9 reports remain immutable and the failed v8 report remains absent."
 }
