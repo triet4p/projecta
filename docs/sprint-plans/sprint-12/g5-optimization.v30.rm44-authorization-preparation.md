@@ -15,7 +15,7 @@ state until RM-45 independently reviews and issues the authorization.
 Machine artifacts:
 
 - `evaluation/sprint-12/optimization/s12-f-12-rm44-authorization-preparation.v1.json`
-  (`sha256:9b2448056e81bb66c4034e161ed49f6b523b947488ccce24a9cc6adc0db6649c`)
+  (`sha256:fe7f74f02e51489d0d68d997df2824705d2c52885ccf88857eec35fc79621285`)
 - `scripts/preflight_sprint12_f12_rm44.py`
 - `scripts/tests/test_sprint12_rm44_authorization_preparation.py`
 - non-authoritative snapshots:

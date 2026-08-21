@@ -22,7 +22,7 @@ its tamper test rejects a one-character change without circular self-binding.
 
 Machine artifact:
 `evaluation/sprint-12/optimization/s12-f-12-rm44-authorization-preparation.v1.json`
-(`sha256:9b2448056e81bb66c4034e161ed49f6b523b947488ccce24a9cc6adc0db6649c`).
+(`sha256:fe7f74f02e51489d0d68d997df2824705d2c52885ccf88857eec35fc79621285`).
 The v30 packet and next-state file are explicitly non-authoritative. The
 authoritative RM-43 current-state index is unchanged. RM-45 is the sole next
 gate and must independently review and issue authorization before any provider
