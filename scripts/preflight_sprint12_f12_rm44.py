@@ -17,6 +17,7 @@ TRANSITION = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm43-issuance-tr
 PACKAGE = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm42-execution-package.v9.json"
 PREREG = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm42-preregistration.v9.json"
 FREEZE = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm42-technical-freeze.v9.json"
+RUNTIME_CONFIG = ROOT / "evaluation/sprint-12/harness/s12-f-12-runtime-configuration.v1.json"
 REPORT_V6 = ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json"
 OUTPUT_V8 = ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json"
 OUTPUT_V9 = ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json"
@@ -70,6 +71,8 @@ def require_exact_runtime_bindings(preparation: dict[str, Any], package: dict[st
     runtime = package.get("runtimeBoundDigests")
     if not isinstance(runtime, dict) or len(runtime) != 19:
         raise ValueError("RM-42 runtime binding set is not exactly 19 blobs")
+    if preparation["exactRuntimeBindings"].get("runtimeBoundDigests") != runtime:
+        raise ValueError("RM-44 runtime binding map differs from RM-42 package")
     for path_text, expected in runtime.items():
         if git_blob_digest(commit, str(path_text)) != expected:
             raise ValueError(f"exact runtime blob mismatch: {path_text}")
@@ -88,6 +91,7 @@ def run_preflight() -> dict[str, object]:
     owner = load(OWNER)
     transition = load(TRANSITION)
     package = load(PACKAGE)
+    runtime_config = load(RUNTIME_CONFIG)
     prereg = load(PREREG)
     freeze = load(FREEZE)
     report = load(REPORT_V6)
@@ -145,6 +149,15 @@ def run_preflight() -> dict[str, object]:
         raise ValueError("authoritative G5 packet opens v9 execution")
     if prereg["executionCommitSha"] != preparation["preparedLineage"]["executionCommit"] or freeze["executionCommitSha"] != preparation["preparedLineage"]["executionCommit"]:
         raise ValueError("RM-42 package/prereg/freeze commit chain changed")
+    if package["executionCommitSha"] != preparation["preparedLineage"]["executionCommit"]:
+        raise ValueError("RM-42 package execution commit changed")
+    runtime_contract = preparation["runtimeContract"]
+    if runtime_contract["providerType"] != runtime_config["providerType"] or runtime_contract["transport"] != runtime_config["transport"]:
+        raise ValueError("runtime provider contract changed")
+    if runtime_contract["model"] != runtime_config["model"] or runtime_contract["promptVersion"] != runtime_config["promptVersion"]:
+        raise ValueError("runtime model or prompt contract changed")
+    if runtime_contract["datasetPath"] != "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json":
+        raise ValueError("runtime dataset boundary changed")
     if OUTPUT_V8.exists() or OUTPUT_V9.exists():
         raise ValueError("RM-44 refuses to reuse or overwrite v8/v9 output")
 

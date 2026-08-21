@@ -113,8 +113,16 @@ def test_rm44_rejects_tampered_exact_runtime_digest() -> None:
     tampered = copy.deepcopy(package)
     path = next(iter(tampered["runtimeBoundDigests"]))
     tampered["runtimeBoundDigests"][path] = "sha256:" + "0" * 64
-    with pytest.raises(ValueError, match="exact runtime blob mismatch"):
+    with pytest.raises(ValueError, match="runtime binding map differs"):
         preflight.require_exact_runtime_bindings(preparation, tampered)
+
+
+def test_rm44_rejects_preparation_runtime_map_drift() -> None:
+    preparation = _json(PREPARATION)
+    package = _json(PACKAGE)
+    preparation["exactRuntimeBindings"]["runtimeBoundDigests"] = {}
+    with pytest.raises(ValueError, match="runtime binding map differs"):
+        preflight.require_exact_runtime_bindings(preparation, package)
 
 
 def test_rm44_rejects_one_character_tamper_of_preflight(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:

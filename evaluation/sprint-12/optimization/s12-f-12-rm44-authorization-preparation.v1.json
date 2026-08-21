@@ -139,7 +139,7 @@
     "excludedFromExactRuntimeBindings": true,
     "rm44Preflight": {
       "path": "scripts/preflight_sprint12_f12_rm44.py",
-      "digest": "sha256:d214b17a8fa3297acb6c4a3a5ec5bd0e890a123ce175a8e4934f0e13f35e01e7"
+      "digest": "sha256:3f0a9f4ef7177fd12e8446a839403d4fb415ca11dca471ab3645030456e539a0"
     }
   },
   "mockEvidence": {
