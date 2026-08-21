@@ -13,11 +13,11 @@
   "rm30Implementation": {
     "package": {
       "path": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-remediation.v1.json",
-      "digest": "sha256:04cc4cc07f2c4293fcd51d58f305ed7554f916e67cc90d392bba1e81a34846a1"
+      "digest": "sha256:32c9339320a4c8a6919525a06fed99af87fd61af6d0873f2511015c7f39e8231"
     },
     "report": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-diagnostic-report.v1.json",
     "schema": "evaluation/sprint-12/harness/s12-f-12-offline-diagnostic-report.schema.v1.json",
-    "mockTests": 24,
+    "mockTests": 31,
     "historicalReportMutated": false
   },
   "nextPermittedTask": "OWNER_REVIEW_RM30_OFFLINE_DIAGNOSTIC_IMPLEMENTATION",

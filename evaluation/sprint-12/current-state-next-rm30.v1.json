@@ -13,7 +13,7 @@
   },
   "rm30Package": {
     "path": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-remediation.v1.json",
-    "digest": "sha256:04cc4cc07f2c4293fcd51d58f305ed7554f916e67cc90d392bba1e81a34846a1",
+    "digest": "sha256:32c9339320a4c8a6919525a06fed99af87fd61af6d0873f2511015c7f39e8231",
     "status": "OFFLINE_REMEDIATION_IMPLEMENTED_PENDING_OWNER_REVIEW"
   },
   "implementationEvidence": {
@@ -22,7 +22,7 @@
     "historicalSchemaUnknownCount": 6,
     "historicalEvidenceUnknownCount": 17,
     "goldRelationsControlFailures": 0,
-    "mockTests": "24 passed"
+    "mockTests": "31 passed"
   },
   "nextGate": "owner review of RM-30 offline implementation before any lineage preparation",
   "governance": {

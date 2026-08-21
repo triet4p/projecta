@@ -36,9 +36,9 @@ and guarded live runner remain untouched.
 
 ## Testing
 
-* **RM-30 deterministic tests:** `24 passed` with one environment-only
+* **RM-30 deterministic tests:** `31 passed` with one environment-only
   `.pytest_cache` permission warning.
-* **Combined safe regression:** `63 passed` across RM-28/RM-29/RM-30,
+* **Combined safe regression:** `70 passed` across RM-28/RM-29/RM-30,
   document consistency, Phase F and spent-authorization tests.
 * **Report validation:** new report schema validates with zero errors; generated
   report equals persisted v1 artifact and all accounting reconciles.

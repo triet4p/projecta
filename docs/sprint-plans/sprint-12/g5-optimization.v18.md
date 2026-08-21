@@ -18,7 +18,7 @@ mock tests. The immutable Stage A report remains bound at
   raw validation detail is emitted.
 - Typed endpoint spans, arm separation, accounting reconciliation and
   gold-relations control preservation.
-- `24 passed` deterministic mock tests covering reason families, redaction,
+- `31 passed` deterministic mock tests covering reason families, redaction,
   unknown fail-closed behavior and output immutability.
 
 Artifacts:
