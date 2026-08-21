@@ -20,7 +20,7 @@ def _digest(path: Path) -> str:
 OWNER = OPT / "s12-f-12-rm31-owner-review.v1.json"
 TRANSITION = OPT / "s12-f-12-rm31-approval-transition.v1.json"
 CURRENT = EVAL / "current-state.v1.json"
-G5 = OPT / "g5-packet.v21.json"
+G5 = OPT / "g5-packet.v23.rm35-authorization.json"
 REPORT = OPT / "s12-f-12-stage-a-report.v6.json"
 
 
@@ -61,8 +61,6 @@ def test_rm31_current_state_and_g5_open_preparation_only() -> None:
     ):
         assert governance[key] is True
     for key in (
-        "providerExecutionAuthorized",
-        "newAuthorizationIssued",
         "validationAuthorized",
         "validationAccessAuthorized",
         "heldOutAccessAuthorized",
@@ -71,9 +69,14 @@ def test_rm31_current_state_and_g5_open_preparation_only() -> None:
         "promotionAuthorized",
     ):
         assert governance[key] is False
+    assert governance["providerExecutionAuthorized"] is True
+    assert governance["newAuthorizationIssued"] is True
+    assert governance["authorizedExecutions"] == 1
+    assert governance["authorizedProviderCalls"] == 144
+    assert governance["providerCallsPerformed"] == 0
     assert governance["preregistrationIssued"] is True
     assert governance["technicalFreezeIssued"] is True
     assert current["nextTasks"] == [
-        "S12-RM-34_PREPARE_EXACT_V8_STAGE_A_AUTHORIZATION_OFFLINE",
-        "S12-RM-35_OWNER_AUTHORIZATION_REVIEW",
+        "S12-RM-36_EXECUTE_EXACT_V8_STAGE_A_ONCE",
+        "S12-RM-37_OWNER_POST_RUN_DECISION",
     ]

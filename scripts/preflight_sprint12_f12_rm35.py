@@ -128,6 +128,8 @@ def run_preflight() -> dict[str, object]:
 
     if current["status"] != "G5_F12_V8_AUTHORIZED_PENDING_EXECUTION":
         raise ValueError("authoritative current state is not RM-35 authorized")
+    if current["currentEvidence"]["g5Packet"]["digest"] != digest(PACKET):
+        raise ValueError("authoritative G5 packet digest mismatch")
     if packet["status"] != "G5_F12_V8_AUTHORIZED_PENDING_EXECUTION":
         raise ValueError("authoritative G5 packet is not RM-35 authorized")
     current_lineage = current["experimentState"]["currentLineage"]

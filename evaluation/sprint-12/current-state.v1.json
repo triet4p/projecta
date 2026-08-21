@@ -74,7 +74,7 @@
     },
     "g5Packet": {
       "path": "evaluation/sprint-12/optimization/g5-packet.v23.rm35-authorization.json",
-      "digest": "sha256:31f06b023e0c3059dbb55330fbfa2a946046046b7be6d600595eca4477d5da0b",
+      "digest": "sha256:be98da4bfa83f1b994a51da47b01d2c8cb562181e97fe316a5ccedc77b90c949",
       "version": "s12.g5.packet.v23.rm35-authorization"
     },
     "humanSummary": "docs/sprint-plans/sprint-12/current-state.md"

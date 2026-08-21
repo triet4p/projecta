@@ -79,6 +79,10 @@
     "candidateFreezeAuthorized": false
   },
   "authorizationBoundary": {
+    "supersedingLineagePreparationAuthorized": true,
+    "preregistrationPreparationAuthorized": true,
+    "technicalFreezePreparationAuthorized": true,
+    "executionPackagePreparationAuthorized": true,
     "preregistrationIssued": true,
     "technicalFreezeIssued": true,
     "providerExecutionAuthorized": true,
