@@ -1,0 +1,107 @@
+{
+  "packetVersion": "s12.g5.packet.v23.rm35-authorization",
+  "status": "G5_F12_V8_AUTHORIZED_PENDING_EXECUTION",
+  "packetRole": "authoritative-current-g5-packet",
+  "asOf": "2026-08-22",
+  "supersedesForCurrentState": {
+    "path": "evaluation/sprint-12/optimization/g5-packet.v22.rm34-authorization-preparation.json",
+    "digest": "sha256:260b28e879a567b9a7f689e4b38f30aef74a32f4e1db7d061fdf23aa8ae6fbd9"
+  },
+  "ownerDecision": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm35-owner-review.v1.json",
+    "digest": "sha256:3e47e0cc7f2bea48d6d6ca86e878c5aee7bf29924861410dcd8b7fb8fe637cc9",
+    "status": "OWNER_REVIEW_APPROVED_ONE_BOUNDED_V8_STAGE_A"
+  },
+  "authorizationTransition": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm35-authorization-transition.v1.json",
+    "digest": "sha256:45e9091877d51a273e224a5314902bbb28dd2953faf09d06876d14e4f29c5fa1",
+    "status": "ONE_BOUNDED_V8_DEVELOPMENT_STAGE_A_AUTHORIZED_PENDING_EXECUTION"
+  },
+  "authorization": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm35-authorization.v8.json",
+    "digest": "sha256:d3e3fd1f4f8520133f91e088e280d415935e1ed38656b6ef0b55a9b4ea84f00a",
+    "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A"
+  },
+  "authorizedLineage": {
+    "lineageVersion": "v8",
+    "executionCommit": "005a35e3be3fbff40fcdae02dfdf79145c76934b",
+    "executionPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm32-execution-package.v8.json",
+      "digest": "sha256:59a42669692c9c4a5460a44643167c17c68d5449a4b9d8de2e35adad0f0f524c"
+    },
+    "technicalFreeze": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm32-technical-freeze.v8.json",
+      "digest": "sha256:2fc20e806ce4a046c10719e9360cc69938325e1963562b730d02b8138f8dfdc1"
+    },
+    "runner": {
+      "path": "scripts/run_sprint12_f12_stage_a_v8.py",
+      "digest": "sha256:91caf611f6fc3d999827864ee1a8fa4a0ecda197b6ecae1b5f12a52f5147006c"
+    },
+    "runtimeConfiguration": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-runtime-configuration.v1.json",
+      "digest": "sha256:a672d1c17a174c5c2697859118e2394b89007c3877a270e82ee5db25b357dd0b"
+    },
+    "reportSchemaExactGitBlobDigest": "sha256:c65a4f039d948e6f3a59750001e58199bfc98e57e2f2f3ac838070ef5f6f6ad5",
+    "outputPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json",
+    "costCeilingUsd": "10.00",
+    "plannedProviderCalls": 144,
+    "plannedRelationBranchOutputs": 96,
+    "retryPolicy": "none",
+    "outputOverwrite": false
+  },
+  "historicalLineage": {
+    "lineageVersion": "v7",
+    "authorizedExecutions": 1,
+    "authorizedProviderCalls": 144,
+    "providerCallsPerformed": 144,
+    "relationBranchOutputs": 96,
+    "retryCount": 0,
+    "totalCostUsd": "0.00592500",
+    "stageAReportDigest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+  },
+  "currentLineage": {
+    "lineageVersion": "v8",
+    "preregistrationIssued": true,
+    "technicalFreezeIssued": true,
+    "authorizedExecutions": 1,
+    "authorizedProviderCalls": 144,
+    "providerCallsPerformed": 0,
+    "relationBranchOutputs": 0,
+    "retryCount": 0,
+    "providerExecutionAuthorized": true,
+    "newAuthorizationIssued": true,
+    "reportPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json",
+    "reportExists": false
+  },
+  "selection": {
+    "status": "NO_SELECTION",
+    "candidateAvailable": false,
+    "candidateFreezeAuthorized": false
+  },
+  "authorizationBoundary": {
+    "preregistrationIssued": true,
+    "technicalFreezeIssued": true,
+    "providerExecutionAuthorized": true,
+    "newAuthorizationIssued": true,
+    "authorizedExecutions": 1,
+    "authorizedProviderCalls": 144,
+    "providerCallsPerformed": 0,
+    "validationAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "retryAuthorized": false,
+    "outputOverwriteAuthorized": false,
+    "providerCallAllowed": true,
+    "nextPermittedTask": "S12-RM-36_EXECUTE_EXACT_V8_STAGE_A_ONCE"
+  },
+  "claimBoundary": {
+    "accuracyImprovementEstablished": false,
+    "businessQualityEstablished": false,
+    "tenantReadinessEstablished": false,
+    "humanEvidence": false
+  },
+  "nextGate": "S12-RM-36 exact v8 Stage A execution once, then S12-RM-37 owner post-run decision"
+}

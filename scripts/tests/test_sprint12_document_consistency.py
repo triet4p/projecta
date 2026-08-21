@@ -54,20 +54,20 @@ def test_rm23f_transition_preserves_history_and_sets_current_state() -> None:
 
 def test_rm25_transition_remains_historical_and_current_state_agrees_after_rm33() -> None:
     current = _json(EVAL / "current-state.v1.json")
-    g5 = _json(OPT / "g5-packet.v21.json")
+    g5 = _json(OPT / "g5-packet.v23.rm35-authorization.json")
     transition = _json(OPT / "s12-f-12-rm25-authorization-transition.v1.json")
     authorization_path = OPT / "s12-f-12-rm25-authorization.v1.json"
     review_path = OPT / "s12-f-12-rm25-owner-review.v1.json"
 
-    expected = "G5_F12_V8_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
+    expected = "G5_F12_V8_AUTHORIZED_PENDING_EXECUTION"
     assert current["status"] == expected
     assert g5["status"] == expected
     assert transition["authorization"]["digest"] == _digest(authorization_path)
     assert transition["ownerReview"]["digest"] == _digest(review_path)
     assert current["experimentState"]["candidateSelection"] == "NO_SELECTION"
     assert g5["selection"]["status"] == "NO_SELECTION"
-    assert current["experimentState"]["currentGovernance"]["providerExecutionAuthorized"] is False
-    assert g5["authorizationBoundary"]["providerExecutionAuthorized"] is False
+    assert current["experimentState"]["currentGovernance"]["providerExecutionAuthorized"] is True
+    assert g5["authorizationBoundary"]["providerExecutionAuthorized"] is True
     assert g5["authorizationBoundary"]["preregistrationIssued"] is True
     assert g5["authorizationBoundary"]["technicalFreezeIssued"] is True
     assert current["experimentState"]["historicalLineage"]["providerCallsPerformed"] == 144
@@ -91,6 +91,10 @@ def test_rm33_issuance_is_digest_bound_and_provider_locked() -> None:
     assert packet["issuanceTransition"]["digest"] == _digest(transition_path)
     assert current["currentEvidence"]["rm33OwnerReview"]["digest"] == _digest(owner_path)
     assert current["currentEvidence"]["rm33IssuanceTransition"]["digest"] == _digest(transition_path)
+    assert current["status"] == "G5_F12_V8_AUTHORIZED_PENDING_EXECUTION"
+    assert current["currentEvidence"]["rm35Authorization"]["expectedStatus"] == (
+        "APPROVED_FOR_DEVELOPMENT_STAGE_A"
+    )
     assert transition["currentDecisionState"]["preregistrationIssued"] is True
     assert transition["currentDecisionState"]["technicalFreezeIssued"] is True
     assert transition["currentDecisionState"]["providerExecutionAuthorized"] is False
@@ -136,7 +140,7 @@ def test_rm27_owner_decision_transition_and_current_state_bind_closed_lineage() 
         "F12_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_REMEDIATION_PREPARATION_ONLY"
     )
     assert g5["status"] == "G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY"
-    assert current["status"] == "G5_F12_V8_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
+    assert current["status"] == "G5_F12_V8_AUTHORIZED_PENDING_EXECUTION"
     assert report["decision"]["status"] == "COMPLETED_REJECTED_HARD_GATE"
     assert report["accounting"]["providerCallsAttempted"] == 144
     assert report["accounting"]["retryCount"] == 0
@@ -175,8 +179,8 @@ def test_rm27_owner_decision_transition_and_current_state_bind_closed_lineage() 
     }
     assert current["experimentState"]["candidateSelection"] == "NO_SELECTION"
     assert current["nextTasks"] == [
-        "S12-RM-34_PREPARE_EXACT_V8_STAGE_A_AUTHORIZATION_OFFLINE",
-        "S12-RM-35_OWNER_AUTHORIZATION_REVIEW",
+        "S12-RM-36_EXECUTE_EXACT_V8_STAGE_A_ONCE",
+        "S12-RM-37_OWNER_POST_RUN_DECISION",
     ]
 
 
@@ -203,9 +207,9 @@ def test_current_documents_do_not_repeat_superseded_statuses() -> None:
     handoffs = (DOCS / "agent-handoffs.md").read_text(encoding="utf-8")
 
     assert "sprint-12/current-state.md" in sprint_plan
-    assert "sprint-12/g5-optimization.v21.md" in sprint_plan
-    assert "G5_F12_V8_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING" in global_plan
-    assert "CURRENT_F12_V8_ISSUED_PROVIDER_AUTHORIZATION_HANDOFF" in handoffs
+    assert "sprint-12/g5-optimization.v23.rm35-authorization.md" in sprint_plan
+    assert "G5_F12_V8_AUTHORIZED_PENDING_EXECUTION" in global_plan
+    assert "CURRENT_F12_V8_AUTHORIZED_EXECUTION_HANDOFF" in handoffs
     assert "Handoff A — Runtime-backed" not in handoffs
 
     stale_phrases = (

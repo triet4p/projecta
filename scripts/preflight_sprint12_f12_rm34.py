@@ -69,6 +69,30 @@ def require_preparation_evidence(preparation: dict[str, Any]) -> str:
     return expected
 
 
+def require_exact_runtime_bindings(
+    preparation: dict[str, Any], package: dict[str, Any]
+) -> int:
+    """Verify RM-32's 22 exact Git-blob bindings from an RM-34 artifact."""
+
+    commit = preparation["preparedLineage"]["executionCommit"]
+    runtime = package.get("runtimeBoundDigests")
+    if not isinstance(runtime, dict) or len(runtime) != 22:
+        raise ValueError("RM-32 runtime binding set is not exactly 22 blobs")
+    for path_text, expected in runtime.items():
+        if git_blob_digest(commit, str(path_text)) != expected:
+            raise ValueError(f"exact runtime blob mismatch: {path_text}")
+    for name in ("runner", "authorizationSchema", "reportSchema"):
+        binding = preparation["exactRuntimeBindings"][name]
+        if git_blob_digest(commit, binding["path"]) != binding["digest"]:
+            raise ValueError(f"named runtime binding mismatch: {name}")
+    preflight_binding = preparation["exactRuntimeBindings"].get("preflight")
+    if not isinstance(preflight_binding, dict):
+        raise ValueError("RM-34 exact runtime preflight binding is missing")
+    if git_blob_digest(commit, preflight_binding["path"]) != preflight_binding["digest"]:
+        raise ValueError("RM-32 preflight exact runtime binding mismatch")
+    return len(runtime)
+
+
 def run_preflight() -> dict[str, object]:
     preparation = load(PREPARATION)
     current = load(CURRENT)
@@ -143,21 +167,7 @@ def run_preflight() -> dict[str, object]:
         raise ValueError("RM-33 transition current decision state changed")
 
     commit = preparation["preparedLineage"]["executionCommit"]
-    runtime = package.get("runtimeBoundDigests")
-    if not isinstance(runtime, dict) or len(runtime) != 22:
-        raise ValueError("RM-32 runtime binding set is not exactly 22 blobs")
-    for path_text, expected in runtime.items():
-        if git_blob_digest(commit, str(path_text)) != expected:
-            raise ValueError(f"exact runtime blob mismatch: {path_text}")
-    for name in ("runner", "authorizationSchema", "reportSchema"):
-        binding = preparation["exactRuntimeBindings"][name]
-        if git_blob_digest(commit, binding["path"]) != binding["digest"]:
-            raise ValueError(f"named runtime binding mismatch: {name}")
-    preflight_binding = preparation["exactRuntimeBindings"].get("preflight")
-    if not isinstance(preflight_binding, dict):
-        raise ValueError("RM-34 exact runtime preflight binding is missing")
-    if git_blob_digest(commit, preflight_binding["path"]) != preflight_binding["digest"]:
-        raise ValueError("RM-32 preflight exact runtime binding mismatch")
+    runtime_blob_count = require_exact_runtime_bindings(preparation, package)
     if preparation["integrityFindings"]["ownerReviewReconciliationRequired"] is not False:
         raise ValueError("RM-33 custody reconciliation remains open")
     if preparation["integrityFindings"]["ownerReviewReconciled"] is not True:
@@ -186,7 +196,7 @@ def run_preflight() -> dict[str, object]:
         "preparationScope": "S12-RM-34",
         "lineageVersion": "v8",
         "executionCommitSha": commit,
-        "runtimeBlobCount": len(runtime),
+        "runtimeBlobCount": runtime_blob_count,
         "providerCalls": 0,
         "retryCount": 0,
         "mockAuthorizedCalls": preparation["mockEvidence"]["authorizedProviderCalls"],

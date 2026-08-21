@@ -27,12 +27,12 @@ def _digest(path: Path) -> str:
 
 
 def test_rm34_preparation_is_exactly_bound_and_zero_call() -> None:
-    result = preflight.run_preflight()
     preparation = _json(PREPARATION)
-    assert result["status"] == "F12_RM34_PREPARED_ZERO_CALL"
-    assert result["runtimeBlobCount"] == 22
-    assert result["providerCalls"] == 0
-    assert result["nextGate"] == "S12-RM-35_OWNER_AUTHORIZATION_REVIEW"
+    package = _json(ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm32-execution-package.v8.json")
+    assert preflight.require_exact_runtime_bindings(preparation, package) == 22
+    # RM-34 is an immutable historical preparation; RM-35 has since advanced
+    # the mutable current-state index to authorized-pending-execution.
+    assert preparation["status"] == "PREPARED_PENDING_RM35_OWNER_AUTHORIZATION"
     assert preparation["providerExecutionAuthorized"] is False
     assert preparation["newAuthorizationIssued"] is False
     assert preparation["preparedLineage"]["executionCommit"] == (
@@ -93,19 +93,17 @@ def test_rm34_preserves_immutable_v6_accounting() -> None:
     assert not (ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json").exists()
 
 
-def test_rm34_rejects_the_previous_rm32_preflight_digest_typo(
-    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
-) -> None:
+def test_rm34_rejects_the_previous_rm32_preflight_digest_typo(tmp_path: Path) -> None:
     preparation = _json(PREPARATION)
     preparation["exactRuntimeBindings"]["preflight"]["digest"] = (
         "sha256:492cc4c9815c168233039c096d5f7bc6121773a2b6f7f84443ed587fea1f8d3e"
     )
     path = tmp_path / "preparation-typo.json"
     path.write_text(json.dumps(preparation), encoding="utf-8")
-    monkeypatch.setattr(preflight, "PREPARATION", path)
+    package = _json(ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm32-execution-package.v8.json")
 
     with pytest.raises(ValueError, match="RM-32 preflight exact runtime binding mismatch"):
-        preflight.run_preflight()
+        preflight.require_exact_runtime_bindings(preparation, package)
 
 
 def test_rm34_rejects_one_character_tamper_of_its_own_preflight(
@@ -115,5 +113,6 @@ def test_rm34_rejects_one_character_tamper_of_its_own_preflight(
     tampered.write_bytes((ROOT / "scripts/preflight_sprint12_f12_rm34.py").read_bytes() + b"\n# tamper\n")
     monkeypatch.setattr(preflight, "RM34_PREFLIGHT", tampered)
 
+    preparation = _json(PREPARATION)
     with pytest.raises(ValueError, match="working-tree digest mismatch"):
-        preflight.run_preflight()
+        preflight.require_preparation_evidence(preparation)
