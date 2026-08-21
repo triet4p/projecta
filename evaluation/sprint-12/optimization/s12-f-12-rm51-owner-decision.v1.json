@@ -1,0 +1,91 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm51-owner-decision.v1",
+  "status": "RM50_REJECTED_OPTION_C_STOP_PROVIDER_EXPERIMENTATION",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-51",
+  "decisionType": "OWNER_REVIEW_OF_RM50_OFFLINE_DIAGNOSTIC_AND_PARITY_IMPLEMENTATION",
+  "decisionDate": "2026-08-22",
+  "decisionAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedAuthority": {
+    "rm49OwnerReview": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm49-owner-review.v1.json",
+      "digest": "sha256:67287ae699ed86bf2ad414a3feb7977c3294a174bc6725ca8557ee7778475711"
+    },
+    "rm49ApprovalTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm49-approval-transition.v1.json",
+      "digest": "sha256:07927a952e32d0f805403c87672dc3a7a84af155149553f681260c0dd1976fe5"
+    }
+  },
+  "reviewedImplementation": {
+    "package": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm50-offline-remediation.v1.json",
+      "digest": "sha256:16926e64543bc827138191a63d3cb039e55ce8dbd0efbc754457192a271aa7ea"
+    },
+    "diagnosticReport": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm50-offline-diagnostic-report.v1.json",
+      "digest": "sha256:62a660e80e37b05e5b8cf7ec471610e5237d9c5cc30d966d44f76c7027c17a16"
+    },
+    "parityFixtures": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-fixtures.v1.json",
+      "digest": "sha256:988cb21c0b8d18845fdf0f0400ad5aadc3d90d782309bf2358b431ea44fe3095"
+    },
+    "parityReport": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-report.v1.json",
+      "digest": "sha256:69b422aa195dbf4f3b479ea1deb8f70fe82a80e5e32069c4693b173f6c00cc6d"
+    }
+  },
+  "verifiedPassingScope": {
+    "sequentialAGateBeforeB": true,
+    "caseRunIdentityMutationsRejected": true,
+    "armStageIdentityMutationsRejected": true,
+    "fixtureMatrixMutationsRejected": true,
+    "clusterMutationsRejected": true,
+    "rawKeyMutationsRejected": true,
+    "pristineRegenerationPasses": true,
+    "providerCalls": 0,
+    "historicalReportsUnchanged": true
+  },
+  "blockingFindings": [
+    "Mutating providerCallsAttempted from 144 to 143 in both source mappings is accepted.",
+    "Mutating responsesReceived, pricedCalls or usageValidResponses in both source mappings is accepted.",
+    "Mutating totalCostUsd or costCeilingUsd in both source mappings is accepted.",
+    "Setting endpointContractFailure, missingOutput or sharedConfigurationMismatch nonzero is accepted.",
+    "Therefore RM-50 can emit a valid-looking comparison from accounting metadata that no longer matches the immutable source reports."
+  ],
+  "ownerAssessment": {
+    "optionAStopCriteriaPassed": false,
+    "optionBApproved": false,
+    "rm50ImplementationApproved": false,
+    "additionalPatchLoopJustified": false,
+    "optionCActivated": true,
+    "qualityImprovementEstablished": false
+  },
+  "decision": {
+    "providerExperimentationStopped": true,
+    "rm50Rejected": true,
+    "offlineClosureDocumentationAuthorized": true,
+    "errorBacklogPreparationAuthorized": true,
+    "offlineDiagnosticImplementationAuthorized": false,
+    "offlineParityImplementationAuthorized": false,
+    "runtimeRemediationImplementationAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "PREPARE_OFFLINE_F12_CLOSURE_AND_ERROR_BACKLOG"
+  },
+  "constraints": [
+    "No further provider experiment, runtime integration, parity implementation patch loop or lineage preparation is authorized in this track.",
+    "RM-50 artifacts remain truthful rejected implementation evidence and must not be relabeled as passing.",
+    "Closure work may document measured failures, audit lessons and prioritized backlog only; it may not open validation, held-out, Stage B, selection or promotion.",
+    "Reopening provider experimentation requires a new owner decision outside this closed track with a complete immutable accounting contract."
+  ]
+}

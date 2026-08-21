@@ -1,0 +1,43 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm51-decision-transition.v1",
+  "status": "F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY",
+  "experimentId": "s12-f-12",
+  "transitionDate": "2026-08-22",
+  "transitionAuthority": "project-owner-delegated-codex-reviewer",
+  "precedenceRule": "This RM-51 transition activates RM-49 Option C after RM-50 failed immutable accounting stop criteria; it authorizes closure documentation only and no further provider or runtime work.",
+  "ownerDecision": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm51-owner-decision.v1.json",
+    "digest": "sha256:f2177fa9c9d5d3b82c491578ef4a3f322832e175926b15ff2f59256b5fbdfb76",
+    "status": "RM50_REJECTED_OPTION_C_STOP_PROVIDER_EXPERIMENTATION"
+  },
+  "rejectedImplementation": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm50-offline-remediation.v1.json",
+    "digest": "sha256:16926e64543bc827138191a63d3cb039e55ce8dbd0efbc754457192a271aa7ea"
+  },
+  "fromState": "G5_F12_OFFLINE_DIAGNOSTIC_HARDENING_THEN_PARITY_FIXTURES_APPROVED_ONLY",
+  "currentDecisionState": {
+    "providerExperimentationStopped": true,
+    "rm50Rejected": true,
+    "offlineClosureDocumentationAuthorized": true,
+    "errorBacklogPreparationAuthorized": true,
+    "offlineDiagnosticImplementationAuthorized": false,
+    "offlineParityImplementationAuthorized": false,
+    "runtimeRemediationImplementationAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "PREPARE_OFFLINE_F12_CLOSURE_AND_ERROR_BACKLOG"
+  },
+  "constraints": [
+    "Only offline closure documentation and error-backlog preparation are authorized.",
+    "No further RM-50 patch loop, runtime integration, lineage, provider call or downstream access is authorized.",
+    "The immutable v6/v9 reports and all execution facts remain the evidence boundary."
+  ]
+}

@@ -673,3 +673,23 @@ calls or reconstructing withheld payloads.
 reconciliation, unknown and raw-data stop criteria pass, Option B. Live runtime
 changes, new lineage, provider execution and downstream gates remain closed;
 failure of the offline criteria returns the track to owner review under Option C.
+
+## [2026-08-22] Stop f12 provider experimentation after RM-50 accounting gaps
+
+**Decision:** Reject RM-50 and activate Option C, stopping further f12 provider
+experimentation and runtime integration while permitting only offline closure
+documentation and error-backlog preparation.
+**Alternatives considered:** Continue a fourth RM-50 patch/audit loop; approve
+the implementation because pristine fixtures pass; open a runtime-integration
+proposal despite residual accounting gaps; or authorize another provider run.
+**Reason:** Successive audits closed raw-key, cluster, case/run, arm/stage and
+fixture identity gaps, but RM-50 still accepts coordinated mutations to calls,
+responses, pricing, usage, cost, ceiling and hard failure-class accounting.
+That violates Option A's exact-reconciliation stop criterion and allows a
+valid-looking report that no longer matches immutable v6/v9 evidence. The
+pre-registered fallback therefore applies.
+**Consequences:** RM-52 may prepare the f12 closure packet and prioritized error
+backlog. RM-50 remains rejected evidence; no more patch loop, runtime lineage,
+provider execution, validation, held-out access, Stage B, selection or
+promotion is authorized. Reopening requires a new owner decision and a complete
+immutable accounting contract outside this closed track.
