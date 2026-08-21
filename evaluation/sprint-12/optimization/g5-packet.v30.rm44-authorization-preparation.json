@@ -1,0 +1,75 @@
+{
+  "packetVersion": "s12.g5.packet.v30.rm44-authorization-preparation",
+  "status": "G5_F12_RM44_EXACT_V9_AUTHORIZATION_PREPARED_PENDING_RM45_OWNER_REVIEW",
+  "packetRole": "non-authoritative-next-g5-preparation-snapshot",
+  "authoritative": false,
+  "asOf": "2026-08-22",
+  "authoritativePredecessor": {
+    "path": "evaluation/sprint-12/optimization/g5-packet.v29.rm43-issuance.json",
+    "digest": "sha256:12273faba085c8f811317a6d0d7774432c760c2487c3d36c0795e5a683710f38"
+  },
+  "rm44Preparation": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm44-authorization-preparation.v1.json",
+    "digest": "sha256:9b2448056e81bb66c4034e161ed49f6b523b947488ccce24a9cc6adc0db6649c",
+    "status": "PREPARED_PENDING_RM45_OWNER_AUTHORIZATION_REVIEW"
+  },
+  "lineage": {
+    "lineageVersion": "v9",
+    "lineageCommit": "6537f6b79f1f5326a9d8362b09af7e52df74819f",
+    "executionCommit": "f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e",
+    "preregistrationIssued": true,
+    "technicalFreezeIssued": true,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "stageAReportExists": false,
+    "outputPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json"
+  },
+  "exactRuntime": {
+    "digestMode": "git_blob_sha256",
+    "runtimeBlobCount": 19,
+    "runnerDigest": "sha256:523106bf38a2da3acdd6cf6be6dcb299e1763174d41d0e1f4438f5c1fefd92dd",
+    "reportSchemaDigest": "sha256:262822030197e36cbabe9d7cb734c794385fa8b6d8d4bf3a63eb5ce82f864bea",
+    "authorizationSchemaDigest": "sha256:47b52efd42849e436f757cdcedc12989d6a64820a0049db5c33e14cb8523a2b9"
+  },
+  "runtimeContract": {
+    "providerType": "openai-response",
+    "transport": "deepseek-chat-completions",
+    "model": "deepseek-v4-flash",
+    "promptVersion": "m3.prompt.v7-v2.two-step-extraction",
+    "dataset": "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json"
+  },
+  "prospectiveExecutionBounds": {
+    "providerCalls": 144,
+    "relationBranchOutputs": 96,
+    "retryPolicy": "none",
+    "outputOverwrite": false,
+    "costCeilingUsd": "10.00",
+    "unauthorizedProviderCalls": 0,
+    "authorizedMockProviderCalls": 144,
+    "mockPersistCount": 1,
+    "mockOverwriteRejected": true
+  },
+  "governance": {
+    "preregistrationIssued": true,
+    "technicalFreezeIssued": true,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "downstreamAccessAuthorized": false,
+    "nextGate": "S12-RM-45_OWNER_AUTHORIZATION_REVIEW"
+  },
+  "custody": {
+    "historicalV6Digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "failedV8ReportExists": false,
+    "failedV8AuthorizationReused": false,
+    "spentRM35AuthorizationReused": false,
+    "newV9ReportExists": false
+  },
+  "claimBoundary": "This is a non-authoritative preparation snapshot. RM-44 has prepared exact v9 authorization offline only; RM-45 owner review and separate issuance are required before any provider call."
+}

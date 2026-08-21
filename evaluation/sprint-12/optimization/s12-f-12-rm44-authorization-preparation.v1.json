@@ -1,0 +1,192 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm44-authorization-preparation.v1",
+  "status": "PREPARED_PENDING_RM45_OWNER_AUTHORIZATION_REVIEW",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-44",
+  "lineageVersion": "v9",
+  "decisionType": "EXACT_V9_STAGE_A_AUTHORIZATION_PREPARATION_ONLY",
+  "preparationDate": "2026-08-22",
+  "preparedBy": "gpt-5.6-luna",
+  "providerExecutionAuthorized": false,
+  "newAuthorizationIssued": false,
+  "providerCallsPerformedAtPreparation": 0,
+  "authoritativeState": {
+    "path": "evaluation/sprint-12/current-state.v1.json",
+    "digest": "sha256:6965c0b7ab007891199f7237f553f789fcac7d755ef7ea18750f4146d18032eb",
+    "status": "G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
+  },
+  "rm43OwnerReview": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm43-owner-review.v1.json",
+    "digest": "sha256:dd8d0210e8bed24b68fea64188fd8bb5cbb45c7a5962f4342b74b8811c9006a9",
+    "status": "OWNER_ISSUANCE_REVIEW_APPROVED_ISSUANCE_ONLY"
+  },
+  "rm43Issuance": {
+    "transitionPath": "evaluation/sprint-12/optimization/s12-f-12-rm43-issuance-transition.v1.json",
+    "transitionDigest": "sha256:d57f040293ff0be4573d49e97a20cea9c838152b47945ee3fc01af2568637fdb",
+    "g5PacketPath": "evaluation/sprint-12/optimization/g5-packet.v29.rm43-issuance.json",
+    "g5PacketDigest": "sha256:12273faba085c8f811317a6d0d7774432c760c2487c3d36c0795e5a683710f38",
+    "status": "CORRECTED_V9_PREREGISTRATION_AND_FREEZE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
+  },
+  "preparedLineage": {
+    "lineageVersion": "v9",
+    "lineageCommit": "6537f6b79f1f5326a9d8362b09af7e52df74819f",
+    "executionCommit": "f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e",
+    "preregistration": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm42-preregistration.v9.json",
+      "digest": "sha256:147503146accb6462548b9a4ce238bee989aacc63884e67a15a217304bfa03c4"
+    },
+    "executionPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm42-execution-package.v9.json",
+      "digest": "sha256:cdaad8ebdce34115c8853067245ed6e5ef4107e271de5ce073a1cbdef20b05d2"
+    },
+    "technicalFreeze": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm42-technical-freeze.v9.json",
+      "digest": "sha256:f595730955848c76d0399706d5f2f32c367a6e88b62a5b3c3986bf2ccc3dfe32"
+    },
+    "outputPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json"
+  },
+  "exactRuntimeBindings": {
+    "digestMode": "git_blob_sha256",
+    "runtimeBlobCount": 19,
+    "runner": {
+      "path": "scripts/run_sprint12_f12_stage_a_v9.py",
+      "digest": "sha256:523106bf38a2da3acdd6cf6be6dcb299e1763174d41d0e1f4438f5c1fefd92dd"
+    },
+    "reportSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v9.json",
+      "digest": "sha256:262822030197e36cbabe9d7cb734c794385fa8b6d8d4bf3a63eb5ce82f864bea"
+    },
+    "authorizationSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v9.json",
+      "digest": "sha256:47b52efd42849e436f757cdcedc12989d6a64820a0049db5c33e14cb8523a2b9"
+    },
+    "runtimeConfiguration": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-runtime-configuration.v1.json",
+      "digest": "sha256:a672d1c17a174c5c2697859118e2394b89007c3877a270e82ee5db25b357dd0b"
+    },
+    "providerAdapter": {
+      "path": "scripts/sprint12_f12_provider_adapter_v2.py",
+      "digest": "sha256:af20e7fd9f717ec319cf8ba321880d3a0b2f6152139873c4bf1eb3e814da5a96",
+      "providerType": "openai-response",
+      "transport": "deepseek-chat-completions",
+      "model": "deepseek-v4-flash"
+    },
+    "prompt": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-m3-prompt-v7-v2-two-step-extraction.v1.txt",
+      "digest": "sha256:e2dad79c2483da65f14726dc7964eb2963e3a3f1ea1135559713613c6c418fb2",
+      "version": "m3.prompt.v7-v2.two-step-extraction"
+    },
+    "dataset": {
+      "path": "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json",
+      "digest": "sha256:0c3795c4ff38e19c7e3ea11d3e16474cced87939a37cc00ff759dd3d39541045",
+      "boundary": "frozen_atomic_v3"
+    },
+    "stage1Schema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-stage-1-entity-envelope.schema.v2.json",
+      "digest": "sha256:53144aeddbcdf53d7c23d59d123eb92ead7afd7f4087e3763125b456923f52d4"
+    },
+    "stage2Schema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-stage-2-relation-envelope.schema.v2.json",
+      "digest": "sha256:0d0dc18829d3fc205d92b3c17ae70e4fb846858f756b3ea788b549587a90f34d"
+    },
+    "runtimeBoundDigests": {
+      "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json": "sha256:0c3795c4ff38e19c7e3ea11d3e16474cced87939a37cc00ff759dd3d39541045",
+      "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json": "sha256:54ab4640d3ef4c2e4879370c3497006638b4f60c932995f7c34b5c06d395cc8c",
+      "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v9.json": "sha256:262822030197e36cbabe9d7cb734c794385fa8b6d8d4bf3a63eb5ce82f864bea",
+      "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v9.json": "sha256:47b52efd42849e436f757cdcedc12989d6a64820a0049db5c33e14cb8523a2b9",
+      "evaluation/sprint-12/harness/s12-f-12-stage-1-entity-envelope.schema.v2.json": "sha256:53144aeddbcdf53d7c23d59d123eb92ead7afd7f4087e3763125b456923f52d4",
+      "evaluation/sprint-12/harness/s12-f-12-stage-2-relation-envelope.schema.v2.json": "sha256:0d0dc18829d3fc205d92b3c17ae70e4fb846858f756b3ea788b549587a90f34d",
+      "evaluation/sprint-12/harness/s12-f-12-runtime-configuration.v1.json": "sha256:a672d1c17a174c5c2697859118e2394b89007c3877a270e82ee5db25b357dd0b",
+      "evaluation/sprint-12/optimization/s12-f-12-m3-prompt-v7-v2-two-step-extraction.v1.txt": "sha256:e2dad79c2483da65f14726dc7964eb2963e3a3f1ea1135559713613c6c418fb2",
+      "scripts/run_sprint12_f12_stage_a_v2.py": "sha256:d211de99191d7f403b4344d876ad143e6b34cb02244b928cf2c6044dc5ed81cd",
+      "scripts/run_sprint12_f12_stage_a_v3.py": "sha256:c5140a39e12c60feea4784faa4adcaa9077baced7f6a34018878c70723c97850",
+      "scripts/run_sprint12_f12_stage_a_v4.py": "sha256:52c8e054a1e385b58ebbc13fcf16a8ba927ef4b6678b4937ec7d1c36371720b0",
+      "scripts/run_sprint12_f12_stage_a_v9.py": "sha256:523106bf38a2da3acdd6cf6be6dcb299e1763174d41d0e1f4438f5c1fefd92dd",
+      "scripts/s12_f12_rm30_diagnostic_remediation.py": "sha256:ac01698dbf4e12dadeb8a1d7858e7de06bdfd4772b31536df917b4906d2d601b",
+      "scripts/s12_f12_rm40_offline_runtime.py": "sha256:1e20a2def263ca99c872d1df1413dcf907ba575f8a70ccda53408f58c0a91deb",
+      "scripts/sprint12_f12_two_step_contracts_v2.py": "sha256:cca6d34b810bc2d77e313159ef6df232011e755716b7d1c313a7411a56221948",
+      "scripts/sprint12_f12_two_step_contracts_v4.py": "sha256:b03837e4cf00e6216b9b3d5533701a448cfb649028c9824a879cb4eb7d1ffb32",
+      "scripts/sprint12_f12_two_step_contracts_v5.py": "sha256:b556ca0de34757815d5a1b9dd0f8034ab2174d860261c0bda8c1297d4c3b1f0f",
+      "scripts/sprint12_provider_adapter.py": "sha256:724ad2e19113e71fc2e18b08960673c09b41b200efc23d44f649027ab31bf4e6",
+      "scripts/sprint12_f12_provider_adapter_v2.py": "sha256:af20e7fd9f717ec319cf8ba321880d3a0b2f6152139873c4bf1eb3e814da5a96"
+    }
+  },
+  "runtimeContract": {
+    "providerType": "openai-response",
+    "transport": "deepseek-chat-completions",
+    "model": "deepseek-v4-flash",
+    "promptVersion": "m3.prompt.v7-v2.two-step-extraction",
+    "datasetPath": "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json",
+    "retryPolicy": "none",
+    "apiKeyStored": false,
+    "providerPayloadStored": false
+  },
+  "executionBounds": {
+    "providerCalls": 144,
+    "stage1ProviderCalls": 48,
+    "stage2PredictedEntitiesCalls": 48,
+    "stage2GoldEntitiesCalls": 48,
+    "relationBranchOutputs": 96,
+    "retryPolicy": "none",
+    "retryAuthorized": false,
+    "outputOverwrite": false,
+    "outputOverwriteAuthorized": false,
+    "outputPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json",
+    "costCeilingUsd": "10.00"
+  },
+  "preparationEvidence": {
+    "digestMode": "working_tree_sha256",
+    "excludedFromExactRuntimeBindings": true,
+    "rm44Preflight": {
+      "path": "scripts/preflight_sprint12_f12_rm44.py",
+      "digest": "sha256:d214b17a8fa3297acb6c4a3a5ec5bd0e890a123ce175a8e4934f0e13f35e01e7"
+    }
+  },
+  "mockEvidence": {
+    "mode": "prospective_default_path_deterministic_mock_only",
+    "unauthorizedProviderCalls": 0,
+    "authorizedProviderCalls": 144,
+    "relationBranches": 96,
+    "retryCount": 0,
+    "outputPersistCount": 1,
+    "overwriteRejected": true,
+    "liveProviderCalls": 0,
+    "liveRunnerInvocations": 0
+  },
+  "historicalCustody": {
+    "historicalV6ReportPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+    "historicalV6ReportDigest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "failedV8ReportPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json",
+    "failedV8ReportExists": false,
+    "failedV8AuthorizationReused": false,
+    "spentRM35AuthorizationReused": false,
+    "newV9ReportPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json",
+    "newV9ReportExists": false,
+    "historicalEvidenceMutated": false
+  },
+  "governanceLocks": {
+    "preregistrationIssued": true,
+    "technicalFreezeIssued": true,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "downstreamAccessAuthorized": false,
+    "nextGate": "S12-RM-45_OWNER_AUTHORIZATION_REVIEW"
+  },
+  "authorizationContract": {
+    "preparedArtifactIsNotAnIssuedAuthorization": true,
+    "issuedAuthorizationSchemaPath": "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v9.json",
+    "issuedAuthorizationSchemaDigest": "sha256:47b52efd42849e436f757cdcedc12989d6a64820a0049db5c33e14cb8523a2b9",
+    "rm25AuthorizationReused": false,
+    "rm35AuthorizationReused": false,
+    "rm45IndependentOwnerReviewRequired": true,
+    "providerCallMayBeginOnlyAfterSeparateIssuance": true
+  },
+  "claimBoundary": "RM-44 prepares one exact v9 Stage A authorization contract offline. It is not an authorization, performs zero provider calls, creates no report, cannot reuse v8 or RM-35, and leaves all downstream gates closed."
+}
