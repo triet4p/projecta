@@ -151,7 +151,9 @@
       "heldOutAccessAuthorized": false,
       "stageBAuthorized": false,
       "candidateSelectionAuthorized": false,
-      "promotionAuthorized": false
+      "promotionAuthorized": false,
+      "offlineFailureDiagnosisPreparationAuthorized": true,
+      "offlineRuntimeRemediationPreparationAuthorized": true
     },
     "stageAReportExists": true,
     "currentStageAReportExists": false,
