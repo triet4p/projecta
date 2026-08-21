@@ -50,7 +50,7 @@ def test_rm32_lineage_binds_rm31_rm30_and_exact_commit() -> None:
     package = _json(PACKAGE)
     prereg = _json(PREREG)
     freeze = _json(FREEZE)
-    assert package["executionCommitSha"] == "79447940f90b17dd22bfa2042be4c9ef2f8c54d1"
+    assert package["executionCommitSha"] == "005a35e3be3fbff40fcdae02dfdf79145c76934b"
     assert prereg["executionCommitSha"] == package["executionCommitSha"]
     assert freeze["executionCommitSha"] == package["executionCommitSha"]
     assert package["rm31ApprovalTransition"]["digest"] == _digest(

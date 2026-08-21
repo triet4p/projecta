@@ -64,7 +64,7 @@
     "stage2GoldEntitiesCalls": 48,
     "stage2PredictedEntitiesCalls": 48
   },
-  "executionCommitSha": "79447940f90b17dd22bfa2042be4c9ef2f8c54d1",
+  "executionCommitSha": "005a35e3be3fbff40fcdae02dfdf79145c76934b",
   "experimentId": "s12-f-12",
   "governance": {
     "candidateSelectionAuthorized": false,

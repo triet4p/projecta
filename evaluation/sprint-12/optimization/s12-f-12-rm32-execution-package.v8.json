@@ -15,7 +15,7 @@
   },
   "costCeilingUsd": "10.00",
   "exactCommitValidated": true,
-  "executionCommitSha": "79447940f90b17dd22bfa2042be4c9ef2f8c54d1",
+  "executionCommitSha": "005a35e3be3fbff40fcdae02dfdf79145c76934b",
   "executionRunner": {
     "digest": "sha256:91caf611f6fc3d999827864ee1a8fa4a0ecda197b6ecae1b5f12a52f5147006c",
     "guarded": true,
@@ -64,8 +64,8 @@
   "preparationEvidence": {
     "scripts/preflight_sprint12_f12_rm32.py": "sha256:492cc4c9815c168233039c096d5f7bc6121773a2b7f6f84443ed587fea1f8d3e",
     "scripts/regenerate_sprint12_f12_rm32_v8.py": "sha256:57618fecad19c080b6d3069f1de4668b40ea17876dc27d931ea1b78c58f0120d",
-    "scripts/tests/test_sprint12_f12_v8_runtime_diagnostics.py": "sha256:8a77345657aa69df8428b9a463b963fe580de84464ea1affc109f79b52992ade",
-    "scripts/tests/test_sprint12_rm32_offline_preparation.py": "sha256:69ac34da2b6a2e044360a84561d12045bf5e5d9ebc665e8ad31b4675f2ffa1d6"
+    "scripts/tests/test_sprint12_f12_v8_runtime_diagnostics.py": "sha256:8b0abc9f1f034e208d1e76f9a2f816c54594f35132d06c0350b0348e18ae69d5",
+    "scripts/tests/test_sprint12_rm32_offline_preparation.py": "sha256:8a2150cc5301018d782dfde2c65458f7cb9bb1a0526c91cc30dd4baf3cf4a956"
   },
   "preparationScope": "S12-RM-32",
   "preregistrationIssued": false,
@@ -84,7 +84,7 @@
   "providerExecutionAuthorized": false,
   "relationBranchOutputs": 96,
   "reportSchema": {
-    "digest": "sha256:c5a3bf16ea61dece84ebc5786f506d9c8fca82e74d8c89e048d7d29e3448e7c5",
+    "digest": "sha256:c65a4f039d948e6f3a59750001e58199bfc98e57e2f2f3ac838070ef5f6f6ad5",
     "path": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v8.json"
   },
   "retryCount": 0,
@@ -123,7 +123,7 @@
     "evaluation/sprint-12/harness/s12-f-12-runtime-configuration.v1.json": "sha256:a672d1c17a174c5c2697859118e2394b89007c3877a270e82ee5db25b357dd0b",
     "evaluation/sprint-12/harness/s12-f-12-stage-1-entity-envelope.schema.v2.json": "sha256:53144aeddbcdf53d7c23d59d123eb92ead7afd7f4087e3763125b456923f52d4",
     "evaluation/sprint-12/harness/s12-f-12-stage-2-relation-envelope.schema.v2.json": "sha256:0d0dc18829d3fc205d92b3c17ae70e4fb846858f756b3ea788b549587a90f34d",
-    "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v8.json": "sha256:c5a3bf16ea61dece84ebc5786f506d9c8fca82e74d8c89e048d7d29e3448e7c5",
+    "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v8.json": "sha256:c65a4f039d948e6f3a59750001e58199bfc98e57e2f2f3ac838070ef5f6f6ad5",
     "evaluation/sprint-12/harness/slice-threshold-contract.v1.json": "sha256:84ab739af415e26465f58733a82a43731d671ae17e5b4043982f862a4e456cbc",
     "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json": "sha256:54ab4640d3ef4c2e4879370c3497006638b4f60c932995f7c34b5c06d395cc8c",
     "evaluation/sprint-12/optimization/s12-f-12-m3-prompt-v7-v2-two-step-extraction.v1.txt": "sha256:e2dad79c2483da65f14726dc7964eb2963e3a3f1ea1135559713613c6c418fb2",

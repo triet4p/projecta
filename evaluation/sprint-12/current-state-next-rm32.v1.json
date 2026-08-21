@@ -36,11 +36,11 @@
   "nextStateStatus": "RM32_SUPERSEDING_LINEAGE_PREPARED_PENDING_RM33_OWNER_ISSUANCE_REVIEW",
   "rm32Preparation": {
     "executionPackage": {
-      "digest": "sha256:7eebec92fddfee0bcfb3ae9f9f3cdc6afec36d47e17924df11936733a06fa339",
+      "digest": "sha256:59a42669692c9c4a5460a44643167c17c68d5449a4b9d8de2e35adad0f0f524c",
       "path": "evaluation/sprint-12/optimization/s12-f-12-rm32-execution-package.v8.json"
     },
     "mockTests": {
-      "digest": "sha256:69ac34da2b6a2e044360a84561d12045bf5e5d9ebc665e8ad31b4675f2ffa1d6",
+      "digest": "sha256:8a2150cc5301018d782dfde2c65458f7cb9bb1a0526c91cc30dd4baf3cf4a956",
       "path": "scripts/tests/test_sprint12_rm32_offline_preparation.py",
       "result": "4 passed"
     },
@@ -49,18 +49,18 @@
       "path": "scripts/preflight_sprint12_f12_rm32.py"
     },
     "preregistration": {
-      "digest": "sha256:9fafbc5bbbdad62c8166551248b6da8f690b3e8612842e28d19f94f6041a18f7",
+      "digest": "sha256:ec2ced60f927e7e8c016b6d2a1d5ed0b5cf52875d3d25c8778626cc75673ccb6",
       "path": "evaluation/sprint-12/optimization/s12-f-12-rm32-preregistration.v8.json"
     },
     "runtimeImplementation": {
       "authorizationSchemaPath": "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v8.json",
-      "commit": "79447940f90b17dd22bfa2042be4c9ef2f8c54d1",
+      "commit": "005a35e3be3fbff40fcdae02dfdf79145c76934b",
       "reportSchemaPath": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v8.json",
       "runnerPath": "scripts/run_sprint12_f12_stage_a_v8.py",
       "runtimeBlobCount": 22
     },
     "technicalFreeze": {
-      "digest": "sha256:ce98e630b86a5a4a0bf1a3fd2b6820787f3bee76a316a5b0904d0c4226ccd6fa",
+      "digest": "sha256:2fc20e806ce4a046c10719e9360cc69938325e1963562b730d02b8138f8dfdc1",
       "path": "evaluation/sprint-12/optimization/s12-f-12-rm32-technical-freeze.v8.json"
     }
   },
