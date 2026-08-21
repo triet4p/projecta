@@ -23,6 +23,7 @@ from s12_f12_rm50_offline_diagnostics import (
     SCHEMA_REASON_CODES,
     assert_no_raw_data_aliases,
     V6_DIGEST,
+    V9_PATH,
     V9_DIGEST,
     validate_report,
 )
@@ -130,60 +131,75 @@ def run_scorer_scenarios() -> dict[str, dict[str, Any]]:
     return {name: score_relations(gold, predicted) for name, (gold, predicted) in cases.items()}
 
 
-def _fixture_data() -> dict[str, Any]:
-    schema_fixtures = [
-        ("schema-unbound", "envelope_unbound_field"),
-        ("schema-version", "envelope_version_mismatch"),
-        ("schema-entity-invalid", "entity_candidate_invalid"),
-        ("schema-duplicate", "entity_candidate_identity_duplicate"),
-        ("schema-span", "entity_span_out_of_source"),
-        ("schema-relation-invalid", "relation_candidate_invalid"),
-        ("schema-endpoint-table", "relation_endpoint_not_in_server_table"),
-        ("schema-evidence-invalid", "relation_evidence_invalid"),
-        ("schema-unknown", "validation_detail_unavailable"),
-    ]
+def _expected_fixture_matrix() -> list[dict[str, Any]]:
+    schema_ids = (
+        "schema-unbound", "schema-version", "schema-entity-invalid", "schema-duplicate",
+        "schema-span", "schema-relation-invalid", "schema-endpoint-table", "schema-evidence-invalid", "schema-unknown",
+    )
     schema = [
         {"fixtureId": fixture_id, "kind": "schema", "caseRun": "fixture-schema#run-1", "arm": "predicted-entities", "stage": "stage1", "slice": "J1", "expectedReason": reason}
-        for fixture_id, reason in schema_fixtures
-    ]
-    evidence_reasons = [
-        "trigger_quote_missing", "trigger_quote_digest_mismatch", "trigger_occurrence_missing",
-        "trigger_occurrence_outside_sentence", "trigger_occurrence_outside_clause", "evidence_span_missing",
-        "evidence_span_out_of_source", "evidence_does_not_contain_trigger", "evidence_does_not_contain_endpoints",
-        "materializer_detail_unavailable",
+        for fixture_id, reason in zip(schema_ids, SCHEMA_REASON_CODES, strict=True)
     ]
     evidence = [
         {"fixtureId": f"evidence-{index}", "kind": "evidence", "caseRun": "fixture-evidence#run-1", "arm": "gold-entities", "stage": "stage2", "slice": "relation-positive", "expectedReason": reason}
-        for index, reason in enumerate(evidence_reasons, start=1)
+        for index, reason in enumerate(EVIDENCE_REASON_CODES, start=1)
     ]
     scorer = [
-        "duplicate", "order", "tie", "wrong-predicate", "reversed-endpoint", "extra", "missing"
-    ]
-    scorer_fixtures = [
         {"fixtureId": f"scorer-{name}", "kind": "scorer", "caseRun": "fixture-scorer#run-1", "arm": "gold-relations", "stage": "stage2", "slice": "J1", "scenario": name}
-        for name in scorer
+        for name in run_scorer_scenarios()
     ]
-    cluster_schema = [
-        "s12-a-4027#run-1", "s12-a-4016#run-1", "s12-a-4032#run-1", "s12-a-4016#run-2", "s12-a-4016#run-3"
-    ]
-    cluster_trigger = [
-        "s12-a-4007#run-1", "s12-a-4011#run-1", "s12-a-4015#run-1", "s12-a-4019#run-1", "s12-a-4027#run-1",
-        "s12-a-4035#run-1", "s12-a-4007#run-2", "s12-a-4011#run-2", "s12-a-4015#run-2", "s12-a-4019#run-2",
-        "s12-a-4027#run-2", "s12-a-4035#run-2", "s12-a-4043#run-2", "s12-a-4007#run-3"
-    ]
-    cluster_endpoint = [
-        "s12-a-4011#run-3",
-        "s12-a-4015#run-3", "s12-a-4019#run-3", "s12-a-4027#run-3", "s12-a-4035#run-3", "s12-a-4043#run-3"
-    ]
-    cluster_evidence = cluster_trigger + cluster_endpoint
-    cluster_cases = (
-        [{"kind": "schema", "caseRun": case_run, "arm": "predicted-entities", "stage": "stage1", "reason": "entity_span_out_of_source", "slice": "all-development"} for case_run in cluster_schema]
-        + [{"kind": "evidence", "caseRun": case_run, "arm": "gold-entities", "stage": "stage2", "reason": "evidence_does_not_contain_trigger", "slice": "relation-positive"} for case_run in cluster_trigger]
-        + [{"kind": "evidence", "caseRun": case_run, "arm": "gold-entities", "stage": "stage2", "reason": "evidence_does_not_contain_endpoints", "slice": "relation-positive"} for case_run in cluster_endpoint]
-    )
-    schema_cluster_cases = [item for item in cluster_cases if item["kind"] == "schema"]
-    evidence_cluster_cases = [item for item in cluster_cases if item["kind"] == "evidence"]
-    evidence_reason_counts = Counter(item["reason"] for item in evidence_cluster_cases)
+    return schema + evidence + scorer
+
+
+def _bound_v9_report() -> dict[str, Any]:
+    if digest(V9_PATH) != V9_DIGEST:
+        raise ValueError("immutable v9 report digest mismatch")
+    value = json.loads(V9_PATH.read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise ValueError("bound v9 report is malformed")
+    return value
+
+
+def _expected_cluster_cases() -> list[dict[str, Any]]:
+    source = _bound_v9_report()
+    schema_cases: list[dict[str, Any]] = []
+    evidence_cases: list[dict[str, Any]] = []
+    for case in source["caseRecords"]:
+        case_run = f"{case['caseId']}#run-{case['runId']}"
+        for arm in ("predicted-entities", "gold-entities", "gold-relations"):
+            arm_record = case["arms"][arm]
+            for stage in ("stage1", "stage2"):
+                if arm_record[stage].get("failureClass"):
+                    counts = arm_record.get("diagnostics", {}).get("schemaReasonCounts", {})
+                    reasons = [(reason, count) for reason, count in counts.items() if count]
+                    if len(reasons) != 1 or reasons[0][0] not in SCHEMA_REASON_CODES or reasons[0][1] != 1:
+                        raise ValueError("bound v9 schema identity/reason matrix is not finite")
+                    schema_cases.append({"kind": "schema", "caseRun": case_run, "arm": arm, "stage": stage, "reason": reasons[0][0], "slice": "all-development"})
+            count = arm_record.get("invalidEvidenceCount", 0)
+            reasons = [(reason, amount) for reason, amount in arm_record.get("diagnostics", {}).get("evidenceReasonCounts", {}).items() if amount]
+            if type(count) is not int or count < 0 or sum(amount for _, amount in reasons) != count:
+                raise ValueError("bound v9 evidence identity/count matrix is not reconciled")
+            for reason, amount in reasons:
+                if reason not in EVIDENCE_REASON_CODES:
+                    raise ValueError("bound v9 evidence reason is outside the finite contract")
+                evidence_cases.extend({"kind": "evidence", "caseRun": case_run, "arm": arm, "stage": "stage2", "reason": reason, "slice": "relation-positive"} for _ in range(amount))
+    return schema_cases + evidence_cases
+
+
+def _expected_cluster_claims(cluster_cases: list[dict[str, Any]]) -> dict[str, Any]:
+    schema_cases = [item for item in cluster_cases if item["kind"] == "schema"]
+    evidence_cases = [item for item in cluster_cases if item["kind"] == "evidence"]
+    schema_reasons = Counter(item["reason"] for item in schema_cases)
+    if len(schema_reasons) != 1:
+        raise ValueError("bound schema cluster reasons are not singular")
+    return {
+        "schemaInvalid": {"total": len(schema_cases), "armStage": f"{schema_cases[0]['arm']}/{schema_cases[0]['stage']}", "reason": next(iter(schema_reasons)), "caseRuns": [item["caseRun"] for item in schema_cases]},
+        "invalidEvidence": {"total": len(evidence_cases), "arm": evidence_cases[0]["arm"], "reasonCounts": dict(Counter(item["reason"] for item in evidence_cases)), "caseRuns": [item["caseRun"] for item in evidence_cases]},
+    }
+
+
+def _fixture_data() -> dict[str, Any]:
+    cluster_cases = _expected_cluster_cases()
     return {
         "artifactVersion": "s12.s12-f-12.rm50-parity-fixtures.v1",
         "status": "OFFLINE_PARITY_FIXTURES_READY_PENDING_OWNER_REVIEW",
@@ -194,12 +210,9 @@ def _fixture_data() -> dict[str, Any]:
         "rawSourceTextIncluded": False,
         "rawTriggerQuoteIncluded": False,
         "rawValidationDetailIncluded": False,
-        "fixtureMatrix": schema + evidence + scorer_fixtures,
+        "fixtureMatrix": _expected_fixture_matrix(),
         "v9ClusterCases": cluster_cases,
-        "v9SanitizedClusters": {
-            "schemaInvalid": {"total": len(schema_cluster_cases), "armStage": "predicted-entities/stage1", "reason": "entity_span_out_of_source", "caseRuns": [item["caseRun"] for item in schema_cluster_cases]},
-            "invalidEvidence": {"total": len(evidence_cluster_cases), "arm": "gold-entities", "reasonCounts": dict(evidence_reason_counts), "caseRuns": [item["caseRun"] for item in evidence_cluster_cases]},
-        },
+        "v9SanitizedClusters": _expected_cluster_claims(cluster_cases),
         "goldRelationsControl": {"fixtureArm": "gold-relations", "invalidEvidence": 0, "integrityPass": True},
     }
 
@@ -208,7 +221,10 @@ def build_parity_report(fixtures: dict[str, Any] | None = None) -> dict[str, Any
     fixtures = fixtures or json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))
     assert_no_raw_data_aliases(fixtures, allow_policy_keys=True)
     matrix = fixtures["fixtureMatrix"]
-    if len(matrix) != 26:
+    expected_matrix = _expected_fixture_matrix()
+    if matrix != expected_matrix:
+        raise ValueError("fixture semantic identity changed")
+    if len(matrix) != len(expected_matrix):
         raise ValueError("fixture matrix count changed")
     schema_reasons = {item["expectedReason"] for item in matrix if item["kind"] == "schema"}
     evidence_reasons = {item["expectedReason"] for item in matrix if item["kind"] == "evidence"}
@@ -218,7 +234,10 @@ def build_parity_report(fixtures: dict[str, Any] | None = None) -> dict[str, Any
     if scorer_names != {"duplicate", "order", "tie", "wrong-predicate", "reversed-endpoint", "extra", "missing"}:
         raise ValueError("fixture matrix scorer coverage changed")
     cluster_cases = fixtures.get("v9ClusterCases")
-    if not isinstance(cluster_cases, list) or len(cluster_cases) != 25:
+    expected_cluster_cases = _expected_cluster_cases()
+    if cluster_cases != expected_cluster_cases:
+        raise ValueError("v9 cluster fixture semantic identity changed")
+    if not isinstance(cluster_cases, list) or len(cluster_cases) != len(expected_cluster_cases):
         raise ValueError("v9 cluster fixture case count changed")
     schema_cases = [item for item in cluster_cases if item.get("kind") == "schema"]
     evidence_cases = [item for item in cluster_cases if item.get("kind") == "evidence"]
@@ -235,6 +254,8 @@ def build_parity_report(fixtures: dict[str, Any] | None = None) -> dict[str, Any
     claims = fixtures.get("v9SanitizedClusters")
     if not isinstance(claims, dict):
         raise ValueError("v9 cluster claims missing")
+    if claims != _expected_cluster_claims(expected_cluster_cases):
+        raise ValueError("v9 cluster claims semantic identity changed")
     schema_claim = claims.get("schemaInvalid", {})
     evidence_claim = claims.get("invalidEvidence", {})
     if schema_claim.get("total") != len(schema_cases) or schema_claim.get("caseRuns") != derived_schema_runs or schema_claim.get("reason") != next(iter(derived_schema_reasons)):
@@ -245,6 +266,9 @@ def build_parity_report(fixtures: dict[str, Any] | None = None) -> dict[str, Any
         raise ValueError("v9 schema cluster arm/stage/reason mismatch")
     if any(item.get("arm") != "gold-entities" or item.get("stage") != "stage2" for item in evidence_cases):
         raise ValueError("v9 evidence cluster arm/stage mismatch")
+    expected_control = {"fixtureArm": "gold-relations", "invalidEvidence": 0, "integrityPass": True}
+    if fixtures.get("goldRelationsControl") != expected_control:
+        raise ValueError("gold-relations control semantic identity changed")
     diagnostic = json.loads(DIAGNOSTIC_REPORT.read_text(encoding="utf-8"))
     validate_report(diagnostic)
     source_reports = diagnostic.get("sourceReports", {})
@@ -264,7 +288,7 @@ def build_parity_report(fixtures: dict[str, Any] | None = None) -> dict[str, Any
         "fixtureContract": {"path": FIXTURE_PATH.relative_to(ROOT).as_posix(), "fixtureCount": len(matrix), "caseArmStageSliceCoverage": True, "schemaBoundaryCoverage": sorted(schema_reasons), "evidenceBoundaryCoverage": sorted(evidence_reasons), "scorerScenarioCoverage": sorted(item["scenario"] for item in matrix if item["kind"] == "scorer")},
         "scorerScenarioResults": run_scorer_scenarios(),
         "v9ClusterReproduction": {"schemaInvalidTotal": len(schema_cases), "invalidEvidenceTotal": len(evidence_cases), "triggerContainment": derived_evidence_reasons["evidence_does_not_contain_trigger"], "endpointContainment": derived_evidence_reasons["evidence_does_not_contain_endpoints"], "reproducedWithoutProviderOrRawReconstruction": True},
-        "goldRelationsControl": fixtures["goldRelationsControl"],
+        "goldRelationsControl": expected_control,
         "rawDataPolicy": {"rawProviderPayloadIncluded": False, "rawSourceTextIncluded": False, "rawTriggerQuoteIncluded": False, "rawValidationDetailIncluded": False, "recursiveDynamicKeyExclusion": True},
         "governance": {"offlineOnly": True, "providerCalls": 0, "runtimeRemediationAuthorized": False, "supersedingLineagePreparationAuthorized": False, "preregistrationIssued": False, "technicalFreezeIssued": False, "newAuthorizationIssued": False, "providerExecutionAuthorized": False, "validationAccessAuthorized": False, "heldOutAccessAuthorized": False, "stageBAuthorized": False, "candidateSelectionAuthorized": False, "promotionAuthorized": False},
         "nextGate": "S12-RM-51_OWNER_REVIEW_RM50_OFFLINE_DIAGNOSTICS_AND_PARITY_FIXTURES",

@@ -86,7 +86,60 @@ def test_option_a_rejects_v9_invalid_evidence_count_mutation() -> None:
     v9 = json.loads(V9.read_text(encoding="utf-8"))
     target = next(case for case in v9["caseRecords"] if case["arms"]["gold-entities"]["invalidEvidenceCount"])
     target["arms"]["gold-entities"]["invalidEvidenceCount"] += 1
-    with pytest.raises(ValueError, match="evidence"):
+    with pytest.raises(ValueError, match="matrix"):
+        build_report(v6, v9)
+
+
+def test_option_a_rejects_v6_invalid_evidence_count_mutation() -> None:
+    v6 = json.loads(V6.read_text(encoding="utf-8"))
+    v9 = json.loads(V9.read_text(encoding="utf-8"))
+    target = next(case for case in v6["caseRecords"] if case["arms"]["gold-entities"]["invalidEvidenceCount"])
+    target["arms"]["gold-entities"]["invalidEvidenceCount"] += 1
+    with pytest.raises(ValueError, match="matrix"):
+        build_report(v6, v9)
+
+
+@pytest.mark.parametrize("mutation", ["caseId", "runId", "arm", "stage"])
+def test_option_a_rejects_source_identity_mutations(mutation: str) -> None:
+    v6 = json.loads(V6.read_text(encoding="utf-8"))
+    v9 = json.loads(V9.read_text(encoding="utf-8"))
+    case = v6["caseRecords"][0]
+    if mutation == "caseId":
+        case["caseId"] = "s12-a-9999"
+    elif mutation == "runId":
+        case["runId"] += 1
+    elif mutation == "arm":
+        case["arms"]["unexpected-arm"] = case["arms"].pop("gold-entities")
+    else:
+        case["arms"]["predicted-entities"]["stage-extra"] = case["arms"]["predicted-entities"].pop("stage1")
+    with pytest.raises(ValueError, match="matrix|identity"):
+        build_report(v6, v9)
+
+
+@pytest.mark.parametrize("operation", ["duplicate", "delete", "add"])
+def test_option_a_rejects_source_case_matrix_set_mutations(operation: str) -> None:
+    v6 = json.loads(V6.read_text(encoding="utf-8"))
+    v9 = json.loads(V9.read_text(encoding="utf-8"))
+    if operation == "duplicate":
+        v6["caseRecords"].append(deepcopy(v6["caseRecords"][0]))
+    elif operation == "delete":
+        v6["caseRecords"].pop()
+    else:
+        added = deepcopy(v6["caseRecords"][0])
+        added["caseId"] = "s12-a-9999"
+        added["runId"] = 1
+        v6["caseRecords"].append(added)
+    with pytest.raises(ValueError, match="matrix|identity"):
+        build_report(v6, v9)
+
+
+def test_option_a_rejects_cross_swapped_stage_identity() -> None:
+    v6 = json.loads(V6.read_text(encoding="utf-8"))
+    v9 = json.loads(V9.read_text(encoding="utf-8"))
+    case = next(case for case in v6["caseRecords"] if case["arms"]["predicted-entities"]["stage1"].get("failureClass"))
+    arm = case["arms"]["predicted-entities"]
+    arm["stage1"], arm["stage2"] = arm["stage2"], arm["stage1"]
+    with pytest.raises(ValueError, match="matrix|identity"):
         build_report(v6, v9)
 
 
@@ -99,7 +152,7 @@ def test_option_a_rejects_v9_schema_finding_removal() -> None:
         if case["arms"]["predicted-entities"]["stage1"].get("failureClass")
     )
     target["failureClass"] = None
-    with pytest.raises(ValueError, match="schema-invalid"):
+    with pytest.raises(ValueError, match="matrix"):
         build_report(v6, v9)
 
 

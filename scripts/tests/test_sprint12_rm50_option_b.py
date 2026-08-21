@@ -93,6 +93,85 @@ def test_option_b_rejects_cluster_claim_or_case_run_mutations(mutation: str) -> 
         build_parity_report(candidate)
 
 
+@pytest.mark.parametrize("kind,field", [
+    ("schema", "fixtureId"), ("schema", "caseRun"), ("schema", "arm"), ("schema", "stage"),
+    ("schema", "slice"), ("schema", "expectedReason"),
+    ("evidence", "fixtureId"), ("evidence", "caseRun"), ("evidence", "arm"), ("evidence", "stage"),
+    ("evidence", "slice"), ("evidence", "expectedReason"),
+    ("scorer", "fixtureId"), ("scorer", "caseRun"), ("scorer", "arm"), ("scorer", "stage"),
+    ("scorer", "slice"), ("scorer", "scenario"),
+])
+def test_option_b_rejects_each_fixture_semantic_field_mutation(kind: str, field: str) -> None:
+    fixtures = json.loads(FIXTURES.read_text(encoding="utf-8"))
+    candidate = deepcopy(fixtures)
+    item = next(item for item in candidate["fixtureMatrix"] if item["kind"] == kind)
+    if field in {"arm", "stage"}:
+        item[field] = ("gold-entities" if kind == "schema" else "predicted-entities") if field == "arm" else ("stage2" if kind == "schema" else "stage1")
+    elif field == "expectedReason":
+        item[field] = "envelope_version_mismatch" if kind == "schema" else "trigger_quote_digest_mismatch"
+    elif field == "scenario":
+        item[field] = "missing"
+    else:
+        item[field] = f"mutated-{field}"
+    with pytest.raises(ValueError, match="semantic identity|fixture"):
+        build_parity_report(candidate)
+
+
+@pytest.mark.parametrize("operation", ["cross-swap", "duplicate", "delete", "add"])
+def test_option_b_rejects_fixture_matrix_set_mutations(operation: str) -> None:
+    fixtures = json.loads(FIXTURES.read_text(encoding="utf-8"))
+    candidate = deepcopy(fixtures)
+    if operation == "cross-swap":
+        candidate["fixtureMatrix"][0]["caseRun"], candidate["fixtureMatrix"][9]["caseRun"] = candidate["fixtureMatrix"][9]["caseRun"], candidate["fixtureMatrix"][0]["caseRun"]
+    elif operation == "duplicate":
+        candidate["fixtureMatrix"].append(deepcopy(candidate["fixtureMatrix"][0]))
+    elif operation == "delete":
+        candidate["fixtureMatrix"].pop()
+    else:
+        added = deepcopy(candidate["fixtureMatrix"][0])
+        added["fixtureId"] = "schema-added"
+        candidate["fixtureMatrix"].append(added)
+    with pytest.raises(ValueError, match="semantic identity|fixture"):
+        build_parity_report(candidate)
+
+
+@pytest.mark.parametrize("field", ["kind", "caseRun", "arm", "stage", "reason", "slice"])
+def test_option_b_rejects_each_cluster_case_semantic_field_mutation(field: str) -> None:
+    fixtures = json.loads(FIXTURES.read_text(encoding="utf-8"))
+    candidate = deepcopy(fixtures)
+    item = candidate["v9ClusterCases"][0]
+    if field == "kind":
+        item[field] = "evidence"
+    elif field == "arm":
+        item[field] = "gold-entities"
+    elif field == "stage":
+        item[field] = "stage2"
+    elif field == "reason":
+        item[field] = "evidence_does_not_contain_trigger"
+    else:
+        item[field] = f"mutated-{field}"
+    with pytest.raises(ValueError, match="semantic identity|cluster"):
+        build_parity_report(candidate)
+
+
+@pytest.mark.parametrize("operation", ["cross-swap", "duplicate", "delete", "add"])
+def test_option_b_rejects_cluster_case_set_mutations(operation: str) -> None:
+    fixtures = json.loads(FIXTURES.read_text(encoding="utf-8"))
+    candidate = deepcopy(fixtures)
+    if operation == "cross-swap":
+        candidate["v9ClusterCases"][0]["caseRun"], candidate["v9ClusterCases"][-1]["caseRun"] = candidate["v9ClusterCases"][-1]["caseRun"], candidate["v9ClusterCases"][0]["caseRun"]
+    elif operation == "duplicate":
+        candidate["v9ClusterCases"].append(deepcopy(candidate["v9ClusterCases"][0]))
+    elif operation == "delete":
+        candidate["v9ClusterCases"].pop()
+    else:
+        added = deepcopy(candidate["v9ClusterCases"][0])
+        added["caseRun"] = "s12-a-4999#run-1"
+        candidate["v9ClusterCases"].append(added)
+    with pytest.raises(ValueError, match="semantic identity|cluster"):
+        build_parity_report(candidate)
+
+
 def test_option_b_rejects_direct_report_cluster_or_source_digest_mutations() -> None:
     report = json.loads(REPORT.read_text(encoding="utf-8"))
     candidate = deepcopy(report)
@@ -108,6 +187,8 @@ def test_option_b_rejects_direct_report_cluster_or_source_digest_mutations() -> 
 def test_option_b_original_inputs_regenerate_byte_identically() -> None:
     fixtures = json.loads(FIXTURES.read_text(encoding="utf-8"))
     report = build_parity_report(fixtures)
+    rendered_fixtures = json.dumps(fixtures, indent=2, ensure_ascii=False) + "\n"
+    assert rendered_fixtures.encode("utf-8") == FIXTURES.read_bytes()
     rendered = json.dumps(report, indent=2, ensure_ascii=False) + "\n"
     assert rendered.encode("utf-8") == REPORT.read_bytes()
 

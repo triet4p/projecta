@@ -118,6 +118,54 @@ def _case_run(case: Mapping[str, Any]) -> str:
     return f"{case['caseId']}#run-{case['runId']}"
 
 
+def _source_case_matrix(report: Mapping[str, Any]) -> list[dict[str, Any]]:
+    """Return the closed case/arm/stage matrix used by source reconciliation."""
+
+    cases = report.get("caseRecords")
+    if not isinstance(cases, list):
+        raise ValueError("source case records are missing")
+    matrix: list[dict[str, Any]] = []
+    for case in cases:
+        if not isinstance(case, Mapping) or not isinstance(case.get("arms"), Mapping):
+            raise ValueError("source case or arm record is malformed")
+        arms = case["arms"]
+        if set(arms) != set(ARMS):
+            raise ValueError("source arm identity changed")
+        arm_matrix: dict[str, Any] = {}
+        for arm in ARMS:
+            arm_record = arms[arm]
+            if not isinstance(arm_record, Mapping):
+                raise ValueError("source arm record is malformed")
+            stages: dict[str, Any] = {}
+            for stage in STAGES:
+                item = arm_record.get(stage)
+                if not isinstance(item, Mapping):
+                    raise ValueError("source stage identity changed")
+                stages[stage] = {
+                    "failureClass": item.get("failureClass"),
+                    "schemaValid": item.get("schemaValid"),
+                    "responseReceived": item.get("responseReceived"),
+                }
+            diagnostics = arm_record.get("diagnostics", {})
+            if diagnostics is None:
+                diagnostics = {}
+            if not isinstance(diagnostics, Mapping):
+                raise ValueError("source diagnostics record is malformed")
+            arm_matrix[arm] = {
+                "invalidEvidenceCount": arm_record.get("invalidEvidenceCount", 0),
+                "stages": stages,
+                "schemaReasonCounts": dict(diagnostics.get("schemaReasonCounts", {})),
+                "evidenceReasonCounts": dict(diagnostics.get("evidenceReasonCounts", {})),
+            }
+        matrix.append({"caseId": case.get("caseId"), "runId": case.get("runId"), "arms": arm_matrix})
+    return matrix
+
+
+def _validate_source_case_matrix(report: Mapping[str, Any], expected: Mapping[str, Any], label: str) -> None:
+    if _source_case_matrix(report) != _source_case_matrix(expected):
+        raise ValueError(f"{label} source caseId/runId/arm/stage matrix changed")
+
+
 def _schema_clusters(report: Mapping[str, Any]) -> dict[str, list[str]]:
     result: dict[str, list[str]] = {}
     for case in report["caseRecords"]:
@@ -249,8 +297,12 @@ def _slice_transition(v6: Mapping[str, Any], v9: Mapping[str, Any]) -> dict[str,
 
 
 def build_report(v6: Mapping[str, Any] | None = None, v9: Mapping[str, Any] | None = None) -> dict[str, Any]:
-    v6 = v6 or _load(V6_PATH, V6_DIGEST)
-    v9 = v9 or _load(V9_PATH, V9_DIGEST)
+    bound_v6 = _load(V6_PATH, V6_DIGEST)
+    bound_v9 = _load(V9_PATH, V9_DIGEST)
+    v6 = v6 or bound_v6
+    v9 = v9 or bound_v9
+    _validate_source_case_matrix(v6, bound_v6, "v6")
+    _validate_source_case_matrix(v9, bound_v9, "v9")
     summary6 = _source_summary(v6, historical_unknowns=True)
     summary9 = _source_summary(v9, historical_unknowns=False)
     account6 = summary6["accounting"]
