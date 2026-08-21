@@ -1,0 +1,52 @@
+{
+  "packetVersion": "s12.g5.packet.v24.rm36-execution-failure",
+  "status": "G5_F12_V8_EXECUTION_FAILED_PENDING_RM37_OWNER_DECISION",
+  "packetRole": "non-authoritative-rm36-post-run-snapshot",
+  "asOf": "2026-08-22",
+  "authoritativePacketBeforeExecution": {
+    "path": "evaluation/sprint-12/optimization/g5-packet.v23.rm35-authorization.json",
+    "digest": "sha256:be98da4bfa83f1b994a51da47b01d2c8cb562181e97fe316a5ccedc77b90c949",
+    "status": "G5_F12_V8_AUTHORIZED_PENDING_EXECUTION"
+  },
+  "executionTransition": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm36-execution-transition.v1.json",
+    "status": "ONE_BOUNDED_V8_DEVELOPMENT_STAGE_A_EXECUTION_FAILED_BEFORE_REPORT_PERSISTENCE_PENDING_RM37_OWNER_DECISION"
+  },
+  "authorizationBoundaryAfterInvocation": {
+    "authorizationSpent": true,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "authorizedExecutions": 1,
+    "authorizedProviderCalls": 144,
+    "providerCallsAttempted": 3,
+    "providerResponsesReceived": 3,
+    "relationBranchOutputsProduced": null,
+    "retryCountObserved": 0,
+    "reportExists": false,
+    "reportPersisted": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "outputOverwriteAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedTask": "S12-RM-37_OWNER_POST_RUN_DECISION"
+  },
+  "failure": {
+    "exitCode": 1,
+    "error": "evidence reason counts do not reconcile with arm materializer failures",
+    "reportSchemaValidation": "not_applicable_report_absent",
+    "costUsd": null,
+    "accountingComplete": false
+  },
+  "historicalLineage": {
+    "lineageVersion": "v7",
+    "providerCallsPerformed": 144,
+    "relationBranchOutputs": 96,
+    "retryCount": 0,
+    "stageAReportDigest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+  },
+  "claimBoundary": "No v8 report or quality/gate/candidate conclusion exists; RM-37 must decide the next governed action."
+}

@@ -1,0 +1,53 @@
+{
+  "artifactVersion": "s12.current-state-next.rm36-execution-failure.v1",
+  "asOf": "2026-08-22",
+  "status": "G5_F12_V8_EXECUTION_FAILED_PENDING_RM37_OWNER_DECISION",
+  "nonAuthoritative": true,
+  "authoritativeStateBeforeExecution": {
+    "path": "evaluation/sprint-12/current-state.v1.json",
+    "digest": "sha256:197661fb308dbeb555275615f23000773f65b03f782f45ce6840924f2d8b2e20",
+    "status": "G5_F12_V8_AUTHORIZED_PENDING_EXECUTION"
+  },
+  "executionTransition": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm36-execution-transition.v1.json",
+    "status": "ONE_BOUNDED_V8_DEVELOPMENT_STAGE_A_EXECUTION_FAILED_BEFORE_REPORT_PERSISTENCE_PENDING_RM37_OWNER_DECISION"
+  },
+  "currentLineageAfterInvocation": {
+    "lineageVersion": "v8",
+    "authorizedExecutions": 1,
+    "authorizedProviderCalls": 144,
+    "providerCallsAttempted": 3,
+    "providerResponsesReceived": 3,
+    "relationBranchOutputsProduced": null,
+    "retryCountObserved": 0,
+    "authorizationSpent": true,
+    "reportExists": false,
+    "reportPersisted": false,
+    "providerAccountingComplete": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false
+  },
+  "historicalLineage": {
+    "lineageVersion": "v7",
+    "authorizedExecutions": 1,
+    "authorizedProviderCalls": 144,
+    "providerCallsPerformed": 144,
+    "relationBranchOutputs": 96,
+    "retryCount": 0,
+    "reportDigest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+  },
+  "governanceLocks": {
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "outputOverwriteAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "nextTasks": [
+    "S12-RM-37_OWNER_POST_RUN_DECISION"
+  ],
+  "claimBoundary": "The failed invocation produced no v8 report; no quality, gate, candidate, business-quality or tenant-readiness claim is established."
+}

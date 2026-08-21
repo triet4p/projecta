@@ -1,0 +1,78 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm36-execution-transition.v1",
+  "status": "ONE_BOUNDED_V8_DEVELOPMENT_STAGE_A_EXECUTION_FAILED_BEFORE_REPORT_PERSISTENCE_PENDING_RM37_OWNER_DECISION",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-36",
+  "transitionDate": "2026-08-22",
+  "transitionAuthority": "project-owner-delegated-codex-execution-agent",
+  "transitionRole": "execution-fact_pending_separate_owner_post_run_decision",
+  "authorization": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm35-authorization.v8.json",
+    "digest": "sha256:d3e3fd1f4f8520133f91e088e280d415935e1ed38656b6ef0b55a9b4ea84f00a",
+    "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A",
+    "authorizedExecutions": 1,
+    "authorizedProviderCalls": 144,
+    "spent": true,
+    "reusable": false
+  },
+  "ownerReview": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm35-owner-review.v1.json",
+    "digest": "sha256:3e47e0cc7f2bea48d6d6ca86e878c5aee7bf29924861410dcd8b7fb8fe637cc9",
+    "status": "OWNER_REVIEW_APPROVED_ONE_BOUNDED_V8_STAGE_A"
+  },
+  "authorizationTransition": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm35-authorization-transition.v1.json",
+    "digest": "sha256:45e9091877d51a273e224a5314902bbb28dd2953faf09d06876d14e4f29c5fa1",
+    "status": "ONE_BOUNDED_V8_DEVELOPMENT_STAGE_A_AUTHORIZED_PENDING_EXECUTION"
+  },
+  "execution": {
+    "invocationCount": 1,
+    "command": "uv run --env-file .env --script scripts/run_sprint12_f12_stage_a_v8.py --authorization evaluation/sprint-12/optimization/s12-f-12-rm35-authorization.v8.json --output evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json",
+    "executionCommit": "005a35e3be3fbff40fcdae02dfdf79145c76934b",
+    "exitCode": 1,
+    "failureType": "F12StageAV8Error",
+    "failureMessage": "evidence reason counts do not reconcile with arm materializer failures",
+    "failurePoint": "first_case_predicted_entities_arm_diagnostic_reconciliation",
+    "providerCallsAttempted": 3,
+    "providerResponsesReceived": 3,
+    "providerCallEvidenceBasis": "runner control flow completes stage1, stage2 predicted-entities and stage2 gold-entities captures before the first arm record raises",
+    "relationBranchOutputsProduced": null,
+    "plannedRelationBranchOutputs": 96,
+    "retryCountObserved": 0,
+    "costUsd": null,
+    "accountingComplete": false,
+    "reportPersisted": false,
+    "reportPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json",
+    "reportSchemaValidation": "not_applicable_report_absent"
+  },
+  "custody": {
+    "outputExists": false,
+    "historicalV6ReportPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+    "historicalV6ReportDigest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "historicalV6ProviderCalls": 144,
+    "historicalV6RetryCount": 0,
+    "rawProviderPayloadStored": false,
+    "rawSourceTextStored": false
+  },
+  "governance": {
+    "authorizationSpent": true,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "retryAuthorized": false,
+    "outputOverwriteAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "rerunAuthorized": false,
+    "nextPermittedAction": "S12-RM-37_OWNER_POST_RUN_DECISION"
+  },
+  "constraints": [
+    "The RM-35 authorization was consumed by the single invocation and cannot be reused.",
+    "No retry or rerun is authorized after the pre-persistence runtime failure.",
+    "The v8 report is absent; no quality, gate, candidate or business-quality conclusion may be inferred.",
+    "RM-37 must independently decide whether any offline remediation or separately authorized action is permissible.",
+    "Validation and held-out data remain sealed; Stage B, selection and promotion remain unauthorized."
+  ]
+}
