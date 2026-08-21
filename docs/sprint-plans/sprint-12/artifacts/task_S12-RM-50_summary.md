@@ -25,13 +25,21 @@ source reconstruction:
   including 14 trigger and 6 endpoint failures;
 - gold-relations control remains clean.
 
+The RM-51 tamper families are fail-closed before any pass or reconciliation
+claim: v9 invalid-evidence count mutation, schema-finding removal, parity
+cluster total/reason/case-run mutation, and direct diagnostic cluster/reason
+map mutation. Totals and reproduction are derived from immutable source case
+records and fixture case records; source v6/v9 digests and case/arm/stage
+identity are checked.
+
 ## Artifacts and validation
 
 The authoritative task package is
 `evaluation/sprint-12/optimization/s12-f-12-rm50-offline-remediation.v1.json`.
 Option A and B each have versioned modules, reports, schemas and tests. Tests
-passed: Option A `4`, Option B `6` (including package digest custody), for a
-total of `10` RM-50 tests. The known `.pytest_cache` permission warning is
+passed: Option A `10`, Option B `11` (including exhaustive mutation and
+package digest custody), for `21` RM-50 tests. The combined safe regression
+suite passed `39` tests. The known `.pytest_cache` permission warning is
 environment-only.
 
 The immutable v6/v9 digests remain bound and the v8 report remains absent.
