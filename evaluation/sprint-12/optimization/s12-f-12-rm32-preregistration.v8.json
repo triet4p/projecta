@@ -1,150 +1,227 @@
 {
-  "artifactVersion": "s12.s12-f-12.preregistration.v8",
-  "status": "PREREGISTRATION_PREPARED_PENDING_RM33_OWNER_ISSUANCE_REVIEW",
-  "experimentId": "s12-f-12",
-  "lineageVersion": "v8",
-  "preparationScope": "S12-RM-32",
-  "supersedes": {
-    "path": "evaluation/sprint-12/optimization/s12-f-12-rm22d-issuance-draft.v7.json",
-    "digest": "sha256:9e52308abb73fa7a0696f8bd8ae11c1eed064bd63fcdc7266e1c1b3bd7844808"
-  },
-  "executionCommitSha": "1a3ffed08a8a96c6ea76f2ae2bf2f868254475a5",
-  "rm31ApprovalTransition": {
-    "path": "evaluation/sprint-12/optimization/s12-f-12-rm31-approval-transition.v1.json",
-    "digest": "sha256:7e2fd2f781a069625cd514a9c970ebb66a8d0d995017f4650571cc8f3b64f181"
-  },
-  "rm30Implementation": {
-    "packagePath": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-remediation.v1.json",
-    "packageDigest": "sha256:32c9339320a4c8a6919525a06fed99af87fd61af6d0873f2511015c7f39e8231",
-    "diagnosticReportPath": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-diagnostic-report.v1.json",
-    "diagnosticReportDigest": "sha256:e03a632b9ff593d0764dc3ea1479366c6f2642c34dafe7818fa09269e3321f13",
-    "diagnosticSchemaPath": "evaluation/sprint-12/harness/s12-f-12-offline-diagnostic-report.schema.v1.json",
-    "diagnosticSchemaDigest": "sha256:f7f8efa30c5fb259fcb603ad4eb176db366427609eed945a8c06685353db138f"
-  },
-  "providerExecutionAuthorized": false,
-  "preregistrationIssued": false,
-  "technicalFreezeIssued": false,
-  "newAuthorizationIssued": false,
-  "heldOutInspected": false,
-  "heldOutAccessAuthorized": false,
-  "validationAccessAuthorized": false,
-  "stageBAuthorized": false,
-  "candidateSelectionAuthorized": false,
-  "promotionAuthorized": false,
-  "denominators": {
-    "selectedDevelopmentCases": 16,
-    "positiveRelationCases": 8,
-    "hardNegativeCases": 4,
-    "abstentionRequiredCases": 4,
-    "goldRelationInstancesPerRun": 8,
-    "goldAbstentionInstancesPerRun": 4,
-    "caseRuns": 48,
-    "relationInstancesAcrossRuns": 24,
-    "abstentionInstancesAcrossRuns": 12,
-    "namedSliceDenominators": {
-      "all-development": 48,
-      "relation-positive": 24,
-      "relation-negative": 12,
-      "abstention-required": 12,
-      "abstention-not-required": 36,
-      "journey": {"J1": 6, "J2": 12, "J3": 12, "J4": 6, "J5": 6, "J6": 6},
-      "language": {"en": 6, "ja": 6, "mixed": 30, "vi": 6}
-    }
-  },
-  "requiredSlices": [
-    {"dimension": "all-development", "label": "all-development", "denominator": 48},
-    {"dimension": "relation-positive", "label": "relation-positive", "denominator": 24},
-    {"dimension": "relation-negative", "label": "relation-negative", "denominator": 12},
-    {"dimension": "abstention-required", "label": "abstention-required", "denominator": 12},
-    {"dimension": "abstention-not-required", "label": "abstention-not-required", "denominator": 36},
-    {"dimension": "journey", "label": "J1", "denominator": 6},
-    {"dimension": "journey", "label": "J2", "denominator": 12},
-    {"dimension": "journey", "label": "J3", "denominator": 12},
-    {"dimension": "journey", "label": "J4", "denominator": 6},
-    {"dimension": "journey", "label": "J5", "denominator": 6},
-    {"dimension": "journey", "label": "J6", "denominator": 6},
-    {"dimension": "language", "label": "en", "denominator": 6},
-    {"dimension": "language", "label": "ja", "denominator": 6},
-    {"dimension": "language", "label": "mixed", "denominator": 30},
-    {"dimension": "language", "label": "vi", "denominator": 6}
-  ],
   "approvedThresholds": {
-    "entityMacroF1Min": 0.85,
-    "entitySpanExactMin": 0.95,
-    "entityHallucinationRateMax": 0.05,
+    "abstentionF1Min": 0.9,
     "abstentionPrecisionMin": 0.9,
     "abstentionRecallMin": 0.9,
-    "abstentionF1Min": 0.9,
-    "relationSemanticMicroF1Min": 0.8,
-    "relationSemanticMacroF1Min": 0.8,
-    "predicateAccuracyMin": 0.85,
     "endpointDirectionAccuracyMin": 0.9,
-    "missingEndpointRateMax": 0.05,
-    "reversedEndpointRateMax": 0.05,
-    "relationEvidenceSupportMin": 0.85,
-    "relationEvidenceExactMin": 0.85,
-    "relationHallucinationRateMax": 0.05,
-    "hardFailureCount": 0,
-    "retryCount": 0,
-    "pricingFailureCount": 0,
+    "entityHallucinationRateMax": 0.05,
+    "entityMacroF1Min": 0.85,
+    "entitySpanExactMin": 0.95,
     "goldRelationsIntegrityScore": 1,
-    "goldRelationsMaterializerFailures": 0
-  },
-  "hardGates": {
-    "schemaInvalid": 0,
-    "invalidEvidence": 0,
-    "missingOutput": 0,
-    "endpointContractFailure": 0,
-    "sharedConfigurationMismatch": 0,
+    "goldRelationsMaterializerFailures": 0,
+    "hardFailureCount": 0,
+    "missingEndpointRateMax": 0.05,
+    "predicateAccuracyMin": 0.85,
+    "pricingFailureCount": 0,
+    "relationEvidenceExactMin": 0.85,
+    "relationEvidenceSupportMin": 0.85,
+    "relationHallucinationRateMax": 0.05,
+    "relationSemanticMacroF1Min": 0.8,
+    "relationSemanticMicroF1Min": 0.8,
     "retryCount": 0,
-    "pricingFailure": 0,
-    "rawSensitiveDataIncluded": false,
-    "heldOutInspected": false
+    "reversedEndpointRateMax": 0.05
+  },
+  "artifactVersion": "s12.s12-f-12.preregistration.v8",
+  "candidateSelectionAuthorized": false,
+  "denominators": {
+    "abstentionInstancesAcrossRuns": 12,
+    "abstentionRequiredCases": 4,
+    "caseRuns": 48,
+    "goldAbstentionInstancesPerRun": 4,
+    "goldRelationInstancesPerRun": 8,
+    "hardNegativeCases": 4,
+    "namedSliceDenominators": {
+      "abstention-not-required": 36,
+      "abstention-required": 12,
+      "all-development": 48,
+      "journey": {
+        "J1": 6,
+        "J2": 12,
+        "J3": 12,
+        "J4": 6,
+        "J5": 6,
+        "J6": 6
+      },
+      "language": {
+        "en": 6,
+        "ja": 6,
+        "mixed": 30,
+        "vi": 6
+      },
+      "relation-negative": 12,
+      "relation-positive": 24
+    },
+    "positiveRelationCases": 8,
+    "relationInstancesAcrossRuns": 24,
+    "selectedDevelopmentCases": 16
   },
   "execution": {
-    "stage1PredictedEntitiesCalls": 48,
-    "stage2PredictedEntitiesCalls": 48,
-    "stage2GoldEntitiesCalls": 48,
+    "outputOverwrite": false,
     "plannedProviderCalls": 144,
     "relationBranchOutputs": 96,
     "retryPolicy": "none",
-    "outputOverwrite": false
+    "stage1PredictedEntitiesCalls": 48,
+    "stage2GoldEntitiesCalls": 48,
+    "stage2PredictedEntitiesCalls": 48
   },
-  "measurement": {
-    "offlineContract": "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v5.json",
-    "metricContract": "evaluation/sprint-12/harness/metric-contract.v2.json",
-    "sliceContract": "evaluation/sprint-12/harness/slice-threshold-contract.v1.json",
-    "triggerContract": "evaluation/sprint-12/harness/relation-trigger-contract.v1.json",
-    "scorer": "scripts/sprint12_f12_two_step_contracts_v5.py",
-    "reportSchema": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v6.json",
-    "runner": "scripts/run_sprint12_f12_stage_a_v6.py",
-    "preflight": "scripts/preflight_sprint12_f12_rm32.py",
-    "diagnosticReport": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-diagnostic-report.v1.json",
-    "aggregateFromCaseRunsOnly": true,
-    "missingJsonSchemaPolicy": "fail-closed"
-  },
-  "report": {
-    "outputPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json",
-    "schemaPath": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v6.json",
-    "sanitizedOnly": true,
-    "rawSourceTextStored": false,
-    "rawProviderPayloadStored": false,
-    "historicalReportPreserved": true
-  },
+  "executionCommitSha": "d64668b800866be65a2ea17e6feef2e05e78aa16",
+  "experimentId": "s12-f-12",
   "governance": {
-    "supersedingLineagePreparationAuthorized": true,
-    "preregistrationPreparationAuthorized": true,
-    "technicalFreezePreparationAuthorized": true,
-    "executionPackagePreparationAuthorized": true,
-    "providerExecutionAuthorized": false,
-    "preregistrationIssued": false,
-    "technicalFreezeIssued": false,
-    "newAuthorizationIssued": false,
-    "validationAccessAuthorized": false,
-    "heldOutAccessAuthorized": false,
-    "stageBAuthorized": false,
     "candidateSelectionAuthorized": false,
+    "executionPackagePreparationAuthorized": true,
+    "heldOutAccessAuthorized": false,
+    "newAuthorizationIssued": false,
+    "nextGate": "RM-33 owner issuance review; separate execution authorization remains required",
+    "preregistrationIssued": false,
+    "preregistrationPreparationAuthorized": true,
     "promotionAuthorized": false,
-    "nextGate": "RM-33 owner issuance review; separate execution authorization remains required"
-  }
+    "providerExecutionAuthorized": false,
+    "stageBAuthorized": false,
+    "supersedingLineagePreparationAuthorized": true,
+    "technicalFreezeIssued": false,
+    "technicalFreezePreparationAuthorized": true,
+    "validationAccessAuthorized": false
+  },
+  "hardGates": {
+    "endpointContractFailure": 0,
+    "heldOutInspected": false,
+    "invalidEvidence": 0,
+    "missingOutput": 0,
+    "pricingFailure": 0,
+    "rawSensitiveDataIncluded": false,
+    "retryCount": 0,
+    "schemaInvalid": 0,
+    "sharedConfigurationMismatch": 0
+  },
+  "heldOutAccessAuthorized": false,
+  "heldOutInspected": false,
+  "lineageVersion": "v8",
+  "measurement": {
+    "aggregateFromCaseRunsOnly": true,
+    "authorizationSchema": "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v8.json",
+    "diagnosticReport": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-diagnostic-report.v1.json",
+    "metricContract": "evaluation/sprint-12/harness/metric-contract.v2.json",
+    "missingJsonSchemaPolicy": "fail-closed",
+    "offlineContract": "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v5.json",
+    "preflight": "scripts/preflight_sprint12_f12_rm32.py",
+    "reportSchema": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v8.json",
+    "runner": "scripts/run_sprint12_f12_stage_a_v8.py",
+    "scorer": "scripts/sprint12_f12_two_step_contracts_v5.py",
+    "sliceContract": "evaluation/sprint-12/harness/slice-threshold-contract.v1.json",
+    "triggerContract": "evaluation/sprint-12/harness/relation-trigger-contract.v1.json"
+  },
+  "newAuthorizationIssued": false,
+  "preparationScope": "S12-RM-32",
+  "preregistrationIssued": false,
+  "promotionAuthorized": false,
+  "providerExecutionAuthorized": false,
+  "report": {
+    "historicalReportPreserved": true,
+    "outputPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json",
+    "rawProviderPayloadStored": false,
+    "rawSourceTextStored": false,
+    "sanitizedOnly": true,
+    "schemaPath": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v8.json"
+  },
+  "requiredSlices": [
+    {
+      "denominator": 48,
+      "dimension": "all-development",
+      "label": "all-development"
+    },
+    {
+      "denominator": 24,
+      "dimension": "relation-positive",
+      "label": "relation-positive"
+    },
+    {
+      "denominator": 12,
+      "dimension": "relation-negative",
+      "label": "relation-negative"
+    },
+    {
+      "denominator": 12,
+      "dimension": "abstention-required",
+      "label": "abstention-required"
+    },
+    {
+      "denominator": 36,
+      "dimension": "abstention-not-required",
+      "label": "abstention-not-required"
+    },
+    {
+      "denominator": 6,
+      "dimension": "journey",
+      "label": "J1"
+    },
+    {
+      "denominator": 12,
+      "dimension": "journey",
+      "label": "J2"
+    },
+    {
+      "denominator": 12,
+      "dimension": "journey",
+      "label": "J3"
+    },
+    {
+      "denominator": 6,
+      "dimension": "journey",
+      "label": "J4"
+    },
+    {
+      "denominator": 6,
+      "dimension": "journey",
+      "label": "J5"
+    },
+    {
+      "denominator": 6,
+      "dimension": "journey",
+      "label": "J6"
+    },
+    {
+      "denominator": 6,
+      "dimension": "language",
+      "label": "en"
+    },
+    {
+      "denominator": 6,
+      "dimension": "language",
+      "label": "ja"
+    },
+    {
+      "denominator": 30,
+      "dimension": "language",
+      "label": "mixed"
+    },
+    {
+      "denominator": 6,
+      "dimension": "language",
+      "label": "vi"
+    }
+  ],
+  "rm30Implementation": {
+    "diagnosticReportDigest": "sha256:e03a632b9ff593d0764dc3ea1479366c6f2642c34dafe7818fa09269e3321f13",
+    "diagnosticReportPath": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-diagnostic-report.v1.json",
+    "diagnosticSchemaDigest": "sha256:f7f8efa30c5fb259fcb603ad4eb176db366427609eed945a8c06685353db138f",
+    "diagnosticSchemaPath": "evaluation/sprint-12/harness/s12-f-12-offline-diagnostic-report.schema.v1.json",
+    "packageDigest": "sha256:32c9339320a4c8a6919525a06fed99af87fd61af6d0873f2511015c7f39e8231",
+    "packagePath": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-remediation.v1.json"
+  },
+  "rm31ApprovalTransition": {
+    "digest": "sha256:7e2fd2f781a069625cd514a9c970ebb66a8d0d995017f4650571cc8f3b64f181",
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm31-approval-transition.v1.json"
+  },
+  "runtimeBinding": {
+    "digestMode": "git_blob_sha256",
+    "runtimeBlobCount": 22
+  },
+  "stageBAuthorized": false,
+  "status": "PREREGISTRATION_PREPARED_PENDING_RM33_OWNER_ISSUANCE_REVIEW",
+  "supersedes": {
+    "digest": "sha256:9e52308abb73fa7a0696f8bd8ae11c1eed064bd63fcdc7266e1c1b3bd7844808",
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm22d-issuance-draft.v7.json"
+  },
+  "technicalFreezeIssued": false,
+  "validationAccessAuthorized": false
 }

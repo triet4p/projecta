@@ -1,61 +1,68 @@
 {
   "artifactVersion": "s12.current-state-next.rm32-offline-preparation.v1",
-  "role": "non-authoritative-offline-next-state-preparation",
-  "currentStatePath": "evaluation/sprint-12/current-state.v1.json",
-  "currentStateDigest": "sha256:4e33b62a5d6ac6625dab157b4de39e3b4fb0396f205c99404fb3dfd9b38663f8",
-  "currentStateStatus": "G5_F12_SUPERSEDING_LINEAGE_PREPARATION_APPROVED_OFFLINE_ONLY",
-  "nextStateStatus": "RM32_SUPERSEDING_LINEAGE_PREPARED_PENDING_RM33_OWNER_ISSUANCE_REVIEW",
-  "experimentId": "s12-f-12",
-  "historicalReport": {
-    "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
-    "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
-    "providerCalls": 144,
-    "retryCount": 0,
-    "mutated": false
-  },
+  "claimBoundary": "No new preregistration, freeze, provider call, quality improvement or candidate claim is established by this offline preparation.",
   "currentG5Packet": {
-    "path": "evaluation/sprint-12/optimization/g5-packet.v19.json",
-    "digest": "sha256:53457844b7f34a197f69e202aabccad2e3ab2c907344b58b1835df49cb1f5582"
+    "digest": "sha256:53457844b7f34a197f69e202aabccad2e3ab2c907344b58b1835df49cb1f5582",
+    "path": "evaluation/sprint-12/optimization/g5-packet.v19.json"
   },
+  "currentStateDigest": "sha256:4e33b62a5d6ac6625dab157b4de39e3b4fb0396f205c99404fb3dfd9b38663f8",
+  "currentStatePath": "evaluation/sprint-12/current-state.v1.json",
+  "currentStateStatus": "G5_F12_SUPERSEDING_LINEAGE_PREPARATION_APPROVED_OFFLINE_ONLY",
+  "experimentId": "s12-f-12",
+  "governance": {
+    "candidateSelectionAuthorized": false,
+    "executionPackagePreparationAuthorized": true,
+    "heldOutAccessAuthorized": false,
+    "newAuthorizationIssued": false,
+    "preregistrationIssued": false,
+    "preregistrationPreparationAuthorized": true,
+    "promotionAuthorized": false,
+    "providerCalls": 0,
+    "providerExecutionAuthorized": false,
+    "stageBAuthorized": false,
+    "supersedingLineagePreparationAuthorized": true,
+    "technicalFreezeIssued": false,
+    "technicalFreezePreparationAuthorized": true,
+    "validationAccessAuthorized": false
+  },
+  "historicalReport": {
+    "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "mutated": false,
+    "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+    "providerCalls": 144,
+    "retryCount": 0
+  },
+  "nextGate": "RM-33 owner issuance review; separate v8 exact-commit authorization remains required",
+  "nextStateStatus": "RM32_SUPERSEDING_LINEAGE_PREPARED_PENDING_RM33_OWNER_ISSUANCE_REVIEW",
   "rm32Preparation": {
-    "preregistration": {
-      "path": "evaluation/sprint-12/optimization/s12-f-12-rm32-preregistration.v8.json",
-      "digest": "sha256:c16a92509703fe11a78d5acb0dc77400f5a815633de27798279c0f6fe01df5f6"
-    },
     "executionPackage": {
-      "path": "evaluation/sprint-12/optimization/s12-f-12-rm32-execution-package.v8.json",
-      "digest": "sha256:ade967db832795c640e744a335d7115885254d9cd9ba29ae724b65447fc80261"
-    },
-    "technicalFreeze": {
-      "path": "evaluation/sprint-12/optimization/s12-f-12-rm32-technical-freeze.v8.json",
-      "digest": "sha256:e2f6df1532b7168aafa6502fb58b8e47d62e4b3280ba908f57e390cd695edb57"
-    },
-    "preflight": {
-      "path": "scripts/preflight_sprint12_f12_rm32.py",
-      "digest": "sha256:990ec93de342e2480abfd6d2c37f671d6bf5dd6469ecbfeeb8243182df434e39"
+      "digest": "sha256:37e9d30724aeb82604988005238c9a19d1f9674850667d470bc42157cf332263",
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm32-execution-package.v8.json"
     },
     "mockTests": {
+      "digest": "sha256:f0479dbb031402462ade20cca4a173ba840b7bd5ac1d931388f4fd3e635ecfd5",
       "path": "scripts/tests/test_sprint12_rm32_offline_preparation.py",
-      "digest": "sha256:7988781b04f5c2c0a49ccb4a63476b1c796d1d3d5d6875223fd6cb3e75718295",
       "result": "4 passed"
+    },
+    "preflight": {
+      "digest": "sha256:492cc4c9815c168233039c096d5f7bc6121773a2b7f6f84443ed587fea1f8d3e",
+      "path": "scripts/preflight_sprint12_f12_rm32.py"
+    },
+    "preregistration": {
+      "digest": "sha256:bec703fce55931641c1767985609fb09f36f931af1d90cbf3b873435199fe600",
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm32-preregistration.v8.json"
+    },
+    "runtimeImplementation": {
+      "authorizationSchemaPath": "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v8.json",
+      "commit": "d64668b800866be65a2ea17e6feef2e05e78aa16",
+      "reportSchemaPath": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v8.json",
+      "runnerPath": "scripts/run_sprint12_f12_stage_a_v8.py",
+      "runtimeBlobCount": 22
+    },
+    "technicalFreeze": {
+      "digest": "sha256:5a56a3ff6bd04b1f078070abb955f647593b8466474c3dd05196f512b6a16ffb",
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm32-technical-freeze.v8.json"
     }
   },
-  "governance": {
-    "supersedingLineagePreparationAuthorized": true,
-    "preregistrationPreparationAuthorized": true,
-    "technicalFreezePreparationAuthorized": true,
-    "executionPackagePreparationAuthorized": true,
-    "preregistrationIssued": false,
-    "technicalFreezeIssued": false,
-    "providerExecutionAuthorized": false,
-    "newAuthorizationIssued": false,
-    "validationAccessAuthorized": false,
-    "heldOutAccessAuthorized": false,
-    "stageBAuthorized": false,
-    "candidateSelectionAuthorized": false,
-    "promotionAuthorized": false,
-    "providerCalls": 0
-  },
-  "nextGate": "RM-33 owner issuance review; separate execution authorization remains required",
-  "claimBoundary": "No new preregistration, freeze, provider call, quality improvement or candidate claim is established by this offline preparation."
+  "role": "non-authoritative-offline-next-state-preparation"
 }

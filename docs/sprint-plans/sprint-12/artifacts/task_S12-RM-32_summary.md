@@ -7,9 +7,13 @@
 
 Prepared a new, non-authoritative v8 f12 superseding lineage under the RM-31
 owner boundary. The preparation includes a preregistration, execution package,
-technical-freeze record and a provider-neutral zero-call preflight. It binds
-the corrected RM-30 diagnostic implementation/report schema, the existing
-guarded v6 runner and closed stage/authorization contracts at exact digests.
+technical-freeze record and a provider-neutral zero-call preflight. A separate
+runtime commit now provides the guarded v8 runner, closed v8 report and
+authorization schemas, and actual RM-30 finite diagnostic integration.
+
+Runtime custody uses exact git-blob SHA-256 digests at the execution commit;
+preflight and test files are recorded separately as preparation evidence and
+are not claimed to exist at that commit.
 
 The closed v7 lineage, spent RM25 authorization and immutable Stage A v6
 report remain unchanged. The new v8 output path is distinct and cannot
@@ -22,7 +26,10 @@ invoked.
 * `evaluation/sprint-12/optimization/s12-f-12-rm32-execution-package.v8.json`
 * `evaluation/sprint-12/optimization/s12-f-12-rm32-technical-freeze.v8.json`
 * `scripts/preflight_sprint12_f12_rm32.py`
+* `scripts/regenerate_sprint12_f12_rm32_v8.py`
 * `scripts/tests/test_sprint12_rm32_offline_preparation.py`
+* `scripts/run_sprint12_f12_stage_a_v8.py` and its v8 report/authorization
+  schemas and deterministic mocked tests.
 * `evaluation/sprint-12/current-state-next-rm32.v1.json` and non-authoritative
   G5 v20 preparation snapshot.
 
@@ -37,8 +44,15 @@ the next gate, followed by separate exact-commit execution authorization.
 
 * RM-32 preflight: `F12_RM32_READY_ZERO_CALL`, `providerCalls=0`.
 * RM-32 deterministic preparation tests: `4 passed`.
-* Combined RM-28–RM-32 safe regression: `76 passed` with one environment-only
-  `.pytest_cache` permission warning.
+* v8 RM-30 integration tests: `4 passed`; RM-30 plus v8 focused regression:
+  `35 passed` with one environment-only `.pytest_cache` permission warning.
+* Exact-commit preflight validates 22 runtime git blobs and 4 separate
+  preparation-evidence files; provider calls remain zero.
+* Runtime implementation commit: `d64668b800866be65a2ea17e6feef2e05e78aa16`.
+  Regenerated package/preregistration/freeze digests are respectively
+  `sha256:37e9d30724aeb82604988005238c9a19d1f9674850667d470bc42157cf332263`,
+  `sha256:bec703fce55931641c1767985609fb09f36f931af1d90cbf3b873435199fe600`,
+  and `sha256:5a56a3ff6bd04b1f078070abb955f647593b8466474c3dd05196f512b6a16ffb`.
 * Immutable report digest remains
   `sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233`.
 * Historical accounting remains 144 calls and 0 retries.
@@ -48,4 +62,4 @@ the next gate, followed by separate exact-commit execution authorization.
 
 RM-33 owner issuance review of the v8 preregistration, execution package,
 technical freeze and zero-call preflight. This task does not issue or execute
-the new lineage.
+the new lineage; a separate v8 authorization artifact remains required.

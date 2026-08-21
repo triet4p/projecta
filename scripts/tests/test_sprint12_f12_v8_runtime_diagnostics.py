@@ -182,3 +182,22 @@ def test_guarded_runtime_mock_runs_144_calls_and_persists_once(monkeypatch: pyte
             authorization_path=tmp_path / "authorization.json",
             output_path=output,
         )
+
+
+def test_current_rm32_package_runs_mocked_144_call_path_without_provider(monkeypatch: pytest.MonkeyPatch) -> None:
+    output = ROOT / "evaluation/sprint-12/optimization/.s12-f-12-v8-mock-report.json"
+    output.unlink(missing_ok=True)
+    monkeypatch.setattr(v8, "validate_authorization_v8", lambda *args, **kwargs: {})
+    adapter = MockAdapter(malformed_first=True)
+    try:
+        report = v8.run_stage_a(
+            provider_adapter=adapter,
+            authorization_path=ROOT / "evaluation/sprint-12/optimization/.mock-authorization.json",
+            output_path=output,
+        )
+        assert adapter.calls == 144
+        assert report["accounting"]["providerCallsAttempted"] == 144
+        assert report["accounting"]["retryCount"] == 0
+        assert report["diagnostics"]["reasonCountsReconciled"] is True
+    finally:
+        output.unlink(missing_ok=True)

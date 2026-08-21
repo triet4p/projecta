@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -34,6 +35,11 @@ def test_rm32_preflight_is_zero_call_and_does_not_touch_historical_report() -> N
         "status": "F12_RM32_READY_ZERO_CALL",
         "preparationScope": "S12-RM-32",
         "lineageVersion": "v8",
+        "executionCommitSha": subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
+        ).strip(),
+        "runtimeBlobCount": 22,
+        "preparationEvidenceCount": 4,
         "providerCalls": 0,
         "retryCount": 0,
         "historicalReportDigest": before,
@@ -46,7 +52,9 @@ def test_rm32_lineage_binds_rm31_rm30_and_exact_commit() -> None:
     package = _json(PACKAGE)
     prereg = _json(PREREG)
     freeze = _json(FREEZE)
-    assert package["executionCommitSha"] == "1a3ffed08a8a96c6ea76f2ae2bf2f868254475a5"
+    assert package["executionCommitSha"] == subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
+    ).strip()
     assert prereg["executionCommitSha"] == package["executionCommitSha"]
     assert freeze["executionCommitSha"] == package["executionCommitSha"]
     assert package["rm31ApprovalTransition"]["digest"] == _digest(
@@ -60,6 +68,13 @@ def test_rm32_lineage_binds_rm31_rm30_and_exact_commit() -> None:
     )
     assert freeze["executionPackageDigest"] == _digest(PACKAGE)
     assert freeze["preregistrationDigest"] == _digest(PREREG)
+    assert package["exactCommitValidated"] is True
+    assert package["runtimeBinding"]["digestMode"] == "git_blob_sha256"
+    assert set(package["runtimeBoundDigests"]).isdisjoint(package["preparationEvidence"])
+    assert package["runtimeBoundDigests"]["evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json"] == preflight.git_blob_digest(
+        package["executionCommitSha"],
+        "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json",
+    )
 
 
 def test_rm32_governance_is_preparation_only() -> None:

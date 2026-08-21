@@ -7,8 +7,13 @@
 
 RM-32 prepared a new versioned v8 f12 preregistration, execution package,
 technical freeze and provider-neutral zero-call preflight under the RM-31
-approval boundary. The package binds the corrected RM-30 diagnostic/report
-contracts and the guarded v6 runner at exact repository digests.
+approval boundary. The runtime commit contains a guarded v8 runner that calls
+the RM-30 finite classifiers for new response failures and persists sanitized
+reason counts under closed v8 report/authorization schemas.
+
+Runtime bindings use exact git-blob SHA-256 bytes. Preflight and tests are
+separate preparation evidence and are not asserted to exist at the execution
+commit.
 
 ## Prepared artifacts
 
