@@ -101,7 +101,8 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   only. RM-31 prepared the superseding lineage and RM-33 issued its v8
   preregistration and technical freeze only. Provider authorization, output,
   validation, held-out access, Stage B, selection and promotion remain closed;
-  RM-34 preparation and RM-35 owner authorization review are next.
+  RM-34 preparation is complete with provider execution still blocked pending
+  schema-digest reconciliation and RM-35 owner authorization review.
   No business-quality claim is made, and new connector/outbound breadth remains
   deferred. The authoritative dashboard is the
   [Sprint 12 current-state index](sprint-plans/sprint-12/current-state.md).*

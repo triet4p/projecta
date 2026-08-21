@@ -147,3 +147,28 @@ provider calls, 96 relation branches, zero retries). Current v8 has no
 provider authorization, no new authorization, no output and no provider
 calls. RM-34 may prepare the exact v8 Stage A authorization offline; RM-35
 must review it before any execution.
+
+## RM-34 exact authorization preparation
+
+RM-34 prepared, but did not issue, the exact v8 Stage A authorization:
+
+- `evaluation/sprint-12/optimization/s12-f-12-rm34-authorization-preparation.v1.json`
+- `scripts/preflight_sprint12_f12_rm34.py`
+- `evaluation/sprint-12/current-state-next-rm34.v1.json`
+- `evaluation/sprint-12/optimization/g5-packet.v22.rm34-authorization-preparation.json`
+
+The preparation binds the RM-33 owner review and issuance transition, exact
+execution commit `005a35e3be3fbff40fcdae02dfdf79145c76934b`, the RM-32 v8
+preregistration/package/freeze digests, the 22 runtime git blobs, runtime
+configuration, model, prompt, provider adapter, dataset and v8 output path.
+It proves zero calls at preparation and preserves the exact prospective mock
+bounds of 144 calls, 96 relation branches, one persist, no retry and rejected
+overwrite. Provider execution and new authorization remain false.
+
+RM-34 also found a reconciliation item that must remain visible to RM-35:
+the immutable RM-33 review records report-schema digest
+`sha256:662e36911f16aa01c7eda920ec57c4fa9890ad47a4c4e4da2ef9a526482a17fc`,
+while the exact execution-commit blob is
+`sha256:c65a4f039d948e6f3a59750001e58199bfc98e57e2f2f3ac838070ef5f6f6ad5`.
+The preparation binds the exact commit blob and blocks provider execution
+until RM-35 reconciles this discrepancy. No authorization is issued by RM-34.

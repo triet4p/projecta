@@ -128,7 +128,7 @@ freeze. A separate authorization remains mandatory before execution.
 
 ## Handoff I — RM-33 v8 issuance and RM-34/RM-35 authorization path
 
-**Status:** RM-33 complete; RM-34 and RM-35 pending.
+**Status:** RM-33 complete; RM-34 preparation complete; RM-35 pending.
 
 RM-33 owner review and the digest-bound issuance transition are authoritative
 for current v8 issuance only. `preregistrationIssued=true` and
@@ -138,10 +138,13 @@ held-out, Stage B, selection and promotion permissions remain false. The
 historical v7 execution remains the sole issued/spent execution (144 provider
 calls, 96 relation branches, zero retries).
 
-RM-34 may prepare the exact v8 Stage A authorization offline, binding both
-RM-33 records, exact runtime commit and all package/freeze/runtime/output/cost
-digests. RM-35 must perform the separate owner authorization review. No
-provider call or live runner invocation is allowed before that review.
+RM-34 prepared the exact v8 Stage A authorization offline at
+`evaluation/sprint-12/optimization/s12-f-12-rm34-authorization-preparation.v1.json`.
+Its preflight is `F12_RM34_PREPARED_ZERO_CALL`; it binds both RM-33 records,
+exact runtime commit and all package/freeze/runtime/output/cost digests. The
+preparation records a report-schema digest discrepancy between the immutable
+RM-33 review and the exact execution blob, so RM-35 must reconcile it before
+issuing authorization. No provider call or live runner invocation is allowed.
 
 ## External-only work — custody and G6
 
