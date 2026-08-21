@@ -32,14 +32,19 @@ map mutation. Totals and reproduction are derived from immutable source case
 records and fixture case records; source v6/v9 digests and case/arm/stage
 identity are checked.
 
+The correction also rejects v6 invalid-evidence count mutation and any
+caseId/runId/arm/stage identity change, plus semantic mutation of every
+fixture field and cluster case (including cross-swap, duplicate, deletion and
+addition).
+
 ## Artifacts and validation
 
 The authoritative task package is
 `evaluation/sprint-12/optimization/s12-f-12-rm50-offline-remediation.v1.json`.
 Option A and B each have versioned modules, reports, schemas and tests. Tests
-passed: Option A `10`, Option B `11` (including exhaustive mutation and
-package digest custody), for `21` RM-50 tests. The combined safe regression
-suite passed `39` tests. The known `.pytest_cache` permission warning is
+passed: Option A `19`, Option B `43` (including exhaustive mutation and
+package digest custody), for `62` RM-50 tests. The combined safe regression
+suite passed `80` tests. The known `.pytest_cache` permission warning is
 environment-only.
 
 The immutable v6/v9 digests remain bound and the v8 report remains absent.
