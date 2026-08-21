@@ -52,14 +52,14 @@ def test_rm23f_transition_preserves_history_and_sets_current_state() -> None:
     assert transition["currentDecisionState"]["providerExecutionAuthorized"] is False
 
 
-def test_rm25_transition_remains_historical_and_current_state_agrees_after_rm27() -> None:
+def test_rm25_transition_remains_historical_and_current_state_agrees_after_rm33() -> None:
     current = _json(EVAL / "current-state.v1.json")
-    g5 = _json(OPT / "g5-packet.v19.json")
+    g5 = _json(OPT / "g5-packet.v21.json")
     transition = _json(OPT / "s12-f-12-rm25-authorization-transition.v1.json")
     authorization_path = OPT / "s12-f-12-rm25-authorization.v1.json"
     review_path = OPT / "s12-f-12-rm25-owner-review.v1.json"
 
-    expected = "G5_F12_SUPERSEDING_LINEAGE_PREPARATION_APPROVED_OFFLINE_ONLY"
+    expected = "G5_F12_V8_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
     assert current["status"] == expected
     assert g5["status"] == expected
     assert transition["authorization"]["digest"] == _digest(authorization_path)
@@ -68,11 +68,43 @@ def test_rm25_transition_remains_historical_and_current_state_agrees_after_rm27(
     assert g5["selection"]["status"] == "NO_SELECTION"
     assert current["experimentState"]["currentGovernance"]["providerExecutionAuthorized"] is False
     assert g5["authorizationBoundary"]["providerExecutionAuthorized"] is False
+    assert g5["authorizationBoundary"]["preregistrationIssued"] is True
+    assert g5["authorizationBoundary"]["technicalFreezeIssued"] is True
     assert current["experimentState"]["historicalLineage"]["providerCallsPerformed"] == 144
     assert current["experimentState"]["stageAReportExists"] is True
     assert current["experimentState"]["stageAStatus"] == "COMPLETED_REJECTED_NO_STAGE_B"
     assert current["experimentState"]["heldOutInspected"] is False
     assert g5["authorizationBoundary"]["heldOutAccessAuthorized"] is False
+
+
+def test_rm33_issuance_is_digest_bound_and_provider_locked() -> None:
+    current = _json(EVAL / "current-state.v1.json")
+    packet = _json(OPT / "g5-packet.v21.json")
+    owner_path = OPT / "s12-f-12-rm33-owner-review.v1.json"
+    transition_path = OPT / "s12-f-12-rm33-issuance-transition.v1.json"
+    owner = _json(owner_path)
+    transition = _json(transition_path)
+
+    assert owner["status"] == "OWNER_ISSUANCE_REVIEW_APPROVED_ISSUANCE_ONLY"
+    assert transition["ownerReview"]["digest"] == _digest(owner_path)
+    assert packet["ownerDecision"]["digest"] == _digest(owner_path)
+    assert packet["issuanceTransition"]["digest"] == _digest(transition_path)
+    assert current["currentEvidence"]["rm33OwnerReview"]["digest"] == _digest(owner_path)
+    assert current["currentEvidence"]["rm33IssuanceTransition"]["digest"] == _digest(transition_path)
+    assert transition["currentDecisionState"]["preregistrationIssued"] is True
+    assert transition["currentDecisionState"]["technicalFreezeIssued"] is True
+    assert transition["currentDecisionState"]["providerExecutionAuthorized"] is False
+    assert transition["currentDecisionState"]["newAuthorizationIssued"] is False
+    assert packet["currentLineage"]["reportExists"] is False
+    assert packet["currentLineage"]["providerCallsPerformed"] == 0
+    for key in (
+        "validationAccessAuthorized",
+        "heldOutAccessAuthorized",
+        "stageBAuthorized",
+        "candidateSelectionAuthorized",
+        "promotionAuthorized",
+    ):
+        assert packet["authorizationBoundary"][key] is False
 
 
 def test_rm27_owner_decision_transition_and_current_state_bind_closed_lineage() -> None:
@@ -104,7 +136,7 @@ def test_rm27_owner_decision_transition_and_current_state_bind_closed_lineage() 
         "F12_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_REMEDIATION_PREPARATION_ONLY"
     )
     assert g5["status"] == "G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY"
-    assert current["status"] == "G5_F12_SUPERSEDING_LINEAGE_PREPARATION_APPROVED_OFFLINE_ONLY"
+    assert current["status"] == "G5_F12_V8_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
     assert report["decision"]["status"] == "COMPLETED_REJECTED_HARD_GATE"
     assert report["accounting"]["providerCallsAttempted"] == 144
     assert report["accounting"]["retryCount"] == 0
@@ -143,7 +175,8 @@ def test_rm27_owner_decision_transition_and_current_state_bind_closed_lineage() 
     }
     assert current["experimentState"]["candidateSelection"] == "NO_SELECTION"
     assert current["nextTasks"] == [
-        "PREPARE_SUPERSEDING_F12_PREREGISTRATION_EXECUTION_PACKAGE_AND_TECHNICAL_FREEZE_OFFLINE"
+        "S12-RM-34_PREPARE_EXACT_V8_STAGE_A_AUTHORIZATION_OFFLINE",
+        "S12-RM-35_OWNER_AUTHORIZATION_REVIEW",
     ]
 
 
@@ -170,9 +203,9 @@ def test_current_documents_do_not_repeat_superseded_statuses() -> None:
     handoffs = (DOCS / "agent-handoffs.md").read_text(encoding="utf-8")
 
     assert "sprint-12/current-state.md" in sprint_plan
-    assert "sprint-12/g5-optimization.v19.md" in sprint_plan
-    assert "G5_F12_SUPERSEDING_LINEAGE_PREPARATION_APPROVED_OFFLINE_ONLY" in global_plan
-    assert "CURRENT_OFFLINE_F12_REMEDIATION_IMPLEMENTATION_HANDOFF" in handoffs
+    assert "sprint-12/g5-optimization.v21.md" in sprint_plan
+    assert "G5_F12_V8_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING" in global_plan
+    assert "CURRENT_F12_V8_ISSUED_PROVIDER_AUTHORIZATION_HANDOFF" in handoffs
     assert "Handoff A — Runtime-backed" not in handoffs
 
     stale_phrases = (

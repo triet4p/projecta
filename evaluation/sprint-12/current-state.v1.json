@@ -1,7 +1,7 @@
 {
   "artifactVersion": "s12.current-state.v1",
   "asOf": "2026-08-22",
-  "status": "G5_F12_SUPERSEDING_LINEAGE_PREPARATION_APPROVED_OFFLINE_ONLY",
+  "status": "G5_F12_V8_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING",
   "sourcePrecedence": [
     "this current-state index",
     "latest explicit owner decision or transition record",
@@ -42,14 +42,24 @@
       "path": "evaluation/sprint-12/optimization/s12-f-12-rm31-approval-transition.v1.json",
       "expectedStatus": "SUPERSEDING_LINEAGE_PREPARATION_APPROVED_OFFLINE_ONLY"
     },
+    "rm33OwnerReview": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm33-owner-review.v1.json",
+      "digest": "sha256:cb6a2965d8f107b50e01957c99366be34e0d1cfc7cc5ccf6fad684d0278e680c",
+      "expectedStatus": "OWNER_ISSUANCE_REVIEW_APPROVED_ISSUANCE_ONLY"
+    },
+    "rm33IssuanceTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm33-issuance-transition.v1.json",
+      "digest": "sha256:62fb2d8a9b9acec0bd07440ea13943c1e81cf98bb38793392aa97110250b7025",
+      "expectedStatus": "SUPERSEDING_V8_PREREGISTRATION_AND_FREEZE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
+    },
     "stageAReport": {
       "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
       "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
       "status": "COMPLETED_REJECTED_HARD_GATE"
     },
     "g5Packet": {
-      "path": "evaluation/sprint-12/optimization/g5-packet.v19.json",
-      "version": "s12.g5.packet.v19"
+      "path": "evaluation/sprint-12/optimization/g5-packet.v21.json",
+      "version": "s12.g5.packet.v21"
     },
     "humanSummary": "docs/sprint-plans/sprint-12/current-state.md"
   },
@@ -63,7 +73,7 @@
     "G3.1-C": "APPROVED_WITH_SCOPE_LIMITS",
     "G4": "RUNTIME_BACKED_BASELINE_WITH_FAILURES",
     "G4.1": "CONTRACT_ALIGNED_STABILITY_FAILED",
-    "G5": "F12_SUPERSEDING_LINEAGE_PREPARATION_APPROVED_OFFLINE_ONLY",
+    "G5": "F12_V8_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING",
     "G6": "BLOCKED_CUSTODY_OR_CANDIDATE",
     "G7": "NOT_STARTED"
   },
@@ -80,13 +90,26 @@
       "retryCount": 0,
       "totalCostUsd": "0.00592500"
     },
+    "currentLineage": {
+      "lineageVersion": "v8",
+      "preregistrationIssued": true,
+      "technicalFreezeIssued": true,
+      "authorizedExecutions": 0,
+      "authorizedProviderCalls": 0,
+      "providerCallsPerformed": 0,
+      "relationBranchOutputs": 0,
+      "retryCount": 0,
+      "stageAReportExists": false,
+      "providerExecutionAuthorized": false,
+      "newAuthorizationIssued": false
+    },
     "currentGovernance": {
       "supersedingLineagePreparationAuthorized": true,
       "preregistrationPreparationAuthorized": true,
       "technicalFreezePreparationAuthorized": true,
       "executionPackagePreparationAuthorized": true,
-      "preregistrationIssued": false,
-      "technicalFreezeIssued": false,
+      "preregistrationIssued": true,
+      "technicalFreezeIssued": true,
       "providerExecutionAuthorized": false,
       "newAuthorizationIssued": false,
       "validationAccessAuthorized": false,
@@ -96,6 +119,7 @@
       "promotionAuthorized": false
     },
     "stageAReportExists": true,
+    "currentStageAReportExists": false,
     "stageAReportSchemaValid": true,
     "stageAStatus": "COMPLETED_REJECTED_NO_STAGE_B",
     "experimentClosedRejected": true,
@@ -106,7 +130,8 @@
     "offlineDiagnosticImplementationAuthorized": true
   },
   "nextTasks": [
-    "PREPARE_SUPERSEDING_F12_PREREGISTRATION_EXECUTION_PACKAGE_AND_TECHNICAL_FREEZE_OFFLINE"
+    "S12-RM-34_PREPARE_EXACT_V8_STAGE_A_AUTHORIZATION_OFFLINE",
+    "S12-RM-35_OWNER_AUTHORIZATION_REVIEW"
   ],
   "claimBoundary": "No accuracy improvement, candidate selection, tenant readiness or business-quality result may be claimed before new execution evidence passes its registered gates."
 }

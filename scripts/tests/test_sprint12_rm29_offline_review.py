@@ -26,7 +26,7 @@ V16 = OPT / "g5-packet.v16.offline-remediation-preparation.json"
 REVIEW = OPT / "s12-f-12-rm29-owner-review.v1.json"
 TRANSITION = OPT / "s12-f-12-rm29-approval-transition.v1.json"
 G5 = OPT / "g5-packet.v17.json"
-CURRENT_G5 = OPT / "g5-packet.v19.json"
+CURRENT_G5 = OPT / "g5-packet.v21.json"
 CURRENT = EVAL / "current-state.v1.json"
 
 
@@ -102,7 +102,7 @@ def test_rm29_current_state_and_plan_advances_to_rm31_after_rm30() -> None:
     current = _json(CURRENT)
     g5 = _json(CURRENT_G5)
     plan = (ROOT / "docs/sprint-plans/sprint-12.md").read_text(encoding="utf-8")
-    assert current["status"] == "G5_F12_SUPERSEDING_LINEAGE_PREPARATION_APPROVED_OFFLINE_ONLY"
+    assert current["status"] == "G5_F12_V8_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
     assert current["status"] == g5["status"]
     assert current["currentEvidence"]["remediationOwnerReview"]["path"] == REVIEW.relative_to(ROOT).as_posix()
     assert current["currentEvidence"]["remediationApprovalTransition"]["path"] == TRANSITION.relative_to(ROOT).as_posix()
@@ -110,11 +110,14 @@ def test_rm29_current_state_and_plan_advances_to_rm31_after_rm30() -> None:
     assert current["experimentState"]["historicalLineage"]["providerCallsPerformed"] == 144
     assert current["experimentState"]["historicalLineage"]["retryCount"] == 0
     assert current["nextTasks"] == [
-        "PREPARE_SUPERSEDING_F12_PREREGISTRATION_EXECUTION_PACKAGE_AND_TECHNICAL_FREEZE_OFFLINE"
+        "S12-RM-34_PREPARE_EXACT_V8_STAGE_A_AUTHORIZATION_OFFLINE",
+        "S12-RM-35_OWNER_AUTHORIZATION_REVIEW",
     ]
     assert "[x] **S12-RM-29" in plan
     assert "[x] **S12-RM-30" in plan
     assert "[x] **S12-RM-31" in plan
     assert "[x] **S12-RM-32" in plan
-    assert "[ ] **S12-RM-33" in plan
-    assert "sprint-12/g5-optimization.v19.md" in plan
+    assert "[x] **S12-RM-33" in plan
+    assert "[ ] **S12-RM-34" in plan
+    assert "[ ] **S12-RM-35" in plan
+    assert "sprint-12/g5-optimization.v21.md" in plan

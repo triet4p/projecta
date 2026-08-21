@@ -20,7 +20,7 @@ def _digest(path: Path) -> str:
 OWNER = OPT / "s12-f-12-rm31-owner-review.v1.json"
 TRANSITION = OPT / "s12-f-12-rm31-approval-transition.v1.json"
 CURRENT = EVAL / "current-state.v1.json"
-G5 = OPT / "g5-packet.v19.json"
+G5 = OPT / "g5-packet.v21.json"
 REPORT = OPT / "s12-f-12-stage-a-report.v6.json"
 
 
@@ -61,8 +61,6 @@ def test_rm31_current_state_and_g5_open_preparation_only() -> None:
     ):
         assert governance[key] is True
     for key in (
-        "preregistrationIssued",
-        "technicalFreezeIssued",
         "providerExecutionAuthorized",
         "newAuthorizationIssued",
         "validationAuthorized",
@@ -73,6 +71,9 @@ def test_rm31_current_state_and_g5_open_preparation_only() -> None:
         "promotionAuthorized",
     ):
         assert governance[key] is False
+    assert governance["preregistrationIssued"] is True
+    assert governance["technicalFreezeIssued"] is True
     assert current["nextTasks"] == [
-        "PREPARE_SUPERSEDING_F12_PREREGISTRATION_EXECUTION_PACKAGE_AND_TECHNICAL_FREEZE_OFFLINE"
+        "S12-RM-34_PREPARE_EXACT_V8_STAGE_A_AUTHORIZATION_OFFLINE",
+        "S12-RM-35_OWNER_AUTHORIZATION_REVIEW",
     ]
