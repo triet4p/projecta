@@ -851,10 +851,14 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   v6 report and decides whether to close the experiment or authorize a
   separately prepared superseding remediation; this task does not authorize a
   rerun by itself.
-- [ ] **S12-RM-28 — Prepare offline f12 schema/evidence remediation:** Analyze
+- [x] **S12-RM-28 — Prepare offline f12 schema/evidence remediation:** Analyze
   the six schema-invalid responses and 17 invalid-evidence findings using only
-  repository-visible development evidence and sanitized diagnostics. Any new
-  run requires a superseding governed lineage and separate owner authorization.
+  repository-visible development evidence and sanitized diagnostics. The
+  versioned offline remediation package records proven arm/stage locations,
+  the evidence/identity bottleneck, finite diagnostic reason codes and the
+  unknowns preserved by report sanitation. Any new run requires a superseding
+  governed lineage and separate owner authorization; RM-28 does not authorize
+  execution.
 
 #### Phase F-S — Candidate Selection Resume Path
 

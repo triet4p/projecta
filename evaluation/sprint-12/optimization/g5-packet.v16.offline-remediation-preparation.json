@@ -1,0 +1,43 @@
+{
+  "packetVersion": "s12.g5.packet.v16.offline-remediation-preparation",
+  "packetRole": "non-authoritative-offline-next-state-preparation",
+  "status": "OFFLINE_REMEDIATION_PREPARED_PENDING_OWNER_REVIEW",
+  "currentOwnerState": "G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY",
+  "experimentId": "s12-f-12",
+  "report": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+    "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+  },
+  "findings": {
+    "schemaInvalid": 6,
+    "schemaInvalidByArmStage": {"predicted-entities:stage1": 5, "gold-entities:stage2": 1},
+    "invalidEvidence": 17,
+    "invalidEvidenceBucket": "unsupported",
+    "invalidEvidenceSemanticBucket": "exactMatch",
+    "endpointResolution": {"resolved": 34, "wrong": 0, "missing": 0},
+    "goldRelationsControl": {"invalidEvidence": 0, "materializerFailures": 0}
+  },
+  "remediation": {
+    "package": "evaluation/sprint-12/optimization/s12-f-12-rm28-offline-remediation.v1.json",
+    "diagnosticContract": "evaluation/sprint-12/optimization/s12-f-12-rm28-diagnostic-contract.v1.json",
+    "providerCalls": 0,
+    "historicalArtifactsMutated": false
+  },
+  "unknowns": [
+    "exact malformed field or validation path",
+    "exact trigger/evidence offsets for unsupported findings",
+    "sole provider/model/prompt/sampling causality"
+  ],
+  "governance": {
+    "providerExecutionAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "newAuthorizationIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextGate": "owner review of RM-28 offline remediation package"
+  }
+}

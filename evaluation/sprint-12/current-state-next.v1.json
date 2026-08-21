@@ -1,0 +1,27 @@
+{
+  "artifactVersion": "s12.current-state-next.offline-remediation-preparation.v1",
+  "role": "non-authoritative-offline-next-state-preparation",
+  "currentStatePath": "evaluation/sprint-12/current-state.v1.json",
+  "currentStateStatus": "G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY",
+  "nextStateStatus": "OFFLINE_REMEDIATION_PREPARED_PENDING_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "report": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+    "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+  },
+  "rm28Package": "evaluation/sprint-12/optimization/s12-f-12-rm28-offline-remediation.v1.json",
+  "findings": {"schemaInvalid": 6, "invalidEvidence": 17, "goldRelationsControlFailures": 0},
+  "nextGate": "owner review of RM-28 offline remediation package",
+  "governance": {
+    "providerExecutionAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "newAuthorizationIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "claimBoundary": "No quality improvement, candidate selection, business quality or tenant readiness may be claimed."
+}

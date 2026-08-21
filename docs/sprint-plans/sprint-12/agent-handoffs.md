@@ -82,6 +82,13 @@ not established.
 This handoff may prepare a superseding design only. It does not authorize a
 provider call, rerun, validation, held-out access, Stage B or selection.
 
+**RM-28 status:** complete for offline preparation. The non-authoritative
+remediation package records the proven arm/stage locations, the unsupported
+evidence bucket with exact semantic matches and resolved endpoints, and finite
+sanitized diagnostics. Exact malformed fields and provider causality remain
+unknown. The next gate is owner review; any run still requires a superseding
+lineage and new authorization.
+
 ## External-only work — custody and G6
 
 S12-55/S12-85 and the G6 blinded review still require a real external

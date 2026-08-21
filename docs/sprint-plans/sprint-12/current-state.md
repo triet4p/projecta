@@ -47,8 +47,7 @@ RM-27 subsequently closed the experiment as rejected through
 
 ## Next work
 
-1. Prepare an offline schema/evidence remediation using repository-visible
-   development evidence and sanitized diagnostics only.
+1. Owner-review the completed offline schema/evidence remediation package.
 2. Keep provider execution, validation, held-out access, Stage B, selection and
    promotion closed; any rerun requires a superseding governed lineage and new
    authorization.
@@ -57,3 +56,22 @@ RM-27 subsequently closed the experiment as rejected through
 
 Historical gate packets remain valid evidence of what was decided at their
 time; they are not current-state dashboards.
+
+## RM-28 offline preparation
+
+RM-28 has prepared a non-authoritative next-state package from the immutable
+sanitized report only. It records five predicted-entity Stage-1 schema-invalid
+responses, one gold-entity Stage-2 schema-invalid response and 17 unsupported
+evidence findings. The 17 findings are semantic exact matches with resolved
+endpoints, while the gold-relations integrity control has zero materializer
+failures. Exact malformed fields and provider payload causality remain unknown
+because the report intentionally does not persist them.
+
+The package and diagnostic contract are:
+
+- `evaluation/sprint-12/optimization/s12-f-12-rm28-offline-remediation.v1.json`
+- `evaluation/sprint-12/optimization/s12-f-12-rm28-diagnostic-contract.v1.json`
+
+This is offline preparation only. The next gate is owner review of the package;
+no preregistration, technical freeze, authorization, provider call, validation,
+held-out access, Stage B or selection is open.
