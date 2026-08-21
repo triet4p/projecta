@@ -788,10 +788,8 @@ def run_stage_a(
                 arm["configurationFingerprint"] = config_fingerprint
                 relation = arm["relation"]
                 arm["invalidEvidenceCount"] = (
-                    int(relation["semantic"]["counts"].get("exactMatch", 0))
-                    if relation["evidence"]["counts"].get("unsupported", 0)
-                    + relation["evidence"]["counts"].get("missing", 0)
-                    else 0
+                    int(relation["evidence"]["counts"].get("unsupported", 0))
+                    + int(relation["evidence"]["counts"].get("missing", 0))
                 )
                 arm["endpointContractFailure"] = (
                     0 if relation["endpointResolution"]["reconciled"] else 1
