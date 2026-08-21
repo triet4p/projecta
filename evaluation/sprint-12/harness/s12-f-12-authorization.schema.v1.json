@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.local/s12-f-12/authorization.v1.schema.json",
+  "title": "S12-f-12 exact Stage A authorization",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "status", "experimentId", "providerExecutionAuthorized", "providerCalls",
+    "retryPolicy", "commitSha", "executionPackage", "freezeRecord", "outputPath",
+    "costCeilingUsd", "heldOutInspected", "heldOutAccessAuthorized",
+    "validationAccessAuthorized", "stageBAuthorized", "candidateSelectionAuthorized",
+    "promotionAuthorized"
+  ],
+  "properties": {
+    "status": {"const": "APPROVED_FOR_DEVELOPMENT_STAGE_A"},
+    "experimentId": {"const": "s12-f-12"},
+    "providerExecutionAuthorized": {"const": true},
+    "providerCalls": {"const": 144},
+    "retryPolicy": {"const": "none"},
+    "commitSha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "executionPackage": {"type": "object", "additionalProperties": false, "required": ["digest"], "properties": {"digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}},
+    "freezeRecord": {"type": "object", "additionalProperties": false, "required": ["digest"], "properties": {"digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}},
+    "outputPath": {"const": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v5.json"},
+    "costCeilingUsd": {"const": "10.00"},
+    "heldOutInspected": {"const": false},
+    "heldOutAccessAuthorized": {"const": false},
+    "validationAccessAuthorized": {"const": false},
+    "stageBAuthorized": {"const": false},
+    "candidateSelectionAuthorized": {"const": false},
+    "promotionAuthorized": {"const": false}
+  }
+}
