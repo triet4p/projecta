@@ -1,0 +1,85 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm41-owner-review.v1",
+  "status": "OWNER_REVIEW_APPROVED_SUPERSEDING_LINEAGE_PREPARATION_ONLY",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-41",
+  "decisionType": "OWNER_REVIEW_OF_RM40_OFFLINE_RUNTIME_REMEDIATION",
+  "decisionDate": "2026-08-22",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedEvidence": {
+    "rm39OwnerReview": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm39-owner-review.v1.json",
+      "digest": "sha256:e7716923fecc2075f4dab3d4e5454a785aab7cdd255ddcbc873da7fc428062be"
+    },
+    "rm39ApprovalTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm39-approval-transition.v1.json",
+      "digest": "sha256:aa65539834d58e1a7b72cbeee7825f4209d14afb15fbfa7f6d4e81d98e293114"
+    },
+    "rm40Package": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm40-offline-runtime-package.v1.json",
+      "digest": "sha256:b203bb1e7a7518b10ed899ee8647efa035682965842a2bde1f3d54d4588b936f",
+      "status": "OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTED_PENDING_RM41_OWNER_REVIEW"
+    },
+    "implementation": {
+      "path": "scripts/s12_f12_rm40_offline_runtime.py",
+      "digest": "sha256:1e20a2def263ca99c872d1df1413dcf907ba575f8a70ccda53408f58c0a91deb"
+    },
+    "tests": {
+      "path": "scripts/tests/test_sprint12_rm40_offline_runtime.py",
+      "digest": "sha256:f03974efd7552aa8000e00cbeec49641e4713edcd861323934d469076e65f6dd"
+    }
+  },
+  "verifiedEvidence": {
+    "exactGreedyPairingMatchesScorer": true,
+    "duplicateOrderAndTieCasesStable": true,
+    "wrongPredicateExcluded": true,
+    "reversedDirectionExcluded": true,
+    "extraAndMissingRelationsExcluded": true,
+    "mixedExactPairs": 3,
+    "mixedUnsupportedPlusMissing": 1,
+    "mixedDiagnosticReasonTotal": 1,
+    "spanProjectionVerified": true,
+    "malformedDetailFailsClosed": true,
+    "rawDataEmitted": false,
+    "providerCalls": 0,
+    "focusedIndependentTests": "17 passed",
+    "documentConsistencyTests": "8 passed",
+    "historicalV6DigestUnchanged": true,
+    "reportV8Exists": false
+  },
+  "ownerAssessment": {
+    "rm40ImplementationApproved": true,
+    "semanticPairParityApproved": true,
+    "reconciliationInvariantApproved": true,
+    "spanProjectionApproved": true,
+    "rawDataBoundaryApproved": true,
+    "qualityResultEstablished": false,
+    "blockingFindings": []
+  },
+  "decision": {
+    "rm40ImplementationApproved": true,
+    "supersedingLineagePreparationAuthorized": true,
+    "preregistrationPreparationAuthorized": true,
+    "technicalFreezePreparationAuthorized": true,
+    "executionPackagePreparationAuthorized": true,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "PREPARE_NEW_SUPERSEDING_RUNTIME_LINEAGE_OFFLINE"
+  },
+  "constraints": [
+    "Preparation must create a new versioned runtime lineage and must not mutate or reuse the failed v8 lineage, RM-36 evidence or spent RM-35 authorization.",
+    "The new runtime must integrate the RM-40 semantic-pair and span-projection behavior into the actual guarded execution path at an exact commit.",
+    "Prepared preregistration, execution package and technical freeze remain unissued and authorize zero provider calls.",
+    "Separate owner issuance and later provider-authorization reviews remain mandatory.",
+    "Validation, held-out access, Stage B, candidate selection and promotion remain closed."
+  ]
+}

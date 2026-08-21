@@ -582,3 +582,20 @@ RM-36 payload.
 runtime version. The frozen v8 lineage, spent authorization and execution fact
 remain immutable; superseding-lineage preparation, provider execution and all
 downstream gates require later owner decisions.
+
+## [2026-08-22] Approve preparation of a corrected post-v8 runtime lineage
+
+**Decision:** Approve the independently reviewed RM-40 remediation and permit
+offline preparation of a new exact-commit runtime lineage only.
+**Alternatives considered:** Keep the remediation as a standalone diagnostic;
+mutate or reuse the failed v8 lineage; issue a new freeze immediately; or
+authorize another provider execution in the same decision.
+**Reason:** Independent parity probes confirm the RM-40 path uses the same
+greedy exact semantic-pair domain as scoring across duplicates, order, ties,
+wrong predicates, reversed direction and extra or missing relations. Evidence
+reasons reconcile exactly with unsupported plus missing, endpoint spans are
+projected correctly, malformed detail fails closed and zero raw data is emitted.
+**Consequences:** RM-42 may integrate the behavior into a new guarded runtime
+and prepare preregistration/package/freeze artifacts offline. Issuance,
+provider execution, validation, held-out access, Stage B, selection and
+promotion remain behind later owner gates.
