@@ -1,0 +1,113 @@
+{
+  "manifestVersion": "s12.corpus.scenario-manifest.v3.deep-pilot",
+  "datasetVersion": "s12.corpus.scenario.v3.deep-pilot",
+  "atomicDatasetVersion": "s12.corpus.atomic.v3.deep-pilot",
+  "status": "DEEP_PILOT_AUTHORED_PENDING_QA",
+  "humanEvidence": false,
+  "scenarioCounts": {
+    "development": 4,
+    "validation": 2,
+    "test": 0,
+    "total": 6
+  },
+  "scenarios": [
+    {
+      "scenarioId": "s12-s-101",
+      "journeyId": "J1",
+      "split": "development",
+      "sourceManifest": [
+        "s12-a-3001",
+        "s12-a-3002",
+        "s12-a-3003",
+        "s12-a-3004",
+        "s12-a-3005",
+        "s12-a-3006",
+        "s12-a-3007",
+        "s12-a-3008"
+      ],
+      "scenarioDigest": "sha256:c8a31d189b4ef9d0d0ba57b1f7cc27ffc7cd8f312aafa9ade55a6411c83b78a2"
+    },
+    {
+      "scenarioId": "s12-s-102",
+      "journeyId": "J2",
+      "split": "development",
+      "sourceManifest": [
+        "s12-a-3009",
+        "s12-a-3010",
+        "s12-a-3011",
+        "s12-a-3012",
+        "s12-a-3013",
+        "s12-a-3014",
+        "s12-a-3015",
+        "s12-a-3016"
+      ],
+      "scenarioDigest": "sha256:37ecd894e35fd8a50b180efacdb04fef63a810d0773fe4895c2255e5c40c80c4"
+    },
+    {
+      "scenarioId": "s12-s-103",
+      "journeyId": "J3",
+      "split": "development",
+      "sourceManifest": [
+        "s12-a-3017",
+        "s12-a-3018",
+        "s12-a-3019",
+        "s12-a-3020",
+        "s12-a-3021",
+        "s12-a-3022",
+        "s12-a-3023",
+        "s12-a-3024"
+      ],
+      "scenarioDigest": "sha256:7708d05cdebd11bf633227e5379268990cd6b438ed730cb7767fb8fc01747fe3"
+    },
+    {
+      "scenarioId": "s12-s-104",
+      "journeyId": "J4",
+      "split": "development",
+      "sourceManifest": [
+        "s12-a-3025",
+        "s12-a-3026",
+        "s12-a-3027",
+        "s12-a-3028",
+        "s12-a-3029",
+        "s12-a-3030",
+        "s12-a-3031",
+        "s12-a-3032"
+      ],
+      "scenarioDigest": "sha256:77568421bc514a329dc632de438e25094ca23fdfdd2d8d9889c59af4a44969f5"
+    },
+    {
+      "scenarioId": "s12-s-105",
+      "journeyId": "J5",
+      "split": "validation",
+      "sourceManifest": [
+        "s12-a-3033",
+        "s12-a-3034",
+        "s12-a-3035",
+        "s12-a-3036",
+        "s12-a-3037",
+        "s12-a-3038",
+        "s12-a-3039",
+        "s12-a-3040"
+      ],
+      "scenarioDigest": "sha256:dd540e778fd2bf972ba6a80ddc74cc6951e6c107dc798e17afaab09fb7af1a27"
+    },
+    {
+      "scenarioId": "s12-s-106",
+      "journeyId": "J6",
+      "split": "validation",
+      "sourceManifest": [
+        "s12-a-3041",
+        "s12-a-3042",
+        "s12-a-3043",
+        "s12-a-3044",
+        "s12-a-3045",
+        "s12-a-3046",
+        "s12-a-3047",
+        "s12-a-3048"
+      ],
+      "scenarioDigest": "sha256:aa2e7ef4b58579004b1bf9f79447a0b3cb2c4f3fbf24d14b94a2f70bb1a4723d"
+    }
+  ],
+  "testPayloadPresent": false,
+  "manifestDigest": "sha256:7579f2e76adb44a067f4e40d0f5da22c6f3c21652ee6f3bbed6411e164fc9f31"
+}

@@ -15,20 +15,20 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from run_sprint12_next_tool_experiment import (
     FINAL_PACKAGE,
     validate_final_execution_package,
-    validate_stage_a_authorization,
 )
 
 
 OPTIMIZATION = ROOT / "evaluation/sprint-12/optimization"
 AUTHORIZATION = OPTIMIZATION / "s12-f-10-approval-b.v1.json"
 OUTPUT = OPTIMIZATION / "s12-f-10-stage-a-report.v5.json"
+DECISION = OPTIMIZATION / "s12-f-10-stage-a-decision.v1.json"
 
 
 def _read(path: Path) -> dict[str, object]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def test_approval_b_is_exactly_bounded_and_validates_without_execution() -> None:
+def test_approval_b_is_exactly_bounded_and_preserved_after_execution() -> None:
     authorization = _read(AUTHORIZATION)
     assert authorization["status"] == "APPROVED_FOR_DEVELOPMENT_STAGE_A"
     assert authorization["providerExecutionAuthorized"] is True
@@ -40,21 +40,21 @@ def test_approval_b_is_exactly_bounded_and_validates_without_execution() -> None
     assert authorization["heldOutAccessAuthorized"] is False
     assert authorization["stageBAuthorized"] is False
     assert authorization["candidateSelectionAuthorized"] is False
-    assert not OUTPUT.exists()
+    assert OUTPUT.is_file()
 
-    package = validate_final_execution_package(FINAL_PACKAGE, output_path=OUTPUT)
-    validated = validate_stage_a_authorization(
-        package,
-        package_path=FINAL_PACKAGE,
-        authorization_path=AUTHORIZATION,
-        output_path=OUTPUT,
-        adapter_digest=authorization["providerAdapter"]["digest"],
-        runtime_configuration_digest=authorization["runtimeConfiguration"][
-            "digest"
-        ],
-        require_concrete_provider_binding=True,
-    )
-    assert validated == authorization
+    package = validate_final_execution_package(FINAL_PACKAGE, output_path=None)
+    decision = _read(DECISION)
+    report = _read(OUTPUT)
+    assert report["artifactVersion"] == "s12.s12-f-10.offline-stage-a-runner-report.v1"
+    assert report["providerCallCount"] == 48
+    assert report["branchOutputCount"] == 96
+    assert package["status"] == "EXECUTION_PACKAGE_FROZEN_PENDING_AUTHORIZATION"
+    assert decision["execution"]["providerCalls"] == 48
+    assert decision["execution"]["branchOutputs"] == 96
+    assert decision["execution"]["retryCount"] == 0
+    assert decision["governance"]["stageBAuthorized"] is False
+    assert decision["governance"]["candidateSelectionAuthorized"] is False
+    assert decision["governance"]["nextProviderExecutionAuthorized"] is False
 
 
 def test_approval_b_binds_approval_a_and_freeze_without_mutating_history() -> None:

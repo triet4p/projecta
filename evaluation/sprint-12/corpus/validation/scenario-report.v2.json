@@ -1,0 +1,599 @@
+{
+  "reportVersion": "s12.scenario-validator.v2",
+  "datasetVersion": "s12.corpus.scenario.v2",
+  "status": "BLOCKED_SCENARIO_INCONSISTENCY",
+  "readScope": {
+    "scenarioPayloadSplits": {
+      "development": 12,
+      "validation": 6
+    },
+    "testPayloadRead": false,
+    "testPayloadStatus": "not-available-custody",
+    "testManifestCount": 6
+  },
+  "dimensions": [
+    "temporalEffects",
+    "reviewDispositions",
+    "checkpoints",
+    "competencyAnswers"
+  ],
+  "analysis": {
+    "payloadScenarioCount": 18,
+    "uniqueSourceLineageCount": 6,
+    "repeatedSourceLineageGroups": [
+      {
+        "lineageHash": "sha256:2a7f048df9403a76769a749dd0f6e16eb8dc1b590de7277c974416259977f4ed",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-007",
+          "s12-s-008",
+          "s12-s-009"
+        ],
+        "splits": [
+          "development"
+        ],
+        "dimensionHashes": {
+          "temporalEffects": [
+            "sha256:a1b0e39237d045a4c785b0dc4c86055ea6572c7205ece396873bcad8a5d52a6b",
+            "sha256:b492f4cc05ed893d163c840c530f49d3905a4739d58fc82fe0d14d9fd14656ab",
+            "sha256:cf76c574608891e782060c5cf81b6db6f26243f8c5a24a57afab7c4d94c0ad94"
+          ],
+          "reviewDispositions": [
+            "sha256:0772b3e24ea505ec26d3c50ce40416889963d9a09b2540c26cc3e55d3f6080fc",
+            "sha256:c9d89ccfb8394a60101894f28c0e69d17c59546d981e07b140bedee806cb2496",
+            "sha256:eb2ca928615e7efd15eb53fab72f97e73bc5abbd4e774047e795b65215c97892"
+          ],
+          "checkpoints": [
+            "sha256:4043fa4a776800e639337771df9aa9f63d448ff266cbeaaefa313b6ce863ee20",
+            "sha256:48fe34f9ac5d53c0d94e76a51ec7df93f2f118f31cb2f81fd769bdd036c3c9f1",
+            "sha256:f15223f59c1de8cb56462dfcfe0ad314f18c8aac73c72505f8b8a343ed37fb20"
+          ],
+          "competencyAnswers": [
+            "sha256:33c091fbc6e186c548ff77bb5e618da82df5b1997501a75dc7edae3258ffcf07",
+            "sha256:992f0e876117d72155f64bc66430c6e7a5573791b1222e50c7838c886ffca720",
+            "sha256:e5330964452de9263187b99e4053d2ed362fbd5c9c747043fd6665b954d9a500"
+          ]
+        },
+        "conflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ],
+        "rationalePresentCount": 0,
+        "unresolvedConflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ]
+      },
+      {
+        "lineageHash": "sha256:2b4c9bfa93ee5c16dcb4eca136616622588a55d151877655bf8fc881b7ddacba",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-013",
+          "s12-s-014",
+          "s12-s-015"
+        ],
+        "splits": [
+          "validation"
+        ],
+        "dimensionHashes": {
+          "temporalEffects": [
+            "sha256:a1b0e39237d045a4c785b0dc4c86055ea6572c7205ece396873bcad8a5d52a6b",
+            "sha256:b492f4cc05ed893d163c840c530f49d3905a4739d58fc82fe0d14d9fd14656ab",
+            "sha256:f4bd45a956380dbd07c2238345ac9fd9eb65fdb4e9e92f4b1cd8bf10d64c8c47"
+          ],
+          "reviewDispositions": [
+            "sha256:0772b3e24ea505ec26d3c50ce40416889963d9a09b2540c26cc3e55d3f6080fc",
+            "sha256:9b4a61b5e917d10b883a31bbaeb2ce7b0b106ccfba70360b6f5132fc2eeb85a3",
+            "sha256:c9d89ccfb8394a60101894f28c0e69d17c59546d981e07b140bedee806cb2496"
+          ],
+          "checkpoints": [
+            "sha256:027e7e55086c6e49c977fd19a25796a8a6fe11225028937253e9b1cf3a87e46d",
+            "sha256:4b3ffa95f75e262033203fa1e689c0ac4b65ac466a5c8479608ed68550c8acdf",
+            "sha256:68f4853aebdf1bf5e27e95e6c2c595057059b4b00eff5c4dbbadae12592f1472"
+          ],
+          "competencyAnswers": [
+            "sha256:7f0b094a8170882bfdf1c0df157752db6ed3f9cb75b8e6d61762b8261477d37d",
+            "sha256:ddf7d7da2488136d73ce951acfc5648b0d9b38339c493c560f44110302d08170",
+            "sha256:e107f2eebbb34489e4748ec9a00790c1f8f6bb3d489a685806827a71af8d7e8e"
+          ]
+        },
+        "conflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ],
+        "rationalePresentCount": 0,
+        "unresolvedConflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ]
+      },
+      {
+        "lineageHash": "sha256:56dc2c9e4d9b7b41cf41c31c526a0b5c6982f3e91bf14452827ee816fbf8e138",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-001",
+          "s12-s-002",
+          "s12-s-003"
+        ],
+        "splits": [
+          "development"
+        ],
+        "dimensionHashes": {
+          "temporalEffects": [
+            "sha256:97e56081543e9f1fe61fcfb297d38239f0d17602290410a1e5a3c80fbe808402",
+            "sha256:a1b0e39237d045a4c785b0dc4c86055ea6572c7205ece396873bcad8a5d52a6b",
+            "sha256:cf76c574608891e782060c5cf81b6db6f26243f8c5a24a57afab7c4d94c0ad94"
+          ],
+          "reviewDispositions": [
+            "sha256:0772b3e24ea505ec26d3c50ce40416889963d9a09b2540c26cc3e55d3f6080fc",
+            "sha256:c55bcf33368f4a406643e0c8f0242521c1a98887bbbba738caddc5bdeea7a43c",
+            "sha256:eb2ca928615e7efd15eb53fab72f97e73bc5abbd4e774047e795b65215c97892"
+          ],
+          "checkpoints": [
+            "sha256:16ae383766012a0d13659fc9ce766063b3c59aa33502857719e9bce407a2f8ab",
+            "sha256:4714c14eb599d0786cb340e63a06096eab81366ab46c92ee6f641313b4076883",
+            "sha256:5f140768886ced6d8b5147bc99a953c8303b108b8672bbb6dbfc6e5aae092098"
+          ],
+          "competencyAnswers": [
+            "sha256:7399781ab4d78c33ce821c56a36b3cabc496c558a749a65d463197b056658abc",
+            "sha256:7d6ccfc64f48ff0bac5874075ea492cd967fb031adf28f48b5ec956405ecc1ca",
+            "sha256:84ebfde9e8de68627e36718fbecb8c4ec4993057c63fc60cba3abc62b31c2946"
+          ]
+        },
+        "conflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ],
+        "rationalePresentCount": 0,
+        "unresolvedConflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ]
+      },
+      {
+        "lineageHash": "sha256:6b65a3c9ccf53c5f01408e38d09758aba81090030148891fecf54421925ca0cb",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-004",
+          "s12-s-005",
+          "s12-s-006"
+        ],
+        "splits": [
+          "development"
+        ],
+        "dimensionHashes": {
+          "temporalEffects": [
+            "sha256:97e56081543e9f1fe61fcfb297d38239f0d17602290410a1e5a3c80fbe808402",
+            "sha256:b492f4cc05ed893d163c840c530f49d3905a4739d58fc82fe0d14d9fd14656ab",
+            "sha256:f4bd45a956380dbd07c2238345ac9fd9eb65fdb4e9e92f4b1cd8bf10d64c8c47"
+          ],
+          "reviewDispositions": [
+            "sha256:9b4a61b5e917d10b883a31bbaeb2ce7b0b106ccfba70360b6f5132fc2eeb85a3",
+            "sha256:c55bcf33368f4a406643e0c8f0242521c1a98887bbbba738caddc5bdeea7a43c",
+            "sha256:c9d89ccfb8394a60101894f28c0e69d17c59546d981e07b140bedee806cb2496"
+          ],
+          "checkpoints": [
+            "sha256:848df0ba8136a77e2f03ab10b97eb244ca5f06ef4e8a57efe06ae2367ac1ba3b",
+            "sha256:cbac0c30559abcb7e9637d96f37739c9d50035bfa29beec7d8e321bc8ea8ce10",
+            "sha256:d19e8bacaf22902065e1a1af21f1e550f1f0b234b29846bf556533acec3524d4"
+          ],
+          "competencyAnswers": [
+            "sha256:0461592b11f38b5cee8aa107b32a8f34820e7af12fdae95be589f7db31b51e0e",
+            "sha256:774b09a6604222e5f7366aa0fb8fa71b82dcb68d59290e17f9fd35f390c75135",
+            "sha256:86550893b4866093578e53ca0c317d12ac27940429fb270b95e909ef93e679a1"
+          ]
+        },
+        "conflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ],
+        "rationalePresentCount": 0,
+        "unresolvedConflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ]
+      },
+      {
+        "lineageHash": "sha256:9fb7d928709b10b1950af0913be8ec46fc313522035dea2c32e902a058f321f3",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-016",
+          "s12-s-017",
+          "s12-s-018"
+        ],
+        "splits": [
+          "validation"
+        ],
+        "dimensionHashes": {
+          "temporalEffects": [
+            "sha256:97e56081543e9f1fe61fcfb297d38239f0d17602290410a1e5a3c80fbe808402",
+            "sha256:a1b0e39237d045a4c785b0dc4c86055ea6572c7205ece396873bcad8a5d52a6b",
+            "sha256:cf76c574608891e782060c5cf81b6db6f26243f8c5a24a57afab7c4d94c0ad94"
+          ],
+          "reviewDispositions": [
+            "sha256:0772b3e24ea505ec26d3c50ce40416889963d9a09b2540c26cc3e55d3f6080fc",
+            "sha256:c55bcf33368f4a406643e0c8f0242521c1a98887bbbba738caddc5bdeea7a43c",
+            "sha256:eb2ca928615e7efd15eb53fab72f97e73bc5abbd4e774047e795b65215c97892"
+          ],
+          "checkpoints": [
+            "sha256:418ace7b4a16fb2294fe4c15eb367363f95f5c711b718dedc8c65a2f7746e15f",
+            "sha256:4b0004b1077fdeeced34505e9878acdf3e4eb8095fbf1b069a002053933fa9ab",
+            "sha256:d8596f52443769197d31be4ac111176067d28cc7673634210b4d9c58177cc69f"
+          ],
+          "competencyAnswers": [
+            "sha256:5934521cee5d3d84dba2b33e45fb1d2e5288a2710d3b30e15d843eac1039bd1f",
+            "sha256:7af970fb24d48e603c91d3dadae160e107d06561cec2eba31ade2dd05e6cc73c",
+            "sha256:d4bd47ebfd16455f2cdff889f9b4565356e73f1fec6dd6bbfbe8153fde916133"
+          ]
+        },
+        "conflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ],
+        "rationalePresentCount": 0,
+        "unresolvedConflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ]
+      },
+      {
+        "lineageHash": "sha256:cc40b7cd9e2d4501916c5cd8c51c70d0b4615699c2656ab3ea5ed550b2723e09",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-010",
+          "s12-s-011",
+          "s12-s-012"
+        ],
+        "splits": [
+          "development"
+        ],
+        "dimensionHashes": {
+          "temporalEffects": [
+            "sha256:97e56081543e9f1fe61fcfb297d38239f0d17602290410a1e5a3c80fbe808402",
+            "sha256:cf76c574608891e782060c5cf81b6db6f26243f8c5a24a57afab7c4d94c0ad94",
+            "sha256:f4bd45a956380dbd07c2238345ac9fd9eb65fdb4e9e92f4b1cd8bf10d64c8c47"
+          ],
+          "reviewDispositions": [
+            "sha256:9b4a61b5e917d10b883a31bbaeb2ce7b0b106ccfba70360b6f5132fc2eeb85a3",
+            "sha256:c55bcf33368f4a406643e0c8f0242521c1a98887bbbba738caddc5bdeea7a43c",
+            "sha256:eb2ca928615e7efd15eb53fab72f97e73bc5abbd4e774047e795b65215c97892"
+          ],
+          "checkpoints": [
+            "sha256:00963583f915a1d5cfd8dd105d735b9219d931926dd426a319ca06c6bbc34fb4",
+            "sha256:5251d00c6991e2afad15f77414b06cca37cef3dc9c2dba42c80ae1d1b57d73eb",
+            "sha256:753f79b874ef780d216be767edfb43c27c142816969cce0857544b245d72040a"
+          ],
+          "competencyAnswers": [
+            "sha256:31f01c97ddd32f30da102a23868f94c0076af669ce9136e4cf4e41340cf12a8e",
+            "sha256:4a7f6ffe8c99746b2a44651415b03b3602d349e6fc9e04f2931081ace777a247",
+            "sha256:d3f9ab6f28ed035ed7a8adccf8b75481bfac8e65a41d9bcdd37e83014b9d33fe"
+          ]
+        },
+        "conflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ],
+        "rationalePresentCount": 0,
+        "unresolvedConflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ]
+      }
+    ],
+    "unresolvedConflictGroups": [
+      {
+        "lineageHash": "sha256:2a7f048df9403a76769a749dd0f6e16eb8dc1b590de7277c974416259977f4ed",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-007",
+          "s12-s-008",
+          "s12-s-009"
+        ],
+        "splits": [
+          "development"
+        ],
+        "dimensionHashes": {
+          "temporalEffects": [
+            "sha256:a1b0e39237d045a4c785b0dc4c86055ea6572c7205ece396873bcad8a5d52a6b",
+            "sha256:b492f4cc05ed893d163c840c530f49d3905a4739d58fc82fe0d14d9fd14656ab",
+            "sha256:cf76c574608891e782060c5cf81b6db6f26243f8c5a24a57afab7c4d94c0ad94"
+          ],
+          "reviewDispositions": [
+            "sha256:0772b3e24ea505ec26d3c50ce40416889963d9a09b2540c26cc3e55d3f6080fc",
+            "sha256:c9d89ccfb8394a60101894f28c0e69d17c59546d981e07b140bedee806cb2496",
+            "sha256:eb2ca928615e7efd15eb53fab72f97e73bc5abbd4e774047e795b65215c97892"
+          ],
+          "checkpoints": [
+            "sha256:4043fa4a776800e639337771df9aa9f63d448ff266cbeaaefa313b6ce863ee20",
+            "sha256:48fe34f9ac5d53c0d94e76a51ec7df93f2f118f31cb2f81fd769bdd036c3c9f1",
+            "sha256:f15223f59c1de8cb56462dfcfe0ad314f18c8aac73c72505f8b8a343ed37fb20"
+          ],
+          "competencyAnswers": [
+            "sha256:33c091fbc6e186c548ff77bb5e618da82df5b1997501a75dc7edae3258ffcf07",
+            "sha256:992f0e876117d72155f64bc66430c6e7a5573791b1222e50c7838c886ffca720",
+            "sha256:e5330964452de9263187b99e4053d2ed362fbd5c9c747043fd6665b954d9a500"
+          ]
+        },
+        "conflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ],
+        "rationalePresentCount": 0,
+        "unresolvedConflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ]
+      },
+      {
+        "lineageHash": "sha256:2b4c9bfa93ee5c16dcb4eca136616622588a55d151877655bf8fc881b7ddacba",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-013",
+          "s12-s-014",
+          "s12-s-015"
+        ],
+        "splits": [
+          "validation"
+        ],
+        "dimensionHashes": {
+          "temporalEffects": [
+            "sha256:a1b0e39237d045a4c785b0dc4c86055ea6572c7205ece396873bcad8a5d52a6b",
+            "sha256:b492f4cc05ed893d163c840c530f49d3905a4739d58fc82fe0d14d9fd14656ab",
+            "sha256:f4bd45a956380dbd07c2238345ac9fd9eb65fdb4e9e92f4b1cd8bf10d64c8c47"
+          ],
+          "reviewDispositions": [
+            "sha256:0772b3e24ea505ec26d3c50ce40416889963d9a09b2540c26cc3e55d3f6080fc",
+            "sha256:9b4a61b5e917d10b883a31bbaeb2ce7b0b106ccfba70360b6f5132fc2eeb85a3",
+            "sha256:c9d89ccfb8394a60101894f28c0e69d17c59546d981e07b140bedee806cb2496"
+          ],
+          "checkpoints": [
+            "sha256:027e7e55086c6e49c977fd19a25796a8a6fe11225028937253e9b1cf3a87e46d",
+            "sha256:4b3ffa95f75e262033203fa1e689c0ac4b65ac466a5c8479608ed68550c8acdf",
+            "sha256:68f4853aebdf1bf5e27e95e6c2c595057059b4b00eff5c4dbbadae12592f1472"
+          ],
+          "competencyAnswers": [
+            "sha256:7f0b094a8170882bfdf1c0df157752db6ed3f9cb75b8e6d61762b8261477d37d",
+            "sha256:ddf7d7da2488136d73ce951acfc5648b0d9b38339c493c560f44110302d08170",
+            "sha256:e107f2eebbb34489e4748ec9a00790c1f8f6bb3d489a685806827a71af8d7e8e"
+          ]
+        },
+        "conflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ],
+        "rationalePresentCount": 0,
+        "unresolvedConflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ]
+      },
+      {
+        "lineageHash": "sha256:56dc2c9e4d9b7b41cf41c31c526a0b5c6982f3e91bf14452827ee816fbf8e138",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-001",
+          "s12-s-002",
+          "s12-s-003"
+        ],
+        "splits": [
+          "development"
+        ],
+        "dimensionHashes": {
+          "temporalEffects": [
+            "sha256:97e56081543e9f1fe61fcfb297d38239f0d17602290410a1e5a3c80fbe808402",
+            "sha256:a1b0e39237d045a4c785b0dc4c86055ea6572c7205ece396873bcad8a5d52a6b",
+            "sha256:cf76c574608891e782060c5cf81b6db6f26243f8c5a24a57afab7c4d94c0ad94"
+          ],
+          "reviewDispositions": [
+            "sha256:0772b3e24ea505ec26d3c50ce40416889963d9a09b2540c26cc3e55d3f6080fc",
+            "sha256:c55bcf33368f4a406643e0c8f0242521c1a98887bbbba738caddc5bdeea7a43c",
+            "sha256:eb2ca928615e7efd15eb53fab72f97e73bc5abbd4e774047e795b65215c97892"
+          ],
+          "checkpoints": [
+            "sha256:16ae383766012a0d13659fc9ce766063b3c59aa33502857719e9bce407a2f8ab",
+            "sha256:4714c14eb599d0786cb340e63a06096eab81366ab46c92ee6f641313b4076883",
+            "sha256:5f140768886ced6d8b5147bc99a953c8303b108b8672bbb6dbfc6e5aae092098"
+          ],
+          "competencyAnswers": [
+            "sha256:7399781ab4d78c33ce821c56a36b3cabc496c558a749a65d463197b056658abc",
+            "sha256:7d6ccfc64f48ff0bac5874075ea492cd967fb031adf28f48b5ec956405ecc1ca",
+            "sha256:84ebfde9e8de68627e36718fbecb8c4ec4993057c63fc60cba3abc62b31c2946"
+          ]
+        },
+        "conflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ],
+        "rationalePresentCount": 0,
+        "unresolvedConflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ]
+      },
+      {
+        "lineageHash": "sha256:6b65a3c9ccf53c5f01408e38d09758aba81090030148891fecf54421925ca0cb",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-004",
+          "s12-s-005",
+          "s12-s-006"
+        ],
+        "splits": [
+          "development"
+        ],
+        "dimensionHashes": {
+          "temporalEffects": [
+            "sha256:97e56081543e9f1fe61fcfb297d38239f0d17602290410a1e5a3c80fbe808402",
+            "sha256:b492f4cc05ed893d163c840c530f49d3905a4739d58fc82fe0d14d9fd14656ab",
+            "sha256:f4bd45a956380dbd07c2238345ac9fd9eb65fdb4e9e92f4b1cd8bf10d64c8c47"
+          ],
+          "reviewDispositions": [
+            "sha256:9b4a61b5e917d10b883a31bbaeb2ce7b0b106ccfba70360b6f5132fc2eeb85a3",
+            "sha256:c55bcf33368f4a406643e0c8f0242521c1a98887bbbba738caddc5bdeea7a43c",
+            "sha256:c9d89ccfb8394a60101894f28c0e69d17c59546d981e07b140bedee806cb2496"
+          ],
+          "checkpoints": [
+            "sha256:848df0ba8136a77e2f03ab10b97eb244ca5f06ef4e8a57efe06ae2367ac1ba3b",
+            "sha256:cbac0c30559abcb7e9637d96f37739c9d50035bfa29beec7d8e321bc8ea8ce10",
+            "sha256:d19e8bacaf22902065e1a1af21f1e550f1f0b234b29846bf556533acec3524d4"
+          ],
+          "competencyAnswers": [
+            "sha256:0461592b11f38b5cee8aa107b32a8f34820e7af12fdae95be589f7db31b51e0e",
+            "sha256:774b09a6604222e5f7366aa0fb8fa71b82dcb68d59290e17f9fd35f390c75135",
+            "sha256:86550893b4866093578e53ca0c317d12ac27940429fb270b95e909ef93e679a1"
+          ]
+        },
+        "conflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ],
+        "rationalePresentCount": 0,
+        "unresolvedConflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ]
+      },
+      {
+        "lineageHash": "sha256:9fb7d928709b10b1950af0913be8ec46fc313522035dea2c32e902a058f321f3",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-016",
+          "s12-s-017",
+          "s12-s-018"
+        ],
+        "splits": [
+          "validation"
+        ],
+        "dimensionHashes": {
+          "temporalEffects": [
+            "sha256:97e56081543e9f1fe61fcfb297d38239f0d17602290410a1e5a3c80fbe808402",
+            "sha256:a1b0e39237d045a4c785b0dc4c86055ea6572c7205ece396873bcad8a5d52a6b",
+            "sha256:cf76c574608891e782060c5cf81b6db6f26243f8c5a24a57afab7c4d94c0ad94"
+          ],
+          "reviewDispositions": [
+            "sha256:0772b3e24ea505ec26d3c50ce40416889963d9a09b2540c26cc3e55d3f6080fc",
+            "sha256:c55bcf33368f4a406643e0c8f0242521c1a98887bbbba738caddc5bdeea7a43c",
+            "sha256:eb2ca928615e7efd15eb53fab72f97e73bc5abbd4e774047e795b65215c97892"
+          ],
+          "checkpoints": [
+            "sha256:418ace7b4a16fb2294fe4c15eb367363f95f5c711b718dedc8c65a2f7746e15f",
+            "sha256:4b0004b1077fdeeced34505e9878acdf3e4eb8095fbf1b069a002053933fa9ab",
+            "sha256:d8596f52443769197d31be4ac111176067d28cc7673634210b4d9c58177cc69f"
+          ],
+          "competencyAnswers": [
+            "sha256:5934521cee5d3d84dba2b33e45fb1d2e5288a2710d3b30e15d843eac1039bd1f",
+            "sha256:7af970fb24d48e603c91d3dadae160e107d06561cec2eba31ade2dd05e6cc73c",
+            "sha256:d4bd47ebfd16455f2cdff889f9b4565356e73f1fec6dd6bbfbe8153fde916133"
+          ]
+        },
+        "conflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ],
+        "rationalePresentCount": 0,
+        "unresolvedConflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ]
+      },
+      {
+        "lineageHash": "sha256:cc40b7cd9e2d4501916c5cd8c51c70d0b4615699c2656ab3ea5ed550b2723e09",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-010",
+          "s12-s-011",
+          "s12-s-012"
+        ],
+        "splits": [
+          "development"
+        ],
+        "dimensionHashes": {
+          "temporalEffects": [
+            "sha256:97e56081543e9f1fe61fcfb297d38239f0d17602290410a1e5a3c80fbe808402",
+            "sha256:cf76c574608891e782060c5cf81b6db6f26243f8c5a24a57afab7c4d94c0ad94",
+            "sha256:f4bd45a956380dbd07c2238345ac9fd9eb65fdb4e9e92f4b1cd8bf10d64c8c47"
+          ],
+          "reviewDispositions": [
+            "sha256:9b4a61b5e917d10b883a31bbaeb2ce7b0b106ccfba70360b6f5132fc2eeb85a3",
+            "sha256:c55bcf33368f4a406643e0c8f0242521c1a98887bbbba738caddc5bdeea7a43c",
+            "sha256:eb2ca928615e7efd15eb53fab72f97e73bc5abbd4e774047e795b65215c97892"
+          ],
+          "checkpoints": [
+            "sha256:00963583f915a1d5cfd8dd105d735b9219d931926dd426a319ca06c6bbc34fb4",
+            "sha256:5251d00c6991e2afad15f77414b06cca37cef3dc9c2dba42c80ae1d1b57d73eb",
+            "sha256:753f79b874ef780d216be767edfb43c27c142816969cce0857544b245d72040a"
+          ],
+          "competencyAnswers": [
+            "sha256:31f01c97ddd32f30da102a23868f94c0076af669ce9136e4cf4e41340cf12a8e",
+            "sha256:4a7f6ffe8c99746b2a44651415b03b3602d349e6fc9e04f2931081ace777a247",
+            "sha256:d3f9ab6f28ed035ed7a8adccf8b75481bfac8e65a41d9bcdd37e83014b9d33fe"
+          ]
+        },
+        "conflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ],
+        "rationalePresentCount": 0,
+        "unresolvedConflictingDimensions": [
+          "temporalEffects",
+          "reviewDispositions",
+          "checkpoints",
+          "competencyAnswers"
+        ]
+      }
+    ],
+    "shapeErrors": [],
+    "pass": false
+  },
+  "gates": {
+    "shapeIntegrity": true,
+    "noUnexplainedLineageConflicts": false,
+    "longitudinalBusinessReady": false
+  }
+}

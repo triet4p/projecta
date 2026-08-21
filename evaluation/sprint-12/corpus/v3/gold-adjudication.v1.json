@@ -1,0 +1,852 @@
+{
+  "schemaVersion": "s12.v3.pilot-adjudication.v1",
+  "status": "ANNOTATED_ADJUDICATED_OWNER_DELEGATED_AI_PENDING_QUALITY_GATE",
+  "reviewMode": "owner-delegated-ai",
+  "humanEvidence": false,
+  "qualifiedHumanEvidence": false,
+  "rawSensitiveDataIncluded": false,
+  "sourceDatasets": {
+    "atomic": {
+      "datasetVersion": "s12.corpus.atomic.v3.deep-pilot",
+      "path": "evaluation/sprint-12/corpus/v3/atomic-deep-pilot.v1.json",
+      "fileDigest": "sha256:7604f1b24d915841c01f978135065e2e6daa0dc891d73b5c71a276fe706ac0f5",
+      "contentDigest": "sha256:ebc8e1244606eb6b97418385e9b4b51eb01c287b37f8c5db537ab1ade175f70a"
+    },
+    "scenario": {
+      "datasetVersion": "s12.corpus.scenario.v3.deep-pilot",
+      "path": "evaluation/sprint-12/corpus/v3/scenario-deep-pilot.v1.json",
+      "fileDigest": "sha256:49edff582e1215ea3e05a8a5d5d43d08e9e09dec5a3fd78a181e317fe1219d99",
+      "contentDigest": "sha256:4b892d03da54478f3d9637dee80d20049ffb182bdd15316ef0fa7443725a4a34"
+    }
+  },
+  "sourceManifests": {
+    "atomic": {
+      "path": "evaluation/sprint-12/corpus/v3/manifest.v1.json",
+      "manifestDigest": "sha256:8dacee1c0160e447991f3e9e804ecae4974c01e80a0c2e430b5ad5b3b4db462e"
+    },
+    "scenario": {
+      "path": "evaluation/sprint-12/corpus/v3/scenario-manifest.v1.json",
+      "manifestDigest": "sha256:7579f2e76adb44a067f4e40d0f5da22c6f3c21652ee6f3bbed6411e164fc9f31"
+    }
+  },
+  "guideVersions": [
+    "annotation-guide.v1",
+    "metrics.v2",
+    "s12.atomic.v1",
+    "s12.scenario.v1"
+  ],
+  "coverage": {
+    "caseCounts": {
+      "development": 32,
+      "validation": 16
+    },
+    "languageCounts": {
+      "en": 20,
+      "ja": 2,
+      "mixed": 8,
+      "vi": 18
+    },
+    "entityTypeCounts": {
+      "Constraint": 3,
+      "Decision": 6,
+      "ProgressClaim": 5,
+      "Question": 7,
+      "Requirement": 12,
+      "Risk": 9,
+      "Task": 16
+    },
+    "relationPredicateCounts": {
+      "answers": 1,
+      "blocks": 5,
+      "constrainedBy": 3,
+      "dependsOn": 2,
+      "implements": 3,
+      "supports": 1
+    },
+    "relationPositiveCases": 15,
+    "relationCount": 15,
+    "abstentionRequiredCases": 6,
+    "semanticGapCases": 0
+  },
+  "reviewSummary": {
+    "atomicCaseCount": 48,
+    "scenarioCount": 6,
+    "materialDisputeCount": 0,
+    "independentHumanReviewPerformed": false,
+    "thirdReviewerRequired": false,
+    "goldChangedAfterPilotAuthoring": false
+  },
+  "caseDecisions": [
+    {
+      "caseId": "s12-a-3001",
+      "scenarioId": "s12-s-101",
+      "split": "development",
+      "caseDigest": "sha256:eb438337fe51b96249f3c79ce88b904298c237a12d31ca414db962415383e144",
+      "goldDigest": "sha256:1ba0b20e5ea2fa7145a184c08cd955710ee4a52a9aeea2d12eba13bdbb36a213",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3002",
+      "scenarioId": "s12-s-101",
+      "split": "development",
+      "caseDigest": "sha256:eca322b7876b7cc7968f8e9c7c4b0bfa4eb31c609c8ad2034bc2d0c3188f2158",
+      "goldDigest": "sha256:8877a6b810df9d899ffe2b1f30bbfcdfc0d8a22ceae9452c9c615b897d820903",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3003",
+      "scenarioId": "s12-s-101",
+      "split": "development",
+      "caseDigest": "sha256:62fa6ae8c2273fa76bc986387d7ac842476c628dd53578ccb12e07ff1e3e7498",
+      "goldDigest": "sha256:55cf2d7a8816a2aac62ea851436a87bf535195655e253a0e7c933c43d8f9d6f9",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3004",
+      "scenarioId": "s12-s-101",
+      "split": "development",
+      "caseDigest": "sha256:3b8ffd9ebf78c5be3586ab6f3c48cd1a214c28baf578a4233994bccdf9186973",
+      "goldDigest": "sha256:1e1162659afaf90a06b94359505ff22b54e0bdae182bd5deb901ac9708dbe90d",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3005",
+      "scenarioId": "s12-s-101",
+      "split": "development",
+      "caseDigest": "sha256:1885b227734293bc1b4d7e41e0ac746b24f073f1876de040cc595406189da3a2",
+      "goldDigest": "sha256:7467a3eae613194d9343dec8754f24cff7a54d09e020fb37d654f2ccf50ee824",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3006",
+      "scenarioId": "s12-s-101",
+      "split": "development",
+      "caseDigest": "sha256:347035c56f2b74b4f70ab606bdc406ce9132aec737f1c10f566764a22cb80487",
+      "goldDigest": "sha256:9e48eda2c148ed4b55d566d84b38f22a0afdfc71a93f60d6b424902a8641af9a",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3007",
+      "scenarioId": "s12-s-101",
+      "split": "development",
+      "caseDigest": "sha256:796250492aa13204a14360bf33624106c14e56d3d6da85279f29032ed6fdbff9",
+      "goldDigest": "sha256:a07468c78ab90201dd97134e75b36bb5fb9ed7eabc505eedee6a9ab68210ca07",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3008",
+      "scenarioId": "s12-s-101",
+      "split": "development",
+      "caseDigest": "sha256:82aa5afa276b51124e1bbe6421eb9c85450775059fa061a45b76c566071676a0",
+      "goldDigest": "sha256:117a02cb16b4236484f451bbb4b96dcec89245e65bbcaec598db756880cb5f09",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.EXPLICIT_UNCERTAINTY"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3009",
+      "scenarioId": "s12-s-102",
+      "split": "development",
+      "caseDigest": "sha256:81eaaa2cb85bd02bd3605027ebbd8813a0b00bff471390fbb2565216a6684627",
+      "goldDigest": "sha256:f08ab7583649d1a94c0c6bd178abbf989ebe398ce834c41b07bb9616b2620bf7",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3010",
+      "scenarioId": "s12-s-102",
+      "split": "development",
+      "caseDigest": "sha256:9055db7c5a016c00dcc44faec9af88d970329a6923818e768e3333f6975ea121",
+      "goldDigest": "sha256:34191e785ed9e4fb444f2afc36be050659900c6b2864aa2af2fc2ed7e8313bd5",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3011",
+      "scenarioId": "s12-s-102",
+      "split": "development",
+      "caseDigest": "sha256:3b6d425001481ed090f96c1f5253f4c21de55b4981b246c8871a978509f527a1",
+      "goldDigest": "sha256:6ce56ab35365e55d2a1e76360628de1ed8ca99de2a9c71b46dc68d4a110fe739",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3012",
+      "scenarioId": "s12-s-102",
+      "split": "development",
+      "caseDigest": "sha256:b9b46e8b56530c71adb3de122e909306c2368b9dc242539540722779325888e2",
+      "goldDigest": "sha256:e4a7460e570a32643ed70e7dbf3a35718a14d742ee652cf4cb163223d83ee6bd",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3013",
+      "scenarioId": "s12-s-102",
+      "split": "development",
+      "caseDigest": "sha256:0ade0098b1450d1706e2b0ebf0d6c3d6cf239b6e6dc723f00a4936ef1a03594e",
+      "goldDigest": "sha256:67078f8042bdbbf8a38770b1b40c785327e3b0a1a4ce3077abd562de3af09764",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3014",
+      "scenarioId": "s12-s-102",
+      "split": "development",
+      "caseDigest": "sha256:07a9b1a1c77db0b61cdd56449ec0868dc15eef87be48db86bbd067e138a20230",
+      "goldDigest": "sha256:c7d4e3f81e3229a1c88bf34ad80a21d1922a2614a0cbcc51a3834f1aa3df645f",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3015",
+      "scenarioId": "s12-s-102",
+      "split": "development",
+      "caseDigest": "sha256:6301a52e8c1e29d95b3adfe67fa5a0a90485f4082936c81cf92fb40dd47c76bf",
+      "goldDigest": "sha256:d960453cefb0ac28e4ee44bb705141e85671e4d5dc5165c8b75aeedfe868bd8c",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3016",
+      "scenarioId": "s12-s-102",
+      "split": "development",
+      "caseDigest": "sha256:a6973b00726ee567af1ebc1f6abc93d403418196af4bbd1911e5c9a29a92054c",
+      "goldDigest": "sha256:e9a1e4f4837d517b877eca9f7717a0037770742c1b8be7dd66cd156bb2f88255",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.EXPLICIT_UNCERTAINTY"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3017",
+      "scenarioId": "s12-s-103",
+      "split": "development",
+      "caseDigest": "sha256:66390ced347556fd65c17f4a2c16001ab51b03b8ac046f778df8cbd3c4699d83",
+      "goldDigest": "sha256:09688fb360d7d5edaa6590c81080098e5d06668163599ea1a2110fe27c67dd48",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3018",
+      "scenarioId": "s12-s-103",
+      "split": "development",
+      "caseDigest": "sha256:707a56d1ee9854b2cfd962fe05d2a7f263c94ccdd8d3e7eb1646ad5f0c211ee0",
+      "goldDigest": "sha256:224a97de4663e962253e222cdb61d636bdcbad41a2eac9603f470cd865fd3585",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3019",
+      "scenarioId": "s12-s-103",
+      "split": "development",
+      "caseDigest": "sha256:93fa02fdbc024d26a7421539bfe6acf20488225810baf8ff259a746354a39fc8",
+      "goldDigest": "sha256:14f34a7b490c9a46278241cf847e135373967989f8b49d3f6f88e0b1eae049d9",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3020",
+      "scenarioId": "s12-s-103",
+      "split": "development",
+      "caseDigest": "sha256:70c2435611159b1cb76dbe8ce6c694f8a4e29cdbfddc822334a405ae7ce3821b",
+      "goldDigest": "sha256:b546ef2d02de8488ac6de95c33c75aa684d7db32c1f46a024dd2071861a65c0f",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3021",
+      "scenarioId": "s12-s-103",
+      "split": "development",
+      "caseDigest": "sha256:7fc90514290321f8f2572f23ffd7e7ce66380bbb02dda668fdbaae6052894d43",
+      "goldDigest": "sha256:ed36427f62a52da66865c3c6043b9673c51ca752530860f7217fc4e0e461a1da",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3022",
+      "scenarioId": "s12-s-103",
+      "split": "development",
+      "caseDigest": "sha256:e627ac8870c1eed4e77590de9df925c8d9ebb33228167f3bf00e8d570b840aaa",
+      "goldDigest": "sha256:e40df8af28c4eb8a129125126e24fcc2aec1a3f901683aa3f46799fe848472c9",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3023",
+      "scenarioId": "s12-s-103",
+      "split": "development",
+      "caseDigest": "sha256:91b0b1ca4463e90cbb6bbe1acde42d17053fdca7d7548ccfa3cbf4c82af60f42",
+      "goldDigest": "sha256:723c92db2fdc26b7ffcf87c312cc679caae8410263cda7bd9885a9a51653bb1b",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3024",
+      "scenarioId": "s12-s-103",
+      "split": "development",
+      "caseDigest": "sha256:ab89a18b31be8a00bc9db8287cf9c00fd41134def0e130b6f064d8cf41a4b769",
+      "goldDigest": "sha256:7d248560fd034b537f44847e7b59cf91618a1d16c7908125dd31d90ebc0f7b2c",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.EXPLICIT_UNCERTAINTY"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3025",
+      "scenarioId": "s12-s-104",
+      "split": "development",
+      "caseDigest": "sha256:86935faf423ecd3ea9facd2f9183375c847e6880c09c517c0e9e6497b2d341bd",
+      "goldDigest": "sha256:ad9b66532bc2a3e782e79ad7e52f95499c9f7a18b067883bd7eb1f866dfa4242",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3026",
+      "scenarioId": "s12-s-104",
+      "split": "development",
+      "caseDigest": "sha256:b6c68fb109d0d69cad4e7ed7c5001c0e7b148536ee37a2399b2cd3b72988404e",
+      "goldDigest": "sha256:aff12522981f4731293f4a427cb063b5d5444e71b45862f49064ae9633495b2c",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3027",
+      "scenarioId": "s12-s-104",
+      "split": "development",
+      "caseDigest": "sha256:7b2a41213d415e66365eb68a7268d20e7e23179c34b534e28a5b697f05bc492b",
+      "goldDigest": "sha256:58fb3cb3199934c6ad1a0b69a0a14f8461ff94f617899cae44804b9a616d302d",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3028",
+      "scenarioId": "s12-s-104",
+      "split": "development",
+      "caseDigest": "sha256:82d29cc16f226836ff90703b3ea8b7390c127951b1058ee2a2dfb4d0fac589c3",
+      "goldDigest": "sha256:af60af3d8e64e6ab66b660393032b73075ed1b691594728ef4584dffe4b33b30",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3029",
+      "scenarioId": "s12-s-104",
+      "split": "development",
+      "caseDigest": "sha256:1776086f95e8dc8c8cf688b9f7de415ddfd441bfba53c7cc0818942ad01a2850",
+      "goldDigest": "sha256:a5cd72721832e2a76039e6a48e1f622a4d069eaf79fe8e2d4de89785cfaa22cf",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3030",
+      "scenarioId": "s12-s-104",
+      "split": "development",
+      "caseDigest": "sha256:4838d150caad9363ae704be528b83552424c42d118ad899d446ae7ccd8807d6f",
+      "goldDigest": "sha256:2d9ccf71e6aba9849efd1b165166c3b185ecd90d0775f916090dc67e29ffb238",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3031",
+      "scenarioId": "s12-s-104",
+      "split": "development",
+      "caseDigest": "sha256:6e4b94959961fcd264f4a7061f87016626c87d15aaceb9687551618c0a7b2430",
+      "goldDigest": "sha256:78f322e9f3f635d6dc1a8af4476e19a736ca447f7fcff789afbcd39ea8ea5377",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3032",
+      "scenarioId": "s12-s-104",
+      "split": "development",
+      "caseDigest": "sha256:149ce38105098ebd0a448177a9e61a76b24b06ae419fb1f3b25e5abc9e016c92",
+      "goldDigest": "sha256:00cde8462668ebbfaff830610a142a93b0b4a54ae4e4df65f185f37350873487",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.EXPLICIT_UNCERTAINTY"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3033",
+      "scenarioId": "s12-s-105",
+      "split": "validation",
+      "caseDigest": "sha256:11e72d9a832d5c1d5bd878ae582e0cadd5e0ea1c99bbaa75086e7f4e33e2aa9d",
+      "goldDigest": "sha256:a38b98dd4417266f1f3b180d20e6c54f47a4f8479a7a1acfee0ffc0fdab3a422",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3034",
+      "scenarioId": "s12-s-105",
+      "split": "validation",
+      "caseDigest": "sha256:675cf72087a503fef76d36c49401485edfbb196c2e03bde7dd24e09b244d9ea5",
+      "goldDigest": "sha256:9ac39006261c0532283b0307b5b23330a792fe606c5ce5238c6dd59b39fa0523",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3035",
+      "scenarioId": "s12-s-105",
+      "split": "validation",
+      "caseDigest": "sha256:0ad8309a44ab8ccfe6ec96885800f6264e79de37be8ca7655e64b66ab6f9e376",
+      "goldDigest": "sha256:389dc10785843fc0a082fe5bd7b43f988e9f9bc85fc8c10b41c8eadd1487af23",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3036",
+      "scenarioId": "s12-s-105",
+      "split": "validation",
+      "caseDigest": "sha256:00e100ce087442166b3d81182ff26bfb0f944448711ad3c6f504e6d55373318f",
+      "goldDigest": "sha256:24b2ee2f46bcbfd96433890f8274c87b0cdd12882765565844773aa5955a795b",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3037",
+      "scenarioId": "s12-s-105",
+      "split": "validation",
+      "caseDigest": "sha256:a926ec1a185ce1475eba73b8498bee5754ba8653b400a8b3f31dcb3c640ce835",
+      "goldDigest": "sha256:6843063b19ea22e1383ba7559e05b9be39566c010312f35edc8ac6d270f9d7c9",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3038",
+      "scenarioId": "s12-s-105",
+      "split": "validation",
+      "caseDigest": "sha256:ce36d170bb343e8cd55c465fff33949dfa2c71c8a1ea2292f42dd098b913d0de",
+      "goldDigest": "sha256:7510696017797751454192c01db5914158f7b9aa3d07429875ddb137767f8a5f",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3039",
+      "scenarioId": "s12-s-105",
+      "split": "validation",
+      "caseDigest": "sha256:27397d748e243aca8742d45078f4c95cdac0096f982331a4d3d5fdaa20a28748",
+      "goldDigest": "sha256:ddfbd2a0738830c132578bf62665efa76cac76f6264ca4a67f7b62826d81c24b",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3040",
+      "scenarioId": "s12-s-105",
+      "split": "validation",
+      "caseDigest": "sha256:3e92ee961fc21c6349cf30ff16f972bdf792eb0ba51be81a0680d0a6ac051d16",
+      "goldDigest": "sha256:0f3562447b5595dd86fe6fffbeaf5a0cecc002cb6a39777587c62bc40e0aa808",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.EXPLICIT_UNCERTAINTY"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3041",
+      "scenarioId": "s12-s-106",
+      "split": "validation",
+      "caseDigest": "sha256:025720702bf8a8fb76a631b9e43ae13de2bc7754cd4419c66ab4ad2db5c83de0",
+      "goldDigest": "sha256:c4f5936d3bb0d822e1d0fff710d19f0407a8bd861bef1f94d11e3d8f413309dd",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3042",
+      "scenarioId": "s12-s-106",
+      "split": "validation",
+      "caseDigest": "sha256:6622af145b39e5c61b21018be3554c27af339ea44c9553b030dd9f6d1e85a3c7",
+      "goldDigest": "sha256:cd8f1411719c6abbe27c9ad9e2e76da9b68431e1a50a271f015f4bd6df35d995",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3043",
+      "scenarioId": "s12-s-106",
+      "split": "validation",
+      "caseDigest": "sha256:42463e450f349c676f5eff6eebf6868dd6b2ee3cb59d370364d63114ffe3b78b",
+      "goldDigest": "sha256:70d7561d00a709cb1753385e49628073cc560813e1f1991d6d76f10ebe442459",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3044",
+      "scenarioId": "s12-s-106",
+      "split": "validation",
+      "caseDigest": "sha256:42bf0e1fc54041611e46ad7070cbd5abcfcbc09a985e20b47255f73cd53519e5",
+      "goldDigest": "sha256:b986b7a4e08c627cb8bf2a4153d4f22962079eb9b4faa4d3627b0a91b188e490",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3045",
+      "scenarioId": "s12-s-106",
+      "split": "validation",
+      "caseDigest": "sha256:a6f8037f5e974a97bccfd5db6c23fd6cbc49c9a1364412ccfe1121bff1750d90",
+      "goldDigest": "sha256:62b22570c6844c135507d55eb7b7433e278c5f14058535bfdb402d9623bcb6b9",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3046",
+      "scenarioId": "s12-s-106",
+      "split": "validation",
+      "caseDigest": "sha256:1b7f7d1d708501bbde2c0140a4358185be81b8cb318f9de1d033ddba6638c590",
+      "goldDigest": "sha256:055e32550e7a39dedffede572136fec01061653a02302f1ed3f9458a276bcc26",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3047",
+      "scenarioId": "s12-s-106",
+      "split": "validation",
+      "caseDigest": "sha256:55a976f48c4b7205f26375998bc47a7697dfb1f7b21625664a703204a2aef650",
+      "goldDigest": "sha256:be8442e7e55942a3d2e0e1168bd58630ec3abed716e524319cea0415abbaa44a",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "caseId": "s12-a-3048",
+      "scenarioId": "s12-s-106",
+      "split": "validation",
+      "caseDigest": "sha256:eb23a790b3300e5479dd439117fe0d4f1164817b4298b3692c859d5e85df8fe4",
+      "goldDigest": "sha256:eb1164800c4d07b93ad3d67dfe8e82afdf933e401b8e7f34a672c37475331f0e",
+      "ruleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.EXPLICIT_UNCERTAINTY"
+      ],
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    }
+  ],
+  "scenarioDecisions": [
+    {
+      "scenarioId": "s12-s-101",
+      "journeyId": "J1",
+      "split": "development",
+      "scenarioDigest": "sha256:c8a31d189b4ef9d0d0ba57b1f7cc27ffc7cd8f312aafa9ade55a6411c83b78a2",
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "scenarioId": "s12-s-102",
+      "journeyId": "J2",
+      "split": "development",
+      "scenarioDigest": "sha256:37ecd894e35fd8a50b180efacdb04fef63a810d0773fe4895c2255e5c40c80c4",
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "scenarioId": "s12-s-103",
+      "journeyId": "J3",
+      "split": "development",
+      "scenarioDigest": "sha256:7708d05cdebd11bf633227e5379268990cd6b438ed730cb7767fb8fc01747fe3",
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "scenarioId": "s12-s-104",
+      "journeyId": "J4",
+      "split": "development",
+      "scenarioDigest": "sha256:77568421bc514a329dc632de438e25094ca23fdfdd2d8d9889c59af4a44969f5",
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "scenarioId": "s12-s-105",
+      "journeyId": "J5",
+      "split": "validation",
+      "scenarioDigest": "sha256:dd540e778fd2bf972ba6a80ddc74cc6951e6c107dc798e17afaab09fb7af1a27",
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    },
+    {
+      "scenarioId": "s12-s-106",
+      "journeyId": "J6",
+      "split": "validation",
+      "scenarioDigest": "sha256:aa2e7ef4b58579004b1bf9f79447a0b3cb2c4f3fbf24d14b94a2f70bb1a4723d",
+      "reviewStatus": "adjudicated-no-change",
+      "materialDispute": false
+    }
+  ],
+  "integrity": {
+    "passed": true,
+    "errors": []
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm23c-owner-review.v1",
+  "status": "OWNER_ISSUANCE_REVIEW_WITHHELD_SCHEMA_AND_AUTHORIZATION_CLOSURE_BLOCKERS",
+  "experimentId": "s12-f-12",
+  "decisionType": "RM-23C_OWNER_ISSUANCE_REVIEW",
+  "decisionDate": "2026-08-21",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedLineage": {
+    "finalCommit": "1c819f6",
+    "executionCommit": "de1589e7d67249ddbcbb48dc6bde6edf7fa03362",
+    "preregistrationDraft": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22c-issuance-draft.v4.json",
+      "digest": "sha256:801d5f2b92ae81f10226893a0bfd2f412e92d6fc637f4ea2ba58ac0ac5bf4756"
+    },
+    "executionPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22c-execution-package.v4.json",
+      "digest": "sha256:83286ade4cd897efcb8a315d7e9495099d54abc459608f9e3b5d349573071fa2"
+    },
+    "technicalFreeze": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22c-technical-freeze.v4.json",
+      "digest": "sha256:b3f2153ebb78913433f39acf46769d9a993c22239cd2cd59bd7f531ff6174774"
+    },
+    "runner": {
+      "path": "scripts/run_sprint12_f12_stage_a_v4.py",
+      "digest": "sha256:52c8e054a1e385b58ebbc13fcf16a8ba927ef4b6678b4937ec7d1c36371720b0"
+    },
+    "reportSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v4.json",
+      "digest": "sha256:8da51754fc126525599f881cfdf45f3686646550d2bf2477e2c8c6afd73a73e3"
+    }
+  },
+  "verifiedEvidence": {
+    "fullF12Regression": "47 passed",
+    "rm22cTargetedTests": "3 passed",
+    "warning": "pytest cache directory unavailable; test outcomes unaffected",
+    "preflightStatus": "F12_RM22C_READY_ZERO_CALL_V4",
+    "ruff": "pass",
+    "gitDiffCheckBeforeReviewArtifacts": "pass",
+    "providerCalls": 0,
+    "heldOutAccess": false,
+    "reportPathExists": false,
+    "exactCommitAndBlobCustody": "pass",
+    "mockExecution": {
+      "providerCalls": 144,
+      "relationBranches": 96,
+      "caseRuns": 48,
+      "relationInstances": 24,
+      "hardNegativeInstances": 12,
+      "abstentionInstances": 12,
+      "goldRelationsIntegrityScore": 1.0,
+      "goldRelationsMaterializerFailures": 0,
+      "reportSchemaOriginalErrors": 0
+    },
+    "remediationAccepted": [
+      "gold oracle trigger/evidence alignment",
+      "hard-negative membership and denominator",
+      "applicable-metric threshold filtering",
+      "missing-jsonschema fail-closed behavior",
+      "required experiment and false-scope field checks"
+    ],
+    "adversarialDiagnostics": {
+      "tamperedSliceLabel": "accepted-by-report-schema",
+      "tamperedSliceDenominator": "accepted-by-report-schema",
+      "tamperedThresholdValue": "accepted-by-report-schema",
+      "unexpectedHeldOutAccessAuthorizedTrue": "accepted-by-authorization-guard",
+      "unexpectedValidationAccessAuthorizedTrue": "accepted-by-authorization-guard",
+      "unexpectedAuthorizationField": "accepted-by-authorization-guard",
+      "providerCalls": 0
+    }
+  },
+  "blockingFindings": [
+    {
+      "id": "F12-RM23C-01",
+      "severity": "P1",
+      "summary": "The v4 report schema is structurally closed but does not bind the preregistered slice tuples or threshold values.",
+      "evidence": "An otherwise valid mock report remained JSON-Schema-valid after changing the first slice label to tampered, its denominator to 999 and entityMacroF1Min to -999. The 15 prefixItems all reference the same generic sliceRecord; label is any string, denominator is any non-negative integer, and threshold fields accept arbitrary numbers.",
+      "impact": "The immutable report can claim a different slice identity, denominator or decision threshold from the preregistration while still passing the sole pre-persist schema gate.",
+      "requiredRemediation": "Publish a superseding schema whose ordered slice records bind exact dimension, label and denominator tuples and whose threshold properties use the exact preregistered constants. Add adversarial validation tests proving each label, denominator and threshold mutation is rejected before persistence."
+    },
+    {
+      "id": "F12-RM23C-02",
+      "severity": "P1",
+      "summary": "Authorization remains open to unknown and expanded authority because no closed authorization schema is bound.",
+      "evidence": "The code checks experimentId and four named false guards, but accepts an authorization containing heldOutAccessAuthorized=true, validationAccessAuthorized=true and an arbitrary extra field. No f12 v4 authorization schema exists in the package or exact-commit binding set.",
+      "impact": "A commit- and digest-correct authorization can simultaneously grant out-of-scope validation or held-out authority and still unlock all 144 provider calls.",
+      "requiredRemediation": "Publish and bind a closed versioned authorization schema with additionalProperties=false, exact experiment/schedule/commit/package/freeze/output/cost fields, and explicit false locks for validation, held-out, Stage B, selection and promotion. Validate it before all other authorization processing and add zero-call tests for unknown, missing, wrong and true scope fields."
+    }
+  ],
+  "decision": {
+    "rm22cPreparationRecorded": true,
+    "rm23cReviewCompleted": true,
+    "rm23cApproved": false,
+    "preregistrationIssued": false,
+    "executionFreezeIssued": false,
+    "providerExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "offline-rm22d-report-and-authorization-schema-closure-only"
+  },
+  "constraints": [
+    "Preserve RM-22 through RM-22C artifacts as historical preparation evidence.",
+    "Do not issue or mutate the v4 preregistration/freeze and do not authorize provider execution.",
+    "Do not change the accepted oracle, denominator or applicable-metric remediation without a new owner decision.",
+    "Do not create Stage A output, inspect validation or held-out data, open Stage B, select or promote a candidate during RM-22D.",
+    "A superseding package requires a new independent owner issuance review and a later separate provider authorization."
+  ]
+}

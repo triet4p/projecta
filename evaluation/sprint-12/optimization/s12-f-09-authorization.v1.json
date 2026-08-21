@@ -1,0 +1,83 @@
+{
+  "artifactVersion": "s12.s12-f-09.stage-a-authorization.v1",
+  "experimentId": "s12-f-09",
+  "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A",
+  "authorizationSource": "explicit-owner-message",
+  "authorizationStatement": "Authorize S12-f-09 Stage A theo preregistration hiện tại.",
+  "authorizedAt": "2026-08-16T06:45:22+00:00",
+  "commitSha": "efdac584c8fad71888fbfcafa3a9620259ec3e5b",
+  "preregistration": {
+    "path": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-preregistration.v1.json",
+    "digest": "sha256:de3a5c2397729537b8ea8e42f1c9e0758648d90a9e4f75b1f2c095afff9cf6aa"
+  },
+  "executionPackage": {
+    "stage": "A",
+    "oneAttemptPerCase": true,
+    "retryPolicy": "none",
+    "independentPairedRuns": 3,
+    "temporalPairing": {
+      "strategy": "interleaved_paired_runs",
+      "schedule": [
+        {
+          "pairId": "pair-1",
+          "runNumber": 1,
+          "armOrder": [
+            "control",
+            "candidate"
+          ]
+        },
+        {
+          "pairId": "pair-2",
+          "runNumber": 2,
+          "armOrder": [
+            "candidate",
+            "control"
+          ]
+        },
+        {
+          "pairId": "pair-3",
+          "runNumber": 3,
+          "armOrder": [
+            "control",
+            "candidate"
+          ]
+        }
+      ]
+    },
+    "digests": {
+      "datasetManifest": "sha256:81cd91fcef327c87348ef0563a6407bdb9aa07f1f54c2711daf77312f91e3bb1",
+      "evaluatorCode": "sha256:ebdf3d8d99d6c9eb3481de209128e10027c836444a5a3f3f0160aba3c5ea7664",
+      "promptImplementation": "sha256:ebd9888e62723f09425f5d074a29060c1e674b3e0178f7cb283cac81ff68f190",
+      "relationEvidenceMaterializer": "sha256:d778d9aed629140ea93f113c0c5e74ae81df2b8ca512a4fe6019b2ab176a378f",
+      "pricingArtifact": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596"
+    }
+  },
+  "runner": {
+    "path": "scripts/run_sprint12_f09_relation_evidence.py",
+    "digest": "sha256:8bf92100a4806c750e28925c24c093b93c50b526538250707a67badd5560d273"
+  },
+  "scope": {
+    "stage": "A",
+    "datasetVersion": "s12.corpus.atomic.v3.frozen",
+    "split": "development",
+    "caseCount": 48,
+    "caseRunsPerArm": 144,
+    "independentPairedRuns": 3,
+    "oneAttemptPerCase": true,
+    "retryPolicy": "none",
+    "costCeilingUsd": "10.00",
+    "controlTool": "llm-authored-relation-evidence-legacy",
+    "candidateTool": "server-owned-relation-evidence.v1"
+  },
+  "gates": {
+    "g31bApproved": true,
+    "g31cReady": true,
+    "frozenQaPass": true,
+    "preflightNonOwnerChecksPass": true
+  },
+  "providerExecutionAuthorized": true,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "retryAuthorized": false,
+  "rawSensitiveDataIncluded": false
+}

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "s12.v3.freeze-manifest.v1",
+  "status": "V3_FROZEN_G31_C_PENDING",
+  "freezeApproval": "s12.g31-b-pilot-approval.v1",
+  "humanEvidence": false,
+  "providerExecutionAuthorized": false,
+  "heldOutInspected": false,
+  "testPayloadPresent": false,
+  "files": [
+    {
+      "path": "atomic-manifest.v1.json",
+      "fileDigest": "sha256:81cd91fcef327c87348ef0563a6407bdb9aa07f1f54c2711daf77312f91e3bb1"
+    },
+    {
+      "path": "atomic-v3.frozen.v1.json",
+      "fileDigest": "sha256:dd535a4ae4ad9888a1dcb041dfd781426fa2d584ef6720a366a58becd0f25841"
+    },
+    {
+      "path": "coverage.v1.json",
+      "fileDigest": "sha256:b2e3332d12ca76ed2e7d994be62117ed7c1de721d6c1d786346d28d9f60cc72c"
+    },
+    {
+      "path": "leakage.v1.json",
+      "fileDigest": "sha256:b3a885d5e1243abe522bfea6f3ba29873c204494dbd23b98a782f2f1be62b73a"
+    },
+    {
+      "path": "provenance.v1.json",
+      "fileDigest": "sha256:22ec307796a25b57994709dad9aba135e2eba7065875f6d87516ed814e952427"
+    },
+    {
+      "path": "qa-report.v1.json",
+      "fileDigest": "sha256:2d35a9943ea7417c31ba56e6de0103a9bd7fbc5f530c7ca0a2ab74d56e9fc53a"
+    },
+    {
+      "path": "scenario-manifest.v1.json",
+      "fileDigest": "sha256:1891d612204f580bd753dc0c47c7735e9ad4429f90bb89e4d34b37936bdc96bb"
+    },
+    {
+      "path": "scenario-v3.frozen.v1.json",
+      "fileDigest": "sha256:d8ca8b911f74e3f8d7bde71e180a076a98b83f3180126b39a8b3fcbbf4158a65"
+    }
+  ],
+  "manifestDigest": "sha256:cf072866c9c8b40901aee4ef8ea9017b7f3aeb26d92d46891874dcd6cf7894f7"
+}

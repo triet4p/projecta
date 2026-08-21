@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "s12.v3.frozen-qa.v1",
+  "status": "FROZEN_QA_PASS",
+  "gates": {
+    "spanIntegrity": true,
+    "language": true,
+    "scenarioConsistency": true,
+    "visibleSplitLeakage": true,
+    "testPayloadAbsent": true
+  },
+  "diagnostics": {
+    "spanErrors": [],
+    "language": {
+      "mismatchCount": 0,
+      "mismatchCaseIds": [],
+      "inferredLanguageCounts": {
+        "en": 5,
+        "ja": 26,
+        "mixed": 4,
+        "unknown": 36,
+        "vi": 137
+      },
+      "policy": "high-confidence en/vi/ja must agree; mixed requires Vietnamese signal plus ASCII code-switch token",
+      "pass": true
+    },
+    "scenarioShapeErrors": []
+  },
+  "providerExecutionAuthorized": false,
+  "heldOutInspected": false,
+  "testPayloadRead": false
+}

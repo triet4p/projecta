@@ -1,0 +1,30 @@
+{
+  "reportVersion": "s12.f09.stage-a-preflight.v1",
+  "status": "READY_PENDING_OWNER_AUTHORIZATION",
+  "checks": {
+    "preregistrationReady": true,
+    "g31bApproved": true,
+    "g31cReady": true,
+    "frozenQaPass": true,
+    "stageCasesAreDevelopment": true,
+    "manifestHasNoTestPayload": true,
+    "ownerAuthorization": false
+  },
+  "execution": {
+    "providerExecutionAuthorized": false,
+    "providerCallsPerformed": false,
+    "heldOutInspected": false,
+    "executionPackageCreated": false,
+    "blockingConditions": [
+      "explicit owner authorization is required before any provider call"
+    ]
+  },
+  "boundExperiment": {
+    "experimentId": "s12-f-09",
+    "preregistration": "s12-f-09-relation-evidence-preregistration.v1.json",
+    "datasetVersion": "s12.corpus.atomic.v3.frozen",
+    "caseCount": 48,
+    "caseRunsPerArm": 144,
+    "costCeilingUsd": "10.00"
+  }
+}

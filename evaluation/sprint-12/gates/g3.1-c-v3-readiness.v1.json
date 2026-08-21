@@ -1,0 +1,139 @@
+{
+  "reportVersion": "s12.g31-c-v3-readiness.v1",
+  "status": "G3_1_C_READY_SCOPED_TO_J1_J6_EXTRACTION",
+  "gates": {
+    "frozenQaPass": true,
+    "atomicMinimumForControlledScope": true,
+    "scenarioMinimumForControlledScope": true,
+    "languageMinimums": true,
+    "journeyMinimumsForRepresentedJourneys": true,
+    "provenanceAndPrivacy": true,
+    "testCustodySeparate": true
+  },
+  "scope": {
+    "controlledDevelopment": true,
+    "oneValidationRun": true,
+    "representedJourneys": [
+      "J1",
+      "J2",
+      "J3",
+      "J4",
+      "J5",
+      "J6"
+    ],
+    "excludedJourneys": [
+      "J7",
+      "J8"
+    ],
+    "benchmarkCompleteness": false,
+    "mandatorySlicesNotClaimed": [
+      "explicit-ambiguity-or-abstention",
+      "adversarial-or-prompt-injection",
+      "cross-project-isolation",
+      "fabricated-link",
+      "duplicate-evidence",
+      "contradiction-or-supersession",
+      "temporal-change",
+      "unicode-and-noisy-text"
+    ]
+  },
+  "coverage": {
+    "atomicCounts": {
+      "development": 160,
+      "validation": 48,
+      "test": 0,
+      "total": 208
+    },
+    "scenarioCounts": {
+      "development": 20,
+      "validation": 6,
+      "test": 0,
+      "total": 26
+    },
+    "languageCounts": {
+      "vi": 87,
+      "en": 41,
+      "ja": 26,
+      "mixed": 54
+    },
+    "languageMinimums": {
+      "vi": 80,
+      "en": 40,
+      "ja": 20,
+      "mixed": 20
+    },
+    "journeyChecks": {
+      "J1": {
+        "atomicMinimum": 20,
+        "scenarioMinimum": 3,
+        "atomicObserved": 32,
+        "scenarioObserved": 4,
+        "pass": true
+      },
+      "J2": {
+        "atomicMinimum": 30,
+        "scenarioMinimum": 3,
+        "atomicObserved": 40,
+        "scenarioObserved": 5,
+        "pass": true
+      },
+      "J3": {
+        "atomicMinimum": 25,
+        "scenarioMinimum": 3,
+        "atomicObserved": 40,
+        "scenarioObserved": 5,
+        "pass": true
+      },
+      "J4": {
+        "atomicMinimum": 25,
+        "scenarioMinimum": 3,
+        "atomicObserved": 32,
+        "scenarioObserved": 4,
+        "pass": true
+      },
+      "J5": {
+        "atomicMinimum": 25,
+        "scenarioMinimum": 3,
+        "atomicObserved": 32,
+        "scenarioObserved": 4,
+        "pass": true
+      },
+      "J6": {
+        "atomicMinimum": 25,
+        "scenarioMinimum": 3,
+        "atomicObserved": 32,
+        "scenarioObserved": 4,
+        "pass": true
+      },
+      "J7": {
+        "atomicMinimum": 25,
+        "scenarioMinimum": 3,
+        "atomicObserved": 0,
+        "scenarioObserved": 0,
+        "pass": false
+      },
+      "J8": {
+        "atomicMinimum": 25,
+        "scenarioMinimum": 3,
+        "atomicObserved": 0,
+        "scenarioObserved": 0,
+        "pass": false
+      }
+    }
+  },
+  "authorization": {
+    "providerExecutionAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "testPayloadRead": false,
+    "nextRequiredControls": [
+      "S12-R17 preregistration supersession",
+      "S12-R18/R19 deterministic evidence tool",
+      "S12-R20/R21 owner authorization"
+    ]
+  },
+  "limitations": [
+    "This is a scoped extraction-contract readiness decision, not G6 business-benchmark approval.",
+    "J7/J8 and mandatory adversarial/isolation slices are not represented in the frozen track.",
+    "Human evidence remains false and test custody remains outside the repository."
+  ]
+}

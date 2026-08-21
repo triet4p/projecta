@@ -748,3 +748,56 @@ as candidate failure without checking both sides.
 **Root cause:** Package digest generation and commit freeze were performed in the wrong order.
 **Fix / workaround:** Keep newly bound artifacts in the execution package commit, then generate preregistration/authorization from that commit; verify the auth package digest map against the working tree before provider execution.
 **Watch out for:** A digest match alone is insufficient when the bound file is outside the commit SHA. The package commit must contain every file named by its digest map.
+
+## [2026-08-16] Evidence metrics must preserve not-applicable zero denominators
+
+**Symptom:** The first offline f09 aggregate reported relation evidence support
+and exactness as `0.25`, even though the only semantically matched relation had
+valid and exact evidence.
+**Root cause:** Per-case records with zero semantic relation true positives
+were emitted as numeric `0.0` instead of `not-applicable`, so they entered the
+evidence mean despite the metric contract's semantic-TP denominator.
+**Fix / workaround:** Preserve the raw execution reports, then generate a
+versioned offline decision report that represents zero-denominator evidence as
+`not-applicable` and aggregates only applicable per-case records. Add a
+contract test for the repaired report.
+**Watch out for:** Any metric whose denominator is semantic true positives
+must carry an explicit not-applicable state through per-case, slice and pooled
+aggregation; never infer a zero from an empty denominator.
+
+## [2026-08-20] Staging output must not pre-exist before immutable executor write
+
+**Symptom:** The mocked authorized f11 run failed at the executor's no-overwrite check before completing its 48 calls.
+**Root cause:** The wrapper created the staging file with `NamedTemporaryFile(delete=False)`, so the legacy executor correctly interpreted the empty staging path as an existing output.
+**Fix / workaround:** Allocate a temporary directory and pass a not-yet-created staging filename; let the executor create it once, then remove the directory after the wrapper reads the staged report and persists the final report once.
+**Watch out for:** Any no-overwrite executor requires both final and intermediate output paths to be absent before invocation; creating an empty placeholder file still violates that contract.
+
+## [2026-08-20] Pre-execution authorization tests become stale after immutable execution
+
+**Symptom:** The f11 authorization test passed before execution but failed after
+the immutable Stage A report was committed because it still required the output
+path to be absent.
+**Root cause:** One test combined issuance-time assertions with a reusable
+package validation call whose overwrite guard correctly rejects an existing
+post-execution report.
+**Fix / workaround:** After the authorized run, validate the frozen package
+without the pre-run output-path guard, retain issuance-time fields as historical
+facts, and assert the immutable report and rejection decision digests, counts,
+gates, and closed downstream authority.
+**Watch out for:** Every one-shot governed runner needs distinct pre-execution
+and post-execution tests; do not leave `output must not exist` assertions active
+after the authorized output has been preserved.
+
+## [2026-08-20] Offline metric package passed with item schemas only
+
+**Symptom:** The f12 offline preflight passed while the stage artifacts could not represent response-level abstention and the scorer omitted approved macro, direction, endpoint and trigger-support metrics.
+**Root cause:** Item validation, fixture presence and outer governance flags were treated as sufficient contract coverage; the preflight did not bind or execute the complete measurement contract.
+**Fix / workaround:** Keep v1 historical, publish v2 response envelopes and deterministic scorer metrics, add paired oracle arms, bind every input digest and execute the fixtures in a zero-call preflight with tamper tests.
+**Watch out for:** A zero-call evaluation package is not reproducible unless the exact response envelopes, scorer, fixture arms, thresholds and all digests are loaded and exercised together.
+
+## [2026-08-21] Superseding wrappers must normalize legacy records before strict schema validation
+
+**Symptom:** The RM-22C zero-call preflight passed custody checks, but the mocked authorized run failed closed because legacy arm records omitted abstention and relation accounting fields required by the closed v4 report schema.
+**Root cause:** The v4 wrapper reused v3 record builders whose output shape was valid only for the historical permissive schema; exact-commit and zero-call checks do not prove report-shape parity.
+**Fix / workaround:** Normalize abstention metrics and relation gate accounting in the v4 wrapper, close the v4 schema for the full nested report, and include an authorized mock E2E test that reaches schema validation and persists no provider output.
+**Watch out for:** Whenever a superseding runner delegates to a historical builder, compare the complete persisted object against the new schema before binding digests; preflight-only tests can miss legacy-shape failures.

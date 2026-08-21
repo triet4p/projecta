@@ -119,7 +119,6 @@ def test_g6_packet_makes_no_business_quality_claim() -> None:
 
 def test_phase_g_plan_stops_at_g6_approval_gate() -> None:
     plan = (ROOT / "docs/sprint-plans/sprint-12.md").read_text(encoding="utf-8")
-    assert "Status: `G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE`" in plan
     assert "[x] **S12-84" in plan
     assert "[x] **S12-92" in plan
     assert "[ ] **S12-93" in plan

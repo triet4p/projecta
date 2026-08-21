@@ -8,7 +8,6 @@ from pathlib import Path
 
 import pytest
 
-
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPTS = ROOT / "scripts"
 API_SRC = ROOT / "apps/api/src"
@@ -104,7 +103,7 @@ def test_relation_instrumentation_is_sanitized_and_predicate_scoped() -> None:
         ["implements", "supports"],
     )
     instrumentation = result["relationInstrumentation"]
-    assert instrumentation["version"] == "s12.relation-instrumentation.v2"
+    assert instrumentation["version"] == "s12.relation-instrumentation.v4"
     assert instrumentation["countsByPredicate"]["implements"][
         "correctPredicateWrongEndpoint"
     ] == 1

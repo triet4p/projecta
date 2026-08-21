@@ -1,0 +1,124 @@
+{
+  "reportVersion": "s12.g31-a-readiness.v1",
+  "status": "G3.1_A_MEASUREMENT_READY_DATASET_REMEDIATION_REQUIRED",
+  "measurementGate": {
+    "pass": true,
+    "providerExecutionAuthorized": false,
+    "heldOutInspected": false,
+    "providerCallsPerformed": false
+  },
+  "bindings": [
+    {
+      "id": "coreAudit",
+      "path": "evaluation/sprint-12/audit/core-quality-audit.v1.json",
+      "digest": "sha256:e476d058ac4acec2414a49778f746f76fb706b05443262a2b6f1cf5a5a217c62"
+    },
+    {
+      "id": "metricContract",
+      "path": "evaluation/sprint-12/harness/metric-contract.v2.json",
+      "digest": "sha256:3168fce54a189773e9c181915348e4c2d022031ba31900412fa7485ed26ff51b"
+    },
+    {
+      "id": "metricDefinitions",
+      "path": "evaluation/sprint-12/harness/metrics.v2.md",
+      "digest": "sha256:43a5b0b8025e9ed339eb46309dd1fdcf1d3795a46ce4038c45885a51b4d1c494"
+    },
+    {
+      "id": "evaluator",
+      "path": "scripts/sprint12_evaluator.py",
+      "digest": "sha256:ebdf3d8d99d6c9eb3481de209128e10027c836444a5a3f3f0160aba3c5ea7664"
+    },
+    {
+      "id": "relationInstrumentationTests",
+      "path": "scripts/tests/test_sprint12_relation_instrumentation_v3.py",
+      "digest": "sha256:68c8e05464a64790b69555f008273a1ad51868c1c576d6560f0b794dec886ed8"
+    },
+    {
+      "id": "sanitizedSignatureTests",
+      "path": "scripts/tests/test_sprint12_sanitized_signatures.py",
+      "digest": "sha256:a381edf94088e4d2d600fe35c5f2c14eb115fc4a09679712f5594d9bfd0c892c"
+    },
+    {
+      "id": "leakageValidator",
+      "path": "scripts/sprint12_leakage_validator.py",
+      "digest": "sha256:1ef7af5efbaaaa517e4ac3b1e1871235373961e349b29224a88be98919368cf6"
+    },
+    {
+      "id": "languageValidator",
+      "path": "scripts/sprint12_language_validator.py",
+      "digest": "sha256:182e55d814ed7b83b42cec8e4955c5e4cb7f6f6c061527c58e6a25fada84d148"
+    },
+    {
+      "id": "scenarioValidator",
+      "path": "scripts/sprint12_scenario_validator.py",
+      "digest": "sha256:c25df3603d032cf2c7b3988996614a1d96b6fccc371b95987f619bf78082e0ca"
+    },
+    {
+      "id": "leakageReport",
+      "path": "evaluation/sprint-12/corpus/validation/leakage-report.v2.json",
+      "digest": "sha256:2fe24e0747d11db8be9581f3fa73bbd0ad0b48a80f4c09c090fc2e49793fe205"
+    },
+    {
+      "id": "languageReport",
+      "path": "evaluation/sprint-12/corpus/validation/language-report.v2.json",
+      "digest": "sha256:7be29aae0bc742abe262c1596f1056a74daecfd0f8035287d78046f8c94906e3"
+    },
+    {
+      "id": "scenarioReport",
+      "path": "evaluation/sprint-12/corpus/validation/scenario-report.v2.json",
+      "digest": "sha256:c36ed5091ab2fffc93225ae4b5d1c9d015ee0e30fbf1dadd89f149a5d789ae13"
+    }
+  ],
+  "diagnosticReports": [
+    {
+      "id": "leakageReport",
+      "path": "evaluation/sprint-12/corpus/validation/leakage-report.v2.json",
+      "digest": "sha256:2fe24e0747d11db8be9581f3fa73bbd0ad0b48a80f4c09c090fc2e49793fe205",
+      "status": "BLOCKED_KNOWN_LEAKAGE",
+      "testPayloadRead": false
+    },
+    {
+      "id": "languageReport",
+      "path": "evaluation/sprint-12/corpus/validation/language-report.v2.json",
+      "digest": "sha256:7be29aae0bc742abe262c1596f1056a74daecfd0f8035287d78046f8c94906e3",
+      "status": "BLOCKED_LANGUAGE_METADATA",
+      "testPayloadRead": false
+    },
+    {
+      "id": "scenarioReport",
+      "path": "evaluation/sprint-12/corpus/validation/scenario-report.v2.json",
+      "digest": "sha256:c36ed5091ab2fffc93225ae4b5d1c9d015ee0e30fbf1dadd89f149a5d789ae13",
+      "status": "BLOCKED_SCENARIO_INCONSISTENCY",
+      "testPayloadRead": false
+    }
+  ],
+  "requiredPrerequisiteTasks": [
+    "S12-R01",
+    "S12-R02",
+    "S12-R03",
+    "S12-R04",
+    "S12-R05",
+    "S12-R06",
+    "S12-R07"
+  ],
+  "testEvidence": {
+    "fullSuiteCommand": "PYTHONPATH=. uv run --project apps/api pytest -q scripts/tests",
+    "targetedContracts": [
+      "test_sprint12_relation_instrumentation_v3.py",
+      "test_sprint12_sanitized_signatures.py",
+      "test_sprint12_leakage_validator_v2.py",
+      "test_sprint12_language_validator_v2.py",
+      "test_sprint12_scenario_validator_v2.py"
+    ],
+    "ruffCommand": "uv run --project apps/api ruff check <changed Python files>",
+    "diffCheckCommand": "git diff --check"
+  },
+  "residualLimitations": [
+    "The v2 atomic and scenario corpora remain historical synthetic fixtures and are not business benchmarks.",
+    "The v2 corpus remains blocked by normalized-template overlap, language metadata mismatches, and scenario lineage conflicts.",
+    "The repository has no qualified independent language or scenario adjudication evidence.",
+    "Test payload and gold remain sealed and were not inspected.",
+    "G3.1-B and G3.1-C are still required before any provider execution or G5-R experiment."
+  ],
+  "failures": []
+}

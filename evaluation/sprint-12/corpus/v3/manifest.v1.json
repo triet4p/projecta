@@ -1,0 +1,498 @@
+{
+  "manifestVersion": "s12.corpus.manifest.v3.deep-pilot",
+  "datasetVersion": "s12.corpus.atomic.v3.deep-pilot",
+  "status": "DEEP_PILOT_AUTHORED_PENDING_QA",
+  "humanEvidence": false,
+  "qualifiedHumanEvidence": false,
+  "atomicCounts": {
+    "development": 32,
+    "validation": 16,
+    "test": 0,
+    "total": 48
+  },
+  "atomicCases": [
+    {
+      "caseId": "s12-a-3001",
+      "scenarioId": "s12-s-101",
+      "journeyId": "J1",
+      "split": "development",
+      "language": "vi",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:81270f7bdb3b77322244541d92903e39f5382c40f6f4cf155cbfc01b854da7d9",
+      "caseDigest": "sha256:eb438337fe51b96249f3c79ce88b904298c237a12d31ca414db962415383e144"
+    },
+    {
+      "caseId": "s12-a-3002",
+      "scenarioId": "s12-s-101",
+      "journeyId": "J1",
+      "split": "development",
+      "language": "en",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:91d268f87c723de90091de377cfe87d1d06a024b685c7ab6a88abea5c6754bd6",
+      "caseDigest": "sha256:eca322b7876b7cc7968f8e9c7c4b0bfa4eb31c609c8ad2034bc2d0c3188f2158"
+    },
+    {
+      "caseId": "s12-a-3003",
+      "scenarioId": "s12-s-101",
+      "journeyId": "J1",
+      "split": "development",
+      "language": "mixed",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:01673c03266b7acff2b2d40afd0d684ea26fb929cd6e7c5d6bb3f9dc6a80782f",
+      "caseDigest": "sha256:62fa6ae8c2273fa76bc986387d7ac842476c628dd53578ccb12e07ff1e3e7498"
+    },
+    {
+      "caseId": "s12-a-3004",
+      "scenarioId": "s12-s-101",
+      "journeyId": "J1",
+      "split": "development",
+      "language": "vi",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:dd7021621b622d2e7067c1832f992a5ed6b6bdb29c9a71fbc576935367754276",
+      "caseDigest": "sha256:3b8ffd9ebf78c5be3586ab6f3c48cd1a214c28baf578a4233994bccdf9186973"
+    },
+    {
+      "caseId": "s12-a-3005",
+      "scenarioId": "s12-s-101",
+      "journeyId": "J1",
+      "split": "development",
+      "language": "en",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:ece505e70e0d1cd67c4b1dd56195f8554c9ed8920478aa155c4311df3c07cbd3",
+      "caseDigest": "sha256:1885b227734293bc1b4d7e41e0ac746b24f073f1876de040cc595406189da3a2"
+    },
+    {
+      "caseId": "s12-a-3006",
+      "scenarioId": "s12-s-101",
+      "journeyId": "J1",
+      "split": "development",
+      "language": "vi",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:bdebd4e2189767edee49913d52852b6bfa3ebf46417cc78d6cb750f17f658408",
+      "caseDigest": "sha256:347035c56f2b74b4f70ab606bdc406ce9132aec737f1c10f566764a22cb80487"
+    },
+    {
+      "caseId": "s12-a-3007",
+      "scenarioId": "s12-s-101",
+      "journeyId": "J1",
+      "split": "development",
+      "language": "en",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:9aebcdd12cfe99ff2879e35965147c98837572ba076ca78958bbf88456319d82",
+      "caseDigest": "sha256:796250492aa13204a14360bf33624106c14e56d3d6da85279f29032ed6fdbff9"
+    },
+    {
+      "caseId": "s12-a-3008",
+      "scenarioId": "s12-s-101",
+      "journeyId": "J1",
+      "split": "development",
+      "language": "mixed",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:837406f2d6e6ea407afbc0551faf7ea5d08e33b23689d681c84ac972a9413621",
+      "caseDigest": "sha256:82aa5afa276b51124e1bbe6421eb9c85450775059fa061a45b76c566071676a0"
+    },
+    {
+      "caseId": "s12-a-3009",
+      "scenarioId": "s12-s-102",
+      "journeyId": "J2",
+      "split": "development",
+      "language": "vi",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:143d05db220ea0d18cb85ea3916f49b6f8cf465359613e9b330e67494b4efc6c",
+      "caseDigest": "sha256:81eaaa2cb85bd02bd3605027ebbd8813a0b00bff471390fbb2565216a6684627"
+    },
+    {
+      "caseId": "s12-a-3010",
+      "scenarioId": "s12-s-102",
+      "journeyId": "J2",
+      "split": "development",
+      "language": "en",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:aa5629efcb6c48a333657d76cd2079b448042d852dfb15d6b0747d5cac343642",
+      "caseDigest": "sha256:9055db7c5a016c00dcc44faec9af88d970329a6923818e768e3333f6975ea121"
+    },
+    {
+      "caseId": "s12-a-3011",
+      "scenarioId": "s12-s-102",
+      "journeyId": "J2",
+      "split": "development",
+      "language": "mixed",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:671c381707b0299649589e431b7c3562b4e7cb38f45f8f206935f2125c5ad74a",
+      "caseDigest": "sha256:3b6d425001481ed090f96c1f5253f4c21de55b4981b246c8871a978509f527a1"
+    },
+    {
+      "caseId": "s12-a-3012",
+      "scenarioId": "s12-s-102",
+      "journeyId": "J2",
+      "split": "development",
+      "language": "vi",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:e757f1010767ef69f7567bd77e4f1793e9917df0d8182f7d61923d6bae8d1d7a",
+      "caseDigest": "sha256:b9b46e8b56530c71adb3de122e909306c2368b9dc242539540722779325888e2"
+    },
+    {
+      "caseId": "s12-a-3013",
+      "scenarioId": "s12-s-102",
+      "journeyId": "J2",
+      "split": "development",
+      "language": "en",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:410accd9c4a771976ff09e4324b462cda0cab0149e09651ac6c2625e6db0c898",
+      "caseDigest": "sha256:0ade0098b1450d1706e2b0ebf0d6c3d6cf239b6e6dc723f00a4936ef1a03594e"
+    },
+    {
+      "caseId": "s12-a-3014",
+      "scenarioId": "s12-s-102",
+      "journeyId": "J2",
+      "split": "development",
+      "language": "vi",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:9cb2ca65f2e96c804a5fc34ea7abebdd28374e88ed82542c2cdb759fbd700fad",
+      "caseDigest": "sha256:07a9b1a1c77db0b61cdd56449ec0868dc15eef87be48db86bbd067e138a20230"
+    },
+    {
+      "caseId": "s12-a-3015",
+      "scenarioId": "s12-s-102",
+      "journeyId": "J2",
+      "split": "development",
+      "language": "en",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:dd4aeaf812b7478ebe7b6978d8c8d4a18806130bdadb8a71645ab24a57b9bce0",
+      "caseDigest": "sha256:6301a52e8c1e29d95b3adfe67fa5a0a90485f4082936c81cf92fb40dd47c76bf"
+    },
+    {
+      "caseId": "s12-a-3016",
+      "scenarioId": "s12-s-102",
+      "journeyId": "J2",
+      "split": "development",
+      "language": "en",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:8adda8adc7b3ae4e25fc66e9f73048611b979fb08299fe7a666bdc38aaf11d1f",
+      "caseDigest": "sha256:a6973b00726ee567af1ebc1f6abc93d403418196af4bbd1911e5c9a29a92054c"
+    },
+    {
+      "caseId": "s12-a-3017",
+      "scenarioId": "s12-s-103",
+      "journeyId": "J3",
+      "split": "development",
+      "language": "vi",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:ff98685c9509549cfc823047a0346c3c5ef048d9a11358611c217e3f849ba5bc",
+      "caseDigest": "sha256:66390ced347556fd65c17f4a2c16001ab51b03b8ac046f778df8cbd3c4699d83"
+    },
+    {
+      "caseId": "s12-a-3018",
+      "scenarioId": "s12-s-103",
+      "journeyId": "J3",
+      "split": "development",
+      "language": "en",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:cf6b74c2894b0361352844bcbf590b94af76de786110cb708b29d8640b700e18",
+      "caseDigest": "sha256:707a56d1ee9854b2cfd962fe05d2a7f263c94ccdd8d3e7eb1646ad5f0c211ee0"
+    },
+    {
+      "caseId": "s12-a-3019",
+      "scenarioId": "s12-s-103",
+      "journeyId": "J3",
+      "split": "development",
+      "language": "en",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:9111b21a524602a90fd2f5048b211ea8f0de270dbee5ff449b53a182967155f2",
+      "caseDigest": "sha256:93fa02fdbc024d26a7421539bfe6acf20488225810baf8ff259a746354a39fc8"
+    },
+    {
+      "caseId": "s12-a-3020",
+      "scenarioId": "s12-s-103",
+      "journeyId": "J3",
+      "split": "development",
+      "language": "vi",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:9d0a03f1187067ef93ffdf1bacc96731f37c744cf3347cebbcb4482514146d27",
+      "caseDigest": "sha256:70c2435611159b1cb76dbe8ce6c694f8a4e29cdbfddc822334a405ae7ce3821b"
+    },
+    {
+      "caseId": "s12-a-3021",
+      "scenarioId": "s12-s-103",
+      "journeyId": "J3",
+      "split": "development",
+      "language": "en",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:10a4b2c931ddbe46f5947ba92c03decc0529ae83e83f68ff0a9a70d31ef2fa21",
+      "caseDigest": "sha256:7fc90514290321f8f2572f23ffd7e7ce66380bbb02dda668fdbaae6052894d43"
+    },
+    {
+      "caseId": "s12-a-3022",
+      "scenarioId": "s12-s-103",
+      "journeyId": "J3",
+      "split": "development",
+      "language": "mixed",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:4032354aaa8900d57b32fca0fda12fb36b483f19d065ef7ee30551176cf6f19c",
+      "caseDigest": "sha256:e627ac8870c1eed4e77590de9df925c8d9ebb33228167f3bf00e8d570b840aaa"
+    },
+    {
+      "caseId": "s12-a-3023",
+      "scenarioId": "s12-s-103",
+      "journeyId": "J3",
+      "split": "development",
+      "language": "en",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:18ee04a4477b83859bec9eafc4f2e3ea2a4cca458df97254b12b50726575f15c",
+      "caseDigest": "sha256:91b0b1ca4463e90cbb6bbe1acde42d17053fdca7d7548ccfa3cbf4c82af60f42"
+    },
+    {
+      "caseId": "s12-a-3024",
+      "scenarioId": "s12-s-103",
+      "journeyId": "J3",
+      "split": "development",
+      "language": "vi",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:668ade2fa4fb594d9777cdfacd35f5a14cf923866fb2dc18a948b4133c82ac49",
+      "caseDigest": "sha256:ab89a18b31be8a00bc9db8287cf9c00fd41134def0e130b6f064d8cf41a4b769"
+    },
+    {
+      "caseId": "s12-a-3025",
+      "scenarioId": "s12-s-104",
+      "journeyId": "J4",
+      "split": "development",
+      "language": "vi",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:05491b73b140349fe38e8ba27a104a65a9d2864292e8759f9bd7d6d095f2cd81",
+      "caseDigest": "sha256:86935faf423ecd3ea9facd2f9183375c847e6880c09c517c0e9e6497b2d341bd"
+    },
+    {
+      "caseId": "s12-a-3026",
+      "scenarioId": "s12-s-104",
+      "journeyId": "J4",
+      "split": "development",
+      "language": "en",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:3123499de3d38008a9db6fd2c2c662eb962d9f8067babc68fe78db0ccfdfa7df",
+      "caseDigest": "sha256:b6c68fb109d0d69cad4e7ed7c5001c0e7b148536ee37a2399b2cd3b72988404e"
+    },
+    {
+      "caseId": "s12-a-3027",
+      "scenarioId": "s12-s-104",
+      "journeyId": "J4",
+      "split": "development",
+      "language": "mixed",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:60152a78ef8f98eb0151cd8c0806d627ed8fdad3cac2f16caef84abad96cb80e",
+      "caseDigest": "sha256:7b2a41213d415e66365eb68a7268d20e7e23179c34b534e28a5b697f05bc492b"
+    },
+    {
+      "caseId": "s12-a-3028",
+      "scenarioId": "s12-s-104",
+      "journeyId": "J4",
+      "split": "development",
+      "language": "vi",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:307a2d515da537b4ccf9af37028b09aa4ca24cb9e485047cd6e3414b7136bb08",
+      "caseDigest": "sha256:82d29cc16f226836ff90703b3ea8b7390c127951b1058ee2a2dfb4d0fac589c3"
+    },
+    {
+      "caseId": "s12-a-3029",
+      "scenarioId": "s12-s-104",
+      "journeyId": "J4",
+      "split": "development",
+      "language": "en",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:5d23d0355aca1358f3ecd498c247a47d6bcffb2922e9938a698e5533134f9042",
+      "caseDigest": "sha256:1776086f95e8dc8c8cf688b9f7de415ddfd441bfba53c7cc0818942ad01a2850"
+    },
+    {
+      "caseId": "s12-a-3030",
+      "scenarioId": "s12-s-104",
+      "journeyId": "J4",
+      "split": "development",
+      "language": "mixed",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:d880acdb6dbbf8615c9524bfb07dd64ed7a63b72959fdfcb5e8f12dc37c9e27c",
+      "caseDigest": "sha256:4838d150caad9363ae704be528b83552424c42d118ad899d446ae7ccd8807d6f"
+    },
+    {
+      "caseId": "s12-a-3031",
+      "scenarioId": "s12-s-104",
+      "journeyId": "J4",
+      "split": "development",
+      "language": "en",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:ac75dab3a7d20c23c1111079c7bbb999fbdf876b985d0ef814839b2268bd3346",
+      "caseDigest": "sha256:6e4b94959961fcd264f4a7061f87016626c87d15aaceb9687551618c0a7b2430"
+    },
+    {
+      "caseId": "s12-a-3032",
+      "scenarioId": "s12-s-104",
+      "journeyId": "J4",
+      "split": "development",
+      "language": "vi",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:d56208e834ff9058e465f10e0b433f26bc78f8281990f8c485fa21093e1e2717",
+      "caseDigest": "sha256:149ce38105098ebd0a448177a9e61a76b24b06ae419fb1f3b25e5abc9e016c92"
+    },
+    {
+      "caseId": "s12-a-3033",
+      "scenarioId": "s12-s-105",
+      "journeyId": "J5",
+      "split": "validation",
+      "language": "vi",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:8b91d3ebd8e4085b8501cd52d4fc9599b682cc2e1df6395ebf821bbe56101af4",
+      "caseDigest": "sha256:11e72d9a832d5c1d5bd878ae582e0cadd5e0ea1c99bbaa75086e7f4e33e2aa9d"
+    },
+    {
+      "caseId": "s12-a-3034",
+      "scenarioId": "s12-s-105",
+      "journeyId": "J5",
+      "split": "validation",
+      "language": "en",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:e5048fb87eeaf34b6721dacdb41b1bafd0d6ed93e29bc0cd700ad6714bb29ce0",
+      "caseDigest": "sha256:675cf72087a503fef76d36c49401485edfbb196c2e03bde7dd24e09b244d9ea5"
+    },
+    {
+      "caseId": "s12-a-3035",
+      "scenarioId": "s12-s-105",
+      "journeyId": "J5",
+      "split": "validation",
+      "language": "mixed",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:bfb6bc6c2a7ac747933d213541636362dea8733adc88653c6904c269e4c5b143",
+      "caseDigest": "sha256:0ad8309a44ab8ccfe6ec96885800f6264e79de37be8ca7655e64b66ab6f9e376"
+    },
+    {
+      "caseId": "s12-a-3036",
+      "scenarioId": "s12-s-105",
+      "journeyId": "J5",
+      "split": "validation",
+      "language": "vi",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:aafcca3b2fa4eb513a6301a2ab2d2ac423180c4ff6729964a6e8fdb8a375ff89",
+      "caseDigest": "sha256:00e100ce087442166b3d81182ff26bfb0f944448711ad3c6f504e6d55373318f"
+    },
+    {
+      "caseId": "s12-a-3037",
+      "scenarioId": "s12-s-105",
+      "journeyId": "J5",
+      "split": "validation",
+      "language": "en",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:8de37365d2a8c817bdb5c63b6dc3530e305bddfe333db3520d64f2fb5985b100",
+      "caseDigest": "sha256:a926ec1a185ce1475eba73b8498bee5754ba8653b400a8b3f31dcb3c640ce835"
+    },
+    {
+      "caseId": "s12-a-3038",
+      "scenarioId": "s12-s-105",
+      "journeyId": "J5",
+      "split": "validation",
+      "language": "en",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:522f6f0adccaedbdb07887deb206d49d3385c99a128b463768f5cb0139d9bff9",
+      "caseDigest": "sha256:ce36d170bb343e8cd55c465fff33949dfa2c71c8a1ea2292f42dd098b913d0de"
+    },
+    {
+      "caseId": "s12-a-3039",
+      "scenarioId": "s12-s-105",
+      "journeyId": "J5",
+      "split": "validation",
+      "language": "ja",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:f629e3f1aa6fa96151f503d7d06d5a6c7a3b2588feebf12a9453e85ed582f273",
+      "caseDigest": "sha256:27397d748e243aca8742d45078f4c95cdac0096f982331a4d3d5fdaa20a28748"
+    },
+    {
+      "caseId": "s12-a-3040",
+      "scenarioId": "s12-s-105",
+      "journeyId": "J5",
+      "split": "validation",
+      "language": "vi",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:d231abe54b7b30fd9c94f17311b7380d81e640d724bd448208de3bdcb6ffaaad",
+      "caseDigest": "sha256:3e92ee961fc21c6349cf30ff16f972bdf792eb0ba51be81a0680d0a6ac051d16"
+    },
+    {
+      "caseId": "s12-a-3041",
+      "scenarioId": "s12-s-106",
+      "journeyId": "J6",
+      "split": "validation",
+      "language": "vi",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:0c7feb346c41905afc30e455e194ac7d1092ffdcf362bf3d8c0dadca5b353b15",
+      "caseDigest": "sha256:025720702bf8a8fb76a631b9e43ae13de2bc7754cd4419c66ab4ad2db5c83de0"
+    },
+    {
+      "caseId": "s12-a-3042",
+      "scenarioId": "s12-s-106",
+      "journeyId": "J6",
+      "split": "validation",
+      "language": "en",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:4af59ccbed098e605291d5a43ef532c11e61c083b0e7efba73e57426a58eb8b2",
+      "caseDigest": "sha256:6622af145b39e5c61b21018be3554c27af339ea44c9553b030dd9f6d1e85a3c7"
+    },
+    {
+      "caseId": "s12-a-3043",
+      "scenarioId": "s12-s-106",
+      "journeyId": "J6",
+      "split": "validation",
+      "language": "en",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:6afac27f40cc09bd00e7743a7c5585fe5ee10bc297901c9879c476d1e5735cde",
+      "caseDigest": "sha256:42463e450f349c676f5eff6eebf6868dd6b2ee3cb59d370364d63114ffe3b78b"
+    },
+    {
+      "caseId": "s12-a-3044",
+      "scenarioId": "s12-s-106",
+      "journeyId": "J6",
+      "split": "validation",
+      "language": "vi",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:e48513d0720239b739dc5e95fa6a0905f8b818838000ac59aaf4bb04fa70c5eb",
+      "caseDigest": "sha256:42bf0e1fc54041611e46ad7070cbd5abcfcbc09a985e20b47255f73cd53519e5"
+    },
+    {
+      "caseId": "s12-a-3045",
+      "scenarioId": "s12-s-106",
+      "journeyId": "J6",
+      "split": "validation",
+      "language": "en",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:46390b686e32fd771b591aeb365d9e99e20b6c64077b6e4879f0b16003161faf",
+      "caseDigest": "sha256:a6f8037f5e974a97bccfd5db6c23fd6cbc49c9a1364412ccfe1121bff1750d90"
+    },
+    {
+      "caseId": "s12-a-3046",
+      "scenarioId": "s12-s-106",
+      "journeyId": "J6",
+      "split": "validation",
+      "language": "mixed",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:256db497996ea146f721c60e72d27b23ef7b56419186650c5b9ba60c81acee66",
+      "caseDigest": "sha256:1b7f7d1d708501bbde2c0140a4358185be81b8cb318f9de1d033ddba6638c590"
+    },
+    {
+      "caseId": "s12-a-3047",
+      "scenarioId": "s12-s-106",
+      "journeyId": "J6",
+      "split": "validation",
+      "language": "ja",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:0b6863fe91c0695194862844c1732ac26cb3c1dea8e0c9a0c08b5faa4a7a736d",
+      "caseDigest": "sha256:55a976f48c4b7205f26375998bc47a7697dfb1f7b21625664a703204a2aef650"
+    },
+    {
+      "caseId": "s12-a-3048",
+      "scenarioId": "s12-s-106",
+      "journeyId": "J6",
+      "split": "validation",
+      "language": "vi",
+      "origin": "agent-authored-synthetic",
+      "contentDigest": "sha256:65dffb7b6df85fb737db717794946595e72a8fff5f96324a2e8580139981e01c",
+      "caseDigest": "sha256:eb23a790b3300e5479dd439117fe0d4f1164817b4298b3692c859d5e85df8fe4"
+    }
+  ],
+  "permissionRef": "sprint12-r09-deep-pilot-v1",
+  "testPayloadPresent": false,
+  "manifestDigest": "sha256:8dacee1c0160e447991f3e9e804ecae4974c01e80a0c2e430b5ad5b3b4db462e"
+}

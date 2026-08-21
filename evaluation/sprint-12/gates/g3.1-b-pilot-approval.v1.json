@@ -1,0 +1,416 @@
+{
+  "reportVersion": "s12.g31-b-pilot-approval.v1",
+  "status": "G3_1_B_PILOT_APPROVED_WITH_SCOPE_LIMITS",
+  "decision": {
+    "scaleUp": "approved-for-passed-v3-patterns-only",
+    "providerExecutionAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "g5ExperimentAuthorized": false,
+    "nextAction": "S12-R14 may scale approved v3 patterns; retain all G5 and test-custody blocks."
+  },
+  "inputs": {
+    "qualityGate": {
+      "path": "evaluation/sprint-12/gates/g3.1-b-v3-pilot-quality.v1.json",
+      "fileDigest": "sha256:20f0a4ffc8e4e40c0a6daf84bf2f3c8fd7b30cc0b54b1dfdf2b16e3aba447aba"
+    },
+    "adjudication": {
+      "path": "evaluation/sprint-12/corpus/v3/gold-adjudication.v1.json",
+      "fileDigest": "sha256:ae616c271b36b167f984b30b8c0187ba49528cfa48a795a41ef19fcffb3d0811"
+    },
+    "metricContract": {
+      "path": "evaluation/sprint-12/harness/metric-contract.v2.json",
+      "fileDigest": "sha256:3168fce54a189773e9c181915348e4c2d022031ba31900412fa7485ed26ff51b"
+    }
+  },
+  "humanEvidence": false,
+  "qualifiedHumanEvidence": false,
+  "rawSensitiveDataIncluded": false,
+  "representativeCaseReview": [
+    {
+      "caseId": "s12-a-3001",
+      "scenarioId": "s12-s-101",
+      "journeyId": "J1",
+      "split": "development",
+      "caseDigest": "sha256:eb438337fe51b96249f3c79ce88b904298c237a12d31ca414db962415383e144",
+      "goldDigest": "sha256:1ba0b20e5ea2fa7145a184c08cd955710ee4a52a9aeea2d12eba13bdbb36a213",
+      "reviewedRuleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewChecks": [
+        "minimal-evidence-span",
+        "released-type-and-predicate",
+        "abstention-or-supported-proposal"
+      ]
+    },
+    {
+      "caseId": "s12-a-3002",
+      "scenarioId": "s12-s-101",
+      "journeyId": "J1",
+      "split": "development",
+      "caseDigest": "sha256:eca322b7876b7cc7968f8e9c7c4b0bfa4eb31c609c8ad2034bc2d0c3188f2158",
+      "goldDigest": "sha256:8877a6b810df9d899ffe2b1f30bbfcdfc0d8a22ceae9452c9c615b897d820903",
+      "reviewedRuleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewChecks": [
+        "minimal-evidence-span",
+        "released-type-and-predicate",
+        "abstention-or-supported-proposal"
+      ]
+    },
+    {
+      "caseId": "s12-a-3003",
+      "scenarioId": "s12-s-101",
+      "journeyId": "J1",
+      "split": "development",
+      "caseDigest": "sha256:62fa6ae8c2273fa76bc986387d7ac842476c628dd53578ccb12e07ff1e3e7498",
+      "goldDigest": "sha256:55cf2d7a8816a2aac62ea851436a87bf535195655e253a0e7c933c43d8f9d6f9",
+      "reviewedRuleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewChecks": [
+        "minimal-evidence-span",
+        "released-type-and-predicate",
+        "abstention-or-supported-proposal"
+      ]
+    },
+    {
+      "caseId": "s12-a-3004",
+      "scenarioId": "s12-s-101",
+      "journeyId": "J1",
+      "split": "development",
+      "caseDigest": "sha256:3b8ffd9ebf78c5be3586ab6f3c48cd1a214c28baf578a4233994bccdf9186973",
+      "goldDigest": "sha256:1e1162659afaf90a06b94359505ff22b54e0bdae182bd5deb901ac9708dbe90d",
+      "reviewedRuleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewChecks": [
+        "minimal-evidence-span",
+        "released-type-and-predicate",
+        "abstention-or-supported-proposal"
+      ]
+    },
+    {
+      "caseId": "s12-a-3005",
+      "scenarioId": "s12-s-101",
+      "journeyId": "J1",
+      "split": "development",
+      "caseDigest": "sha256:1885b227734293bc1b4d7e41e0ac746b24f073f1876de040cc595406189da3a2",
+      "goldDigest": "sha256:7467a3eae613194d9343dec8754f24cff7a54d09e020fb37d654f2ccf50ee824",
+      "reviewedRuleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewChecks": [
+        "minimal-evidence-span",
+        "released-type-and-predicate",
+        "abstention-or-supported-proposal"
+      ]
+    },
+    {
+      "caseId": "s12-a-3006",
+      "scenarioId": "s12-s-101",
+      "journeyId": "J1",
+      "split": "development",
+      "caseDigest": "sha256:347035c56f2b74b4f70ab606bdc406ce9132aec737f1c10f566764a22cb80487",
+      "goldDigest": "sha256:9e48eda2c148ed4b55d566d84b38f22a0afdfc71a93f60d6b424902a8641af9a",
+      "reviewedRuleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewChecks": [
+        "minimal-evidence-span",
+        "released-type-and-predicate",
+        "abstention-or-supported-proposal"
+      ]
+    },
+    {
+      "caseId": "s12-a-3007",
+      "scenarioId": "s12-s-101",
+      "journeyId": "J1",
+      "split": "development",
+      "caseDigest": "sha256:796250492aa13204a14360bf33624106c14e56d3d6da85279f29032ed6fdbff9",
+      "goldDigest": "sha256:a07468c78ab90201dd97134e75b36bb5fb9ed7eabc505eedee6a9ab68210ca07",
+      "reviewedRuleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewChecks": [
+        "minimal-evidence-span",
+        "released-type-and-predicate",
+        "abstention-or-supported-proposal"
+      ]
+    },
+    {
+      "caseId": "s12-a-3008",
+      "scenarioId": "s12-s-101",
+      "journeyId": "J1",
+      "split": "development",
+      "caseDigest": "sha256:82aa5afa276b51124e1bbe6421eb9c85450775059fa061a45b76c566071676a0",
+      "goldDigest": "sha256:117a02cb16b4236484f451bbb4b96dcec89245e65bbcaec598db756880cb5f09",
+      "reviewedRuleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.EXPLICIT_UNCERTAINTY"
+      ],
+      "reviewChecks": [
+        "minimal-evidence-span",
+        "released-type-and-predicate",
+        "abstention-or-supported-proposal"
+      ]
+    },
+    {
+      "caseId": "s12-a-3013",
+      "scenarioId": "s12-s-102",
+      "journeyId": "J2",
+      "split": "development",
+      "caseDigest": "sha256:0ade0098b1450d1706e2b0ebf0d6c3d6cf239b6e6dc723f00a4936ef1a03594e",
+      "goldDigest": "sha256:67078f8042bdbbf8a38770b1b40c785327e3b0a1a4ce3077abd562de3af09764",
+      "reviewedRuleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewChecks": [
+        "minimal-evidence-span",
+        "released-type-and-predicate",
+        "abstention-or-supported-proposal"
+      ]
+    },
+    {
+      "caseId": "s12-a-3015",
+      "scenarioId": "s12-s-102",
+      "journeyId": "J2",
+      "split": "development",
+      "caseDigest": "sha256:6301a52e8c1e29d95b3adfe67fa5a0a90485f4082936c81cf92fb40dd47c76bf",
+      "goldDigest": "sha256:d960453cefb0ac28e4ee44bb705141e85671e4d5dc5165c8b75aeedfe868bd8c",
+      "reviewedRuleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewChecks": [
+        "minimal-evidence-span",
+        "released-type-and-predicate",
+        "abstention-or-supported-proposal"
+      ]
+    },
+    {
+      "caseId": "s12-a-3027",
+      "scenarioId": "s12-s-104",
+      "journeyId": "J4",
+      "split": "development",
+      "caseDigest": "sha256:7b2a41213d415e66365eb68a7268d20e7e23179c34b534e28a5b697f05bc492b",
+      "goldDigest": "sha256:58fb3cb3199934c6ad1a0b69a0a14f8461ff94f617899cae44804b9a616d302d",
+      "reviewedRuleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewChecks": [
+        "minimal-evidence-span",
+        "released-type-and-predicate",
+        "abstention-or-supported-proposal"
+      ]
+    },
+    {
+      "caseId": "s12-a-3031",
+      "scenarioId": "s12-s-104",
+      "journeyId": "J4",
+      "split": "development",
+      "caseDigest": "sha256:6e4b94959961fcd264f4a7061f87016626c87d15aaceb9687551618c0a7b2430",
+      "goldDigest": "sha256:78f322e9f3f635d6dc1a8af4476e19a736ca447f7fcff789afbcd39ea8ea5377",
+      "reviewedRuleIds": [
+        "EVIDENCE.CODEPOINT_HALF_OPEN",
+        "TYPE.RELEASED_M3",
+        "RELATION.RELEASED_PREDICATE",
+        "RELATION.ENDPOINTS_LABELED",
+        "RELATION.FULL_CLAUSE_EVIDENCE",
+        "ABSTENTION.SUPPORTED_PROPOSAL"
+      ],
+      "reviewChecks": [
+        "minimal-evidence-span",
+        "released-type-and-predicate",
+        "abstention-or-supported-proposal"
+      ]
+    }
+  ],
+  "longitudinalTimelineReview": [
+    {
+      "scenarioId": "s12-s-101",
+      "journeyId": "J1",
+      "split": "development",
+      "eventCount": 8,
+      "checkpointSequences": [
+        2,
+        4,
+        6,
+        8
+      ],
+      "contradictionCheckpointCount": 2,
+      "competencyAnswerCount": 2,
+      "reviewRationaleDigest": "sha256:dad33a6225071b5f3da182e3330c231a7b69bc7352dfb9be37f550d14656b493"
+    },
+    {
+      "scenarioId": "s12-s-102",
+      "journeyId": "J2",
+      "split": "development",
+      "eventCount": 8,
+      "checkpointSequences": [
+        2,
+        4,
+        6,
+        8
+      ],
+      "contradictionCheckpointCount": 2,
+      "competencyAnswerCount": 2,
+      "reviewRationaleDigest": "sha256:16680dadd4e7c69bade0e7e84e7486cc8336373de35a0812449eff8e9bc37962"
+    },
+    {
+      "scenarioId": "s12-s-103",
+      "journeyId": "J3",
+      "split": "development",
+      "eventCount": 8,
+      "checkpointSequences": [
+        2,
+        4,
+        6,
+        8
+      ],
+      "contradictionCheckpointCount": 2,
+      "competencyAnswerCount": 2,
+      "reviewRationaleDigest": "sha256:3229099d15ef4d01b580089180b3987d4e4521b3c1b71cc7c371a2be2540d963"
+    },
+    {
+      "scenarioId": "s12-s-104",
+      "journeyId": "J4",
+      "split": "development",
+      "eventCount": 8,
+      "checkpointSequences": [
+        2,
+        4,
+        6,
+        8
+      ],
+      "contradictionCheckpointCount": 2,
+      "competencyAnswerCount": 2,
+      "reviewRationaleDigest": "sha256:b5237a4c5e9cb79e32839f8175c445eb3d5d00e94a9b4bf2f8355385145a1824"
+    },
+    {
+      "scenarioId": "s12-s-105",
+      "journeyId": "J5",
+      "split": "validation",
+      "eventCount": 8,
+      "checkpointSequences": [
+        2,
+        4,
+        6,
+        8
+      ],
+      "contradictionCheckpointCount": 2,
+      "competencyAnswerCount": 2,
+      "reviewRationaleDigest": "sha256:6f7fee1f38080ffb0e927c7c97d4ebb755d8ca224c0f30f6a0af3b9bb8ab8f07"
+    },
+    {
+      "scenarioId": "s12-s-106",
+      "journeyId": "J6",
+      "split": "validation",
+      "eventCount": 8,
+      "checkpointSequences": [
+        2,
+        4,
+        6,
+        8
+      ],
+      "contradictionCheckpointCount": 2,
+      "competencyAnswerCount": 2,
+      "reviewRationaleDigest": "sha256:5f7a76123d57f98f44227003707e65a3e9187292a61a85bd6fcb8b1a533245d5"
+    }
+  ],
+  "normalizedTemplateReview": {
+    "crossSplitNormalizedTemplateClusters": [],
+    "crossSplitExactDuplicates": [],
+    "pass": true
+  },
+  "metricComputability": {
+    "requiredReportFields": [
+      "datasetVersion",
+      "manifestDigest",
+      "configurationDigest",
+      "evaluatorVersion",
+      "caseCoverage",
+      "missingOutputCount",
+      "hardInvariants",
+      "rawSensitiveDataIncluded",
+      "relationSemanticF1",
+      "relationEvidenceSupport",
+      "relationEvidenceExact",
+      "perCaseDenominators",
+      "perSliceDenominators"
+    ],
+    "missingReportFields": [],
+    "relationSemanticIdentityBound": true,
+    "relationEvidenceSupportBound": true,
+    "relationEvidenceExactBound": true,
+    "perCaseDenominatorsRequired": true,
+    "perSliceDenominatorsRequired": true,
+    "pooledOnlySummaryForbidden": true
+  },
+  "coverageReview": {
+    "relationPositiveCases": 15,
+    "relationNegativeCases": 33,
+    "abstentionRequiredCases": 6,
+    "journeys": [
+      "J1",
+      "J2",
+      "J3",
+      "J4",
+      "J5",
+      "J6"
+    ],
+    "pilotGapsForScale": {
+      "entityTypesWithoutPositiveCases": [
+        "Assumption",
+        "ResearchFinding"
+      ],
+      "predicatesWithoutPositiveCases": [
+        "resolves"
+      ],
+      "journeysNotInPilot": [
+        "J7",
+        "J8"
+      ]
+    }
+  },
+  "limitations": [
+    "Synthetic owner-delegated AI review is not human-authored evidence.",
+    "Pilot coverage is not the full G0 minimum and must be scaled before benchmark claims.",
+    "No provider, held-out, G5, ontology, or business-utility claim is approved by this packet."
+  ]
+}

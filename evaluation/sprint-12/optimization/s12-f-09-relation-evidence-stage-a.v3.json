@@ -1,0 +1,524 @@
+{
+  "accounting": {
+    "costAccountingStatus": "BOUND",
+    "costCeilingUsd": 10.0,
+    "pricingArtifactDigest": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+    "totalCostUsd": 0.0112600264,
+    "withinCostCeiling": true
+  },
+  "artifactVersion": "s12.s12-f-09.relation-evidence-stage-a.v3",
+  "attemptedCaseRuns": 288,
+  "authorizationCommitLimitation": {
+    "commitContainsExecutionPackage": false,
+    "commitSha": "efdac584c8fad71888fbfcafa3a9620259ec3e5b",
+    "evidenceIntegrity": "PRESERVED_BY_ARTIFACT_DIGESTS",
+    "status": "HISTORICAL_AUTHORIZATION_METADATA_NOT_FROZEN_EXECUTION_PACKAGE"
+  },
+  "authorizationDigest": "sha256:540e0530784c61d2bfd2a81bf3d4fa4c7161bad3b468d38c73e2a1a3ffb53cb9",
+  "candidate": {
+    "hardGatesPass": false,
+    "primaryMetrics": {
+      "abstentionAccuracy": 0.6319444444444444,
+      "abstentionCounts": {
+        "f1": 0.07407407407407407,
+        "falseNegative": 16,
+        "falsePositive": 34,
+        "trueNegative": 92,
+        "truePositive": 2
+      },
+      "abstentionF1": 0.07407407407407407,
+      "caseRuns": 144,
+      "entityMacroF1": 0.22615740740740742,
+      "hallucinationRate": 0.5260416666666666,
+      "relationEvidenceExact": 1.0,
+      "relationEvidenceExactTruePositive": 1,
+      "relationEvidenceSupport": 1.0,
+      "relationEvidenceSupportTruePositive": 1,
+      "relationPositiveCaseRuns": 36,
+      "relationSemanticGold": 36,
+      "relationSemanticMacroF1": 0.027777777777777776,
+      "relationSemanticMicroF1": 0.037037037037037035,
+      "relationSemanticPredicted": 18,
+      "relationSemanticTruePositive": 1,
+      "validCaseRuns": 141
+    },
+    "runs": [
+      {
+        "caseRuns": 48,
+        "costUsd": null,
+        "failureCount": 0,
+        "missingOutputCount": 0,
+        "pairId": "pair-1",
+        "relationEvidenceExact": 0.0,
+        "relationEvidenceSupport": 0.0,
+        "relationSemanticGold": 12,
+        "relationSemanticMicroF1": 0.0,
+        "relationSemanticPredicted": 3,
+        "relationSemanticTruePositive": 0,
+        "runId": "pair-1-02-candidate",
+        "runNumber": 1,
+        "validCaseRuns": 48
+      },
+      {
+        "caseRuns": 48,
+        "costUsd": null,
+        "failureCount": 2,
+        "missingOutputCount": 2,
+        "pairId": "pair-2",
+        "relationEvidenceExact": 1.0,
+        "relationEvidenceSupport": 1.0,
+        "relationSemanticGold": 12,
+        "relationSemanticMicroF1": 0.1,
+        "relationSemanticPredicted": 8,
+        "relationSemanticTruePositive": 1,
+        "runId": "pair-2-01-candidate",
+        "runNumber": 2,
+        "validCaseRuns": 46
+      },
+      {
+        "caseRuns": 48,
+        "costUsd": null,
+        "failureCount": 1,
+        "missingOutputCount": 1,
+        "pairId": "pair-3",
+        "relationEvidenceExact": 0.0,
+        "relationEvidenceSupport": 0.0,
+        "relationSemanticGold": 12,
+        "relationSemanticMicroF1": 0.0,
+        "relationSemanticPredicted": 7,
+        "relationSemanticTruePositive": 0,
+        "runId": "pair-3-02-candidate",
+        "runNumber": 3,
+        "validCaseRuns": 47
+      }
+    ],
+    "sliceMetrics": {
+      "abstention-not-required": {
+        "abstentionAccuracy": 0.7063492063492064,
+        "abstentionCounts": {
+          "f1": 0.0,
+          "falseNegative": 0,
+          "falsePositive": 34,
+          "trueNegative": 92,
+          "truePositive": 0
+        },
+        "abstentionF1": 0.0,
+        "caseRuns": 126,
+        "entityMacroF1": 0.24259259259259258,
+        "hallucinationRate": 0.4742063492063492,
+        "relationEvidenceExact": 1.0,
+        "relationEvidenceExactTruePositive": 1,
+        "relationEvidenceSupport": 1.0,
+        "relationEvidenceSupportTruePositive": 1,
+        "relationPositiveCaseRuns": 36,
+        "relationSemanticGold": 36,
+        "relationSemanticMacroF1": 0.027777777777777776,
+        "relationSemanticMicroF1": 0.037037037037037035,
+        "relationSemanticPredicted": 18,
+        "relationSemanticTruePositive": 1,
+        "validCaseRuns": 123
+      },
+      "abstention-required": {
+        "abstentionAccuracy": 0.1111111111111111,
+        "abstentionCounts": {
+          "f1": 0.19999999999999998,
+          "falseNegative": 16,
+          "falsePositive": 0,
+          "trueNegative": 0,
+          "truePositive": 2
+        },
+        "abstentionF1": 0.19999999999999998,
+        "caseRuns": 18,
+        "entityMacroF1": 0.1111111111111111,
+        "hallucinationRate": 0.8888888888888888,
+        "relationEvidenceExact": 0.0,
+        "relationEvidenceExactTruePositive": 0,
+        "relationEvidenceSupport": 0.0,
+        "relationEvidenceSupportTruePositive": 0,
+        "relationPositiveCaseRuns": 0,
+        "relationSemanticGold": 0,
+        "relationSemanticMacroF1": 0.0,
+        "relationSemanticMicroF1": 0.0,
+        "relationSemanticPredicted": 0,
+        "relationSemanticTruePositive": 0,
+        "validCaseRuns": 18
+      },
+      "all": {
+        "abstentionAccuracy": 0.6319444444444444,
+        "abstentionCounts": {
+          "f1": 0.07407407407407407,
+          "falseNegative": 16,
+          "falsePositive": 34,
+          "trueNegative": 92,
+          "truePositive": 2
+        },
+        "abstentionF1": 0.07407407407407407,
+        "caseRuns": 144,
+        "entityMacroF1": 0.22615740740740742,
+        "hallucinationRate": 0.5260416666666666,
+        "relationEvidenceExact": 1.0,
+        "relationEvidenceExactTruePositive": 1,
+        "relationEvidenceSupport": 1.0,
+        "relationEvidenceSupportTruePositive": 1,
+        "relationPositiveCaseRuns": 36,
+        "relationSemanticGold": 36,
+        "relationSemanticMacroF1": 0.027777777777777776,
+        "relationSemanticMicroF1": 0.037037037037037035,
+        "relationSemanticPredicted": 18,
+        "relationSemanticTruePositive": 1,
+        "validCaseRuns": 141
+      },
+      "relation-negative": {
+        "abstentionAccuracy": 0.6111111111111112,
+        "abstentionCounts": {
+          "f1": 0.09090909090909093,
+          "falseNegative": 16,
+          "falsePositive": 24,
+          "trueNegative": 66,
+          "truePositive": 2
+        },
+        "abstentionF1": 0.09090909090909093,
+        "caseRuns": 108,
+        "entityMacroF1": 0.24074074074074073,
+        "hallucinationRate": 0.5185185185185185,
+        "relationEvidenceExact": 0.0,
+        "relationEvidenceExactTruePositive": 0,
+        "relationEvidenceSupport": 0.0,
+        "relationEvidenceSupportTruePositive": 0,
+        "relationPositiveCaseRuns": 0,
+        "relationSemanticGold": 0,
+        "relationSemanticMacroF1": 0.0,
+        "relationSemanticMicroF1": 0.0,
+        "relationSemanticPredicted": 0,
+        "relationSemanticTruePositive": 0,
+        "validCaseRuns": 106
+      },
+      "relation-positive": {
+        "abstentionAccuracy": 0.6944444444444444,
+        "abstentionCounts": {
+          "f1": 0.0,
+          "falseNegative": 0,
+          "falsePositive": 10,
+          "trueNegative": 26,
+          "truePositive": 0
+        },
+        "abstentionF1": 0.0,
+        "caseRuns": 36,
+        "entityMacroF1": 0.1824074074074074,
+        "hallucinationRate": 0.5486111111111112,
+        "relationEvidenceExact": 1.0,
+        "relationEvidenceExactTruePositive": 1,
+        "relationEvidenceSupport": 1.0,
+        "relationEvidenceSupportTruePositive": 1,
+        "relationPositiveCaseRuns": 36,
+        "relationSemanticGold": 36,
+        "relationSemanticMacroF1": 0.027777777777777776,
+        "relationSemanticMicroF1": 0.037037037037037035,
+        "relationSemanticPredicted": 18,
+        "relationSemanticTruePositive": 1,
+        "validCaseRuns": 35
+      }
+    },
+    "supersessionFalsePositiveCount": 0
+  },
+  "caseCount": 48,
+  "control": {
+    "hardGatesPass": false,
+    "primaryMetrics": {
+      "abstentionAccuracy": 0.6180555555555556,
+      "abstentionCounts": {
+        "f1": 0.2033898305084746,
+        "falseNegative": 12,
+        "falsePositive": 35,
+        "trueNegative": 91,
+        "truePositive": 6
+      },
+      "abstentionF1": 0.2033898305084746,
+      "caseRuns": 144,
+      "entityMacroF1": 0.2048611111111111,
+      "hallucinationRate": 0.5046296296296297,
+      "relationEvidenceExact": 1.0,
+      "relationEvidenceExactTruePositive": 2,
+      "relationEvidenceSupport": 1.0,
+      "relationEvidenceSupportTruePositive": 2,
+      "relationPositiveCaseRuns": 36,
+      "relationSemanticGold": 36,
+      "relationSemanticMacroF1": 0.05555555555555555,
+      "relationSemanticMicroF1": 0.07272727272727272,
+      "relationSemanticPredicted": 19,
+      "relationSemanticTruePositive": 2,
+      "validCaseRuns": 136
+    },
+    "runs": [
+      {
+        "caseRuns": 48,
+        "costUsd": null,
+        "failureCount": 5,
+        "missingOutputCount": 5,
+        "pairId": "pair-1",
+        "relationEvidenceExact": 1.0,
+        "relationEvidenceSupport": 1.0,
+        "relationSemanticGold": 12,
+        "relationSemanticMicroF1": 0.11764705882352941,
+        "relationSemanticPredicted": 5,
+        "relationSemanticTruePositive": 1,
+        "runId": "pair-1-01-control",
+        "runNumber": 1,
+        "validCaseRuns": 43
+      },
+      {
+        "caseRuns": 48,
+        "costUsd": null,
+        "failureCount": 1,
+        "missingOutputCount": 1,
+        "pairId": "pair-2",
+        "relationEvidenceExact": 1.0,
+        "relationEvidenceSupport": 1.0,
+        "relationSemanticGold": 12,
+        "relationSemanticMicroF1": 0.11764705882352941,
+        "relationSemanticPredicted": 5,
+        "relationSemanticTruePositive": 1,
+        "runId": "pair-2-02-control",
+        "runNumber": 2,
+        "validCaseRuns": 47
+      },
+      {
+        "caseRuns": 48,
+        "costUsd": null,
+        "failureCount": 2,
+        "missingOutputCount": 2,
+        "pairId": "pair-3",
+        "relationEvidenceExact": 0.0,
+        "relationEvidenceSupport": 0.0,
+        "relationSemanticGold": 12,
+        "relationSemanticMicroF1": 0.0,
+        "relationSemanticPredicted": 9,
+        "relationSemanticTruePositive": 0,
+        "runId": "pair-3-01-control",
+        "runNumber": 3,
+        "validCaseRuns": 46
+      }
+    ],
+    "sliceMetrics": {
+      "abstention-not-required": {
+        "abstentionAccuracy": 0.6587301587301587,
+        "abstentionCounts": {
+          "f1": 0.0,
+          "falseNegative": 0,
+          "falsePositive": 35,
+          "trueNegative": 91,
+          "truePositive": 0
+        },
+        "abstentionF1": 0.0,
+        "caseRuns": 126,
+        "entityMacroF1": 0.1865079365079365,
+        "hallucinationRate": 0.48148148148148145,
+        "relationEvidenceExact": 1.0,
+        "relationEvidenceExactTruePositive": 2,
+        "relationEvidenceSupport": 1.0,
+        "relationEvidenceSupportTruePositive": 2,
+        "relationPositiveCaseRuns": 36,
+        "relationSemanticGold": 36,
+        "relationSemanticMacroF1": 0.05555555555555555,
+        "relationSemanticMicroF1": 0.07407407407407407,
+        "relationSemanticPredicted": 18,
+        "relationSemanticTruePositive": 2,
+        "validCaseRuns": 118
+      },
+      "abstention-required": {
+        "abstentionAccuracy": 0.3333333333333333,
+        "abstentionCounts": {
+          "f1": 0.5,
+          "falseNegative": 12,
+          "falsePositive": 0,
+          "trueNegative": 0,
+          "truePositive": 6
+        },
+        "abstentionF1": 0.5,
+        "caseRuns": 18,
+        "entityMacroF1": 0.3333333333333333,
+        "hallucinationRate": 0.6666666666666666,
+        "relationEvidenceExact": 0.0,
+        "relationEvidenceExactTruePositive": 0,
+        "relationEvidenceSupport": 0.0,
+        "relationEvidenceSupportTruePositive": 0,
+        "relationPositiveCaseRuns": 0,
+        "relationSemanticGold": 0,
+        "relationSemanticMacroF1": 0.0,
+        "relationSemanticMicroF1": 0.0,
+        "relationSemanticPredicted": 1,
+        "relationSemanticTruePositive": 0,
+        "validCaseRuns": 18
+      },
+      "all": {
+        "abstentionAccuracy": 0.6180555555555556,
+        "abstentionCounts": {
+          "f1": 0.2033898305084746,
+          "falseNegative": 12,
+          "falsePositive": 35,
+          "trueNegative": 91,
+          "truePositive": 6
+        },
+        "abstentionF1": 0.2033898305084746,
+        "caseRuns": 144,
+        "entityMacroF1": 0.2048611111111111,
+        "hallucinationRate": 0.5046296296296297,
+        "relationEvidenceExact": 1.0,
+        "relationEvidenceExactTruePositive": 2,
+        "relationEvidenceSupport": 1.0,
+        "relationEvidenceSupportTruePositive": 2,
+        "relationPositiveCaseRuns": 36,
+        "relationSemanticGold": 36,
+        "relationSemanticMacroF1": 0.05555555555555555,
+        "relationSemanticMicroF1": 0.07272727272727272,
+        "relationSemanticPredicted": 19,
+        "relationSemanticTruePositive": 2,
+        "validCaseRuns": 136
+      },
+      "relation-negative": {
+        "abstentionAccuracy": 0.6018518518518519,
+        "abstentionCounts": {
+          "f1": 0.23076923076923078,
+          "falseNegative": 12,
+          "falsePositive": 28,
+          "trueNegative": 62,
+          "truePositive": 6
+        },
+        "abstentionF1": 0.23076923076923078,
+        "caseRuns": 108,
+        "entityMacroF1": 0.2222222222222222,
+        "hallucinationRate": 0.49074074074074076,
+        "relationEvidenceExact": 0.0,
+        "relationEvidenceExactTruePositive": 0,
+        "relationEvidenceSupport": 0.0,
+        "relationEvidenceSupportTruePositive": 0,
+        "relationPositiveCaseRuns": 0,
+        "relationSemanticGold": 0,
+        "relationSemanticMacroF1": 0.0,
+        "relationSemanticMicroF1": 0.0,
+        "relationSemanticPredicted": 1,
+        "relationSemanticTruePositive": 0,
+        "validCaseRuns": 105
+      },
+      "relation-positive": {
+        "abstentionAccuracy": 0.6666666666666666,
+        "abstentionCounts": {
+          "f1": 0.0,
+          "falseNegative": 0,
+          "falsePositive": 7,
+          "trueNegative": 29,
+          "truePositive": 0
+        },
+        "abstentionF1": 0.0,
+        "caseRuns": 36,
+        "entityMacroF1": 0.1527777777777778,
+        "hallucinationRate": 0.5462962962962963,
+        "relationEvidenceExact": 1.0,
+        "relationEvidenceExactTruePositive": 2,
+        "relationEvidenceSupport": 1.0,
+        "relationEvidenceSupportTruePositive": 2,
+        "relationPositiveCaseRuns": 36,
+        "relationSemanticGold": 36,
+        "relationSemanticMacroF1": 0.05555555555555555,
+        "relationSemanticMicroF1": 0.07407407407407407,
+        "relationSemanticPredicted": 18,
+        "relationSemanticTruePositive": 2,
+        "validCaseRuns": 31
+      }
+    }
+  },
+  "decision": "STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B",
+  "executionAccounting": {
+    "attemptedCaseRuns": 288,
+    "failureExplicit": true,
+    "retryCount": 0,
+    "validCaseRuns": {
+      "candidate": 141,
+      "control": 136
+    }
+  },
+  "executionCount": 288,
+  "experimentId": "s12-f-09",
+  "gateContract": {
+    "abstention": {
+      "diagnosticAccuracyRetained": true,
+      "evaluatedStatistic": "binary-positive-class-F1",
+      "preregisteredName": "abstentionF1Minimum"
+    },
+    "relationSemanticF1": {
+      "minimum": 0.8,
+      "offlineRule": "require-both-macro-and-micro",
+      "preregisteredName": "relationSemanticF1Minimum",
+      "preregisteredStatistic": "unspecified"
+    },
+    "sliceFloor": {
+      "gate": false,
+      "requiredByPreregistration": true,
+      "status": "NOT_EVALUATED_NO_VERSIONED_SLICE_THRESHOLDS"
+    }
+  },
+  "gates": {
+    "candidateAbstentionF1Minimum": false,
+    "candidateEntityMacroF1Minimum": false,
+    "candidateHallucinationRateMaximum": false,
+    "candidateHardGate": false,
+    "candidateRelationEvidenceExactMinimum": true,
+    "candidateRelationEvidenceSupportMinimum": true,
+    "candidateRelationSemanticMacroF1Minimum": false,
+    "candidateRelationSemanticMicroF1Minimum": false,
+    "controlHardGate": false,
+    "sliceFloorRequired": false,
+    "supersessionFalsePositiveZero": true
+  },
+  "heldOutInspected": false,
+  "measurement": {
+    "comparisonIntegrity": "DEGRADED_INDEPENDENT_STOCHASTIC_OUTPUTS",
+    "denominatorPolicy": "fail-closed-all-attempted-case-runs",
+    "instrumentationOverlapAssessment": "NO_UNMATCHED_PREDICATE_BUCKET_PRESENT_IN_IMMUTABLE_F09_REPORTS",
+    "perCaseAndPerSliceDenominatorsPresent": true,
+    "pooledEvidencePolicy": "sum-numerators-divided-by-sum-semantic-TP",
+    "semanticIdentityExcludesEvidenceSpan": true,
+    "toolCausalAttribution": "NOT_IDENTIFIABLE_CONTROL_AND_CANDIDATE_USED_INDEPENDENT_PROVIDER_CALLS",
+    "triggerContractStatus": "NOT_EXERCISED_LIVE_PATH_TRIGGER_QUOTE_ALWAYS_OMITTED"
+  },
+  "preregistrationDigest": "sha256:de3a5c2397729537b8ea8e42f1c9e0758648d90a9e4f75b1f2c095afff9cf6aa",
+  "previousOfflineRepair": {
+    "digest": "sha256:751636c84dcce94d5dcf6936017212282e7e1994d3d63c482425a91ee5157ce8",
+    "path": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a.v2.json"
+  },
+  "rawExecutionArtifact": {
+    "digest": "sha256:d6b8bfe030842ad21afceb52f63b7f620d7db8ade66e4ee0fc73b669ed563c48",
+    "path": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a.v1.json"
+  },
+  "rawSensitiveDataIncluded": false,
+  "reportDigests": [
+    {
+      "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-1-01-control.report.v1.json",
+      "digest": "sha256:df6758b808c18212ab433e8fab910a6e29966ac322dd517eb43469b3d96287d3"
+    },
+    {
+      "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-1-02-candidate.report.v1.json",
+      "digest": "sha256:526c0174362a46175b6c787d6e14dc96aea4412ecbfae717f5462838dc0bdf12"
+    },
+    {
+      "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-2-01-candidate.report.v1.json",
+      "digest": "sha256:6de3c6c637eb5ea29dbaaec3f17ba465ac3e9d74ebb15d46617855f26f1004c2"
+    },
+    {
+      "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-2-02-control.report.v1.json",
+      "digest": "sha256:2ff705b9192867ae4a70bd0434bda339f80dce3a5830f138cbb848bd7ae1f012"
+    },
+    {
+      "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-3-01-control.report.v1.json",
+      "digest": "sha256:df86f626281d1d9ab286fdc331c64fad37a84525e42cf31d229b7da0fde16356"
+    },
+    {
+      "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-3-02-candidate.report.v1.json",
+      "digest": "sha256:185aaa49e224335c3b4b169c339e2f93ec5a2db135b782ca9848fe1ae1d70519"
+    }
+  ],
+  "retryCount": 0,
+  "stageATechnicalPass": false,
+  "stageBAuthorized": false,
+  "status": "STAGE_A_COMPLETED_OFFLINE_ERRATUM"
+}

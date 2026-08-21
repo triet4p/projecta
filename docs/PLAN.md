@@ -40,10 +40,13 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   security và production hardening. Sprint 11 and `v0.6.0` are complete. M7
   remains open, but additional connector/outbound breadth is paused until the
   Sprint 12 business-quality evidence is reviewed.
-- [ ] **M8 — Business Semantic Quality and Evaluation (Sprint 12):** Governed
-  atomic and longitudinal datasets, independent annotation, leakage-resistant
-  splits, ontology/graph/retrieval metrics, controlled optimization, sealed
-  held-out evaluation, and target-role business acceptance.
+- [~] **M8 — Business Semantic Quality and Evaluation (Sprint 12):** Governed
+  atomic and longitudinal datasets, leakage-resistant splits,
+  ontology/graph/retrieval metrics, controlled optimization, sealed held-out
+  evaluation, and target-role business acceptance. The historical synthetic
+  corpus and rejected prompt experiments are retained as evidence; M8 now
+  includes a G3.1 dataset-and-measurement remediation track before candidate
+  selection can resume.
 
 ## Completed Sprints
 
@@ -87,14 +90,14 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 ## Active Sprints
 
 - [Sprint 12 — Business Semantic Quality and Evaluation](sprint-plans/sprint-12.md)
-  — *In progress; the repository-visible synthetic corpus has owner-delegated
-  AI semantic review, explicitly not human evidence. A runtime-backed
-  `v0.6.0` baseline now exists, but 55 model-output failures make its schema
-  validity fail. G5 development experiments are open under the revised gate;
-  G6 remains blocked until a clean contract candidate, test custody and a
-  frozen candidate exist. The held-out preregistration and fail-closed evidence
-  guards are ready; no business-quality claim is made. New connector and
-  outbound breadth remains deferred.*
+  — *In progress at `G5_F12_ISSUED_PROVIDER_AUTHORIZATION_PENDING`. Dataset v3,
+  measurement remediation and the two-step f12 development execution package
+  are frozen. RM-23F issued the preregistration/freeze only after exact custody,
+  closed schemas and mocked 144-call execution passed; no provider run or
+  candidate selection has occurred. A separate authorization remains required
+  before the one bounded development Stage A run. Validation and held-out data
+  remain sealed, no business-quality claim is made, and new connector/outbound
+  breadth remains deferred.*
 
 ## Planned Sprints
 

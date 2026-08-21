@@ -1,0 +1,118 @@
+{
+  "artifactVersion": "s12.s12-f-09.scoring-erratum.v1",
+  "comparisonIntegrity": "DEGRADED_INDEPENDENT_STOCHASTIC_OUTPUTS",
+  "corrections": [
+    "Use fail-closed gold relation denominators for missing-output records.",
+    "Use pooled support and exact numerators divided by pooled semantic true positives.",
+    "Use preregistered abstentionF1 naming; retain abstentionAccuracy as diagnostic only.",
+    "Require both macro and micro relation semantic floors because the preregistration did not specify the statistic.",
+    "Do not infer slice-floor passage when thresholds were not versioned before execution."
+  ],
+  "decisionUnchanged": true,
+  "evidenceDenominator": {
+    "candidateEvidenceExact": "1/1",
+    "candidateEvidenceSupport": "1/1",
+    "candidateSemanticPositiveCaseRuns": 36,
+    "controlEvidenceExact": "2/2",
+    "controlEvidenceSupport": "2/2",
+    "controlSemanticPositiveCaseRuns": 36
+  },
+  "experimentId": "s12-f-09",
+  "immutableInputs": {
+    "authorization": {
+      "digest": "sha256:540e0530784c61d2bfd2a81bf3d4fa4c7161bad3b468d38c73e2a1a3ffb53cb9",
+      "path": "evaluation/sprint-12/optimization/s12-f-09-authorization.v1.json"
+    },
+    "rawExecution": {
+      "digest": "sha256:d6b8bfe030842ad21afceb52f63b7f620d7db8ade66e4ee0fc73b669ed563c48",
+      "path": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a.v1.json"
+    },
+    "runReports": [
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-1-01-control.report.v1.json",
+        "digest": "sha256:df6758b808c18212ab433e8fab910a6e29966ac322dd517eb43469b3d96287d3"
+      },
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-1-02-candidate.report.v1.json",
+        "digest": "sha256:526c0174362a46175b6c787d6e14dc96aea4412ecbfae717f5462838dc0bdf12"
+      },
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-2-01-candidate.report.v1.json",
+        "digest": "sha256:6de3c6c637eb5ea29dbaaec3f17ba465ac3e9d74ebb15d46617855f26f1004c2"
+      },
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-2-02-control.report.v1.json",
+        "digest": "sha256:2ff705b9192867ae4a70bd0434bda339f80dce3a5830f138cbb848bd7ae1f012"
+      },
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-3-01-control.report.v1.json",
+        "digest": "sha256:df86f626281d1d9ab286fdc331c64fad37a84525e42cf31d229b7da0fde16356"
+      },
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-3-02-candidate.report.v1.json",
+        "digest": "sha256:185aaa49e224335c3b4b169c339e2f93ec5a2db135b782ca9848fe1ae1d70519"
+      }
+    ],
+    "stageARepairV2": {
+      "digest": "sha256:751636c84dcce94d5dcf6936017212282e7e1994d3d63c482425a91ee5157ce8",
+      "path": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a.v2.json"
+    }
+  },
+  "instrumentationLimitation": "The immutable f09 reports contain no unmatchedPredicate bucket; future decomposition must keep wrong-span and predicted-side unmatched categories explicitly disjoint or label overlap.",
+  "metrics": {
+    "candidate": {
+      "abstentionAccuracy": 0.6319444444444444,
+      "abstentionCounts": {
+        "f1": 0.07407407407407407,
+        "falseNegative": 16,
+        "falsePositive": 34,
+        "trueNegative": 92,
+        "truePositive": 2
+      },
+      "abstentionF1": 0.07407407407407407,
+      "caseRuns": 144,
+      "entityMacroF1": 0.22615740740740742,
+      "hallucinationRate": 0.5260416666666666,
+      "relationEvidenceExact": 1.0,
+      "relationEvidenceExactTruePositive": 1,
+      "relationEvidenceSupport": 1.0,
+      "relationEvidenceSupportTruePositive": 1,
+      "relationPositiveCaseRuns": 36,
+      "relationSemanticGold": 36,
+      "relationSemanticMacroF1": 0.027777777777777776,
+      "relationSemanticMicroF1": 0.037037037037037035,
+      "relationSemanticPredicted": 18,
+      "relationSemanticTruePositive": 1,
+      "validCaseRuns": 141
+    },
+    "control": {
+      "abstentionAccuracy": 0.6180555555555556,
+      "abstentionCounts": {
+        "f1": 0.2033898305084746,
+        "falseNegative": 12,
+        "falsePositive": 35,
+        "trueNegative": 91,
+        "truePositive": 6
+      },
+      "abstentionF1": 0.2033898305084746,
+      "caseRuns": 144,
+      "entityMacroF1": 0.2048611111111111,
+      "hallucinationRate": 0.5046296296296297,
+      "relationEvidenceExact": 1.0,
+      "relationEvidenceExactTruePositive": 2,
+      "relationEvidenceSupport": 1.0,
+      "relationEvidenceSupportTruePositive": 2,
+      "relationPositiveCaseRuns": 36,
+      "relationSemanticGold": 36,
+      "relationSemanticMacroF1": 0.05555555555555555,
+      "relationSemanticMicroF1": 0.07272727272727272,
+      "relationSemanticPredicted": 19,
+      "relationSemanticTruePositive": 2,
+      "validCaseRuns": 136
+    }
+  },
+  "noProviderRerun": true,
+  "status": "ERRATUM_ISSUED_WITHOUT_RERUN",
+  "toolCausalLimitation": "The six runs cannot isolate the materializer effect because both arms made independent provider calls; a future tool comparison must branch one captured provider response through both post-processing paths.",
+  "triggerLimitation": "The live candidate path passed no trigger quote, so required-trigger fail-closed behavior was not exercised."
+}

@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G3.1_REMEDIATION_REQUIRED_G5_PAUSED`
+Status: `G5_F12_ISSUED_PROVIDER_AUTHORIZATION_PENDING`
 
 G0 packet: [Business Scope Review Packet](sprint-12/g0-business-scope.md)
 
@@ -796,10 +796,45 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   before capture. Targeted tests `5 passed`, full f12 regression `52 passed`,
   and preflight returns `F12_RM22D_READY_ZERO_CALL_V5`; provider calls remain
   zero. See `artifacts/task_S12-RM-22D_summary.md`.
-- [ ] **S12-RM-23D — Owner issuance review of RM-22D:** Independently verify the
-  two closed schemas, adversarial tests and superseding lineage. Provider
-  execution remains subject to a later separate exact-commit authorization even
-  if preregistration/freeze issuance passes.
+- [x] **S12-RM-23D — Owner issuance review of RM-22D:** Review was withheld as
+  `OWNER_ISSUANCE_REVIEW_WITHHELD_METADATA_LINEAGE_MISMATCH` because v5 carried
+  `preparationScope: S12-RM-22C` despite belonging to RM-22D. Historical v5
+  artifacts remain unchanged; no issuance or provider authorization was
+  granted. See the RM-23D owner review artifact.
+- [x] **S12-RM-22E — Remediate RM-23D metadata lineage offline:** Published v6
+  preregistration, execution package and technical freeze artifacts with exact
+  `preparationScope: S12-RM-22D`, rebound package/freeze/preregistration
+  digests, and preserved execution commit `b63ebcb`. Added a v6 zero-call
+  preflight assertion for exact scope and digest custody. Targeted lineage
+  tests `5 passed`; preflight returns
+  `F12_RM22D_READY_ZERO_CALL_V6`; provider calls remain zero. See
+  `artifacts/task_S12-RM-22E_summary.md`.
+- [x] **S12-RM-23E — Owner issuance review of RM-22D v6:** Review was withheld
+  as `OWNER_ISSUANCE_REVIEW_WITHHELD_EXECUTION_LINEAGE_MISMATCH` because the
+  v6 authorization schema still required report v5 and the bound runner still
+  hard-coded package/preregistration/freeze/output v5. No issuance or provider
+  authorization was granted.
+- [x] **S12-RM-22F — Remediate RM-23E execution lineage offline:** Published
+  v7 preregistration, execution package and technical freeze with runner v6,
+  authorization schema v2, report schema v6, a new exact execution commit,
+  and v7 preflight. Mocked E2E proves unauthorized `0` calls, authorized
+  `144 calls / 96 branches`, one persist, and no overwrite/retry. Preflight
+  returns `F12_RM22D_READY_ZERO_CALL_V7`; provider calls remain zero. See
+  `artifacts/task_S12-RM-22F_summary.md`.
+- [x] **S12-RM-23F — Owner issuance review of RM-22D v7:** Approved as
+  `OWNER_ISSUANCE_REVIEW_APPROVED_ISSUANCE_ONLY`. Exact execution/blob custody,
+  closed schemas, zero-call preflight and mocked guarded E2E pass. The v7
+  preregistration and freeze are issued, while provider execution, validation,
+  held-out, Stage B, selection and promotion remain unauthorized. See
+  `artifacts/task_S12-RM-23F_summary.md`.
+- [ ] **S12-RM-24 — Prepare exact f12 Stage A authorization:** Bind the RM-23F
+  owner-review digest, execution commit `e047911e`, v7 package/freeze digests,
+  runtime configuration, report-v6 path, no-retry/no-overwrite policy and exact
+  cost ceiling. Preparation is offline and performs zero provider calls.
+- [ ] **S12-RM-25 — Authorize one bounded f12 Stage A execution:** Independently
+  review RM-24 and, only if every binding remains exact, authorize one
+  development execution of 144 calls. This gate does not authorize validation,
+  held-out access, Stage B, selection or promotion.
 
 #### Phase F-S — Candidate Selection Resume Path
 

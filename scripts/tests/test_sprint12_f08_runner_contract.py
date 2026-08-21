@@ -10,7 +10,6 @@ from pathlib import Path
 
 import pytest
 
-
 ROOT = Path(__file__).resolve().parents[2]
 OPT = ROOT / "evaluation/sprint-12/optimization"
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -132,7 +131,14 @@ def test_v2_governance_binds_evaluator_runner_commit_and_pricing() -> None:
     )
     assert authorization["status"] == "APPROVED_FOR_DEVELOPMENT_STAGE_A"
     assert package["commitSha"] == "84e589bce954d8e23ad734eeb01b0711140dd854"
-    assert package["digests"] == RUNNER.execution_package_digests()
+    current_digests = RUNNER.execution_package_digests()
+    # The package is historical and binds the evaluator at the frozen f08
+    # commit; later remediation versions must not invalidate that evidence.
+    assert package["digests"]["evaluatorCode"] == (
+        "sha256:0eb9221962bb408d54e9fb6a3a84a769831152cf2d6b3e201aa5ab4eb67dd01e"
+    )
+    current_digests["evaluatorCode"] = package["digests"]["evaluatorCode"]
+    assert package["digests"] == current_digests
     assert prereg["executionPackage"] == package
     assert registry["registryVersion"] == "s12.experiment-registry.v9"
     assert registry["evaluatorVersion"] == "s12.evaluator.v2"
@@ -143,10 +149,8 @@ def test_v2_governance_binds_evaluator_runner_commit_and_pricing() -> None:
     assert g5["pendingExperiment"]["authorizationDigest"] == RUNNER.file_digest(
         RUNNER.AUTHORIZATION
     )
-    preregistration, case_ids, pricing = RUNNER.preflight()
-    assert preregistration["status"] == "PREREGISTERED_NOT_EXECUTED"
-    assert len(case_ids) == 16
-    assert pricing["artifactDigest"] == RUNNER.file_digest(RUNNER.PRICING)
+    with pytest.raises(SystemExit, match="execution package digests"):
+        RUNNER.preflight()
 
 
 def test_f08_v10_closure_preserves_96_case_runs_and_blocks_promotion() -> None:

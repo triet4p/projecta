@@ -1,0 +1,78 @@
+{
+  "artifactVersion": "s12.s12-f-09.remediation-track.v1",
+  "experimentId": "s12-f-09",
+  "status": "OPEN_PREPARATION_NO_PROVIDER",
+  "decision": "KEEP_S12_78_THROUGH_S12_81_BLOCKED",
+  "providerCallsAuthorized": false,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "selectionStatus": "NO_SELECTION",
+  "historicalClosure": {
+    "registry": {
+      "artifact": "experiment-registry.v11.json",
+      "digest": "sha256:32b1ffdd0618ce71c79723d09203de8161fdeebdb922be1102326c6db86f7366"
+    },
+    "g5": {
+      "artifact": "g5-packet.v11.json",
+      "digest": "sha256:d66f501960e2f828586b18be18db25917c568205eefccf79c3f652f34524c81f"
+    },
+    "stageA": {
+      "artifact": "s12-f-09-relation-evidence-stage-a.v3.json",
+      "digest": "sha256:d58fab612da3800f0219f97c7360964431a5b6fca0e78a4491896cdf7d9a708e"
+    },
+    "erratum": {
+      "artifact": "s12-f-09-scoring-erratum.v1.json",
+      "digest": "sha256:144a67a1b35ad516c1e9f71920c81800b02327872cfab6230f5af566ab318a78"
+    }
+  },
+  "remediationItems": [
+    {
+      "id": "S12-RM-01",
+      "name": "shared-response-paired-comparison",
+      "status": "PENDING",
+      "requirement": "Capture one provider response per case/run, then branch the immutable response through control and candidate post-processing without a second provider call."
+    },
+    {
+      "id": "S12-RM-02",
+      "name": "versioned-slice-thresholds",
+      "status": "PENDING",
+      "requirement": "Bind slice labels, denominators, thresholds, zero-denominator policy and macro/micro statistic before the next experiment."
+    },
+    {
+      "id": "S12-RM-03",
+      "name": "trigger-quote-contract",
+      "status": "PENDING",
+      "requirement": "Decide which predicates require trigger_quote, encode it in schema/materializer/scorer, and test missing-trigger fail-closed behavior."
+    },
+    {
+      "id": "S12-RM-04",
+      "name": "execution-package-freeze",
+      "status": "PENDING",
+      "requirement": "Commit runner, evaluator, materializer, prompt/configuration, preregistration revision and tests together; authorization must bind that commit and every digest."
+    },
+    {
+      "id": "S12-RM-05",
+      "name": "new-stage-a-preregistration",
+      "status": "PENDING",
+      "requirement": "Only after RM-01 through RM-04 pass, publish a new experiment preregistration and authorization packet; no provider execution is implied by this track."
+    }
+  ],
+  "gates": {
+    "comparisonIntegrity": "SHARED_RESPONSE_BRANCHING_PROVEN",
+    "sliceThresholdsVersioned": true,
+    "triggerContractExercisedOffline": true,
+    "authorizationBindsExecutionPackageCommit": true,
+    "newPreregistrationApproved": true
+  },
+  "fixedConstraints": [
+    "Do not rerun S12-f-09.",
+    "Do not inspect validation or held-out data.",
+    "Do not change gold, ontology or immutable f09 evidence.",
+    "Do not mark S12-R24 or G6 complete.",
+    "Do not call a provider before a new authorization is issued."
+  ],
+  "sourceDigests": {
+    "authorization": "sha256:540e0530784c61d2bfd2a81bf3d4fa4c7161bad3b468d38c73e2a1a3ffb53cb9",
+    "preregistration": "sha256:de3a5c2397729537b8ea8e42f1c9e0758648d90a9e4f75b1f2c095afff9cf6aa"
+  }
+}

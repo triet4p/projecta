@@ -1,0 +1,857 @@
+{
+  "reportVersion": "s12.language-validator.v2",
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "status": "BLOCKED_LANGUAGE_METADATA",
+  "readScope": {
+    "atomicPayloadSplits": {
+      "development": 120,
+      "validation": 40
+    },
+    "testPayloadRead": false,
+    "testPayloadStatus": "not-available-custody",
+    "testManifestCount": 40
+  },
+  "review": {
+    "qualifiedReview": false,
+    "sourceReportVersion": "s12.corpus.qa.v2",
+    "humanEvidence": false,
+    "independentLabelsPresent": false,
+    "excludedSlicesWithoutQualifiedReview": [
+      "en",
+      "ja",
+      "mixed",
+      "vi"
+    ]
+  },
+  "atomic": {
+    "caseCount": 160,
+    "splitCounts": {
+      "development": 120,
+      "validation": 40
+    },
+    "inferredLanguageCounts": {
+      "en": 124,
+      "ja": 4,
+      "mixed": 4,
+      "unknown": 8,
+      "vi": 20
+    },
+    "mismatchCount": 96,
+    "mismatches": [
+      {
+        "caseId": "s12-a-0101",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:b04eb3408f375d85801b9c67a56de814e28160aee32f50dcb9e407d7dc7c989d"
+      },
+      {
+        "caseId": "s12-a-0102",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0103",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0104",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:fd8380c10b995090f0ece4a6d5849a9b281e0eea9ea4dae9ca1e23d403062079"
+      },
+      {
+        "caseId": "s12-a-0106",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:ac639b3bfa732752a001aafb66952906fa2df2b8f36b6f9e3568b23f45c8bad1"
+      },
+      {
+        "caseId": "s12-a-0107",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:2526d154a24e5f32b084c34ed176689c9e2e477fd36734938294f8220a12255c"
+      },
+      {
+        "caseId": "s12-a-0109",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:b04eb3408f375d85801b9c67a56de814e28160aee32f50dcb9e407d7dc7c989d"
+      },
+      {
+        "caseId": "s12-a-0110",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0111",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0112",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:fd8380c10b995090f0ece4a6d5849a9b281e0eea9ea4dae9ca1e23d403062079"
+      },
+      {
+        "caseId": "s12-a-0113",
+        "split": "validation",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "mixed",
+        "confidence": "high",
+        "evidenceHash": "sha256:2b7834376a0b903437a3554bfdbc18c2a317caf81ce9670df1982045a3528634"
+      },
+      {
+        "caseId": "s12-a-0114",
+        "split": "validation",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:ac639b3bfa732752a001aafb66952906fa2df2b8f36b6f9e3568b23f45c8bad1"
+      },
+      {
+        "caseId": "s12-a-0115",
+        "split": "validation",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:2526d154a24e5f32b084c34ed176689c9e2e477fd36734938294f8220a12255c"
+      },
+      {
+        "caseId": "s12-a-0122",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:ac639b3bfa732752a001aafb66952906fa2df2b8f36b6f9e3568b23f45c8bad1"
+      },
+      {
+        "caseId": "s12-a-0123",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:2526d154a24e5f32b084c34ed176689c9e2e477fd36734938294f8220a12255c"
+      },
+      {
+        "caseId": "s12-a-0125",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:b04eb3408f375d85801b9c67a56de814e28160aee32f50dcb9e407d7dc7c989d"
+      },
+      {
+        "caseId": "s12-a-0126",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0127",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0128",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:fd8380c10b995090f0ece4a6d5849a9b281e0eea9ea4dae9ca1e23d403062079"
+      },
+      {
+        "caseId": "s12-a-0130",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:ac639b3bfa732752a001aafb66952906fa2df2b8f36b6f9e3568b23f45c8bad1"
+      },
+      {
+        "caseId": "s12-a-0131",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:2526d154a24e5f32b084c34ed176689c9e2e477fd36734938294f8220a12255c"
+      },
+      {
+        "caseId": "s12-a-0133",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:b04eb3408f375d85801b9c67a56de814e28160aee32f50dcb9e407d7dc7c989d"
+      },
+      {
+        "caseId": "s12-a-0134",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0135",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0136",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:fd8380c10b995090f0ece4a6d5849a9b281e0eea9ea4dae9ca1e23d403062079"
+      },
+      {
+        "caseId": "s12-a-0138",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:ac639b3bfa732752a001aafb66952906fa2df2b8f36b6f9e3568b23f45c8bad1"
+      },
+      {
+        "caseId": "s12-a-0139",
+        "split": "validation",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:2526d154a24e5f32b084c34ed176689c9e2e477fd36734938294f8220a12255c"
+      },
+      {
+        "caseId": "s12-a-0141",
+        "split": "validation",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:b04eb3408f375d85801b9c67a56de814e28160aee32f50dcb9e407d7dc7c989d"
+      },
+      {
+        "caseId": "s12-a-0142",
+        "split": "validation",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0143",
+        "split": "validation",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0144",
+        "split": "validation",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:fd8380c10b995090f0ece4a6d5849a9b281e0eea9ea4dae9ca1e23d403062079"
+      },
+      {
+        "caseId": "s12-a-0151",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0152",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:fd8380c10b995090f0ece4a6d5849a9b281e0eea9ea4dae9ca1e23d403062079"
+      },
+      {
+        "caseId": "s12-a-0154",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:ac639b3bfa732752a001aafb66952906fa2df2b8f36b6f9e3568b23f45c8bad1"
+      },
+      {
+        "caseId": "s12-a-0155",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:2526d154a24e5f32b084c34ed176689c9e2e477fd36734938294f8220a12255c"
+      },
+      {
+        "caseId": "s12-a-0157",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:b04eb3408f375d85801b9c67a56de814e28160aee32f50dcb9e407d7dc7c989d"
+      },
+      {
+        "caseId": "s12-a-0158",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0159",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0160",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:fd8380c10b995090f0ece4a6d5849a9b281e0eea9ea4dae9ca1e23d403062079"
+      },
+      {
+        "caseId": "s12-a-0162",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:ac639b3bfa732752a001aafb66952906fa2df2b8f36b6f9e3568b23f45c8bad1"
+      },
+      {
+        "caseId": "s12-a-0163",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:2526d154a24e5f32b084c34ed176689c9e2e477fd36734938294f8220a12255c"
+      },
+      {
+        "caseId": "s12-a-0165",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:b04eb3408f375d85801b9c67a56de814e28160aee32f50dcb9e407d7dc7c989d"
+      },
+      {
+        "caseId": "s12-a-0166",
+        "split": "validation",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0167",
+        "split": "validation",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0168",
+        "split": "validation",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:fd8380c10b995090f0ece4a6d5849a9b281e0eea9ea4dae9ca1e23d403062079"
+      },
+      {
+        "caseId": "s12-a-0169",
+        "split": "validation",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "mixed",
+        "confidence": "high",
+        "evidenceHash": "sha256:2b7834376a0b903437a3554bfdbc18c2a317caf81ce9670df1982045a3528634"
+      },
+      {
+        "caseId": "s12-a-0170",
+        "split": "validation",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:ac639b3bfa732752a001aafb66952906fa2df2b8f36b6f9e3568b23f45c8bad1"
+      },
+      {
+        "caseId": "s12-a-0176",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:fd8380c10b995090f0ece4a6d5849a9b281e0eea9ea4dae9ca1e23d403062079"
+      },
+      {
+        "caseId": "s12-a-0178",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:ac639b3bfa732752a001aafb66952906fa2df2b8f36b6f9e3568b23f45c8bad1"
+      },
+      {
+        "caseId": "s12-a-0179",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:2526d154a24e5f32b084c34ed176689c9e2e477fd36734938294f8220a12255c"
+      },
+      {
+        "caseId": "s12-a-0181",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:b04eb3408f375d85801b9c67a56de814e28160aee32f50dcb9e407d7dc7c989d"
+      },
+      {
+        "caseId": "s12-a-0182",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0183",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0184",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:fd8380c10b995090f0ece4a6d5849a9b281e0eea9ea4dae9ca1e23d403062079"
+      },
+      {
+        "caseId": "s12-a-0186",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:ac639b3bfa732752a001aafb66952906fa2df2b8f36b6f9e3568b23f45c8bad1"
+      },
+      {
+        "caseId": "s12-a-0187",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:2526d154a24e5f32b084c34ed176689c9e2e477fd36734938294f8220a12255c"
+      },
+      {
+        "caseId": "s12-a-0189",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:b04eb3408f375d85801b9c67a56de814e28160aee32f50dcb9e407d7dc7c989d"
+      },
+      {
+        "caseId": "s12-a-0190",
+        "split": "development",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0191",
+        "split": "validation",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0192",
+        "split": "validation",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:fd8380c10b995090f0ece4a6d5849a9b281e0eea9ea4dae9ca1e23d403062079"
+      },
+      {
+        "caseId": "s12-a-0194",
+        "split": "validation",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:ac639b3bfa732752a001aafb66952906fa2df2b8f36b6f9e3568b23f45c8bad1"
+      },
+      {
+        "caseId": "s12-a-0195",
+        "split": "validation",
+        "declaredLanguage": "vi",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:2526d154a24e5f32b084c34ed176689c9e2e477fd36734938294f8220a12255c"
+      },
+      {
+        "caseId": "s12-a-0251",
+        "split": "development",
+        "declaredLanguage": "ja",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:2526d154a24e5f32b084c34ed176689c9e2e477fd36734938294f8220a12255c"
+      },
+      {
+        "caseId": "s12-a-0253",
+        "split": "development",
+        "declaredLanguage": "ja",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:b04eb3408f375d85801b9c67a56de814e28160aee32f50dcb9e407d7dc7c989d"
+      },
+      {
+        "caseId": "s12-a-0254",
+        "split": "development",
+        "declaredLanguage": "ja",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0255",
+        "split": "development",
+        "declaredLanguage": "ja",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0256",
+        "split": "development",
+        "declaredLanguage": "ja",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:fd8380c10b995090f0ece4a6d5849a9b281e0eea9ea4dae9ca1e23d403062079"
+      },
+      {
+        "caseId": "s12-a-0257",
+        "split": "development",
+        "declaredLanguage": "ja",
+        "inferredLanguage": "mixed",
+        "confidence": "high",
+        "evidenceHash": "sha256:ce97049d19c19772cfa45a7aa254e7428122bdc90637efa11ab8ab7e04b256c8"
+      },
+      {
+        "caseId": "s12-a-0258",
+        "split": "development",
+        "declaredLanguage": "ja",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:ac639b3bfa732752a001aafb66952906fa2df2b8f36b6f9e3568b23f45c8bad1"
+      },
+      {
+        "caseId": "s12-a-0259",
+        "split": "development",
+        "declaredLanguage": "ja",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:2526d154a24e5f32b084c34ed176689c9e2e477fd36734938294f8220a12255c"
+      },
+      {
+        "caseId": "s12-a-0261",
+        "split": "development",
+        "declaredLanguage": "ja",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:b04eb3408f375d85801b9c67a56de814e28160aee32f50dcb9e407d7dc7c989d"
+      },
+      {
+        "caseId": "s12-a-0262",
+        "split": "development",
+        "declaredLanguage": "ja",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0263",
+        "split": "development",
+        "declaredLanguage": "ja",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0264",
+        "split": "development",
+        "declaredLanguage": "ja",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:fd8380c10b995090f0ece4a6d5849a9b281e0eea9ea4dae9ca1e23d403062079"
+      },
+      {
+        "caseId": "s12-a-0266",
+        "split": "validation",
+        "declaredLanguage": "ja",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:ac639b3bfa732752a001aafb66952906fa2df2b8f36b6f9e3568b23f45c8bad1"
+      },
+      {
+        "caseId": "s12-a-0267",
+        "split": "validation",
+        "declaredLanguage": "ja",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:2526d154a24e5f32b084c34ed176689c9e2e477fd36734938294f8220a12255c"
+      },
+      {
+        "caseId": "s12-a-0269",
+        "split": "validation",
+        "declaredLanguage": "ja",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:b04eb3408f375d85801b9c67a56de814e28160aee32f50dcb9e407d7dc7c989d"
+      },
+      {
+        "caseId": "s12-a-0270",
+        "split": "validation",
+        "declaredLanguage": "ja",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0277",
+        "split": "development",
+        "declaredLanguage": "mixed",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:b04eb3408f375d85801b9c67a56de814e28160aee32f50dcb9e407d7dc7c989d"
+      },
+      {
+        "caseId": "s12-a-0278",
+        "split": "development",
+        "declaredLanguage": "mixed",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0279",
+        "split": "development",
+        "declaredLanguage": "mixed",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0280",
+        "split": "development",
+        "declaredLanguage": "mixed",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:fd8380c10b995090f0ece4a6d5849a9b281e0eea9ea4dae9ca1e23d403062079"
+      },
+      {
+        "caseId": "s12-a-0281",
+        "split": "development",
+        "declaredLanguage": "mixed",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:8949af5e6efcf2a688bbd8e475d11721210a6e2feb678867d1b2895e823c0b4f"
+      },
+      {
+        "caseId": "s12-a-0282",
+        "split": "development",
+        "declaredLanguage": "mixed",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:ac639b3bfa732752a001aafb66952906fa2df2b8f36b6f9e3568b23f45c8bad1"
+      },
+      {
+        "caseId": "s12-a-0283",
+        "split": "development",
+        "declaredLanguage": "mixed",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:2526d154a24e5f32b084c34ed176689c9e2e477fd36734938294f8220a12255c"
+      },
+      {
+        "caseId": "s12-a-0284",
+        "split": "development",
+        "declaredLanguage": "mixed",
+        "inferredLanguage": "vi",
+        "confidence": "high",
+        "evidenceHash": "sha256:3821f2f7e74956b1869dab064eb50cb3a77aeeed1e6446b5d78e70803043fc79"
+      },
+      {
+        "caseId": "s12-a-0285",
+        "split": "development",
+        "declaredLanguage": "mixed",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:b04eb3408f375d85801b9c67a56de814e28160aee32f50dcb9e407d7dc7c989d"
+      },
+      {
+        "caseId": "s12-a-0286",
+        "split": "development",
+        "declaredLanguage": "mixed",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0287",
+        "split": "development",
+        "declaredLanguage": "mixed",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0288",
+        "split": "development",
+        "declaredLanguage": "mixed",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:fd8380c10b995090f0ece4a6d5849a9b281e0eea9ea4dae9ca1e23d403062079"
+      },
+      {
+        "caseId": "s12-a-0290",
+        "split": "development",
+        "declaredLanguage": "mixed",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:ac639b3bfa732752a001aafb66952906fa2df2b8f36b6f9e3568b23f45c8bad1"
+      },
+      {
+        "caseId": "s12-a-0291",
+        "split": "validation",
+        "declaredLanguage": "mixed",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:2526d154a24e5f32b084c34ed176689c9e2e477fd36734938294f8220a12255c"
+      },
+      {
+        "caseId": "s12-a-0292",
+        "split": "validation",
+        "declaredLanguage": "mixed",
+        "inferredLanguage": "vi",
+        "confidence": "high",
+        "evidenceHash": "sha256:458c5e7c68f7de56d3343afd8fe79fd9e764244c5de17520eefbf471a879524b"
+      },
+      {
+        "caseId": "s12-a-0293",
+        "split": "validation",
+        "declaredLanguage": "mixed",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:b04eb3408f375d85801b9c67a56de814e28160aee32f50dcb9e407d7dc7c989d"
+      },
+      {
+        "caseId": "s12-a-0294",
+        "split": "validation",
+        "declaredLanguage": "mixed",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      },
+      {
+        "caseId": "s12-a-0295",
+        "split": "validation",
+        "declaredLanguage": "mixed",
+        "inferredLanguage": "en",
+        "confidence": "high",
+        "evidenceHash": "sha256:3c3ced2bdf4bc94bed734a8160501e5e77004d4bdefa36d7f5392463fd39628d"
+      }
+    ],
+    "slices": {
+      "declaredLanguageCounts": {
+        "en": 40,
+        "ja": 20,
+        "mixed": 20,
+        "vi": 80
+      },
+      "slices": [
+        {
+          "language": "en",
+          "caseCount": 40,
+          "mismatchCount": 0,
+          "qualifiedReview": false,
+          "eligibleForBenchmark": false
+        },
+        {
+          "language": "ja",
+          "caseCount": 20,
+          "mismatchCount": 16,
+          "qualifiedReview": false,
+          "eligibleForBenchmark": false
+        },
+        {
+          "language": "mixed",
+          "caseCount": 20,
+          "mismatchCount": 18,
+          "qualifiedReview": false,
+          "eligibleForBenchmark": false
+        },
+        {
+          "language": "vi",
+          "caseCount": 80,
+          "mismatchCount": 62,
+          "qualifiedReview": false,
+          "eligibleForBenchmark": false
+        }
+      ],
+      "eligibleSlices": []
+    },
+    "qualifiedReview": false,
+    "pass": false
+  },
+  "gates": {
+    "languageMetadataConsistent": false,
+    "qualifiedReviewPresent": false,
+    "eligibleLanguageSlices": []
+  }
+}

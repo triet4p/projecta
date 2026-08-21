@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "s12.v3.frozen-leakage.v1",
+  "status": "CLEAN_VISIBLE_SPLITS",
+  "atomicPass": true,
+  "scenarioPass": true,
+  "crossSplitNormalizedTemplateClusters": [],
+  "crossSplitExactContentDuplicates": [],
+  "reusedScenarioLineages": [],
+  "testPayloadRead": false
+}

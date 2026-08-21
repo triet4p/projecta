@@ -542,7 +542,6 @@ def test_phase_f_plan_stops_at_g5_approval_gate() -> None:
     packet = (ROOT / "docs/sprint-plans/sprint-12/g5-optimization.md").read_text(
         encoding="utf-8"
     )
-    assert "Status: `G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE`" in plan
     assert "[x] **S12-72" in plan
     assert "[x] **S12-82" in plan
     assert "[x] **S12-83" in plan
@@ -554,3 +553,38 @@ def test_phase_f_plan_stops_at_g5_approval_gate() -> None:
         )
         assert summary.exists(), summary
         assert "## Testing" in summary.read_text(encoding="utf-8")
+
+
+def test_phase_f_plan_inserts_g31_remediation_before_candidate_selection() -> None:
+    plan = (ROOT / "docs/sprint-plans/sprint-12.md").read_text(encoding="utf-8")
+    assert "Status: `G5_F12_ISSUED_PROVIDER_AUTHORIZATION_PENDING`" in plan
+    assert "[x] **S12-R01" in plan
+    assert "[x] **S12-R02" in plan
+    assert "[x] **S12-R03" in plan
+    assert "[x] **S12-R04" in plan
+    assert "[x] **S12-R05" in plan
+    assert "[x] **S12-R06" in plan
+    assert "[x] **S12-R07" in plan
+    assert "[x] **S12-R08" in plan
+    assert "[x] **S12-R09" in plan
+    assert "[x] **S12-R10" in plan
+    assert "[x] **S12-R11" in plan
+    assert "[x] **S12-R12" in plan
+    assert "[x] **S12-R13" in plan
+    assert "[x] **S12-R14" in plan
+    assert "[x] **S12-R15" in plan
+    assert "[x] **S12-R16" in plan
+    assert "[x] **S12-R17" in plan
+    assert "[x] **S12-R18" in plan
+    assert "[x] **S12-R19" in plan
+    assert "[x] **S12-R20" in plan
+    for number in range(21, 24):
+        assert f"[x] **S12-R{number:02d}" in plan
+    assert "[ ] **S12-R24" in plan
+    assert "G3.1-A — Measurement" in plan
+    assert "G3.1-B — Deep pilot" in plan
+    assert "G3.1-C — Dataset freeze" in plan
+    assert "G5-R Stage A" in plan
+    assert plan.index("S12-f-08 preparation") < plan.index("S12-R01")
+    assert plan.index("[x] **S12-R23") < plan.index("[ ] **S12-78")
+    assert plan.index("[ ] **S12-R24") < plan.index("[ ] **S12-85")

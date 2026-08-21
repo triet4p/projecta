@@ -1,0 +1,1604 @@
+{
+  "datasetVersion": "s12.corpus.scenario.v3.deep-pilot",
+  "status": "DEEP_PILOT_AUTHORED_PENDING_QA",
+  "humanEvidence": false,
+  "atomicDatasetVersion": "s12.corpus.atomic.v3.deep-pilot",
+  "scenarios": [
+    {
+      "scenarioId": "s12-s-101",
+      "schemaVersion": "s12.scenario.v1",
+      "journeyId": "J1",
+      "split": "development",
+      "events": [
+        {
+          "eventId": "event-01",
+          "sequence": 1,
+          "caseId": "s12-a-3001",
+          "expectedTemporalEffect": "creates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged",
+            "rationale": "Finance lead opened the Friday close requirement during Monday planning."
+          }
+        },
+        {
+          "eventId": "event-02",
+          "sequence": 2,
+          "caseId": "s12-a-3002",
+          "expectedTemporalEffect": "updates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic",
+            "rationale": "Treasury manager confirmed the Stripe fallback after the Tuesday retry review."
+          }
+        },
+        {
+          "eventId": "event-03",
+          "sequence": 3,
+          "caseId": "s12-a-3003",
+          "expectedTemporalEffect": "creates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged",
+            "rationale": "Settlement operations recorded the missing-file risk at Wednesday stand-up."
+          }
+        },
+        {
+          "eventId": "event-04",
+          "sequence": 4,
+          "caseId": "s12-a-3004",
+          "expectedTemporalEffect": "none",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged",
+            "rationale": "The chargeback owner was not named; the finance lead deferred assignment to Thursday."
+          }
+        },
+        {
+          "eventId": "event-05",
+          "sequence": 5,
+          "caseId": "s12-a-3005",
+          "expectedTemporalEffect": "implements",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged",
+            "rationale": "Platform engineer confirmed the replay mapping after the Thursday sandbox run."
+          }
+        },
+        {
+          "eventId": "event-06",
+          "sequence": 6,
+          "caseId": "s12-a-3006",
+          "expectedTemporalEffect": "contradicts",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic",
+            "rationale": "Risk reviewer kept the short retry window open because the gateway response was not yet reproduced."
+          }
+        },
+        {
+          "eventId": "event-07",
+          "sequence": 7,
+          "caseId": "s12-a-3007",
+          "expectedTemporalEffect": "updates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged",
+            "rationale": "Refund controller confirmed the two-hour review constraint before month close."
+          }
+        },
+        {
+          "eventId": "event-08",
+          "sequence": 8,
+          "caseId": "s12-a-3008",
+          "expectedTemporalEffect": "none",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged",
+            "rationale": "Product owner left the old-versus-new ledger choice unresolved for the next review."
+          }
+        }
+      ],
+      "checkpoints": [
+        {
+          "afterSequence": 2,
+          "sourceIds": [
+            "s12-a-3001",
+            "s12-a-3002"
+          ],
+          "candidateIds": [
+            "candidate-101-01",
+            "candidate-101-02"
+          ],
+          "assertedIds": [
+            "asserted-101-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-101-01",
+            "activity-101-02"
+          ],
+          "contradictionIds": []
+        },
+        {
+          "afterSequence": 4,
+          "sourceIds": [
+            "s12-a-3001",
+            "s12-a-3002",
+            "s12-a-3003",
+            "s12-a-3004"
+          ],
+          "candidateIds": [
+            "candidate-101-01",
+            "candidate-101-02",
+            "candidate-101-03",
+            "candidate-101-04"
+          ],
+          "assertedIds": [
+            "asserted-101-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-101-01",
+            "activity-101-02",
+            "activity-101-03",
+            "activity-101-04"
+          ],
+          "contradictionIds": []
+        },
+        {
+          "afterSequence": 6,
+          "sourceIds": [
+            "s12-a-3001",
+            "s12-a-3002",
+            "s12-a-3003",
+            "s12-a-3004",
+            "s12-a-3005",
+            "s12-a-3006"
+          ],
+          "candidateIds": [
+            "candidate-101-01",
+            "candidate-101-02",
+            "candidate-101-03",
+            "candidate-101-04",
+            "candidate-101-05",
+            "candidate-101-06"
+          ],
+          "assertedIds": [
+            "asserted-101-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved",
+            "open-review-risk"
+          ],
+          "provenanceActivityIds": [
+            "activity-101-01",
+            "activity-101-02",
+            "activity-101-03",
+            "activity-101-04",
+            "activity-101-05",
+            "activity-101-06"
+          ],
+          "contradictionIds": [
+            "contradiction-101-01"
+          ]
+        },
+        {
+          "afterSequence": 8,
+          "sourceIds": [
+            "s12-a-3001",
+            "s12-a-3002",
+            "s12-a-3003",
+            "s12-a-3004",
+            "s12-a-3005",
+            "s12-a-3006",
+            "s12-a-3007",
+            "s12-a-3008"
+          ],
+          "candidateIds": [
+            "candidate-101-01",
+            "candidate-101-02",
+            "candidate-101-03",
+            "candidate-101-04",
+            "candidate-101-05",
+            "candidate-101-06",
+            "candidate-101-07",
+            "candidate-101-08"
+          ],
+          "assertedIds": [
+            "asserted-101-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved",
+            "open-review-risk"
+          ],
+          "provenanceActivityIds": [
+            "activity-101-01",
+            "activity-101-02",
+            "activity-101-03",
+            "activity-101-04",
+            "activity-101-05",
+            "activity-101-06",
+            "activity-101-07",
+            "activity-101-08"
+          ],
+          "contradictionIds": [
+            "contradiction-101-01"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-01",
+          "status": "answerable",
+          "expectedFactIds": [
+            "fact-101-01",
+            "fact-101-02"
+          ],
+          "expectedCitationIds": [
+            "s12-a-3001",
+            "s12-a-3002"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        },
+        {
+          "questionId": "CQ-02",
+          "status": "ambiguous",
+          "expectedFactIds": [],
+          "expectedCitationIds": [
+            "s12-a-3008"
+          ],
+          "completeness": "not-applicable",
+          "freshness": "not-applicable",
+          "abstain": true
+        }
+      ],
+      "sourceManifest": [
+        "s12-a-3001",
+        "s12-a-3002",
+        "s12-a-3003",
+        "s12-a-3004",
+        "s12-a-3005",
+        "s12-a-3006",
+        "s12-a-3007",
+        "s12-a-3008"
+      ]
+    },
+    {
+      "scenarioId": "s12-s-102",
+      "schemaVersion": "s12.scenario.v1",
+      "journeyId": "J2",
+      "split": "development",
+      "events": [
+        {
+          "eventId": "event-01",
+          "sequence": 1,
+          "caseId": "s12-a-3009",
+          "expectedTemporalEffect": "creates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged",
+            "rationale": "Warehouse manager set the outbound lock as the first Monday dispatch rule."
+          }
+        },
+        {
+          "eventId": "event-02",
+          "sequence": 2,
+          "caseId": "s12-a-3010",
+          "expectedTemporalEffect": "updates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic",
+            "rationale": "Loading supervisor chose pallet scanning at Tuesday bay planning."
+          }
+        },
+        {
+          "eventId": "event-03",
+          "sequence": 3,
+          "caseId": "s12-a-3011",
+          "expectedTemporalEffect": "creates",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic",
+            "rationale": "Line-B lead reported the carton-label risk and asked operations to verify it."
+          }
+        },
+        {
+          "eventId": "event-04",
+          "sequence": 4,
+          "caseId": "s12-a-3012",
+          "expectedTemporalEffect": "none",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged",
+            "rationale": "Regional warehouse coordinator asked for an ETA; transport planner deferred the answer."
+          }
+        },
+        {
+          "eventId": "event-05",
+          "sequence": 5,
+          "caseId": "s12-a-3013",
+          "expectedTemporalEffect": "creates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged",
+            "rationale": "Training lead confirmed the scanner pilot complete after Wednesday practice."
+          }
+        },
+        {
+          "eventId": "event-06",
+          "sequence": 6,
+          "caseId": "s12-a-3014",
+          "expectedTemporalEffect": "contradicts",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic",
+            "rationale": "Quality reviewer marked the barcode risk as open because the pass-rate sample was incomplete."
+          }
+        },
+        {
+          "eventId": "event-07",
+          "sequence": 7,
+          "caseId": "s12-a-3015",
+          "expectedTemporalEffect": "updates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged",
+            "rationale": "Slotting analyst confirmed the dependency before the next picking wave."
+          }
+        },
+        {
+          "eventId": "event-08",
+          "sequence": 8,
+          "caseId": "s12-a-3016",
+          "expectedTemporalEffect": "none",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged",
+            "rationale": "Logistics director postponed the 3PL overflow choice until capacity numbers arrive."
+          }
+        }
+      ],
+      "checkpoints": [
+        {
+          "afterSequence": 2,
+          "sourceIds": [
+            "s12-a-3009",
+            "s12-a-3010"
+          ],
+          "candidateIds": [
+            "candidate-102-01",
+            "candidate-102-02"
+          ],
+          "assertedIds": [
+            "asserted-102-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-102-01",
+            "activity-102-02"
+          ],
+          "contradictionIds": []
+        },
+        {
+          "afterSequence": 4,
+          "sourceIds": [
+            "s12-a-3009",
+            "s12-a-3010",
+            "s12-a-3011",
+            "s12-a-3012"
+          ],
+          "candidateIds": [
+            "candidate-102-01",
+            "candidate-102-02",
+            "candidate-102-03",
+            "candidate-102-04"
+          ],
+          "assertedIds": [
+            "asserted-102-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-102-01",
+            "activity-102-02",
+            "activity-102-03",
+            "activity-102-04"
+          ],
+          "contradictionIds": []
+        },
+        {
+          "afterSequence": 6,
+          "sourceIds": [
+            "s12-a-3009",
+            "s12-a-3010",
+            "s12-a-3011",
+            "s12-a-3012",
+            "s12-a-3013",
+            "s12-a-3014"
+          ],
+          "candidateIds": [
+            "candidate-102-01",
+            "candidate-102-02",
+            "candidate-102-03",
+            "candidate-102-04",
+            "candidate-102-05",
+            "candidate-102-06"
+          ],
+          "assertedIds": [
+            "asserted-102-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved",
+            "open-review-risk"
+          ],
+          "provenanceActivityIds": [
+            "activity-102-01",
+            "activity-102-02",
+            "activity-102-03",
+            "activity-102-04",
+            "activity-102-05",
+            "activity-102-06"
+          ],
+          "contradictionIds": [
+            "contradiction-102-01"
+          ]
+        },
+        {
+          "afterSequence": 8,
+          "sourceIds": [
+            "s12-a-3009",
+            "s12-a-3010",
+            "s12-a-3011",
+            "s12-a-3012",
+            "s12-a-3013",
+            "s12-a-3014",
+            "s12-a-3015",
+            "s12-a-3016"
+          ],
+          "candidateIds": [
+            "candidate-102-01",
+            "candidate-102-02",
+            "candidate-102-03",
+            "candidate-102-04",
+            "candidate-102-05",
+            "candidate-102-06",
+            "candidate-102-07",
+            "candidate-102-08"
+          ],
+          "assertedIds": [
+            "asserted-102-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved",
+            "open-review-risk"
+          ],
+          "provenanceActivityIds": [
+            "activity-102-01",
+            "activity-102-02",
+            "activity-102-03",
+            "activity-102-04",
+            "activity-102-05",
+            "activity-102-06",
+            "activity-102-07",
+            "activity-102-08"
+          ],
+          "contradictionIds": [
+            "contradiction-102-01"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-03",
+          "status": "answerable",
+          "expectedFactIds": [
+            "fact-102-01",
+            "fact-102-02"
+          ],
+          "expectedCitationIds": [
+            "s12-a-3009",
+            "s12-a-3010"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        },
+        {
+          "questionId": "CQ-04",
+          "status": "ambiguous",
+          "expectedFactIds": [],
+          "expectedCitationIds": [
+            "s12-a-3016"
+          ],
+          "completeness": "not-applicable",
+          "freshness": "not-applicable",
+          "abstain": true
+        }
+      ],
+      "sourceManifest": [
+        "s12-a-3009",
+        "s12-a-3010",
+        "s12-a-3011",
+        "s12-a-3012",
+        "s12-a-3013",
+        "s12-a-3014",
+        "s12-a-3015",
+        "s12-a-3016"
+      ]
+    },
+    {
+      "scenarioId": "s12-s-103",
+      "schemaVersion": "s12.scenario.v1",
+      "journeyId": "J3",
+      "split": "development",
+      "events": [
+        {
+          "eventId": "event-01",
+          "sequence": 1,
+          "caseId": "s12-a-3017",
+          "expectedTemporalEffect": "creates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged",
+            "rationale": "Identity architect required an owner on every tenant before SSO planning started."
+          }
+        },
+        {
+          "eventId": "event-02",
+          "sequence": 2,
+          "caseId": "s12-a-3018",
+          "expectedTemporalEffect": "updates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic",
+            "rationale": "Security lead selected OAuth device flow at the partner-portal design review."
+          }
+        },
+        {
+          "eventId": "event-03",
+          "sequence": 3,
+          "caseId": "s12-a-3019",
+          "expectedTemporalEffect": "implements",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged",
+            "rationale": "Migration engineer confirmed the SSO mapping in the first import rehearsal."
+          }
+        },
+        {
+          "eventId": "event-04",
+          "sequence": 4,
+          "caseId": "s12-a-3020",
+          "expectedTemporalEffect": "none",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged",
+            "rationale": "Tenant operations asked who could approve the locked list; the release manager deferred it."
+          }
+        },
+        {
+          "eventId": "event-05",
+          "sequence": 5,
+          "caseId": "s12-a-3021",
+          "expectedTemporalEffect": "creates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged",
+            "rationale": "Data migration lead confirmed the dry run completed with no rejected rows."
+          }
+        },
+        {
+          "eventId": "event-06",
+          "sequence": 6,
+          "caseId": "s12-a-3022",
+          "expectedTemporalEffect": "contradicts",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "major-semantic",
+            "rationale": "Policy owner kept the region-mapping risk unresolved because tenant routing evidence was missing."
+          }
+        },
+        {
+          "eventId": "event-07",
+          "sequence": 7,
+          "caseId": "s12-a-3023",
+          "expectedTemporalEffect": "updates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged",
+            "rationale": "Mobile security reviewer confirmed the device-binding constraint for the login flow."
+          }
+        },
+        {
+          "eventId": "event-08",
+          "sequence": 8,
+          "caseId": "s12-a-3024",
+          "expectedTemporalEffect": "supersedes",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "major-semantic",
+            "rationale": "Product security deferred the old-login shutdown until the OAuth rollout owner signs off."
+          }
+        }
+      ],
+      "checkpoints": [
+        {
+          "afterSequence": 2,
+          "sourceIds": [
+            "s12-a-3017",
+            "s12-a-3018"
+          ],
+          "candidateIds": [
+            "candidate-103-01",
+            "candidate-103-02"
+          ],
+          "assertedIds": [
+            "asserted-103-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-103-01",
+            "activity-103-02"
+          ],
+          "contradictionIds": []
+        },
+        {
+          "afterSequence": 4,
+          "sourceIds": [
+            "s12-a-3017",
+            "s12-a-3018",
+            "s12-a-3019",
+            "s12-a-3020"
+          ],
+          "candidateIds": [
+            "candidate-103-01",
+            "candidate-103-02",
+            "candidate-103-03",
+            "candidate-103-04"
+          ],
+          "assertedIds": [
+            "asserted-103-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-103-01",
+            "activity-103-02",
+            "activity-103-03",
+            "activity-103-04"
+          ],
+          "contradictionIds": []
+        },
+        {
+          "afterSequence": 6,
+          "sourceIds": [
+            "s12-a-3017",
+            "s12-a-3018",
+            "s12-a-3019",
+            "s12-a-3020",
+            "s12-a-3021",
+            "s12-a-3022"
+          ],
+          "candidateIds": [
+            "candidate-103-01",
+            "candidate-103-02",
+            "candidate-103-03",
+            "candidate-103-04",
+            "candidate-103-05",
+            "candidate-103-06"
+          ],
+          "assertedIds": [
+            "asserted-103-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved",
+            "open-review-risk"
+          ],
+          "provenanceActivityIds": [
+            "activity-103-01",
+            "activity-103-02",
+            "activity-103-03",
+            "activity-103-04",
+            "activity-103-05",
+            "activity-103-06"
+          ],
+          "contradictionIds": [
+            "contradiction-103-01"
+          ]
+        },
+        {
+          "afterSequence": 8,
+          "sourceIds": [
+            "s12-a-3017",
+            "s12-a-3018",
+            "s12-a-3019",
+            "s12-a-3020",
+            "s12-a-3021",
+            "s12-a-3022",
+            "s12-a-3023",
+            "s12-a-3024"
+          ],
+          "candidateIds": [
+            "candidate-103-01",
+            "candidate-103-02",
+            "candidate-103-03",
+            "candidate-103-04",
+            "candidate-103-05",
+            "candidate-103-06",
+            "candidate-103-07",
+            "candidate-103-08"
+          ],
+          "assertedIds": [
+            "asserted-103-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved",
+            "open-review-risk"
+          ],
+          "provenanceActivityIds": [
+            "activity-103-01",
+            "activity-103-02",
+            "activity-103-03",
+            "activity-103-04",
+            "activity-103-05",
+            "activity-103-06",
+            "activity-103-07",
+            "activity-103-08"
+          ],
+          "contradictionIds": [
+            "contradiction-103-01"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-05",
+          "status": "answerable",
+          "expectedFactIds": [
+            "fact-103-01",
+            "fact-103-02"
+          ],
+          "expectedCitationIds": [
+            "s12-a-3017",
+            "s12-a-3018"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        },
+        {
+          "questionId": "CQ-06",
+          "status": "ambiguous",
+          "expectedFactIds": [],
+          "expectedCitationIds": [
+            "s12-a-3024"
+          ],
+          "completeness": "not-applicable",
+          "freshness": "not-applicable",
+          "abstain": true
+        }
+      ],
+      "sourceManifest": [
+        "s12-a-3017",
+        "s12-a-3018",
+        "s12-a-3019",
+        "s12-a-3020",
+        "s12-a-3021",
+        "s12-a-3022",
+        "s12-a-3023",
+        "s12-a-3024"
+      ]
+    },
+    {
+      "scenarioId": "s12-s-104",
+      "schemaVersion": "s12.scenario.v1",
+      "journeyId": "J4",
+      "split": "development",
+      "events": [
+        {
+          "eventId": "event-01",
+          "sequence": 1,
+          "caseId": "s12-a-3025",
+          "expectedTemporalEffect": "creates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged",
+            "rationale": "Claims product owner required an audit trail before the Monday payout planning session."
+          }
+        },
+        {
+          "eventId": "event-02",
+          "sequence": 2,
+          "caseId": "s12-a-3026",
+          "expectedTemporalEffect": "updates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic",
+            "rationale": "Claims manager approved two-step review for high-value payouts on Tuesday."
+          }
+        },
+        {
+          "eventId": "event-03",
+          "sequence": 3,
+          "caseId": "s12-a-3027",
+          "expectedTemporalEffect": "updates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged",
+            "rationale": "Fraud lead confirmed the reviewer support rule after the anomaly triage."
+          }
+        },
+        {
+          "eventId": "event-04",
+          "sequence": 4,
+          "caseId": "s12-a-3028",
+          "expectedTemporalEffect": "none",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged",
+            "rationale": "Compliance coordinator asked for a sign-off owner; the claims manager deferred assignment."
+          }
+        },
+        {
+          "eventId": "event-05",
+          "sequence": 5,
+          "caseId": "s12-a-3029",
+          "expectedTemporalEffect": "creates",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic",
+            "rationale": "Partner operations recorded two late files and asked for a delivery review."
+          }
+        },
+        {
+          "eventId": "event-06",
+          "sequence": 6,
+          "caseId": "s12-a-3030",
+          "expectedTemporalEffect": "contradicts",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "major-semantic",
+            "rationale": "Payout controller held the VIP auto-payout decision because the policy exception was missing."
+          }
+        },
+        {
+          "eventId": "event-07",
+          "sequence": 7,
+          "caseId": "s12-a-3031",
+          "expectedTemporalEffect": "updates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged",
+            "rationale": "Knowledge lead confirmed that the FAQ assistant can answer the duplicate-claim question."
+          }
+        },
+        {
+          "eventId": "event-08",
+          "sequence": 8,
+          "caseId": "s12-a-3032",
+          "expectedTemporalEffect": "none",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged",
+            "rationale": "Claims owner kept the export scope open until the approved-claim boundary is agreed."
+          }
+        }
+      ],
+      "checkpoints": [
+        {
+          "afterSequence": 2,
+          "sourceIds": [
+            "s12-a-3025",
+            "s12-a-3026"
+          ],
+          "candidateIds": [
+            "candidate-104-01",
+            "candidate-104-02"
+          ],
+          "assertedIds": [
+            "asserted-104-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-104-01",
+            "activity-104-02"
+          ],
+          "contradictionIds": []
+        },
+        {
+          "afterSequence": 4,
+          "sourceIds": [
+            "s12-a-3025",
+            "s12-a-3026",
+            "s12-a-3027",
+            "s12-a-3028"
+          ],
+          "candidateIds": [
+            "candidate-104-01",
+            "candidate-104-02",
+            "candidate-104-03",
+            "candidate-104-04"
+          ],
+          "assertedIds": [
+            "asserted-104-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-104-01",
+            "activity-104-02",
+            "activity-104-03",
+            "activity-104-04"
+          ],
+          "contradictionIds": []
+        },
+        {
+          "afterSequence": 6,
+          "sourceIds": [
+            "s12-a-3025",
+            "s12-a-3026",
+            "s12-a-3027",
+            "s12-a-3028",
+            "s12-a-3029",
+            "s12-a-3030"
+          ],
+          "candidateIds": [
+            "candidate-104-01",
+            "candidate-104-02",
+            "candidate-104-03",
+            "candidate-104-04",
+            "candidate-104-05",
+            "candidate-104-06"
+          ],
+          "assertedIds": [
+            "asserted-104-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved",
+            "open-review-risk"
+          ],
+          "provenanceActivityIds": [
+            "activity-104-01",
+            "activity-104-02",
+            "activity-104-03",
+            "activity-104-04",
+            "activity-104-05",
+            "activity-104-06"
+          ],
+          "contradictionIds": [
+            "contradiction-104-01"
+          ]
+        },
+        {
+          "afterSequence": 8,
+          "sourceIds": [
+            "s12-a-3025",
+            "s12-a-3026",
+            "s12-a-3027",
+            "s12-a-3028",
+            "s12-a-3029",
+            "s12-a-3030",
+            "s12-a-3031",
+            "s12-a-3032"
+          ],
+          "candidateIds": [
+            "candidate-104-01",
+            "candidate-104-02",
+            "candidate-104-03",
+            "candidate-104-04",
+            "candidate-104-05",
+            "candidate-104-06",
+            "candidate-104-07",
+            "candidate-104-08"
+          ],
+          "assertedIds": [
+            "asserted-104-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved",
+            "open-review-risk"
+          ],
+          "provenanceActivityIds": [
+            "activity-104-01",
+            "activity-104-02",
+            "activity-104-03",
+            "activity-104-04",
+            "activity-104-05",
+            "activity-104-06",
+            "activity-104-07",
+            "activity-104-08"
+          ],
+          "contradictionIds": [
+            "contradiction-104-01"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-07",
+          "status": "answerable",
+          "expectedFactIds": [
+            "fact-104-01",
+            "fact-104-02"
+          ],
+          "expectedCitationIds": [
+            "s12-a-3025",
+            "s12-a-3026"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        },
+        {
+          "questionId": "CQ-08",
+          "status": "ambiguous",
+          "expectedFactIds": [],
+          "expectedCitationIds": [
+            "s12-a-3032"
+          ],
+          "completeness": "not-applicable",
+          "freshness": "not-applicable",
+          "abstain": true
+        }
+      ],
+      "sourceManifest": [
+        "s12-a-3025",
+        "s12-a-3026",
+        "s12-a-3027",
+        "s12-a-3028",
+        "s12-a-3029",
+        "s12-a-3030",
+        "s12-a-3031",
+        "s12-a-3032"
+      ]
+    },
+    {
+      "scenarioId": "s12-s-105",
+      "schemaVersion": "s12.scenario.v1",
+      "journeyId": "J5",
+      "split": "validation",
+      "events": [
+        {
+          "eventId": "event-01",
+          "sequence": 1,
+          "caseId": "s12-a-3033",
+          "expectedTemporalEffect": "creates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged",
+            "rationale": "Clinic operations required an urgent-follow-up buffer during Monday scheduling."
+          }
+        },
+        {
+          "eventId": "event-02",
+          "sequence": 2,
+          "caseId": "s12-a-3034",
+          "expectedTemporalEffect": "updates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic",
+            "rationale": "Clinic manager selected SMS reminders at the Tuesday patient-flow review."
+          }
+        },
+        {
+          "eventId": "event-03",
+          "sequence": 3,
+          "caseId": "s12-a-3035",
+          "expectedTemporalEffect": "contradicts",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "minor-semantic",
+            "rationale": "Nurse lead reported that missing consent contradicts confirmation policy and requested compliance review."
+          }
+        },
+        {
+          "eventId": "event-04",
+          "sequence": 4,
+          "caseId": "s12-a-3036",
+          "expectedTemporalEffect": "none",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged",
+            "rationale": "Patient support asked which channel allows rescheduling; service owner deferred the answer."
+          }
+        },
+        {
+          "eventId": "event-05",
+          "sequence": 5,
+          "caseId": "s12-a-3037",
+          "expectedTemporalEffect": "creates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged",
+            "rationale": "Nursing lead confirmed the reminder pilot after Wednesday shift handover."
+          }
+        },
+        {
+          "eventId": "event-06",
+          "sequence": 6,
+          "caseId": "s12-a-3038",
+          "expectedTemporalEffect": "updates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged",
+            "rationale": "Consent coordinator confirmed that appointment confirmation depends on the consent check."
+          }
+        },
+        {
+          "eventId": "event-07",
+          "sequence": 7,
+          "caseId": "s12-a-3039",
+          "expectedTemporalEffect": "updates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic",
+            "rationale": "Japanese clinic liaison confirmed the pre-visit email requirement for the validation episode."
+          }
+        },
+        {
+          "eventId": "event-08",
+          "sequence": 8,
+          "caseId": "s12-a-3040",
+          "expectedTemporalEffect": "none",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged",
+            "rationale": "Scheduling owner postponed the single-queue choice until the clinic capacity review."
+          }
+        }
+      ],
+      "checkpoints": [
+        {
+          "afterSequence": 2,
+          "sourceIds": [
+            "s12-a-3033",
+            "s12-a-3034"
+          ],
+          "candidateIds": [
+            "candidate-105-01",
+            "candidate-105-02"
+          ],
+          "assertedIds": [
+            "asserted-105-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-105-01",
+            "activity-105-02"
+          ],
+          "contradictionIds": []
+        },
+        {
+          "afterSequence": 4,
+          "sourceIds": [
+            "s12-a-3033",
+            "s12-a-3034",
+            "s12-a-3035",
+            "s12-a-3036"
+          ],
+          "candidateIds": [
+            "candidate-105-01",
+            "candidate-105-02",
+            "candidate-105-03",
+            "candidate-105-04"
+          ],
+          "assertedIds": [
+            "asserted-105-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-105-01",
+            "activity-105-02",
+            "activity-105-03",
+            "activity-105-04"
+          ],
+          "contradictionIds": []
+        },
+        {
+          "afterSequence": 6,
+          "sourceIds": [
+            "s12-a-3033",
+            "s12-a-3034",
+            "s12-a-3035",
+            "s12-a-3036",
+            "s12-a-3037",
+            "s12-a-3038"
+          ],
+          "candidateIds": [
+            "candidate-105-01",
+            "candidate-105-02",
+            "candidate-105-03",
+            "candidate-105-04",
+            "candidate-105-05",
+            "candidate-105-06"
+          ],
+          "assertedIds": [
+            "asserted-105-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved",
+            "open-review-risk"
+          ],
+          "provenanceActivityIds": [
+            "activity-105-01",
+            "activity-105-02",
+            "activity-105-03",
+            "activity-105-04",
+            "activity-105-05",
+            "activity-105-06"
+          ],
+          "contradictionIds": [
+            "contradiction-105-01"
+          ]
+        },
+        {
+          "afterSequence": 8,
+          "sourceIds": [
+            "s12-a-3033",
+            "s12-a-3034",
+            "s12-a-3035",
+            "s12-a-3036",
+            "s12-a-3037",
+            "s12-a-3038",
+            "s12-a-3039",
+            "s12-a-3040"
+          ],
+          "candidateIds": [
+            "candidate-105-01",
+            "candidate-105-02",
+            "candidate-105-03",
+            "candidate-105-04",
+            "candidate-105-05",
+            "candidate-105-06",
+            "candidate-105-07",
+            "candidate-105-08"
+          ],
+          "assertedIds": [
+            "asserted-105-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved",
+            "open-review-risk"
+          ],
+          "provenanceActivityIds": [
+            "activity-105-01",
+            "activity-105-02",
+            "activity-105-03",
+            "activity-105-04",
+            "activity-105-05",
+            "activity-105-06",
+            "activity-105-07",
+            "activity-105-08"
+          ],
+          "contradictionIds": [
+            "contradiction-105-01"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-09",
+          "status": "answerable",
+          "expectedFactIds": [
+            "fact-105-01",
+            "fact-105-02"
+          ],
+          "expectedCitationIds": [
+            "s12-a-3033",
+            "s12-a-3034"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        },
+        {
+          "questionId": "CQ-10",
+          "status": "ambiguous",
+          "expectedFactIds": [],
+          "expectedCitationIds": [
+            "s12-a-3040"
+          ],
+          "completeness": "not-applicable",
+          "freshness": "not-applicable",
+          "abstain": true
+        }
+      ],
+      "sourceManifest": [
+        "s12-a-3033",
+        "s12-a-3034",
+        "s12-a-3035",
+        "s12-a-3036",
+        "s12-a-3037",
+        "s12-a-3038",
+        "s12-a-3039",
+        "s12-a-3040"
+      ]
+    },
+    {
+      "scenarioId": "s12-s-106",
+      "schemaVersion": "s12.scenario.v1",
+      "journeyId": "J6",
+      "split": "validation",
+      "events": [
+        {
+          "eventId": "event-01",
+          "sequence": 1,
+          "caseId": "s12-a-3041",
+          "expectedTemporalEffect": "creates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged",
+            "rationale": "Field-service manager required maintenance visibility before Tuesday shift assignment."
+          }
+        },
+        {
+          "eventId": "event-02",
+          "sequence": 2,
+          "caseId": "s12-a-3042",
+          "expectedTemporalEffect": "updates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic",
+            "rationale": "Rollout lead selected offline mode for the first regional deployment."
+          }
+        },
+        {
+          "eventId": "event-03",
+          "sequence": 3,
+          "caseId": "s12-a-3043",
+          "expectedTemporalEffect": "implements",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged",
+            "rationale": "Safety coordinator confirmed the dispatch checklist after the Wednesday review."
+          }
+        },
+        {
+          "eventId": "event-04",
+          "sequence": 4,
+          "caseId": "s12-a-3044",
+          "expectedTemporalEffect": "none",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged",
+            "rationale": "Site supervisor asked who confirms the spare part; the depot owner deferred the answer."
+          }
+        },
+        {
+          "eventId": "event-05",
+          "sequence": 5,
+          "caseId": "s12-a-3045",
+          "expectedTemporalEffect": "creates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "unchanged",
+            "rationale": "Regional support lead confirmed the pilot rollout completed in the first zone."
+          }
+        },
+        {
+          "eventId": "event-06",
+          "sequence": 6,
+          "caseId": "s12-a-3046",
+          "expectedTemporalEffect": "contradicts",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "major-semantic",
+            "rationale": "Connectivity reviewer kept the remote-sync risk open because field logs were incomplete."
+          }
+        },
+        {
+          "eventId": "event-07",
+          "sequence": 7,
+          "caseId": "s12-a-3047",
+          "expectedTemporalEffect": "updates",
+          "expectedReview": {
+            "disposition": "confirmed",
+            "correctionClass": "minor-semantic",
+            "rationale": "Japanese field liaison confirmed the device power-setting constraint during validation review."
+          }
+        },
+        {
+          "eventId": "event-08",
+          "sequence": 8,
+          "caseId": "s12-a-3048",
+          "expectedTemporalEffect": "none",
+          "expectedReview": {
+            "disposition": "deferred",
+            "correctionClass": "unchanged",
+            "rationale": "Maintenance owner postponed the schedule change until the site coordinator responds."
+          }
+        }
+      ],
+      "checkpoints": [
+        {
+          "afterSequence": 2,
+          "sourceIds": [
+            "s12-a-3041",
+            "s12-a-3042"
+          ],
+          "candidateIds": [
+            "candidate-106-01",
+            "candidate-106-02"
+          ],
+          "assertedIds": [
+            "asserted-106-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-106-01",
+            "activity-106-02"
+          ],
+          "contradictionIds": []
+        },
+        {
+          "afterSequence": 4,
+          "sourceIds": [
+            "s12-a-3041",
+            "s12-a-3042",
+            "s12-a-3043",
+            "s12-a-3044"
+          ],
+          "candidateIds": [
+            "candidate-106-01",
+            "candidate-106-02",
+            "candidate-106-03",
+            "candidate-106-04"
+          ],
+          "assertedIds": [
+            "asserted-106-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved"
+          ],
+          "provenanceActivityIds": [
+            "activity-106-01",
+            "activity-106-02",
+            "activity-106-03",
+            "activity-106-04"
+          ],
+          "contradictionIds": []
+        },
+        {
+          "afterSequence": 6,
+          "sourceIds": [
+            "s12-a-3041",
+            "s12-a-3042",
+            "s12-a-3043",
+            "s12-a-3044",
+            "s12-a-3045",
+            "s12-a-3046"
+          ],
+          "candidateIds": [
+            "candidate-106-01",
+            "candidate-106-02",
+            "candidate-106-03",
+            "candidate-106-04",
+            "candidate-106-05",
+            "candidate-106-06"
+          ],
+          "assertedIds": [
+            "asserted-106-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved",
+            "open-review-risk"
+          ],
+          "provenanceActivityIds": [
+            "activity-106-01",
+            "activity-106-02",
+            "activity-106-03",
+            "activity-106-04",
+            "activity-106-05",
+            "activity-106-06"
+          ],
+          "contradictionIds": [
+            "contradiction-106-01"
+          ]
+        },
+        {
+          "afterSequence": 8,
+          "sourceIds": [
+            "s12-a-3041",
+            "s12-a-3042",
+            "s12-a-3043",
+            "s12-a-3044",
+            "s12-a-3045",
+            "s12-a-3046",
+            "s12-a-3047",
+            "s12-a-3048"
+          ],
+          "candidateIds": [
+            "candidate-106-01",
+            "candidate-106-02",
+            "candidate-106-03",
+            "candidate-106-04",
+            "candidate-106-05",
+            "candidate-106-06",
+            "candidate-106-07",
+            "candidate-106-08"
+          ],
+          "assertedIds": [
+            "asserted-106-01"
+          ],
+          "inferredExpectations": [
+            "history-preserved",
+            "open-review-risk"
+          ],
+          "provenanceActivityIds": [
+            "activity-106-01",
+            "activity-106-02",
+            "activity-106-03",
+            "activity-106-04",
+            "activity-106-05",
+            "activity-106-06",
+            "activity-106-07",
+            "activity-106-08"
+          ],
+          "contradictionIds": [
+            "contradiction-106-01"
+          ]
+        }
+      ],
+      "competencyAnswers": [
+        {
+          "questionId": "CQ-11",
+          "status": "answerable",
+          "expectedFactIds": [
+            "fact-106-01",
+            "fact-106-02"
+          ],
+          "expectedCitationIds": [
+            "s12-a-3041",
+            "s12-a-3042"
+          ],
+          "completeness": "complete",
+          "freshness": "current",
+          "abstain": false
+        },
+        {
+          "questionId": "CQ-12",
+          "status": "ambiguous",
+          "expectedFactIds": [],
+          "expectedCitationIds": [
+            "s12-a-3048"
+          ],
+          "completeness": "not-applicable",
+          "freshness": "not-applicable",
+          "abstain": true
+        }
+      ],
+      "sourceManifest": [
+        "s12-a-3041",
+        "s12-a-3042",
+        "s12-a-3043",
+        "s12-a-3044",
+        "s12-a-3045",
+        "s12-a-3046",
+        "s12-a-3047",
+        "s12-a-3048"
+      ]
+    }
+  ]
+}

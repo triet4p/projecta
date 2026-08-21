@@ -1,0 +1,751 @@
+{
+  "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "evaluatorVersion": "s12.evaluator.v4",
+  "experiments": [
+    {
+      "baselineConfigurationDigest": "sha256:2f4a4c84984fefd1d6ab502a5e73a70bf37ef92e416336392acc2227fa1a5cb2",
+      "candidateConfigurationDigest": "sha256:1c63b91a4d9b1f85b40572d26b038e03f05f912dacb04041ee3c57db616020da",
+      "changedArtifacts": [
+        "prompt"
+      ],
+      "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+      "dimension": "prompt",
+      "executionEvidence": {
+        "initialExperiment": {
+          "artifact": "s12-73-prompt-supersession.v1.json",
+          "digest": "sha256:7fb394675b5f0de5b10f66c2f9693d4d2ee5ca0ef2d5bd39fe1d2ee31ecc83e0",
+          "status": "PROMPT_EXPERIMENT_COMPLETED_CANDIDATE_NOT_PROMOTED"
+        },
+        "stabilityFollowup": {
+          "artifact": "s12-73-prompt-followup-stability.v2.json",
+          "digest": "sha256:b5660ae919330b2fb94529d347581e2a043fc63df7e79020590ee088c27a5943",
+          "failureCounts": {
+            "invalid_evidence": 0,
+            "schema_invalid": 3
+          },
+          "status": "STABILITY_GATE_FAIL"
+        },
+        "targetedDiagnostic": {
+          "artifact": "s12-73-targeted-diagnostics.v1.json",
+          "caseIds": [
+            "s12-a-0153",
+            "s12-a-0187"
+          ],
+          "digest": "sha256:90ea3443dde91a8b21f4a9be590017d96b81e0afb34bb3ac90ac4821e3c8d48b",
+          "failureCounts": {},
+          "status": "DIAGNOSTIC_COMPLETED"
+        }
+      },
+      "executionProtocol": {
+        "followupCaseCount": 32,
+        "followupIndependentRunCount": 3,
+        "initialCasesPerVariant": 8,
+        "initialIndependentRunsPerVariant": 3,
+        "noRetryWithinEachRun": true,
+        "retryPolicy": "none"
+      },
+      "experimentId": "s12-f-01",
+      "hypothesis": "A bounded supersession-guard prompt avoids unsupported Requirement proposals while preserving m3.v2 evidence and candidate IDs.",
+      "metricTarget": {
+        "semanticQuality": {
+          "direction": "higher",
+          "minimumDelta": 0.01
+        }
+      },
+      "permittedSplit": "development",
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract"
+      ],
+      "protocolAmendment": "The registered one-run development stopping rule was amended for measurement stability: execute three independent 8-case runs per variant, then a three-run 32-case guarded-prompt follow-up. No retry was used within a run.",
+      "protocolVariance": true,
+      "resultSummary": {
+        "candidateSchemaEvidenceClean": true,
+        "followupFailureCounts": {
+          "invalid_evidence": 0,
+          "schema_invalid": 3
+        },
+        "followupStatus": "STABILITY_GATE_FAIL",
+        "semanticMetricsImproved": true,
+        "status": "COMPLETED_NOT_PROMOTED"
+      },
+      "status": "COMPLETED_STABILITY_FAILED",
+      "stoppingRule": "Stop after one development run or immediately on a hard-invariant regression."
+    },
+    {
+      "baselineConfigurationDigest": "sha256:2f4a4c84984fefd1d6ab502a5e73a70bf37ef92e416336392acc2227fa1a5cb2",
+      "candidateConfigurationDigest": "sha256:da88cf56d5c3dd3e361e466be0482526166f50e0e20761c666dde535c2e685df",
+      "changedArtifacts": [
+        "context"
+      ],
+      "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+      "dimension": "context",
+      "experimentId": "s12-f-02",
+      "hypothesis": "A bounded context change improves the registered development metric without weakening hard invariants.",
+      "metricTarget": {
+        "semanticQuality": {
+          "direction": "higher",
+          "minimumDelta": 0.01
+        }
+      },
+      "permittedSplit": "development",
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract"
+      ],
+      "status": "REGISTERED",
+      "stoppingRule": "Stop after one development run or immediately on a hard-invariant regression."
+    },
+    {
+      "baselineConfigurationDigest": "sha256:2f4a4c84984fefd1d6ab502a5e73a70bf37ef92e416336392acc2227fa1a5cb2",
+      "candidateConfigurationDigest": "sha256:3c3c75919274b42c15ecb4287cfe18e72ca20a86725c426aa094a154273275bd",
+      "changedArtifacts": [
+        "agent-workflow"
+      ],
+      "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+      "dimension": "agent-workflow",
+      "experimentId": "s12-f-03",
+      "hypothesis": "A bounded agent-workflow change improves the registered development metric without weakening hard invariants.",
+      "metricTarget": {
+        "semanticQuality": {
+          "direction": "higher",
+          "minimumDelta": 0.01
+        }
+      },
+      "permittedSplit": "development",
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract"
+      ],
+      "status": "REGISTERED",
+      "stoppingRule": "Stop after one development run or immediately on a hard-invariant regression."
+    },
+    {
+      "baselineConfigurationDigest": "sha256:2f4a4c84984fefd1d6ab502a5e73a70bf37ef92e416336392acc2227fa1a5cb2",
+      "candidateConfigurationDigest": "sha256:ab1eb385faac94fc74514569330ae42c78cff4b044586d83e8695ed8a9dc0173",
+      "changedArtifacts": [
+        "tool"
+      ],
+      "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+      "dimension": "tool",
+      "experimentId": "s12-f-04",
+      "hypothesis": "A bounded tool change improves the registered development metric without weakening hard invariants.",
+      "metricTarget": {
+        "semanticQuality": {
+          "direction": "higher",
+          "minimumDelta": 0.01
+        }
+      },
+      "permittedSplit": "development",
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract"
+      ],
+      "status": "REGISTERED",
+      "stoppingRule": "Stop after one development run or immediately on a hard-invariant regression."
+    },
+    {
+      "baselineConfigurationDigest": "sha256:2f4a4c84984fefd1d6ab502a5e73a70bf37ef92e416336392acc2227fa1a5cb2",
+      "candidateConfigurationDigest": "sha256:ae034290395e7592c676d27b1b675f65d81fd12d4473dfe52f3c93b9c97b0494",
+      "changedArtifacts": [
+        "model"
+      ],
+      "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+      "dimension": "model",
+      "executionEvidence": {
+        "artifact": "s12-77-model-stage-a.v1.json",
+        "costAccountingStatus": "NOT_AVAILABLE_PROVIDER_PRICE_CONFIGURATION",
+        "decision": "STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B",
+        "digest": "sha256:30656e6aee4145e71d40959bf8d91e8b2e83208736e278406915a0acd652b2c4",
+        "hardGatesPass": false,
+        "semanticGatesPass": false,
+        "stageBAuthorized": false,
+        "targetedDiagnostic": {
+          "artifact": "s12-77-targeted-diagnostics.v1.json",
+          "caseIds": [
+            "s12-a-0121",
+            "s12-a-0176"
+          ],
+          "digest": "sha256:d40dd042ccc7c20b0e3829a71c0fe25b58a4153b8eb01ca19cc17e6cc96ddb1e",
+          "failureCounts": {},
+          "status": "DIAGNOSTIC_COMPLETED"
+        }
+      },
+      "experimentId": "s12-f-05",
+      "hypothesis": "A bounded model change improves the registered development metric without weakening hard invariants.",
+      "metricTarget": {
+        "semanticQuality": {
+          "direction": "higher",
+          "minimumDelta": 0.01
+        }
+      },
+      "permittedSplit": "development",
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract"
+      ],
+      "resultSummary": {
+        "candidateFailureCounts": {
+          "cross_project_link": 1,
+          "schema_invalid": 2
+        },
+        "candidateModel": "deepseek-v4-pro",
+        "controlFailureCounts": {
+          "invalid_evidence": 1
+        },
+        "controlModel": "deepseek-v4-flash",
+        "metricDeltas": {
+          "abstentionAccuracy": -0.010119047619047805,
+          "entityMacroF1": -0.02351190476190468,
+          "hallucinationRateReduction": -0.005555555555555564,
+          "relationMacroF1": 0.0029761904761905766
+        }
+      },
+      "status": "COMPLETED_STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B",
+      "stoppingRule": "Stop after one development run or immediately on a hard-invariant regression."
+    },
+    {
+      "baselineConfigurationDigest": "sha256:1b083a91c758bcad821ba0a23b132a0b4e41f52dd418af4cb317dcb14d9a4120",
+      "candidateConfigurationDigest": "sha256:75d6eeee547036124052d5f991d7d7406158f1826119bbf6cf289ed6de426ef0",
+      "changedArtifacts": [
+        "sampling"
+      ],
+      "dimension": "sampling",
+      "executionEvidence": {
+        "artifact": "s12-f-06-sampling-stage-a.v1.json",
+        "authorizationArtifact": "s12-f-06-sampling-authorization.v1.json",
+        "authorizationDigest": "sha256:201a9adf8cbdca3212f6c0b0ba83d209afb5a92d2b67b8015357ab86d973aeba",
+        "candidateHardGates": "PASS",
+        "comparisonIntegrity": "DEGRADED_UNEQUAL_VALID_OUTPUTS",
+        "controlHardGates": "FAIL",
+        "costAccountingStatus": "NOT_AVAILABLE_PROVIDER_PRICE_CONFIGURATION",
+        "decision": "STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B",
+        "digest": "sha256:53a3180cac56c30431a2c228f0377f9a01f3c7c95583b51c8e6745a3c9cad235",
+        "erratum": {
+          "artifact": "s12-f-06-sampling-erratum.v1.json",
+          "commonCaseExecutionCount": 23,
+          "digest": "sha256:1803470e1685589f5c44aacaa7baf2f46c41bd79ee19c3de52faae2c12036f5c",
+          "status": "ERRATUM_ISSUED_WITHOUT_RERUN"
+        },
+        "hardGatesPass": false,
+        "semanticGatesPass": false,
+        "stageBAuthorized": false
+      },
+      "experimentId": "s12-f-06",
+      "hypothesis": "Explicit deterministic sampling reduces stochastic schema and relation normalization failures without changing model, prompt, dataset, or policy.",
+      "metricTarget": {
+        "semanticQuality": {
+          "direction": "higher",
+          "minimumDelta": 0.05
+        }
+      },
+      "permittedSplit": "development",
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract",
+        "model",
+        "prompt"
+      ],
+      "resultSummary": {
+        "candidateFailureCounts": {},
+        "candidateHardGates": "PASS",
+        "candidateMissingOutputCount": 0,
+        "commonCaseExecutionCount": 23,
+        "comparisonIntegrity": "DEGRADED_UNEQUAL_VALID_OUTPUTS",
+        "controlFailureCounts": {
+          "schema_invalid": 1
+        },
+        "controlHardGates": "FAIL",
+        "controlMissingOutputCount": 1,
+        "metricDeltas": {
+          "abstentionAccuracy": -0.07738095238095244,
+          "entityMacroF1": -0.07142857142857151,
+          "hallucinationRateReduction": 0.023809523809523836,
+          "relationMacroF1": -0.023809523809523836
+        }
+      },
+      "status": "COMPLETED_STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B",
+      "stoppingRule": "Stop after Stage A if any hard gate fails; authorize Stage B only when all hard and registered semantic gates pass."
+    },
+    {
+      "authorization": {
+        "artifact": "s12-f-07-authorization.v2.json",
+        "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A"
+      },
+      "baselineConfigurationDigest": "sha256:f0d066cbab02b834acf323be2a96b70bfa41c65c3d47cb62c968afa0deac9d2f",
+      "candidateConfigurationDigest": "sha256:b10030d7ec44b0efb5f84824789b216323810f6406abdca928ab1c0b4af6e483",
+      "changedArtifacts": [
+        "prompt"
+      ],
+      "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+      "denominatorContract": {
+        "candidateHardGates": {
+          "invalid_evidence": 0,
+          "missing_output": 0,
+          "schema_invalid": 0
+        },
+        "controlFailurePolicy": "degrade_comparison_integrity_without_relabeling_as_candidate_hard_gate_failure",
+        "controlHardGates": {
+          "invalid_evidence": 0,
+          "missing_output": 0,
+          "schema_invalid": 0
+        },
+        "primary": {
+          "caseRunsPerArm": 48,
+          "missingOutputTreatment": "metric_value_zero_and_hard_gate_failure_for_that_arm",
+          "name": "fail_closed_all_declared_case_runs"
+        },
+        "primaryRelationDeltaMinimum": 0.05,
+        "sensitivity": {
+          "missingOutputTreatment": "exclude_only_from_sensitivity_denominator",
+          "name": "paired_common_valid_case_runs"
+        },
+        "sensitivityRelationDeltaMinimum": 0.0
+      },
+      "dimension": "prompt",
+      "executionEvidence": {
+        "aggregate": {
+          "artifact": "s12-f-07-relation-prompt-stage-a.v1.json",
+          "digest": "sha256:b75fcb75e52b2dae637b36f345454a151495802ec921a96e99c5dc0e9a523d12"
+        },
+        "decision": "REJECTED_NO_STAGE_B_NO_SELECTION",
+        "reports": [
+          {
+            "artifact": "evaluation/sprint-12/optimization/s12-f-07-relation-prompt-stage-a/pair-1-01-control.report.v1.json",
+            "digest": "sha256:6f0b308c7538d9ba81533c5027923f0cd84044959e9fede00b26403f0b286227"
+          },
+          {
+            "artifact": "evaluation/sprint-12/optimization/s12-f-07-relation-prompt-stage-a/pair-2-02-control.report.v1.json",
+            "digest": "sha256:5b79166883817934bc31cd32b0e696973d20f0e3f426780393cb3060d93c57f2"
+          },
+          {
+            "artifact": "evaluation/sprint-12/optimization/s12-f-07-relation-prompt-stage-a/pair-3-01-control.report.v1.json",
+            "digest": "sha256:61e90226e0f48757bf78ef9697857969895d4380ca6f15fd5f98558b9e3d8b1a"
+          },
+          {
+            "artifact": "evaluation/sprint-12/optimization/s12-f-07-relation-prompt-stage-a/pair-1-02-candidate.report.v1.json",
+            "digest": "sha256:b0479d48678da2d5b7a1400e9a1ba5da5b84ea30f4b4235f91276bc36c213c3d"
+          },
+          {
+            "artifact": "evaluation/sprint-12/optimization/s12-f-07-relation-prompt-stage-a/pair-2-01-candidate.report.v1.json",
+            "digest": "sha256:c57c1898d5cc77e8bc4f43a230f4079f8dc4795d2c1ec7fdcd4c9926ee1cc9c7"
+          },
+          {
+            "artifact": "evaluation/sprint-12/optimization/s12-f-07-relation-prompt-stage-a/pair-3-02-candidate.report.v1.json",
+            "digest": "sha256:65806af2de5e3b18eea9078f804fddb0efb2cd6b8ad4c4754e17b26a6fc6a5c6"
+          }
+        ],
+        "scoringErratum": {
+          "artifact": "s12-f-07-scoring-erratum.v1.json",
+          "digest": "sha256:03b836a65cf58e5092a4c600b9354ef389f0b609ff6aa755730526a9c12d6af2"
+        }
+      },
+      "executionPackage": {
+        "commitSha": "2b8ca5a14f150b372645186fa6acbbffb7fa8914",
+        "digests": {
+          "candidateRunnerCode": "sha256:fd6e8fe073ed24fd537f96291d14862d488cd137be06ec1c10cecb22a02e6cba",
+          "evaluatorCode": "sha256:24bcf7032eaf4a69a1f2d41f93e87cecb802b90ffac07e9f16c7d8e50dfedf2a",
+          "promptArtifact": "sha256:d30170306e5fafa401c6b6e8d78e4fcf5ede3aa6c81f85c269a95fb78a9e290b",
+          "promptImplementation": "sha256:52bf864a14237c9e1c8672677f19b4327ae90187e74634ca60c3d7936b6acf2d",
+          "stageRunnerCode": "sha256:a1823c83e9762e0f99cdddd61a0081757138ca9630254a9329d28782210dae6b"
+        }
+      },
+      "experimentId": "s12-f-07",
+      "hypothesis": "A relation decision rubric in the prompt reduces missing and wrong predicate/endpoints errors while preserving entity extraction, abstention safety and hallucination rate on the incumbent model.",
+      "metricTarget": {
+        "abstentionAccuracy": {
+          "direction": "higher",
+          "minimumDelta": -0.01
+        },
+        "entityMacroF1": {
+          "direction": "higher",
+          "minimumDelta": -0.01
+        },
+        "relationMacroF1": {
+          "direction": "higher",
+          "minimumDelta": 0.05
+        }
+      },
+      "permittedSplit": "development",
+      "preregistration": {
+        "artifact": "s12-f-07-relation-prompt-preregistration.v2.json",
+        "digest": "sha256:a8669d7a036fc211e57fb8d032d482ccecce86f231a242cf99c8c6dd79c2b051"
+      },
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract",
+        "context",
+        "tool"
+      ],
+      "pricingContract": {
+        "rationale": "Stage A may produce development evidence without a bound price table; candidate selection, Stage B authorization and any promotion remain blocked until the provider price configuration is bound and cost is recomputed.",
+        "requiredBeforeExecution": false,
+        "requiredBeforeSelection": true,
+        "status": "NOT_BOUND_PRESELECTION"
+      },
+      "promptArtifact": {
+        "artifact": "s12-f-07-prompt-v4-relation-decision-rubric.v1.txt",
+        "digest": "sha256:d30170306e5fafa401c6b6e8d78e4fcf5ede3aa6c81f85c269a95fb78a9e290b",
+        "implementation": "apps/api/src/projecta_api/extraction/prompt.py",
+        "implementationDigest": "sha256:52bf864a14237c9e1c8672677f19b4327ae90187e74634ca60c3d7936b6acf2d"
+      },
+      "status": "COMPLETED_REJECTED",
+      "stoppingRule": "Stop after Stage A if the candidate hard gate fails; authorize Stage B only after primary and sensitivity denominator gates, pricing-before-selection and comparison-integrity conditions pass."
+    },
+    {
+      "baselineConfigurationDigest": "sha256:f0d066cbab02b834acf323be2a96b70bfa41c65c3d47cb62c968afa0deac9d2f",
+      "candidateConfigurationDigest": "sha256:872affcf7e7c6fc4e5f50577e56b61afe239c992cb1f245c96e45db940eec978",
+      "changedArtifacts": [
+        "prompt"
+      ],
+      "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+      "denominatorContract": {
+        "candidateHardGates": {
+          "invalid_evidence": 0,
+          "missing_output": 0,
+          "schema_invalid": 0
+        },
+        "controlFailurePolicy": "degrade_comparison_integrity_without_relabeling_as_candidate_hard_gate_failure",
+        "controlHardGates": {
+          "invalid_evidence": 0,
+          "missing_output": 0,
+          "schema_invalid": 0
+        },
+        "positiveRelationMacroF1Minimum": 0.05,
+        "positiveRelationMacroF1MinimumDelta": 0.05,
+        "positiveRelationMicroF1Minimum": 0.05,
+        "primary": {
+          "caseRunsPerArm": 48,
+          "missingOutputTreatment": "metric_value_zero_and_hard_gate_failure_for_that_arm",
+          "name": "fail_closed_all_declared_case_runs"
+        },
+        "primaryRelationDeltaMinimum": 0.05,
+        "sensitivity": {
+          "missingOutputTreatment": "exclude_only_from_sensitivity_denominator",
+          "name": "paired_common_valid_case_runs"
+        },
+        "sensitivityRelationDeltaMinimum": 0.0,
+        "supersessionFalsePositiveMaximum": 0,
+        "supersessionSliceCaseCount": 5
+      },
+      "dimension": "prompt",
+      "evaluatorVersion": "s12.evaluator.v2",
+      "executionEvidence": {
+        "aggregate": {
+          "artifact": "s12-f-08-relation-prompt-stage-a.v1.json",
+          "digest": "sha256:09bc9b00e081044f07a268cc3fd2ecf4f16b2222501d8d7e1ca4f4273866e76e"
+        },
+        "candidateHardGatesPass": true,
+        "controlHardGatesPass": true,
+        "decision": "REJECTED_NO_STAGE_B_NO_SELECTION",
+        "reports": [
+          {
+            "artifact": "evaluation/sprint-12/optimization/s12-f-08-relation-prompt-stage-a/pair-1-01-control.report.v1.json",
+            "digest": "sha256:37d3cbd02448a0eec736bda6ba708408bf040b77f9abfcd5900e2a77e762aa09"
+          },
+          {
+            "artifact": "evaluation/sprint-12/optimization/s12-f-08-relation-prompt-stage-a/pair-1-02-candidate.report.v1.json",
+            "digest": "sha256:6da009931d23117de503fbf67e1778925e57f82607568e3899bf80f018faee29"
+          },
+          {
+            "artifact": "evaluation/sprint-12/optimization/s12-f-08-relation-prompt-stage-a/pair-2-01-candidate.report.v1.json",
+            "digest": "sha256:5f0e77baa9a1994ea0b33c20e608d5955e0d16d73c632ad91a046097c2876353"
+          },
+          {
+            "artifact": "evaluation/sprint-12/optimization/s12-f-08-relation-prompt-stage-a/pair-2-02-control.report.v1.json",
+            "digest": "sha256:7335f312990676025735bd9e45814d0290e7530776b7428323cdc903549d9e2e"
+          },
+          {
+            "artifact": "evaluation/sprint-12/optimization/s12-f-08-relation-prompt-stage-a/pair-3-01-control.report.v1.json",
+            "digest": "sha256:a9ef4a1d4002f6acbb05f1594928ab4fed988556bd86736dfb2549efb34392c7"
+          },
+          {
+            "artifact": "evaluation/sprint-12/optimization/s12-f-08-relation-prompt-stage-a/pair-3-02-candidate.report.v1.json",
+            "digest": "sha256:0851cd4c266425441d59c4243edc71c1b84c5226ffd1a30e90e3896f31644018"
+          }
+        ],
+        "stageATechnicalPass": false
+      },
+      "executionPackage": {
+        "commitSha": "84e589bce954d8e23ad734eeb01b0711140dd854",
+        "digests": {
+          "datasetManifest": "sha256:9de3e73ef10fe4f43c994f85c8f41fc009349b4c9f6857959b807e8da0a06829",
+          "evaluatorCode": "sha256:0eb9221962bb408d54e9fb6a3a84a769831152cf2d6b3e201aa5ab4eb67dd01e",
+          "pricingArtifact": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+          "pricingModuleCode": "sha256:babc33da52788e65e031b56d89464bbc4a4360edcb14b1cc5cd5d33a2109486b",
+          "promptArtifact": "sha256:efafb779bd4b96b4b53f7a5e927dcad215217b9ec6df6d707a332406e983a7c9",
+          "promptImplementation": "sha256:ebd9888e62723f09425f5d074a29060c1e674b3e0178f7cb283cac81ff68f190",
+          "runnerCode": "sha256:cfb38081cdf3316e8fa874d918a34770eb73ce289031b83c5b16a177c0305c5a",
+          "runtimeContractCode": "sha256:f889260141f70753b255ccb813c9d9ce6fc57cd41c2deece4b027b739dc76b34",
+          "runtimeServiceCode": "sha256:a91bacc991972a4ed291ee2c85617418e582ce7bbbd2ea3751999dfd991f5157"
+        },
+        "oneAttemptPerCase": true,
+        "retryPolicy": "none",
+        "stage": "A"
+      },
+      "experimentId": "s12-f-08",
+      "hypothesis": "A composed m3.v2 contract-aligned prompt that retains the supersession guard and adds the relation rubric will reduce supersession false positives and improve positive-relation extraction without harming entity, abstention or hallucination behavior.",
+      "measurementContract": {
+        "evaluatorVersion": "s12.evaluator.v2",
+        "positiveRelationDenominator": "fail-closed-all-positive-gold-case-runs",
+        "relationInstrumentationVersion": "s12.relation-instrumentation.v2",
+        "usageContract": "cache-hit-cache-miss-output-v1"
+      },
+      "metricTarget": {
+        "abstentionAccuracy": {
+          "direction": "higher",
+          "minimumDelta": -0.01
+        },
+        "entityMacroF1": {
+          "direction": "higher",
+          "minimumDelta": -0.01
+        },
+        "hallucinationRate": {
+          "direction": "lower",
+          "maximumDelta": 0.0
+        },
+        "positiveRelationMacroF1": {
+          "direction": "higher",
+          "minimumAbsolute": 0.05,
+          "minimumDelta": 0.05
+        },
+        "positiveRelationMicroF1": {
+          "direction": "higher",
+          "minimumAbsolute": 0.05
+        },
+        "supersessionFalsePositive": {
+          "direction": "lower",
+          "maximum": 0
+        }
+      },
+      "noCandidateSelection": true,
+      "noStageB": true,
+      "permittedSplit": "development",
+      "preregistration": {
+        "artifact": "s12-f-08-relation-prompt-preregistration.v2.json",
+        "digest": "sha256:62745799d004c117f1637c396f721702f9411175cfb6b3bd6ec45f4511a861ee"
+      },
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract",
+        "context",
+        "tool"
+      ],
+      "pricingContract": {
+        "artifact": "s12-f-08-pricing-deepseek-v4-flash.v1.json",
+        "artifactDigest": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+        "currency": "USD",
+        "model": "deepseek-v4-flash",
+        "rateClasses": [
+          "inputCacheHitUsdPer1M",
+          "inputCacheMissUsdPer1M",
+          "outputUsdPer1M"
+        ],
+        "requiredBeforeExecution": true,
+        "requiredBeforeSelection": true,
+        "retrievedAt": "2026-08-16",
+        "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing",
+        "status": "BOUND",
+        "unit": "USD per 1M tokens"
+      },
+      "promptArtifact": {
+        "artifact": "s12-f-08-prompt-v5-composed-relation-contract.v1.txt",
+        "digest": "sha256:efafb779bd4b96b4b53f7a5e927dcad215217b9ec6df6d707a332406e983a7c9",
+        "implementation": "apps/api/src/projecta_api/extraction/prompt.py",
+        "implementationDigest": "sha256:ebd9888e62723f09425f5d074a29060c1e674b3e0178f7cb283cac81ff68f190"
+      },
+      "status": "COMPLETED_REJECTED",
+      "stoppingRule": "Stop if candidate hard gates fail or supersession false positives exceed zero; authorize no Stage B until positive-relation floors/deltas, non-inferiority and bound pricing pass."
+    },
+    {
+      "authorization": {
+        "artifact": "s12-f-09-authorization.v1.json",
+        "digest": "sha256:540e0530784c61d2bfd2a81bf3d4fa4c7161bad3b468d38c73e2a1a3ffb53cb9",
+        "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A"
+      },
+      "changedArtifacts": [
+        "tool"
+      ],
+      "datasetManifestDigest": "sha256:81cd91fcef327c87348ef0563a6407bdb9aa07f1f54c2711daf77312f91e3bb1",
+      "datasetVersion": "s12.corpus.atomic.v3.frozen",
+      "dimension": "tool",
+      "executionEvidence": {
+        "attemptedCaseRuns": 288,
+        "authorizationCommitPackageStatus": "HISTORICAL_AUTHORIZATION_METADATA_NOT_FROZEN_EXECUTION_PACKAGE",
+        "comparisonIntegrity": "DEGRADED_INDEPENDENT_STOCHASTIC_OUTPUTS",
+        "correctedAggregate": {
+          "artifact": "s12-f-09-relation-evidence-stage-a.v3.json",
+          "digest": "sha256:d58fab612da3800f0219f97c7360964431a5b6fca0e78a4491896cdf7d9a708e"
+        },
+        "decision": "REJECTED_NO_STAGE_B_NO_SELECTION",
+        "executionCount": 288,
+        "offlineErratum": {
+          "artifact": "s12-f-09-scoring-erratum.v1.json",
+          "digest": "sha256:144a67a1b35ad516c1e9f71920c81800b02327872cfab6230f5af566ab318a78"
+        },
+        "offlineRepairV2": {
+          "artifact": "s12-f-09-relation-evidence-stage-a.v2.json",
+          "digest": "sha256:751636c84dcce94d5dcf6936017212282e7e1994d3d63c482425a91ee5157ce8"
+        },
+        "rawAggregate": {
+          "artifact": "s12-f-09-relation-evidence-stage-a.v1.json",
+          "digest": "sha256:d6b8bfe030842ad21afceb52f63b7f620d7db8ade66e4ee0fc73b669ed563c48"
+        },
+        "reports": [
+          {
+            "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-1-01-control.report.v1.json",
+            "digest": "sha256:df6758b808c18212ab433e8fab910a6e29966ac322dd517eb43469b3d96287d3"
+          },
+          {
+            "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-1-02-candidate.report.v1.json",
+            "digest": "sha256:526c0174362a46175b6c787d6e14dc96aea4412ecbfae717f5462838dc0bdf12"
+          },
+          {
+            "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-2-01-candidate.report.v1.json",
+            "digest": "sha256:6de3c6c637eb5ea29dbaaec3f17ba465ac3e9d74ebb15d46617855f26f1004c2"
+          },
+          {
+            "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-2-02-control.report.v1.json",
+            "digest": "sha256:2ff705b9192867ae4a70bd0434bda339f80dce3a5830f138cbb848bd7ae1f012"
+          },
+          {
+            "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-3-01-control.report.v1.json",
+            "digest": "sha256:df86f626281d1d9ab286fdc331c64fad37a84525e42cf31d229b7da0fde16356"
+          },
+          {
+            "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-3-02-candidate.report.v1.json",
+            "digest": "sha256:185aaa49e224335c3b4b169c339e2f93ec5a2db135b782ca9848fe1ae1d70519"
+          }
+        ],
+        "validCaseRuns": {
+          "candidate": 141,
+          "control": 136
+        }
+      },
+      "executionPackage": {
+        "digests": {
+          "datasetManifest": "sha256:81cd91fcef327c87348ef0563a6407bdb9aa07f1f54c2711daf77312f91e3bb1",
+          "evaluatorCode": "sha256:ebdf3d8d99d6c9eb3481de209128e10027c836444a5a3f3f0160aba3c5ea7664",
+          "pricingArtifact": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+          "promptImplementation": "sha256:ebd9888e62723f09425f5d074a29060c1e674b3e0178f7cb283cac81ff68f190",
+          "relationEvidenceMaterializer": "sha256:d778d9aed629140ea93f113c0c5e74ae81df2b8ca512a4fe6019b2ab176a378f"
+        },
+        "independentPairedRuns": 3,
+        "oneAttemptPerCase": true,
+        "retryPolicy": "none",
+        "stage": "A",
+        "temporalPairing": {
+          "schedule": [
+            {
+              "armOrder": [
+                "control",
+                "candidate"
+              ],
+              "pairId": "pair-1",
+              "runNumber": 1
+            },
+            {
+              "armOrder": [
+                "candidate",
+                "control"
+              ],
+              "pairId": "pair-2",
+              "runNumber": 2
+            },
+            {
+              "armOrder": [
+                "control",
+                "candidate"
+              ],
+              "pairId": "pair-3",
+              "runNumber": 3
+            }
+          ],
+          "strategy": "interleaved_paired_runs"
+        }
+      },
+      "experimentId": "s12-f-09",
+      "hypothesis": "A server-owned deterministic relation evidence materializer improves evidence support/exactness without changing the model, prompt, sampling, dataset, evaluator or ontology.",
+      "measurementContract": {
+        "denominator": "fail-closed-all-attempted-case-runs",
+        "offlineScoringRevision": "s12.s12-f-09.relation-evidence-stage-a.v3",
+        "positiveEvidenceAggregation": "sum-numerators-divided-by-sum-semantic-TP",
+        "runtimeEvaluatorVersion": "s12.evaluator.v4",
+        "sliceFloorStatus": "NOT_EVALUATED_NO_VERSIONED_SLICE_THRESHOLDS"
+      },
+      "noCandidateSelection": true,
+      "noStageB": true,
+      "permittedSplit": "development",
+      "preregistration": {
+        "artifact": "s12-f-09-relation-evidence-preregistration.v1.json",
+        "digest": "sha256:de3a5c2397729537b8ea8e42f1c9e0758648d90a9e4f75b1f2c095afff9cf6aa"
+      },
+      "preservedArtifacts": [
+        "dataset",
+        "evaluator",
+        "ontology",
+        "policy",
+        "review-contract",
+        "model",
+        "prompt",
+        "sampling"
+      ],
+      "pricingContract": {
+        "artifact": "s12-f-08-pricing-deepseek-v4-flash.v1.json",
+        "digest": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+        "status": "BOUND_FOR_COMPLETED_RUN"
+      },
+      "status": "COMPLETED_REJECTED"
+    }
+  ],
+  "heldOutInspected": false,
+  "openedExperimentId": "s12-f-09",
+  "pendingExperiment": {
+    "aggregateArtifact": "s12-f-09-relation-evidence-stage-a.v3.json",
+    "aggregateDigest": "sha256:d58fab612da3800f0219f97c7360964431a5b6fca0e78a4491896cdf7d9a708e",
+    "authorizationArtifact": "s12-f-09-authorization.v1.json",
+    "authorizationDigest": "sha256:540e0530784c61d2bfd2a81bf3d4fa4c7161bad3b468d38c73e2a1a3ffb53cb9",
+    "executionAuthorized": false,
+    "experimentId": "s12-f-09",
+    "stageBAuthorized": false,
+    "status": "COMPLETED_REJECTED"
+  },
+  "permittedSplits": [
+    "development"
+  ],
+  "promptDevelopmentExperimentAuthorized": true,
+  "registryDigest": "sha256:6c6e9def38a09cf8bf64ea1f4450ead0a646ac0bca926dbfc4bf97624b3d3099",
+  "registryVersion": "s12.experiment-registry.v11",
+  "selection": {
+    "heldOutInspected": false,
+    "reason": "S12-f-09 failed hard and registered semantic gates; independent provider outputs also degrade tool causal attribution. No Stage B or candidate selection is authorized.",
+    "status": "NO_SELECTION"
+  },
+  "status": "G5_PREPARATION_DEVELOPMENT_CLOSED_S12_F09_REJECTED",
+  "validationAuthorized": false
+}

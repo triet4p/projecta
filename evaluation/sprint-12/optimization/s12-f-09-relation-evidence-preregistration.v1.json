@@ -1,0 +1,215 @@
+{
+  "artifactVersion": "s12.s12-f-09.relation-evidence-preregistration.v1",
+  "experimentId": "s12-f-09",
+  "status": "PREREGISTERED_NOT_EXECUTED",
+  "changedDimension": "tool",
+  "executionAuthorized": false,
+  "executionDeferredByUserInstruction": true,
+  "control": {
+    "configuration": {
+      "model": "deepseek-v4-flash",
+      "promptVersion": "m3.prompt.v3.supersession-guard",
+      "samplingConfiguration": {
+        "seed": "provider-controlled",
+        "temperature": "provider-default",
+        "topP": "provider-default"
+      },
+      "schemaVersion": "m3.v2",
+      "tool": "llm-authored-relation-evidence-legacy"
+    },
+    "configurationDigest": "sha256:6a72aaf8253b340cd7c3bd5ded7a2f4b72f4b2581128d4fed67810c08f3e2b85"
+  },
+  "candidate": {
+    "configuration": {
+      "model": "deepseek-v4-flash",
+      "promptVersion": "m3.prompt.v3.supersession-guard",
+      "samplingConfiguration": {
+        "seed": "provider-controlled",
+        "temperature": "provider-default",
+        "topP": "provider-default"
+      },
+      "schemaVersion": "m3.v2",
+      "tool": "server-owned-relation-evidence.v1"
+    },
+    "configurationDigest": "sha256:300309c421bd1a8f664c44f4323009682d9cca3e65c7c1af8800f50c6d97ec29"
+  },
+  "fixedArtifacts": {
+    "datasetVersion": "s12.corpus.atomic.v3.frozen",
+    "datasetManifestPath": "evaluation/sprint-12/corpus/v3-frozen/atomic-manifest.v1.json",
+    "datasetManifestDigest": "sha256:81cd91fcef327c87348ef0563a6407bdb9aa07f1f54c2711daf77312f91e3bb1",
+    "evaluator": "s12.evaluator.v4",
+    "promptVersion": "m3.prompt.v3.supersession-guard",
+    "tool": "changed-only",
+    "schemaVersion": "m3.v2",
+    "retryPolicy": "none"
+  },
+  "executionPackage": {
+    "stage": "A",
+    "oneAttemptPerCase": true,
+    "retryPolicy": "none",
+    "independentPairedRuns": 3,
+    "temporalPairing": {
+      "strategy": "interleaved_paired_runs",
+      "schedule": [
+        {
+          "pairId": "pair-1",
+          "runNumber": 1,
+          "armOrder": [
+            "control",
+            "candidate"
+          ]
+        },
+        {
+          "pairId": "pair-2",
+          "runNumber": 2,
+          "armOrder": [
+            "candidate",
+            "control"
+          ]
+        },
+        {
+          "pairId": "pair-3",
+          "runNumber": 3,
+          "armOrder": [
+            "control",
+            "candidate"
+          ]
+        }
+      ]
+    },
+    "digests": {
+      "datasetManifest": "sha256:81cd91fcef327c87348ef0563a6407bdb9aa07f1f54c2711daf77312f91e3bb1",
+      "evaluatorCode": "sha256:ebdf3d8d99d6c9eb3481de209128e10027c836444a5a3f3f0160aba3c5ea7664",
+      "promptImplementation": "sha256:ebd9888e62723f09425f5d074a29060c1e674b3e0178f7cb283cac81ff68f190",
+      "relationEvidenceMaterializer": "sha256:d778d9aed629140ea93f113c0c5e74ae81df2b8ca512a4fe6019b2ab176a378f",
+      "pricingArtifact": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596"
+    }
+  },
+  "stageA": {
+    "caseCount": 48,
+    "caseRunsPerArm": 144,
+    "caseSelectionDigest": "sha256:54f05249545d7867edf9cc4598fbd56dd42b56579eb20bb9dda81781d898e388",
+    "caseIds": [
+      "s12-a-4001",
+      "s12-a-4002",
+      "s12-a-4003",
+      "s12-a-4004",
+      "s12-a-4005",
+      "s12-a-4006",
+      "s12-a-4007",
+      "s12-a-4008",
+      "s12-a-4009",
+      "s12-a-4010",
+      "s12-a-4011",
+      "s12-a-4012",
+      "s12-a-4013",
+      "s12-a-4014",
+      "s12-a-4015",
+      "s12-a-4016",
+      "s12-a-4017",
+      "s12-a-4018",
+      "s12-a-4019",
+      "s12-a-4020",
+      "s12-a-4021",
+      "s12-a-4022",
+      "s12-a-4023",
+      "s12-a-4024",
+      "s12-a-4025",
+      "s12-a-4026",
+      "s12-a-4027",
+      "s12-a-4028",
+      "s12-a-4029",
+      "s12-a-4030",
+      "s12-a-4031",
+      "s12-a-4032",
+      "s12-a-4033",
+      "s12-a-4034",
+      "s12-a-4035",
+      "s12-a-4036",
+      "s12-a-4037",
+      "s12-a-4038",
+      "s12-a-4039",
+      "s12-a-4040",
+      "s12-a-4041",
+      "s12-a-4042",
+      "s12-a-4043",
+      "s12-a-4044",
+      "s12-a-4045",
+      "s12-a-4046",
+      "s12-a-4047",
+      "s12-a-4048"
+    ],
+    "independentPairedRuns": 3,
+    "oneAttemptPerCase": true,
+    "noRetryWithinEachRun": true,
+    "split": "development",
+    "selectionRationale": "Six complete frozen v3 development lineages provide relation-positive depth, abstention negatives, multilingual notes and longitudinally coherent domains without reading validation or test custody.",
+    "relationPositiveCases": 12,
+    "abstentionRequiredCases": 6
+  },
+  "relationTool": {
+    "llmOutput": [
+      "entity candidates",
+      "predicate",
+      "source/target candidate IDs",
+      "optional relation-trigger quote"
+    ],
+    "serverOutput": [
+      "canonical entity spans",
+      "deterministic clause/sentence evidence span"
+    ],
+    "failClosedOn": [
+      "invalid endpoint span",
+      "missing trigger when required",
+      "ambiguous boundary",
+      "cross-sentence endpoints"
+    ]
+  },
+  "measurementContract": {
+    "evaluatorVersion": "s12.evaluator.v4",
+    "relationInstrumentationVersion": "s12.relation-instrumentation.v4",
+    "metricContract": "s12.metric-contract.v2",
+    "semanticIdentityExcludesEvidenceSpan": true,
+    "perCaseAndPerSliceDenominatorsRequired": true
+  },
+  "hardGates": {
+    "schema_invalid": 0,
+    "invalid_evidence": 0,
+    "missing_output": 0
+  },
+  "semanticGates": {
+    "relationSemanticF1Minimum": 0.8,
+    "relationEvidenceSupportMinimum": 0.85,
+    "relationEvidenceExactMinimum": 0.85,
+    "entityMacroF1Minimum": 0.85,
+    "abstentionF1Minimum": 0.9,
+    "hallucinationRateMaximum": 0.05,
+    "sliceFloorRequired": true
+  },
+  "pricingContract": {
+    "artifact": "s12-f-08-pricing-deepseek-v4-flash.v1.json",
+    "artifactDigest": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+    "model": "deepseek-v4-flash",
+    "currency": "USD",
+    "requiredBeforeExecution": true,
+    "requiredBeforeSelection": true,
+    "costCeilingUsd": "10.00"
+  },
+  "prohibitedBeforeStageA": [
+    "prompt-sweep",
+    "model-sweep",
+    "sampling-sweep",
+    "held-out-inspection",
+    "gold-or-ontology-change",
+    "retry"
+  ],
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "rawSensitiveDataIncluded": false,
+  "sourceEvidence": {
+    "stalePreregs": "s12-f-02-04-v3-supersession.v1.json",
+    "g31cReadiness": "evaluation/sprint-12/gates/g3.1-c-v3-readiness.v1.json",
+    "frozenDataset": "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json",
+    "frozenManifest": "sha256:9d285f7349659aa356edb1981d1a4bd4fde42f29079914d83e5840a242eb62f4"
+  }
+}

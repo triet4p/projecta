@@ -1,0 +1,2091 @@
+{
+  "datasetVersion": "s12.corpus.atomic.v3.deep-pilot",
+  "status": "DEEP_PILOT_AUTHORED_PENDING_QA",
+  "authoringTrack": "agent-authored-synthetic",
+  "humanEvidence": false,
+  "cases": [
+    {
+      "caseId": "s12-a-3001",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J1",
+      "scenarioId": "s12-s-101",
+      "source": {
+        "rawText": "Đối soát ví điện tử phải chốt trước kỳ billing thứ Sáu.",
+        "language": "vi",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:81270f7bdb3b77322244541d92903e39f5382c40f6f4cf155cbfc01b854da7d9",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Requirement",
+            "label": "Đối soát ví điện tử",
+            "span": {
+              "start": 0,
+              "end": 19,
+              "text": "Đối soát ví điện tử"
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3002",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J1",
+      "scenarioId": "s12-s-101",
+      "source": {
+        "rawText": "Finance approved Stripe as the fallback when card retries fail.",
+        "language": "en",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:91d268f87c723de90091de377cfe87d1d06a024b685c7ab6a88abea5c6754bd6",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Decision",
+            "label": "Stripe as the fallback",
+            "span": {
+              "start": 17,
+              "end": 39,
+              "text": "Stripe as the fallback"
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3003",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J1",
+      "scenarioId": "s12-s-101",
+      "source": {
+        "rawText": "Job reconcile-payments vẫn blocks release nếu settlement file thiếu.",
+        "language": "mixed",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:01673c03266b7acff2b2d40afd0d684ea26fb929cd6e7c5d6bb3f9dc6a80782f",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "label": "Job reconcile-payments",
+            "span": {
+              "start": 0,
+              "end": 22,
+              "text": "Job reconcile-payments"
+            }
+          },
+          {
+            "id": "entity-02",
+            "type": "Risk",
+            "label": "settlement file thiếu",
+            "span": {
+              "start": 46,
+              "end": 67,
+              "text": "settlement file thiếu"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "blocks",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 68,
+              "text": "Job reconcile-payments vẫn blocks release nếu settlement file thiếu."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3004",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J1",
+      "scenarioId": "s12-s-101",
+      "source": {
+        "rawText": "Ai sẽ kiểm tra chargeback trước khi chốt tháng?",
+        "language": "vi",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:dd7021621b622d2e7067c1832f992a5ed6b6bdb29c9a71fbc576935367754276",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Question",
+            "label": "Ai sẽ kiểm tra chargeback trước khi chốt tháng?",
+            "span": {
+              "start": 0,
+              "end": 47,
+              "text": "Ai sẽ kiểm tra chargeback trước khi chốt tháng?"
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3005",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J1",
+      "scenarioId": "s12-s-101",
+      "source": {
+        "rawText": "The replay job implements the approved ledger mapping.",
+        "language": "en",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:ece505e70e0d1cd67c4b1dd56195f8554c9ed8920478aa155c4311df3c07cbd3",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "label": "replay job",
+            "span": {
+              "start": 4,
+              "end": 14,
+              "text": "replay job"
+            }
+          },
+          {
+            "id": "entity-02",
+            "type": "Requirement",
+            "label": "approved ledger mapping",
+            "span": {
+              "start": 30,
+              "end": 53,
+              "text": "approved ledger mapping"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "implements",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 54,
+              "text": "The replay job implements the approved ledger mapping."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3006",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J1",
+      "scenarioId": "s12-s-101",
+      "source": {
+        "rawText": "Nếu gateway trả 429, retry window có thể quá ngắn.",
+        "language": "vi",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:bdebd4e2189767edee49913d52852b6bfa3ebf46417cc78d6cb750f17f658408",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Risk",
+            "label": "retry window có thể quá ngắn",
+            "span": {
+              "start": 21,
+              "end": 49,
+              "text": "retry window có thể quá ngắn"
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3007",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J1",
+      "scenarioId": "s12-s-101",
+      "source": {
+        "rawText": "Manual review is constrained by the two-hour refund window.",
+        "language": "en",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:9aebcdd12cfe99ff2879e35965147c98837572ba076ca78958bbf88456319d82",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "label": "Manual review",
+            "span": {
+              "start": 0,
+              "end": 13,
+              "text": "Manual review"
+            }
+          },
+          {
+            "id": "entity-02",
+            "type": "Constraint",
+            "label": "two-hour refund window",
+            "span": {
+              "start": 36,
+              "end": 58,
+              "text": "two-hour refund window"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "constrainedBy",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 59,
+              "text": "Manual review is constrained by the two-hour refund window."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3008",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J1",
+      "scenarioId": "s12-s-101",
+      "source": {
+        "rawText": "Refunds nên dùng ledger cũ hay mới? Chưa ai chốt.",
+        "language": "mixed",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:837406f2d6e6ea407afbc0551faf7ea5d08e33b23689d681c84ac972a9413621",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unresolved choice without an owner decision"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3009",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J2",
+      "scenarioId": "s12-s-102",
+      "source": {
+        "rawText": "Đơn outbound phải được khóa trước khi xe rời kho.",
+        "language": "vi",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:143d05db220ea0d18cb85ea3916f49b6f8cf465359613e9b330e67494b4efc6c",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Requirement",
+            "label": "Đơn outbound phải được khóa trước khi xe rời kho.",
+            "span": {
+              "start": 0,
+              "end": 49,
+              "text": "Đơn outbound phải được khóa trước khi xe rời kho."
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3010",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J2",
+      "scenarioId": "s12-s-102",
+      "source": {
+        "rawText": "The loading team decided to scan pallet labels at the bay.",
+        "language": "en",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:aa5629efcb6c48a333657d76cd2079b448042d852dfb15d6b0747d5cac343642",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Decision",
+            "label": "scan pallet labels at the bay",
+            "span": {
+              "start": 28,
+              "end": 57,
+              "text": "scan pallet labels at the bay"
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3011",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J2",
+      "scenarioId": "s12-s-102",
+      "source": {
+        "rawText": "Thiếu carton label blocks release shipment ở line B.",
+        "language": "mixed",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:671c381707b0299649589e431b7c3562b4e7cb38f45f8f206935f2125c5ad74a",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Risk",
+            "label": "Thiếu carton label",
+            "span": {
+              "start": 0,
+              "end": 18,
+              "text": "Thiếu carton label"
+            }
+          },
+          {
+            "id": "entity-02",
+            "type": "Task",
+            "label": "release shipment",
+            "span": {
+              "start": 26,
+              "end": 42,
+              "text": "release shipment"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "blocks",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 52,
+              "text": "Thiếu carton label blocks release shipment ở line B."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3012",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J2",
+      "scenarioId": "s12-s-102",
+      "source": {
+        "rawText": "Kho miền Trung hỏi ETA cho chuyến bổ sung sáng mai.",
+        "language": "vi",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:e757f1010767ef69f7567bd77e4f1793e9917df0d8182f7d61923d6bae8d1d7a",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Question",
+            "label": "Kho miền Trung hỏi ETA cho chuyến bổ sung sáng mai.",
+            "span": {
+              "start": 0,
+              "end": 51,
+              "text": "Kho miền Trung hỏi ETA cho chuyến bổ sung sáng mai."
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3013",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J2",
+      "scenarioId": "s12-s-102",
+      "source": {
+        "rawText": "Picker training for the new scanner is complete.",
+        "language": "en",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:410accd9c4a771976ff09e4324b462cda0cab0149e09651ac6c2625e6db0c898",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "ProgressClaim",
+            "label": "Picker training for the new scanner is complete.",
+            "span": {
+              "start": 0,
+              "end": 48,
+              "text": "Picker training for the new scanner is complete."
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3014",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J2",
+      "scenarioId": "s12-s-102",
+      "source": {
+        "rawText": "Barcode bị mờ có thể làm giảm scan pass rate.",
+        "language": "vi",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:9cb2ca65f2e96c804a5fc34ea7abebdd28374e88ed82542c2cdb759fbd700fad",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Risk",
+            "label": "Barcode bị mờ có thể làm giảm scan pass rate.",
+            "span": {
+              "start": 0,
+              "end": 45,
+              "text": "Barcode bị mờ có thể làm giảm scan pass rate."
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3015",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J2",
+      "scenarioId": "s12-s-102",
+      "source": {
+        "rawText": "Wave picking depends on the new slotting rule.",
+        "language": "en",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:dd4aeaf812b7478ebe7b6978d8c8d4a18806130bdadb8a71645ab24a57b9bce0",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "label": "Wave picking",
+            "span": {
+              "start": 0,
+              "end": 12,
+              "text": "Wave picking"
+            }
+          },
+          {
+            "id": "entity-02",
+            "type": "Requirement",
+            "label": "new slotting rule",
+            "span": {
+              "start": 28,
+              "end": 45,
+              "text": "new slotting rule"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "dependsOn",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 46,
+              "text": "Wave picking depends on the new slotting rule."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3016",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J2",
+      "scenarioId": "s12-s-102",
+      "source": {
+        "rawText": "We may route overflow to the 3PL, but no decision has been made.",
+        "language": "en",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:8adda8adc7b3ae4e25fc66e9f73048611b979fb08299fe7a666bdc38aaf11d1f",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "possible routing option without a resolved decision"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3017",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J3",
+      "scenarioId": "s12-s-103",
+      "source": {
+        "rawText": "Mọi tenant phải có owner trước khi bật SSO.",
+        "language": "vi",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:ff98685c9509549cfc823047a0346c3c5ef048d9a11358611c217e3f849ba5bc",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Requirement",
+            "label": "Mọi tenant phải có owner trước khi bật SSO.",
+            "span": {
+              "start": 0,
+              "end": 43,
+              "text": "Mọi tenant phải có owner trước khi bật SSO."
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3018",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J3",
+      "scenarioId": "s12-s-103",
+      "source": {
+        "rawText": "The identity team chose OAuth device flow for the partner portal.",
+        "language": "en",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:cf6b74c2894b0361352844bcbf590b94af76de786110cb708b29d8640b700e18",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Decision",
+            "label": "OAuth device flow for the partner portal",
+            "span": {
+              "start": 24,
+              "end": 64,
+              "text": "OAuth device flow for the partner portal"
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3019",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J3",
+      "scenarioId": "s12-s-103",
+      "source": {
+        "rawText": "The migration script implements the approved SSO mapping.",
+        "language": "en",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:9111b21a524602a90fd2f5048b211ea8f0de270dbee5ff449b53a182967155f2",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "label": "migration script",
+            "span": {
+              "start": 4,
+              "end": 20,
+              "text": "migration script"
+            }
+          },
+          {
+            "id": "entity-02",
+            "type": "Requirement",
+            "label": "approved SSO mapping",
+            "span": {
+              "start": 36,
+              "end": 56,
+              "text": "approved SSO mapping"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "implements",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 57,
+              "text": "The migration script implements the approved SSO mapping."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3020",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J3",
+      "scenarioId": "s12-s-103",
+      "source": {
+        "rawText": "Ai duyệt danh sách tenant bị khóa trước cutover?",
+        "language": "vi",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:9d0a03f1187067ef93ffdf1bacc96731f37c744cf3347cebbcb4482514146d27",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Question",
+            "label": "Ai duyệt danh sách tenant bị khóa trước cutover?",
+            "span": {
+              "start": 0,
+              "end": 48,
+              "text": "Ai duyệt danh sách tenant bị khóa trước cutover?"
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3021",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J3",
+      "scenarioId": "s12-s-103",
+      "source": {
+        "rawText": "The dry run for tenant import finished without rejected rows.",
+        "language": "en",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:10a4b2c931ddbe46f5947ba92c03decc0529ae83e83f68ff0a9a70d31ef2fa21",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "ProgressClaim",
+            "label": "The dry run for tenant import finished without rejected rows.",
+            "span": {
+              "start": 0,
+              "end": 61,
+              "text": "The dry run for tenant import finished without rejected rows."
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3022",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J3",
+      "scenarioId": "s12-s-103",
+      "source": {
+        "rawText": "Nếu mapping thiếu region, tenant có thể vào nhầm policy.",
+        "language": "mixed",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:4032354aaa8900d57b32fca0fda12fb36b483f19d065ef7ee30551176cf6f19c",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Risk",
+            "label": "tenant có thể vào nhầm policy",
+            "span": {
+              "start": 26,
+              "end": 55,
+              "text": "tenant có thể vào nhầm policy"
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3023",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J3",
+      "scenarioId": "s12-s-103",
+      "source": {
+        "rawText": "Mobile login is constrained by the device-binding policy.",
+        "language": "en",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:18ee04a4477b83859bec9eafc4f2e3ea2a4cca458df97254b12b50726575f15c",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "label": "Mobile login",
+            "span": {
+              "start": 0,
+              "end": 12,
+              "text": "Mobile login"
+            }
+          },
+          {
+            "id": "entity-02",
+            "type": "Constraint",
+            "label": "device-binding policy",
+            "span": {
+              "start": 35,
+              "end": 56,
+              "text": "device-binding policy"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "constrainedBy",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 57,
+              "text": "Mobile login is constrained by the device-binding policy."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3024",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J3",
+      "scenarioId": "s12-s-103",
+      "source": {
+        "rawText": "Giữ login cũ hay tắt ngay? Chưa có quyết định.",
+        "language": "vi",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:668ade2fa4fb594d9777cdfacd35f5a14cf923866fb2dc18a948b4133c82ac49",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unresolved migration choice without a decision"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3025",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J4",
+      "scenarioId": "s12-s-104",
+      "source": {
+        "rawText": "Claim draft phải giữ được audit trail từ lúc tạo đến lúc trả tiền.",
+        "language": "vi",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:05491b73b140349fe38e8ba27a104a65a9d2864292e8759f9bd7d6d095f2cd81",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Requirement",
+            "label": "Claim draft phải giữ được audit trail từ lúc tạo đến lúc trả tiền.",
+            "span": {
+              "start": 0,
+              "end": 66,
+              "text": "Claim draft phải giữ được audit trail từ lúc tạo đến lúc trả tiền."
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3026",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J4",
+      "scenarioId": "s12-s-104",
+      "source": {
+        "rawText": "The claims team approved a two-step review for high-value payouts.",
+        "language": "en",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:3123499de3d38008a9db6fd2c2c662eb962d9f8067babc68fe78db0ccfdfa7df",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Decision",
+            "label": "two-step review for high-value payouts",
+            "span": {
+              "start": 27,
+              "end": 65,
+              "text": "two-step review for high-value payouts"
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3027",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J4",
+      "scenarioId": "s12-s-104",
+      "source": {
+        "rawText": "Rule fraud-check hỗ trợ reviewer khi claim có dấu hiệu bất thường.",
+        "language": "mixed",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:60152a78ef8f98eb0151cd8c0806d627ed8fdad3cac2f16caef84abad96cb80e",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "label": "Rule fraud-check",
+            "span": {
+              "start": 0,
+              "end": 16,
+              "text": "Rule fraud-check"
+            }
+          },
+          {
+            "id": "entity-02",
+            "type": "Task",
+            "label": "reviewer",
+            "span": {
+              "start": 24,
+              "end": 32,
+              "text": "reviewer"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "supports",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 66,
+              "text": "Rule fraud-check hỗ trợ reviewer khi claim có dấu hiệu bất thường."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3028",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J4",
+      "scenarioId": "s12-s-104",
+      "source": {
+        "rawText": "Ai chịu trách nhiệm sign-off claim bị thiếu chứng từ?",
+        "language": "vi",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:307a2d515da537b4ccf9af37028b09aa4ca24cb9e485047cd6e3414b7136bb08",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Question",
+            "label": "Ai chịu trách nhiệm sign-off claim bị thiếu chứng từ?",
+            "span": {
+              "start": 0,
+              "end": 53,
+              "text": "Ai chịu trách nhiệm sign-off claim bị thiếu chứng từ?"
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3029",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J4",
+      "scenarioId": "s12-s-104",
+      "source": {
+        "rawText": "The batch export completed, but two partner files were late.",
+        "language": "en",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:5d23d0355aca1358f3ecd498c247a47d6bcffb2922e9938a698e5533134f9042",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "ProgressClaim",
+            "label": "The batch export completed",
+            "span": {
+              "start": 0,
+              "end": 26,
+              "text": "The batch export completed"
+            }
+          },
+          {
+            "id": "entity-02",
+            "type": "Risk",
+            "label": "two partner files were late",
+            "span": {
+              "start": 32,
+              "end": 59,
+              "text": "two partner files were late"
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3030",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J4",
+      "scenarioId": "s12-s-104",
+      "source": {
+        "rawText": "Thiếu policy exception blocks auto payout cho claim VIP.",
+        "language": "mixed",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:d880acdb6dbbf8615c9524bfb07dd64ed7a63b72959fdfcb5e8f12dc37c9e27c",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Risk",
+            "label": "Thiếu policy exception",
+            "span": {
+              "start": 0,
+              "end": 22,
+              "text": "Thiếu policy exception"
+            }
+          },
+          {
+            "id": "entity-02",
+            "type": "Task",
+            "label": "auto payout",
+            "span": {
+              "start": 30,
+              "end": 41,
+              "text": "auto payout"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "blocks",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 56,
+              "text": "Thiếu policy exception blocks auto payout cho claim VIP."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3031",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J4",
+      "scenarioId": "s12-s-104",
+      "source": {
+        "rawText": "The FAQ assistant answers the question about duplicate claims.",
+        "language": "en",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:ac75dab3a7d20c23c1111079c7bbb999fbdf876b985d0ef814839b2268bd3346",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "label": "FAQ assistant",
+            "span": {
+              "start": 4,
+              "end": 17,
+              "text": "FAQ assistant"
+            }
+          },
+          {
+            "id": "entity-02",
+            "type": "Question",
+            "label": "the question about duplicate claims",
+            "span": {
+              "start": 26,
+              "end": 61,
+              "text": "the question about duplicate claims"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "answers",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 62,
+              "text": "The FAQ assistant answers the question about duplicate claims."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3032",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J4",
+      "scenarioId": "s12-s-104",
+      "source": {
+        "rawText": "Export toàn bộ claim hay chỉ các claim đã duyệt? Chưa rõ phạm vi.",
+        "language": "vi",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:d56208e834ff9058e465f10e0b433f26bc78f8281990f8c485fa21093e1e2717",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "development",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "scope is unresolved and no owner decision is recorded"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3033",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J5",
+      "scenarioId": "s12-s-105",
+      "source": {
+        "rawText": "Lịch khám phải chừa buffer cho ca tái khám khẩn.",
+        "language": "vi",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:8b91d3ebd8e4085b8501cd52d4fc9599b682cc2e1df6395ebf821bbe56101af4",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "validation",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Requirement",
+            "label": "Lịch khám phải chừa buffer cho ca tái khám khẩn.",
+            "span": {
+              "start": 0,
+              "end": 48,
+              "text": "Lịch khám phải chừa buffer cho ca tái khám khẩn."
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3034",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J5",
+      "scenarioId": "s12-s-105",
+      "source": {
+        "rawText": "The clinic chose SMS as the default appointment reminder.",
+        "language": "en",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:e5048fb87eeaf34b6721dacdb41b1bafd0d6ed93e29bc0cd700ad6714bb29ce0",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "validation",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Decision",
+            "label": "SMS as the default appointment reminder",
+            "span": {
+              "start": 17,
+              "end": 56,
+              "text": "SMS as the default appointment reminder"
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3035",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J5",
+      "scenarioId": "s12-s-105",
+      "source": {
+        "rawText": "Thiếu consent form blocks appointment confirmation.",
+        "language": "mixed",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:bfb6bc6c2a7ac747933d213541636362dea8733adc88653c6904c269e4c5b143",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "validation",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Risk",
+            "label": "Thiếu consent form",
+            "span": {
+              "start": 0,
+              "end": 18,
+              "text": "Thiếu consent form"
+            }
+          },
+          {
+            "id": "entity-02",
+            "type": "Task",
+            "label": "appointment confirmation",
+            "span": {
+              "start": 26,
+              "end": 50,
+              "text": "appointment confirmation"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "blocks",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 51,
+              "text": "Thiếu consent form blocks appointment confirmation."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3036",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J5",
+      "scenarioId": "s12-s-105",
+      "source": {
+        "rawText": "Bệnh nhân có thể đổi lịch qua kênh nào sau khi check-in?",
+        "language": "vi",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:aafcca3b2fa4eb513a6301a2ab2d2ac423180c4ff6729964a6e8fdb8a375ff89",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "validation",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Question",
+            "label": "Bệnh nhân có thể đổi lịch qua kênh nào sau khi check-in?",
+            "span": {
+              "start": 0,
+              "end": 56,
+              "text": "Bệnh nhân có thể đổi lịch qua kênh nào sau khi check-in?"
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3037",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J5",
+      "scenarioId": "s12-s-105",
+      "source": {
+        "rawText": "The nurse pilot finished with no missed reminder.",
+        "language": "en",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:8de37365d2a8c817bdb5c63b6dc3530e305bddfe333db3520d64f2fb5985b100",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "validation",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "ProgressClaim",
+            "label": "The nurse pilot finished with no missed reminder.",
+            "span": {
+              "start": 0,
+              "end": 49,
+              "text": "The nurse pilot finished with no missed reminder."
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3038",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J5",
+      "scenarioId": "s12-s-105",
+      "source": {
+        "rawText": "Appointment confirmation depends on the consent check.",
+        "language": "en",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:522f6f0adccaedbdb07887deb206d49d3385c99a128b463768f5cb0139d9bff9",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "validation",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "label": "Appointment confirmation",
+            "span": {
+              "start": 0,
+              "end": 24,
+              "text": "Appointment confirmation"
+            }
+          },
+          {
+            "id": "entity-02",
+            "type": "Requirement",
+            "label": "consent check",
+            "span": {
+              "start": 40,
+              "end": 53,
+              "text": "consent check"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "dependsOn",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 54,
+              "text": "Appointment confirmation depends on the consent check."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3039",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J5",
+      "scenarioId": "s12-s-105",
+      "source": {
+        "rawText": "予約確認メールは診療前に必ず送信する。",
+        "language": "ja",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:f629e3f1aa6fa96151f503d7d06d5a6c7a3b2588feebf12a9453e85ed582f273",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "validation",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Requirement",
+            "label": "予約確認メールは診療前に必ず送信する。",
+            "span": {
+              "start": 0,
+              "end": 19,
+              "text": "予約確認メールは診療前に必ず送信する。"
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3040",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J5",
+      "scenarioId": "s12-s-105",
+      "source": {
+        "rawText": "Có nên gom lịch tái khám vào một queue không? Chưa thống nhất.",
+        "language": "vi",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:d231abe54b7b30fd9c94f17311b7380d81e640d724bd448208de3bdcb6ffaaad",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "validation",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unresolved scheduling policy without agreement"
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3041",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J6",
+      "scenarioId": "s12-s-106",
+      "source": {
+        "rawText": "Kỹ thuật viên phải thấy lịch bảo trì trước khi nhận ca.",
+        "language": "vi",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:0c7feb346c41905afc30e455e194ac7d1092ffdcf362bf3d8c0dadca5b353b15",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "validation",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Requirement",
+            "label": "Kỹ thuật viên phải thấy lịch bảo trì trước khi nhận ca.",
+            "span": {
+              "start": 0,
+              "end": 55,
+              "text": "Kỹ thuật viên phải thấy lịch bảo trì trước khi nhận ca."
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3042",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J6",
+      "scenarioId": "s12-s-106",
+      "source": {
+        "rawText": "The field team selected offline mode for the first rollout.",
+        "language": "en",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:4af59ccbed098e605291d5a43ef532c11e61c083b0e7efba73e57426a58eb8b2",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "validation",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Decision",
+            "label": "offline mode for the first rollout",
+            "span": {
+              "start": 24,
+              "end": 58,
+              "text": "offline mode for the first rollout"
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3043",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J6",
+      "scenarioId": "s12-s-106",
+      "source": {
+        "rawText": "The dispatch checklist implements the safety review agreed yesterday.",
+        "language": "en",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:6afac27f40cc09bd00e7743a7c5585fe5ee10bc297901c9879c476d1e5735cde",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "validation",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "label": "dispatch checklist",
+            "span": {
+              "start": 4,
+              "end": 22,
+              "text": "dispatch checklist"
+            }
+          },
+          {
+            "id": "entity-02",
+            "type": "Requirement",
+            "label": "safety review agreed yesterday",
+            "span": {
+              "start": 38,
+              "end": 68,
+              "text": "safety review agreed yesterday"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "implements",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 69,
+              "text": "The dispatch checklist implements the safety review agreed yesterday."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3044",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J6",
+      "scenarioId": "s12-s-106",
+      "source": {
+        "rawText": "Ai xác nhận spare part đã tới công trường?",
+        "language": "vi",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:e48513d0720239b739dc5e95fa6a0905f8b818838000ac59aaf4bb04fa70c5eb",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "validation",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Question",
+            "label": "Ai xác nhận spare part đã tới công trường?",
+            "span": {
+              "start": 0,
+              "end": 42,
+              "text": "Ai xác nhận spare part đã tới công trường?"
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3045",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J6",
+      "scenarioId": "s12-s-106",
+      "source": {
+        "rawText": "The first mobile rollout completed in the pilot region.",
+        "language": "en",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:46390b686e32fd771b591aeb365d9e99e20b6c64077b6e4879f0b16003161faf",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "validation",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "ProgressClaim",
+            "label": "The first mobile rollout completed in the pilot region.",
+            "span": {
+              "start": 0,
+              "end": 55,
+              "text": "The first mobile rollout completed in the pilot region."
+            }
+          }
+        ],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3046",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J6",
+      "scenarioId": "s12-s-106",
+      "source": {
+        "rawText": "Mất mạng blocks technician sync ở khu vực xa.",
+        "language": "mixed",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:256db497996ea146f721c60e72d27b23ef7b56419186650c5b9ba60c81acee66",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "validation",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Risk",
+            "label": "Mất mạng",
+            "span": {
+              "start": 0,
+              "end": 8,
+              "text": "Mất mạng"
+            }
+          },
+          {
+            "id": "entity-02",
+            "type": "Task",
+            "label": "technician sync",
+            "span": {
+              "start": 16,
+              "end": 31,
+              "text": "technician sync"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "blocks",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 45,
+              "text": "Mất mạng blocks technician sync ở khu vực xa."
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3047",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J6",
+      "scenarioId": "s12-s-106",
+      "source": {
+        "rawText": "現場アプリは端末の省電力設定に制約される。",
+        "language": "ja",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:0b6863fe91c0695194862844c1732ac26cb3c1dea8e0c9a0c08b5faa4a7a736d",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "validation",
+      "gold": {
+        "entities": [
+          {
+            "id": "entity-01",
+            "type": "Task",
+            "label": "現場アプリ",
+            "span": {
+              "start": 0,
+              "end": 5,
+              "text": "現場アプリ"
+            }
+          },
+          {
+            "id": "entity-02",
+            "type": "Constraint",
+            "label": "端末の省電力設定",
+            "span": {
+              "start": 6,
+              "end": 14,
+              "text": "端末の省電力設定"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "predicate": "constrainedBy",
+            "sourceEntityId": "entity-01",
+            "targetEntityId": "entity-02",
+            "span": {
+              "start": 0,
+              "end": 21,
+              "text": "現場アプリは端末の省電力設定に制約される。"
+            }
+          }
+        ],
+        "links": [],
+        "abstention": {
+          "required": false,
+          "reason": null
+        },
+        "semanticGaps": []
+      }
+    },
+    {
+      "caseId": "s12-a-3048",
+      "schemaVersion": "s12.atomic.v1",
+      "journeyId": "J6",
+      "scenarioId": "s12-s-106",
+      "source": {
+        "rawText": "Sửa lịch bảo trì hay giữ như cũ? Owner chưa trả lời.",
+        "language": "vi",
+        "origin": "agent-authored-synthetic",
+        "sensitivity": "synthetic",
+        "license": "Projecta-internal-synthetic-v3",
+        "permissionRef": "sprint12-r09-deep-pilot-v1",
+        "contentDigest": "sha256:65dffb7b6df85fb737db717794946595e72a8fff5f96324a2e8580139981e01c",
+        "authoringNote": "R09 deep pilot synthetic Quick Note; not human-authored evidence."
+      },
+      "split": "validation",
+      "gold": {
+        "entities": [],
+        "relations": [],
+        "links": [],
+        "abstention": {
+          "required": true,
+          "reason": "unresolved maintenance choice without an owner answer"
+        },
+        "semanticGaps": []
+      }
+    }
+  ]
+}

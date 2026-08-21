@@ -1,0 +1,80 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm23f-owner-review.v1",
+  "status": "OWNER_ISSUANCE_REVIEW_APPROVED_ISSUANCE_ONLY",
+  "experimentId": "s12-f-12",
+  "decisionType": "RM-23F_OWNER_ISSUANCE_REVIEW",
+  "decisionDate": "2026-08-21",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedLineage": {
+    "lineageCommit": "909995ebbb3c8a8f8f6f2168fd5d721481925f23",
+    "executionCommit": "e047911e2e2d513f2b8751965dd702b2c1fe9d5a",
+    "preregistration": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22d-issuance-draft.v7.json",
+      "digest": "sha256:9e52308abb73fa7a0696f8bd8ae11c1eed064bd63fcdc7266e1c1b3bd7844808"
+    },
+    "executionPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22d-execution-package.v7.json",
+      "digest": "sha256:22c47dd77ea4a348b479a21d5d42b97684c6f04a1fa54b06857bd82f2c9bc641"
+    },
+    "technicalFreeze": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22d-technical-freeze.v7.json",
+      "digest": "sha256:20bf9ed82b629c9e26067b42acbb9efdf2b78de243ffd40cc0a707f46901a772"
+    },
+    "runner": {
+      "path": "scripts/run_sprint12_f12_stage_a_v6.py",
+      "digest": "sha256:f572254610653edf0510e3a8a67c017bacdacad44336fc7bdbd3d3db7bd582da"
+    },
+    "authorizationSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v2.json",
+      "digest": "sha256:452cbddf0af489b21c21b0fa97f4147d0672c8a8f840c1df33c74b292f0987ea"
+    },
+    "reportSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v6.json",
+      "digest": "sha256:22f0b96df89bc65d7d290e46879ea9d13092e98b47c1694bbe9a4102bf054346"
+    },
+    "preflight": {
+      "path": "scripts/preflight_sprint12_f12_rm22d_v7.py",
+      "digest": "sha256:27ccffe3dd55f7432505d7fb2bd4cafa44e04668fcce2ecb156b110ee877c9d1"
+    }
+  },
+  "verifiedEvidence": {
+    "fullF12Regression": "60 passed",
+    "fullSprint12Suite": "278 passed",
+    "rm22fTargetedTests": "8 passed",
+    "preflightStatus": "F12_RM22D_READY_ZERO_CALL_V7",
+    "ruff": "pass",
+    "jsonSchemaValidation": "pass",
+    "gitDiffCheckBeforeReviewArtifacts": "pass",
+    "exactCommitAndBlobCustody": "pass",
+    "providerCalls": 0,
+    "heldOutAccess": false,
+    "reportPathExists": false,
+    "mockExecution": {
+      "unauthorizedProviderCalls": 0,
+      "authorizedProviderCalls": 144,
+      "relationBranches": 96,
+      "retryCount": 0,
+      "outputPersistCount": 1,
+      "secondExecutionProviderCalls": 0
+    }
+  },
+  "decision": {
+    "rm23fReviewCompleted": true,
+    "rm23fApproved": true,
+    "preregistrationIssued": true,
+    "executionFreezeIssued": true,
+    "providerExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "prepare-separate-exact-commit-stage-a-provider-authorization"
+  },
+  "constraints": [
+    "This decision issues only the v7 preregistration and technical freeze lineage.",
+    "A separate authorization artifact must bind this owner-review digest, the exact execution commit, package and freeze digests, output path, runtime configuration and the exact cost ceiling before provider capture.",
+    "Do not reuse any f10 or f11 authorization and do not authorize retries or output overwrite.",
+    "Validation and held-out data remain sealed; Stage B, selection and promotion remain closed."
+  ]
+}

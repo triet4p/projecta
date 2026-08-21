@@ -1,0 +1,879 @@
+{
+  "reportVersion": "s12.leakage-validator.v2",
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "status": "BLOCKED_KNOWN_LEAKAGE",
+  "readScope": {
+    "atomicPayloadSplits": {
+      "development": 120,
+      "validation": 40
+    },
+    "scenarioPayloadSplits": {
+      "development": 12,
+      "validation": 6
+    },
+    "testPayloadRead": false,
+    "testPayloadStatus": "not-available-custody",
+    "testManifestCounts": {
+      "atomic": 40,
+      "scenarios": 6
+    }
+  },
+  "atomic": {
+    "payloadCaseCount": 160,
+    "splitCounts": {
+      "development": 120,
+      "validation": 40
+    },
+    "generatorMarkerCaseCount": 160,
+    "generatorMarkerCaseIds": [
+      "s12-a-0101",
+      "s12-a-0102",
+      "s12-a-0103",
+      "s12-a-0104",
+      "s12-a-0105",
+      "s12-a-0106",
+      "s12-a-0107",
+      "s12-a-0108",
+      "s12-a-0109",
+      "s12-a-0110",
+      "s12-a-0111",
+      "s12-a-0112",
+      "s12-a-0113",
+      "s12-a-0114",
+      "s12-a-0115",
+      "s12-a-0116",
+      "s12-a-0121",
+      "s12-a-0122",
+      "s12-a-0123",
+      "s12-a-0124",
+      "s12-a-0125",
+      "s12-a-0126",
+      "s12-a-0127",
+      "s12-a-0128",
+      "s12-a-0129",
+      "s12-a-0130",
+      "s12-a-0131",
+      "s12-a-0132",
+      "s12-a-0133",
+      "s12-a-0134",
+      "s12-a-0135",
+      "s12-a-0136",
+      "s12-a-0137",
+      "s12-a-0138",
+      "s12-a-0139",
+      "s12-a-0140",
+      "s12-a-0141",
+      "s12-a-0142",
+      "s12-a-0143",
+      "s12-a-0144",
+      "s12-a-0151",
+      "s12-a-0152",
+      "s12-a-0153",
+      "s12-a-0154",
+      "s12-a-0155",
+      "s12-a-0156",
+      "s12-a-0157",
+      "s12-a-0158",
+      "s12-a-0159",
+      "s12-a-0160",
+      "s12-a-0161",
+      "s12-a-0162",
+      "s12-a-0163",
+      "s12-a-0164",
+      "s12-a-0165",
+      "s12-a-0166",
+      "s12-a-0167",
+      "s12-a-0168",
+      "s12-a-0169",
+      "s12-a-0170",
+      "s12-a-0176",
+      "s12-a-0177",
+      "s12-a-0178",
+      "s12-a-0179",
+      "s12-a-0180",
+      "s12-a-0181",
+      "s12-a-0182",
+      "s12-a-0183",
+      "s12-a-0184",
+      "s12-a-0185",
+      "s12-a-0186",
+      "s12-a-0187",
+      "s12-a-0188",
+      "s12-a-0189",
+      "s12-a-0190",
+      "s12-a-0191",
+      "s12-a-0192",
+      "s12-a-0193",
+      "s12-a-0194",
+      "s12-a-0195",
+      "s12-a-0201",
+      "s12-a-0202",
+      "s12-a-0203",
+      "s12-a-0204",
+      "s12-a-0205",
+      "s12-a-0206",
+      "s12-a-0207",
+      "s12-a-0208",
+      "s12-a-0209",
+      "s12-a-0210",
+      "s12-a-0211",
+      "s12-a-0212",
+      "s12-a-0213",
+      "s12-a-0214",
+      "s12-a-0215",
+      "s12-a-0216",
+      "s12-a-0217",
+      "s12-a-0218",
+      "s12-a-0219",
+      "s12-a-0220",
+      "s12-a-0226",
+      "s12-a-0227",
+      "s12-a-0228",
+      "s12-a-0229",
+      "s12-a-0230",
+      "s12-a-0231",
+      "s12-a-0232",
+      "s12-a-0233",
+      "s12-a-0234",
+      "s12-a-0235",
+      "s12-a-0236",
+      "s12-a-0237",
+      "s12-a-0238",
+      "s12-a-0239",
+      "s12-a-0240",
+      "s12-a-0241",
+      "s12-a-0242",
+      "s12-a-0243",
+      "s12-a-0244",
+      "s12-a-0245",
+      "s12-a-0251",
+      "s12-a-0252",
+      "s12-a-0253",
+      "s12-a-0254",
+      "s12-a-0255",
+      "s12-a-0256",
+      "s12-a-0257",
+      "s12-a-0258",
+      "s12-a-0259",
+      "s12-a-0260",
+      "s12-a-0261",
+      "s12-a-0262",
+      "s12-a-0263",
+      "s12-a-0264",
+      "s12-a-0265",
+      "s12-a-0266",
+      "s12-a-0267",
+      "s12-a-0268",
+      "s12-a-0269",
+      "s12-a-0270",
+      "s12-a-0276",
+      "s12-a-0277",
+      "s12-a-0278",
+      "s12-a-0279",
+      "s12-a-0280",
+      "s12-a-0281",
+      "s12-a-0282",
+      "s12-a-0283",
+      "s12-a-0284",
+      "s12-a-0285",
+      "s12-a-0286",
+      "s12-a-0287",
+      "s12-a-0288",
+      "s12-a-0289",
+      "s12-a-0290",
+      "s12-a-0291",
+      "s12-a-0292",
+      "s12-a-0293",
+      "s12-a-0294",
+      "s12-a-0295"
+    ],
+    "normalizedTemplateClusterCount": 13,
+    "normalizedTemplateClusters": [
+      {
+        "templateHash": "sha256:0bb93ec923869c03880907ba0f8974dbcd9a74c16309a5fdce752499f60c3b59",
+        "caseCount": 21,
+        "splits": [
+          "development",
+          "validation"
+        ],
+        "caseIds": [
+          "s12-a-0106",
+          "s12-a-0114",
+          "s12-a-0122",
+          "s12-a-0130",
+          "s12-a-0138",
+          "s12-a-0154",
+          "s12-a-0162",
+          "s12-a-0170",
+          "s12-a-0178",
+          "s12-a-0186",
+          "s12-a-0194",
+          "s12-a-0202",
+          "s12-a-0210",
+          "s12-a-0218",
+          "s12-a-0226",
+          "s12-a-0234",
+          "s12-a-0242",
+          "s12-a-0258",
+          "s12-a-0266",
+          "s12-a-0282",
+          "s12-a-0290"
+        ]
+      },
+      {
+        "templateHash": "sha256:541c1aa9cccc4f442e17c103aa0a24e348589c73aacfa2b11cd17cfd6f188b38",
+        "caseCount": 21,
+        "splits": [
+          "development",
+          "validation"
+        ],
+        "caseIds": [
+          "s12-a-0107",
+          "s12-a-0115",
+          "s12-a-0123",
+          "s12-a-0131",
+          "s12-a-0139",
+          "s12-a-0155",
+          "s12-a-0163",
+          "s12-a-0179",
+          "s12-a-0187",
+          "s12-a-0195",
+          "s12-a-0203",
+          "s12-a-0211",
+          "s12-a-0219",
+          "s12-a-0227",
+          "s12-a-0235",
+          "s12-a-0243",
+          "s12-a-0251",
+          "s12-a-0259",
+          "s12-a-0267",
+          "s12-a-0283",
+          "s12-a-0291"
+        ]
+      },
+      {
+        "templateHash": "sha256:e30de70c3a119e54c46e512a26a65cc59c0c44a9b8cba2b885147b21bbdd2468",
+        "caseCount": 20,
+        "splits": [
+          "development",
+          "validation"
+        ],
+        "caseIds": [
+          "s12-a-0101",
+          "s12-a-0109",
+          "s12-a-0125",
+          "s12-a-0133",
+          "s12-a-0141",
+          "s12-a-0157",
+          "s12-a-0165",
+          "s12-a-0181",
+          "s12-a-0189",
+          "s12-a-0205",
+          "s12-a-0213",
+          "s12-a-0229",
+          "s12-a-0237",
+          "s12-a-0245",
+          "s12-a-0253",
+          "s12-a-0261",
+          "s12-a-0269",
+          "s12-a-0277",
+          "s12-a-0285",
+          "s12-a-0293"
+        ]
+      },
+      {
+        "templateHash": "sha256:0f53a0f378b933165dd9def9bab820b781d526c36dc799634581496887218ec4",
+        "caseCount": 19,
+        "splits": [
+          "development",
+          "validation"
+        ],
+        "caseIds": [
+          "s12-a-0103",
+          "s12-a-0111",
+          "s12-a-0127",
+          "s12-a-0135",
+          "s12-a-0143",
+          "s12-a-0151",
+          "s12-a-0159",
+          "s12-a-0167",
+          "s12-a-0183",
+          "s12-a-0191",
+          "s12-a-0207",
+          "s12-a-0215",
+          "s12-a-0231",
+          "s12-a-0239",
+          "s12-a-0255",
+          "s12-a-0263",
+          "s12-a-0279",
+          "s12-a-0287",
+          "s12-a-0295"
+        ]
+      },
+      {
+        "templateHash": "sha256:86c532a570dcebca29e0e575f77b1bda99a9573996591b3f9ded3501366daee4",
+        "caseCount": 19,
+        "splits": [
+          "development",
+          "validation"
+        ],
+        "caseIds": [
+          "s12-a-0102",
+          "s12-a-0110",
+          "s12-a-0126",
+          "s12-a-0134",
+          "s12-a-0142",
+          "s12-a-0158",
+          "s12-a-0166",
+          "s12-a-0182",
+          "s12-a-0190",
+          "s12-a-0206",
+          "s12-a-0214",
+          "s12-a-0230",
+          "s12-a-0238",
+          "s12-a-0254",
+          "s12-a-0262",
+          "s12-a-0270",
+          "s12-a-0278",
+          "s12-a-0286",
+          "s12-a-0294"
+        ]
+      },
+      {
+        "templateHash": "sha256:e630192b6c07bba25ecb507bfc05f6ef6202f7fb5568324c3193e7df77bb1f6b",
+        "caseCount": 19,
+        "splits": [
+          "development",
+          "validation"
+        ],
+        "caseIds": [
+          "s12-a-0104",
+          "s12-a-0112",
+          "s12-a-0128",
+          "s12-a-0136",
+          "s12-a-0144",
+          "s12-a-0152",
+          "s12-a-0160",
+          "s12-a-0168",
+          "s12-a-0176",
+          "s12-a-0184",
+          "s12-a-0192",
+          "s12-a-0208",
+          "s12-a-0216",
+          "s12-a-0232",
+          "s12-a-0240",
+          "s12-a-0256",
+          "s12-a-0264",
+          "s12-a-0280",
+          "s12-a-0288"
+        ]
+      },
+      {
+        "templateHash": "sha256:1404bfd4898c6c050d2cd86284129534d97b51c67b9b2b90a5f1af6e26d87937",
+        "caseCount": 2,
+        "splits": [
+          "validation"
+        ],
+        "caseIds": [
+          "s12-a-0113",
+          "s12-a-0169"
+        ]
+      },
+      {
+        "templateHash": "sha256:189281b2ab9f1b32402701ef945fc3037927cd40bba3b17fffffcbdd8a966291",
+        "caseCount": 2,
+        "splits": [
+          "development"
+        ],
+        "caseIds": [
+          "s12-a-0108",
+          "s12-a-0180"
+        ]
+      },
+      {
+        "templateHash": "sha256:2080aa20f6c2c9d21b1a33d8fa258cf35b0155379a1eb923a80c0600855380fb",
+        "caseCount": 2,
+        "splits": [
+          "development"
+        ],
+        "caseIds": [
+          "s12-a-0121",
+          "s12-a-0177"
+        ]
+      },
+      {
+        "templateHash": "sha256:210a17c9a0f79672d2171c7369afbec2b5112e174e08ca801074fd23e5b64f74",
+        "caseCount": 2,
+        "splits": [
+          "development",
+          "validation"
+        ],
+        "caseIds": [
+          "s12-a-0137",
+          "s12-a-0193"
+        ]
+      },
+      {
+        "templateHash": "sha256:5532cae0e4aa1998b88af35b6ffec9e6b5524f9db574a28a2c97171e392e5342",
+        "caseCount": 2,
+        "splits": [
+          "development",
+          "validation"
+        ],
+        "caseIds": [
+          "s12-a-0116",
+          "s12-a-0188"
+        ]
+      },
+      {
+        "templateHash": "sha256:7862d04d6a5351c793cbbd1834ac771795e47a74e2d1c0dbe2e02069d67716e3",
+        "caseCount": 2,
+        "splits": [
+          "development"
+        ],
+        "caseIds": [
+          "s12-a-0129",
+          "s12-a-0185"
+        ]
+      },
+      {
+        "templateHash": "sha256:ed880f535c0f24d65f49e9ab5184e06a387185d0af4618d2d3f88a41a2c0c676",
+        "caseCount": 2,
+        "splits": [
+          "development"
+        ],
+        "caseIds": [
+          "s12-a-0105",
+          "s12-a-0161"
+        ]
+      }
+    ],
+    "crossSplitNormalizedTemplateClusters": [
+      {
+        "templateHash": "sha256:0bb93ec923869c03880907ba0f8974dbcd9a74c16309a5fdce752499f60c3b59",
+        "caseCount": 21,
+        "splits": [
+          "development",
+          "validation"
+        ],
+        "caseIds": [
+          "s12-a-0106",
+          "s12-a-0114",
+          "s12-a-0122",
+          "s12-a-0130",
+          "s12-a-0138",
+          "s12-a-0154",
+          "s12-a-0162",
+          "s12-a-0170",
+          "s12-a-0178",
+          "s12-a-0186",
+          "s12-a-0194",
+          "s12-a-0202",
+          "s12-a-0210",
+          "s12-a-0218",
+          "s12-a-0226",
+          "s12-a-0234",
+          "s12-a-0242",
+          "s12-a-0258",
+          "s12-a-0266",
+          "s12-a-0282",
+          "s12-a-0290"
+        ]
+      },
+      {
+        "templateHash": "sha256:541c1aa9cccc4f442e17c103aa0a24e348589c73aacfa2b11cd17cfd6f188b38",
+        "caseCount": 21,
+        "splits": [
+          "development",
+          "validation"
+        ],
+        "caseIds": [
+          "s12-a-0107",
+          "s12-a-0115",
+          "s12-a-0123",
+          "s12-a-0131",
+          "s12-a-0139",
+          "s12-a-0155",
+          "s12-a-0163",
+          "s12-a-0179",
+          "s12-a-0187",
+          "s12-a-0195",
+          "s12-a-0203",
+          "s12-a-0211",
+          "s12-a-0219",
+          "s12-a-0227",
+          "s12-a-0235",
+          "s12-a-0243",
+          "s12-a-0251",
+          "s12-a-0259",
+          "s12-a-0267",
+          "s12-a-0283",
+          "s12-a-0291"
+        ]
+      },
+      {
+        "templateHash": "sha256:e30de70c3a119e54c46e512a26a65cc59c0c44a9b8cba2b885147b21bbdd2468",
+        "caseCount": 20,
+        "splits": [
+          "development",
+          "validation"
+        ],
+        "caseIds": [
+          "s12-a-0101",
+          "s12-a-0109",
+          "s12-a-0125",
+          "s12-a-0133",
+          "s12-a-0141",
+          "s12-a-0157",
+          "s12-a-0165",
+          "s12-a-0181",
+          "s12-a-0189",
+          "s12-a-0205",
+          "s12-a-0213",
+          "s12-a-0229",
+          "s12-a-0237",
+          "s12-a-0245",
+          "s12-a-0253",
+          "s12-a-0261",
+          "s12-a-0269",
+          "s12-a-0277",
+          "s12-a-0285",
+          "s12-a-0293"
+        ]
+      },
+      {
+        "templateHash": "sha256:0f53a0f378b933165dd9def9bab820b781d526c36dc799634581496887218ec4",
+        "caseCount": 19,
+        "splits": [
+          "development",
+          "validation"
+        ],
+        "caseIds": [
+          "s12-a-0103",
+          "s12-a-0111",
+          "s12-a-0127",
+          "s12-a-0135",
+          "s12-a-0143",
+          "s12-a-0151",
+          "s12-a-0159",
+          "s12-a-0167",
+          "s12-a-0183",
+          "s12-a-0191",
+          "s12-a-0207",
+          "s12-a-0215",
+          "s12-a-0231",
+          "s12-a-0239",
+          "s12-a-0255",
+          "s12-a-0263",
+          "s12-a-0279",
+          "s12-a-0287",
+          "s12-a-0295"
+        ]
+      },
+      {
+        "templateHash": "sha256:86c532a570dcebca29e0e575f77b1bda99a9573996591b3f9ded3501366daee4",
+        "caseCount": 19,
+        "splits": [
+          "development",
+          "validation"
+        ],
+        "caseIds": [
+          "s12-a-0102",
+          "s12-a-0110",
+          "s12-a-0126",
+          "s12-a-0134",
+          "s12-a-0142",
+          "s12-a-0158",
+          "s12-a-0166",
+          "s12-a-0182",
+          "s12-a-0190",
+          "s12-a-0206",
+          "s12-a-0214",
+          "s12-a-0230",
+          "s12-a-0238",
+          "s12-a-0254",
+          "s12-a-0262",
+          "s12-a-0270",
+          "s12-a-0278",
+          "s12-a-0286",
+          "s12-a-0294"
+        ]
+      },
+      {
+        "templateHash": "sha256:e630192b6c07bba25ecb507bfc05f6ef6202f7fb5568324c3193e7df77bb1f6b",
+        "caseCount": 19,
+        "splits": [
+          "development",
+          "validation"
+        ],
+        "caseIds": [
+          "s12-a-0104",
+          "s12-a-0112",
+          "s12-a-0128",
+          "s12-a-0136",
+          "s12-a-0144",
+          "s12-a-0152",
+          "s12-a-0160",
+          "s12-a-0168",
+          "s12-a-0176",
+          "s12-a-0184",
+          "s12-a-0192",
+          "s12-a-0208",
+          "s12-a-0216",
+          "s12-a-0232",
+          "s12-a-0240",
+          "s12-a-0256",
+          "s12-a-0264",
+          "s12-a-0280",
+          "s12-a-0288"
+        ]
+      },
+      {
+        "templateHash": "sha256:210a17c9a0f79672d2171c7369afbec2b5112e174e08ca801074fd23e5b64f74",
+        "caseCount": 2,
+        "splits": [
+          "development",
+          "validation"
+        ],
+        "caseIds": [
+          "s12-a-0137",
+          "s12-a-0193"
+        ]
+      },
+      {
+        "templateHash": "sha256:5532cae0e4aa1998b88af35b6ffec9e6b5524f9db574a28a2c97171e392e5342",
+        "caseCount": 2,
+        "splits": [
+          "development",
+          "validation"
+        ],
+        "caseIds": [
+          "s12-a-0116",
+          "s12-a-0188"
+        ]
+      }
+    ],
+    "exactContentDuplicateClusters": [],
+    "crossSplitExactContentDuplicateClusters": [],
+    "pass": false
+  },
+  "scenarios": {
+    "payloadScenarioCount": 18,
+    "uniqueSourceLineageCount": 6,
+    "reusedSourceLineageGroups": [
+      {
+        "lineageHash": "sha256:364ec0af439edbd420e7d5db49716c4d98bb9177269837ad4c84d4f73d0defde",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-010",
+          "s12-s-011",
+          "s12-s-012"
+        ],
+        "splits": [
+          "development"
+        ],
+        "semanticHashes": [
+          "sha256:2a653f0223282819b3be99351ea1c929451d37086b01033e8effb6f60cb911d7",
+          "sha256:492cf7bd16bd937d6b0abf4a772c379b456202910c65b5888defcad7114e1d25",
+          "sha256:93ca9b67f02e13822fb536bf365b06482dd73305dc1949e35f0076b467e8b0b5"
+        ]
+      },
+      {
+        "lineageHash": "sha256:56df1c90ac32ff3b19b296d7e9bcf761b7d08ffca8cc850e114185fee26f5d91",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-013",
+          "s12-s-014",
+          "s12-s-015"
+        ],
+        "splits": [
+          "validation"
+        ],
+        "semanticHashes": [
+          "sha256:075e4c2f3cb1bfb8fb6973c77f7c30dabdf4b4b394e053a373b20997edeb0a78",
+          "sha256:703a0a060ad6b5aea923177ddaf8a79ff3dcaaa4664be8c7145fc4d440965ca2",
+          "sha256:b9a7493b2d7dd9e0286b2de42fcae2b62a8c98c8260298f15bcdbd8e1f3fabdf"
+        ]
+      },
+      {
+        "lineageHash": "sha256:658a289a8265892c3b966cb8769c2f63be3d94cad167fdd2d0c2bbde3445b99e",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-016",
+          "s12-s-017",
+          "s12-s-018"
+        ],
+        "splits": [
+          "validation"
+        ],
+        "semanticHashes": [
+          "sha256:1c047057184921e2914379cb85586c5d19e6dc5ae8d61d68ed065e29c1e44251",
+          "sha256:646840ab88453dfbad505f7e336003cc467019b57d0d8dc3e8e4462aa0192134",
+          "sha256:b1da454d1cc71fb56a8307a2c417a06f4824825f35d863e874263ec7ad600ba1"
+        ]
+      },
+      {
+        "lineageHash": "sha256:6e05357cf26986d196e9188c0990f31874d67f0162db47d41fc1b501bd4523b7",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-007",
+          "s12-s-008",
+          "s12-s-009"
+        ],
+        "splits": [
+          "development"
+        ],
+        "semanticHashes": [
+          "sha256:5b2fb299c4f65cab8756c3457ac755bd8d878c6ff51d42972255560226f3786f",
+          "sha256:7ed4be3cd1f78b0f2894caff2d82856883407d12055dabd6fefbef90a22b5061",
+          "sha256:8ffd29812df15571685a72c70f4425c13a4ab83f440a1790ad5a3276f9a23576"
+        ]
+      },
+      {
+        "lineageHash": "sha256:e9f2dd22fe97b197772a01fcf0466e6a86277847ff1079f2132087474c56338c",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-001",
+          "s12-s-002",
+          "s12-s-003"
+        ],
+        "splits": [
+          "development"
+        ],
+        "semanticHashes": [
+          "sha256:447598b6a76fffde3c31ad6cc435f37a0e0995bababe5f2d594c7770a0202f70",
+          "sha256:de0e75e6e99017c9b8f5ebc21aaa1893d776cac4655a03c4fef997b783c1d695",
+          "sha256:ebee5939a68831a41a9a7b0a2756b098dec2765e02d3a256efbeae75deabb944"
+        ]
+      },
+      {
+        "lineageHash": "sha256:fadb3e142e445a505d45335f4d5417668f289a0a7a8e52da274817705e1b0eea",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-004",
+          "s12-s-005",
+          "s12-s-006"
+        ],
+        "splits": [
+          "development"
+        ],
+        "semanticHashes": [
+          "sha256:028dff04b4a404f40b626445a40e9fd9091006dc694343568e6d3583093162b4",
+          "sha256:273529c9fa52fcaf95b81ced0542e221a52de0dc756349df628ba0d6ed568a2d",
+          "sha256:87ebced6b4573ab0ac96a7613b4d44e18fe517ddfbcf99b8feb810287de695f7"
+        ]
+      }
+    ],
+    "crossSplitSourceLineageGroups": [],
+    "conflictingGoldGroups": [
+      {
+        "lineageHash": "sha256:364ec0af439edbd420e7d5db49716c4d98bb9177269837ad4c84d4f73d0defde",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-010",
+          "s12-s-011",
+          "s12-s-012"
+        ],
+        "splits": [
+          "development"
+        ],
+        "semanticHashes": [
+          "sha256:2a653f0223282819b3be99351ea1c929451d37086b01033e8effb6f60cb911d7",
+          "sha256:492cf7bd16bd937d6b0abf4a772c379b456202910c65b5888defcad7114e1d25",
+          "sha256:93ca9b67f02e13822fb536bf365b06482dd73305dc1949e35f0076b467e8b0b5"
+        ]
+      },
+      {
+        "lineageHash": "sha256:56df1c90ac32ff3b19b296d7e9bcf761b7d08ffca8cc850e114185fee26f5d91",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-013",
+          "s12-s-014",
+          "s12-s-015"
+        ],
+        "splits": [
+          "validation"
+        ],
+        "semanticHashes": [
+          "sha256:075e4c2f3cb1bfb8fb6973c77f7c30dabdf4b4b394e053a373b20997edeb0a78",
+          "sha256:703a0a060ad6b5aea923177ddaf8a79ff3dcaaa4664be8c7145fc4d440965ca2",
+          "sha256:b9a7493b2d7dd9e0286b2de42fcae2b62a8c98c8260298f15bcdbd8e1f3fabdf"
+        ]
+      },
+      {
+        "lineageHash": "sha256:658a289a8265892c3b966cb8769c2f63be3d94cad167fdd2d0c2bbde3445b99e",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-016",
+          "s12-s-017",
+          "s12-s-018"
+        ],
+        "splits": [
+          "validation"
+        ],
+        "semanticHashes": [
+          "sha256:1c047057184921e2914379cb85586c5d19e6dc5ae8d61d68ed065e29c1e44251",
+          "sha256:646840ab88453dfbad505f7e336003cc467019b57d0d8dc3e8e4462aa0192134",
+          "sha256:b1da454d1cc71fb56a8307a2c417a06f4824825f35d863e874263ec7ad600ba1"
+        ]
+      },
+      {
+        "lineageHash": "sha256:6e05357cf26986d196e9188c0990f31874d67f0162db47d41fc1b501bd4523b7",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-007",
+          "s12-s-008",
+          "s12-s-009"
+        ],
+        "splits": [
+          "development"
+        ],
+        "semanticHashes": [
+          "sha256:5b2fb299c4f65cab8756c3457ac755bd8d878c6ff51d42972255560226f3786f",
+          "sha256:7ed4be3cd1f78b0f2894caff2d82856883407d12055dabd6fefbef90a22b5061",
+          "sha256:8ffd29812df15571685a72c70f4425c13a4ab83f440a1790ad5a3276f9a23576"
+        ]
+      },
+      {
+        "lineageHash": "sha256:e9f2dd22fe97b197772a01fcf0466e6a86277847ff1079f2132087474c56338c",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-001",
+          "s12-s-002",
+          "s12-s-003"
+        ],
+        "splits": [
+          "development"
+        ],
+        "semanticHashes": [
+          "sha256:447598b6a76fffde3c31ad6cc435f37a0e0995bababe5f2d594c7770a0202f70",
+          "sha256:de0e75e6e99017c9b8f5ebc21aaa1893d776cac4655a03c4fef997b783c1d695",
+          "sha256:ebee5939a68831a41a9a7b0a2756b098dec2765e02d3a256efbeae75deabb944"
+        ]
+      },
+      {
+        "lineageHash": "sha256:fadb3e142e445a505d45335f4d5417668f289a0a7a8e52da274817705e1b0eea",
+        "scenarioCount": 3,
+        "scenarioIds": [
+          "s12-s-004",
+          "s12-s-005",
+          "s12-s-006"
+        ],
+        "splits": [
+          "development"
+        ],
+        "semanticHashes": [
+          "sha256:028dff04b4a404f40b626445a40e9fd9091006dc694343568e6d3583093162b4",
+          "sha256:273529c9fa52fcaf95b81ced0542e221a52de0dc756349df628ba0d6ed568a2d",
+          "sha256:87ebced6b4573ab0ac96a7613b4d44e18fe517ddfbcf99b8feb810287de695f7"
+        ]
+      }
+    ],
+    "pass": false
+  },
+  "gates": {
+    "visibleDevelopmentValidationLeakage": false,
+    "fullSplitLeakage": false,
+    "fullSplitLeakageReason": "test payload is sealed and was not read"
+  }
+}

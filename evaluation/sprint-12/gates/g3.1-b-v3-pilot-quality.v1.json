@@ -1,0 +1,147 @@
+{
+  "reportVersion": "s12.g31-b-v3-pilot-quality.v1",
+  "status": "V3_PILOT_QUALITY_READY",
+  "humanEvidence": false,
+  "qualifiedHumanEvidence": false,
+  "readScope": {
+    "atomicSplits": {
+      "development": 32,
+      "validation": 16,
+      "test": 0,
+      "total": 48
+    },
+    "scenarioSplits": {
+      "development": 4,
+      "validation": 2,
+      "test": 0,
+      "total": 6
+    },
+    "testPayloadRead": false,
+    "testPayloadStatus": "not-available-custody"
+  },
+  "gates": {
+    "adjudicationIntegrity": true,
+    "schema": true,
+    "provenance": true,
+    "spanIntegrity": true,
+    "language": true,
+    "scenarioConsistency": true,
+    "visibleSplitLeakage": true,
+    "testPayloadUninspected": true
+  },
+  "coverage": {
+    "caseCounts": {
+      "development": 32,
+      "validation": 16
+    },
+    "businessJourneyCoverage": {
+      "J1": {
+        "caseCount": 8,
+        "relationPositiveCases": 3,
+        "relationNegativeCases": 5,
+        "abstentionRequiredCases": 1,
+        "entityCount": 10,
+        "relationCount": 3,
+        "scenarioCount": 1
+      },
+      "J2": {
+        "caseCount": 8,
+        "relationPositiveCases": 2,
+        "relationNegativeCases": 6,
+        "abstentionRequiredCases": 1,
+        "entityCount": 9,
+        "relationCount": 2,
+        "scenarioCount": 1
+      },
+      "J3": {
+        "caseCount": 8,
+        "relationPositiveCases": 2,
+        "relationNegativeCases": 6,
+        "abstentionRequiredCases": 1,
+        "entityCount": 9,
+        "relationCount": 2,
+        "scenarioCount": 1
+      },
+      "J4": {
+        "caseCount": 8,
+        "relationPositiveCases": 3,
+        "relationNegativeCases": 5,
+        "abstentionRequiredCases": 1,
+        "entityCount": 11,
+        "relationCount": 3,
+        "scenarioCount": 1
+      },
+      "J5": {
+        "caseCount": 8,
+        "relationPositiveCases": 2,
+        "relationNegativeCases": 6,
+        "abstentionRequiredCases": 1,
+        "entityCount": 9,
+        "relationCount": 2,
+        "scenarioCount": 1
+      },
+      "J6": {
+        "caseCount": 8,
+        "relationPositiveCases": 3,
+        "relationNegativeCases": 5,
+        "abstentionRequiredCases": 1,
+        "entityCount": 10,
+        "relationCount": 3,
+        "scenarioCount": 1
+      }
+    },
+    "entityTypeCounts": {
+      "Assumption": 0,
+      "Constraint": 3,
+      "Decision": 6,
+      "ProgressClaim": 5,
+      "Question": 7,
+      "Requirement": 12,
+      "ResearchFinding": 0,
+      "Risk": 9,
+      "Task": 16
+    },
+    "relationPredicateCounts": {
+      "answers": 1,
+      "blocks": 5,
+      "constrainedBy": 3,
+      "dependsOn": 2,
+      "implements": 3,
+      "resolves": 0,
+      "supports": 1
+    },
+    "relationPositiveCases": 15,
+    "relationNegativeCases": 33,
+    "abstentionRequiredCases": 6,
+    "abstentionNotRequiredCases": 42
+  },
+  "diagnostics": {
+    "schemaErrors": [],
+    "provenanceErrors": [],
+    "spanErrors": [],
+    "language": {
+      "mismatchCount": 0,
+      "mismatchCaseIds": [],
+      "inferredLanguageCounts": {
+        "en": 16,
+        "ja": 2,
+        "unknown": 4,
+        "vi": 26
+      },
+      "policy": "high-confidence en/vi/ja must agree; mixed requires Vietnamese signal plus ASCII code-switch token",
+      "pass": true
+    },
+    "scenario": {
+      "shapeErrors": [],
+      "unresolvedConflictGroups": []
+    },
+    "leakage": {
+      "atomicPass": true,
+      "scenarioPass": true,
+      "crossSplitTemplateClusters": [],
+      "crossSplitExactDuplicates": [],
+      "reusedScenarioLineages": []
+    }
+  },
+  "nextGate": "G3.1-B review / R13 approval before scale-up"
+}

@@ -1,0 +1,179 @@
+{
+  "approvalStatus": "COMPLETED_REJECTED_NO_STAGE_B",
+  "candidateAvailable": false,
+  "candidateFreezeAuthorized": false,
+  "closedExperiment": {
+    "accounting": {
+      "costAccountingStatus": "BOUND",
+      "costCeilingUsd": 10.0,
+      "pricingArtifactDigest": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+      "totalCostUsd": 0.0112600264,
+      "withinCostCeiling": true
+    },
+    "aggregateArtifact": "s12-f-09-relation-evidence-stage-a.v3.json",
+    "aggregateDigest": "sha256:d58fab612da3800f0219f97c7360964431a5b6fca0e78a4491896cdf7d9a708e",
+    "authorizationArtifact": "s12-f-09-authorization.v1.json",
+    "authorizationDigest": "sha256:540e0530784c61d2bfd2a81bf3d4fa4c7161bad3b468d38c73e2a1a3ffb53cb9",
+    "experimentId": "s12-f-09",
+    "noCandidateSelection": true,
+    "noStageB": true,
+    "offlineErratumArtifact": "s12-f-09-scoring-erratum.v1.json",
+    "offlineErratumDigest": "sha256:144a67a1b35ad516c1e9f71920c81800b02327872cfab6230f5af566ab318a78",
+    "offlineRepairV2Artifact": "s12-f-09-relation-evidence-stage-a.v2.json",
+    "offlineRepairV2Digest": "sha256:751636c84dcce94d5dcf6936017212282e7e1994d3d63c482425a91ee5157ce8",
+    "rawAggregateArtifact": "s12-f-09-relation-evidence-stage-a.v1.json",
+    "rawAggregateDigest": "sha256:d6b8bfe030842ad21afceb52f63b7f620d7db8ade66e4ee0fc73b669ed563c48",
+    "reports": [
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-1-01-control.report.v1.json",
+        "digest": "sha256:df6758b808c18212ab433e8fab910a6e29966ac322dd517eb43469b3d96287d3"
+      },
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-1-02-candidate.report.v1.json",
+        "digest": "sha256:526c0174362a46175b6c787d6e14dc96aea4412ecbfae717f5462838dc0bdf12"
+      },
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-2-01-candidate.report.v1.json",
+        "digest": "sha256:6de3c6c637eb5ea29dbaaec3f17ba465ac3e9d74ebb15d46617855f26f1004c2"
+      },
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-2-02-control.report.v1.json",
+        "digest": "sha256:2ff705b9192867ae4a70bd0434bda339f80dce3a5830f138cbb848bd7ae1f012"
+      },
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-3-01-control.report.v1.json",
+        "digest": "sha256:df86f626281d1d9ab286fdc331c64fad37a84525e42cf31d229b7da0fde16356"
+      },
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-3-02-candidate.report.v1.json",
+        "digest": "sha256:185aaa49e224335c3b4b169c339e2f93ec5a2db135b782ca9848fe1ae1d70519"
+      }
+    ],
+    "status": "COMPLETED_REJECTED"
+  },
+  "completedExperiment": {
+    "accounting": {
+      "costAccountingStatus": "BOUND",
+      "costCeilingUsd": 10.0,
+      "pricingArtifactDigest": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+      "totalCostUsd": 0.0112600264,
+      "withinCostCeiling": true
+    },
+    "aggregateArtifact": "s12-f-09-relation-evidence-stage-a.v3.json",
+    "aggregateDigest": "sha256:d58fab612da3800f0219f97c7360964431a5b6fca0e78a4491896cdf7d9a708e",
+    "authorizationArtifact": "s12-f-09-authorization.v1.json",
+    "authorizationDigest": "sha256:540e0530784c61d2bfd2a81bf3d4fa4c7161bad3b468d38c73e2a1a3ffb53cb9",
+    "experimentId": "s12-f-09",
+    "noCandidateSelection": true,
+    "noStageB": true,
+    "offlineErratumArtifact": "s12-f-09-scoring-erratum.v1.json",
+    "offlineErratumDigest": "sha256:144a67a1b35ad516c1e9f71920c81800b02327872cfab6230f5af566ab318a78",
+    "offlineRepairV2Artifact": "s12-f-09-relation-evidence-stage-a.v2.json",
+    "offlineRepairV2Digest": "sha256:751636c84dcce94d5dcf6936017212282e7e1994d3d63c482425a91ee5157ce8",
+    "rawAggregateArtifact": "s12-f-09-relation-evidence-stage-a.v1.json",
+    "rawAggregateDigest": "sha256:d6b8bfe030842ad21afceb52f63b7f620d7db8ade66e4ee0fc73b669ed563c48",
+    "reports": [
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-1-01-control.report.v1.json",
+        "digest": "sha256:df6758b808c18212ab433e8fab910a6e29966ac322dd517eb43469b3d96287d3"
+      },
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-1-02-candidate.report.v1.json",
+        "digest": "sha256:526c0174362a46175b6c787d6e14dc96aea4412ecbfae717f5462838dc0bdf12"
+      },
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-2-01-candidate.report.v1.json",
+        "digest": "sha256:6de3c6c637eb5ea29dbaaec3f17ba465ac3e9d74ebb15d46617855f26f1004c2"
+      },
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-2-02-control.report.v1.json",
+        "digest": "sha256:2ff705b9192867ae4a70bd0434bda339f80dce3a5830f138cbb848bd7ae1f012"
+      },
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-3-01-control.report.v1.json",
+        "digest": "sha256:df86f626281d1d9ab286fdc331c64fad37a84525e42cf31d229b7da0fde16356"
+      },
+      {
+        "artifact": "evaluation/sprint-12/optimization/s12-f-09-relation-evidence-stage-a/pair-3-02-candidate.report.v1.json",
+        "digest": "sha256:185aaa49e224335c3b4b169c339e2f93ec5a2db135b782ca9848fe1ae1d70519"
+      }
+    ],
+    "status": "COMPLETED_REJECTED"
+  },
+  "datasetManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+  "datasetVersion": "s12.corpus.atomic.v2",
+  "denominatorContract": {
+    "candidateHardGates": {
+      "invalid_evidence": 0,
+      "missing_output": 0,
+      "schema_invalid": 0
+    },
+    "controlFailurePolicy": "degrade_comparison_integrity_without_relabeling_as_candidate_hard_gate_failure",
+    "controlHardGates": {
+      "invalid_evidence": 0,
+      "missing_output": 0,
+      "schema_invalid": 0
+    },
+    "positiveRelationMacroF1Minimum": 0.05,
+    "positiveRelationMacroF1MinimumDelta": 0.05,
+    "positiveRelationMicroF1Minimum": 0.05,
+    "primary": {
+      "caseRunsPerArm": 48,
+      "missingOutputTreatment": "metric_value_zero_and_hard_gate_failure_for_that_arm",
+      "name": "fail_closed_all_declared_case_runs"
+    },
+    "primaryRelationDeltaMinimum": 0.05,
+    "sensitivity": {
+      "missingOutputTreatment": "exclude_only_from_sensitivity_denominator",
+      "name": "paired_common_valid_case_runs"
+    },
+    "sensitivityRelationDeltaMinimum": 0.0,
+    "supersessionFalsePositiveMaximum": 0,
+    "supersessionSliceCaseCount": 5
+  },
+  "executionBlockedReasons": [
+    "S12-f-09 failed hard and registered semantic gates",
+    "comparison integrity is degraded by independent stochastic provider outputs",
+    "no Stage B or candidate selection is authorized",
+    "immutable raw and run reports are preserved"
+  ],
+  "heldOutInspected": false,
+  "humanEvidence": false,
+  "optimizationAuthorized": false,
+  "packetVersion": "s12.g5.packet.v11",
+  "pendingExperiment": {
+    "aggregateArtifact": "s12-f-09-relation-evidence-stage-a.v3.json",
+    "aggregateDigest": "sha256:d58fab612da3800f0219f97c7360964431a5b6fca0e78a4491896cdf7d9a708e",
+    "executionAuthorized": false,
+    "experimentId": "s12-f-09",
+    "stageBAuthorized": false,
+    "status": "COMPLETED_REJECTED"
+  },
+  "pricingContract": {
+    "artifact": "s12-f-08-pricing-deepseek-v4-flash.v1.json",
+    "artifactDigest": "sha256:c3d36cea2da0f091b174e111407e9283065b12d9658dd659f9023dd1b2dfc596",
+    "currency": "USD",
+    "model": "deepseek-v4-flash",
+    "rateClasses": [
+      "inputCacheHitUsdPer1M",
+      "inputCacheMissUsdPer1M",
+      "outputUsdPer1M"
+    ],
+    "requiredBeforeExecution": true,
+    "requiredBeforeSelection": true,
+    "retrievedAt": "2026-08-16",
+    "sourceUrl": "https://api-docs.deepseek.com/quick_start/pricing",
+    "status": "BOUND",
+    "unit": "USD per 1M tokens"
+  },
+  "rawSensitiveDataIncluded": false,
+  "registryDigest": "sha256:6c6e9def38a09cf8bf64ea1f4450ead0a646ac0bca926dbfc4bf97624b3d3099",
+  "registryVersion": "s12.experiment-registry.v11",
+  "selection": {
+    "heldOutInspected": false,
+    "reason": "S12-f-09 rejected; no candidate is available.",
+    "status": "NO_SELECTION"
+  },
+  "status": "G5_PREPARATION_DEVELOPMENT_CLOSED_S12_F09_REJECTED",
+  "validationAuthorized": false
+}

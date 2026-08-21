@@ -1,0 +1,244 @@
+{
+  "schemaVersion": "s12.core-quality-audit.v1",
+  "status": "G3.1_REMEDIATION_REQUIRED_G5_PAUSED",
+  "purpose": "Bind the observed Sprint 12 corpus, measurement contracts, runtime baseline, and rejected f08 evidence for non-destructive G3.1 remediation.",
+  "scope": {
+    "historicalEvidenceImmutable": true,
+    "providerExecutionPerformed": false,
+    "heldOutInspected": false,
+    "rawSensitiveDataIncluded": false,
+    "claimBoundary": "diagnostic evidence for the named synthetic development/validation benchmark only"
+  },
+  "sourceArtifacts": [
+    {
+      "id": "atomic-corpus-v2",
+      "path": "evaluation/sprint-12/corpus/atomic-development-validation.v2.json",
+      "digest": "sha256:a4bfe225d570fe3b937565755ff7a140a06d079910120c42a36e2c6783539d51",
+      "role": "observed atomic corpus"
+    },
+    {
+      "id": "scenario-corpus-v2",
+      "path": "evaluation/sprint-12/corpus/scenario-development-validation.v2.json",
+      "digest": "sha256:a30d446164e555c28a25f122d3e62f51a7d5922f8be3c020f9ec739ab39af7b9",
+      "role": "observed longitudinal scenario corpus"
+    },
+    {
+      "id": "corpus-manifest-v2",
+      "path": "evaluation/sprint-12/corpus/manifest.v2.json",
+      "digest": "sha256:ea42edbc3342060cac96748e6f20b4ac34d7f35cea657aacdc8d311d61c4231e",
+      "role": "dataset binding"
+    },
+    {
+      "id": "atomic-gold-v2",
+      "path": "evaluation/sprint-12/corpus/gold/atomic-gold.v2.json",
+      "digest": "sha256:1d948304abb2b3ba33a899711ea12fe62f659a3c9c4bdc4b018f67e480ba4c1a",
+      "role": "atomic gold binding"
+    },
+    {
+      "id": "scenario-gold-v2",
+      "path": "evaluation/sprint-12/corpus/gold/scenario-gold.v2.json",
+      "digest": "sha256:064418e2fd47138446fe36c901a31abd06a5e577854a2d73ccf593e7f7229dd4",
+      "role": "scenario gold binding"
+    },
+    {
+      "id": "corpus-qa-v2",
+      "path": "evaluation/sprint-12/corpus/qa/qa-report.v2.json",
+      "digest": "sha256:df9fc6e14bbc3cf57ac1584a0dadb6be0c3fabd2ab8f691b27e23f3a795790b6",
+      "role": "corpus QA evidence"
+    },
+    {
+      "id": "corpus-validation-v1",
+      "path": "evaluation/sprint-12/corpus/validation/report.v1.json",
+      "digest": "sha256:aeab89292b56af753bd3008ffab1a3d558f41a06c78f2c7a8fcd286c18fbbf6c",
+      "role": "development/validation boundary evidence"
+    },
+    {
+      "id": "metric-contract-v1",
+      "path": "evaluation/sprint-12/harness/metric-contract.v1.json",
+      "digest": "sha256:6b8e673772296d90cb4d2bd76cac84f64e4f30f4ddbcdca3e448be491024fc5d",
+      "role": "historical metric contract"
+    },
+    {
+      "id": "error-taxonomy-v1",
+      "path": "evaluation/sprint-12/harness/error-taxonomy.v1.json",
+      "digest": "sha256:81e66c4eb3940cf71d46244e56c0f75e7d286f0f9e79951cf5ed8ab18daf311b",
+      "role": "historical error taxonomy"
+    },
+    {
+      "id": "evaluator",
+      "path": "scripts/sprint12_evaluator.py",
+      "digest": "sha256:0eb9221962bb408d54e9fb6a3a84a769831152cf2d6b3e201aa5ab4eb67dd01e",
+      "role": "evaluator implementation bound by f08",
+      "binding": "historical-at-r01-publication",
+      "currentSourceMayEvolve": true
+    },
+    {
+      "id": "baseline-report-v1",
+      "path": "evaluation/sprint-12/baseline/baseline-report.v1.json",
+      "digest": "sha256:d3d94e4b7b822a55fc271b9d56191a7d2ec5ec09ab7cebd095ad144423b45c54",
+      "role": "immutable runtime-backed baseline"
+    },
+    {
+      "id": "baseline-scoring-erratum-v1",
+      "path": "evaluation/sprint-12/baseline/baseline-scoring-erratum.v1.json",
+      "digest": "sha256:49237d42dce56f285a8c5ff43908889cf6b54486befafd1528b115be479ad36e",
+      "role": "immutable scoring erratum"
+    },
+    {
+      "id": "f08-aggregate",
+      "path": "evaluation/sprint-12/optimization/s12-f-08-relation-prompt-stage-a.v1.json",
+      "digest": "sha256:09bc9b00e081044f07a268cc3fd2ecf4f16b2222501d8d7e1ca4f4273866e76e",
+      "role": "immutable f08 Stage A aggregate"
+    },
+    {
+      "id": "f08-registry-v10",
+      "path": "evaluation/sprint-12/optimization/experiment-registry.v10.json",
+      "digest": "sha256:9b9d9db1878950062c2390840844438610c2302b5a614c5db4997b2545862ba5",
+      "role": "immutable f08 rejection and no-selection registry"
+    },
+    {
+      "id": "g5-packet-v10",
+      "path": "evaluation/sprint-12/optimization/g5-packet.v10.json",
+      "digest": "sha256:1f2c4bdd79dd014d78fdcc175d5b2fcf0e32360fb127b08c588ff7849ec61200",
+      "role": "immutable G5 closure packet"
+    },
+    {
+      "id": "f08-report-pair-1-control",
+      "path": "evaluation/sprint-12/optimization/s12-f-08-relation-prompt-stage-a/pair-1-01-control.report.v1.json",
+      "digest": "sha256:37d3cbd02448a0eec736bda6ba708408bf040b77f9abfcd5900e2a77e762aa09",
+      "role": "f08 case-run evidence"
+    },
+    {
+      "id": "f08-report-pair-1-candidate",
+      "path": "evaluation/sprint-12/optimization/s12-f-08-relation-prompt-stage-a/pair-1-02-candidate.report.v1.json",
+      "digest": "sha256:6da009931d23117de503fbf67e1778925e57f82607568e3899bf80f018faee29",
+      "role": "f08 case-run evidence"
+    },
+    {
+      "id": "f08-report-pair-2-candidate",
+      "path": "evaluation/sprint-12/optimization/s12-f-08-relation-prompt-stage-a/pair-2-01-candidate.report.v1.json",
+      "digest": "sha256:5f0e77baa9a1994ea0b33c20e608d5955e0d16d73c632ad91a046097c2876353",
+      "role": "f08 case-run evidence"
+    },
+    {
+      "id": "f08-report-pair-2-control",
+      "path": "evaluation/sprint-12/optimization/s12-f-08-relation-prompt-stage-a/pair-2-02-control.report.v1.json",
+      "digest": "sha256:7335f312990676025735bd9e45814d0290e7530776b7428323cdc903549d9e2e",
+      "role": "f08 case-run evidence"
+    },
+    {
+      "id": "f08-report-pair-3-control",
+      "path": "evaluation/sprint-12/optimization/s12-f-08-relation-prompt-stage-a/pair-3-01-control.report.v1.json",
+      "digest": "sha256:a9ef4a1d4002f6acbb05f1594928ab4fed988556bd86736dfb2549efb34392c7",
+      "role": "f08 case-run evidence"
+    },
+    {
+      "id": "f08-report-pair-3-candidate",
+      "path": "evaluation/sprint-12/optimization/s12-f-08-relation-prompt-stage-a/pair-3-02-candidate.report.v1.json",
+      "digest": "sha256:0851cd4c266425441d59c4243edc71c1b84c5226ffd1a30e90e3896f31644018",
+      "role": "f08 case-run evidence"
+    }
+  ],
+  "observations": {
+    "atomicCorpusV2": {
+      "caseCount": 160,
+      "splits": {
+        "development": 120,
+        "validation": 40
+      },
+      "languageCounts": {
+        "vi": 80,
+        "en": 40,
+        "ja": 20,
+        "mixed": 20
+      },
+      "origin": "agent-authored-synthetic",
+      "humanEvidence": false,
+      "abstentionCases": 98,
+      "relationPositiveCases": 20,
+      "artificialMarkerCases": 160,
+      "normalizedTemplateAudit": {
+        "largestSixTemplateClustersCaseCount": 119,
+        "validationCasesWithDevelopmentTemplate": 31,
+        "validationCaseCount": 40,
+        "validatorLimitation": "numeric substitution plus similarity threshold can miss semantic template reuse"
+      },
+      "metadataAnomalyExamples": [
+        "s12-a-0187 is English content labeled language vi"
+      ]
+    },
+    "scenarioCorpusV2": {
+      "scenarioCount": 18,
+      "uniqueSourceSequences": 6,
+      "sourceSequenceReuseCount": 3,
+      "sourceSequenceLength": 5,
+      "unexplainedGoldVariation": true,
+      "conclusion": "The current scenario corpus cannot establish longitudinal business quality."
+    },
+    "runtimeBaseline": {
+      "caseCount": 160,
+      "missingOutputCount": 55,
+      "failureCounts": {
+        "schema_invalid": 7,
+        "invalid_evidence": 48
+      },
+      "schemaValidity": false,
+      "executionEvidenceReliable": true,
+      "historicalMetricReliability": false,
+      "scoringDefect": "The locked scorer read start/end while m3.v2 predictions used startOffset/endOffset."
+    },
+    "f08StageA": {
+      "executionCount": 96,
+      "oneAttemptPerCase": true,
+      "hardGateFailures": 0,
+      "supersessionFalsePositiveCount": 0,
+      "heldOutInspected": false,
+      "stageBAuthorized": false,
+      "candidateSelection": "NO_SELECTION",
+      "control": {
+        "entityMacroF1": 0.9166666666666666,
+        "abstentionAccuracy": 0.9791666666666666,
+        "positiveRelationMacroF1": 0.0476190476190476,
+        "positiveRelationMicroF1": 0.0487804878048781,
+        "relationMacroF1": 0.583333333333333,
+        "hallucinationRate": 0.194444444444444
+      },
+      "candidate": {
+        "entityMacroF1": 0.9166666666666666,
+        "abstentionAccuracy": 0.9791666666666666,
+        "positiveRelationMacroF1": 0.0476190476190476,
+        "positiveRelationMicroF1": 0.0487804878048781,
+        "relationMacroF1": 0.5625,
+        "hallucinationRate": 0.194444444444444
+      },
+      "candidateRelationMacroDelta": -0.020833333333333,
+      "decision": "STAGE_A_NOT_ELIGIBLE_FOR_STAGE_B"
+    },
+    "relationDiagnostic": {
+      "status": "diagnostic_not_official_metric",
+      "goldRelationsPerArm": 21,
+      "exactMatchesPerArm": 1,
+      "predicateAndEndpointMatchesWithSpanMismatchPerArm": 19,
+      "missingRelationsPerArm": 1,
+      "semanticRelationF1Estimate": {
+        "control": 0.9756,
+        "candidate": 0.9524
+      },
+      "interpretation": "The observed gap is consistent with evidence-boundary coupling, but the candidate remains rejected because it did not improve over control."
+    }
+  },
+  "remediationDecision": {
+    "measurementGate": "G3.1-A_REQUIRED",
+    "datasetGate": "G3.1-B_AND_G3.1-C_REQUIRED",
+    "nextExperiment": "S12-f-09",
+    "nextExperimentDimension": "tool",
+    "providerCallsAllowedNow": false,
+    "promptSweepAllowedNow": false,
+    "requiredMeasurementRepair": [
+      "separate relation semantic F1 from evidence support/exact-span quality",
+      "make diagnostic buckets mutually exclusive or explicitly directional",
+      "persist sanitized per-case predicate, endpoint, and offset signatures",
+      "add evaluator fixtures for semantic/span and endpoint failure modes"
+    ]
+  }
+}

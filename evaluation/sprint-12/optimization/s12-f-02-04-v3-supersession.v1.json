@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "s12.f02-04-v3-supersession.v1",
+  "status": "STALE_PREREGISTRATIONS_CLOSED_BEFORE_V3",
+  "sourceRegistry": {
+    "path": "evaluation/sprint-12/optimization/experiment-registry.v10.json",
+    "fileDigest": "sha256:9b9d9db1878950062c2390840844438610c2302b5a614c5db4997b2545862ba5",
+    "registryDatasetVersion": "s12.corpus.atomic.v2",
+    "registryManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a"
+  },
+  "experiments": [
+    {
+      "experimentId": "s12-f-02",
+      "dimension": "context",
+      "historicalEntryDigest": "sha256:f256735f9e5a86341a55e00809cf9ebe7a01eabba24b606d5babf595d4a59041",
+      "historicalStatus": "REGISTERED",
+      "historicalDatasetVersion": "s12.corpus.atomic.v2",
+      "historicalManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+      "replacementExperiment": "s12-f-09",
+      "replacementDatasetVersion": "s12.corpus.atomic.v3.frozen",
+      "replacementStatus": "CLOSED_SUPERSEDED_BEFORE_V3"
+    },
+    {
+      "experimentId": "s12-f-03",
+      "dimension": "agent-workflow",
+      "historicalEntryDigest": "sha256:94fecf6da26d4a24b03304106a021b4a358b3c62f5e5209629ed54b3c3d40c07",
+      "historicalStatus": "REGISTERED",
+      "historicalDatasetVersion": "s12.corpus.atomic.v2",
+      "historicalManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+      "replacementExperiment": "s12-f-09",
+      "replacementDatasetVersion": "s12.corpus.atomic.v3.frozen",
+      "replacementStatus": "CLOSED_SUPERSEDED_BEFORE_V3"
+    },
+    {
+      "experimentId": "s12-f-04",
+      "dimension": "tool",
+      "historicalEntryDigest": "sha256:df67c608b93d977c86ca813c66b57ea2536b2c7368140f00e1dad8674aa35933",
+      "historicalStatus": "REGISTERED",
+      "historicalDatasetVersion": "s12.corpus.atomic.v2",
+      "historicalManifestDigest": "sha256:030087614d30c821a0d03c8d5bf0a549b63fc6ba672531e8eda37f474265f32a",
+      "replacementExperiment": "s12-f-09",
+      "replacementDatasetVersion": "s12.corpus.atomic.v3.frozen",
+      "replacementStatus": "CLOSED_SUPERSEDED_BEFORE_V3"
+    }
+  ],
+  "historicalRegistryImmutable": true,
+  "replacement": {
+    "experimentId": "s12-f-09",
+    "datasetVersion": "s12.corpus.atomic.v3.frozen",
+    "manifestPath": "evaluation/sprint-12/corpus/v3-frozen/atomic-manifest.v1.json",
+    "providerExecutionAuthorized": false,
+    "heldOutInspected": false
+  },
+  "rawSensitiveDataIncluded": false
+}

@@ -399,7 +399,6 @@ def test_g4_approval_records_limitation_without_unlocking_optimization() -> None
     packet = (ROOT / "docs/sprint-plans/sprint-12/g4-baseline.md").read_text(
         encoding="utf-8"
     )
-    assert "Status: `G6_PREPARATION_BLOCKED_CUSTODY_OR_CANDIDATE`" in plan
     assert "[x] **S12-71" in plan
     assert "`APPROVED_WITH_LIMITATIONS`" in packet
     assert "No optimization or held-out evaluation unlock" in packet

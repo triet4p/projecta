@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "s12.v3.frozen-provenance.v1",
+  "status": "FROZEN_DEVELOPMENT_VALIDATION_ONLY",
+  "humanEvidence": false,
+  "qualifiedHumanEvidence": false,
+  "rawSensitiveDataIncluded": false,
+  "originCounts": {
+    "agent-authored-synthetic": 208
+  },
+  "sensitivityCounts": {
+    "synthetic": 208
+  },
+  "permissionRefs": [
+    "sprint12-r14-scale-v1"
+  ],
+  "testPayloadPresent": false
+}

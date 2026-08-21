@@ -1,0 +1,112 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm23b-owner-review.v1",
+  "status": "OWNER_ISSUANCE_REVIEW_WITHHELD_ORACLE_SLICE_AND_GUARD_BLOCKERS",
+  "experimentId": "s12-f-12",
+  "decisionType": "RM-23B_OWNER_ISSUANCE_REVIEW",
+  "decisionDate": "2026-08-21",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedLineage": {
+    "finalCommit": "761f708",
+    "executionCommit": "99423f8116ba1aa6f56c68f01f5055c609cff883",
+    "preregistrationDraft": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22b-issuance-draft.v3.json",
+      "digest": "sha256:37888b29204135772ae2bb65c24c192bbb0ceb62c70c04aaaf24ce062bf721df"
+    },
+    "executionPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22b-execution-package.v3.json",
+      "digest": "sha256:06d7960742b22e80ee29ae37c5e584f2885dc20557a552f0c317f1fb23a75c77"
+    },
+    "technicalFreeze": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22b-technical-freeze.v3.json",
+      "digest": "sha256:05c575cf6f8d5d5ef515df135f9b7a3d25e79830e2026cae3ac22eebdf9a5268"
+    },
+    "runner": {
+      "path": "scripts/run_sprint12_f12_stage_a_v3.py",
+      "digest": "sha256:c5140a39e12c60feea4784faa4adcaa9077baced7f6a34018878c70723c97850"
+    },
+    "reportSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v3.json",
+      "digest": "sha256:a56473fb95e3cd803e344bb254fb667295bfbe2deabfad0d23c0f80273b5e5f9"
+    }
+  },
+  "verifiedEvidence": {
+    "fullF12Regression": "44 passed",
+    "warning": "pytest cache directory unavailable; test outcomes unaffected",
+    "preflightStatus": "F12_RM22B_READY_ZERO_CALL_V3",
+    "ruff": "pass",
+    "gitDiffCheckBeforeReviewArtifacts": "pass",
+    "providerCalls": 0,
+    "heldOutAccess": false,
+    "reportPathExists": false,
+    "exactCommitAndBlobCustody": "pass",
+    "mockExecution": {
+      "providerCalls": 144,
+      "relationBranches": 96,
+      "caseRuns": 48,
+      "relationInstances": 24,
+      "abstentionInstances": 12,
+      "sliceRecordCount": 15,
+      "goldRelationsMaterializerFailures": 6,
+      "relationNegativeReportedDenominator": 0,
+      "decision": "COMPLETED_REJECTED_HARD_GATE"
+    },
+    "goldOracleFailureCases": [
+      "s12-a-4007",
+      "s12-a-4015"
+    ]
+  },
+  "blockingFindings": [
+    {
+      "id": "F12-RM23B-01",
+      "severity": "P1",
+      "summary": "The deterministic gold-relations integrity control is known to fail before provider execution.",
+      "evidence": "The mocked execution reports six materializer failures: s12-a-4007 and s12-a-4015 fail once in each of three runs. Both relations use predicate constrainedBy, but the source contains the Vietnamese trigger phrase rather than the predicate token. The inherited materializer searches source.find(predicate), so the frozen gold oracle records missing evidence. The RM-22B test explicitly asserts goldRelationsMaterializerFailures > 0, while the preregistration requires zero and integrity score 1.0.",
+      "impact": "Every authorized execution is ineligible regardless of model quality, and the deterministic control cannot distinguish a model defect from a harness/gold trigger-alignment defect.",
+      "requiredRemediation": "Version and freeze an adjudicated trigger/evidence fixture or deterministic trigger mapping for every selected positive relation, derived from source spans without changing ontology semantics. Require the zero-provider gold control to achieve 24/24 semantic matches, valid evidence for every applicable match and zero materializer failures before issuance."
+    },
+    {
+      "id": "F12-RM23B-02",
+      "severity": "P1",
+      "summary": "The relation-negative slice membership, denominator and threshold applicability do not match the preregistration.",
+      "evidence": "The preregistration binds 12 relation-negative case-runs from four hard-negative cases. The runner selects every record with zero gold relations, which includes both four abstention and four hard-negative cases, then computes the denominator by summing goldRelationCount and emits zero. It also applies all entity, abstention, relation and evidence thresholds to every arm and slice; not-applicable metrics are treated as failures even though the slice contract requires only applicable metrics.",
+      "impact": "Slice evidence is not comparable to the frozen denominator contract and sliceGatesPass is structurally false even for otherwise perfect applicable predictions.",
+      "requiredRemediation": "Bind explicit hard-negative membership or an unambiguous frozen derivation, emit denominator 12, and implement a versioned arm-by-slice metric-applicability matrix. Fail closed only when an applicable metric is missing or below threshold; add perfect-oracle and zero-denominator regression tests."
+    },
+    {
+      "id": "F12-RM23B-03",
+      "severity": "P1",
+      "summary": "The report validation is not fully closed or fail-closed when JSON Schema support is unavailable.",
+      "evidence": "The v3 schema leaves relation semantic, endpoint and evidence payloads, per-case entity/abstention/relation payloads, by-type maps and threshold maps as unrestricted objects. Required slice labels and denominators are not constrained per position. If jsonschema cannot be imported, the runner falls back to checking only top-level keys, record count and labels, then permits persistence.",
+      "impact": "A report can omit or corrupt decisive numerators, denominators, thresholds or per-slice evidence and still pass the claimed pre-persist validation in some runtime paths.",
+      "requiredRemediation": "Make JSON Schema validation a mandatory runtime dependency with no permissive fallback. Close all decisive nested metric/bucket structures, freeze exact threshold keys and slice label/dimension/denominator tuples, and add adversarial tests for missing, extra and tampered nested evidence."
+    },
+    {
+      "id": "F12-RM23B-04",
+      "severity": "P1",
+      "summary": "The authorization guard does not enforce the complete experiment and governance boundary.",
+      "evidence": "validate_authorization does not check experimentId, held-out access, Stage B, candidate selection or promotion locks. The mocked authorization omits all four negative authorization fields and is accepted for a 144-call run.",
+      "impact": "A digest- and commit-correct artifact with the wrong experiment identity or expanded downstream authority can pass the provider-call guard.",
+      "requiredRemediation": "Publish and validate a closed authorization schema requiring experimentId s12-f-12 and explicit false values for held-out, Stage B, selection and promotion. Add zero-call tests for missing, wrong and true governance fields."
+    }
+  ],
+  "decision": {
+    "rm22bPreparationRecorded": true,
+    "rm23bReviewCompleted": true,
+    "rm23bApproved": false,
+    "preregistrationIssued": false,
+    "executionFreezeIssued": false,
+    "providerExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "offline-rm22c-oracle-slice-schema-authorization-remediation-only"
+  },
+  "constraints": [
+    "Preserve RM-22, RM-22A and RM-22B artifacts as historical preparation evidence.",
+    "Do not issue or mutate the v3 preregistration/freeze and do not authorize provider execution.",
+    "Do not create Stage A output, inspect validation or held-out data, open Stage B, select or promote a candidate during RM-22C.",
+    "A superseding package requires a new independent owner issuance review and a later separate provider authorization."
+  ]
+}

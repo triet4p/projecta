@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "s12.v3.frozen-coverage.v1",
+  "status": "FROZEN_DEVELOPMENT_VALIDATION_ONLY",
+  "datasetVersions": [
+    "s12.corpus.atomic.v3.frozen",
+    "s12.corpus.scenario.v3.frozen"
+  ],
+  "coverage": {
+    "caseCounts": {
+      "development": 160,
+      "validation": 48
+    },
+    "businessJourneyCoverage": {
+      "J1": {
+        "caseCount": 32,
+        "relationPositiveCases": 8,
+        "relationNegativeCases": 24,
+        "abstentionRequiredCases": 4,
+        "entityCount": 36,
+        "relationCount": 8,
+        "scenarioCount": 4
+      },
+      "J2": {
+        "caseCount": 40,
+        "relationPositiveCases": 10,
+        "relationNegativeCases": 30,
+        "abstentionRequiredCases": 5,
+        "entityCount": 45,
+        "relationCount": 10,
+        "scenarioCount": 5
+      },
+      "J3": {
+        "caseCount": 40,
+        "relationPositiveCases": 10,
+        "relationNegativeCases": 30,
+        "abstentionRequiredCases": 5,
+        "entityCount": 45,
+        "relationCount": 10,
+        "scenarioCount": 5
+      },
+      "J4": {
+        "caseCount": 32,
+        "relationPositiveCases": 8,
+        "relationNegativeCases": 24,
+        "abstentionRequiredCases": 4,
+        "entityCount": 36,
+        "relationCount": 8,
+        "scenarioCount": 4
+      },
+      "J5": {
+        "caseCount": 32,
+        "relationPositiveCases": 8,
+        "relationNegativeCases": 24,
+        "abstentionRequiredCases": 4,
+        "entityCount": 36,
+        "relationCount": 8,
+        "scenarioCount": 4
+      },
+      "J6": {
+        "caseCount": 32,
+        "relationPositiveCases": 8,
+        "relationNegativeCases": 24,
+        "abstentionRequiredCases": 4,
+        "entityCount": 36,
+        "relationCount": 8,
+        "scenarioCount": 4
+      }
+    },
+    "entityTypeCounts": {
+      "Assumption": 0,
+      "Constraint": 26,
+      "Decision": 26,
+      "ProgressClaim": 26,
+      "Question": 26,
+      "Requirement": 26,
+      "ResearchFinding": 0,
+      "Risk": 52,
+      "Task": 52
+    },
+    "relationPredicateCounts": {
+      "answers": 5,
+      "blocks": 4,
+      "constrainedBy": 31,
+      "dependsOn": 4,
+      "implements": 4,
+      "resolves": 0,
+      "supports": 4
+    },
+    "relationPositiveCases": 52,
+    "relationNegativeCases": 156,
+    "abstentionRequiredCases": 26,
+    "abstentionNotRequiredCases": 182,
+    "languageCounts": {
+      "vi": 87,
+      "en": 41,
+      "ja": 26,
+      "mixed": 54
+    }
+  },
+  "testPayloadPresent": false
+}
