@@ -119,6 +119,35 @@ def _valid_span(span: tuple[int, int], source_length: int) -> bool:
     return 0 <= span[0] < span[1] <= source_length
 
 
+_MALFORMED = object()
+
+
+def _parse_int(value: Any) -> int | object:
+    """Return a strict integer, rejecting bool and coercion surprises."""
+
+    if type(value) is not int:
+        return _MALFORMED
+    return value
+
+
+def _parse_span(value: Any) -> tuple[int, int] | None | object:
+    """Parse a runtime span without allowing malformed mocks to raise."""
+
+    if value is None:
+        return None
+    try:
+        values = tuple(value)
+    except Exception:
+        return _MALFORMED
+    if len(values) != 2:
+        return _MALFORMED
+    start = _parse_int(values[0])
+    end = _parse_int(values[1])
+    if start is _MALFORMED or end is _MALFORMED:
+        return _MALFORMED
+    return (start, end)
+
+
 def diagnose_evidence_failure(
     relation: Any,
     *,
@@ -131,45 +160,81 @@ def diagnose_evidence_failure(
     The result never contains source text, offsets or the trigger quote.
     """
 
-    if getattr(relation, "trigger_quote", None) in (None, ""):
+    if relation is None:
+        return normalize_evidence_failure("materializer_detail_unavailable")
+    try:
+        trigger_quote = getattr(relation, "trigger_quote", None)
+        evidence_start = getattr(relation, "evidence_start", None)
+        evidence_end = getattr(relation, "evidence_end", None)
+    except Exception:
+        return normalize_evidence_failure("materializer_detail_unavailable")
+    if trigger_quote is None:
         return normalize_evidence_failure("trigger_quote_missing")
-    evidence_start = getattr(relation, "evidence_start", None)
-    evidence_end = getattr(relation, "evidence_end", None)
+    if not isinstance(trigger_quote, str):
+        return normalize_evidence_failure("materializer_detail_unavailable")
+    if trigger_quote == "":
+        return normalize_evidence_failure("trigger_quote_missing")
     if evidence_start is None or evidence_end is None:
         return normalize_evidence_failure("evidence_span_missing")
+    evidence_start = _parse_int(evidence_start)
+    evidence_end = _parse_int(evidence_end)
+    if evidence_start is _MALFORMED or evidence_end is _MALFORMED:
+        return normalize_evidence_failure("materializer_detail_unavailable")
     if context is None:
         return normalize_evidence_failure("trigger_occurrence_missing")
-    source_text = getattr(context, "source_text", None)
-    source_length = getattr(context, "source_length", None)
-    if not isinstance(source_text, str) or not isinstance(source_length, int):
+    try:
+        source_text = getattr(context, "source_text", None)
+        source_length = getattr(context, "source_length", None)
+    except Exception:
+        return normalize_evidence_failure("materializer_detail_unavailable")
+    if not isinstance(source_text, str) or type(source_length) is not int:
         return normalize_evidence_failure("materializer_detail_unavailable")
     if len(source_text) != source_length:
         return normalize_evidence_failure("materializer_detail_unavailable")
-    source_digest = getattr(context, "source_digest", None)
+    try:
+        source_digest = getattr(context, "source_digest", None)
+    except Exception:
+        return normalize_evidence_failure("materializer_detail_unavailable")
     expected_source_digest = "sha256:" + hashlib.sha256(source_text.encode()).hexdigest()
     if source_digest != expected_source_digest:
         return normalize_evidence_failure("materializer_detail_unavailable")
-    evidence_span = (int(evidence_start), int(evidence_end))
+    evidence_span = (evidence_start, evidence_end)
     if not _valid_span(evidence_span, source_length):
         return normalize_evidence_failure("evidence_span_out_of_source")
-    sentence = tuple(getattr(context, "sentence", ()))
-    clause = tuple(getattr(context, "clause", ()))
-    if len(sentence) != 2 or not _valid_span((int(sentence[0]), int(sentence[1])), source_length):
+    try:
+        sentence = _parse_span(getattr(context, "sentence", None))
+        clause = _parse_span(getattr(context, "clause", None))
+    except Exception:
+        return normalize_evidence_failure("materializer_detail_unavailable")
+    if sentence is _MALFORMED or clause is _MALFORMED:
+        return normalize_evidence_failure("materializer_detail_unavailable")
+    if sentence is None or clause is None:
+        return normalize_evidence_failure("materializer_detail_unavailable")
+    if not _valid_span(sentence, source_length):
         return normalize_evidence_failure("trigger_occurrence_outside_sentence")
-    if len(clause) != 2 or not _valid_span((int(clause[0]), int(clause[1])), source_length):
+    if not _valid_span(clause, source_length):
         return normalize_evidence_failure("trigger_occurrence_outside_clause")
-    quote = str(relation.trigger_quote)
-    occurrences = tuple(getattr(context, "trigger_occurrences", ()))
+    quote = trigger_quote
+    try:
+        occurrences = tuple(getattr(context, "trigger_occurrences", ()))
+    except Exception:
+        return normalize_evidence_failure("materializer_detail_unavailable")
     if not occurrences:
         return normalize_evidence_failure("trigger_occurrence_missing")
     quote_match = False
     for occurrence in occurrences:
-        occurrence_span = (int(occurrence.start), int(occurrence.end))
+        try:
+            occurrence_span = _parse_span((occurrence.start, occurrence.end))
+            occurrence_digest = occurrence.quote_digest
+        except Exception:
+            return normalize_evidence_failure("materializer_detail_unavailable")
+        if occurrence_span is _MALFORMED or occurrence_span is None:
+            return normalize_evidence_failure("materializer_detail_unavailable")
         if not _valid_span(occurrence_span, source_length):
-            continue
+            return normalize_evidence_failure("materializer_detail_unavailable")
         source_slice = source_text[occurrence_span[0] : occurrence_span[1]]
         expected_quote_digest = "sha256:" + hashlib.sha256(source_slice.encode()).hexdigest()
-        if source_slice != quote or occurrence.quote_digest != expected_quote_digest:
+        if source_slice != quote or occurrence_digest != expected_quote_digest:
             continue
         quote_match = True
         if not (sentence[0] <= occurrence_span[0] and occurrence_span[1] <= sentence[1]):
@@ -180,7 +245,14 @@ def diagnose_evidence_failure(
             return normalize_evidence_failure("evidence_does_not_contain_trigger")
     if not quote_match:
         return normalize_evidence_failure("trigger_quote_digest_mismatch")
-    source_span, target_span = endpoint_spans
+    try:
+        source_span, target_span = endpoint_spans
+    except Exception:
+        return normalize_evidence_failure("materializer_detail_unavailable")
+    source_span = _parse_span(source_span)
+    target_span = _parse_span(target_span)
+    if source_span is _MALFORMED or target_span is _MALFORMED:
+        return normalize_evidence_failure("materializer_detail_unavailable")
     if (
         source_span is None
         or target_span is None

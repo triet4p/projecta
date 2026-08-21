@@ -47,10 +47,10 @@
       "required": ["schemaInvalid", "schemaReasonCounts", "invalidEvidence", "evidenceBucketCounts", "evidenceReasonCounts", "goldRelationsControlFailures"],
       "properties": {
         "schemaInvalid": {"const": 6},
-        "schemaReasonCounts": {"$ref": "#/$defs/reasonCounts"},
+        "schemaReasonCounts": {"$ref": "#/$defs/schemaReasonCounts"},
         "invalidEvidence": {"const": 17},
-        "evidenceBucketCounts": {"$ref": "#/$defs/reasonCounts"},
-        "evidenceReasonCounts": {"$ref": "#/$defs/reasonCounts"},
+        "evidenceBucketCounts": {"$ref": "#/$defs/evidenceBucketCounts"},
+        "evidenceReasonCounts": {"$ref": "#/$defs/evidenceReasonCounts"},
         "goldRelationsControlFailures": {"const": 0}
       }
     },
@@ -107,15 +107,48 @@
           "required": ["stage1", "stage2"],
           "properties": {"stage1": {"type": "integer", "minimum": 0}, "stage2": {"type": "integer", "minimum": 0}}
         },
-        "schemaReasonCounts": {"$ref": "#/$defs/reasonCounts"},
+        "schemaReasonCounts": {"$ref": "#/$defs/schemaReasonCounts"},
         "invalidEvidence": {"type": "integer", "minimum": 0},
-        "evidenceReasonCounts": {"$ref": "#/$defs/reasonCounts"}
+        "evidenceReasonCounts": {"$ref": "#/$defs/evidenceReasonCounts"}
       }
     },
-    "reasonCounts": {
+    "schemaReasonCounts": {
       "type": "object",
-      "propertyNames": {"pattern": "^[a-z_]+$"},
-      "additionalProperties": {"type": "integer", "minimum": 0}
+      "additionalProperties": false,
+      "properties": {
+        "envelope_unbound_field": {"type": "integer", "minimum": 0},
+        "envelope_version_mismatch": {"type": "integer", "minimum": 0},
+        "entity_candidate_invalid": {"type": "integer", "minimum": 0},
+        "entity_candidate_identity_duplicate": {"type": "integer", "minimum": 0},
+        "entity_span_out_of_source": {"type": "integer", "minimum": 0},
+        "relation_candidate_invalid": {"type": "integer", "minimum": 0},
+        "relation_endpoint_not_in_server_table": {"type": "integer", "minimum": 0},
+        "relation_evidence_invalid": {"type": "integer", "minimum": 0},
+        "validation_detail_unavailable": {"type": "integer", "minimum": 0}
+      }
+    },
+    "evidenceReasonCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "trigger_quote_missing": {"type": "integer", "minimum": 0},
+        "trigger_quote_digest_mismatch": {"type": "integer", "minimum": 0},
+        "trigger_occurrence_missing": {"type": "integer", "minimum": 0},
+        "trigger_occurrence_outside_sentence": {"type": "integer", "minimum": 0},
+        "trigger_occurrence_outside_clause": {"type": "integer", "minimum": 0},
+        "evidence_span_missing": {"type": "integer", "minimum": 0},
+        "evidence_span_out_of_source": {"type": "integer", "minimum": 0},
+        "evidence_does_not_contain_trigger": {"type": "integer", "minimum": 0},
+        "evidence_does_not_contain_endpoints": {"type": "integer", "minimum": 0},
+        "materializer_detail_unavailable": {"type": "integer", "minimum": 0}
+      }
+    },
+    "evidenceBucketCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "unsupported": {"type": "integer", "minimum": 0}
+      }
     }
   }
 }

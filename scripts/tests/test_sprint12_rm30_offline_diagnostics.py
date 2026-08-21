@@ -4,6 +4,7 @@ import hashlib
 import json
 from decimal import Decimal
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 from jsonschema import Draft202012Validator
@@ -139,6 +140,87 @@ def test_evidence_materializer_reason_codes_fail_closed(
         relation, context=context, endpoint_spans=endpoints
     )
     assert (result.code if result is not None else None) == expected
+
+
+@pytest.mark.parametrize(
+    ("relation", "context", "endpoints"),
+    [
+        (
+            SimpleNamespace(trigger_quote="supports", evidence_start="bad", evidence_end=18),
+            _context(),
+            ((0, 4), (14, 18)),
+        ),
+        (
+            _relation(),
+            SimpleNamespace(
+                source_text="task supports risk",
+                source_length=18,
+                source_digest="bad",
+                sentence=None,
+                clause=(0, 18),
+                trigger_occurrences=(),
+            ),
+            ((0, 4), (14, 18)),
+        ),
+        (
+            _relation(),
+            SimpleNamespace(
+                source_text="task supports risk",
+                source_length=18,
+                source_digest="bad",
+                sentence=(0, 18),
+                clause="bad",
+                trigger_occurrences=(),
+            ),
+            ((0, 4), (14, 18)),
+        ),
+        (
+            _relation(),
+            SimpleNamespace(
+                source_text="task supports risk",
+                source_length=18,
+                source_digest="bad",
+                sentence=(0, 18),
+                clause=(0, 18),
+                trigger_occurrences=(
+                    SimpleNamespace(start="bad", end=13, quote_digest="bad"),
+                ),
+            ),
+            ((0, 4), (14, 18)),
+        ),
+        (_relation(), _context(), ("bad", (14, 18))),
+        (
+            SimpleNamespace(trigger_quote=42, evidence_start=0, evidence_end=18),
+            _context(),
+            ((0, 4), (14, 18)),
+        ),
+    ],
+)
+def test_malformed_runtime_mock_fields_fail_closed(
+    relation: object,
+    context: object,
+    endpoints: object,
+) -> None:
+    result = diagnose_evidence_failure(
+        relation, context=context, endpoint_spans=endpoints  # type: ignore[arg-type]
+    )
+    assert result is not None
+    assert result.code == "materializer_detail_unavailable"
+    assert result.detailAvailable is False
+
+
+def test_schema_rejects_unregistered_reason_codes() -> None:
+    schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
+    persisted = json.loads(DIAGNOSTIC.read_text(encoding="utf-8"))
+    for section, location in (
+        ("schema", ("totals", "schemaReasonCounts")),
+        ("evidence", ("totals", "evidenceReasonCounts")),
+        ("bucket", ("totals", "evidenceBucketCounts")),
+    ):
+        candidate = json.loads(json.dumps(persisted))
+        candidate[location[0]][location[1]]["unknown_not_registered"] = 1
+        errors = list(Draft202012Validator(schema).iter_errors(candidate))
+        assert errors, section
 
 
 def test_rm30_report_matches_schema_and_historical_counts_without_mutation() -> None:
