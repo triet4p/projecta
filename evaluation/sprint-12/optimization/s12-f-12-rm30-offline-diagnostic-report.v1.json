@@ -1,0 +1,71 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm30-offline-diagnostic-report.v1",
+  "status": "OFFLINE_DIAGNOSTIC_REPORT_READY_PENDING_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "sourceReport": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+    "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "historicalResultsPreserved": true
+  },
+  "accounting": {
+    "providerCallsAttempted": 144,
+    "retryCount": 0,
+    "schemaInvalid": 6,
+    "invalidEvidence": 17,
+    "schemaFailureReconciled": true,
+    "evidenceFailureReconciled": true
+  },
+  "arms": {
+    "predicted-entities": {
+      "schemaInvalid": {"stage1": 5, "stage2": 0},
+      "schemaReasonCounts": {"validation_detail_unavailable": 5},
+      "invalidEvidence": 0,
+      "evidenceReasonCounts": {}
+    },
+    "gold-entities": {
+      "schemaInvalid": {"stage1": 0, "stage2": 1},
+      "schemaReasonCounts": {"validation_detail_unavailable": 1},
+      "invalidEvidence": 17,
+      "evidenceReasonCounts": {"materializer_detail_unavailable": 17}
+    },
+    "gold-relations": {
+      "schemaInvalid": {"stage1": 0, "stage2": 0},
+      "schemaReasonCounts": {},
+      "invalidEvidence": 0,
+      "evidenceReasonCounts": {}
+    }
+  },
+  "totals": {
+    "schemaInvalid": 6,
+    "schemaReasonCounts": {"validation_detail_unavailable": 6},
+    "invalidEvidence": 17,
+    "evidenceBucketCounts": {"unsupported": 17},
+    "evidenceReasonCounts": {"materializer_detail_unavailable": 17},
+    "goldRelationsControlFailures": 0
+  },
+  "redaction": {
+    "rawProviderPayloadIncluded": false,
+    "rawSourceTextIncluded": false,
+    "rawValidationDetailIncluded": false,
+    "rawTriggerQuoteIncluded": false
+  },
+  "unknownPolicy": {
+    "historicalSchemaReason": "validation_detail_unavailable",
+    "historicalEvidenceReason": "materializer_detail_unavailable",
+    "unknownIsPass": false
+  },
+  "governance": {
+    "offlineOnly": true,
+    "providerCalls": 0,
+    "providerExecutionAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "newAuthorizationIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  }
+}

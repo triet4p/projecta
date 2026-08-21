@@ -1,0 +1,72 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm30-offline-remediation.v1",
+  "status": "OFFLINE_REMEDIATION_IMPLEMENTED_PENDING_OWNER_REVIEW",
+  "taskId": "S12-RM-30",
+  "experimentId": "s12-f-12",
+  "implementationScope": "offline diagnostic/report path and deterministic mock tests only",
+  "supersedes": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm28-offline-remediation.v1.json",
+    "status": "OFFLINE_REMEDIATION_PREPARED_PENDING_OWNER_REVIEW"
+  },
+  "boundDigests": {
+    "evaluation/sprint-12/optimization/s12-f-12-rm29-owner-review.v1.json": "sha256:f9194de4daf3930e209a507fbcfb2f7fe9caea2cf2b767b153265580def3e00e",
+    "evaluation/sprint-12/optimization/s12-f-12-rm29-approval-transition.v1.json": "sha256:b4d2bd2a251285fc9f47a0d17cf5546b96ec0c85abffcf38b2acd46ba0ce6b36",
+    "evaluation/sprint-12/optimization/s12-f-12-rm28-diagnostic-contract.v1.json": "sha256:0b7b90bbe3ddc94ef66769e04d23c851e8ac491372518445edad62b494d20582",
+    "evaluation/sprint-12/optimization/s12-f-12-rm28-offline-remediation.v1.json": "sha256:268c4e1daefeba9f486732f039cf2113e132f712cc4358012d704a01cbbae45a",
+    "evaluation/sprint-12/harness/s12-f-12-offline-diagnostic-report.schema.v1.json": "sha256:658e6255f7d3689b8b022c470a0c98199bf9cdd093f69dd66f0ed9a3cf7ec1cf",
+    "scripts/s12_f12_rm30_diagnostic_remediation.py": "sha256:bc05bdffab89c5ca9832c4b1e0b658de268083ca2181f4a1b453cc707f06f5d1",
+    "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-diagnostic-report.v1.json": "sha256:e03a632b9ff593d0764dc3ea1479366c6f2642c34dafe7818fa09269e3321f13",
+    "scripts/tests/test_sprint12_rm30_offline_diagnostics.py": "sha256:c5bb332861114f414b37a2662412e268cbbdb0e39b98cd9096300a5c81dd75e9"
+  },
+  "diagnosticContract": {
+    "schemaPath": "evaluation/sprint-12/harness/s12-f-12-offline-diagnostic-report.schema.v1.json",
+    "implementationPath": "scripts/s12_f12_rm30_diagnostic_remediation.py",
+    "schemaFailureReasonCodes": [
+      "envelope_unbound_field",
+      "envelope_version_mismatch",
+      "entity_candidate_invalid",
+      "entity_candidate_identity_duplicate",
+      "entity_span_out_of_source",
+      "relation_candidate_invalid",
+      "relation_endpoint_not_in_server_table",
+      "relation_evidence_invalid",
+      "validation_detail_unavailable"
+    ],
+    "evidenceFailureReasonCodes": [
+      "trigger_quote_missing",
+      "trigger_quote_digest_mismatch",
+      "trigger_occurrence_missing",
+      "trigger_occurrence_outside_sentence",
+      "trigger_occurrence_outside_clause",
+      "evidence_span_missing",
+      "evidence_span_out_of_source",
+      "evidence_does_not_contain_trigger",
+      "evidence_does_not_contain_endpoints",
+      "materializer_detail_unavailable"
+    ],
+    "unknownReasonIsPass": false,
+    "historicalSchemaReason": "validation_detail_unavailable",
+    "historicalEvidenceReason": "materializer_detail_unavailable"
+  },
+  "report": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-diagnostic-report.v1.json",
+    "providerCalls": 0,
+    "rawProviderPayloadIncluded": false,
+    "rawSourceTextIncluded": false,
+    "historicalReportMutated": false
+  },
+  "governance": {
+    "offlineImplementationAuthorized": true,
+    "providerExecutionAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "newAuthorizationIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextGate": "separate owner review of RM-30 implementation before any lineage preparation"
+  }
+}

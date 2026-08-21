@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "s12-f-12.offline-diagnostic-report.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifactVersion", "status", "experimentId", "sourceReport", "accounting", "arms", "totals", "redaction", "unknownPolicy", "governance"],
+  "properties": {
+    "artifactVersion": {"const": "s12.s12-f-12.rm30-offline-diagnostic-report.v1"},
+    "status": {"const": "OFFLINE_DIAGNOSTIC_REPORT_READY_PENDING_OWNER_REVIEW"},
+    "experimentId": {"const": "s12-f-12"},
+    "sourceReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "digest", "historicalResultsPreserved"],
+      "properties": {
+        "path": {"const": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json"},
+        "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "historicalResultsPreserved": {"const": true}
+      }
+    },
+    "accounting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["providerCallsAttempted", "retryCount", "schemaInvalid", "invalidEvidence", "schemaFailureReconciled", "evidenceFailureReconciled"],
+      "properties": {
+        "providerCallsAttempted": {"const": 144},
+        "retryCount": {"const": 0},
+        "schemaInvalid": {"const": 6},
+        "invalidEvidence": {"const": 17},
+        "schemaFailureReconciled": {"const": true},
+        "evidenceFailureReconciled": {"const": true}
+      }
+    },
+    "arms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["predicted-entities", "gold-entities", "gold-relations"],
+      "properties": {
+        "predicted-entities": {"$ref": "#/$defs/arm"},
+        "gold-entities": {"$ref": "#/$defs/arm"},
+        "gold-relations": {"$ref": "#/$defs/arm"}
+      }
+    },
+    "totals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaInvalid", "schemaReasonCounts", "invalidEvidence", "evidenceBucketCounts", "evidenceReasonCounts", "goldRelationsControlFailures"],
+      "properties": {
+        "schemaInvalid": {"const": 6},
+        "schemaReasonCounts": {"$ref": "#/$defs/reasonCounts"},
+        "invalidEvidence": {"const": 17},
+        "evidenceBucketCounts": {"$ref": "#/$defs/reasonCounts"},
+        "evidenceReasonCounts": {"$ref": "#/$defs/reasonCounts"},
+        "goldRelationsControlFailures": {"const": 0}
+      }
+    },
+    "redaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rawProviderPayloadIncluded", "rawSourceTextIncluded", "rawValidationDetailIncluded", "rawTriggerQuoteIncluded"],
+      "properties": {
+        "rawProviderPayloadIncluded": {"const": false},
+        "rawSourceTextIncluded": {"const": false},
+        "rawValidationDetailIncluded": {"const": false},
+        "rawTriggerQuoteIncluded": {"const": false}
+      }
+    },
+    "unknownPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["historicalSchemaReason", "historicalEvidenceReason", "unknownIsPass"],
+      "properties": {
+        "historicalSchemaReason": {"const": "validation_detail_unavailable"},
+        "historicalEvidenceReason": {"const": "materializer_detail_unavailable"},
+        "unknownIsPass": {"const": false}
+      }
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["offlineOnly", "providerCalls", "providerExecutionAuthorized", "supersedingLineagePreparationAuthorized", "preregistrationIssued", "technicalFreezeIssued", "newAuthorizationIssued", "validationAccessAuthorized", "heldOutAccessAuthorized", "stageBAuthorized", "candidateSelectionAuthorized", "promotionAuthorized"],
+      "properties": {
+        "offlineOnly": {"const": true},
+        "providerCalls": {"const": 0},
+        "providerExecutionAuthorized": {"const": false},
+        "supersedingLineagePreparationAuthorized": {"const": false},
+        "preregistrationIssued": {"const": false},
+        "technicalFreezeIssued": {"const": false},
+        "newAuthorizationIssued": {"const": false},
+        "validationAccessAuthorized": {"const": false},
+        "heldOutAccessAuthorized": {"const": false},
+        "stageBAuthorized": {"const": false},
+        "candidateSelectionAuthorized": {"const": false},
+        "promotionAuthorized": {"const": false}
+      }
+    }
+  },
+  "$defs": {
+    "arm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaInvalid", "schemaReasonCounts", "invalidEvidence", "evidenceReasonCounts"],
+      "properties": {
+        "schemaInvalid": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["stage1", "stage2"],
+          "properties": {"stage1": {"type": "integer", "minimum": 0}, "stage2": {"type": "integer", "minimum": 0}}
+        },
+        "schemaReasonCounts": {"$ref": "#/$defs/reasonCounts"},
+        "invalidEvidence": {"type": "integer", "minimum": 0},
+        "evidenceReasonCounts": {"$ref": "#/$defs/reasonCounts"}
+      }
+    },
+    "reasonCounts": {
+      "type": "object",
+      "propertyNames": {"pattern": "^[a-z_]+$"},
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    }
+  }
+}
