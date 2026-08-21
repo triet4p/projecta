@@ -293,18 +293,28 @@ def _legacy_package_view(package: Mapping[str, Any], prereg: Mapping[str, Any], 
     prompt_path = "evaluation/sprint-12/optimization/s12-f-12-m3-prompt-v7-v2-two-step-extraction.v1.txt"
     stage1_schema_path = "evaluation/sprint-12/harness/s12-f-12-stage-1-entity-envelope.schema.v2.json"
     stage2_schema_path = "evaluation/sprint-12/harness/s12-f-12-stage-2-relation-envelope.schema.v2.json"
-    for path in (runtime_config_path, prompt_path, stage1_schema_path, stage2_schema_path):
-        if path not in runtime_digests:
-            raise F12StageAV9Error(f"runtime binding omits legacy configuration path: {path}")
+    def bound_or_legacy(path: str, section: str, nested: str | None = None) -> str:
+        if path in runtime_digests:
+            return runtime_digests[path]
+        value: Any = package.get(section)
+        if nested is not None and isinstance(value, Mapping):
+            value = value.get(nested)
+        if isinstance(value, Mapping) and isinstance(value.get("digest"), str):
+            return str(value["digest"])
+        raise F12StageAV9Error(f"runtime binding omits legacy configuration path: {path}")
+    runtime_config_digest = bound_or_legacy(runtime_config_path, "runtimeConfiguration")
+    prompt_digest = bound_or_legacy(prompt_path, "prompt")
+    stage1_digest = bound_or_legacy(stage1_schema_path, "stageSchemas", "stage1")
+    stage2_digest = bound_or_legacy(stage2_schema_path, "stageSchemas", "stage2")
     view.update(
         {
             "status": "EXECUTION_PACKAGE_PREPARED_PENDING_RM43_OWNER_ISSUANCE_REVIEW",
             "commitSha": package["executionCommitSha"],
-            "runtimeConfiguration": {"digest": runtime_digests[runtime_config_path]},
-            "prompt": {"digest": runtime_digests[prompt_path]},
+            "runtimeConfiguration": {"digest": runtime_config_digest},
+            "prompt": {"digest": prompt_digest},
             "stageSchemas": {
-                "stage1": {"digest": runtime_digests[stage1_schema_path]},
-                "stage2": {"digest": runtime_digests[stage2_schema_path]},
+                "stage1": {"digest": stage1_digest},
+                "stage2": {"digest": stage2_digest},
             },
             "preregistration": {"path": _relative(PREREG), "digest": digest(PREREG)},
             "freezeRecord": _relative(FREEZE),
