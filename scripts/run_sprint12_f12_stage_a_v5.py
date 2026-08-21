@@ -17,6 +17,8 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 import run_sprint12_f12_stage_a_v4 as v4
 
+v3 = v4.v3
+
 PACKAGE = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm22d-execution-package.v5.json"
 PREREG = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm22d-issuance-draft.v5.json"
 FREEZE = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm22d-technical-freeze.v5.json"

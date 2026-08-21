@@ -1,0 +1,268 @@
+{
+  "artifactVersion": "s12.s12-f-12.execution-package.v5",
+  "status": "EXECUTION_PACKAGE_PREPARED_PENDING_RM23D_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "supersedes": "evaluation/sprint-12/optimization/s12-f-12-rm22c-execution-package.v4.json",
+  "commitSha": "d079b5c6c642135b0be17a0be088c0f4964a3b83",
+  "providerExecutionAuthorized": false,
+  "heldOutInspected": false,
+  "heldOutAccessAuthorized": false,
+  "validationAccessAuthorized": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false,
+  "executionRunnerImplemented": true,
+  "executionRunner": {
+    "path": "scripts/run_sprint12_f12_stage_a_v5.py",
+    "digest": "sha256:67ccb4826519744c6b22a5afa8581bb8f155f93e17939d528ab817afc75cbb5c"
+  },
+  "providerAdapter": {
+    "path": "scripts/sprint12_f12_provider_adapter_v2.py",
+    "digest": "sha256:af20e7fd9f717ec319cf8ba321880d3a0b2f6152139873c4bf1eb3e814da5a96",
+    "class": "F12ProviderAdapterV2",
+    "retryPolicy": "none"
+  },
+  "runtimeConfiguration": {
+    "path": "evaluation/sprint-12/harness/s12-f-12-runtime-configuration.v1.json",
+    "digest": "sha256:a672d1c17a174c5c2697859118e2394b89007c3877a270e82ee5db25b357dd0b"
+  },
+  "prompt": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-m3-prompt-v7-v2-two-step-extraction.v1.txt",
+    "digest": "sha256:e2dad79c2483da65f14726dc7964eb2963e3a3f1ea1135559713613c6c418fb2"
+  },
+  "stageSchemas": {
+    "stage1": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-stage-1-entity-envelope.schema.v2.json",
+      "digest": "sha256:53144aeddbcdf53d7c23d59d123eb92ead7afd7f4087e3763125b456923f52d4"
+    },
+    "stage2": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-stage-2-relation-envelope.schema.v2.json",
+      "digest": "sha256:0d0dc18829d3fc205d92b3c17ae70e4fb846858f756b3ea788b549587a90f34d"
+    }
+  },
+  "preregistration": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm22d-issuance-draft.v5.json",
+    "digest": "sha256:5b26dd12cc379dc021b16f16b68ae0ade4668273d9d16691e6fe04d5e3fd98f2"
+  },
+  "freezeRecord": "evaluation/sprint-12/optimization/s12-f-12-rm22d-technical-freeze.v5.json",
+  "preflight": {
+    "path": "scripts/preflight_sprint12_f12_rm22d.py",
+    "digest": "sha256:b87fcd8a7aa9dfef176dc9ea4e199c727a4066d23f2338f231d78dfb5094d8ad"
+  },
+  "reportSchema": {
+    "path": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v5.json",
+    "digest": "sha256:092b3a400872e2e3bc5c43d4c477420c8775b614c1b828aba3aaf0699a160508"
+  },
+  "mockE2ETest": {
+    "path": "scripts/tests/test_sprint12_f12_rm22d_execution.py",
+    "digest": "sha256:6b81a1b698fec6c5c3705692d2714be0c26d350efa1ed7723899ffbd4b328471"
+  },
+  "providerCalls": 144,
+  "stage1ProviderCalls": 48,
+  "stage2ProviderCalls": 96,
+  "relationBranchOutputs": 96,
+  "requiredSchemaValidResponses": 144,
+  "requiredUsageValidResponses": 144,
+  "expectedPricedCalls": 144,
+  "retryPolicy": "none",
+  "outputOverwrite": false,
+  "outputPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v5.json",
+  "costCeilingUsd": "10.00",
+  "providerBudget": {
+    "maxInputTokensPerCall": 50000,
+    "maxOutputTokens": 4096,
+    "worstCaseCostUsd": "1.17315072",
+    "costCeilingUsd": "10.00"
+  },
+  "approvedThresholds": {
+    "entityMacroF1Min": 0.85,
+    "entitySpanExactMin": 0.95,
+    "entityHallucinationRateMax": 0.05,
+    "abstentionPrecisionMin": 0.9,
+    "abstentionRecallMin": 0.9,
+    "abstentionF1Min": 0.9,
+    "relationSemanticMicroF1Min": 0.8,
+    "relationSemanticMacroF1Min": 0.8,
+    "predicateAccuracyMin": 0.85,
+    "endpointDirectionAccuracyMin": 0.9,
+    "missingEndpointRateMax": 0.05,
+    "reversedEndpointRateMax": 0.05,
+    "relationEvidenceSupportMin": 0.85,
+    "relationEvidenceExactMin": 0.85,
+    "relationHallucinationRateMax": 0.05,
+    "hardFailureCount": 0,
+    "retryCount": 0,
+    "pricingFailureCount": 0,
+    "goldRelationsIntegrityScore": 1,
+    "goldRelationsMaterializerFailures": 0
+  },
+  "hardGates": {
+    "schemaInvalid": 0,
+    "invalidEvidence": 0,
+    "missingOutput": 0,
+    "endpointContractFailure": 0,
+    "sharedConfigurationMismatch": 0,
+    "retryCount": 0,
+    "pricingFailure": 0,
+    "rawSensitiveDataIncluded": false,
+    "heldOutInspected": false
+  },
+  "requiredSlices": [
+    {
+      "dimension": "all-development",
+      "label": "all-development",
+      "denominator": 48
+    },
+    {
+      "dimension": "relation-positive",
+      "label": "relation-positive",
+      "denominator": 24
+    },
+    {
+      "dimension": "relation-negative",
+      "label": "relation-negative",
+      "denominator": 12
+    },
+    {
+      "dimension": "abstention-required",
+      "label": "abstention-required",
+      "denominator": 12
+    },
+    {
+      "dimension": "abstention-not-required",
+      "label": "abstention-not-required",
+      "denominator": 36
+    },
+    {
+      "dimension": "journey",
+      "label": "J1",
+      "denominator": 6
+    },
+    {
+      "dimension": "journey",
+      "label": "J2",
+      "denominator": 12
+    },
+    {
+      "dimension": "journey",
+      "label": "J3",
+      "denominator": 12
+    },
+    {
+      "dimension": "journey",
+      "label": "J4",
+      "denominator": 6
+    },
+    {
+      "dimension": "journey",
+      "label": "J5",
+      "denominator": 6
+    },
+    {
+      "dimension": "journey",
+      "label": "J6",
+      "denominator": 6
+    },
+    {
+      "dimension": "language",
+      "label": "en",
+      "denominator": 6
+    },
+    {
+      "dimension": "language",
+      "label": "ja",
+      "denominator": 6
+    },
+    {
+      "dimension": "language",
+      "label": "mixed",
+      "denominator": 30
+    },
+    {
+      "dimension": "language",
+      "label": "vi",
+      "denominator": 6
+    }
+  ],
+  "currentExecutionPaths": [
+    "scripts/run_sprint12_f12_stage_a_v4.py",
+    "scripts/run_sprint12_f12_stage_a_v3.py",
+    "scripts/run_sprint12_f12_stage_a_v2.py",
+    "scripts/sprint12_f12_provider_adapter_v2.py",
+    "scripts/preflight_sprint12_f12_rm22c.py",
+    "scripts/preflight_sprint12_f12_rm22b.py",
+    "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v5.json",
+    "evaluation/sprint-12/harness/metric-contract.v2.json",
+    "evaluation/sprint-12/harness/slice-threshold-contract.v1.json",
+    "evaluation/sprint-12/harness/relation-trigger-contract.v1.json",
+    "scripts/sprint12_f12_two_step_contracts_v5.py",
+    "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json",
+    "evaluation/sprint-12/harness/s12-f-12-runtime-configuration.v1.json",
+    "evaluation/sprint-12/optimization/s12-f-12-m3-prompt-v7-v2-two-step-extraction.v1.txt",
+    "evaluation/sprint-12/harness/s12-f-12-stage-1-entity-envelope.schema.v2.json",
+    "evaluation/sprint-12/harness/s12-f-12-stage-2-relation-envelope.schema.v2.json",
+    "scripts/run_sprint12_f12_stage_a_v5.py",
+    "scripts/preflight_sprint12_f12_rm22d.py",
+    "scripts/tests/test_sprint12_f12_rm22d_execution.py",
+    "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v5.json",
+    "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v1.json"
+  ],
+  "exactCommitBoundPaths": [
+    "evaluation/sprint-12/optimization/s12-f-12-rm22a-execution-package.v2.json",
+    "evaluation/sprint-12/optimization/s12-f-12-rm22a-issuance-draft.v2.json",
+    "evaluation/sprint-12/optimization/s12-f-12-rm22a-technical-freeze.v2.json",
+    "scripts/run_sprint12_f12_stage_a_v2.py",
+    "scripts/run_sprint12_f12_stage_a_v3.py",
+    "scripts/run_sprint12_f12_stage_a_v4.py",
+    "scripts/sprint12_f12_provider_adapter_v2.py",
+    "scripts/preflight_sprint12_f12_rm22b.py",
+    "scripts/preflight_sprint12_f12_rm22c.py",
+    "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v5.json",
+    "evaluation/sprint-12/harness/metric-contract.v2.json",
+    "evaluation/sprint-12/harness/slice-threshold-contract.v1.json",
+    "evaluation/sprint-12/harness/relation-trigger-contract.v1.json",
+    "scripts/sprint12_f12_two_step_contracts_v5.py",
+    "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json",
+    "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json",
+    "evaluation/sprint-12/harness/s12-f-12-runtime-configuration.v1.json",
+    "evaluation/sprint-12/optimization/s12-f-12-m3-prompt-v7-v2-two-step-extraction.v1.txt",
+    "evaluation/sprint-12/harness/s12-f-12-stage-1-entity-envelope.schema.v2.json",
+    "evaluation/sprint-12/harness/s12-f-12-stage-2-relation-envelope.schema.v2.json",
+    "scripts/run_sprint12_f12_stage_a_v5.py",
+    "scripts/preflight_sprint12_f12_rm22d.py",
+    "scripts/tests/test_sprint12_f12_rm22d_execution.py",
+    "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v5.json",
+    "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v1.json"
+  ],
+  "boundDigests": {
+    "evaluation/sprint-12/optimization/s12-f-12-rm22a-execution-package.v2.json": "sha256:f80c6ea8e3180290b786970475fd1a0db4aa780bc6a32eb8030c9bf46e36ea44",
+    "evaluation/sprint-12/optimization/s12-f-12-rm22a-issuance-draft.v2.json": "sha256:9c32c4dcbfb472131495df042114b7e509b759257b0d20a1e36b5f522db85979",
+    "evaluation/sprint-12/optimization/s12-f-12-rm22a-technical-freeze.v2.json": "sha256:3fd530fca1bb50d9d6e333c85f9e143d1fcf43b877e1d9d549f17e8b4163e21e",
+    "scripts/run_sprint12_f12_stage_a_v4.py": "sha256:52c8e054a1e385b58ebbc13fcf16a8ba927ef4b6678b4937ec7d1c36371720b0",
+    "scripts/run_sprint12_f12_stage_a_v3.py": "sha256:c5140a39e12c60feea4784faa4adcaa9077baced7f6a34018878c70723c97850",
+    "scripts/run_sprint12_f12_stage_a_v2.py": "sha256:d211de99191d7f403b4344d876ad143e6b34cb02244b928cf2c6044dc5ed81cd",
+    "scripts/sprint12_f12_provider_adapter_v2.py": "sha256:af20e7fd9f717ec319cf8ba321880d3a0b2f6152139873c4bf1eb3e814da5a96",
+    "scripts/preflight_sprint12_f12_rm22c.py": "sha256:e7843070194fb14695bc8ef1181b2bdc397da5c39f53230b6ff1273d8b778d6f",
+    "scripts/preflight_sprint12_f12_rm22b.py": "sha256:68f0c5278dd4a8d8496acb229aa4a9b9881ac76c6e1e82363b853623b1c7f0bc",
+    "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v5.json": "sha256:692579bd7586110120f2f65a3747249536da0656e7be373da953c64ef5462cd9",
+    "evaluation/sprint-12/harness/metric-contract.v2.json": "sha256:3168fce54a189773e9c181915348e4c2d022031ba31900412fa7485ed26ff51b",
+    "evaluation/sprint-12/harness/slice-threshold-contract.v1.json": "sha256:84ab739af415e26465f58733a82a43731d671ae17e5b4043982f862a4e456cbc",
+    "evaluation/sprint-12/harness/relation-trigger-contract.v1.json": "sha256:bdfc4e62dd73da690578aa1c9fd816bd4dba153951e7c8081b8d0ae82adc6253",
+    "scripts/sprint12_f12_two_step_contracts_v5.py": "sha256:b556ca0de34757815d5a1b9dd0f8034ab2174d860261c0bda8c1297d4c3b1f0f",
+    "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json": "sha256:0c3795c4ff38e19c7e3ea11d3e16474cced87939a37cc00ff759dd3d39541045",
+    "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json": "sha256:54ab4640d3ef4c2e4879370c3497006638b4f60c932995f7c34b5c06d395cc8c",
+    "evaluation/sprint-12/harness/s12-f-12-runtime-configuration.v1.json": "sha256:a672d1c17a174c5c2697859118e2394b89007c3877a270e82ee5db25b357dd0b",
+    "evaluation/sprint-12/optimization/s12-f-12-m3-prompt-v7-v2-two-step-extraction.v1.txt": "sha256:e2dad79c2483da65f14726dc7964eb2963e3a3f1ea1135559713613c6c418fb2",
+    "evaluation/sprint-12/harness/s12-f-12-stage-1-entity-envelope.schema.v2.json": "sha256:53144aeddbcdf53d7c23d59d123eb92ead7afd7f4087e3763125b456923f52d4",
+    "evaluation/sprint-12/harness/s12-f-12-stage-2-relation-envelope.schema.v2.json": "sha256:0d0dc18829d3fc205d92b3c17ae70e4fb846858f756b3ea788b549587a90f34d",
+    "scripts/run_sprint12_f12_stage_a_v5.py": "sha256:67ccb4826519744c6b22a5afa8581bb8f155f93e17939d528ab817afc75cbb5c",
+    "scripts/preflight_sprint12_f12_rm22d.py": "sha256:b87fcd8a7aa9dfef176dc9ea4e199c727a4066d23f2338f231d78dfb5094d8ad",
+    "scripts/tests/test_sprint12_f12_rm22d_execution.py": "sha256:6b81a1b698fec6c5c3705692d2714be0c26d350efa1ed7723899ffbd4b328471",
+    "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v5.json": "sha256:092b3a400872e2e3bc5c43d4c477420c8775b614c1b828aba3aaf0699a160508",
+    "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v1.json": "sha256:aee5d6bf36330110977ab1ba1fd3523ea27a96bf97494d319ef5a6db3cf5e889"
+  },
+  "authorizationSchema": {
+    "path": "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v1.json",
+    "digest": "sha256:aee5d6bf36330110977ab1ba1fd3523ea27a96bf97494d319ef5a6db3cf5e889"
+  }
+}

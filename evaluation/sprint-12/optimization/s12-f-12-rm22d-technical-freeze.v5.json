@@ -1,0 +1,39 @@
+{
+  "artifactVersion": "s12.s12-f-12.technical-freeze.v5",
+  "status": "TECHNICAL_FREEZE_PREPARED_PENDING_RM23D_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "supersedes": "evaluation/sprint-12/optimization/s12-f-12-rm22c-technical-freeze.v4.json",
+  "commitSha": "d079b5c6c642135b0be17a0be088c0f4964a3b83",
+  "executionPackage": "evaluation/sprint-12/optimization/s12-f-12-rm22d-execution-package.v5.json",
+  "executionPackageDigest": "sha256:89096f11dff264c8774e504fa40f7670b54b81f93eeffc3548801769649646e7",
+  "preregistration": "evaluation/sprint-12/optimization/s12-f-12-rm22d-issuance-draft.v5.json",
+  "preregistrationDigest": "sha256:5b26dd12cc379dc021b16f16b68ae0ade4668273d9d16691e6fe04d5e3fd98f2",
+  "runnerDigest": "sha256:67ccb4826519744c6b22a5afa8581bb8f155f93e17939d528ab817afc75cbb5c",
+  "adapterDigest": "sha256:af20e7fd9f717ec319cf8ba321880d3a0b2f6152139873c4bf1eb3e814da5a96",
+  "preflightDigest": "sha256:b87fcd8a7aa9dfef176dc9ea4e199c727a4066d23f2338f231d78dfb5094d8ad",
+  "reportSchemaDigest": "sha256:092b3a400872e2e3bc5c43d4c477420c8775b614c1b828aba3aaf0699a160508",
+  "providerExecutionAuthorized": false,
+  "preregistrationIssued": false,
+  "executionFreezeIssued": false,
+  "heldOutInspected": false,
+  "heldOutAccessAuthorized": false,
+  "validationAccessAuthorized": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false,
+  "issuance": {
+    "status": "NOT_ISSUED",
+    "requiresRM23DOwnerReview": true,
+    "requiresSeparateExactCommitAuthorization": true,
+    "exactCommitValidated": true,
+    "mustBindExactPackageDigest": true,
+    "mustBindExactPreregistrationDigest": true
+  },
+  "constraints": [
+    "RM-22D offline schema-closure remediation only.",
+    "No provider call or Stage A output is permitted before RM-23D issuance review and separate exact-commit authorization.",
+    "RM-22 through RM-22C remain historical evidence and are not mutated.",
+    "The accepted gold oracle, denominators and applicability-aware threshold logic remain unchanged."
+  ],
+  "authorizationSchemaDigest": "sha256:aee5d6bf36330110977ab1ba1fd3523ea27a96bf97494d319ef5a6db3cf5e889"
+}

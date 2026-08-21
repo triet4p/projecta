@@ -86,7 +86,7 @@ def test_rm22d_preflight_is_zero_call_and_binds_v5_lineage() -> None:
 
 
 def test_rm22d_schema_rejects_slice_and_threshold_tampering() -> None:
-    output = ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.test.v5.json"
+    output = v5.OUTPUT
     authorization = _authorization(output)
     try:
         report = run_stage_a(
@@ -119,7 +119,7 @@ def test_rm22d_schema_rejects_slice_and_threshold_tampering() -> None:
 def test_rm22d_authorization_schema_rejects_expanded_or_unknown_scope(
     changes: dict[str, object],
 ) -> None:
-    output = ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.auth-test.v5.json"
+    output = v5.OUTPUT
     authorization = _authorization(output, **changes)
     try:
         with pytest.raises(RuntimeError, match="authorization schema validation failed"):
