@@ -1,0 +1,51 @@
+{
+  "artifactVersion": "s12.current-state-next-rm34.v1",
+  "asOf": "2026-08-22",
+  "status": "G5_F12_V8_AUTHORIZATION_PREPARATION_PENDING_RM35_REVIEW",
+  "authoritativeCurrentState": {
+    "path": "evaluation/sprint-12/current-state.v1.json",
+    "status": "G5_F12_V8_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING",
+    "digest": "sha256:26c26d5c6ea4af9169fa005747f6256db048508a85be053afc193c1723d0eb51"
+  },
+  "preparation": {
+    "taskId": "S12-RM-34",
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm34-authorization-preparation.v1.json",
+    "digest": "sha256:a0058e558cfd90b67afbed5f4aa1a7ee38272bd94f5fb2f7bc58c81198160f9c",
+    "status": "PREPARED_PENDING_RM35_OWNER_AUTHORIZATION"
+  },
+  "lineage": {
+    "lineageVersion": "v8",
+    "preregistrationIssued": true,
+    "technicalFreezeIssued": true,
+    "executionCommitSha": "005a35e3be3fbff40fcdae02dfdf79145c76934b",
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "authorizedExecutions": 0,
+    "providerCallsPerformed": 0,
+    "relationBranchOutputs": 0,
+    "retryCount": 0,
+    "reportExists": false
+  },
+  "historicalLineage": {
+    "lineageVersion": "v7",
+    "authorizedExecutions": 1,
+    "providerCallsPerformed": 144,
+    "relationBranchOutputs": 96,
+    "retryCount": 0,
+    "reportDigest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+  },
+  "governanceLocks": {
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "providerCallAllowed": false,
+    "ownerReviewReconciliationRequired": true
+  },
+  "nextTasks": [
+    "S12-RM-35_OWNER_AUTHORIZATION_REVIEW"
+  ],
+  "nonAuthoritative": true,
+  "claimBoundary": "No provider execution, output, quality improvement, candidate selection or business-quality claim is established."
+}

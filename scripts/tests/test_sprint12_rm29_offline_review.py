@@ -118,6 +118,6 @@ def test_rm29_current_state_and_plan_advances_to_rm31_after_rm30() -> None:
     assert "[x] **S12-RM-31" in plan
     assert "[x] **S12-RM-32" in plan
     assert "[x] **S12-RM-33" in plan
-    assert "[ ] **S12-RM-34" in plan
+    assert "[x] **S12-RM-34" in plan
     assert "[ ] **S12-RM-35" in plan
     assert "sprint-12/g5-optimization.v21.md" in plan

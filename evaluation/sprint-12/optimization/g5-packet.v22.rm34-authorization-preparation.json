@@ -1,0 +1,57 @@
+{
+  "packetVersion": "s12.g5.packet.v22.rm34-authorization-preparation",
+  "status": "G5_F12_V8_AUTHORIZATION_PREPARATION_PENDING_RM35_REVIEW",
+  "packetRole": "non-authoritative-rm34-preparation-snapshot",
+  "asOf": "2026-08-22",
+  "authoritativePacket": {
+    "path": "evaluation/sprint-12/optimization/g5-packet.v21.json",
+    "digest": "sha256:43beb7458f2feb9a739e56d05cef4ccf0e077c4141aafd3c97e9c83e2d1344c5",
+    "status": "G5_F12_V8_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
+  },
+  "authorizationPreparation": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm34-authorization-preparation.v1.json",
+    "digest": "sha256:a0058e558cfd90b67afbed5f4aa1a7ee38272bd94f5fb2f7bc58c81198160f9c",
+    "status": "PREPARED_PENDING_RM35_OWNER_AUTHORIZATION"
+  },
+  "lineage": {
+    "lineageVersion": "v8",
+    "executionCommitSha": "005a35e3be3fbff40fcdae02dfdf79145c76934b",
+    "preregistrationIssued": true,
+    "technicalFreezeIssued": true,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "plannedProviderCalls": 144,
+    "plannedRelationBranchOutputs": 96,
+    "providerCallsPerformed": 0,
+    "retryCount": 0,
+    "outputPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json",
+    "reportExists": false
+  },
+  "governanceBoundary": {
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "retryAuthorized": false,
+    "outputOverwriteAuthorized": false,
+    "providerCallAllowed": false,
+    "ownerReviewReconciliationRequired": true
+  },
+  "mockEvidence": {
+    "unauthorizedProviderCalls": 0,
+    "authorizedProviderCalls": 144,
+    "relationBranches": 96,
+    "outputPersistCount": 1,
+    "retryCount": 0,
+    "overwriteRejected": true
+  },
+  "nextGate": "S12-RM-35_OWNER_AUTHORIZATION_REVIEW",
+  "nonAuthoritative": true,
+  "claimBoundary": {
+    "accuracyImprovementEstablished": false,
+    "businessQualityEstablished": false,
+    "tenantReadinessEstablished": false,
+    "humanEvidence": false
+  }
+}
