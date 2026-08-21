@@ -1,0 +1,70 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm37-owner-decision.v1",
+  "status": "COMPLETED_FAILED_BEFORE_REPORT_NO_RERUN_OFFLINE_REMEDIATION_PREPARATION_ONLY",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-37",
+  "decisionType": "OWNER_POST_RUN_DECISION_FOR_FAILED_V8_STAGE_A",
+  "decisionDate": "2026-08-22",
+  "decisionAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedExecution": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm36-execution-transition.v1.json",
+    "digest": "sha256:738d3bdada83af5f152a2a5974af1a73e856247d88c226cafd3d5d60d6899d45",
+    "status": "ONE_BOUNDED_V8_DEVELOPMENT_STAGE_A_EXECUTION_FAILED_BEFORE_REPORT_PERSISTENCE_PENDING_RM37_OWNER_DECISION"
+  },
+  "reviewedPreparationSnapshot": {
+    "path": "evaluation/sprint-12/current-state-next-rm36.v1.json",
+    "digest": "sha256:afb3ef206769854d08744f264b898ff99b79b0770b05df4dcf38771d2185ade0",
+    "role": "non-authoritative"
+  },
+  "verifiedFacts": {
+    "invocationCount": 1,
+    "providerCallsAttempted": 3,
+    "providerResponsesReceived": 3,
+    "retryCountObserved": 0,
+    "reportPersisted": false,
+    "reportV8Exists": false,
+    "accountingComplete": false,
+    "aggregateCostAvailable": false,
+    "relationBranchAggregateAvailable": false,
+    "authorizationSpent": true,
+    "authorizationReusable": false,
+    "failureType": "F12StageAV8Error",
+    "failureMessage": "evidence reason counts do not reconcile with arm materializer failures",
+    "historicalReportV6DigestUnchanged": true,
+    "heldOutInspected": false
+  },
+  "ownerAssessment": {
+    "executionEvidenceAcceptedAsFailureFact": true,
+    "qualityResultAvailable": false,
+    "candidateEvaluationAvailable": false,
+    "retryPermissibleUnderSpentAuthorization": false,
+    "failureRequiresOfflineRuntimeDiagnosis": true,
+    "blockingFindings": [
+      "The first-case predicted-entities diagnostic reconciliation failed after three provider captures and before report persistence.",
+      "No complete accounting, aggregate cost, relation-branch aggregate or v8 quality report exists."
+    ]
+  },
+  "decision": {
+    "experimentV8ExecutionClosedFailed": true,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "offlineFailureDiagnosisPreparationAuthorized": true,
+    "offlineRuntimeRemediationPreparationAuthorized": true,
+    "supersedingLineagePreparationAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "PREPARE_OFFLINE_RM36_RECONCILIATION_FAILURE_DIAGNOSIS_AND_REMEDIATION"
+  },
+  "constraints": [
+    "The three attempted calls are preserved as truthful partial execution accounting and cannot be relabeled as a completed Stage A result.",
+    "The RM-35 authorization is spent and cannot authorize a fourth call, retry or rerun.",
+    "Offline diagnosis may inspect repository-visible code, sanitized execution facts and deterministic mocks only; no raw provider payload is available or may be invented.",
+    "Any future provider attempt requires corrected runtime evidence, a new superseding exact-commit lineage and a new separate owner authorization.",
+    "Validation, held-out access, Stage B, candidate selection and promotion remain closed."
+  ]
+}

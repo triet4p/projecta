@@ -1,0 +1,43 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm37-decision-transition.v1",
+  "status": "V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY",
+  "experimentId": "s12-f-12",
+  "transitionDate": "2026-08-22",
+  "transitionAuthority": "project-owner-delegated-codex-reviewer",
+  "precedenceRule": "This RM-37 transition closes the failed v8 invocation and permits offline remediation preparation only; it does not mutate execution evidence, restore the spent authorization or authorize another provider call.",
+  "executionTransition": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm36-execution-transition.v1.json",
+    "digest": "sha256:738d3bdada83af5f152a2a5974af1a73e856247d88c226cafd3d5d60d6899d45"
+  },
+  "ownerDecision": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm37-owner-decision.v1.json",
+    "digest": "sha256:d4f6725d4b1e44007a7da35dc8030b496eb075bc1bdbfd653b3e321d3c14550d",
+    "status": "COMPLETED_FAILED_BEFORE_REPORT_NO_RERUN_OFFLINE_REMEDIATION_PREPARATION_ONLY"
+  },
+  "fromState": "G5_F12_V8_EXECUTION_FAILED_PENDING_RM37_OWNER_DECISION",
+  "currentDecisionState": {
+    "v8ExecutionClosedFailed": true,
+    "providerCallsAttempted": 3,
+    "providerResponsesReceived": 3,
+    "reportV8Exists": false,
+    "authorizationSpent": true,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "offlineFailureDiagnosisPreparationAuthorized": true,
+    "offlineRuntimeRemediationPreparationAuthorized": true,
+    "supersedingLineagePreparationAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "PREPARE_OFFLINE_RM36_RECONCILIATION_FAILURE_DIAGNOSIS_AND_REMEDIATION"
+  },
+  "constraints": [
+    "Offline diagnosis and deterministic remediation preparation are the only newly open activities.",
+    "No provider call, rerun, retry, validation, held-out access, Stage B, selection or promotion is authorized.",
+    "Any future execution requires a new exact lineage, issuance review and separate owner authorization."
+  ]
+}

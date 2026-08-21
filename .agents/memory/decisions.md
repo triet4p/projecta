@@ -543,3 +543,22 @@ spent when execution starts. Validation, held-out access, Stage B, candidate
 selection and promotion remain closed; execution establishes no quality or
 tenant-readiness claim until the immutable result receives a separate owner
 decision.
+
+## [2026-08-22] Close the failed S12-f-12 v8 invocation without a retry
+
+**Decision:** Close the single RM-36 v8 invocation as failed before report
+persistence and permit only offline preparation of a runtime reconciliation
+diagnosis and remediation.
+**Alternatives considered:** Reuse the remaining 141-call numerical allowance;
+retry the first case; infer a quality result from three responses; authorize an
+immediate new lineage; or abandon diagnosis without preserving the failure.
+**Reason:** The exact runner failed closed after three provider responses when
+evidence reason counts did not reconcile with the first predicted-entities arm.
+No report, complete accounting, aggregate cost or branch aggregate was
+persisted. The single-use authorization was consumed by invocation, regardless
+of unused call capacity, and therefore cannot permit a fourth call or rerun.
+**Consequences:** The three calls remain partial execution facts and establish
+no candidate-quality result. Offline code diagnosis and deterministic mocks may
+proceed, but every future provider attempt requires corrected evidence, a new
+exact lineage, issuance review and owner authorization; all downstream gates
+remain closed.
