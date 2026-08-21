@@ -1,0 +1,61 @@
+{
+  "artifactVersion": "s12.current-state-next.rm46-execution.v1",
+  "asOf": "2026-08-22",
+  "status": "G5_F12_V9_STAGE_A_EXECUTED_COMPLETED_REJECTED_HARD_GATE_PENDING_RM47_OWNER_DECISION",
+  "nonAuthoritative": true,
+  "authoritativeStateBeforeExecution": {
+    "path": "evaluation/sprint-12/current-state.v1.json",
+    "digest": "sha256:609a8b58a7ca46e237d138037077c2c60419a87bc92f897fa5de55aafabb8493",
+    "status": "G5_F12_CORRECTED_V9_LINEAGE_AUTHORIZED_ONE_STAGE_A_PENDING_EXECUTION"
+  },
+  "executionTransition": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm46-execution-transition.v1.json",
+    "status": "ONE_BOUNDED_V9_DEVELOPMENT_STAGE_A_EXECUTED_COMPLETED_REJECTED_HARD_GATE_PENDING_RM47_OWNER_DECISION"
+  },
+  "currentLineageAfterInvocation": {
+    "lineageVersion": "v9",
+    "authorizedExecutions": 1,
+    "authorizedProviderCalls": 144,
+    "providerCallsAttempted": 144,
+    "providerResponsesReceived": 144,
+    "relationBranchOutputs": 96,
+    "retryCountObserved": 0,
+    "totalCostUsd": "0.00599700",
+    "accountingComplete": true,
+    "authorizationSpent": true,
+    "reportExists": true,
+    "reportPersisted": true,
+    "reportDigest": "sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e",
+    "reportStatus": "COMPLETED_REJECTED_HARD_GATE",
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false
+  },
+  "historicalLineage": {
+    "lineageVersion": "v6",
+    "providerCallsPerformed": 144,
+    "relationBranchOutputs": 96,
+    "retryCount": 0,
+    "stageAReportDigest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+  },
+  "supersededLineage": {
+    "lineageVersion": "v8",
+    "providerCallsAttempted": 3,
+    "reportExists": false,
+    "authorizationSpent": true
+  },
+  "governanceLocks": {
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "outputOverwriteAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "downstreamAccessAuthorized": false
+  },
+  "nextTasks": [
+    "S12-RM-47_OWNER_POST_RUN_DECISION"
+  ],
+  "claimBoundary": "The single authorized v9 Stage A completed with a persisted schema-valid report but failed schema-invalid, invalid-evidence, threshold and slice gates. No quality improvement, candidate, business-quality, tenant-readiness or downstream claim is established; RM-47 owner decision is required."
+}

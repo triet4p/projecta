@@ -1,0 +1,71 @@
+{
+  "packetVersion": "s12.g5.packet.v32.rm46-execution",
+  "status": "G5_F12_V9_STAGE_A_EXECUTED_COMPLETED_REJECTED_HARD_GATE_PENDING_RM47_OWNER_DECISION",
+  "packetRole": "non-authoritative-rm46-post-run-snapshot",
+  "asOf": "2026-08-22",
+  "authoritativePacketBeforeExecution": {
+    "path": "evaluation/sprint-12/optimization/g5-packet.v31.rm45-authorization.json",
+    "digest": "sha256:e2d2818913447fc20eb6268a94f6ff7fe4cc28fa518dac37b52e4d5b67b7c5e0",
+    "status": "G5_F12_CORRECTED_V9_LINEAGE_AUTHORIZED_ONE_STAGE_A_PENDING_EXECUTION"
+  },
+  "executionTransition": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm46-execution-transition.v1.json",
+    "status": "ONE_BOUNDED_V9_DEVELOPMENT_STAGE_A_EXECUTED_COMPLETED_REJECTED_HARD_GATE_PENDING_RM47_OWNER_DECISION"
+  },
+  "authorizationBoundaryAfterInvocation": {
+    "authorizationSpent": true,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "authorizedExecutions": 1,
+    "authorizedProviderCalls": 144,
+    "providerCallsAttempted": 144,
+    "providerResponsesReceived": 144,
+    "relationBranchOutputs": 96,
+    "retryCount": 0,
+    "totalCostUsd": "0.00599700",
+    "reportExists": true,
+    "reportPersisted": true,
+    "reportDigest": "sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e",
+    "reportStatus": "COMPLETED_REJECTED_HARD_GATE",
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "outputOverwriteAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "downstreamAccessAuthorized": false,
+    "nextPermittedTask": "S12-RM-47_OWNER_POST_RUN_DECISION"
+  },
+  "reportEvidence": {
+    "schemaValid": true,
+    "hardGatesPass": false,
+    "failedGates": [
+      "schemaInvalid",
+      "invalidEvidence",
+      "thresholds",
+      "sliceGates"
+    ],
+    "schemaInvalid": 5,
+    "invalidEvidence": 20,
+    "goldRelationsIntegrityPass": true,
+    "costCeilingPass": true,
+    "rawSensitiveDataIncluded": false,
+    "heldOutInspected": false
+  },
+  "historicalLineage": {
+    "lineageVersion": "v6",
+    "providerCallsPerformed": 144,
+    "relationBranchOutputs": 96,
+    "retryCount": 0,
+    "stageAReportDigest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+  },
+  "supersededLineage": {
+    "lineageVersion": "v8",
+    "providerCallsAttempted": 3,
+    "reportExists": false,
+    "authorizationSpent": true
+  },
+  "claimBoundary": "RM-46 records the single bounded v9 execution and preserves its rejected report. No rerun, validation, held-out, Stage B, selection, promotion, downstream access or RM-47 owner decision is authorized by this snapshot."
+}

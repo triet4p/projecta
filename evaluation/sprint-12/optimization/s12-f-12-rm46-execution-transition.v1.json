@@ -1,0 +1,123 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm46-execution-transition.v1",
+  "status": "ONE_BOUNDED_V9_DEVELOPMENT_STAGE_A_EXECUTED_COMPLETED_REJECTED_HARD_GATE_PENDING_RM47_OWNER_DECISION",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-46",
+  "transitionDate": "2026-08-22",
+  "transitionAuthority": "project-owner-delegated-codex-execution-agent",
+  "transitionRole": "immutable_execution_fact_pending_separate_owner_post_run_decision",
+  "precedenceRule": "This RM-46 transition records the single authorized v9 execution and does not replace the authoritative RM-45 pre-execution index until RM-47 owner review.",
+  "authorization": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm45-authorization.v9.json",
+    "digest": "sha256:ad84eaad496458cc2f5064be59016d7e2497aa4d3ad898e807cf8d496d77a0c8",
+    "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A",
+    "authorizedExecutions": 1,
+    "authorizedProviderCalls": 144,
+    "spent": true,
+    "reusable": false,
+    "retryPolicy": "none",
+    "outputOverwrite": false
+  },
+  "authorizationTransition": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm45-authorization-transition.v1.json",
+    "digest": "sha256:68a69e313e203aa7d5e88209efacf3d7b8eab293a2d015810f0953fdb0dc6234",
+    "status": "ONE_BOUNDED_V9_DEVELOPMENT_STAGE_A_AUTHORIZED_PENDING_EXECUTION"
+  },
+  "authorizedLineage": {
+    "executionCommit": "f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e",
+    "executionPackageDigest": "sha256:cdaad8ebdce34115c8853067245ed6e5ef4107e271de5ce073a1cbdef20b05d2",
+    "technicalFreezeDigest": "sha256:f595730955848c76d0399706d5f2f32c367a6e88b62a5b3c3986bf2ccc3dfe32",
+    "runnerExactGitBlobDigest": "sha256:523106bf38a2da3acdd6cf6be6dcb299e1763174d41d0e1f4438f5c1fefd92dd",
+    "reportSchemaExactGitBlobDigest": "sha256:262822030197e36cbabe9d7cb734c794385fa8b6d8d4bf3a63eb5ce82f864bea",
+    "outputPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json",
+    "costCeilingUsd": "10.00"
+  },
+  "execution": {
+    "invocationCount": 1,
+    "command": "uv run --env-file .env --script scripts/run_sprint12_f12_stage_a_v9.py --authorization evaluation/sprint-12/optimization/s12-f-12-rm45-authorization.v9.json --output evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json",
+    "executionCommit": "f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e",
+    "providerCallsAttempted": 144,
+    "responsesReceived": 144,
+    "relationBranchOutputs": 96,
+    "schemaValidResponses": 139,
+    "usageValidResponses": 144,
+    "pricedCalls": 144,
+    "retryCount": 0,
+    "pricingFailureCount": 0,
+    "totalCostUsd": "0.00599700",
+    "costCeilingUsd": "10.00",
+    "failureClasses": {
+      "schemaInvalid": 5,
+      "invalidEvidence": 20,
+      "missingOutput": 0,
+      "endpointContractFailure": 0,
+      "sharedConfigurationMismatch": 0
+    }
+  },
+  "report": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json",
+    "digest": "sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e",
+    "schema": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v9.json",
+    "schemaValid": true,
+    "status": "COMPLETED_REJECTED_HARD_GATE",
+    "rawSourceTextStored": false,
+    "rawProviderPayloadStored": false,
+    "heldOutAccess": false,
+    "immutable": true
+  },
+  "gateResults": {
+    "costCeilingPass": true,
+    "goldRelationsIntegrityPass": true,
+    "hardGatesPass": false,
+    "thresholdsPass": false,
+    "sliceGatesPass": false,
+    "failedGates": [
+      "schemaInvalid",
+      "invalidEvidence",
+      "thresholds",
+      "sliceGates"
+    ]
+  },
+  "diagnostics": {
+    "schemaFailureTotal": 5,
+    "schemaFailureReason": "predicted-entities:entity_span_out_of_source",
+    "invalidEvidenceTotal": 20,
+    "invalidEvidenceReasons": {
+      "gold-entities:evidence_does_not_contain_trigger": 14,
+      "gold-entities:evidence_does_not_contain_endpoints": 6
+    },
+    "reasonCountsReconciled": true
+  },
+  "custody": {
+    "historicalV6ReportPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+    "historicalV6ReportDigest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "historicalV6ProviderCalls": 144,
+    "historicalV6RetryCount": 0,
+    "supersededV8ReportPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json",
+    "supersededV8ReportExists": false,
+    "rawProviderPayloadStored": false,
+    "rawSourceTextStored": false
+  },
+  "governance": {
+    "authorizationSpent": true,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "retryAuthorized": false,
+    "outputOverwriteAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "downstreamAccessAuthorized": false,
+    "rerunAuthorized": false,
+    "nextPermittedAction": "S12-RM-47_OWNER_POST_RUN_DECISION"
+  },
+  "constraints": [
+    "The RM-45 authorization was consumed by the single invocation and cannot be reused.",
+    "No retry, rerun or report overwrite is authorized after this completed rejected report.",
+    "The v9 report is immutable evidence of a completed hard-gate-rejected Stage A and does not establish quality, candidate, business-quality or tenant-readiness claims.",
+    "RM-47 must independently decide whether any offline remediation or separately authorized action is permissible.",
+    "Validation, held-out data, Stage B, selection, promotion and downstream access remain unauthorized."
+  ]
+}
