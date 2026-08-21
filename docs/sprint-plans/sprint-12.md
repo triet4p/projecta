@@ -747,10 +747,24 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   144 calls and one persist; unauthorized preflight remains zero-call. Status:
   `F12_RM22A_READY_ZERO_CALL_V2`; provider calls remain zero. See
   `artifacts/task_S12-RM-22A_summary.md`.
-- [ ] **S12-RM-23A — Owner issuance re-review for f12 package:** Independently
-  review the superseding preregistration, execution package, technical freeze,
-  guarded runner, report schema and zero-call preflight. Provider execution
-  still requires a later separate authorization even if issuance passes.
+- [x] **S12-RM-23A — Owner issuance re-review for f12 package:** Completed with
+  `OWNER_ISSUANCE_REVIEW_WITHHELD_MEASUREMENT_AND_LINEAGE_BLOCKERS`. The guarded
+  144-call happy path and zero-call preflight pass, but exact-commit custody is
+  unenforceable, aggregate denominators are triple-counted, approved thresholds
+  and hard gates are missing or bypassed, and the immutable report omits required
+  metrics/slices and is not schema-validated. No issuance or authorization was
+  granted. See `artifacts/task_S12-RM-23A_summary.md`.
+- [x] **S12-RM-22B — Remediate f12 measurement and lineage offline:** Published
+  superseding v3 preregistration/package/freeze lineage with exact commit/blob
+  custody, corrected aggregate denominators, all approved metrics and named
+  slices, restored hard gates/threshold decision wiring, closed JSON Schema
+  validation before one final persist, and adversarial zero-call/mock E2E tests.
+  Preflight returns `F12_RM22B_READY_ZERO_CALL_V3`; no provider or held-out access.
+  See `artifacts/task_S12-RM-22B_summary.md`.
+- [ ] **S12-RM-23B — Owner issuance review of RM-22B:** Independently verify the
+  superseding artifacts and execution evidence. A passing review may issue the
+  preregistration/freeze only; provider execution still requires a separate
+  authorization.
 
 #### Phase F-S — Candidate Selection Resume Path
 
