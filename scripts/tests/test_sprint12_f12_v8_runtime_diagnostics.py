@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import tempfile
 from copy import deepcopy
 from collections import Counter
 from pathlib import Path
@@ -266,6 +267,108 @@ def test_report_schema_closes_raw_payload_boundary(
         else:
             candidate[location][field] = "SECRET"
         assert list(validator.iter_errors(candidate)), (location, field)
+
+
+def test_report_schema_recursively_closes_forbidden_dynamic_keys(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Reject raw-data aliases at every report object, including open maps."""
+
+    schema = json.loads(
+        (ROOT / "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v8.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    validator = Draft202012Validator(schema)
+    package = _legacy_fixture()
+
+    # The report contains only closed objects except the ontology-keyed maps.
+    # Keep this assertion generic so a future open map cannot bypass the key
+    # policy by omitting propertyNames.
+    open_objects: list[dict[str, object]] = []
+
+    def collect_schema_objects(value: object) -> None:
+        if isinstance(value, dict):
+            if (
+                value.get("type") == "object"
+                and "additionalProperties" in value
+                and value.get("additionalProperties") is not False
+            ):
+                open_objects.append(value)
+            for child in value.values():
+                collect_schema_objects(child)
+        elif isinstance(value, list):
+            for child in value:
+                collect_schema_objects(child)
+
+    collect_schema_objects(schema)
+    assert open_objects
+    assert all("propertyNames" in value for value in open_objects)
+
+    monkeypatch.setattr(v8, "validate_preparation_v8", lambda *args, **kwargs: package)
+    monkeypatch.setattr(v8, "validate_authorization_v8", lambda *args, **kwargs: {})
+    monkeypatch.setattr(v8.v3, "relative", lambda path: Path(path).as_posix())
+
+    with tempfile.TemporaryDirectory() as directory:
+        report = v8.run_stage_a(
+            provider_adapter=MockAdapter(),
+            authorization_path=Path(directory) / "authorization.json",
+            output_path=Path(directory) / "report.json",
+        )
+
+    forbidden = (
+        "rawSourceText",
+        "providerPayload",
+        "rawValidationDetail",
+        "triggerQuote",
+        "rawPayload",
+        "rawEvidenceText",
+        "validationMessageWithPayload",
+    )
+    valid_dynamic_value = {"gold": 0, "predicted": 0, "truePositive": 0, "f1": 0.0}
+
+    def inject_everywhere(value: object, field: str) -> None:
+        if isinstance(value, dict):
+            children = list(value.values())
+            value[field] = deepcopy(valid_dynamic_value)
+            for child in children:
+                inject_everywhere(child, field)
+
+    for field in forbidden:
+        inject_everywhere(report, field)
+        try:
+            assert list(validator.iter_errors(report)), field
+        finally:
+            # The next pass must start from the legitimate report.  Every
+            # injected key is absent from the generated v8 report.
+            def remove_everywhere(value: object) -> None:
+                if isinstance(value, dict):
+                    value.pop(field, None)
+                    for child in value.values():
+                        remove_everywhere(child)
+                elif isinstance(value, list):
+                    for child in value:
+                        remove_everywhere(child)
+
+            remove_everywhere(report)
+
+    assert not list(validator.iter_errors(report))
+
+    # Explicit regression probes for the original RM33 bypasses.
+    probes = (
+        (report["metrics"]["arms"]["predicted-entities"]["entity"]["byType"], "rawSourceText"),
+        (report["metrics"]["arms"]["predicted-entities"]["relation"]["semantic"]["byPredicate"], "providerPayload"),
+        (report["caseRecords"][0]["arms"]["predicted-entities"]["entity"]["byType"], "rawValidationDetail"),
+        (report["caseRecords"][0]["arms"]["predicted-entities"]["relation"]["semantic"]["byPredicate"], "triggerQuote"),
+    )
+    for mapping, field in probes:
+        mapping[field] = deepcopy(valid_dynamic_value)
+        try:
+            assert list(validator.iter_errors(report)), field
+        finally:
+            del mapping[field]
+
+    assert not list(validator.iter_errors(report))
 
 
 def test_guarded_runtime_unauthorized_makes_zero_calls(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:

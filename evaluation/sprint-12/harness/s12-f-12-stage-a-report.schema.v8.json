@@ -757,6 +757,9 @@
           "additionalProperties": {
             "$ref": "#/$defs/entityType"
           },
+          "propertyNames": {
+            "$ref": "#/$defs/sanitizedDynamicKey"
+          },
           "type": "object"
         },
         "denominatorReconciled": {
@@ -1063,6 +1066,9 @@
         "byPredicate": {
           "additionalProperties": {
             "$ref": "#/$defs/predicate"
+          },
+          "propertyNames": {
+            "$ref": "#/$defs/sanitizedDynamicKey"
           },
           "type": "object"
         },
@@ -1568,6 +1574,12 @@
         "responseDigest"
       ],
       "type": "object"
+    },
+    "sanitizedDynamicKey": {
+      "not": {
+        "pattern": "^(?:[Rr][Aa][Ww](?:[_-]?[Pp][Aa][Yy][Ll][Oo][Aa][Dd]|[_-]?[Ss][Oo][Uu][Rr][Cc][Ee][_-]?[Tt][Ee][Xx][Tt]|[_-]?[Ee][Vv][Ii][Dd][Ee][Nn][Cc][Ee][_-]?[Tt][Ee][Xx][Tt]|[_-]?[Pp][Rr][Oo][Vv][Ii][Dd][Ee][Rr][_-]?[Pp][Aa][Yy][Ll][Oo][Aa][Dd]|[_-]?[Vv][Aa][Ll][Ii][Dd][Aa][Tt][Ii][Oo][Nn][_-]?[Dd][Ee][Tt][Aa][Ii][Ll])|[Pp][Rr][Oo][Vv][Ii][Dd][Ee][Rr][_-]?[Pp][Aa][Yy][Ll][Oo][Aa][Dd]|[Tt][Rr][Ii][Gg][Gg][Ee][Rr][_-]?[Qq][Uu][Oo][Tt][Ee]|[Vv][Aa][Ll][Ii][Dd][Aa][Tt][Ii][Oo][Nn][_-]?[Mm][Ee][Ss][Ss][Aa][Gg][Ee][_-]?[Ww][Ii][Tt][Hh][_-]?[Pp][Aa][Yy][Ll][Oo][Aa][Dd])$"
+      },
+      "type": "string"
     },
     "thresholds": {
       "additionalProperties": false,
