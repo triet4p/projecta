@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G5_F12_OFFLINE_REMEDIATION_APPROVED_IMPLEMENTATION_ONLY`
+Status: `G5_F12_SUPERSEDING_LINEAGE_PREPARATION_APPROVED_OFFLINE_ONLY`
 
 Current state: [Sprint 12 Current State](sprint-12/current-state.md)
 
@@ -12,7 +12,7 @@ G4 packet: [Baseline Evaluation Review Packet](sprint-12/g4-baseline.md)
 
 G4.1 packet: [Contract Alignment and Failure Diagnosis](sprint-12/g4.1-contract-alignment.md)
 
-G5 packet: [Controlled Optimization Review Packet v17](sprint-12/g5-optimization.v17.md)
+G5 packet: [Controlled Optimization Review Packet v19](sprint-12/g5-optimization.v19.md)
 
 G6 packet: [Held-out Business Evaluation Packet](sprint-12/g6-business-evaluation.md)
 
@@ -868,10 +868,15 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   denominator reconciliation, and prove it with deterministic mock tests. The
   RM-30 package is implementation-complete offline and stops for separate owner
   review before preparing any execution lineage.
-- [ ] **S12-RM-31 — Owner-review RM-30 implementation:** Review the versioned
+- [x] **S12-RM-31 — Owner-review RM-30 implementation:** Review the versioned
   diagnostic/report schema, finite reason classifiers, sanitized report and
-  deterministic mock evidence. This gate does not authorize lineage
-  preparation, preregistration, freeze, provider execution or downstream use.
+  deterministic mock evidence. RM-31 approves only offline preparation of a
+  new superseding lineage; issuance, provider execution and downstream use
+  remain closed.
+- [ ] **S12-RM-32 — Prepare superseding f12 lineage offline:** Bind a new exact
+  commit, preregistration, execution package and technical-freeze packet to the
+  corrected RM-30 implementation. Do not issue, authorize or execute the new
+  lineage; separate owner reviews remain required.
 
 #### Phase F-S — Candidate Selection Resume Path
 

@@ -2,7 +2,7 @@
 
 **As of:** 2026-08-22
 
-**Status:** `G5_F12_OFFLINE_REMEDIATION_APPROVED_IMPLEMENTATION_ONLY`
+**Status:** `G5_F12_SUPERSEDING_LINEAGE_PREPARATION_APPROVED_OFFLINE_ONLY`
 
 This is the human-readable current-state index for Sprint 12. Machine consumers
 must use `evaluation/sprint-12/current-state.v1.json`.
@@ -28,7 +28,10 @@ current governance state without rewriting history or mutating the report.
 RM-27 subsequently closed the experiment as rejected through
 `s12-f-12-rm27-decision-transition.v1.json`.
 RM-29 approved the RM-28 package for offline implementation and mock testing
-only through `s12-f-12-rm29-approval-transition.v1.json`.
+only through `s12-f-12-rm29-approval-transition.v1.json`. RM-31 then approved
+offline preparation of a new superseding lineage through
+`s12-f-12-rm31-approval-transition.v1.json`; it did not issue a new
+preregistration or technical freeze.
 
 ## Current boundary
 
@@ -40,7 +43,8 @@ only through `s12-f-12-rm29-approval-transition.v1.json`.
   `invalidEvidence=17`), registered thresholds and slice gates. It records 144
   calls, 96 relation branches, 0 retries and `$0.00592500` cost.
 - RM-27 closes f12 as `COMPLETED_REJECTED_NO_STAGE_B`; RM-29 approves finite
-  diagnostic/remediation implementation offline only.
+  diagnostic/remediation implementation and RM-31 approves only offline
+  preparation of a new superseding lineage.
 - Retry and output overwrite were not authorized and were not attempted. The
   authorization is spent and cannot be reused.
 - No candidate is selected or frozen; no accuracy improvement is established.
@@ -49,10 +53,11 @@ only through `s12-f-12-rm29-approval-transition.v1.json`.
 
 ## Next work
 
-1. Owner-review the completed RM-30 finite schema/evidence diagnostic contract,
-   report and deterministic mock regressions.
-2. Keep superseding lineage preparation, provider execution, validation,
-   held-out access, Stage B, selection and promotion closed.
+1. Prepare a new exact-commit f12 preregistration, execution package and
+   technical-freeze packet offline under RM-32.
+2. Keep preregistration issuance, technical-freeze issuance, provider
+   execution, validation, held-out access, Stage B, selection and promotion
+   closed.
 3. Do not claim accuracy improvement, candidate quality, business quality or
    tenant readiness from this rejected run.
 
@@ -84,10 +89,26 @@ RM-30 completed the approved implementation-only scope in a new versioned
 diagnostic/report path. Historical schema and evidence findings remain
 `validation_detail_unavailable` and `materializer_detail_unavailable`; no exact
 historical cause was inferred. The implementation preserves typed-span identity,
-endpoint denominators, reconciliation and raw-data exclusion, with 24
+endpoint denominators, reconciliation and raw-data exclusion, with 31
 deterministic mock tests passing.
 
 The non-authoritative next-state snapshot is
-`evaluation/sprint-12/current-state-next-rm30.v1.json`; the next gate is RM-31
-owner review. The authoritative current-state status remains
-`G5_F12_OFFLINE_REMEDIATION_APPROVED_IMPLEMENTATION_ONLY`.
+`evaluation/sprint-12/current-state-next-rm30.v1.json`; RM-31 has approved
+offline preparation only. The authoritative current G5 packet is
+`evaluation/sprint-12/optimization/g5-packet.v19.json`.
+
+## RM-31 owner transition
+
+RM-31 approved the corrected RM-30 implementation and authorized preparation
+of a new exact, versioned superseding f12 lineage. The old v7 lineage remains
+historical: its preregistration and technical freeze were issued and it spent
+one 144-call execution with zero retries. For the new lineage,
+`supersedingLineagePreparationAuthorized` and all three preparation flags are
+true, while `preregistrationIssued`, `technicalFreezeIssued`,
+`providerExecutionAuthorized`, validation, held-out, Stage B, selection and
+promotion remain false.
+
+RM-32 may prepare the preregistration, execution package and technical-freeze
+artifacts offline. A separate owner issuance review is required before either
+issuance, followed by a separate execution authorization before any provider
+call. No quality improvement or candidate claim is established.

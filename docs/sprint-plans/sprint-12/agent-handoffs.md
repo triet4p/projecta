@@ -94,12 +94,26 @@ authorization.
 
 ## Handoff F — RM-30 offline diagnostic implementation
 
-**Status:** complete pending RM-31 owner review.
+**Status:** complete; RM-31 owner review approved offline lineage preparation.
 
 RM-30 adds a versioned sanitized diagnostic/report schema, finite schema and
 evidence reason classifiers, runtime-only materializer diagnostics and mock
 tests. Historical unknowns remain fail-closed; no execution lineage is
-prepared. RM-31 must review the implementation before any future lineage work.
+prepared. RM-31 reviewed and approved only the next offline preparation gate.
+
+## Handoff G — RM-31 approved superseding lineage preparation
+
+**Status:** complete; RM-32 pending.
+
+RM-31 approved the corrected RM-30 implementation and authorized offline
+preparation of a new exact-commit f12 preregistration, execution package and
+technical-freeze packet. The historical v7 preregistration/freeze and its
+144-call, zero-retry execution remain immutable facts. No new preregistration,
+freeze, provider authorization or provider call exists.
+
+RM-32 may prepare the new versioned lineage only. It must preserve the RM-30
+package/report/schema digests, keep issuance and downstream locks false, and
+stop for separate owner issuance and execution-authorization reviews.
 
 ## External-only work — custody and G6
 
