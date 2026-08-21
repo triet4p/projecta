@@ -2,7 +2,7 @@
 
 **As of:** 2026-08-22
 
-**Status:** `G5_F12_V8_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING`
+**Status:** `G5_F12_V8_AUTHORIZED_PENDING_EXECUTION`
 
 This is the human-readable current-state index for Sprint 12. Machine consumers
 must use `evaluation/sprint-12/current-state.v1.json`.
@@ -45,7 +45,8 @@ preregistration or technical freeze.
   calls, 96 relation branches, 0 retries and `$0.00592500` cost.
 - RM-27 closes the v7 execution as `COMPLETED_REJECTED_NO_STAGE_B`; RM-29
   approved finite diagnostic/remediation implementation, RM-31 approved
-  lineage preparation, and RM-33 issued v8 preregistration/freeze only.
+  lineage preparation, RM-33 issued v8 preregistration/freeze, and RM-35
+  authorized exactly one v8 execution.
 - Retry and output overwrite were not authorized and were not attempted. The
   authorization is spent and cannot be reused.
 - No candidate is selected or frozen; no accuracy improvement is established.
@@ -54,9 +55,9 @@ preregistration or technical freeze.
 
 ## Next work
 
-1. Prepare the exact v8 Stage A authorization offline under RM-34.
-2. Keep provider execution, validation, held-out access, Stage B, selection
-   and promotion closed pending RM-35 owner authorization review.
+1. Execute the exact v8 Stage A once under RM-36.
+2. Keep retry, overwrite, validation, held-out access, Stage B, selection and
+   promotion closed pending RM-37 owner post-run decision.
 3. Do not claim accuracy improvement, candidate quality, business quality or
    tenant readiness from this rejected run.
 
@@ -94,7 +95,7 @@ deterministic mock tests passing.
 The non-authoritative next-state snapshot is
 `evaluation/sprint-12/current-state-next-rm30.v1.json`. The authoritative
 current G5 packet is now
-`evaluation/sprint-12/optimization/g5-packet.v21.json`.
+`evaluation/sprint-12/optimization/g5-packet.v23.rm35-authorization.json`.
 
 ## RM-31 owner transition
 
@@ -106,12 +107,14 @@ one 144-call execution with zero retries. No v7 authorization is reusable.
 RM-33 completed the separate owner issuance review and issued only the exact
 v8 preregistration and technical-freeze lineage through
 `evaluation/sprint-12/optimization/s12-f-12-rm33-issuance-transition.v1.json`.
-This issuance does not authorize a provider call. For current v8,
-`preregistrationIssued=true` and `technicalFreezeIssued=true`, while
-`providerExecutionAuthorized=false`, `newAuthorizationIssued=false`, the v8
-report is absent, and validation, held-out access, Stage B, selection and
-promotion remain false. No quality improvement or candidate claim is
-established.
+This issuance did not authorize a provider call. RM-35 later authorized one
+bounded v8 execution. Current v8 has
+`preregistrationIssued=true`, `technicalFreezeIssued=true`,
+`providerExecutionAuthorized=true`, `newAuthorizationIssued=true`,
+`authorizedExecutions=1`, `authorizedProviderCalls=144`, and
+`providerCallsPerformed=0`. The v8 report is absent, and validation, held-out
+access, Stage B, selection, promotion, retry and overwrite remain false. No
+quality improvement or candidate claim is established.
 
 ## RM-32 lineage preparation (historical preparation snapshot)
 
@@ -140,13 +143,13 @@ only the reviewed v8 preregistration and technical freeze:
   (`sha256:cb6a2965d8f107b50e01957c99366be34e0d1cfc7cc5ccf6fad684d0278e680c`)
 - `evaluation/sprint-12/optimization/s12-f-12-rm33-issuance-transition.v1.json`
   (`sha256:62fb2d8a9b9acec0bd07440ea13943c1e81cf98bb38793392aa97110250b7025`)
-- `evaluation/sprint-12/optimization/g5-packet.v21.json`
+- `evaluation/sprint-12/optimization/g5-packet.v23.rm35-authorization.json`
 
-The historical v7 execution remains the sole issued/spent execution (144
-provider calls, 96 relation branches, zero retries). Current v8 has no
-provider authorization, no new authorization, no output and no provider
-calls. RM-34 may prepare the exact v8 Stage A authorization offline; RM-35
-must review it before any execution.
+The historical v7 execution remains the sole issued/spent historical execution
+(144 provider calls, 96 relation branches, zero retries). Current v8 has one
+authorized execution, but no output and no provider calls performed. RM-35 is
+complete; RM-36 is the next execution task and RM-37 must review its immutable
+result.
 
 ## RM-34 exact authorization preparation
 
@@ -163,7 +166,7 @@ preregistration/package/freeze digests, the 22 runtime git blobs, runtime
 configuration, model, prompt, provider adapter, dataset and v8 output path.
 It proves zero calls at preparation and preserves the exact prospective mock
 bounds of 144 calls, 96 relation branches, one persist, no retry and rejected
-overwrite. Provider execution and new authorization remain false.
+overwrite. RM-35 later reviewed this artifact without mutating it.
 
 The RM32 preflight binding is the exact Git-blob digest
 `sha256:492cc4c9815c168233039c096d5f7bc6121773a2b7f6f84443ed587fea1f8d3e`.
@@ -179,5 +182,29 @@ now reconciles the report-schema digest: the reviewed working-tree digest
 is CRLF-normalized content-equivalent to the canonical exact-commit blob
 `sha256:c65a4f039d948e6f3a59750001e58199bfc98e57e2f2f3ac838070ef5f6f6ad5`.
 RM-34 now records `ownerReviewReconciliationRequired=false` and binds the
-canonical blob. Provider execution and new authorization remain false until
-RM-35 independently reviews and acts; RM-34 itself issues nothing.
+canonical blob. RM-35 independently reviewed that preparation and issued one
+bounded v8 authorization. The authorization binds the exact execution commit,
+package, freeze, runtime, output and cost boundary; it permits 144 calls and
+96 relation branches with no retry or overwrite.
+
+## RM-35 v8 authorization
+
+RM-35 is complete. The immutable owner review, authorization and transition
+are:
+
+- `evaluation/sprint-12/optimization/s12-f-12-rm35-owner-review.v1.json`
+- `evaluation/sprint-12/optimization/s12-f-12-rm35-authorization.v8.json`
+- `evaluation/sprint-12/optimization/s12-f-12-rm35-authorization-transition.v1.json`
+
+Current v8 state is `providerExecutionAuthorized=true`,
+`newAuthorizationIssued=true`, `authorizedExecutions=1`,
+`authorizedProviderCalls=144`, `providerCallsPerformed=0`, and
+`stageAReportExists=false`. Retry, overwrite, validation, held-out, Stage B,
+selection and promotion remain false. The safe pre-execution preflight is
+`scripts/preflight_sprint12_f12_rm35.py`; it performs zero provider calls and
+returns `F12_RM35_AUTHORIZED_ZERO_CALL_PRECHECK`.
+
+The historical v7 execution remains separately spent and immutable at 144
+provider calls, 96 relation branches and zero retries. No v7 authorization is
+reused. RM-36 must execute v8 once; RM-37 must then perform the owner post-run
+decision. No quality or tenant-readiness claim is established by authorization.

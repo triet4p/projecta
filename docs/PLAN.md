@@ -90,7 +90,7 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 ## Active Sprints
 
 - [Sprint 12 — Business Semantic Quality and Evaluation](sprint-plans/sprint-12.md)
-  — *In progress at `G5_F12_V8_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING`.
+  — *In progress at `G5_F12_V8_AUTHORIZED_PENDING_EXECUTION`.
   Dataset v3,
   measurement remediation and the two-step f12 development execution package
   are frozen. RM-23F issued the preregistration/freeze and RM-25 authorized one
@@ -101,8 +101,9 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   only. RM-31 prepared the superseding lineage and RM-33 issued its v8
   preregistration and technical freeze only. Provider authorization, output,
   validation, held-out access, Stage B, selection and promotion remain closed;
-  RM-34 preparation and custody reconciliation are complete; provider
-  execution/new authorization remain false pending RM-35 owner review.
+  RM-34 preparation and custody reconciliation are complete; RM-35 authorized
+  exactly one new v8 execution. RM-36 execution and RM-37 post-run owner
+  decision remain pending.
   No business-quality claim is made, and new connector/outbound breadth remains
   deferred. The authoritative dashboard is the
   [Sprint 12 current-state index](sprint-plans/sprint-12/current-state.md).*

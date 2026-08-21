@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G5_F12_V8_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING`
+Status: `G5_F12_V8_AUTHORIZED_PENDING_EXECUTION`
 
 Current state: [Sprint 12 Current State](sprint-12/current-state.md)
 
@@ -12,7 +12,7 @@ G4 packet: [Baseline Evaluation Review Packet](sprint-12/g4-baseline.md)
 
 G4.1 packet: [Contract Alignment and Failure Diagnosis](sprint-12/g4.1-contract-alignment.md)
 
-G5 packet: [Controlled Optimization Review Packet v21](sprint-12/g5-optimization.v21.md)
+G5 packet: [Controlled Optimization Review Packet v23 — RM-35 authorization](sprint-12/g5-optimization.v23.rm35-authorization.md)
 
 G6 packet: [Held-out Business Evaluation Packet](sprint-12/g6-business-evaluation.md)
 
@@ -890,9 +890,18 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   remains zero-call only. Its RM32 preflight blob digest is corrected and its
   own preflight is separately tamper-bound through preparation evidence. No
   provider was called and the live runner was not invoked.
-- [ ] **S12-RM-35 — Owner authorization review:** Independently review RM-34
-  and authorize at most one bounded v8 Stage A execution, with retry,
-  overwrite, validation, held-out, Stage B, selection and promotion closed.
+- [x] **S12-RM-35 — Owner authorization review:** Independently review RM-34
+  and authorize exactly one bounded v8 Stage A execution. The authorization
+  binds the exact commit/package/freeze/runtime/output/cost boundary; retry,
+  overwrite, validation, held-out, Stage B, selection and promotion remain
+  closed.
+- [ ] **S12-RM-36 — Execute exact v8 Stage A once:** Run the authorized v8
+  development Stage A exactly once, preserving the report and immutable v6
+  history. No retry, overwrite, validation, held-out, Stage B, selection or
+  promotion is permitted.
+- [ ] **S12-RM-37 — Owner post-run decision:** Independently review the
+  immutable v8 execution report and decide whether the experiment remains
+  rejected or any separately governed downstream action may be considered.
 
 #### Phase F-S — Candidate Selection Resume Path
 

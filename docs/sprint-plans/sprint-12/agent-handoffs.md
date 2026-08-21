@@ -1,6 +1,6 @@
 # Sprint 12 Current Handoffs
 
-**Status:** `CURRENT_F12_V8_ISSUED_PROVIDER_AUTHORIZATION_HANDOFF`
+**Status:** `CURRENT_F12_V8_AUTHORIZED_EXECUTION_HANDOFF`
 
 This revision supersedes the old baseline and generic-optimization handoffs.
 Those tasks are complete or historically closed. Use
@@ -126,29 +126,46 @@ runner was invoked. The immutable preparation fields remain unissued in their
 own snapshots; RM-33 separately issued the reviewed v8 preregistration and
 freeze. A separate authorization remains mandatory before execution.
 
-## Handoff I — RM-33 v8 issuance and RM-34/RM-35 authorization path
+## Handoff I — RM-33/RM-34/RM-35 v8 authorization path
 
-**Status:** RM-33 complete; RM-34 preparation complete; RM-35 pending.
+**Status:** RM-33, RM-34 and RM-35 complete; RM-36 execution pending; RM-37
+post-run owner decision pending.
 
-RM-33 owner review and the digest-bound issuance transition are authoritative
-for current v8 issuance only. `preregistrationIssued=true` and
-`technicalFreezeIssued=true`; `providerExecutionAuthorized=false`,
-`newAuthorizationIssued=false`, the v8 report is absent, and all validation,
-held-out, Stage B, selection and promotion permissions remain false. The
-historical v7 execution remains the sole issued/spent execution (144 provider
-calls, 96 relation branches, zero retries).
+RM-33 owner review and the digest-bound issuance transition remain immutable
+history. RM-35 is now authoritative for current v8 execution authority:
+`preregistrationIssued=true`, `technicalFreezeIssued=true`,
+`providerExecutionAuthorized=true`, `newAuthorizationIssued=true`,
+`authorizedExecutions=1`, `authorizedProviderCalls=144`,
+`providerCallsPerformed=0`, and the v8 report is absent. Retry, overwrite,
+validation, held-out, Stage B, selection and promotion permissions remain
+false. The historical v7 execution remains separately issued/spent (144
+provider calls, 96 relation branches, zero retries).
 
 RM-34 prepared the exact v8 Stage A authorization offline at
 `evaluation/sprint-12/optimization/s12-f-12-rm34-authorization-preparation.v1.json`.
 Its preflight is `F12_RM34_PREPARED_ZERO_CALL`; it binds both RM-33 records,
 the accepted RM33 custody erratum, exact runtime commit and all
 package/freeze/runtime/output/cost digests. The CRLF/LF report-schema
-discrepancy is reconciled to the canonical exact git blob; provider execution
-and new authorization remain false. RM-35 must independently review and act.
+discrepancy is reconciled to the canonical exact git blob. RM-35 has
+independently reviewed and authorized one bounded execution; the v8 report is
+still absent and provider calls performed remain zero.
 The RM32 preflight binding is `sha256:492cc4c9815c168233039c096d5f7bc6121773a2b7f6f84443ed587fea1f8d3e`;
 RM-34's own preflight is separately bound by working-tree preparation
 evidence so a one-character tamper fails without self-referential hashing.
-No provider call or live runner invocation is allowed.
+RM-35 authorized exactly one execution against the exact v8 commit/package/
+freeze/runtime/output/cost boundary. RM-36 may invoke that execution once;
+until then no provider call or live runner invocation has occurred. RM-37 must
+perform a separate owner post-run decision after the immutable v8 report is
+preserved.
+
+## Handoff J — RM-36 execution and RM-37 post-run decision
+
+RM-36 is the sole next execution task. It must run the safe pre-execution
+preflight `scripts/preflight_sprint12_f12_rm35.py`, then invoke the exact v8
+runner once using the immutable RM-35 authorization. It must preserve the v8
+report, reject retries and overwrite, keep validation/held-out data sealed,
+and record provider accounting. RM-37 must review the resulting immutable
+report before any Stage B, selection, validation or promotion consideration.
 
 ## External-only work — custody and G6
 

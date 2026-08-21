@@ -2,7 +2,7 @@
 
 **Base contract version:** `s12.v1`; current visible corpus: `v3-frozen`
 
-**Current Sprint status:** `G5_F12_V8_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING`
+**Current Sprint status:** `G5_F12_V8_AUTHORIZED_PENDING_EXECUTION`
 
 The repository-visible pilot and development/validation gold now have
 owner-delegated AI semantic review. They remain agent-authored synthetic data
@@ -11,10 +11,10 @@ preregistration/freeze lineage was issued and one exact 144-call development
 Stage A execution completed. RM-27 closed f12 rejected after hard, threshold
 and slice failures; RM-29 permitted offline diagnostic/remediation
 implementation, RM-31 permitted preparation of a new superseding lineage and
-RM-33 issued only the exact v8 preregistration and technical freeze. Current
-v8 provider authorization remains false, its report is absent, and no
-candidate is selected. G6 separately remains blocked by test custody and
-candidate quality. See
+RM-33 issued only the exact v8 preregistration and technical freeze; RM-35
+subsequently authorized exactly one v8 execution. Current v8 provider calls
+performed remain zero, its report is absent, and no candidate is selected. G6
+separately remains blocked by test custody and candidate quality. See
 `current-state.v1.json` for the authoritative index.
 
 This directory contains the governed contract for the Sprint 12 business
@@ -115,25 +115,31 @@ procedure permits one blinded run.
 - `optimization/s12-f-12-rm23f-issuance-transition.v1.json` records the later
   issuance of the exact f12 v7 preparation lineage without mutating its
   historical `PREPARED` fields.
-- `optimization/g5-packet.v21.json` is the current G5 machine packet. It records
-  RM-33 issuance of the v8 preregistration and technical freeze, keeps
-  selection at `NO_SELECTION`, and leaves provider execution closed.
+- `optimization/g5-packet.v23.rm35-authorization.json` is the current G5
+  machine packet. It records RM-35 authorization of exactly one bounded v8
+  development Stage A execution, keeps selection at `NO_SELECTION`, and
+  leaves validation, held-out, Stage B, promotion, retry and overwrite closed.
 - `optimization/g5-packet.v20.rm32-offline-preparation.json` and the RM32 v8
   artifacts are immutable preparation snapshots; their unissued fields are not
   rewritten by the separate RM-33 transition and they performed zero provider
   calls. The current issuance state is in the RM-33 transition and v21 packet.
 - `optimization/s12-f-12-rm33-owner-review.v1.json` and
-  `optimization/s12-f-12-rm33-issuance-transition.v1.json` record the
-  digest-bound v8 issuance-only decision. RM-34 may prepare exact v8
-  authorization offline; RM-35 owner authorization review is pending.
+  `optimization/s12-f-12-rm33-issuance-transition.v1.json` remain the
+  immutable digest-bound v8 issuance-only decision. RM-35's immutable review,
+  authorization and transition now record one bounded execution authority.
 - `optimization/s12-f-12-rm34-authorization-preparation.v1.json` records the
   exact v8 authorization preparation only. Its zero-call preflight binds 22
   exact runtime blobs and the prospective 144/96 mock bounds. The RM32
   preflight blob digest is exact; RM-34's own preflight is separately bound by
   external preparation evidence and rejects tampering. The accepted RM33
   custody erratum reconciles the report-schema CRLF/LF digest to the canonical
-  exact execution blob. Provider execution and new authorization remain false
-  pending RM-35.
+  exact execution blob. The v8 output remains absent and provider calls
+  performed remain zero pending RM-36.
+- `optimization/s12-f-12-rm35-owner-review.v1.json`,
+  `optimization/s12-f-12-rm35-authorization.v8.json` and
+  `optimization/s12-f-12-rm35-authorization-transition.v1.json` are immutable
+  RM-35 authority records. `scripts/preflight_sprint12_f12_rm35.py` is the
+  safe zero-call pre-execution gate; RM-37 remains required after execution.
 
 ## Dataset contract rules
 
