@@ -3,7 +3,7 @@
   "status": "EXECUTION_PACKAGE_PREPARED_PENDING_RM23D_OWNER_REVIEW",
   "experimentId": "s12-f-12",
   "supersedes": "evaluation/sprint-12/optimization/s12-f-12-rm22c-execution-package.v4.json",
-  "commitSha": "d079b5c6c642135b0be17a0be088c0f4964a3b83",
+  "commitSha": "b63ebcb4603cd2cabeb796a38c86be4471304f3f",
   "providerExecutionAuthorized": false,
   "heldOutInspected": false,
   "heldOutAccessAuthorized": false,
@@ -14,7 +14,7 @@
   "executionRunnerImplemented": true,
   "executionRunner": {
     "path": "scripts/run_sprint12_f12_stage_a_v5.py",
-    "digest": "sha256:67ccb4826519744c6b22a5afa8581bb8f155f93e17939d528ab817afc75cbb5c"
+    "digest": "sha256:20caf2d4455a946557ac1ef1bf5370940779c2b63e112dbbdc0b5024918dafd5"
   },
   "providerAdapter": {
     "path": "scripts/sprint12_f12_provider_adapter_v2.py",
@@ -42,7 +42,7 @@
   },
   "preregistration": {
     "path": "evaluation/sprint-12/optimization/s12-f-12-rm22d-issuance-draft.v5.json",
-    "digest": "sha256:5b26dd12cc379dc021b16f16b68ae0ade4668273d9d16691e6fe04d5e3fd98f2"
+    "digest": "sha256:bb102d9feeb1a014a4f2184565690d69da2a6ec4c61d767554552bdad7f84cc4"
   },
   "freezeRecord": "evaluation/sprint-12/optimization/s12-f-12-rm22d-technical-freeze.v5.json",
   "preflight": {
@@ -55,7 +55,7 @@
   },
   "mockE2ETest": {
     "path": "scripts/tests/test_sprint12_f12_rm22d_execution.py",
-    "digest": "sha256:6b81a1b698fec6c5c3705692d2714be0c26d350efa1ed7723899ffbd4b328471"
+    "digest": "sha256:6cb9b700ea3a60036ccf163489f3cf0e92544bff7cf2e54de72ca697a7c83177"
   },
   "providerCalls": 144,
   "stage1ProviderCalls": 48,
@@ -255,9 +255,9 @@
     "evaluation/sprint-12/optimization/s12-f-12-m3-prompt-v7-v2-two-step-extraction.v1.txt": "sha256:e2dad79c2483da65f14726dc7964eb2963e3a3f1ea1135559713613c6c418fb2",
     "evaluation/sprint-12/harness/s12-f-12-stage-1-entity-envelope.schema.v2.json": "sha256:53144aeddbcdf53d7c23d59d123eb92ead7afd7f4087e3763125b456923f52d4",
     "evaluation/sprint-12/harness/s12-f-12-stage-2-relation-envelope.schema.v2.json": "sha256:0d0dc18829d3fc205d92b3c17ae70e4fb846858f756b3ea788b549587a90f34d",
-    "scripts/run_sprint12_f12_stage_a_v5.py": "sha256:67ccb4826519744c6b22a5afa8581bb8f155f93e17939d528ab817afc75cbb5c",
+    "scripts/run_sprint12_f12_stage_a_v5.py": "sha256:20caf2d4455a946557ac1ef1bf5370940779c2b63e112dbbdc0b5024918dafd5",
     "scripts/preflight_sprint12_f12_rm22d.py": "sha256:b87fcd8a7aa9dfef176dc9ea4e199c727a4066d23f2338f231d78dfb5094d8ad",
-    "scripts/tests/test_sprint12_f12_rm22d_execution.py": "sha256:6b81a1b698fec6c5c3705692d2714be0c26d350efa1ed7723899ffbd4b328471",
+    "scripts/tests/test_sprint12_f12_rm22d_execution.py": "sha256:6cb9b700ea3a60036ccf163489f3cf0e92544bff7cf2e54de72ca697a7c83177",
     "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v5.json": "sha256:092b3a400872e2e3bc5c43d4c477420c8775b614c1b828aba3aaf0699a160508",
     "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v1.json": "sha256:aee5d6bf36330110977ab1ba1fd3523ea27a96bf97494d319ef5a6db3cf5e889"
   },

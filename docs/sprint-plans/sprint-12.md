@@ -779,10 +779,27 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   mandatory. Targeted tests `3 passed`, f12 regression `47 passed`, and
   preflight returns `F12_RM22C_READY_ZERO_CALL_V4`; provider calls remain zero.
   See `artifacts/task_S12-RM-22C_summary.md`.
-- [ ] **S12-RM-23C — Owner issuance review of RM-22C:** Independently verify the
-  superseding artifacts, deterministic oracle, applicability-aware slices,
-  closed report and authorization guard. Provider execution remains subject to
-  a later separate exact-commit authorization even if issuance passes.
+- [x] **S12-RM-23C — Owner issuance review of RM-22C:** Completed with
+  `OWNER_ISSUANCE_REVIEW_WITHHELD_SCHEMA_AND_AUTHORIZATION_CLOSURE_BLOCKERS`.
+  Gold oracle, hard-negative denominator, applicable-metric gating and missing-
+  schema fail-closed behavior pass. Issuance remains withheld because the report
+  schema accepts tampered slice/threshold bindings and no closed authorization
+  schema rejects unknown or expanded authority. No provider authorization was
+  granted. See `artifacts/task_S12-RM-23C_summary.md`.
+- [x] **S12-RM-22D — Close f12 report and authorization schemas offline:** Kept
+  the accepted v4 oracle, denominators and applicability logic frozen and
+  published superseding v5 preregistration, execution package and technical
+  freeze artifacts. The report schema now binds exact ordered slice tuples and
+  threshold constants; the authorization schema is closed with exact lineage,
+  schedule, output and cost fields plus explicit false validation, held-out,
+  Stage B, selection and promotion locks. Adversarial tests reject tampering
+  before capture. Targeted tests `5 passed`, full f12 regression `52 passed`,
+  and preflight returns `F12_RM22D_READY_ZERO_CALL_V5`; provider calls remain
+  zero. See `artifacts/task_S12-RM-22D_summary.md`.
+- [ ] **S12-RM-23D — Owner issuance review of RM-22D:** Independently verify the
+  two closed schemas, adversarial tests and superseding lineage. Provider
+  execution remains subject to a later separate exact-commit authorization even
+  if preregistration/freeze issuance passes.
 
 #### Phase F-S — Candidate Selection Resume Path
 
