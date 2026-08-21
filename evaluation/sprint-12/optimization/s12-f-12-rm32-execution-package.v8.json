@@ -15,9 +15,9 @@
   },
   "costCeilingUsd": "10.00",
   "exactCommitValidated": true,
-  "executionCommitSha": "d64668b800866be65a2ea17e6feef2e05e78aa16",
+  "executionCommitSha": "79447940f90b17dd22bfa2042be4c9ef2f8c54d1",
   "executionRunner": {
-    "digest": "sha256:f985ea4a355b47dc74ce29b5c0af41666dd0292ab47a7ec3981fd13c6c129182",
+    "digest": "sha256:91caf611f6fc3d999827864ee1a8fa4a0ecda197b6ecae1b5f12a52f5147006c",
     "guarded": true,
     "liveIntegrationOpened": true,
     "path": "scripts/run_sprint12_f12_stage_a_v8.py",
@@ -64,8 +64,8 @@
   "preparationEvidence": {
     "scripts/preflight_sprint12_f12_rm32.py": "sha256:492cc4c9815c168233039c096d5f7bc6121773a2b7f6f84443ed587fea1f8d3e",
     "scripts/regenerate_sprint12_f12_rm32_v8.py": "sha256:57618fecad19c080b6d3069f1de4668b40ea17876dc27d931ea1b78c58f0120d",
-    "scripts/tests/test_sprint12_f12_v8_runtime_diagnostics.py": "sha256:7e1d9814a5a7cdd2c22a9963a176015681ed5d5540bbb3764fd4d50ea0668478",
-    "scripts/tests/test_sprint12_rm32_offline_preparation.py": "sha256:15d045a61c8324c29356a05fc96d51bf018c9a2993940ffbbcca09fdabe78873"
+    "scripts/tests/test_sprint12_f12_v8_runtime_diagnostics.py": "sha256:8a77345657aa69df8428b9a463b963fe580de84464ea1affc109f79b52992ade",
+    "scripts/tests/test_sprint12_rm32_offline_preparation.py": "sha256:69ac34da2b6a2e044360a84561d12045bf5e5d9ebc665e8ad31b4675f2ffa1d6"
   },
   "preparationScope": "S12-RM-32",
   "preregistrationIssued": false,
@@ -84,7 +84,7 @@
   "providerExecutionAuthorized": false,
   "relationBranchOutputs": 96,
   "reportSchema": {
-    "digest": "sha256:b87ce66e6190cbf57237fafe0917d6a9aa16ef4e59153d7f8e3d2f0140a8921f",
+    "digest": "sha256:c5a3bf16ea61dece84ebc5786f506d9c8fca82e74d8c89e048d7d29e3448e7c5",
     "path": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v8.json"
   },
   "retryCount": 0,
@@ -123,7 +123,7 @@
     "evaluation/sprint-12/harness/s12-f-12-runtime-configuration.v1.json": "sha256:a672d1c17a174c5c2697859118e2394b89007c3877a270e82ee5db25b357dd0b",
     "evaluation/sprint-12/harness/s12-f-12-stage-1-entity-envelope.schema.v2.json": "sha256:53144aeddbcdf53d7c23d59d123eb92ead7afd7f4087e3763125b456923f52d4",
     "evaluation/sprint-12/harness/s12-f-12-stage-2-relation-envelope.schema.v2.json": "sha256:0d0dc18829d3fc205d92b3c17ae70e4fb846858f756b3ea788b549587a90f34d",
-    "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v8.json": "sha256:b87ce66e6190cbf57237fafe0917d6a9aa16ef4e59153d7f8e3d2f0140a8921f",
+    "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v8.json": "sha256:c5a3bf16ea61dece84ebc5786f506d9c8fca82e74d8c89e048d7d29e3448e7c5",
     "evaluation/sprint-12/harness/slice-threshold-contract.v1.json": "sha256:84ab739af415e26465f58733a82a43731d671ae17e5b4043982f862a4e456cbc",
     "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json": "sha256:54ab4640d3ef4c2e4879370c3497006638b4f60c932995f7c34b5c06d395cc8c",
     "evaluation/sprint-12/optimization/s12-f-12-m3-prompt-v7-v2-two-step-extraction.v1.txt": "sha256:e2dad79c2483da65f14726dc7964eb2963e3a3f1ea1135559713613c6c418fb2",
@@ -131,7 +131,7 @@
     "scripts/run_sprint12_f12_stage_a_v2.py": "sha256:d211de99191d7f403b4344d876ad143e6b34cb02244b928cf2c6044dc5ed81cd",
     "scripts/run_sprint12_f12_stage_a_v3.py": "sha256:c5140a39e12c60feea4784faa4adcaa9077baced7f6a34018878c70723c97850",
     "scripts/run_sprint12_f12_stage_a_v4.py": "sha256:52c8e054a1e385b58ebbc13fcf16a8ba927ef4b6678b4937ec7d1c36371720b0",
-    "scripts/run_sprint12_f12_stage_a_v8.py": "sha256:f985ea4a355b47dc74ce29b5c0af41666dd0292ab47a7ec3981fd13c6c129182",
+    "scripts/run_sprint12_f12_stage_a_v8.py": "sha256:91caf611f6fc3d999827864ee1a8fa4a0ecda197b6ecae1b5f12a52f5147006c",
     "scripts/s12_f12_rm30_diagnostic_remediation.py": "sha256:ac01698dbf4e12dadeb8a1d7858e7de06bdfd4772b31536df917b4906d2d601b",
     "scripts/sprint12_f12_provider_adapter_v2.py": "sha256:af20e7fd9f717ec319cf8ba321880d3a0b2f6152139873c4bf1eb3e814da5a96",
     "scripts/sprint12_f12_two_step_contracts_v2.py": "sha256:cca6d34b810bc2d77e313159ef6df232011e755716b7d1c313a7411a56221948",

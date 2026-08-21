@@ -12,8 +12,8 @@ the RM-30 finite classifiers for new response failures and persists sanitized
 reason counts under closed v8 report/authorization schemas.
 
 Runtime bindings use exact git-blob SHA-256 bytes. Preflight and tests are
-separate preparation evidence and are not asserted to exist at the execution
-commit.
+separate preparation evidence and are excluded from the runtime digest set;
+their physical presence at the execution commit is not an execution claim.
 
 ## Prepared artifacts
 
