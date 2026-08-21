@@ -244,6 +244,208 @@
       "scenario": "missing"
     }
   ],
+  "v9ClusterCases": [
+    {
+      "kind": "schema",
+      "caseRun": "s12-a-4027#run-1",
+      "arm": "predicted-entities",
+      "stage": "stage1",
+      "reason": "entity_span_out_of_source",
+      "slice": "all-development"
+    },
+    {
+      "kind": "schema",
+      "caseRun": "s12-a-4016#run-1",
+      "arm": "predicted-entities",
+      "stage": "stage1",
+      "reason": "entity_span_out_of_source",
+      "slice": "all-development"
+    },
+    {
+      "kind": "schema",
+      "caseRun": "s12-a-4032#run-1",
+      "arm": "predicted-entities",
+      "stage": "stage1",
+      "reason": "entity_span_out_of_source",
+      "slice": "all-development"
+    },
+    {
+      "kind": "schema",
+      "caseRun": "s12-a-4016#run-2",
+      "arm": "predicted-entities",
+      "stage": "stage1",
+      "reason": "entity_span_out_of_source",
+      "slice": "all-development"
+    },
+    {
+      "kind": "schema",
+      "caseRun": "s12-a-4016#run-3",
+      "arm": "predicted-entities",
+      "stage": "stage1",
+      "reason": "entity_span_out_of_source",
+      "slice": "all-development"
+    },
+    {
+      "kind": "evidence",
+      "caseRun": "s12-a-4007#run-1",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "reason": "evidence_does_not_contain_trigger",
+      "slice": "relation-positive"
+    },
+    {
+      "kind": "evidence",
+      "caseRun": "s12-a-4011#run-1",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "reason": "evidence_does_not_contain_trigger",
+      "slice": "relation-positive"
+    },
+    {
+      "kind": "evidence",
+      "caseRun": "s12-a-4015#run-1",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "reason": "evidence_does_not_contain_trigger",
+      "slice": "relation-positive"
+    },
+    {
+      "kind": "evidence",
+      "caseRun": "s12-a-4019#run-1",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "reason": "evidence_does_not_contain_trigger",
+      "slice": "relation-positive"
+    },
+    {
+      "kind": "evidence",
+      "caseRun": "s12-a-4027#run-1",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "reason": "evidence_does_not_contain_trigger",
+      "slice": "relation-positive"
+    },
+    {
+      "kind": "evidence",
+      "caseRun": "s12-a-4035#run-1",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "reason": "evidence_does_not_contain_trigger",
+      "slice": "relation-positive"
+    },
+    {
+      "kind": "evidence",
+      "caseRun": "s12-a-4007#run-2",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "reason": "evidence_does_not_contain_trigger",
+      "slice": "relation-positive"
+    },
+    {
+      "kind": "evidence",
+      "caseRun": "s12-a-4011#run-2",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "reason": "evidence_does_not_contain_trigger",
+      "slice": "relation-positive"
+    },
+    {
+      "kind": "evidence",
+      "caseRun": "s12-a-4015#run-2",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "reason": "evidence_does_not_contain_trigger",
+      "slice": "relation-positive"
+    },
+    {
+      "kind": "evidence",
+      "caseRun": "s12-a-4019#run-2",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "reason": "evidence_does_not_contain_trigger",
+      "slice": "relation-positive"
+    },
+    {
+      "kind": "evidence",
+      "caseRun": "s12-a-4027#run-2",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "reason": "evidence_does_not_contain_trigger",
+      "slice": "relation-positive"
+    },
+    {
+      "kind": "evidence",
+      "caseRun": "s12-a-4035#run-2",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "reason": "evidence_does_not_contain_trigger",
+      "slice": "relation-positive"
+    },
+    {
+      "kind": "evidence",
+      "caseRun": "s12-a-4043#run-2",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "reason": "evidence_does_not_contain_trigger",
+      "slice": "relation-positive"
+    },
+    {
+      "kind": "evidence",
+      "caseRun": "s12-a-4007#run-3",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "reason": "evidence_does_not_contain_trigger",
+      "slice": "relation-positive"
+    },
+    {
+      "kind": "evidence",
+      "caseRun": "s12-a-4011#run-3",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "reason": "evidence_does_not_contain_endpoints",
+      "slice": "relation-positive"
+    },
+    {
+      "kind": "evidence",
+      "caseRun": "s12-a-4015#run-3",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "reason": "evidence_does_not_contain_endpoints",
+      "slice": "relation-positive"
+    },
+    {
+      "kind": "evidence",
+      "caseRun": "s12-a-4019#run-3",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "reason": "evidence_does_not_contain_endpoints",
+      "slice": "relation-positive"
+    },
+    {
+      "kind": "evidence",
+      "caseRun": "s12-a-4027#run-3",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "reason": "evidence_does_not_contain_endpoints",
+      "slice": "relation-positive"
+    },
+    {
+      "kind": "evidence",
+      "caseRun": "s12-a-4035#run-3",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "reason": "evidence_does_not_contain_endpoints",
+      "slice": "relation-positive"
+    },
+    {
+      "kind": "evidence",
+      "caseRun": "s12-a-4043#run-3",
+      "arm": "gold-entities",
+      "stage": "stage2",
+      "reason": "evidence_does_not_contain_endpoints",
+      "slice": "relation-positive"
+    }
+  ],
   "v9SanitizedClusters": {
     "schemaInvalid": {
       "total": 5,

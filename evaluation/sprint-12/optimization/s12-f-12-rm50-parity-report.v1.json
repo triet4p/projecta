@@ -3,6 +3,14 @@
   "status": "OFFLINE_PARITY_FIXTURES_VERIFIED_PENDING_OWNER_REVIEW",
   "experimentId": "s12-f-12",
   "taskId": "S12-RM-50",
+  "sourceReports": {
+    "v6": {
+      "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+    },
+    "v9": {
+      "digest": "sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e"
+    }
+  },
   "diagnosticContract": {
     "path": "evaluation/sprint-12/optimization/s12-f-12-rm50-offline-diagnostic-report.v1.json",
     "digest": "sha256:62a660e80e37b05e5b8cf7ec471610e5237d9c5cc30d966d44f76c7027c17a16",
