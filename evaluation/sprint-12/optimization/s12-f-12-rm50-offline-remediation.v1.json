@@ -29,7 +29,7 @@
     "evaluation/sprint-12/harness/s12-f-12-rm50-parity-fixtures.schema.v1.json": "sha256:c27c977e9ea9078020ccfcc64dcbc3d88104e94136280585eaaee7b342dc4d81",
     "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-report.v1.json": "sha256:69b422aa195dbf4f3b479ea1deb8f70fe82a80e5e32069c4693b173f6c00cc6d",
     "evaluation/sprint-12/harness/s12-f-12-rm50-parity-report.schema.v1.json": "sha256:93b48c6b760c9701de2c07dcd342a2eea94be57ee607338cb091b2d35e7888e4",
-    "scripts/s12_f12_rm50_parity_fixtures.py": "sha256:6488bc788a5de135751af214de7d74990047e0261ef6da76b3c4bf648a4b657e",
+    "scripts/s12_f12_rm50_parity_fixtures.py": "sha256:0c1a4975f4abb1a97addb3c7275e7e875c60b2041a5f8f1873a0fd2861e94c1b",
     "scripts/tests/test_sprint12_rm50_option_b.py": "sha256:78cf88780baf8bdf6cf5b5979b7f3cd7721b499c1d5f501761cb482cfb58a8e2"
   },
   "optionA": {
