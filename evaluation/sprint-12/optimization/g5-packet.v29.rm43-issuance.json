@@ -1,0 +1,105 @@
+{
+  "packetVersion": "s12.g5.packet.v29.rm43-issuance",
+  "status": "G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING",
+  "packetRole": "authoritative-current-g5-packet",
+  "asOf": "2026-08-22",
+  "supersedesForCurrentState": {
+    "path": "evaluation/sprint-12/optimization/g5-packet.v28.rm42-v9-preparation.json",
+    "digest": "sha256:425fc9eeeafbe9df83b25a81c02c6011b1bd9d5a724c9d3803f38f6ea4810158"
+  },
+  "ownerReview": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm43-owner-review.v1.json",
+    "digest": "sha256:dd8d0210e8bed24b68fea64188fd8bb5cbb45c7a5962f4342b74b8811c9006a9",
+    "status": "OWNER_ISSUANCE_REVIEW_APPROVED_ISSUANCE_ONLY"
+  },
+  "issuanceTransition": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm43-issuance-transition.v1.json",
+    "digest": "sha256:d57f040293ff0be4573d49e97a20cea9c838152b47945ee3fc01af2568637fdb",
+    "status": "CORRECTED_V9_PREREGISTRATION_AND_FREEZE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
+  },
+  "issuedLineage": {
+    "lineageCommit": "6537f6b79f1f5326a9d8362b09af7e52df74819f",
+    "executionCommit": "f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e",
+    "lineageVersion": "v9",
+    "preregistration": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm42-preregistration.v9.json",
+      "digest": "sha256:147503146accb6462548b9a4ce238bee989aacc63884e67a15a217304bfa03c4"
+    },
+    "executionPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm42-execution-package.v9.json",
+      "digest": "sha256:cdaad8ebdce34115c8853067245ed6e5ef4107e271de5ce073a1cbdef20b05d2"
+    },
+    "technicalFreeze": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm42-technical-freeze.v9.json",
+      "digest": "sha256:f595730955848c76d0399706d5f2f32c367a6e88b62a5b3c3986bf2ccc3dfe32"
+    },
+    "runtime": {
+      "digestMode": "git_blob_sha256",
+      "runtimeBlobCount": 19,
+      "runnerPath": "scripts/run_sprint12_f12_stage_a_v9.py",
+      "runnerDigest": "sha256:523106bf38a2da3acdd6cf6be6dcb299e1763174d41d0e1f4438f5c1fefd92dd",
+      "reportSchemaDigest": "sha256:262822030197e36cbabe9d7cb734c794385fa8b6d8d4bf3a63eb5ce82f864bea",
+      "authorizationSchemaDigest": "sha256:47b52efd42849e436f757cdcedc12989d6a64820a0049db5c33e14cb8523a2b9"
+    },
+    "preflight": {
+      "path": "scripts/preflight_sprint12_f12_rm43.py",
+      "result": "F12_RM43_ISSUED_ZERO_CALL",
+      "providerCalls": 0,
+      "retryCount": 0
+    }
+  },
+  "executionEvidencePreserved": {
+    "historicalV6ReportDigest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "rm36ProviderCallsAttempted": 3,
+    "rm36ReportExists": false,
+    "rm36AuthorizationSpent": true,
+    "failedV8ReportExists": false,
+    "newV9ReportExists": false
+  },
+  "currentLineage": {
+    "lineageVersion": "v9",
+    "preregistrationIssued": true,
+    "technicalFreezeIssued": true,
+    "authorizedExecutions": 0,
+    "authorizedProviderCalls": 0,
+    "providerCallsPerformed": 0,
+    "providerResponsesReceived": 0,
+    "relationBranchOutputs": null,
+    "retryCount": 0,
+    "accountingComplete": false,
+    "aggregateCostAvailable": false,
+    "stageAReportExists": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "authorizationSpent": false
+  },
+  "authorizationBoundary": {
+    "preregistrationIssued": true,
+    "technicalFreezeIssued": true,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedTask": "S12-RM-44_PREPARE_EXACT_V9_STAGE_A_AUTHORIZATION"
+  },
+  "nextTasks": [
+    "S12-RM-44_PREPARE_EXACT_V9_STAGE_A_AUTHORIZATION",
+    "S12-RM-45_OWNER_REVIEW_EXACT_V9_STAGE_A_AUTHORIZATION"
+  ],
+  "claimBoundary": {
+    "v9QualityResultAvailable": false,
+    "candidateEvaluationAvailable": false,
+    "accuracyImprovementEstablished": false,
+    "businessQualityEstablished": false,
+    "tenantReadinessEstablished": false,
+    "humanEvidence": false,
+    "providerExecutionAuthorized": false,
+    "retryAuthorized": false,
+    "downstreamAccessAuthorized": false
+  }
+}

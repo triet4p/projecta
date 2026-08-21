@@ -59,7 +59,7 @@ def test_rm25_transition_remains_historical_and_current_state_agrees_after_rm33(
     authorization_path = OPT / "s12-f-12-rm25-authorization.v1.json"
     review_path = OPT / "s12-f-12-rm25-owner-review.v1.json"
 
-    assert current["status"] == "G5_F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY"
+    assert current["status"] == "G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
     assert g5["status"] == "G5_F12_V8_AUTHORIZED_PENDING_EXECUTION"
     assert transition["authorization"]["digest"] == _digest(authorization_path)
     assert transition["ownerReview"]["digest"] == _digest(review_path)
@@ -90,7 +90,7 @@ def test_rm33_issuance_is_digest_bound_and_provider_locked() -> None:
     assert packet["issuanceTransition"]["digest"] == _digest(transition_path)
     assert current["currentEvidence"]["rm33OwnerReview"]["digest"] == _digest(owner_path)
     assert current["currentEvidence"]["rm33IssuanceTransition"]["digest"] == _digest(transition_path)
-    assert current["status"] == "G5_F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY"
+    assert current["status"] == "G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
     assert current["currentEvidence"]["rm35Authorization"]["expectedStatus"] == (
         "APPROVED_FOR_DEVELOPMENT_STAGE_A"
     )
@@ -139,7 +139,7 @@ def test_rm27_owner_decision_transition_and_current_state_bind_closed_lineage() 
         "F12_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_REMEDIATION_PREPARATION_ONLY"
     )
     assert g5["status"] == "G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY"
-    assert current["status"] == "G5_F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY"
+    assert current["status"] == "G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
     assert report["decision"]["status"] == "COMPLETED_REJECTED_HARD_GATE"
     assert report["accounting"]["providerCallsAttempted"] == 144
     assert report["accounting"]["retryCount"] == 0
@@ -178,13 +178,14 @@ def test_rm27_owner_decision_transition_and_current_state_bind_closed_lineage() 
     }
     assert current["experimentState"]["candidateSelection"] == "NO_SELECTION"
     assert current["nextTasks"] == [
-        "S12-RM-40_OFFLINE_RM36_RECONCILIATION_REMEDIATION_AND_REGRESSIONS"
+        "S12-RM-44_PREPARE_EXACT_V9_STAGE_A_AUTHORIZATION",
+        "S12-RM-45_OWNER_REVIEW_EXACT_V9_STAGE_A_AUTHORIZATION",
     ]
 
 
 def test_rm37_closes_v8_and_binds_authoritative_packet() -> None:
     current = _json(EVAL / "current-state.v1.json")
-    packet_path = OPT / "g5-packet.v25.rm37-closure.json"
+    packet_path = OPT / "g5-packet.v29.rm43-issuance.json"
     packet = _json(packet_path)
     decision_path = OPT / "s12-f-12-rm37-owner-decision.v1.json"
     transition_path = OPT / "s12-f-12-rm37-decision-transition.v1.json"
@@ -193,30 +194,82 @@ def test_rm37_closes_v8_and_binds_authoritative_packet() -> None:
 
     assert packet["packetRole"] == "authoritative-current-g5-packet"
     assert packet["status"] == (
-        "G5_F12_V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY"
+        "G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
     )
-    assert current["status"] == "G5_F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY"
-    assert packet["ownerDecision"]["digest"] == _digest(decision_path)
-    assert packet["decisionTransition"]["digest"] == _digest(transition_path)
-    assert decision["verifiedFacts"]["providerCallsAttempted"] == 3
-    assert decision["verifiedFacts"]["providerResponsesReceived"] == 3
-    assert decision["decision"]["offlineFailureDiagnosisPreparationAuthorized"] is True
-    assert decision["decision"]["providerExecutionAuthorized"] is False
-    assert decision["decision"]["rerunAuthorized"] is False
+    assert current["status"] == "G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
+    assert packet["ownerReview"]["digest"] == _digest(
+        OPT / "s12-f-12-rm43-owner-review.v1.json"
+    )
+    assert packet["issuanceTransition"]["digest"] == _digest(
+        OPT / "s12-f-12-rm43-issuance-transition.v1.json"
+    )
+    assert packet["executionEvidencePreserved"]["rm36ProviderCallsAttempted"] == 3
+    assert packet["executionEvidencePreserved"]["rm36ReportExists"] is False
     assert transition["currentDecisionState"]["nextPermittedAction"] == (
         "PREPARE_OFFLINE_RM36_RECONCILIATION_FAILURE_DIAGNOSIS_AND_REMEDIATION"
     )
     assert current["currentEvidence"]["g5Packet"]["path"] == str(
         packet_path.relative_to(ROOT).as_posix()
     )
-    assert current["experimentState"]["currentLineage"]["providerCallsPerformed"] == 3
-    assert current["experimentState"]["currentLineage"]["relationBranchOutputs"] is None
+    assert current["experimentState"]["supersededLineages"]["v8"]["providerCallsPerformed"] == 3
+    assert current["experimentState"]["supersededLineages"]["v8"]["relationBranchOutputs"] is None
     assert current["currentEvidence"]["rm39ApprovalTransition"]["expectedStatus"] == (
         "OFFLINE_RUNTIME_REMEDIATION_APPROVED_IMPLEMENTATION_ONLY"
     )
     assert current["experimentState"]["currentGovernance"][
         "offlineRuntimeRemediationImplementationAuthorized"
     ] is True
+
+
+def test_rm43_issues_v9_only_and_opens_rm44_rm45() -> None:
+    import preflight_sprint12_f12_rm43 as preflight
+
+    current = _json(EVAL / "current-state.v1.json")
+    packet_path = OPT / "g5-packet.v29.rm43-issuance.json"
+    packet = _json(packet_path)
+    owner_path = OPT / "s12-f-12-rm43-owner-review.v1.json"
+    transition_path = OPT / "s12-f-12-rm43-issuance-transition.v1.json"
+    owner = _json(owner_path)
+    transition = _json(transition_path)
+
+    result = preflight.run_preflight()
+    assert result["status"] == "F12_RM43_ISSUED_ZERO_CALL"
+    assert result["runtimeBlobCount"] == 19
+    assert result["providerCalls"] == 0
+    assert result["retryCount"] == 0
+    assert packet["packetRole"] == "authoritative-current-g5-packet"
+    assert packet["status"] == "G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
+    assert packet["ownerReview"]["digest"] == _digest(owner_path)
+    assert packet["issuanceTransition"]["digest"] == _digest(transition_path)
+    assert transition["ownerReview"]["digest"] == _digest(owner_path)
+    assert current["currentEvidence"]["rm43OwnerReview"]["digest"] == _digest(owner_path)
+    assert current["currentEvidence"]["rm43IssuanceTransition"]["digest"] == _digest(transition_path)
+    assert current["currentEvidence"]["g5Packet"]["digest"] == _digest(packet_path)
+    assert current["status"] == packet["status"]
+    assert owner["decision"]["preregistrationIssued"] is True
+    assert owner["decision"]["technicalFreezeIssued"] is True
+    for key in (
+        "providerExecutionAuthorized",
+        "newAuthorizationIssued",
+        "rerunAuthorized",
+        "retryAuthorized",
+        "validationAccessAuthorized",
+        "heldOutAccessAuthorized",
+        "stageBAuthorized",
+        "candidateSelectionAuthorized",
+        "promotionAuthorized",
+    ):
+        assert owner["decision"][key] is False
+        assert transition["currentDecisionState"][key] is False
+        assert packet["authorizationBoundary"][key] is False
+    assert current["experimentState"]["currentLineage"]["lineageVersion"] == "v9"
+    assert current["experimentState"]["currentLineage"]["providerCallsPerformed"] == 0
+    assert current["experimentState"]["currentLineage"]["stageAReportExists"] is False
+    assert current["experimentState"]["supersededLineages"]["v8"]["providerCallsPerformed"] == 3
+    assert current["nextTasks"] == [
+        "S12-RM-44_PREPARE_EXACT_V9_STAGE_A_AUTHORIZATION",
+        "S12-RM-45_OWNER_REVIEW_EXACT_V9_STAGE_A_AUTHORIZATION",
+    ]
 
 
 def test_f12_stage_a_execution_transition_and_report_are_immutable_evidence() -> None:
@@ -243,10 +296,10 @@ def test_current_documents_do_not_repeat_superseded_statuses() -> None:
 
     assert "sprint-12/current-state.md" in sprint_plan
     assert "sprint-12/g5-optimization.v23.rm35-authorization.md" in sprint_plan
-    assert "G5_F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY" in global_plan
+    assert "G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING" in global_plan
     assert "g5-optimization.v25.rm37-closure.md" in sprint_plan
     assert "Handoff K — RM-37 closure to RM-38 offline diagnosis" in handoffs
-    assert "CURRENT_F12_V8_AUTHORIZED_EXECUTION_HANDOFF" in handoffs
+    assert "CURRENT_F12_V9_ISSUED_AUTHORIZATION_HANDOFF" in handoffs
     assert "Handoff A — Runtime-backed" not in handoffs
 
     stale_phrases = (

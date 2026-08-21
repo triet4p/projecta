@@ -21,6 +21,7 @@ OWNER = OPT / "s12-f-12-rm31-owner-review.v1.json"
 TRANSITION = OPT / "s12-f-12-rm31-approval-transition.v1.json"
 CURRENT = EVAL / "current-state.v1.json"
 G5 = OPT / "g5-packet.v23.rm35-authorization.json"
+CURRENT_G5 = OPT / "g5-packet.v29.rm43-issuance.json"
 REPORT = OPT / "s12-f-12-stage-a-report.v6.json"
 
 
@@ -43,8 +44,9 @@ def test_rm31_owner_transition_binds_immutable_inputs() -> None:
 def test_rm31_current_state_and_g5_open_preparation_only() -> None:
     current = _json(CURRENT)
     g5 = _json(G5)
-    assert current["status"] == g5["status"]
-    assert current["currentEvidence"]["g5Packet"]["path"] == G5.relative_to(ROOT).as_posix()
+    current_g5 = _json(CURRENT_G5)
+    assert current["status"] == current_g5["status"]
+    assert current["currentEvidence"]["g5Packet"]["path"] == CURRENT_G5.relative_to(ROOT).as_posix()
     assert current["currentEvidence"]["remediationImplementationOwnerReview"]["path"] == OWNER.relative_to(ROOT).as_posix()
     assert current["currentEvidence"]["remediationImplementationApprovalTransition"]["path"] == TRANSITION.relative_to(ROOT).as_posix()
     historical = current["experimentState"]["historicalLineage"]
@@ -77,6 +79,6 @@ def test_rm31_current_state_and_g5_open_preparation_only() -> None:
     assert governance["preregistrationIssued"] is True
     assert governance["technicalFreezeIssued"] is True
     assert current["nextTasks"] == [
-        "S12-RM-36_EXECUTE_EXACT_V8_STAGE_A_ONCE",
-        "S12-RM-37_OWNER_POST_RUN_DECISION",
+        "S12-RM-44_PREPARE_EXACT_V9_STAGE_A_AUTHORIZATION",
+        "S12-RM-45_OWNER_REVIEW_EXACT_V9_STAGE_A_AUTHORIZATION",
     ]

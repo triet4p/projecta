@@ -61,15 +61,17 @@ def test_rm37_closure_preserves_spent_v7_and_immutable_v6_without_v8_output() ->
     current = _json(ROOT / "evaluation/sprint-12/current-state.v1.json")
     report_v6 = _json(REPORT_V6)
     assert current["status"] == (
-        "G5_F12_V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY"
+        "G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
     )
     assert current["experimentState"]["historicalLineage"]["lineageVersion"] == "v7"
     assert current["experimentState"]["historicalLineage"]["providerCallsPerformed"] == 144
-    assert current["experimentState"]["currentLineage"]["lineageVersion"] == "v8"
-    assert current["experimentState"]["currentLineage"]["providerCallsPerformed"] == 3
-    assert current["experimentState"]["currentLineage"]["providerResponsesReceived"] == 3
+    assert current["experimentState"]["currentLineage"]["lineageVersion"] == "v9"
+    assert current["experimentState"]["currentLineage"]["providerCallsPerformed"] == 0
+    assert current["experimentState"]["currentLineage"]["providerResponsesReceived"] == 0
     assert current["experimentState"]["currentLineage"]["relationBranchOutputs"] is None
     assert current["experimentState"]["currentLineage"]["providerExecutionAuthorized"] is False
+    assert current["experimentState"]["supersededLineages"]["v8"]["providerCallsPerformed"] == 3
+    assert current["experimentState"]["supersededLineages"]["v8"]["providerResponsesReceived"] == 3
     assert _digest(REPORT_V6) == (
         "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
     )

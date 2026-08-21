@@ -1,7 +1,7 @@
 {
   "artifactVersion": "s12.current-state.v1",
   "asOf": "2026-08-22",
-  "status": "G5_F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY",
+  "status": "G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING",
   "sourcePrecedence": [
     "this current-state index",
     "latest explicit owner decision or transition record",
@@ -92,15 +92,25 @@
       "digest": "sha256:aa65539834d58e1a7b72cbeee7825f4209d14afb15fbfa7f6d4e81d98e293114",
       "expectedStatus": "OFFLINE_RUNTIME_REMEDIATION_APPROVED_IMPLEMENTATION_ONLY"
     },
+    "rm43OwnerReview": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm43-owner-review.v1.json",
+      "digest": "sha256:dd8d0210e8bed24b68fea64188fd8bb5cbb45c7a5962f4342b74b8811c9006a9",
+      "expectedStatus": "OWNER_ISSUANCE_REVIEW_APPROVED_ISSUANCE_ONLY"
+    },
+    "rm43IssuanceTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm43-issuance-transition.v1.json",
+      "digest": "sha256:d57f040293ff0be4573d49e97a20cea9c838152b47945ee3fc01af2568637fdb",
+      "expectedStatus": "CORRECTED_V9_PREREGISTRATION_AND_FREEZE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
+    },
     "stageAReport": {
       "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
       "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
       "status": "COMPLETED_REJECTED_HARD_GATE"
     },
     "g5Packet": {
-      "path": "evaluation/sprint-12/optimization/g5-packet.v25.rm37-closure.json",
-      "digest": "sha256:e419ccc113c6f412cc8bd2867f8527b2137de6adc89a80a306ef5a01bcf5749c",
-      "version": "s12.g5.packet.v25.rm37-closure"
+      "path": "evaluation/sprint-12/optimization/g5-packet.v29.rm43-issuance.json",
+      "digest": "sha256:12273faba085c8f811317a6d0d7774432c760c2487c3d36c0795e5a683710f38",
+      "version": "s12.g5.packet.v29.rm43-issuance"
     },
     "humanSummary": "docs/sprint-plans/sprint-12/current-state.md"
   },
@@ -114,7 +124,7 @@
     "G3.1-C": "APPROVED_WITH_SCOPE_LIMITS",
     "G4": "RUNTIME_BACKED_BASELINE_WITH_FAILURES",
     "G4.1": "CONTRACT_ALIGNED_STABILITY_FAILED",
-    "G5": "F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY",
+    "G5": "F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING",
     "G6": "BLOCKED_CUSTODY_OR_CANDIDATE",
     "G7": "NOT_STARTED"
   },
@@ -131,14 +141,34 @@
       "retryCount": 0,
       "totalCostUsd": "0.00592500"
     },
+    "supersededLineages": {
+      "v8": {
+        "lineageVersion": "v8",
+        "preregistrationIssued": true,
+        "technicalFreezeIssued": true,
+        "authorizedExecutions": 1,
+        "authorizedProviderCalls": 144,
+        "providerCallsPerformed": 3,
+        "providerResponsesReceived": 3,
+        "relationBranchOutputs": null,
+        "retryCount": 0,
+        "accountingComplete": false,
+        "aggregateCostAvailable": false,
+        "stageAReportExists": false,
+        "providerExecutionAuthorized": false,
+        "newAuthorizationIssued": false,
+        "authorizationSpent": true,
+        "closure": "V8_EXECUTION_CLOSED_FAILED_BEFORE_REPORT_PERSISTENCE"
+      }
+    },
     "currentLineage": {
-      "lineageVersion": "v8",
+      "lineageVersion": "v9",
       "preregistrationIssued": true,
       "technicalFreezeIssued": true,
-      "authorizedExecutions": 1,
-      "authorizedProviderCalls": 144,
-      "providerCallsPerformed": 3,
-      "providerResponsesReceived": 3,
+      "authorizedExecutions": 0,
+      "authorizedProviderCalls": 0,
+      "providerCallsPerformed": 0,
+      "providerResponsesReceived": 0,
       "relationBranchOutputs": null,
       "retryCount": 0,
       "accountingComplete": false,
@@ -146,13 +176,13 @@
       "stageAReportExists": false,
       "providerExecutionAuthorized": false,
       "newAuthorizationIssued": false,
-      "authorizationSpent": true
+      "authorizationSpent": false
     },
     "currentGovernance": {
       "supersedingLineagePreparationAuthorized": false,
-      "preregistrationPreparationAuthorized": true,
-      "technicalFreezePreparationAuthorized": true,
-      "executionPackagePreparationAuthorized": true,
+      "preregistrationPreparationAuthorized": false,
+      "technicalFreezePreparationAuthorized": false,
+      "executionPackagePreparationAuthorized": false,
       "preregistrationIssued": true,
       "technicalFreezeIssued": true,
       "providerExecutionAuthorized": false,
@@ -184,7 +214,8 @@
       "retryAuthorized": false
   },
   "nextTasks": [
-    "S12-RM-40_OFFLINE_RM36_RECONCILIATION_REMEDIATION_AND_REGRESSIONS"
+    "S12-RM-44_PREPARE_EXACT_V9_STAGE_A_AUTHORIZATION",
+    "S12-RM-45_OWNER_REVIEW_EXACT_V9_STAGE_A_AUTHORIZATION"
   ],
-  "claimBoundary": "The v8 execution closed failed before report persistence; no quality result, candidate selection, tenant readiness or business-quality result may be claimed. Only offline runtime remediation and deterministic regression implementation are newly permitted."
+  "claimBoundary": "RM-43 issued only the corrected v9 preregistration and technical freeze. No v9 provider authorization, report, quality result, candidate selection, tenant readiness or business-quality result exists. The failed v8 execution and immutable v6 report remain historical evidence; RM-44 may prepare exact authorization offline and RM-45 must review it before any provider call."
 }

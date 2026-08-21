@@ -557,7 +557,7 @@ def test_phase_f_plan_stops_at_g5_approval_gate() -> None:
 
 def test_phase_f_plan_inserts_g31_remediation_before_candidate_selection() -> None:
     plan = (ROOT / "docs/sprint-plans/sprint-12.md").read_text(encoding="utf-8")
-    assert "Status: `G5_F12_V8_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING`" in plan
+    assert "Status: `G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING`" in plan
     assert "[x] **S12-R01" in plan
     assert "[x] **S12-R02" in plan
     assert "[x] **S12-R03" in plan
