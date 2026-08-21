@@ -733,10 +733,24 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   Completed with `F12_RM22_READY_ZERO_CALL_V1`; 144 future provider calls and
   96 relation branches are bound, but issuance and provider authorization remain
   withheld. See `artifacts/task_S12-RM-22_summary.md`.
-- [ ] **S12-RM-23 — Owner issuance review for f12 package:** Independently review
-  the preregistration, execution package, technical freeze and zero-call
-  preflight. Issuance does not itself authorize provider execution; any live run
-  requires a later, separate authorization artifact.
+- [x] **S12-RM-23 — Owner issuance review for f12 package:** Review is recorded as
+  `OWNER_ISSUANCE_REVIEW_WITHHELD_EXECUTION_CONTRACT_BLOCKERS`. Schedule, cost,
+  denominators and zero-call custody pass, but the runner is non-executable,
+  Stage 2 lacks candidate-table input, the report schema cannot hold evidence
+  and preflight does not derive denominators from frozen gold.
+- [x] **S12-RM-22A — Remediate f12 execution contracts offline:** Preserve RM-22
+  v1 and publish superseding v2 issuance-draft, execution-package and technical
+  freeze artifacts. The v2 runner executes a guarded 144-call schedule only
+  after exact authorization, Stage 2 receives an immutable candidate table and
+  explicit arm, the report schema stores accounting/metrics/case/slice records,
+  and preflight derives denominators from frozen gold. Mock authorized E2E proves
+  144 calls and one persist; unauthorized preflight remains zero-call. Status:
+  `F12_RM22A_READY_ZERO_CALL_V2`; provider calls remain zero. See
+  `artifacts/task_S12-RM-22A_summary.md`.
+- [ ] **S12-RM-23A — Owner issuance re-review for f12 package:** Independently
+  review the superseding preregistration, execution package, technical freeze,
+  guarded runner, report schema and zero-call preflight. Provider execution
+  still requires a later separate authorization even if issuance passes.
 
 #### Phase F-S — Candidate Selection Resume Path
 
