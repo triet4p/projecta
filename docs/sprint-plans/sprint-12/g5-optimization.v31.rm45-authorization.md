@@ -1,7 +1,7 @@
 # Controlled Optimization Review Packet v31 — RM-45 v9 Authorization
 
-**Status:** `G5_F12_CORRECTED_V9_LINEAGE_AUTHORIZED_ONE_STAGE_A_PENDING_EXECUTION`  
-**Date:** 2026-08-22  
+**Status:** `G5_F12_CORRECTED_V9_LINEAGE_AUTHORIZED_ONE_STAGE_A_PENDING_EXECUTION`
+**Date:** 2026-08-22
 **Scope:** exactly one v9 development Stage A execution; no retry or downstream access
 
 ## Decision boundary

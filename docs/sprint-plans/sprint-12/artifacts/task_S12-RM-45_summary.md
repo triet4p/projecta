@@ -1,6 +1,6 @@
 # S12-RM-45 — Owner Authorization Review for Exact v9 Stage A
 
-**Status:** complete; one bounded authorization issued, execution pending  
+**Status:** complete; one bounded authorization issued, execution pending
 **Date:** 2026-08-22
 
 RM-45 independently reviewed the immutable RM-44 preparation and issued one
