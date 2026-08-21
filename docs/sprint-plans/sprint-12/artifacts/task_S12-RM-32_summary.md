@@ -46,14 +46,14 @@ the next gate, followed by separate exact-commit execution authorization.
 * RM-32 preflight: `F12_RM32_READY_ZERO_CALL`, `providerCalls=0`.
 * RM-32 deterministic preparation tests: `4 passed`.
 * v8 RM-30 integration tests and adversarial schema/runtime regression:
-  `8 passed` with one environment-only `.pytest_cache` permission warning.
+  `9 passed` with one environment-only `.pytest_cache` permission warning.
 * Exact-commit preflight validates 22 runtime git blobs and 4 separate
   preparation-evidence files; provider calls remain zero.
-* Runtime implementation commit: `79447940f90b17dd22bfa2042be4c9ef2f8c54d1`.
+* Runtime implementation commit: `005a35e3be3fbff40fcdae02dfdf79145c76934b`.
   Regenerated package/preregistration/freeze digests are respectively
-  `sha256:111f6399b5f1871a099f685673979ec5850add8489e18a11586bb1c310e4a681`,
-  `sha256:9fafbc5bbbdad62c8166551248b6da8f690b3e8612842e28d19f94f6041a18f7`,
-  and `sha256:011d190dabc0a4af2648ccff271b239262ec4ec019d826ce1d77d11f674b7827`.
+  `sha256:59a42669692c9c4a5460a44643167c17c68d5449a4b9d8de2e35adad0f0f524c`,
+  `sha256:ec2ced60f927e7e8c016b6d2a1d5ed0b5cf52875d3d25c8778626cc75673ccb6`,
+  and `sha256:2fc20e806ce4a046c10719e9360cc69938325e1963562b730d02b8138f8dfdc1`.
 * Immutable report digest remains
   `sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233`.
 * Historical accounting remains 144 calls and 0 retries.

@@ -15,6 +15,12 @@ Runtime bindings use exact git-blob SHA-256 bytes. Preflight and tests are
 separate preparation evidence and are excluded from the runtime digest set;
 their physical presence at the execution commit is not an execution claim.
 
+The v8 report schema now applies a closed sanitized-key policy to every
+ontology-keyed metric map, including casing and separator variants of the
+registered raw-payload/source/evidence aliases. Deterministic mocked regression
+coverage injects each forbidden alias recursively and preserves validation of
+legitimate entity and predicate keys.
+
 ## Prepared artifacts
 
 - `evaluation/sprint-12/optimization/s12-f-12-rm32-preregistration.v8.json`
