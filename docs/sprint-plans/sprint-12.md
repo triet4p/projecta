@@ -966,10 +966,11 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   20 (14 trigger, 6 endpoint). The schema-invalid count improved by one versus
   v6 but invalid evidence increased by three, so no quality-improvement claim
   follows. Only offline error-analysis preparation is open.
-- [ ] **S12-RM-48 — Prepare offline v6/v9 error comparison and remediation
-  options:** Use sanitized immutable reports and deterministic repository code
-  only. Do not implement remediation, prepare a lineage, call a provider or
-  open downstream gates.
+- [x] **S12-RM-48 — Prepare offline v6/v9 error comparison and remediation
+  options:** Produced the sanitized, deterministic comparison and three bounded
+  options. Schema-invalid is 6→5, but invalid evidence is 17→20; no quality or
+  causality claim follows. No remediation, lineage, provider or downstream gate
+  was opened. RM-49 owner review is now required.
 - [ ] **S12-RM-49 — Owner review offline error-analysis preparation:**
   Independently review the RM-48 packet before any remediation implementation,
   lineage preparation or new authorization.

@@ -312,7 +312,7 @@ downstream access are all closed.
 
 ## Handoff S — RM-47 closure to RM-48/RM-49 offline error analysis
 
-**Status:** RM-47 complete; RM-48 and RM-49 pending.
+**Status:** RM-48 complete as preparation; RM-49 pending.
 
 The authoritative current G5 packet is
 `evaluation/sprint-12/optimization/g5-packet.v33.rm47-closure.json`, and the
@@ -320,11 +320,13 @@ authoritative machine state is `evaluation/sprint-12/current-state.v1.json`.
 RM-47's owner decision and transition are immutable and close v9 as
 `COMPLETED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY`.
 Only offline v6/v9 error comparison and remediation-option preparation is
-permitted. RM-48 may inspect sanitized immutable reports and deterministic
-repository code; it may not implement remediation, prepare a new lineage,
-call a provider, rerun, retry, overwrite or open downstream gates. RM-49 must
-independently review the RM-48 preparation. The v6/v9 reports remain immutable,
-v8 remains absent and no quality-improvement claim is established.
+permitted. RM-48 produced
+`evaluation/sprint-12/optimization/s12-f-12-rm48-error-comparison.v1.json`
+and the non-authoritative RM-48 snapshots. It did not implement remediation,
+prepare a new lineage, call a provider, rerun, retry, overwrite or open
+downstream gates. RM-49 must independently review the RM-48 preparation before
+any such work. The v6/v9 reports remain immutable, v8 remains absent and no
+quality-improvement or causality claim is established.
 
 ## External-only work — custody and G6
 

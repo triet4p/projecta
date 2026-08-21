@@ -337,8 +337,10 @@ slice gates. Compared with v6, schema-invalid decreased from 6 to 5 while
 invalid evidence increased from 17 to 20, so no quality-improvement claim is
 established.
 
-Only offline v6/v9 error-analysis preparation is permitted. RM-48 may prepare
-sanitized comparison and remediation options; RM-49 must review that packet.
+Only offline v6/v9 error-analysis preparation is permitted. RM-48 has prepared
+the sanitized comparison and remediation options at
+`evaluation/sprint-12/optimization/s12-f-12-rm48-error-comparison.v1.json`;
+RM-49 must review that packet.
 Remediation implementation, lineage preparation, provider/new authorization,
 rerun, retry, validation, held-out access, Stage B, selection, promotion and
 downstream access remain closed. The v6 and v9 reports remain immutable and
