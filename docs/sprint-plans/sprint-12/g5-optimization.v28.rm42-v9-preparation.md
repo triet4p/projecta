@@ -9,7 +9,7 @@ package and technical-freeze artifacts.
 
 ## Runtime custody
 
-The runtime commit is `2464022dc2cc7fb7c13565accaa648c242e0ec16`. Runtime inputs
+The runtime commit is `f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e`. Runtime inputs
 are bound with Git-blob SHA-256 digests at that exact commit. Preparation
 evidence is held in a separate digest namespace and is excluded from
 `runtimeBoundDigests`, avoiding working-tree line-ending confusion and
@@ -25,6 +25,12 @@ The v9 arm record calls RM-40 over the same exact greedy semantic-pair domain
 as `score_relations`, projects entity spans to `(start,end)`, reconciles finite
 evidence reasons with `unsupported + missing`, rejects mismatches, and emits no
 raw source/provider/validation data.
+
+The runner defaults load the actual RM-42 v9 package, preregistration and
+technical-freeze artifacts. A default-path regression exercises the real
+working-tree lineage with exact-commit custody: unauthorized capture is zero,
+the authorized mock path performs 144 captures, and retry/overwrite remain
+closed.
 
 ## Preparation artifacts
 

@@ -3,14 +3,14 @@
   "status": "TECHNICAL_FREEZE_PREPARED_PENDING_RM43_OWNER_ISSUANCE_REVIEW",
   "experimentId": "s12-f-12",
   "lineageVersion": "v9",
-  "executionCommitSha": "2464022dc2cc7fb7c13565accaa648c242e0ec16",
+  "executionCommitSha": "f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e",
   "executionPackage": "evaluation/sprint-12/optimization/s12-f-12-rm42-execution-package.v9.json",
-  "executionPackageDigest": "sha256:45ace79f692799f1750f23f632d0bd43237e6f5b0d9a2fc791e3d4504f3c2a21",
+  "executionPackageDigest": "sha256:cdaad8ebdce34115c8853067245ed6e5ef4107e271de5ce073a1cbdef20b05d2",
   "preregistration": "evaluation/sprint-12/optimization/s12-f-12-rm42-preregistration.v9.json",
-  "preregistrationDigest": "sha256:0e3f9363d36b28bdeb77dde832a310b3141f3ec0c11d3667685b631723ddbdb3",
+  "preregistrationDigest": "sha256:147503146accb6462548b9a4ce238bee989aacc63884e67a15a217304bfa03c4",
   "runner": {
     "path": "scripts/run_sprint12_f12_stage_a_v9.py",
-    "gitBlobDigest": "sha256:c99afc305221432ec1893071a6b2372f04699c9ce73d161513fec21e6a171dfd",
+    "gitBlobDigest": "sha256:523106bf38a2da3acdd6cf6be6dcb299e1763174d41d0e1f4438f5c1fefd92dd",
     "guarded": true,
     "providerExecutionAuthorized": false
   },

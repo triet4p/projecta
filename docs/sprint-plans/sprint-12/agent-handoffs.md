@@ -216,9 +216,10 @@ promotion is authorized.
 **Status:** RM-42 complete; RM-43 pending.
 
 RM-42 integrated RM-40 into the guarded v9 runtime at exact commit
-`2464022dc2cc7fb7c13565accaa648c242e0ec16`. The closed v9 report and
+`f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e`. The closed v9 report and
 authorization schemas, deterministic mocked E2E, and exact Git-blob runtime
-binding are present. The unissued preregistration, execution package and
+binding are present. The runner defaults load the actual RM-42 v9 package,
+preregistration and freeze; the unissued preregistration, execution package and
 technical freeze are preparation-only artifacts; the zero-call preflight passes
 with 144/96 prospective custody, zero calls, zero retries and absent v9 output.
 

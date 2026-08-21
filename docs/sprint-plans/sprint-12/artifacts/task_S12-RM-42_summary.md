@@ -12,16 +12,19 @@ provider execution.
 
 The runtime commit is:
 
-- `2464022dc2cc7fb7c13565accaa648c242e0ec16`
+- `f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e`
 
 It contains the guarded v9 runner, closed report and authorization schemas, and
 deterministic mocked E2E coverage. The runner calls `rm40.diagnose_arm` from
 the arm-record path; RM-40 remains a diagnostic dependency, not a standalone
-execution lineage.
+execution lineage. Its default package/preregistration/freeze bindings point
+to the actual RM-42 v9 artifacts, and the default-path regression validates
+those artifacts without lineage monkeypatching.
 
-Focused runtime and reconciliation tests pass (`29 passed` across v9, RM-40
-and RM-38 suites). The mocked E2E reaches the closed v9 report schema and
-persists once with exactly 144 mock captures, zero retries and no provider.
+The focused v9, RM-40 and RM-42 safe suite passes (`23 passed`). The mocked E2E
+reaches the closed v9 report schema and persists once with exactly 144 mock
+captures, zero retries and no provider; the default-path regression also proves
+unauthorized capture remains at zero.
 
 ## Custody artifacts
 

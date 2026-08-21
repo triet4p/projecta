@@ -12,19 +12,25 @@
   },
   "rm42Preparation": {
     "executionPackagePath": "evaluation/sprint-12/optimization/s12-f-12-rm42-execution-package.v9.json",
-    "executionPackageDigest": "sha256:45ace79f692799f1750f23f632d0bd43237e6f5b0d9a2fc791e3d4504f3c2a21",
+    "executionPackageDigest": "sha256:cdaad8ebdce34115c8853067245ed6e5ef4107e271de5ce073a1cbdef20b05d2",
     "preregistrationPath": "evaluation/sprint-12/optimization/s12-f-12-rm42-preregistration.v9.json",
-    "preregistrationDigest": "sha256:0e3f9363d36b28bdeb77dde832a310b3141f3ec0c11d3667685b631723ddbdb3",
+    "preregistrationDigest": "sha256:147503146accb6462548b9a4ce238bee989aacc63884e67a15a217304bfa03c4",
     "technicalFreezePath": "evaluation/sprint-12/optimization/s12-f-12-rm42-technical-freeze.v9.json",
-    "technicalFreezeDigest": "sha256:31966809f6248ff4ccd2cbb6d466db8a466de0b5d11146f2e623561934d15dac",
-    "runtimeCommit": "2464022dc2cc7fb7c13565accaa648c242e0ec16",
+    "technicalFreezeDigest": "sha256:f595730955848c76d0399706d5f2f32c367a6e88b62a5b3c3986bf2ccc3dfe32",
+    "runtimeCommit": "f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e",
     "runnerPath": "scripts/run_sprint12_f12_stage_a_v9.py",
     "reportSchemaPath": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v9.json",
     "authorizationSchemaPath": "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v9.json",
     "preflightPath": "scripts/preflight_sprint12_f12_rm42.py",
     "preflightDigest": "sha256:4351400831d8ae58ee3406c3127169bd0766f7cbd3ba9746ecde753fd38af8cd",
     "preflightResult": "F12_RM42_READY_ZERO_CALL",
-    "safePreparationTests": 4
+    "safePreparationTests": 4,
+    "runnerDigest": "sha256:523106bf38a2da3acdd6cf6be6dcb299e1763174d41d0e1f4438f5c1fefd92dd",
+    "runtimeRegression": {
+      "testPath": "scripts/tests/test_sprint12_f12_v9_runtime.py",
+      "testDigest": "sha256:1f5547f4f52889bf549223317dedd6d693cff9fd944ffa2011de703ea93ca74b",
+      "result": "default-path unauthorized=0; authorized mock=144; retry=0; output persisted once then removed"
+    }
   },
   "executionEvidencePreserved": {
     "historicalV6ReportDigest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",

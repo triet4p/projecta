@@ -4,12 +4,12 @@
   "experimentId": "s12-f-12",
   "taskId": "S12-RM-42",
   "lineageVersion": "v9",
-  "executionCommitSha": "2464022dc2cc7fb7c13565accaa648c242e0ec16",
+  "executionCommitSha": "f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e",
   "implementationBoundary": "new guarded v9 runtime lineage only; v8, RM-36 evidence, spent authorization and historical v6 remain immutable",
   "executionRunnerImplemented": true,
   "executionRunner": {
     "path": "scripts/run_sprint12_f12_stage_a_v9.py",
-    "digest": "sha256:c99afc305221432ec1893071a6b2372f04699c9ce73d161513fec21e6a171dfd",
+    "digest": "sha256:523106bf38a2da3acdd6cf6be6dcb299e1763174d41d0e1f4438f5c1fefd92dd",
     "guarded": true,
     "liveIntegrationOpened": true,
     "providerExecutionAuthorized": false
@@ -84,7 +84,7 @@
     "scripts/run_sprint12_f12_stage_a_v2.py": "sha256:d211de99191d7f403b4344d876ad143e6b34cb02244b928cf2c6044dc5ed81cd",
     "scripts/run_sprint12_f12_stage_a_v3.py": "sha256:c5140a39e12c60feea4784faa4adcaa9077baced7f6a34018878c70723c97850",
     "scripts/run_sprint12_f12_stage_a_v4.py": "sha256:52c8e054a1e385b58ebbc13fcf16a8ba927ef4b6678b4937ec7d1c36371720b0",
-    "scripts/run_sprint12_f12_stage_a_v9.py": "sha256:c99afc305221432ec1893071a6b2372f04699c9ce73d161513fec21e6a171dfd",
+    "scripts/run_sprint12_f12_stage_a_v9.py": "sha256:523106bf38a2da3acdd6cf6be6dcb299e1763174d41d0e1f4438f5c1fefd92dd",
     "scripts/s12_f12_rm30_diagnostic_remediation.py": "sha256:ac01698dbf4e12dadeb8a1d7858e7de06bdfd4772b31536df917b4906d2d601b",
     "scripts/s12_f12_rm40_offline_runtime.py": "sha256:1e20a2def263ca99c872d1df1413dcf907ba575f8a70ccda53408f58c0a91deb",
     "scripts/sprint12_f12_two_step_contracts_v2.py": "sha256:cca6d34b810bc2d77e313159ef6df232011e755716b7d1c313a7411a56221948",
@@ -102,7 +102,7 @@
     "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
     "scripts/preflight_sprint12_f12_rm42.py": "sha256:4351400831d8ae58ee3406c3127169bd0766f7cbd3ba9746ecde753fd38af8cd",
     "scripts/tests/test_sprint12_rm42_preparation.py": "sha256:00f689a03a6d1bddeb57cc90b5f6a39dae1fd15e2508cd1cd5fea795f76b034b",
-    "scripts/tests/test_sprint12_f12_v9_runtime.py": "sha256:f1d4ecef89b672b02f4149cb4795f092126f90773808c936fe2f83b593894f0e"
+    "scripts/tests/test_sprint12_f12_v9_runtime.py": "sha256:1f5547f4f52889bf549223317dedd6d693cff9fd944ffa2011de703ea93ca74b"
   },
   "governance": {
     "supersedingLineagePreparationAuthorized": true,
