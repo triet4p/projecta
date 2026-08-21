@@ -1,0 +1,45 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm29-approval-transition.v1",
+  "status": "OFFLINE_REMEDIATION_APPROVED_IMPLEMENTATION_ONLY",
+  "experimentId": "s12-f-12",
+  "transitionDate": "2026-08-22",
+  "transitionAuthority": "project-owner-delegated-codex-reviewer",
+  "precedenceRule": "This RM-29 transition approves offline implementation against the RM-28 package without promoting its non-authoritative snapshots or opening an execution lineage.",
+  "ownerReview": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm29-owner-review.v1.json",
+    "digest": "sha256:f9194de4daf3930e209a507fbcfb2f7fe9caea2cf2b767b153265580def3e00e",
+    "status": "OWNER_REVIEW_APPROVED_OFFLINE_REMEDIATION_IMPLEMENTATION_ONLY"
+  },
+  "approvedPreparation": {
+    "remediationPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm28-offline-remediation.v1.json",
+      "digest": "sha256:268c4e1daefeba9f486732f039cf2113e132f712cc4358012d704a01cbbae45a"
+    },
+    "diagnosticContract": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm28-diagnostic-contract.v1.json",
+      "digest": "sha256:0b7b90bbe3ddc94ef66769e04d23c851e8ac491372518445edad62b494d20582"
+    }
+  },
+  "fromState": "G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY",
+  "currentDecisionState": {
+    "rm28PackageApproved": true,
+    "offlineDiagnosticImplementationAuthorized": true,
+    "offlineSchemaEvidenceRemediationAuthorized": true,
+    "supersedingLineagePreparationAuthorized": false,
+    "providerExecutionAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "newAuthorizationIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "IMPLEMENT_OFFLINE_F12_DIAGNOSTIC_REMEDIATION_AND_MOCK_TESTS"
+  },
+  "constraints": [
+    "Only offline implementation and deterministic mock tests are authorized.",
+    "The immutable report and all historical execution artifacts remain unchanged.",
+    "A separate owner review is required before any superseding lineage preparation or provider execution."
+  ]
+}

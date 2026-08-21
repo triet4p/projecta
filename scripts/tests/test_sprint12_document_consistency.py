@@ -54,12 +54,12 @@ def test_rm23f_transition_preserves_history_and_sets_current_state() -> None:
 
 def test_rm25_transition_remains_historical_and_current_state_agrees_after_rm27() -> None:
     current = _json(EVAL / "current-state.v1.json")
-    g5 = _json(OPT / "g5-packet.v15.json")
+    g5 = _json(OPT / "g5-packet.v17.json")
     transition = _json(OPT / "s12-f-12-rm25-authorization-transition.v1.json")
     authorization_path = OPT / "s12-f-12-rm25-authorization.v1.json"
     review_path = OPT / "s12-f-12-rm25-owner-review.v1.json"
 
-    expected = "G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY"
+    expected = "G5_F12_OFFLINE_REMEDIATION_APPROVED_IMPLEMENTATION_ONLY"
     assert current["status"] == expected
     assert g5["status"] == expected
     assert transition["authorization"]["digest"] == _digest(authorization_path)
@@ -103,10 +103,8 @@ def test_rm27_owner_decision_transition_and_current_state_bind_closed_lineage() 
     assert current["currentEvidence"]["decisionTransition"]["expectedStatus"] == (
         "F12_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_REMEDIATION_PREPARATION_ONLY"
     )
-    assert current["status"] == g5["status"]
-    assert current["status"] == (
-        "G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY"
-    )
+    assert g5["status"] == "G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY"
+    assert current["status"] == "G5_F12_OFFLINE_REMEDIATION_APPROVED_IMPLEMENTATION_ONLY"
     assert report["decision"]["status"] == "COMPLETED_REJECTED_HARD_GATE"
     assert report["accounting"]["providerCallsAttempted"] == 144
     assert report["accounting"]["retryCount"] == 0
@@ -145,7 +143,7 @@ def test_rm27_owner_decision_transition_and_current_state_bind_closed_lineage() 
     }
     assert current["experimentState"]["candidateSelection"] == "NO_SELECTION"
     assert current["nextTasks"] == [
-        "PREPARE_OFFLINE_F12_SCHEMA_AND_EVIDENCE_REMEDIATION"
+        "IMPLEMENT_OFFLINE_F12_DIAGNOSTIC_REMEDIATION_AND_MOCK_TESTS"
     ]
 
 
@@ -172,9 +170,9 @@ def test_current_documents_do_not_repeat_superseded_statuses() -> None:
     handoffs = (DOCS / "agent-handoffs.md").read_text(encoding="utf-8")
 
     assert "sprint-12/current-state.md" in sprint_plan
-    assert "sprint-12/g5-optimization.v15.md" in sprint_plan
-    assert "G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY" in global_plan
-    assert "CURRENT_OFFLINE_F12_REMEDIATION_PREPARATION_HANDOFF" in handoffs
+    assert "sprint-12/g5-optimization.v17.md" in sprint_plan
+    assert "G5_F12_OFFLINE_REMEDIATION_APPROVED_IMPLEMENTATION_ONLY" in global_plan
+    assert "CURRENT_OFFLINE_F12_REMEDIATION_IMPLEMENTATION_HANDOFF" in handoffs
     assert "Handoff A — Runtime-backed" not in handoffs
 
     stale_phrases = (
@@ -200,4 +198,4 @@ def test_historical_gate_packets_are_labeled_as_snapshots() -> None:
     for name in historical:
         text = (DOCS / name).read_text(encoding="utf-8")
         assert "Historical gate snapshot" in text
-        assert "current-state.md" in text or "g5-optimization.v15.md" in text
+        assert "current-state.md" in text or "g5-optimization.v17.md" in text

@@ -1,0 +1,56 @@
+{
+  "packetVersion": "s12.g5.packet.v17",
+  "status": "G5_F12_OFFLINE_REMEDIATION_APPROVED_IMPLEMENTATION_ONLY",
+  "asOf": "2026-08-22",
+  "supersedesForCurrentState": {
+    "path": "evaluation/sprint-12/optimization/g5-packet.v15.json",
+    "digest": "sha256:be80d868f8b950949a4d38fdb504926248eb49380d40819ee73f1fa2bef24b03"
+  },
+  "ownerDecision": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm29-owner-review.v1.json",
+    "digest": "sha256:f9194de4daf3930e209a507fbcfb2f7fe9caea2cf2b767b153265580def3e00e",
+    "status": "OWNER_REVIEW_APPROVED_OFFLINE_REMEDIATION_IMPLEMENTATION_ONLY"
+  },
+  "approvalTransition": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm29-approval-transition.v1.json",
+    "digest": "sha256:b4d2bd2a251285fc9f47a0d17cf5546b96ec0c85abffcf38b2acd46ba0ce6b36",
+    "status": "OFFLINE_REMEDIATION_APPROVED_IMPLEMENTATION_ONLY"
+  },
+  "approvedRemediation": {
+    "package": "evaluation/sprint-12/optimization/s12-f-12-rm28-offline-remediation.v1.json",
+    "diagnosticContract": "evaluation/sprint-12/optimization/s12-f-12-rm28-diagnostic-contract.v1.json",
+    "implementationScope": [
+      "finite sanitized schema failure reason codes",
+      "finite evidence rejection reason codes and reconciliation",
+      "typed span identity and endpoint denominator preservation",
+      "deterministic mock regressions"
+    ],
+    "unknownsPreserved": true
+  },
+  "selection": {
+    "status": "NO_SELECTION",
+    "candidateAvailable": false,
+    "candidateFreezeAuthorized": false
+  },
+  "authorizationBoundary": {
+    "nextPermittedTask": "IMPLEMENT_OFFLINE_F12_DIAGNOSTIC_REMEDIATION_AND_MOCK_TESTS",
+    "offlineDiagnosticImplementationAuthorized": true,
+    "offlineSchemaEvidenceRemediationAuthorized": true,
+    "supersedingLineagePreparationAuthorized": false,
+    "providerExecutionAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "newAuthorizationIssued": false,
+    "validationAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "claimBoundary": {
+    "accuracyImprovementEstablished": false,
+    "businessQualityEstablished": false,
+    "tenantReadinessEstablished": false,
+    "humanEvidence": false
+  }
+}

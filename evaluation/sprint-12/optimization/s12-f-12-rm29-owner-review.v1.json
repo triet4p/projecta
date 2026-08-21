@@ -1,0 +1,81 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm29-owner-review.v1",
+  "status": "OWNER_REVIEW_APPROVED_OFFLINE_REMEDIATION_IMPLEMENTATION_ONLY",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-29",
+  "decisionType": "OWNER_REVIEW_OF_RM28_OFFLINE_REMEDIATION",
+  "decisionDate": "2026-08-22",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedEvidence": {
+    "immutableReport": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+      "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+    },
+    "diagnosticContract": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm28-diagnostic-contract.v1.json",
+      "digest": "sha256:0b7b90bbe3ddc94ef66769e04d23c851e8ac491372518445edad62b494d20582",
+      "status": "OFFLINE_CONTRACT_PREPARED_PENDING_OWNER_REVIEW"
+    },
+    "remediationPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm28-offline-remediation.v1.json",
+      "digest": "sha256:268c4e1daefeba9f486732f039cf2113e132f712cc4358012d704a01cbbae45a",
+      "status": "OFFLINE_REMEDIATION_PREPARED_PENDING_OWNER_REVIEW"
+    },
+    "diagnosticImplementation": {
+      "path": "scripts/s12_f12_rm28_offline_diagnostics.py",
+      "digest": "sha256:8f878e1830748c6d79c7c92cb0b35e668973ed42be546418577c40187e506b63"
+    },
+    "nonAuthoritativeNextState": {
+      "path": "evaluation/sprint-12/current-state-next.v1.json",
+      "digest": "sha256:b7f4d8892938b10b3732cb8dfe1aeeea68c80b45e3e9023ffcc32e32c5a47dac"
+    },
+    "nonAuthoritativeG5Preparation": {
+      "path": "evaluation/sprint-12/optimization/g5-packet.v16.offline-remediation-preparation.json",
+      "digest": "sha256:66296216eca5cc08dd030efa7f807d8b562179dccc8aa78ce6ea6538619a4843"
+    }
+  },
+  "verifiedEvidence": {
+    "schemaInvalidTotal": 6,
+    "schemaInvalidPredictedEntitiesStage1": 5,
+    "schemaInvalidGoldEntitiesStage2": 1,
+    "invalidEvidenceTotal": 17,
+    "invalidEvidenceClassification": "unsupported",
+    "invalidEvidenceSemanticDisposition": "exactMatch",
+    "invalidEvidenceEndpointsResolved": 34,
+    "goldRelationsControlFailures": 0,
+    "rawProviderPayloadAvailable": false,
+    "heldOutInspected": false,
+    "safeTargetedTests": "35 passed",
+    "reportDigestUnchanged": true
+  },
+  "ownerAssessment": {
+    "finiteDiagnosticReasonCodesApproved": true,
+    "unknownsPreservedWithoutGuessing": true,
+    "identityAndEvidenceBoundariesSeparated": true,
+    "goldRelationsControlInterpretedAsControlOnly": true,
+    "qualityImprovementEstablished": false,
+    "blockingFindings": []
+  },
+  "decision": {
+    "rm28PackageApproved": true,
+    "offlineDiagnosticImplementationAuthorized": true,
+    "offlineSchemaEvidenceRemediationAuthorized": true,
+    "supersedingLineagePreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "IMPLEMENT_OFFLINE_F12_DIAGNOSTIC_REMEDIATION_AND_MOCK_TESTS"
+  },
+  "constraints": [
+    "Implementation must version new diagnostic/report contracts and preserve every historical artifact and digest.",
+    "Unknown malformed fields and sole provider or prompt causality must remain unknown until a future governed capture can record sanitized reason codes.",
+    "No provider call, preregistration, freeze, authorization, validation, held-out access, Stage B, selection or promotion is authorized.",
+    "A separate owner review is required before any superseding execution lineage is prepared or issued."
+  ]
+}
