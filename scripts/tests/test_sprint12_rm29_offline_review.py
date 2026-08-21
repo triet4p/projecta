@@ -97,7 +97,7 @@ def test_rm29_transition_and_g5_v17_have_exact_pointers_and_locks() -> None:
     assert locks["offlineSchemaEvidenceRemediationAuthorized"] is True
 
 
-def test_rm29_current_state_and_plan_stop_at_rm30() -> None:
+def test_rm29_current_state_and_plan_advances_to_rm31_after_rm30() -> None:
     current = _json(CURRENT)
     g5 = _json(G5)
     plan = (ROOT / "docs/sprint-plans/sprint-12.md").read_text(encoding="utf-8")
@@ -111,5 +111,6 @@ def test_rm29_current_state_and_plan_stop_at_rm30() -> None:
         "IMPLEMENT_OFFLINE_F12_DIAGNOSTIC_REMEDIATION_AND_MOCK_TESTS"
     ]
     assert "[x] **S12-RM-29" in plan
-    assert "[ ] **S12-RM-30" in plan
+    assert "[x] **S12-RM-30" in plan
+    assert "[ ] **S12-RM-31" in plan
     assert "sprint-12/g5-optimization.v17.md" in plan
