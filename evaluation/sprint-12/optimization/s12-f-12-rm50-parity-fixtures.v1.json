@@ -290,7 +290,7 @@
       "caseRun": "s12-a-4007#run-1",
       "arm": "gold-entities",
       "stage": "stage2",
-      "reason": "evidence_does_not_contain_trigger",
+      "reason": "evidence_does_not_contain_endpoints",
       "slice": "relation-positive"
     },
     {
@@ -306,7 +306,7 @@
       "caseRun": "s12-a-4015#run-1",
       "arm": "gold-entities",
       "stage": "stage2",
-      "reason": "evidence_does_not_contain_trigger",
+      "reason": "evidence_does_not_contain_endpoints",
       "slice": "relation-positive"
     },
     {
@@ -338,7 +338,7 @@
       "caseRun": "s12-a-4007#run-2",
       "arm": "gold-entities",
       "stage": "stage2",
-      "reason": "evidence_does_not_contain_trigger",
+      "reason": "evidence_does_not_contain_endpoints",
       "slice": "relation-positive"
     },
     {
@@ -354,7 +354,7 @@
       "caseRun": "s12-a-4015#run-2",
       "arm": "gold-entities",
       "stage": "stage2",
-      "reason": "evidence_does_not_contain_trigger",
+      "reason": "evidence_does_not_contain_endpoints",
       "slice": "relation-positive"
     },
     {
@@ -394,7 +394,7 @@
       "caseRun": "s12-a-4007#run-3",
       "arm": "gold-entities",
       "stage": "stage2",
-      "reason": "evidence_does_not_contain_trigger",
+      "reason": "evidence_does_not_contain_endpoints",
       "slice": "relation-positive"
     },
     {
@@ -402,7 +402,7 @@
       "caseRun": "s12-a-4011#run-3",
       "arm": "gold-entities",
       "stage": "stage2",
-      "reason": "evidence_does_not_contain_endpoints",
+      "reason": "evidence_does_not_contain_trigger",
       "slice": "relation-positive"
     },
     {
@@ -418,7 +418,7 @@
       "caseRun": "s12-a-4019#run-3",
       "arm": "gold-entities",
       "stage": "stage2",
-      "reason": "evidence_does_not_contain_endpoints",
+      "reason": "evidence_does_not_contain_trigger",
       "slice": "relation-positive"
     },
     {
@@ -426,7 +426,7 @@
       "caseRun": "s12-a-4027#run-3",
       "arm": "gold-entities",
       "stage": "stage2",
-      "reason": "evidence_does_not_contain_endpoints",
+      "reason": "evidence_does_not_contain_trigger",
       "slice": "relation-positive"
     },
     {
@@ -434,7 +434,7 @@
       "caseRun": "s12-a-4035#run-3",
       "arm": "gold-entities",
       "stage": "stage2",
-      "reason": "evidence_does_not_contain_endpoints",
+      "reason": "evidence_does_not_contain_trigger",
       "slice": "relation-positive"
     },
     {
@@ -442,7 +442,7 @@
       "caseRun": "s12-a-4043#run-3",
       "arm": "gold-entities",
       "stage": "stage2",
-      "reason": "evidence_does_not_contain_endpoints",
+      "reason": "evidence_does_not_contain_trigger",
       "slice": "relation-positive"
     }
   ],
@@ -463,8 +463,8 @@
       "total": 20,
       "arm": "gold-entities",
       "reasonCounts": {
-        "evidence_does_not_contain_trigger": 14,
-        "evidence_does_not_contain_endpoints": 6
+        "evidence_does_not_contain_endpoints": 6,
+        "evidence_does_not_contain_trigger": 14
       },
       "caseRuns": [
         "s12-a-4007#run-1",

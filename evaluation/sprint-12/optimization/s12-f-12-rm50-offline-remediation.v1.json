@@ -23,14 +23,14 @@
     "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json": "sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e",
     "evaluation/sprint-12/optimization/s12-f-12-rm50-offline-diagnostic-report.v1.json": "sha256:62a660e80e37b05e5b8cf7ec471610e5237d9c5cc30d966d44f76c7027c17a16",
     "evaluation/sprint-12/harness/s12-f-12-rm50-offline-diagnostic-report.schema.v1.json": "sha256:c8a47c266975aec04e467c812513d115f0d49e571fcfe657ea8039944fb93221",
-    "scripts/s12_f12_rm50_offline_diagnostics.py": "sha256:c225b21886496d6d330b6f93de5d473d61f6b20c0884214e5e1750d855cc3394",
-    "scripts/tests/test_sprint12_rm50_option_a.py": "sha256:72873ded2f015fefb8c5868ff7811004d5765b94ce2b62f942cfc51ea41d780a",
-    "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-fixtures.v1.json": "sha256:7618d2bdbb201c47077f7153d609abb8cb3b069d9d9bf4a307f550d7464403a6",
+    "scripts/s12_f12_rm50_offline_diagnostics.py": "sha256:48c9bab92c223f195b0478a02aa87868ee3ca63858dc492f0674462fecf65eb6",
+    "scripts/tests/test_sprint12_rm50_option_a.py": "sha256:32d6216f84d866d4e7f37c27d8e93c11c67dd371b36faa2034b3f87d2a3b99ba",
+    "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-fixtures.v1.json": "sha256:988cb21c0b8d18845fdf0f0400ad5aadc3d90d782309bf2358b431ea44fe3095",
     "evaluation/sprint-12/harness/s12-f-12-rm50-parity-fixtures.schema.v1.json": "sha256:c27c977e9ea9078020ccfcc64dcbc3d88104e94136280585eaaee7b342dc4d81",
     "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-report.v1.json": "sha256:69b422aa195dbf4f3b479ea1deb8f70fe82a80e5e32069c4693b173f6c00cc6d",
     "evaluation/sprint-12/harness/s12-f-12-rm50-parity-report.schema.v1.json": "sha256:93b48c6b760c9701de2c07dcd342a2eea94be57ee607338cb091b2d35e7888e4",
-    "scripts/s12_f12_rm50_parity_fixtures.py": "sha256:0c1a4975f4abb1a97addb3c7275e7e875c60b2041a5f8f1873a0fd2861e94c1b",
-    "scripts/tests/test_sprint12_rm50_option_b.py": "sha256:78cf88780baf8bdf6cf5b5979b7f3cd7721b499c1d5f501761cb482cfb58a8e2"
+    "scripts/s12_f12_rm50_parity_fixtures.py": "sha256:5ed1870db0a31651203d1b77db6d11067c9bf50d55e5f083d3134dc67e41c337",
+    "scripts/tests/test_sprint12_rm50_option_b.py": "sha256:c1380a9a7bc046eb8e5a964fec53015cbf91d8d94ac90ce1c9003e72ed92e6cd"
   },
   "optionA": {
     "reportPath": "evaluation/sprint-12/optimization/s12-f-12-rm50-offline-diagnostic-report.v1.json",
@@ -39,7 +39,7 @@
     "unknownFailClosed": true,
     "recursiveDynamicKeyRawDataExclusion": true,
     "j1GoldEntitiesSupportTransition": "not-applicable_to_zero",
-    "safeTestsPassed": 10
+    "safeTestsPassed": 19
   },
   "optionB": {
     "fixturePath": "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-fixtures.v1.json",
@@ -55,7 +55,7 @@
     "goldRelationsControlClean": true,
     "providerCalls": 0,
     "rawReconstruction": false,
-    "safeTestsPassed": 11
+    "safeTestsPassed": 43
   },
   "historicalCustody": {
     "v6ReportImmutable": true,
