@@ -312,10 +312,10 @@ downstream access are all closed.
 
 ## Handoff S — RM-47 closure to RM-48/RM-49 offline error analysis
 
-**Status:** RM-50 complete offline; RM-51 pending owner review.
+**Status:** RM-51 Option C stop complete; RM-52 prepared offline; RM-53 pending owner review.
 
 The authoritative current G5 packet is
-`evaluation/sprint-12/optimization/g5-packet.v33.rm47-closure.json`, and the
+`evaluation/sprint-12/optimization/g5-packet.v36.rm51-closure-only.json`, and the
 authoritative machine state is `evaluation/sprint-12/current-state.v1.json`.
 RM-47's owner decision and transition are immutable and close v9 as
 `COMPLETED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY`.
@@ -327,9 +327,16 @@ implemented the closed diagnostic contract and deterministic parity fixtures in
 `evaluation/sprint-12/optimization/s12-f-12-rm50-offline-remediation.v1.json`.
 Option A stop criteria passed before Option B began. RM-50 did not modify the
 live runtime, prepare a new lineage, call a provider, rerun, retry, overwrite
-or open downstream gates. RM-51 must independently review the RM-50 packet
-before any such work. The v6/v9 reports remain immutable, v8 remains absent and
-no quality-improvement or causality claim is established.
+or open downstream gates. RM-51 rejected the package under Option C because
+accounting fields remain mutable against immutable v6/v9 source reports;
+provider experimentation and runtime integration are stopped. RM-52 prepared
+the non-authoritative closure packet and prioritized backlog at
+`optimization/s12-f-12-rm52-offline-closure.v1.json` and
+`optimization/s12-f-12-rm52-error-backlog.v1.json`, binding v6/v9, the failed
+three-call/no-report v8 fact, spent authorizations, RM-47/RM-51 and rejected
+RM-50 artifacts. The v6/v9 reports remain immutable, v8 remains absent and no
+quality-improvement or causality claim is established. RM-53 must review the
+closure packet before acceptance.
 
 ## External-only work — custody and G6
 

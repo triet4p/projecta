@@ -2,7 +2,7 @@
 
 **Base contract version:** `s12.v1`; current visible corpus: `v3-frozen`
 
-**Current Sprint status:** `G5_F12_V9_STAGE_A_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY`
+**Current Sprint status:** `G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY`
 
 RM-36 consumed the single RM-35-authorized v8 invocation and failed after
 three provider captures before persisting a report or aggregate accounting.
@@ -127,10 +127,11 @@ procedure permits one blinded run.
   historical `PREPARED` fields.
 - `optimization/g5-packet.v29.rm43-issuance.json` is an immutable RM-43
   issuance snapshot. The authoritative current packet is
-  `optimization/g5-packet.v33.rm47-closure.json`, which records RM-47 closure
-  of the one bounded v9 Stage A as rejected with no Stage B. Output overwrite,
-  validation, held-out, Stage B, promotion, retry, remediation implementation
-  and new lineage preparation remain closed.
+  `optimization/g5-packet.v36.rm51-closure-only.json`, which records RM-51's
+  Option C stop after rejecting RM-50 accounting custody. RM-52 closure and
+  backlog preparation are the only permitted work; output overwrite,
+  validation, held-out, Stage B, promotion, retry, remediation implementation,
+  provider execution and new lineage preparation remain closed.
 - `optimization/s12-f-12-rm44-authorization-preparation.v1.json` is the
   non-authoritative RM-44 exact v9 authorization preparation. Its zero-call
   preflight binds 19 exact Git blobs and the 144/96 prospective default-path
@@ -176,8 +177,9 @@ authorization, RM-46 executed once, and RM-47 closed v9 rejected with no Stage
 B. RM-48 has prepared a sanitized v6/v9 error comparison and remediation
 options in `optimization/s12-f-12-rm48-error-comparison.v1.json`; RM-49 approved
 the sequential offline path and RM-50 completed diagnostics/parity fixtures.
-RM-51 owner review is pending. No runtime remediation, lineage or provider work
-is authorized.
+RM-51 rejected RM-50 under Option C. RM-52 prepared the offline closure packet
+and prioritized error backlog; RM-53 owner closure review is pending. No
+runtime remediation, lineage or provider work is authorized.
 
 ## Dataset contract rules
 
@@ -204,6 +206,6 @@ exact v9 Stage A execution, RM-46 consumed it once, and RM-47 closed it
 rejected with no Stage B. The v9 report is schema-valid but rejected by
 schema-invalid, invalid-evidence, threshold and slice gates; its comparison to
 v6 establishes no quality improvement. Only offline error-analysis preparation
-is open; RM-51 review of the RM-50 preparation is pending.
+is closed to provider work; RM-52 offline closure is pending RM-53 owner review.
 G6 is blocked by missing external test custody and a
 frozen passing candidate; held-out inputs/gold remain outside the repository.

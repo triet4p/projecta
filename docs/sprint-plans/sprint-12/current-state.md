@@ -2,7 +2,7 @@
 
 **As of:** 2026-08-22
 
-**Status:** `G5_F12_V9_STAGE_A_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY`
+**Status:** `G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY`
 
 RM-37 accepted the RM-36 execution fact and closed v8 as failed before report
 persistence. RM-39 subsequently approved only offline runtime remediation and
@@ -12,12 +12,14 @@ preregistration and technical freeze. The authoritative machine state is
 `evaluation/sprint-12/current-state.v1.json`.
 
 The latest authoritative G5 packet is
-`evaluation/sprint-12/optimization/g5-packet.v33.rm47-closure.json`.
+`evaluation/sprint-12/optimization/g5-packet.v36.rm51-closure-only.json`.
 RM-47's immutable owner decision and transition close the single RM-45-
-authorized v9 Stage A as rejected with no Stage B. The v9 report is immutable;
-only offline v6/v9 error-analysis preparation is permitted. Remediation
-implementation, new lineage preparation, provider execution, rerun, retry,
-validation, held-out access, selection and promotion remain closed.
+authorized v9 Stage A as rejected with no Stage B. RM-51 rejected the RM-50
+accounting implementation under Option C and stopped provider experimentation.
+The v6 and v9 reports are immutable; only offline closure documentation and
+error-backlog preparation are permitted. Runtime remediation, new lineage
+preparation, provider execution, rerun, retry, validation, held-out access,
+selection and promotion remain closed.
 
 This is the human-readable current-state index for Sprint 12. Machine consumers
 must use `evaluation/sprint-12/current-state.v1.json`.
@@ -337,13 +339,27 @@ slice gates. Compared with v6, schema-invalid decreased from 6 to 5 while
 invalid evidence increased from 17 to 20, so no quality-improvement claim is
 established.
 
-Only offline v6/v9 error-analysis preparation is permitted. RM-48 has prepared
+Only offline v6/v9 error-analysis preparation was permitted. RM-48 prepared
 the sanitized comparison and remediation options at
 `evaluation/sprint-12/optimization/s12-f-12-rm48-error-comparison.v1.json`;
 RM-49 approved the sequential offline diagnostic-hardening and parity-fixture
 path, and RM-50 completed both stages after Option A stop criteria passed. RM-51
-must review the RM-50 package.
+rejected the package because accounting mutations can detach it from immutable
+v6/v9 evidence. RM-52 now prepares only offline closure custody and a
+prioritized error backlog; RM-53 is the next owner review.
 Remediation implementation, lineage preparation, provider/new authorization,
 rerun, retry, validation, held-out access, Stage B, selection, promotion and
 downstream access remain closed. The v6 and v9 reports remain immutable and
-the failed v8 report remains absent.
+the failed v8 report remains absent. No Sprint 12, G5 or G6 completion or
+quality claim follows.
+
+## RM-52 closure packet and backlog
+
+The non-authoritative RM-52 artifacts are
+`evaluation/sprint-12/optimization/s12-f-12-rm52-offline-closure.v1.json` and
+`evaluation/sprint-12/optimization/s12-f-12-rm52-error-backlog.v1.json`.
+They bind v6, the three-call/no-report v8 execution fact, v9, spent v7/v8/v9
+authorizations, RM-47/RM-51 decisions and rejected RM-50 artifacts. Known cost
+is `$0.01192200`; v8 aggregate cost is unknown because no report persisted.
+The backlog distinguishes bounded offline fixes, residual product-quality
+failures, tooling/governance lessons and external custody blockers.

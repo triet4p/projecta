@@ -91,7 +91,7 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 ## Active Sprints
 
 - [Sprint 12 — Business Semantic Quality and Evaluation](sprint-plans/sprint-12.md)
-  — *In progress at `G5_F12_V9_STAGE_A_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY`.
+  — *In progress at `G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY`.
   Dataset v3,
   measurement remediation and the two-step f12 development execution package
   are frozen. RM-23F issued the preregistration/freeze and RM-25 authorized one
@@ -115,8 +115,9 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   Stage B and opened only offline v6/v9 error-analysis preparation. The v6/v9
   comparison does not establish quality improvement. RM-48 has prepared the
   sanitized comparison/options packet; RM-49 approved sequential offline
-  diagnostics then parity-fixture work, and RM-50 completed it. RM-51 owner
-  review is pending. Validation, held-out access, remediation
+  diagnostics then parity-fixture work, and RM-50 completed it. RM-51 rejected
+  RM-50 under Option C; RM-52 is preparing only an offline closure packet and
+  prioritized error backlog, with RM-53 owner review next. Validation, held-out access, remediation
   implementation, lineage preparation, provider execution, Stage B, selection
   and promotion remain closed.
   No business-quality claim is made, and new connector/outbound breadth remains

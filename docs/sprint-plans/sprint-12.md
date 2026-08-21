@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G5_F12_V9_STAGE_A_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY`
+Status: `G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY`
 
 Current state: [Sprint 12 Current State](sprint-12/current-state.md)
 
@@ -14,8 +14,8 @@ G4.1 packet: [Contract Alignment and Failure Diagnosis](sprint-12/g4.1-contract-
 
 G5 packet: [Controlled Optimization Review Packet v25 — RM-37 closure](sprint-12/g5-optimization.v25.rm37-closure.md)
 
-Current G5 packet: [Controlled Optimization Review Packet v33 — RM-47 v9
-closure](sprint-12/g5-optimization.v33.rm47-closure.md)
+Current G5 packet: [Controlled Optimization Review Packet v36 — RM-51
+closure-only stop](sprint-12/g5-optimization.v36.rm51-closure-only.md)
 
 Historical preparation snapshot: [Controlled Optimization Review Packet v30 —
 RM-44 exact v9 authorization preparation](sprint-12/g5-optimization.v30.rm44-authorization-preparation.md)
@@ -981,9 +981,19 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   `not-applicable → 0.0` transition. Option B then passed 26 deterministic
   fixtures across schema/evidence/scorer boundaries and reproduced v9's
   sanitized 5/20 failure clusters without provider/raw reconstruction.
-- [ ] **S12-RM-51 — Owner review RM-50 offline diagnostics and parity fixtures:**
-  Independently review RM-50 artifacts before any runtime remediation, lineage
-  preparation, authorization or provider execution.
+- [x] **S12-RM-51 — Owner review RM-50 offline diagnostics and parity fixtures:**
+  Rejected RM-50 under Option C because accounting fields remain mutable against
+  immutable v6/v9 sources. Provider experimentation and runtime integration
+  stopped; only offline closure documentation and backlog preparation remain.
+- [x] **S12-RM-52 — Prepare offline f12 closure and prioritized error backlog:**
+  Bind v6/v9 reports, failed v8 execution facts, spent authorizations, RM-47/
+  RM-51 decisions and rejected RM-50 artifacts. Record measured residual
+  failures, unknown prompt/model causality, custody lessons and external
+  blockers without opening provider or downstream work. RM-53 owner review is
+  required next.
+- [ ] **S12-RM-53 — Owner closure review RM-52 packet and backlog:**
+  Independently review custody, digests, absence of v8 output, classifications
+  and governance locks before accepting or rejecting the offline closure.
 
 #### Phase F-S — Candidate Selection Resume Path
 
