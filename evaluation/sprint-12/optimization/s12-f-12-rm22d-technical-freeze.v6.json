@@ -1,0 +1,40 @@
+{
+  "artifactVersion": "s12.s12-f-12.technical-freeze.v6",
+  "status": "TECHNICAL_FREEZE_PREPARED_PENDING_RM23E_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "supersedes": "evaluation/sprint-12/optimization/s12-f-12-rm22d-technical-freeze.v5.json",
+  "commitSha": "b63ebcb4603cd2cabeb796a38c86be4471304f3f",
+  "executionPackage": "evaluation/sprint-12/optimization/s12-f-12-rm22d-execution-package.v6.json",
+  "executionPackageDigest": "sha256:4e0f6d1415c4026614d8afb62e50c4a95665a13e32868d067d10e3fb022181e4",
+  "preregistration": "evaluation/sprint-12/optimization/s12-f-12-rm22d-issuance-draft.v6.json",
+  "preregistrationDigest": "sha256:3e4e2afcf04ad6f7fb79c994d49fb5febd56ad44a8ea6c826340b068484387c5",
+  "runnerDigest": "sha256:20caf2d4455a946557ac1ef1bf5370940779c2b63e112dbbdc0b5024918dafd5",
+  "adapterDigest": "sha256:af20e7fd9f717ec319cf8ba321880d3a0b2f6152139873c4bf1eb3e814da5a96",
+  "preflightDigest": "sha256:56010b31b26d9959bd6efb4bfd9c35ef5e7c054f05dc93272fb8df1889a6124e",
+  "reportSchemaDigest": "sha256:092b3a400872e2e3bc5c43d4c477420c8775b614c1b828aba3aaf0699a160508",
+  "providerExecutionAuthorized": false,
+  "preregistrationIssued": false,
+  "executionFreezeIssued": false,
+  "heldOutInspected": false,
+  "heldOutAccessAuthorized": false,
+  "validationAccessAuthorized": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false,
+  "issuance": {
+    "status": "NOT_ISSUED",
+    "requiresSeparateExactCommitAuthorization": true,
+    "exactCommitValidated": true,
+    "mustBindExactPackageDigest": true,
+    "mustBindExactPreregistrationDigest": true,
+    "requiresRM23EOwnerReview": true
+  },
+  "constraints": [
+    "RM-22D v6 lineage metadata remediation only.",
+    "No provider call or Stage A output is permitted before RM-23E issuance review and separate exact-commit authorization.",
+    "RM-22 through RM-22D v5 remain historical evidence and are not mutated.",
+    "The accepted gold oracle, denominators and applicability-aware threshold logic remain unchanged."
+  ],
+  "authorizationSchemaDigest": "sha256:aee5d6bf36330110977ab1ba1fd3523ea27a96bf97494d319ef5a6db3cf5e889",
+  "preparationScope": "S12-RM-22D"
+}

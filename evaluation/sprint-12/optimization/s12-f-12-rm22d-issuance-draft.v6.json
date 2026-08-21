@@ -1,0 +1,209 @@
+{
+  "artifactVersion": "s12.s12-f-12.preregistration.v6",
+  "status": "PREPARED_PENDING_RM23E_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "supersedes": "evaluation/sprint-12/optimization/s12-f-12-rm22d-issuance-draft.v5.json",
+  "preparationScope": "S12-RM-22D",
+  "executionCommitSha": "b63ebcb4603cd2cabeb796a38c86be4471304f3f",
+  "providerExecutionAuthorized": false,
+  "preregistrationIssued": false,
+  "executionFreezeIssued": false,
+  "heldOutInspected": false,
+  "heldOutAccessAuthorized": false,
+  "validationAccessAuthorized": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false,
+  "denominators": {
+    "selectedDevelopmentCases": 16,
+    "positiveRelationCases": 8,
+    "hardNegativeCases": 4,
+    "abstentionRequiredCases": 4,
+    "goldRelationInstancesPerRun": 8,
+    "goldAbstentionInstancesPerRun": 4,
+    "caseRuns": 48,
+    "relationInstancesAcrossRuns": 24,
+    "abstentionInstancesAcrossRuns": 12,
+    "namedSliceDenominators": {
+      "all-development": 48,
+      "relation-positive": 24,
+      "relation-negative": 12,
+      "abstention-required": 12,
+      "abstention-not-required": 36,
+      "journey": {
+        "J1": 6,
+        "J2": 12,
+        "J3": 12,
+        "J4": 6,
+        "J5": 6,
+        "J6": 6
+      },
+      "language": {
+        "en": 6,
+        "ja": 6,
+        "mixed": 30,
+        "vi": 6
+      }
+    }
+  },
+  "requiredSlices": [
+    {
+      "dimension": "all-development",
+      "label": "all-development",
+      "denominator": 48
+    },
+    {
+      "dimension": "relation-positive",
+      "label": "relation-positive",
+      "denominator": 24
+    },
+    {
+      "dimension": "relation-negative",
+      "label": "relation-negative",
+      "denominator": 12
+    },
+    {
+      "dimension": "abstention-required",
+      "label": "abstention-required",
+      "denominator": 12
+    },
+    {
+      "dimension": "abstention-not-required",
+      "label": "abstention-not-required",
+      "denominator": 36
+    },
+    {
+      "dimension": "journey",
+      "label": "J1",
+      "denominator": 6
+    },
+    {
+      "dimension": "journey",
+      "label": "J2",
+      "denominator": 12
+    },
+    {
+      "dimension": "journey",
+      "label": "J3",
+      "denominator": 12
+    },
+    {
+      "dimension": "journey",
+      "label": "J4",
+      "denominator": 6
+    },
+    {
+      "dimension": "journey",
+      "label": "J5",
+      "denominator": 6
+    },
+    {
+      "dimension": "journey",
+      "label": "J6",
+      "denominator": 6
+    },
+    {
+      "dimension": "language",
+      "label": "en",
+      "denominator": 6
+    },
+    {
+      "dimension": "language",
+      "label": "ja",
+      "denominator": 6
+    },
+    {
+      "dimension": "language",
+      "label": "mixed",
+      "denominator": 30
+    },
+    {
+      "dimension": "language",
+      "label": "vi",
+      "denominator": 6
+    }
+  ],
+  "approvedThresholds": {
+    "entityMacroF1Min": 0.85,
+    "entitySpanExactMin": 0.95,
+    "entityHallucinationRateMax": 0.05,
+    "abstentionPrecisionMin": 0.9,
+    "abstentionRecallMin": 0.9,
+    "abstentionF1Min": 0.9,
+    "relationSemanticMicroF1Min": 0.8,
+    "relationSemanticMacroF1Min": 0.8,
+    "predicateAccuracyMin": 0.85,
+    "endpointDirectionAccuracyMin": 0.9,
+    "missingEndpointRateMax": 0.05,
+    "reversedEndpointRateMax": 0.05,
+    "relationEvidenceSupportMin": 0.85,
+    "relationEvidenceExactMin": 0.85,
+    "relationHallucinationRateMax": 0.05,
+    "hardFailureCount": 0,
+    "retryCount": 0,
+    "pricingFailureCount": 0,
+    "goldRelationsIntegrityScore": 1,
+    "goldRelationsMaterializerFailures": 0
+  },
+  "hardGates": {
+    "schemaInvalid": 0,
+    "invalidEvidence": 0,
+    "missingOutput": 0,
+    "endpointContractFailure": 0,
+    "sharedConfigurationMismatch": 0,
+    "retryCount": 0,
+    "pricingFailure": 0,
+    "rawSensitiveDataIncluded": false,
+    "heldOutInspected": false
+  },
+  "execution": {
+    "stage1PredictedEntitiesCalls": 48,
+    "stage2PredictedEntitiesCalls": 48,
+    "stage2GoldEntitiesCalls": 48,
+    "providerCalls": 144,
+    "relationBranchOutputs": 96,
+    "retryPolicy": "none",
+    "outputOverwrite": false
+  },
+  "measurement": {
+    "offlineContract": "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v5.json",
+    "metricContract": "evaluation/sprint-12/harness/metric-contract.v2.json",
+    "sliceContract": "evaluation/sprint-12/harness/slice-threshold-contract.v1.json",
+    "triggerContract": "evaluation/sprint-12/harness/relation-trigger-contract.v1.json",
+    "scorer": "scripts/sprint12_f12_two_step_contracts_v5.py",
+    "reportSchema": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v5.json",
+    "runner": "scripts/run_sprint12_f12_stage_a_v5.py",
+    "aggregateFromCaseRunsOnly": true,
+    "missingJsonSchemaPolicy": "fail-closed",
+    "goldOracleTriggerMap": {
+      "constrainedBy": "bị giới hạn bởi"
+    },
+    "preflight": "scripts/preflight_sprint12_f12_rm22d_v6.py",
+    "authorizationSchema": "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v1.json"
+  },
+  "pricing": {
+    "providerCalls": 144,
+    "worstCaseCostUsd": "1.17315072",
+    "costCeilingUsd": "10.00",
+    "totalCostMustNotExceedCeiling": true
+  },
+  "report": {
+    "outputPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+    "sanitizedOnly": true,
+    "rawSourceTextStored": false,
+    "rawProviderPayloadStored": false
+  },
+  "executionPackagePath": "evaluation/sprint-12/optimization/s12-f-12-rm22d-execution-package.v6.json",
+  "technicalFreezePath": "evaluation/sprint-12/optimization/s12-f-12-rm22d-technical-freeze.v6.json",
+  "governance": {
+    "providerExecutionAuthorized": false,
+    "preregistrationIssued": false,
+    "executionFreezeIssued": false,
+    "heldOutInspected": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextGate": "RM-23E owner issuance review, then separate exact-commit provider authorization",
+    "authorizationSchema": "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v1.json"
+  }
+}
