@@ -14,8 +14,8 @@
     "caseRecords": {"type": "array", "minItems": 48, "maxItems": 48, "items": {"$ref": "#/$defs/caseRecord"}},
     "sliceRecords": {
       "type": "array",
-      "minItems": 14,
-      "maxItems": 14,
+      "minItems": 15,
+      "maxItems": 15,
       "prefixItems": [
         {"$ref": "#/$defs/sliceRecord"}, {"$ref": "#/$defs/sliceRecord"}, {"$ref": "#/$defs/sliceRecord"}, {"$ref": "#/$defs/sliceRecord"}, {"$ref": "#/$defs/sliceRecord"},
         {"$ref": "#/$defs/sliceRecord"}, {"$ref": "#/$defs/sliceRecord"}, {"$ref": "#/$defs/sliceRecord"}, {"$ref": "#/$defs/sliceRecord"},
