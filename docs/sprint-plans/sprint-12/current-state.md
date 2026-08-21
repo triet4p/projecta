@@ -2,19 +2,20 @@
 
 **As of:** 2026-08-22
 
-**Status:** `G5_F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY`
+**Status:** `G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING`
 
 RM-37 accepted the RM-36 execution fact and closed v8 as failed before report
 persistence. RM-39 subsequently approved only offline runtime remediation and
-deterministic regressions; RM-40 implemented them in a non-authoritative
-versioned path pending RM-41 review. The authoritative machine state is
+deterministic regressions; RM-40 implemented them, RM-41 approved preparation
+of a corrected lineage, RM-42 prepared v9, and RM-43 issued only its
+preregistration and technical freeze. The authoritative machine state is
 `evaluation/sprint-12/current-state.v1.json`.
 
-The latest non-authoritative preparation snapshot is
-`evaluation/sprint-12/current-state-next-rm42.v1.json`. RM-41 approved only
-offline superseding-lineage preparation; RM-42 prepared an exact-commit v9
-runtime lineage pending the separate RM-43 issuance review. This snapshot does
-not replace the authoritative machine state or authorize provider execution.
+The latest authoritative G5 packet is
+`evaluation/sprint-12/optimization/g5-packet.v29.rm43-issuance.json`. RM-43's
+immutable owner review and issuance transition issue only the corrected v9
+preregistration and technical freeze. Provider execution remains behind the
+separate RM-44/RM-45 authorization path.
 
 This is the human-readable current-state index for Sprint 12. Machine consumers
 must use `evaluation/sprint-12/current-state.v1.json`.
@@ -73,11 +74,12 @@ new lineage.
 ## Next work
 
 1. RM-41 approved offline preparation of a corrected superseding lineage only.
-2. RM-42 prepared the guarded exact-commit v9 runtime, unissued
-   preregistration/package/freeze and zero-call preflight. RM-43 must review
-   issuance before any separate provider authorization review.
-3. Keep provider execution, retry, overwrite, validation, held-out access,
-   Stage B, selection and promotion closed.
+2. RM-42 prepared the guarded exact-commit v9 runtime and RM-43 issued its
+   preregistration and technical freeze through a separate transition. RM-44
+   may prepare exact v9 authorization offline; RM-45 must review and issue it
+   before any provider call.
+3. Keep provider execution, new authorization, retry, overwrite, validation,
+   held-out access, Stage B, selection and promotion closed.
 4. Do not claim accuracy improvement, candidate quality, business quality or
    tenant readiness from this rejected run or the offline preparation.
 
@@ -251,7 +253,7 @@ The post-run current-state and G5 packet are explicitly non-authoritative:
 
 The authorization is spent and non-reusable. RM-37 is complete; RM-39 approved
 offline implementation, RM-40 prepared the versioned remediation path and
-RM-41 is the next owner review. No provider call, retry, overwrite,
+RM-41 later reviewed the implementation. No provider call, retry, overwrite,
 superseding-lineage preparation, validation, held-out access, Stage B,
 selection or promotion is authorized.
 
@@ -267,3 +269,30 @@ The decision and transition are:
 Only offline RM36 reconciliation-failure diagnosis and deterministic runtime
 remediation preparation are permitted. Any future provider attempt requires a
 corrected exact lineage, issuance review and separate owner authorization.
+
+## RM-43 corrected v9 issuance
+
+RM-43 is complete. The owner review and issuance transition are immutable and
+digest-bound:
+
+- `evaluation/sprint-12/optimization/s12-f-12-rm43-owner-review.v1.json`
+  (`sha256:dd8d0210e8bed24b68fea64188fd8bb5cbb45c7a5962f4342b74b8811c9006a9`)
+- `evaluation/sprint-12/optimization/s12-f-12-rm43-issuance-transition.v1.json`
+  (`sha256:d57f040293ff0be4573d49e97a20cea9c838152b47945ee3fc01af2568637fdb`)
+- `evaluation/sprint-12/optimization/g5-packet.v29.rm43-issuance.json`
+
+RM-43 issues only the corrected v9 preregistration and technical freeze. The
+runtime remains bound to execution commit
+`f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e` and 19 exact Git blobs. The
+provider-neutral issuance preflight passes with zero calls and zero retries;
+the v9 output remains absent.
+
+The historical v8 failure and immutable v6 report remain preserved. The v6
+digest is
+`sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233`.
+No quality improvement, candidate, validation, held-out, Stage B, selection,
+promotion or tenant-readiness claim is established.
+
+RM-44 is the next task to prepare exact v9 Stage A authorization offline. RM-45
+must independently review and issue that authorization before any provider
+execution.

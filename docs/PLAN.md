@@ -90,7 +90,7 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 ## Active Sprints
 
 - [Sprint 12 — Business Semantic Quality and Evaluation](sprint-plans/sprint-12.md)
-  — *In progress at `G5_F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY`.
+  — *In progress at `G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING`.
   Dataset v3,
   measurement remediation and the two-step f12 development execution package
   are frozen. RM-23F issued the preregistration/freeze and RM-25 authorized one
@@ -106,9 +106,10 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   report persistence; the authorization is spent and no retry is permitted.
   RM-37 closed the failed execution and opened only offline reconciliation
   diagnosis/remediation preparation. RM-39 approved offline implementation;
-  RM-40 implemented the versioned remediation path and RM-41 owner review is
-  pending. Provider execution, superseding-lineage preparation, validation,
-  held-out access, Stage B, selection and promotion remain closed.
+  RM-40 implemented the versioned remediation path; RM-43 issued the corrected
+  v9 preregistration and technical freeze. RM-44 authorization preparation and
+  RM-45 owner review are pending. Provider execution, new authorization,
+  validation, held-out access, Stage B, selection and promotion remain closed.
   No business-quality claim is made, and new connector/outbound breadth remains
   deferred. The authoritative dashboard is the
   [Sprint 12 current-state index](sprint-plans/sprint-12/current-state.md).*

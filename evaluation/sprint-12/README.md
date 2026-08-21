@@ -2,15 +2,15 @@
 
 **Base contract version:** `s12.v1`; current visible corpus: `v3-frozen`
 
-**Current Sprint status:** `G5_F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY`
+**Current Sprint status:** `G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING`
 
 RM-36 consumed the single RM-35-authorized v8 invocation and failed after
 three provider captures before persisting a report or aggregate accounting.
-RM-37 closed that execution as failed and authorized only offline
-reconciliation-failure diagnosis and deterministic runtime-remediation
-preparation. The authoritative packet is
-`optimization/g5-packet.v25.rm37-closure.json`; RM35/RM36 snapshots remain
-immutable custody history.
+RM-37 closed that execution as failed, RM-40 implemented the offline
+remediation, RM-42 prepared corrected v9, and RM-43 issued only the corrected
+v9 preregistration and technical freeze. The authoritative packet is
+`optimization/g5-packet.v29.rm43-issuance.json`; RM35/RM36 and RM42 snapshots
+remain immutable custody history.
 
 The repository-visible pilot and development/validation gold now have
 owner-delegated AI semantic review. They remain agent-authored synthetic data
@@ -20,9 +20,10 @@ Stage A execution completed. RM-27 closed f12 rejected after hard, threshold
 and slice failures; RM-29 permitted offline diagnostic/remediation
 implementation, RM-31 permitted preparation of a new superseding lineage and
 RM-33 issued only the exact v8 preregistration and technical freeze; RM-35
-subsequently authorized exactly one v8 execution. Current v8 provider calls
-performed remain zero, its report is absent, and no candidate is selected. G6
-separately remains blocked by test custody and candidate quality. See
+subsequently authorized exactly one v8 execution. That superseded invocation
+performed three captures before report persistence, its authorization is spent,
+its report is absent, and no candidate is selected. G6 separately remains
+blocked by test custody and candidate quality. See
 `current-state.v1.json` for the authoritative index.
 
 This directory contains the governed contract for the Sprint 12 business
@@ -123,10 +124,10 @@ procedure permits one blinded run.
 - `optimization/s12-f-12-rm23f-issuance-transition.v1.json` records the later
   issuance of the exact f12 v7 preparation lineage without mutating its
   historical `PREPARED` fields.
-- `optimization/g5-packet.v23.rm35-authorization.json` is the current G5
-  machine packet. It records RM-35 authorization of exactly one bounded v8
-  development Stage A execution, keeps selection at `NO_SELECTION`, and
-  leaves validation, held-out, Stage B, promotion, retry and overwrite closed.
+- `optimization/g5-packet.v29.rm43-issuance.json` is the current G5 machine
+  packet. It records RM-43 issuance of only the corrected v9 preregistration
+  and technical freeze; provider authorization, output, validation, held-out,
+  Stage B, promotion, retry and overwrite remain closed.
 - `optimization/g5-packet.v20.rm32-offline-preparation.json` and the RM32 v8
   artifacts are immutable preparation snapshots; their unissued fields are not
   rewritten by the separate RM-33 transition and they performed zero provider
@@ -156,8 +157,9 @@ procedure permits one blinded run.
 - `optimization/s12-f-12-rm37-owner-decision.v1.json` and
   `optimization/s12-f-12-rm37-decision-transition.v1.json` close the failed v8
   execution and open only offline RM36 reconciliation diagnosis and runtime
-  remediation preparation. RM-39 approved offline implementation; RM-40 has
-  prepared the versioned remediation path and RM-41 is the next owner review.
+  remediation preparation. RM-39 approved offline implementation; RM-40
+  prepared the versioned remediation path; RM-43 issued corrected v9 and
+  RM-44/RM-45 are the next authorization preparation/review gates.
 
 ## Dataset contract rules
 
@@ -179,7 +181,7 @@ procedure permits one blinded run.
 G0 and G1 are approved; G2 and G3 are approved with recorded limitations;
 G3.1-A/B/C are complete with scope limits. G4 now has a runtime-backed baseline
 with failures and G4.1 is contract-aligned but stability-failed. G5 has issued
-the exact f12 v8 preregistration/freeze lineage, while provider authorization,
-Stage A output and candidate selection remain absent. G6 is blocked by missing
-external test custody and a frozen passing candidate; held-out inputs/gold
-remain outside the repository.
+the corrected f12 v9 preregistration/freeze lineage; RM-44/RM-45 must prepare
+and review the separate provider authorization, while v9 output and candidate
+selection remain absent. G6 is blocked by missing external test custody and a
+frozen passing candidate; held-out inputs/gold remain outside the repository.

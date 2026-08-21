@@ -1,6 +1,6 @@
 # Sprint 12 Current Handoffs
 
-**Status:** `CURRENT_F12_V8_AUTHORIZED_EXECUTION_HANDOFF`
+**Status:** `CURRENT_F12_V9_ISSUED_AUTHORIZATION_HANDOFF`
 
 This revision supersedes the old baseline and generic-optimization handoffs.
 Those tasks are complete or historically closed. Use
@@ -213,7 +213,7 @@ promotion is authorized.
 
 ## Handoff N — RM-42 v9 lineage preparation to RM-43 issuance review
 
-**Status:** RM-42 complete; RM-43 pending.
+**Status:** complete; superseded by the RM-43 issuance transition.
 
 RM-42 integrated RM-40 into the guarded v9 runtime at exact commit
 `f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e`. The closed v9 report and
@@ -223,9 +223,29 @@ preregistration and freeze; the unissued preregistration, execution package and
 technical freeze are preparation-only artifacts; the zero-call preflight passes
 with 144/96 prospective custody, zero calls, zero retries and absent v9 output.
 
-RM-43 must review and issue the v9 preregistration/freeze before any separate
-exact-commit provider authorization review. No provider execution, rerun,
-retry, validation, held-out, Stage B, selection or promotion is authorized.
+RM-43 reviewed and issued only the v9 preregistration/freeze through a separate
+immutable transition. No provider execution, rerun, retry, validation,
+held-out, Stage B, selection or promotion was authorized.
+
+## Handoff O — RM-43 v9 issuance to RM-44/RM-45 authorization path
+
+**Status:** RM-43 complete; RM-44 pending authorization preparation; RM-45
+pending owner authorization review.
+
+The authoritative current G5 packet is
+`evaluation/sprint-12/optimization/g5-packet.v29.rm43-issuance.json`. RM-43
+issued only the corrected v9 preregistration and technical freeze. The owner
+review and issuance transition remain immutable and bind execution commit
+`f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e` and the RM-42 package/freeze chain.
+The RM-43 preflight is provider-neutral and reports zero calls; the v9 report
+does not exist.
+
+RM-44 may prepare an exact v9 Stage A authorization offline, binding the issued
+lineage, exact runtime blobs, output path, cost ceiling and no-retry /
+no-overwrite policy. RM-45 must independently review and issue that
+authorization before any provider call. Do not reuse the spent RM-35 v8
+authorization or revive the failed v8 lineage. Validation, held-out access,
+Stage B, selection and promotion remain closed.
 
 ## External-only work — custody and G6
 

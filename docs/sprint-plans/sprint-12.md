@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G5_F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY`
+Status: `G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING`
 
 Current state: [Sprint 12 Current State](sprint-12/current-state.md)
 
@@ -13,6 +13,9 @@ G4 packet: [Baseline Evaluation Review Packet](sprint-12/g4-baseline.md)
 G4.1 packet: [Contract Alignment and Failure Diagnosis](sprint-12/g4.1-contract-alignment.md)
 
 G5 packet: [Controlled Optimization Review Packet v25 — RM-37 closure](sprint-12/g5-optimization.v25.rm37-closure.md)
+
+Current G5 packet: [Controlled Optimization Review Packet v29 — RM-43 v9
+issuance](sprint-12/g5-optimization.v29.rm43-issuance.md)
 
 Authoritative pre-execution packet: [Controlled Optimization Review Packet
 v23 — RM-35 authorization](sprint-12/g5-optimization.v23.rm35-authorization.md).
@@ -930,9 +933,14 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   preregistration/package/freeze artifacts with Git-blob custody. No provider
   call, rerun, retry, validation, held-out, Stage B, selection or promotion is
   authorized.
-- [ ] **S12-RM-43 — Owner issuance review for corrected v9 lineage:** Review the
-  exact-commit package, preregistration and technical freeze before issuance;
-  separate provider authorization remains required after issuance.
+- [x] **S12-RM-43 — Owner issuance review for corrected v9 lineage:** Review
+  and issue only the exact corrected v9 preregistration and technical freeze;
+  provider authorization remains a separate gate.
+- [ ] **S12-RM-44 — Prepare exact v9 Stage A authorization:** Bind the issued
+  RM-43 lineage, exact runtime commit, output path, cost ceiling and no-retry /
+  no-overwrite boundary offline without calling a provider.
+- [ ] **S12-RM-45 — Owner review exact v9 Stage A authorization:** Independently
+  review and issue the new authorization before any v9 provider capture.
 
 #### Phase F-S — Candidate Selection Resume Path
 
