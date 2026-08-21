@@ -3,13 +3,14 @@
   "$id": "s12-f-12.rm50-parity-fixtures.v1",
   "type": "object",
   "additionalProperties": false,
-  "required": ["artifactVersion", "status", "experimentId", "taskId", "sanitizedOnly", "rawProviderPayloadIncluded", "rawSourceTextIncluded", "rawTriggerQuoteIncluded", "rawValidationDetailIncluded", "fixtureMatrix", "v9SanitizedClusters", "goldRelationsControl"],
+  "required": ["artifactVersion", "status", "experimentId", "taskId", "sanitizedOnly", "rawProviderPayloadIncluded", "rawSourceTextIncluded", "rawTriggerQuoteIncluded", "rawValidationDetailIncluded", "fixtureMatrix", "v9ClusterCases", "v9SanitizedClusters", "goldRelationsControl"],
   "properties": {
     "artifactVersion": {"const": "s12.s12-f-12.rm50-parity-fixtures.v1"},
     "status": {"const": "OFFLINE_PARITY_FIXTURES_READY_PENDING_OWNER_REVIEW"},
     "experimentId": {"const": "s12-f-12"}, "taskId": {"const": "S12-RM-50"}, "sanitizedOnly": {"const": true},
     "rawProviderPayloadIncluded": {"const": false}, "rawSourceTextIncluded": {"const": false}, "rawTriggerQuoteIncluded": {"const": false}, "rawValidationDetailIncluded": {"const": false},
     "fixtureMatrix": {"type": "array", "minItems": 26, "items": {"oneOf": [{"$ref": "#/$defs/schemaFixture"}, {"$ref": "#/$defs/evidenceFixture"}, {"$ref": "#/$defs/scorerFixture"}]}},
+    "v9ClusterCases": {"type": "array", "minItems": 25, "items": {"$ref": "#/$defs/clusterCase"}},
     "v9SanitizedClusters": {
       "type": "object", "additionalProperties": false, "required": ["schemaInvalid", "invalidEvidence"],
       "properties": {
@@ -41,13 +42,17 @@
       "allOf": [{"$ref": "#/$defs/common"}, {"type": "object", "additionalProperties": false, "required": ["fixtureId", "kind", "caseRun", "arm", "stage", "slice", "scenario"], "properties": {"fixtureId": {"type": "string"}, "kind": {"const": "scorer"}, "caseRun": {"type": "string"}, "arm": {"enum": ["predicted-entities", "gold-entities", "gold-relations"]}, "stage": {"enum": ["stage1", "stage2"]}, "slice": {"type": "string"}, "scenario": {"enum": ["duplicate", "order", "tie", "wrong-predicate", "reversed-endpoint", "extra", "missing"]}}}],
       "unevaluatedProperties": false
     },
+    "clusterCase": {
+      "type": "object", "additionalProperties": false, "required": ["kind", "caseRun", "arm", "stage", "reason", "slice"],
+      "properties": {"kind": {"enum": ["schema", "evidence"]}, "caseRun": {"type": "string", "pattern": "^s12-a-[0-9]+#run-[0-9]+$"}, "arm": {"enum": ["predicted-entities", "gold-entities"]}, "stage": {"enum": ["stage1", "stage2"]}, "reason": {"type": "string"}, "slice": {"type": "string"}}
+    },
     "schemaCluster": {
       "type": "object", "additionalProperties": false, "required": ["total", "armStage", "reason", "caseRuns"],
-      "properties": {"total": {"const": 5}, "armStage": {"const": "predicted-entities/stage1"}, "reason": {"const": "entity_span_out_of_source"}, "caseRuns": {"type": "array", "minItems": 5, "items": {"type": "string"}}}
+      "properties": {"total": {"type": "integer", "minimum": 0}, "armStage": {"type": "string"}, "reason": {"type": "string"}, "caseRuns": {"type": "array", "items": {"type": "string"}}}
     },
     "evidenceCluster": {
       "type": "object", "additionalProperties": false, "required": ["total", "arm", "reasonCounts", "caseRuns"],
-      "properties": {"total": {"const": 20}, "arm": {"const": "gold-entities"}, "reasonCounts": {"type": "object", "additionalProperties": false, "required": ["evidence_does_not_contain_trigger", "evidence_does_not_contain_endpoints"], "properties": {"evidence_does_not_contain_trigger": {"const": 14}, "evidence_does_not_contain_endpoints": {"const": 6}}}, "caseRuns": {"type": "array", "minItems": 20, "items": {"type": "string"}}}
+      "properties": {"total": {"type": "integer", "minimum": 0}, "arm": {"type": "string"}, "reasonCounts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}, "propertyNames": {"type": "string", "not": {"pattern": "[Rr][Aa][Ww]|[Pp][Aa][Yy][Ll][Oo][Aa][Dd]|[Ss][Oo][Uu][Rr][Cc][Ee][Tt][Ee][Xx][Tt]|[Tt][Rr][Ii][Gg][Gg][Ee][Rr][Qq][Uu][Oo][Tt][Ee]|[Vv][Aa][Ll][Ii][Dd][Aa][Tt][Ii][Oo][Nn][Dd][Ee][Tt][Aa][Ii][Ll]"}}}, "caseRuns": {"type": "array", "items": {"type": "string"}}}
     }
   }
 }

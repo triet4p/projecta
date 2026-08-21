@@ -8,6 +8,8 @@ import pytest
 from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parents[2]
+V6 = ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json"
+V9 = ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json"
 REPORT = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm50-offline-diagnostic-report.v1.json"
 SCHEMA = ROOT / "evaluation/sprint-12/harness/s12-f-12-rm50-offline-diagnostic-report.schema.v1.json"
 
@@ -78,3 +80,38 @@ def test_option_a_records_j1_gold_entities_transition_and_keeps_governance_close
     )
     assert report["governance"]["providerCalls"] == 0
 
+
+def test_option_a_rejects_v9_invalid_evidence_count_mutation() -> None:
+    v6 = json.loads(V6.read_text(encoding="utf-8"))
+    v9 = json.loads(V9.read_text(encoding="utf-8"))
+    target = next(case for case in v9["caseRecords"] if case["arms"]["gold-entities"]["invalidEvidenceCount"])
+    target["arms"]["gold-entities"]["invalidEvidenceCount"] += 1
+    with pytest.raises(ValueError, match="evidence"):
+        build_report(v6, v9)
+
+
+def test_option_a_rejects_v9_schema_finding_removal() -> None:
+    v6 = json.loads(V6.read_text(encoding="utf-8"))
+    v9 = json.loads(V9.read_text(encoding="utf-8"))
+    target = next(
+        case["arms"]["predicted-entities"]["stage1"]
+        for case in v9["caseRecords"]
+        if case["arms"]["predicted-entities"]["stage1"].get("failureClass")
+    )
+    target["failureClass"] = None
+    with pytest.raises(ValueError, match="schema-invalid"):
+        build_report(v6, v9)
+
+
+@pytest.mark.parametrize("mutation", ["schemaClusterDelta", "evidenceClusterDelta", "schemaReasonCounts", "evidenceReasonCounts"])
+def test_option_a_rejects_direct_diagnostic_cluster_or_reason_mutations(mutation: str) -> None:
+    report = build_report()
+    candidate = deepcopy(report)
+    if mutation.endswith("ClusterDelta"):
+        first_key = next(iter(candidate["diagnostics"][mutation]))
+        candidate["diagnostics"][mutation][first_key]["v9Count"] += 1
+    else:
+        reason = "validation_detail_unavailable" if mutation == "schemaReasonCounts" else "materializer_detail_unavailable"
+        candidate["diagnostics"][mutation]["v9"][reason] += 1
+    with pytest.raises(ValueError, match="does not match"):
+        validate_report(candidate)

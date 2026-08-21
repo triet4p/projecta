@@ -23,6 +23,7 @@ from s12_f12_rm50_parity_fixtures import (  # noqa: E402
     classify_evidence,
     digest,
     run_scorer_scenarios,
+    validate_parity_report,
 )
 
 
@@ -76,6 +77,39 @@ def test_option_b_rejects_dynamic_raw_fixture_key() -> None:
     candidate["v9SanitizedClusters"]["rawPayload"] = {"secret": True}
     with pytest.raises(ValueError):
         build_parity_report(candidate)
+
+
+@pytest.mark.parametrize("mutation", ["total", "reasonCounts", "deleteCaseRun"])
+def test_option_b_rejects_cluster_claim_or_case_run_mutations(mutation: str) -> None:
+    fixtures = json.loads(FIXTURES.read_text(encoding="utf-8"))
+    candidate = deepcopy(fixtures)
+    if mutation == "total":
+        candidate["v9SanitizedClusters"]["invalidEvidence"]["total"] += 1
+    elif mutation == "reasonCounts":
+        candidate["v9SanitizedClusters"]["invalidEvidence"]["reasonCounts"]["evidence_does_not_contain_trigger"] += 1
+    else:
+        candidate["v9ClusterCases"].pop()
+    with pytest.raises(ValueError):
+        build_parity_report(candidate)
+
+
+def test_option_b_rejects_direct_report_cluster_or_source_digest_mutations() -> None:
+    report = json.loads(REPORT.read_text(encoding="utf-8"))
+    candidate = deepcopy(report)
+    candidate["v9ClusterReproduction"]["schemaInvalidTotal"] += 1
+    with pytest.raises(ValueError, match="does not match"):
+        validate_parity_report(candidate)
+    candidate = deepcopy(report)
+    candidate["sourceReports"]["v9"]["digest"] = "sha256:" + "0" * 64
+    with pytest.raises(ValueError, match="does not match"):
+        validate_parity_report(candidate)
+
+
+def test_option_b_original_inputs_regenerate_byte_identically() -> None:
+    fixtures = json.loads(FIXTURES.read_text(encoding="utf-8"))
+    report = build_parity_report(fixtures)
+    rendered = json.dumps(report, indent=2, ensure_ascii=False) + "\n"
+    assert rendered.encode("utf-8") == REPORT.read_bytes()
 
 
 def test_option_b_package_binds_a_pass_and_preserves_historical_custody() -> None:

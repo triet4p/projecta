@@ -14,6 +14,7 @@ from collections import Counter
 from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
+from decimal import Decimal
 
 from jsonschema import Draft202012Validator
 
@@ -163,6 +164,55 @@ def _reason_totals(report: Mapping[str, Any], field: str, allowed: tuple[str, ..
     return _finite_counts(result, allowed)
 
 
+def _source_summary(report: Mapping[str, Any], *, historical_unknowns: bool) -> dict[str, Any]:
+    """Derive all failure totals from case records and reconcile accounting."""
+
+    schema_clusters = _schema_clusters(report)
+    evidence_clusters = _evidence_clusters(report)
+    schema_total = sum(len(values) for values in schema_clusters.values())
+    evidence_total = sum(len(values) for values in evidence_clusters.values())
+    accounting = report.get("accounting")
+    if not isinstance(accounting, Mapping):
+        raise ValueError("source accounting is missing")
+    failure_classes = accounting.get("failureClasses")
+    if not isinstance(failure_classes, Mapping):
+        raise ValueError("source failure classes are missing")
+    if schema_total != failure_classes.get("schemaInvalid"):
+        raise ValueError("source schema-invalid total does not reconcile")
+    diagnostics_schema: dict[str, int]
+    diagnostics_evidence: dict[str, int]
+    if historical_unknowns:
+        diagnostics_schema = {code: 0 for code in SCHEMA_REASON_CODES}
+        diagnostics_schema["validation_detail_unavailable"] = schema_total
+        diagnostics_evidence = {code: 0 for code in EVIDENCE_REASON_CODES}
+        diagnostics_evidence["materializer_detail_unavailable"] = evidence_total
+    else:
+        diagnostics_schema = _reason_totals(report, "schemaReasonCounts", SCHEMA_REASON_CODES)
+        diagnostics_evidence = _reason_totals(report, "evidenceReasonCounts", EVIDENCE_REASON_CODES)
+        if sum(diagnostics_schema.values()) != schema_total:
+            raise ValueError("source schema diagnostic reasons do not reconcile")
+        if sum(diagnostics_evidence.values()) != evidence_total:
+            raise ValueError("source evidence diagnostic reasons do not reconcile")
+    for case in report["caseRecords"]:
+        for arm in ARMS:
+            item = case["arms"][arm]
+            invalid_evidence = item.get("invalidEvidenceCount", 0)
+            if type(invalid_evidence) is not int or invalid_evidence < 0:
+                raise ValueError("source invalidEvidenceCount must be a non-negative integer")
+            reasons = item.get("diagnostics", {}).get("evidenceReasonCounts", {})
+            if reasons and sum(normalize_evidence_counts(reasons).values()) != invalid_evidence:
+                raise ValueError("source case evidence reasons do not reconcile")
+    return {
+        "schemaClusters": schema_clusters,
+        "evidenceClusters": evidence_clusters,
+        "schemaTotal": schema_total,
+        "evidenceTotal": evidence_total,
+        "schemaReasons": diagnostics_schema,
+        "evidenceReasons": diagnostics_evidence,
+        "accounting": accounting,
+    }
+
+
 def assert_no_raw_data_aliases(value: Any, *, path: str = "$", allow_policy_keys: bool = False) -> None:
     """Reject raw-data aliases recursively, including arbitrary dynamic keys."""
 
@@ -201,16 +251,15 @@ def _slice_transition(v6: Mapping[str, Any], v9: Mapping[str, Any]) -> dict[str,
 def build_report(v6: Mapping[str, Any] | None = None, v9: Mapping[str, Any] | None = None) -> dict[str, Any]:
     v6 = v6 or _load(V6_PATH, V6_DIGEST)
     v9 = v9 or _load(V9_PATH, V9_DIGEST)
-    schema6 = _schema_clusters(v6)
-    schema9 = _schema_clusters(v9)
-    evidence6 = _evidence_clusters(v6)
-    evidence9 = _evidence_clusters(v9)
-    schema_reasons_v9 = _reason_totals(v9, "schemaReasonCounts", SCHEMA_REASON_CODES)
-    evidence_reasons_v9 = _reason_totals(v9, "evidenceReasonCounts", EVIDENCE_REASON_CODES)
-    schema_reasons_v6 = {code: 0 for code in SCHEMA_REASON_CODES}
-    schema_reasons_v6[classify_unknown_schema()] = 6
-    evidence_reasons_v6 = {code: 0 for code in EVIDENCE_REASON_CODES}
-    evidence_reasons_v6[classify_unknown_evidence()] = 17
+    summary6 = _source_summary(v6, historical_unknowns=True)
+    summary9 = _source_summary(v9, historical_unknowns=False)
+    account6 = summary6["accounting"]
+    account9 = summary9["accounting"]
+    if int(account6["providerCallsAttempted"]) != int(account9["providerCallsAttempted"]):
+        raise ValueError("source provider call counts differ")
+    if int(account6["retryCount"]) != 0 or int(account9["retryCount"]) != 0:
+        raise ValueError("source retry count is not zero")
+    cost_delta = Decimal(str(account9["totalCostUsd"])) - Decimal(str(account6["totalCostUsd"]))
     report: dict[str, Any] = {
         "artifactVersion": "s12.s12-f-12.rm50-offline-diagnostic-report.v1",
         "status": "OFFLINE_DIAGNOSTIC_CONTRACT_HARDENED_PENDING_OWNER_REVIEW",
@@ -221,16 +270,16 @@ def build_report(v6: Mapping[str, Any] | None = None, v9: Mapping[str, Any] | No
             "v9": {"path": V9_PATH.relative_to(ROOT).as_posix(), "digest": V9_DIGEST, "immutable": True},
         },
         "accounting": {
-            "v6": {"providerCalls": 144, "responses": 144, "retryCount": 0, "schemaInvalid": 6, "invalidEvidence": 17, "costUsd": "0.00592500"},
-            "v9": {"providerCalls": 144, "responses": 144, "retryCount": 0, "schemaInvalid": 5, "invalidEvidence": 20, "costUsd": "0.00599700"},
+            "v6": {"providerCalls": int(account6["providerCallsAttempted"]), "responses": int(account6["responsesReceived"]), "retryCount": int(account6["retryCount"]), "schemaInvalid": summary6["schemaTotal"], "invalidEvidence": summary6["evidenceTotal"], "costUsd": str(account6["totalCostUsd"])},
+            "v9": {"providerCalls": int(account9["providerCallsAttempted"]), "responses": int(account9["responsesReceived"]), "retryCount": int(account9["retryCount"]), "schemaInvalid": summary9["schemaTotal"], "invalidEvidence": summary9["evidenceTotal"], "costUsd": str(account9["totalCostUsd"])},
             "reconciled": True,
-            "deltaV9MinusV6": {"schemaInvalid": -1, "invalidEvidence": 3, "costUsd": "0.00007200"},
+            "deltaV9MinusV6": {"schemaInvalid": summary9["schemaTotal"] - summary6["schemaTotal"], "invalidEvidence": summary9["evidenceTotal"] - summary6["evidenceTotal"], "costUsd": f"{cost_delta:.8f}"},
         },
         "diagnostics": {
-            "schemaReasonCounts": {"v6": schema_reasons_v6, "v9": schema_reasons_v9},
-            "evidenceReasonCounts": {"v6": evidence_reasons_v6, "v9": evidence_reasons_v9},
-            "schemaClusterDelta": _set_cluster_delta(schema6, schema9),
-            "evidenceClusterDelta": _set_cluster_delta(evidence6, evidence9),
+            "schemaReasonCounts": {"v6": summary6["schemaReasons"], "v9": summary9["schemaReasons"]},
+            "evidenceReasonCounts": {"v6": summary6["evidenceReasons"], "v9": summary9["evidenceReasons"]},
+            "schemaClusterDelta": _set_cluster_delta(summary6["schemaClusters"], summary9["schemaClusters"]),
+            "evidenceClusterDelta": _set_cluster_delta(summary6["evidenceClusters"], summary9["evidenceClusters"]),
             "totalsReconciled": True,
         },
         "sliceTransitions": {"J1GoldEntitiesEvidence": _slice_transition(v6, v9)},
@@ -280,6 +329,9 @@ def validate_report(report: Mapping[str, Any]) -> None:
     errors = sorted(Draft202012Validator(schema).iter_errors(report), key=lambda error: list(error.path))
     if errors:
         raise ValueError("RM-50 report schema invalid: " + "; ".join(error.message for error in errors))
+    expected = build_report()
+    if dict(report) != expected:
+        raise ValueError("RM-50 diagnostic report does not match regenerated immutable-source analysis")
     assert_no_raw_data_aliases(report, allow_policy_keys=True)
     for arm_counts in report["diagnostics"]["schemaReasonCounts"].values():
         normalize_schema_counts(arm_counts)

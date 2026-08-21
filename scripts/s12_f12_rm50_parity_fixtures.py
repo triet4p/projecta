@@ -16,16 +16,22 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
+from jsonschema import Draft202012Validator
+
 from s12_f12_rm50_offline_diagnostics import (
     EVIDENCE_REASON_CODES,
     SCHEMA_REASON_CODES,
     assert_no_raw_data_aliases,
+    V6_DIGEST,
+    V9_DIGEST,
+    validate_report,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE_PATH = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-fixtures.v1.json"
 REPORT_PATH = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-report.v1.json"
 DIAGNOSTIC_REPORT = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm50-offline-diagnostic-report.v1.json"
+PARITY_SCHEMA = ROOT / "evaluation/sprint-12/harness/s12-f-12-rm50-parity-report.schema.v1.json"
 
 
 @dataclass(frozen=True, slots=True)
@@ -166,6 +172,10 @@ def _fixture_data() -> dict[str, Any]:
         "s12-a-4027#run-2", "s12-a-4035#run-2", "s12-a-4043#run-2", "s12-a-4007#run-3", "s12-a-4011#run-3",
         "s12-a-4015#run-3", "s12-a-4019#run-3", "s12-a-4027#run-3", "s12-a-4035#run-3", "s12-a-4043#run-3"
     ]
+    cluster_cases = (
+        [{"kind": "schema", "caseRun": case_run, "arm": "predicted-entities", "stage": "stage1", "reason": "entity_span_out_of_source", "slice": "all-development"} for case_run in cluster_schema]
+        + [{"kind": "evidence", "caseRun": case_run, "arm": "gold-entities", "stage": "stage2", "reason": "evidence_does_not_contain_trigger" if index < 14 else "evidence_does_not_contain_endpoints", "slice": "relation-positive"} for index, case_run in enumerate(cluster_evidence)]
+    )
     return {
         "artifactVersion": "s12.s12-f-12.rm50-parity-fixtures.v1",
         "status": "OFFLINE_PARITY_FIXTURES_READY_PENDING_OWNER_REVIEW",
@@ -177,6 +187,7 @@ def _fixture_data() -> dict[str, Any]:
         "rawTriggerQuoteIncluded": False,
         "rawValidationDetailIncluded": False,
         "fixtureMatrix": schema + evidence + scorer_fixtures,
+        "v9ClusterCases": cluster_cases,
         "v9SanitizedClusters": {
             "schemaInvalid": {"total": 5, "armStage": "predicted-entities/stage1", "reason": "entity_span_out_of_source", "caseRuns": cluster_schema},
             "invalidEvidence": {"total": 20, "arm": "gold-entities", "reasonCounts": {"evidence_does_not_contain_trigger": 14, "evidence_does_not_contain_endpoints": 6}, "caseRuns": cluster_evidence},
@@ -189,10 +200,48 @@ def build_parity_report(fixtures: dict[str, Any] | None = None) -> dict[str, Any
     fixtures = fixtures or json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))
     assert_no_raw_data_aliases(fixtures, allow_policy_keys=True)
     matrix = fixtures["fixtureMatrix"]
+    if len(matrix) != 26:
+        raise ValueError("fixture matrix count changed")
     schema_reasons = {item["expectedReason"] for item in matrix if item["kind"] == "schema"}
     evidence_reasons = {item["expectedReason"] for item in matrix if item["kind"] == "evidence"}
     if schema_reasons != set(SCHEMA_REASON_CODES) or evidence_reasons != set(EVIDENCE_REASON_CODES):
         raise ValueError("fixture matrix does not cover the finite diagnostic allowlists")
+    scorer_names = {item["scenario"] for item in matrix if item["kind"] == "scorer"}
+    if scorer_names != {"duplicate", "order", "tie", "wrong-predicate", "reversed-endpoint", "extra", "missing"}:
+        raise ValueError("fixture matrix scorer coverage changed")
+    cluster_cases = fixtures.get("v9ClusterCases")
+    if not isinstance(cluster_cases, list) or len(cluster_cases) != 25:
+        raise ValueError("v9 cluster fixture case count changed")
+    schema_cases = [item for item in cluster_cases if item.get("kind") == "schema"]
+    evidence_cases = [item for item in cluster_cases if item.get("kind") == "evidence"]
+    if len(schema_cases) + len(evidence_cases) != len(cluster_cases):
+        raise ValueError("unknown v9 cluster fixture kind")
+    derived_schema_runs = [item["caseRun"] for item in schema_cases]
+    derived_evidence_runs = [item["caseRun"] for item in evidence_cases]
+    derived_schema_reasons = Counter(item["reason"] for item in schema_cases)
+    derived_evidence_reasons = Counter(item["reason"] for item in evidence_cases)
+    if set(derived_schema_reasons) != {"entity_span_out_of_source"}:
+        raise ValueError("v9 schema cluster reason is outside the closed allowlist")
+    if set(derived_evidence_reasons) != {"evidence_does_not_contain_trigger", "evidence_does_not_contain_endpoints"}:
+        raise ValueError("v9 evidence cluster reasons are outside the closed allowlist")
+    claims = fixtures.get("v9SanitizedClusters")
+    if not isinstance(claims, dict):
+        raise ValueError("v9 cluster claims missing")
+    schema_claim = claims.get("schemaInvalid", {})
+    evidence_claim = claims.get("invalidEvidence", {})
+    if schema_claim.get("total") != len(schema_cases) or schema_claim.get("caseRuns") != derived_schema_runs or schema_claim.get("reason") != next(iter(derived_schema_reasons)):
+        raise ValueError("v9 schema cluster claim does not reconcile with fixture cases")
+    if evidence_claim.get("total") != len(evidence_cases) or evidence_claim.get("caseRuns") != derived_evidence_runs or evidence_claim.get("reasonCounts") != dict(derived_evidence_reasons):
+        raise ValueError("v9 evidence cluster claim does not reconcile with fixture cases")
+    if any(item.get("arm") != "predicted-entities" or item.get("stage") != "stage1" or item.get("reason") != "entity_span_out_of_source" for item in schema_cases):
+        raise ValueError("v9 schema cluster arm/stage/reason mismatch")
+    if any(item.get("arm") != "gold-entities" or item.get("stage") != "stage2" for item in evidence_cases):
+        raise ValueError("v9 evidence cluster arm/stage mismatch")
+    diagnostic = json.loads(DIAGNOSTIC_REPORT.read_text(encoding="utf-8"))
+    validate_report(diagnostic)
+    source_reports = diagnostic.get("sourceReports", {})
+    if source_reports.get("v6", {}).get("digest") != V6_DIGEST or source_reports.get("v9", {}).get("digest") != V9_DIGEST:
+        raise ValueError("diagnostic source report digests changed")
     trigger_result = classify_evidence(False, True)
     endpoint_result = classify_evidence(True, False)
     if trigger_result != "evidence_does_not_contain_trigger" or endpoint_result != "evidence_does_not_contain_endpoints":
@@ -202,10 +251,11 @@ def build_parity_report(fixtures: dict[str, Any] | None = None) -> dict[str, Any
         "status": "OFFLINE_PARITY_FIXTURES_VERIFIED_PENDING_OWNER_REVIEW",
         "experimentId": "s12-f-12",
         "taskId": "S12-RM-50",
+        "sourceReports": {"v6": {"digest": V6_DIGEST}, "v9": {"digest": V9_DIGEST}},
         "diagnosticContract": {"path": DIAGNOSTIC_REPORT.relative_to(ROOT).as_posix(), "digest": digest(DIAGNOSTIC_REPORT), "optionAStopCriteriaPassed": True},
         "fixtureContract": {"path": FIXTURE_PATH.relative_to(ROOT).as_posix(), "fixtureCount": len(matrix), "caseArmStageSliceCoverage": True, "schemaBoundaryCoverage": sorted(schema_reasons), "evidenceBoundaryCoverage": sorted(evidence_reasons), "scorerScenarioCoverage": sorted(item["scenario"] for item in matrix if item["kind"] == "scorer")},
         "scorerScenarioResults": run_scorer_scenarios(),
-        "v9ClusterReproduction": {"schemaInvalidTotal": 5, "invalidEvidenceTotal": 20, "triggerContainment": 14, "endpointContainment": 6, "reproducedWithoutProviderOrRawReconstruction": True},
+        "v9ClusterReproduction": {"schemaInvalidTotal": len(schema_cases), "invalidEvidenceTotal": len(evidence_cases), "triggerContainment": derived_evidence_reasons["evidence_does_not_contain_trigger"], "endpointContainment": derived_evidence_reasons["evidence_does_not_contain_endpoints"], "reproducedWithoutProviderOrRawReconstruction": True},
         "goldRelationsControl": fixtures["goldRelationsControl"],
         "rawDataPolicy": {"rawProviderPayloadIncluded": False, "rawSourceTextIncluded": False, "rawTriggerQuoteIncluded": False, "rawValidationDetailIncluded": False, "recursiveDynamicKeyExclusion": True},
         "governance": {"offlineOnly": True, "providerCalls": 0, "runtimeRemediationAuthorized": False, "supersedingLineagePreparationAuthorized": False, "preregistrationIssued": False, "technicalFreezeIssued": False, "newAuthorizationIssued": False, "providerExecutionAuthorized": False, "validationAccessAuthorized": False, "heldOutAccessAuthorized": False, "stageBAuthorized": False, "candidateSelectionAuthorized": False, "promotionAuthorized": False},
@@ -215,11 +265,22 @@ def build_parity_report(fixtures: dict[str, Any] | None = None) -> dict[str, Any
     return report
 
 
+def validate_parity_report(report: dict[str, Any]) -> None:
+    schema = json.loads(PARITY_SCHEMA.read_text(encoding="utf-8"))
+    errors = sorted(Draft202012Validator(schema).iter_errors(report), key=lambda error: list(error.path))
+    if errors:
+        raise ValueError("RM-50 parity report schema invalid: " + "; ".join(error.message for error in errors))
+    expected = build_parity_report()
+    if report != expected:
+        raise ValueError("RM-50 parity report does not match regenerated fixtures and diagnostic source")
+
+
 def main() -> None:
     fixtures = _fixture_data()
-    FIXTURE_PATH.write_text(json.dumps(fixtures, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    FIXTURE_PATH.write_bytes((json.dumps(fixtures, indent=2, ensure_ascii=False) + "\n").encode("utf-8"))
     report = build_parity_report(fixtures)
-    REPORT_PATH.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    validate_parity_report(report)
+    REPORT_PATH.write_bytes((json.dumps(report, indent=2, ensure_ascii=False) + "\n").encode("utf-8"))
     print(REPORT_PATH)
 
 
