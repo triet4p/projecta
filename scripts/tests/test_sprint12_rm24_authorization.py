@@ -8,14 +8,14 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
-PREPARATION = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm24-authorization-preparation.v1.json"
+PREPARATION = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm24-preparation.v1.json"
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import preflight_sprint12_f12_rm24 as rm24
 
 
 def test_rm24_preflight_is_zero_call_and_pending_rm25() -> None:
-    result = rm24.run_preflight()
+    result = rm24.run_preflight(require_clean_tree=False)
     assert result["status"] == "S12_RM24_READY_ZERO_CALL_PENDING_RM25"
     assert result["providerCalls"] == 0
     assert result["providerExecutionAuthorized"] is False

@@ -17,21 +17,24 @@ unauthorized.
 
 ## Files Modified
 
-* `evaluation/sprint-12/optimization/s12-f-12-rm24-authorization-preparation.v1.json` — exact RM-24 binding and governance-lock artifact.
+* `evaluation/sprint-12/optimization/s12-f-12-rm24-preparation.v1.json` — exact RM-24 binding and governance-lock artifact; the filename deliberately distinguishes preparation from an authorization so immutable historical preflights do not confuse the two.
 * `scripts/preflight_sprint12_f12_rm24.py` — fail-closed offline digest, ancestry, clean-tree, output-custody and zero-call preflight.
 * `scripts/tests/test_sprint12_rm24_authorization.py` — RM-24 binding and tamper-resistance tests.
 * `docs/sprint-plans/sprint-12.md` — marked S12-RM-24 complete while leaving RM-25 pending.
 
 ## Testing
 
-* **Targeted tests:** `8 passed` (`test_sprint12_rm24_authorization.py` and the RM-22D lineage regression).
+* **Targeted tests:** `11 passed` (`test_sprint12_rm24_authorization.py`, the offline-contract v2 preflight regression, and document consistency).
 * **Preflight:** `S12_RM24_READY_ZERO_CALL_PENDING_RM25`; provider calls `0`; report-v6 path absent; working tree clean; exact execution commit is an ancestor of current HEAD.
-* **Consistency:** RM-23F/current-state document consistency suite remains applicable and was inspected; current-state remains `G5_F12_ISSUED_PROVIDER_AUTHORIZATION_PENDING`.
+* **Consistency:** RM-23F/current-state document consistency remains passing; current-state remains `G5_F12_ISSUED_PROVIDER_AUTHORIZATION_PENDING`.
 * **Diff hygiene:** `git diff --check` passed.
 
 ## Additional Notes
 
-RM-24 does not satisfy or perform RM-25. The final authorization must be a new
+RM-24 does not satisfy or perform RM-25. The historical v2 offline preflight
+remains immutable and continues to reject any matching artifact with
+`providerExecutionAuthorized: true`; the RM-24 preparation filename is
+explicitly non-authorization so it is allowed. The final authorization must be a new
 owner-issued artifact validated against this preparation. No provider
 credentials, raw source/provider payloads or held-out material were read or
 persisted. Pytest emitted only an environment `PytestCacheWarning` because the

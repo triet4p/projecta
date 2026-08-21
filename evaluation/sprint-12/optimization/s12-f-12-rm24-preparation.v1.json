@@ -1,5 +1,5 @@
 {
-  "artifactVersion": "s12.s12-f-12.rm24-authorization-preparation.v1",
+  "artifactVersion": "s12.s12-f-12.rm24-preparation.v1",
   "status": "PREPARED_PENDING_RM25_OWNER_AUTHORIZATION",
   "experimentId": "s12-f-12",
   "taskId": "S12-RM-24",

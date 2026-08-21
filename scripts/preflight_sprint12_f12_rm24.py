@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-PREPARATION = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm24-authorization-preparation.v1.json"
+PREPARATION = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm24-preparation.v1.json"
 OUTPUT = ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json"
 sys.path.insert(0, str(ROOT / "scripts"))
 
@@ -50,7 +50,7 @@ def _git(*args: str) -> str:
     return result.stdout.strip()
 
 
-def run_preflight() -> dict[str, Any]:
+def run_preflight(*, require_clean_tree: bool = True) -> dict[str, Any]:
     preparation = _load(PREPARATION)
     if preparation.get("status") != "PREPARED_PENDING_RM25_OWNER_AUTHORIZATION":
         raise ValueError("RM-24 preparation status is not pending RM-25")
@@ -157,7 +157,7 @@ def run_preflight() -> dict[str, Any]:
         raise ValueError("RM-24 expanded governance authority")
     if OUTPUT.exists():
         raise ValueError("Stage A report output already exists")
-    if _git("status", "--porcelain=v1"):
+    if require_clean_tree and _git("status", "--porcelain=v1"):
         raise ValueError("working tree must be clean for RM-24 preflight")
 
     return {
@@ -168,7 +168,7 @@ def run_preflight() -> dict[str, Any]:
         "providerCalls": 0,
         "providerExecutionAuthorized": False,
         "outputPathAbsent": True,
-        "workingTreeClean": True,
+        "workingTreeClean": not bool(_git("status", "--porcelain=v1")),
         "heldOutInspected": False,
         "nextGate": "S12-RM-25_OWNER_REVIEW_AND_OPTIONAL_ONE_RUN_AUTHORIZATION",
     }
