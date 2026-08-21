@@ -1,0 +1,96 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm35-owner-review.v1",
+  "status": "OWNER_REVIEW_APPROVED_ONE_BOUNDED_V8_STAGE_A",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-35",
+  "decisionType": "INDEPENDENT_OWNER_REVIEW_BEFORE_SUPERSEDING_V8_STAGE_A",
+  "decisionDate": "2026-08-22",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewBaseCommit": "11e8bc1bdacec44f122eee41d91f31831a4ae13b",
+  "reviewedPreparation": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm34-authorization-preparation.v1.json",
+    "digest": "sha256:b53cc0132a536bc8aeeff9be14d26f03c634ea43fccf17b5b3073b3082bcab4e",
+    "status": "PREPARED_PENDING_RM35_OWNER_AUTHORIZATION"
+  },
+  "custodyErratum": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm33-owner-custody-erratum.v1.json",
+    "digest": "sha256:c72867583a722c928db1a76ebb633afdaedad73abb762397b45ca3db8a782296",
+    "status": "OWNER_CUSTODY_ERRATUM_ACCEPTED_NO_EXECUTION_AUTHORITY"
+  },
+  "issuedAuthorization": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm35-authorization.v8.json",
+    "digest": "sha256:d3e3fd1f4f8520133f91e088e280d415935e1ed38656b6ef0b55a9b4ea84f00a",
+    "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A"
+  },
+  "reviewedLineage": {
+    "executionCommit": "005a35e3be3fbff40fcdae02dfdf79145c76934b",
+    "executionPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm32-execution-package.v8.json",
+      "digest": "sha256:59a42669692c9c4a5460a44643167c17c68d5449a4b9d8de2e35adad0f0f524c"
+    },
+    "technicalFreeze": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm32-technical-freeze.v8.json",
+      "digest": "sha256:2fc20e806ce4a046c10719e9360cc69938325e1963562b730d02b8138f8dfdc1"
+    },
+    "runner": {
+      "path": "scripts/run_sprint12_f12_stage_a_v8.py",
+      "digest": "sha256:91caf611f6fc3d999827864ee1a8fa4a0ecda197b6ecae1b5f12a52f5147006c"
+    },
+    "runtimeConfiguration": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-runtime-configuration.v1.json",
+      "digest": "sha256:a672d1c17a174c5c2697859118e2394b89007c3877a270e82ee5db25b357dd0b"
+    },
+    "authorizationSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v8.json",
+      "digest": "sha256:dc98750a95d353a9e469d174eca528458d4e7421fda77e51e1bece99b1a38569"
+    },
+    "reportSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v8.json",
+      "canonicalExactGitBlobDigest": "sha256:c65a4f039d948e6f3a59750001e58199bfc98e57e2f2f3ac838070ef5f6f6ad5"
+    }
+  },
+  "verifiedEvidence": {
+    "rm34PreflightStatus": "F12_RM34_PREPARED_ZERO_CALL",
+    "finalIndependentFocusedTests": "51 passed",
+    "authorizationSchemaValidation": "pass",
+    "exactRuntimeGitBlobs": "22/22",
+    "ownerCustodyErratumReconciled": true,
+    "preflightSelfBinding": "pass",
+    "preflightTamperRejection": "pass",
+    "stageAReportExists": false,
+    "providerCallsPerformed": 0,
+    "heldOutInspected": false,
+    "mockExecution": {
+      "unauthorizedProviderCalls": 0,
+      "authorizedProviderCalls": 144,
+      "relationBranches": 96,
+      "retryCount": 0,
+      "outputPersistCount": 1,
+      "overwriteRejected": true
+    }
+  },
+  "blockingFindings": [],
+  "decision": {
+    "rm35ReviewCompleted": true,
+    "authorizationIssued": true,
+    "providerExecutionAuthorized": true,
+    "authorizedProviderCalls": 144,
+    "authorizedExecutions": 1,
+    "retryAuthorized": false,
+    "outputOverwriteAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "EXECUTE_EXACT_S12_F12_V8_DEVELOPMENT_STAGE_A_ONCE"
+  },
+  "constraints": [
+    "This authorization permits exactly one 144-call development Stage A execution against the exact v8 lineage and execution commit.",
+    "The runner must fail before provider capture if any digest, commit, schema, runtime, output path, authorization or cost binding differs.",
+    "No retry or output overwrite is authorized; authorization becomes spent when execution starts and cannot be reused.",
+    "The closed v7 lineage and spent RM-25 authorization cannot be reused.",
+    "Validation and held-out data remain sealed; Stage B, candidate selection and promotion remain unauthorized.",
+    "Authorization does not establish quality improvement, business quality or tenant readiness."
+  ]
+}

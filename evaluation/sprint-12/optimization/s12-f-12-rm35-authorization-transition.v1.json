@@ -1,0 +1,58 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm35-authorization-transition.v1",
+  "status": "ONE_BOUNDED_V8_DEVELOPMENT_STAGE_A_AUTHORIZED_PENDING_EXECUTION",
+  "experimentId": "s12-f-12",
+  "transitionDate": "2026-08-22",
+  "transitionAuthority": "project-owner-delegated-codex-reviewer",
+  "precedenceRule": "This explicit RM-35 transition is authoritative for current v8 provider-execution authority and does not mutate the RM-32 preparation lineage, RM-33 issuance artifacts or RM-34 preparation.",
+  "preparation": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm34-authorization-preparation.v1.json",
+    "digest": "sha256:b53cc0132a536bc8aeeff9be14d26f03c634ea43fccf17b5b3073b3082bcab4e",
+    "status": "PREPARED_PENDING_RM35_OWNER_AUTHORIZATION"
+  },
+  "custodyErratum": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm33-owner-custody-erratum.v1.json",
+    "digest": "sha256:c72867583a722c928db1a76ebb633afdaedad73abb762397b45ca3db8a782296"
+  },
+  "ownerReview": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm35-owner-review.v1.json",
+    "digest": "sha256:3e47e0cc7f2bea48d6d6ca86e878c5aee7bf29924861410dcd8b7fb8fe637cc9",
+    "status": "OWNER_REVIEW_APPROVED_ONE_BOUNDED_V8_STAGE_A"
+  },
+  "authorization": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm35-authorization.v8.json",
+    "digest": "sha256:d3e3fd1f4f8520133f91e088e280d415935e1ed38656b6ef0b55a9b4ea84f00a",
+    "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A"
+  },
+  "authorizedLineage": {
+    "executionCommit": "005a35e3be3fbff40fcdae02dfdf79145c76934b",
+    "executionPackageDigest": "sha256:59a42669692c9c4a5460a44643167c17c68d5449a4b9d8de2e35adad0f0f524c",
+    "technicalFreezeDigest": "sha256:2fc20e806ce4a046c10719e9360cc69938325e1963562b730d02b8138f8dfdc1",
+    "runtimeConfigurationDigest": "sha256:a672d1c17a174c5c2697859118e2394b89007c3877a270e82ee5db25b357dd0b",
+    "runnerDigest": "sha256:91caf611f6fc3d999827864ee1a8fa4a0ecda197b6ecae1b5f12a52f5147006c",
+    "reportSchemaExactGitBlobDigest": "sha256:c65a4f039d948e6f3a59750001e58199bfc98e57e2f2f3ac838070ef5f6f6ad5",
+    "outputPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json",
+    "costCeilingUsd": "10.00"
+  },
+  "currentDecisionState": {
+    "providerExecutionAuthorized": true,
+    "authorizedExecutions": 1,
+    "authorizedProviderCalls": 144,
+    "providerCallsPerformed": 0,
+    "stageAReportExists": false,
+    "retryAuthorized": false,
+    "outputOverwriteAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "EXECUTE_EXACT_S12_F12_V8_DEVELOPMENT_STAGE_A_ONCE"
+  },
+  "constraints": [
+    "Authorization is single-use and limited to exactly 144 provider calls for development Stage A.",
+    "No retry, report overwrite, validation access, held-out access, Stage B, selection or promotion is authorized.",
+    "The spent RM-25 authorization and closed v7 lineage cannot be reused.",
+    "Authorization is spent when the authorized execution starts and is not a quality result."
+  ]
+}

@@ -524,3 +524,22 @@ aliases, while zero-call preflight and mocked custody proved the 144-call,
 provider call is authorized until a later independent owner decision; the v6
 report, closed v7 lineage, validation and held-out custody, Stage B, selection
 and promotion remain unchanged.
+
+## [2026-08-22] Authorize one exact S12-f-12 v8 development Stage A execution
+
+**Decision:** Authorize exactly one 144-call S12-f-12 v8 development Stage A
+execution against execution commit `005a35e3`, the issued RM-32 v8 package and
+freeze, report-v8 output, no-retry/no-overwrite policy and `$10.00` ceiling.
+**Alternatives considered:** Withhold authorization after RM-34; authorize a
+mutable working-tree lineage; reuse the spent RM-25 authorization; or broaden
+authority to retries, Stage B or downstream data.
+**Reason:** Independent RM-35 review verified 22 exact runtime Git blobs, the
+RM-33 custody erratum and canonical report-schema digest, self-bound zero-call
+preflight, closed authorization/report schemas, and mocked custody of 144 calls,
+96 branches, one persist, zero retries and rejected overwrite. The v8 output is
+absent and all prior audit findings are resolved.
+**Consequences:** The exact v8 runner may execute once and the authorization is
+spent when execution starts. Validation, held-out access, Stage B, candidate
+selection and promotion remain closed; execution establishes no quality or
+tenant-readiness claim until the immutable result receives a separate owner
+decision.
