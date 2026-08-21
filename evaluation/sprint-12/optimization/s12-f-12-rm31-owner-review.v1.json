@@ -1,0 +1,101 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm31-owner-review.v1",
+  "status": "OWNER_REVIEW_APPROVED_SUPERSEDING_LINEAGE_PREPARATION_ONLY",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-31",
+  "decisionType": "OWNER_REVIEW_OF_RM30_OFFLINE_DIAGNOSTIC_IMPLEMENTATION",
+  "decisionDate": "2026-08-22",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedEvidence": {
+    "immutableReport": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+      "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+      "providerCalls": 144,
+      "retryCount": 0
+    },
+    "rm30Package": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-remediation.v1.json",
+      "digest": "sha256:32c9339320a4c8a6919525a06fed99af87fd61af6d0873f2511015c7f39e8231",
+      "status": "OFFLINE_REMEDIATION_IMPLEMENTED_PENDING_OWNER_REVIEW"
+    },
+    "diagnosticReport": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-diagnostic-report.v1.json",
+      "digest": "sha256:e03a632b9ff593d0764dc3ea1479366c6f2642c34dafe7818fa09269e3321f13"
+    },
+    "diagnosticReportSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-offline-diagnostic-report.schema.v1.json",
+      "digest": "sha256:f7f8efa30c5fb259fcb603ad4eb176db366427609eed945a8c06685353db138f"
+    },
+    "diagnosticImplementation": {
+      "path": "scripts/s12_f12_rm30_diagnostic_remediation.py",
+      "digest": "sha256:ac01698dbf4e12dadeb8a1d7858e7de06bdfd4772b31536df917b4906d2d601b"
+    },
+    "diagnosticTests": {
+      "path": "scripts/tests/test_sprint12_rm30_offline_diagnostics.py",
+      "digest": "sha256:e9ec282f5ed2088492aabb22df7f181dcaf76bd9fc4d74371fbc91646b7676b9"
+    },
+    "nonAuthoritativeNextState": {
+      "path": "evaluation/sprint-12/current-state-next-rm30.v1.json",
+      "digest": "sha256:e8b9c9df6de48dbaa2aaaae383b696ee4bce5bd66281f724f6e48641107834a7"
+    },
+    "nonAuthoritativeG5Preparation": {
+      "path": "evaluation/sprint-12/optimization/g5-packet.v18.offline-implementation-preparation.json",
+      "digest": "sha256:14bf32ca6a659c9ac64b328cdf8d66378a9ae7bf9fa1e9bd228d5bdffc9ee1c6"
+    }
+  },
+  "verifiedEvidence": {
+    "schemaFailureReasonCodes": 9,
+    "evidenceFailureReasonCodes": 10,
+    "historicalSchemaUnknownCount": 6,
+    "historicalEvidenceUnknownCount": 17,
+    "goldRelationsControlFailures": 0,
+    "malformedRuntimeInputsFailClosed": true,
+    "finiteReasonAllowlistClosed": true,
+    "rawProviderPayloadEmitted": false,
+    "sourceOrTriggerTextEmitted": false,
+    "historicalReportMutated": false,
+    "heldOutInspected": false,
+    "safeTargetedTests": "70 passed",
+    "reportSchemaErrors": 0,
+    "generatedReportMatchesPersisted": true,
+    "boundDigestsMatched": "8/8",
+    "reportDigestUnchanged": true
+  },
+  "ownerAssessment": {
+    "finiteDiagnosticReasonCodesApproved": true,
+    "malformedInputsFailClosedWithoutRawDisclosure": true,
+    "unknownsPreservedWithoutGuessing": true,
+    "typedIdentityAndDenominatorsPreserved": true,
+    "goldRelationsControlInterpretedAsControlOnly": true,
+    "qualityImprovementEstablished": false,
+    "initialAuditFindingsResolved": [
+      "Malformed runtime diagnostic fields now return materializer_detail_unavailable instead of raising.",
+      "The report schema now rejects reason codes outside the registered finite allowlists."
+    ],
+    "blockingFindings": []
+  },
+  "decision": {
+    "rm30ImplementationApproved": true,
+    "supersedingLineagePreparationAuthorized": true,
+    "preregistrationPreparationAuthorized": true,
+    "technicalFreezePreparationAuthorized": true,
+    "executionPackagePreparationAuthorized": true,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "PREPARE_SUPERSEDING_F12_PREREGISTRATION_EXECUTION_PACKAGE_AND_TECHNICAL_FREEZE_OFFLINE"
+  },
+  "constraints": [
+    "Preparation must create a new versioned lineage and must not mutate the closed v7 lineage, spent authorization or immutable Stage A report.",
+    "The new lineage must bind the RM-30 diagnostic implementation and closed reason-code schemas at an exact commit.",
+    "Prepared preregistration, execution package and technical freeze remain unissued and authorize zero provider calls.",
+    "A separate owner issuance review is required before preregistration or freeze issuance, and a later separate owner authorization is required before any provider execution.",
+    "Validation, held-out access, Stage B, candidate selection and promotion remain closed."
+  ]
+}

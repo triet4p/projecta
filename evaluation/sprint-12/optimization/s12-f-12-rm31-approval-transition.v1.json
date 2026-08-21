@@ -1,0 +1,51 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm31-approval-transition.v1",
+  "status": "SUPERSEDING_LINEAGE_PREPARATION_APPROVED_OFFLINE_ONLY",
+  "experimentId": "s12-f-12",
+  "transitionDate": "2026-08-22",
+  "transitionAuthority": "project-owner-delegated-codex-reviewer",
+  "precedenceRule": "This RM-31 transition approves preparation of a new superseding lineage without promoting RM-30 preparation snapshots or issuing any preregistration, freeze or provider authorization.",
+  "ownerReview": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm31-owner-review.v1.json",
+    "digest": "sha256:f6e67673013e324556096537ca6b97093edcff4d3655dce893c2773cec0e721e",
+    "status": "OWNER_REVIEW_APPROVED_SUPERSEDING_LINEAGE_PREPARATION_ONLY"
+  },
+  "approvedImplementation": {
+    "package": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-remediation.v1.json",
+      "digest": "sha256:32c9339320a4c8a6919525a06fed99af87fd61af6d0873f2511015c7f39e8231"
+    },
+    "diagnosticReport": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm30-offline-diagnostic-report.v1.json",
+      "digest": "sha256:e03a632b9ff593d0764dc3ea1479366c6f2642c34dafe7818fa09269e3321f13"
+    },
+    "diagnosticReportSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-offline-diagnostic-report.schema.v1.json",
+      "digest": "sha256:f7f8efa30c5fb259fcb603ad4eb176db366427609eed945a8c06685353db138f"
+    }
+  },
+  "fromState": "G5_F12_OFFLINE_REMEDIATION_APPROVED_IMPLEMENTATION_ONLY",
+  "currentDecisionState": {
+    "rm30ImplementationApproved": true,
+    "supersedingLineagePreparationAuthorized": true,
+    "preregistrationPreparationAuthorized": true,
+    "technicalFreezePreparationAuthorized": true,
+    "executionPackagePreparationAuthorized": true,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "PREPARE_SUPERSEDING_F12_PREREGISTRATION_EXECUTION_PACKAGE_AND_TECHNICAL_FREEZE_OFFLINE"
+  },
+  "constraints": [
+    "Only offline preparation of a new exact, versioned superseding lineage is authorized.",
+    "Historical execution, report and spent authorization artifacts remain immutable.",
+    "No preregistration, freeze, provider call or downstream access is issued by this transition.",
+    "Separate owner issuance and execution-authorization reviews remain mandatory."
+  ]
+}

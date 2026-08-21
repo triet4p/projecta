@@ -484,3 +484,23 @@ next highest-value work.
 **Alternatives considered:** Reject the package because sanitized evidence cannot reveal exact malformed fields; authorize immediate superseding-lineage preparation; reuse the existing report contract without finite reasons; or infer provider/prompt causality from aggregate failures.
 **Reason:** RM-28 truthfully localizes the six schema failures and 17 unsupported-evidence findings while preserving unknown validation paths and causality. Finite sanitized reason codes and reconciliation tests improve the next evidence boundary without exposing raw payloads or pretending the rejected candidate passed.
 **Consequences:** Offline code and mock tests may be implemented, but superseding-lineage preparation, preregistration, freeze, provider execution, validation, held-out access, Stage B, selection and promotion remain closed pending another owner review.
+
+## [2026-08-22] Approve superseding S12-f-12 lineage preparation only
+
+**Decision:** Approve the corrected RM-30 finite diagnostic implementation and
+authorize offline preparation of a new versioned S12-f-12 preregistration,
+execution package and technical freeze, without issuing any of them.
+**Alternatives considered:** Reject RM-30 after its initial audit findings;
+authorize an immediate rerun; reuse or mutate the closed v7 lineage; or issue a
+new preregistration and freeze in the same review.
+**Reason:** The initial owner audit found two fail-closed gaps: malformed runtime
+diagnostic inputs could raise, and the report schema admitted unregistered
+reason codes. Both were corrected with regression coverage; the safe suite now
+passes 70 tests, the finite allowlists are closed, all historical unknowns
+remain explicit, and the immutable report still binds 144 calls with zero
+retry. This is sufficient to prepare reviewable execution custody, but not to
+issue or execute it.
+**Consequences:** RM-32 may prepare a new exact-commit lineage offline and must
+bind the corrected diagnostic contracts. Preregistration issuance, technical
+freeze issuance, provider execution, validation, held-out access, Stage B,
+candidate selection and promotion remain closed behind separate owner gates.
