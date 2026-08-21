@@ -908,10 +908,15 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   reconciliation-failure diagnosis and deterministic runtime-remediation
   preparation are permitted; no report, quality gate or downstream decision
   exists.
-- [ ] **S12-RM-38 — Prepare offline RM36 reconciliation-failure diagnosis and
-  remediation:** Inspect repository-visible runtime code and deterministic mocks
-  only. Do not invoke a provider, rerun v8, create a superseding lineage, or
-  open validation, held-out, Stage B, selection or promotion.
+- [x] **S12-RM-38 — Prepare offline RM36 reconciliation-failure diagnosis and
+  remediation:** Deterministically reproduced the first-case predicted-
+  entities reconciliation defect, prepared the finite remediation proposal and
+  focused regression tests without provider calls or runtime implementation.
+- [ ] **S12-RM-39 — Owner review RM38 diagnosis and remediation proposal:**
+  Review the sanitized finding and decide whether runtime implementation may
+  proceed. Provider execution, retry/rerun, superseding-lineage preparation,
+  issuance, validation, held-out, Stage B, selection and promotion remain
+  closed until explicitly authorized.
 
 #### Phase F-S — Candidate Selection Resume Path
 

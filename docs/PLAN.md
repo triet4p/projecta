@@ -105,7 +105,8 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   exactly one new v8 execution. RM-36 invoked it once and failed before v8
   report persistence; the authorization is spent and no retry is permitted.
   RM-37 closed the failed execution and opened only offline reconciliation
-  diagnosis/remediation preparation. RM-38 is pending; provider execution,
+  diagnosis/remediation preparation. RM-38 prepared the diagnosis and finite
+  remediation proposal; RM-39 owner review is pending. Provider execution,
   superseding-lineage preparation, validation, held-out access, Stage B,
   selection and promotion remain closed.
   No business-quality claim is made, and new connector/outbound breadth remains

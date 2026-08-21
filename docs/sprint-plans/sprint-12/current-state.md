@@ -62,9 +62,11 @@ preregistration or technical freeze.
 
 ## Next work
 
-1. RM-38 must prepare offline RM36 reconciliation-failure diagnosis and
-   deterministic runtime remediation.
-2. Keep provider execution, retry, overwrite, superseding-lineage preparation,
+1. RM-38 has prepared the offline RM36 reconciliation diagnosis and finite
+   remediation proposal; its non-authoritative artifacts await RM-39 owner
+   review.
+2. RM-39 must decide whether offline runtime implementation may proceed. Keep
+   provider execution, retry, overwrite, superseding-lineage preparation,
    validation, held-out access, Stage B, selection and promotion closed.
 3. Do not claim accuracy improvement, candidate quality, business quality or
    tenant readiness from this rejected run.

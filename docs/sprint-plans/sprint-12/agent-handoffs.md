@@ -184,6 +184,20 @@ sanitized execution facts and deterministic mocks to diagnose and prepare a
 remediation. It may not call a provider, rerun v8, create a superseding
 lineage, or open validation, held-out, Stage B, selection or promotion.
 
+## Handoff L — RM-38 diagnosis to RM-39 owner review
+
+**Status:** RM-38 complete; RM-39 pending.
+
+RM-38 prepared a non-authoritative diagnosis and finite remediation proposal
+from repository-visible code, sanitized RM-36/RM-37 facts and deterministic
+mocks. The reproducer shows that `_evidence_reasons` counts non-exact/extra
+relations while the arm materializer denominator counts only exact semantic
+pairs; it also records the endpoint span-shape adapter gap. The hidden provider
+payload remains unknown. RM-39 may review the proposal and decide whether
+offline runtime implementation is allowed. No provider execution, retry,
+rerun, superseding lineage, issuance, validation, held-out, Stage B, selection
+or promotion is authorized by RM-38.
+
 ## External-only work — custody and G6
 
 S12-55/S12-85 and the G6 blinded review still require a real external
