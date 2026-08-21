@@ -1,0 +1,53 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm33-owner-custody-erratum.v1",
+  "status": "OWNER_CUSTODY_ERRATUM_ACCEPTED_NO_EXECUTION_AUTHORITY",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-33E",
+  "decisionDate": "2026-08-22",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "erratumScope": "REPORT_SCHEMA_V8_BYTE_DIGEST_RECONCILIATION_ONLY",
+  "immutableReferences": {
+    "rm33OwnerReview": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm33-owner-review.v1.json",
+      "digest": "sha256:cb6a2965d8f107b50e01957c99366be34e0d1cfc7cc5ccf6fad684d0278e680c"
+    },
+    "rm33IssuanceTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm33-issuance-transition.v1.json",
+      "digest": "sha256:62fb2d8a9b9acec0bd07440ea13943c1e81cf98bb38793392aa97110250b7025"
+    },
+    "rm32ExecutionPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm32-execution-package.v8.json",
+      "digest": "sha256:59a42669692c9c4a5460a44643167c17c68d5449a4b9d8de2e35adad0f0f524c"
+    }
+  },
+  "executionCommit": "005a35e3be3fbff40fcdae02dfdf79145c76934b",
+  "reconciliation": {
+    "path": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v8.json",
+    "reviewedWorkingTreeDigest": "sha256:662e36911f16aa01c7eda920ec57c4fa9890ad47a4c4e4da2ef9a526482a17fc",
+    "exactExecutionBlobDigest": "sha256:c65a4f039d948e6f3a59750001e58199bfc98e57e2f2f3ac838070ef5f6f6ad5",
+    "exactGitBlobObject": "f9e9a4dfe9eedf9f52be5b70fdade4d817fc3e26",
+    "difference": "CRLF_TO_LF_LINE_ENDING_NORMALIZATION_ONLY",
+    "normalizedContentEqual": true,
+    "semanticContentChanged": false,
+    "canonicalRuntimeDigest": "sha256:c65a4f039d948e6f3a59750001e58199bfc98e57e2f2f3ac838070ef5f6f6ad5"
+  },
+  "ownerDisposition": {
+    "rm33IssuanceRevoked": false,
+    "rm33IssuanceRemainsLimitedToPreregistrationAndFreeze": true,
+    "canonicalRuntimeDigestCorrectedForFutureBindings": true,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "RM35_REVIEW_RM34_PREPARATION_USING_CANONICAL_GIT_BLOB_DIGEST"
+  },
+  "constraints": [
+    "This erratum does not mutate the RM-33 owner review, issuance transition or any RM-32 preparation artifact.",
+    "All future exact-runtime bindings must hash bytes from the named Git commit, not the checked-out working tree.",
+    "RM-35 must bind the canonical exact-execution blob digest and independently review the RM-34 preparation before any provider authorization.",
+    "No provider call, retry, overwrite or downstream access is authorized by this erratum."
+  ]
+}

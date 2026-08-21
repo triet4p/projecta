@@ -801,3 +801,19 @@ after the authorized output has been preserved.
 **Root cause:** The v4 wrapper reused v3 record builders whose output shape was valid only for the historical permissive schema; exact-commit and zero-call checks do not prove report-shape parity.
 **Fix / workaround:** Normalize abstention metrics and relation gate accounting in the v4 wrapper, close the v4 schema for the full nested report, and include an authorized mock E2E test that reaches schema validation and persists no provider output.
 **Watch out for:** Whenever a superseding runner delegates to a historical builder, compare the complete persisted object against the new schema before binding digests; preflight-only tests can miss legacy-shape failures.
+
+## [2026-08-22] Working-tree hashes can disagree with exact Git custody on Windows
+
+**Symptom:** An owner review recorded a SHA-256 digest for a JSON schema that
+did not match the byte digest of the same path at the frozen execution commit,
+even though the parsed content was identical.
+**Root cause:** The checked-out file used CRLF line endings while the Git blob
+used LF. Hashing working-tree bytes therefore produced a different custody
+digest from hashing the exact committed bytes.
+**Fix / workaround:** For every exact-commit runtime binding, resolve the blob
+at `<commit>:<path>` and hash `git cat-file blob` output. Keep preparation-only
+working-tree digests in a separate namespace and record line-ending-only
+reconciliations through an immutable owner erratum.
+**Watch out for:** Windows checkouts, `.gitattributes` conversions, or any
+freeze/authorization packet that claims exact-commit custody while its digest
+was computed with `Get-FileHash` against the working tree.
