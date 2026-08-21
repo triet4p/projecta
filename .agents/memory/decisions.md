@@ -599,3 +599,20 @@ projected correctly, malformed detail fails closed and zero raw data is emitted.
 and prepare preregistration/package/freeze artifacts offline. Issuance,
 provider execution, validation, held-out access, Stage B, selection and
 promotion remain behind later owner gates.
+
+## [2026-08-22] Issue the corrected S12-f-12 v9 lineage without execution authority
+
+**Decision:** Issue the exact RM-42 v9 preregistration and technical freeze
+after independent RM-43 review, while withholding provider authorization and
+all downstream access.
+**Alternatives considered:** Issue the initial v9 preparation despite broken
+default artifact paths; retain the corrected lineage as preparation only;
+authorize execution in the same gate; or revive the spent v8 lineage.
+**Reason:** The corrected runner loads the actual RM-42 package,
+preregistration and freeze by default, its compatibility adapter returns the
+exact frozen runtime bindings, 19 Git blobs match execution commit `f81103b`,
+and default-path mocks prove unauthorized zero calls plus bounded 144-call,
+96-branch, one-persist, no-retry and no-overwrite behavior.
+**Consequences:** A separate task may prepare an exact v9 authorization. No
+provider call is authorized until another independent owner decision; v6
+custody, failed v8 evidence and all downstream gates remain unchanged.

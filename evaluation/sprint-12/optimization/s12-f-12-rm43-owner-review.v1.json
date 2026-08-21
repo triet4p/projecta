@@ -1,0 +1,91 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm43-owner-review.v1",
+  "status": "OWNER_ISSUANCE_REVIEW_APPROVED_ISSUANCE_ONLY",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-43",
+  "decisionType": "OWNER_ISSUANCE_REVIEW_OF_CORRECTED_V9_LINEAGE",
+  "decisionDate": "2026-08-22",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedLineage": {
+    "lineageCommit": "6537f6b79f1f5326a9d8362b09af7e52df74819f",
+    "executionCommit": "f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e",
+    "preregistration": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm42-preregistration.v9.json",
+      "digest": "sha256:147503146accb6462548b9a4ce238bee989aacc63884e67a15a217304bfa03c4"
+    },
+    "executionPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm42-execution-package.v9.json",
+      "digest": "sha256:cdaad8ebdce34115c8853067245ed6e5ef4107e271de5ce073a1cbdef20b05d2"
+    },
+    "technicalFreeze": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm42-technical-freeze.v9.json",
+      "digest": "sha256:f595730955848c76d0399706d5f2f32c367a6e88b62a5b3c3986bf2ccc3dfe32"
+    },
+    "runner": {
+      "path": "scripts/run_sprint12_f12_stage_a_v9.py",
+      "exactGitBlobDigest": "sha256:523106bf38a2da3acdd6cf6be6dcb299e1763174d41d0e1f4438f5c1fefd92dd"
+    },
+    "reportSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v9.json",
+      "exactGitBlobDigest": "sha256:262822030197e36cbabe9d7cb734c794385fa8b6d8d4bf3a63eb5ce82f864bea"
+    },
+    "authorizationSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v9.json",
+      "exactGitBlobDigest": "sha256:47b52efd42849e436f757cdcedc12989d6a64820a0049db5c33e14cb8523a2b9"
+    },
+    "preflight": {
+      "path": "scripts/preflight_sprint12_f12_rm42.py",
+      "workingTreeDigest": "sha256:4351400831d8ae58ee3406c3127169bd0766f7cbd3ba9746ecde753fd38af8cd"
+    }
+  },
+  "verifiedEvidence": {
+    "preflightStatus": "F12_RM42_READY_ZERO_CALL",
+    "exactRuntimeGitBlobs": "19/19",
+    "independentFocusedTests": "23 passed",
+    "defaultLineagePathsLoadWithoutMonkeypatch": true,
+    "compatibilityAdapterMatchesExactBindings": true,
+    "semanticPairReconciliation": "pass",
+    "rawDataBoundary": "pass",
+    "providerCalls": 0,
+    "retryCount": 0,
+    "reportV9Exists": false,
+    "historicalV6DigestUnchanged": true,
+    "reportV8Exists": false,
+    "mockExecution": {
+      "unauthorizedProviderCalls": 0,
+      "authorizedProviderCalls": 144,
+      "relationBranches": 96,
+      "retryCount": 0,
+      "outputPersistCount": 1,
+      "overwriteRejected": true
+    }
+  },
+  "ownerAssessment": {
+    "actualGuardedIntegrationApproved": true,
+    "defaultPathFindingResolved": true,
+    "exactCommitCustodyApproved": true,
+    "qualityImprovementEstablished": false,
+    "blockingFindings": []
+  },
+  "decision": {
+    "rm42LineageApproved": true,
+    "preregistrationIssued": true,
+    "technicalFreezeIssued": true,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "PREPARE_SEPARATE_EXACT_V9_STAGE_A_PROVIDER_AUTHORIZATION"
+  },
+  "constraints": [
+    "This decision issues only the reviewed v9 preregistration and technical freeze lineage through a separate transition.",
+    "A separate authorization preparation and independent owner review must bind this decision, exact execution commit, package/freeze, output v9 and cost ceiling before provider capture.",
+    "The failed v8 lineage and spent RM-35 authorization cannot be reused.",
+    "No retry, overwrite or downstream access is authorized."
+  ]
+}
