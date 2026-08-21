@@ -1,0 +1,184 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm52-error-backlog.v1",
+  "status": "PRIORITIZED_OFFLINE_ERROR_BACKLOG_PREPARED_PENDING_RM53_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-52",
+  "sourceClosurePacket": "evaluation/sprint-12/optimization/s12-f-12-rm52-offline-closure.v1.json",
+  "sourceReports": {
+    "v6": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "v9": "sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e",
+    "v8ReportExists": false
+  },
+  "items": [
+    {
+      "id": "S12-F12-E01",
+      "priority": "P0",
+      "category": "residual_product_quality_failure",
+      "title": "Entity spans must remain inside source bounds",
+      "severity": "hard-gate",
+      "measuredEvidence": {
+        "v6": 6,
+        "v9": 5,
+        "v9Reason": "entity_span_out_of_source",
+        "unit": "schema-invalid responses"
+      },
+      "affectedArms": ["predicted-entities"],
+      "affectedStages": ["stage1"],
+      "affectedSlices": ["all-development"],
+      "recommendedNonProviderNextWork": [
+        "Add offline boundary-property tests for negative, empty and Unicode spans.",
+        "Make the adapter reject or classify out-of-source spans before materialization without persisting raw text."
+      ],
+      "acceptanceCriteria": [
+        "Every accepted span satisfies 0 <= start <= end <= source code-point length.",
+        "Malformed spans produce a finite fail-closed diagnostic and cannot enter scoring or persistence.",
+        "The diagnostic report reconciles one-to-one with immutable case records."
+      ],
+      "deferredUntil": ["RM53 owner disposition", "new exact lineage and authorization if a provider rerun is ever proposed"],
+      "reopenConditions": ["A new owner decision explicitly reopens provider experimentation after offline contract evidence passes"]
+    },
+    {
+      "id": "S12-F12-E02",
+      "priority": "P0",
+      "category": "residual_product_quality_failure",
+      "title": "Evidence must contain the trigger and both relation endpoints",
+      "severity": "hard-gate",
+      "measuredEvidence": {
+        "v6": {"unsupported": 17, "exactEndpointResolution": 34},
+        "v9": {"triggerContainmentFailure": 14, "endpointContainmentFailure": 6},
+        "unit": "gold-entities stage2 relation-positive case-runs"
+      },
+      "affectedArms": ["gold-entities"],
+      "affectedStages": ["stage2"],
+      "affectedSlices": ["relation-positive", "language:vi", "language:mixed"],
+      "recommendedNonProviderNextWork": [
+        "Keep trigger and endpoint containment as separate finite materializer predicates.",
+        "Add deterministic Unicode/code-point and clause/sentence boundary fixtures for missing, outside and non-containing evidence."
+      ],
+      "acceptanceCriteria": [
+        "A relation is exact only when one evidence span contains the trigger and both resolved endpoints.",
+        "Trigger and endpoint failure counts reconcile to the same exact semantic-pair denominator.",
+        "Gold-relations control remains zero-invalid under every fixture mutation."
+      ],
+      "deferredUntil": ["RM53 owner disposition", "raw payload/source custody if exact provider causality is requested"],
+      "reopenConditions": ["A new preregistered hypothesis defines a measurable evidence-containment change and receives separate owner authorization"]
+    },
+    {
+      "id": "S12-F12-E03",
+      "priority": "P0",
+      "category": "tooling_governance_lesson",
+      "title": "Scorer, materializer and accounting contracts must be immutable",
+      "severity": "custody-blocking",
+      "measuredEvidence": {
+        "rm50": "Coordinated mutations to providerCallsAttempted, responsesReceived, pricedCalls, usageValidResponses, totalCostUsd, costCeilingUsd and hard-failure classes remain accepted.",
+        "sourceLineages": ["v7", "v8", "v9"],
+        "providerCallsInRM52": 0
+      },
+      "affectedArms": ["predicted-entities", "gold-entities", "gold-relations"],
+      "affectedStages": ["stage1", "stage2", "relation"],
+      "affectedSlices": ["all-development", "relation-positive", "relation-negative", "all registered slices"],
+      "recommendedNonProviderNextWork": [
+        "Derive all accounting and gate totals from immutable source case records and execution facts.",
+        "Add mutation tests that independently alter calls, responses, pricing, usage, cost and hard-failure accounting.",
+        "Quarantine RM-50 as rejected evidence; do not patch or relabel it in this closure track."
+      ],
+      "acceptanceCriteria": [
+        "Any accounting mutation fails before a pass, reconciliation or promotion claim.",
+        "Unknown v8 cost and incomplete accounting remain null/unknown, never coerced to zero.",
+        "A fresh artifact binds source digests, case identity and derived totals without raw payloads."
+      ],
+      "deferredUntil": ["RM53 owner closure decision", "new owner decision outside this closed track"],
+      "reopenConditions": ["Owner explicitly opens a new accounting-contract workstream with a complete immutable contract"]
+    },
+    {
+      "id": "S12-F12-E04",
+      "priority": "P2",
+      "category": "unknown_causality",
+      "title": "Prompt/model/provider behavior remains unknown",
+      "severity": "unknown-not-actionable",
+      "measuredEvidence": {
+        "v6": {"schemaInvalid": 6, "invalidEvidence": 17},
+        "v9": {"schemaInvalid": 5, "invalidEvidence": 20},
+        "causalAttribution": "not established because raw provider payload/source is not retained"
+      },
+      "affectedArms": ["predicted-entities", "gold-entities"],
+      "affectedStages": ["stage1", "stage2"],
+      "affectedSlices": ["all-development"],
+      "recommendedNonProviderNextWork": ["Do not infer prompt or model causality from aggregate sanitized counts; document the unknown boundary."],
+      "acceptanceCriteria": ["Any causal claim requires newly authorized, immutable and privacy-approved evidence that actually observes the relevant payload/source."],
+      "deferredUntil": ["external custody and a new owner-authorized experiment"],
+      "reopenConditions": ["New owner decision with a measurable hypothesis, exact lineage and approved payload/source custody"]
+    },
+    {
+      "id": "S12-F12-E05",
+      "priority": "P1",
+      "category": "tooling_governance_lesson",
+      "title": "Windows Git-blob custody must be explicit",
+      "severity": "audit-blocking",
+      "measuredEvidence": {
+        "lesson": "Working-tree CRLF bytes and canonical Git-blob LF bytes can differ while remaining content-equivalent.",
+        "custodyRule": "Bind exact-commit Git blobs and record any working-tree normalization as a separate reconciliation."
+      },
+      "affectedArms": ["all"],
+      "affectedStages": ["all"],
+      "affectedSlices": ["all artifacts"],
+      "recommendedNonProviderNextWork": ["Make safe tests calculate both index/blob and working-tree digests where exact-commit custody is claimed."],
+      "acceptanceCriteria": ["A claimed exact-commit digest is independently reproducible from git show and cannot be satisfied by an untracked working-tree rewrite."],
+      "deferredUntil": ["RM53 owner disposition"],
+      "reopenConditions": ["Any future exact-lineage preparation or custody mismatch"]
+    },
+    {
+      "id": "S12-F12-E06",
+      "priority": "P0",
+      "category": "tooling_governance_lesson",
+      "title": "Unsafe historical tests must not delete immutable reports",
+      "severity": "custody-blocking",
+      "measuredEvidence": {
+        "lesson": "Some historical mock tests can remove the immutable Stage A report when run against the repository output path.",
+        "requiredControl": "Run destructive-path tests only against disposable copies and keep safe suites read-only against v6/v9."
+      },
+      "affectedArms": ["all"],
+      "affectedStages": ["all"],
+      "affectedSlices": ["repository test harness"],
+      "recommendedNonProviderNextWork": ["Mark destructive tests unsafe, redirect outputs to temporary directories and add a report-presence custody assertion."],
+      "acceptanceCriteria": ["Safe regression tests leave v6/v9 bytes and digests unchanged and preserve absent v8 output."],
+      "deferredUntil": ["RM53 owner disposition"],
+      "reopenConditions": ["Any test or script proposes writing to an immutable report path"]
+    },
+    {
+      "id": "S12-F12-E07",
+      "priority": "P0",
+      "category": "external_custody_blocker",
+      "title": "G6 held-out and human evidence remain external blockers",
+      "severity": "release-blocking",
+      "measuredEvidence": {
+        "repositoryState": "held-out payload and gold are not present; humanEvidence remains false",
+        "requiredEvidence": ["external held-out custodian", "blinded target-role review", "frozen passing candidate"]
+      },
+      "affectedArms": ["all"],
+      "affectedStages": ["G6"],
+      "affectedSlices": ["held-out"],
+      "recommendedNonProviderNextWork": ["Coordinate only with an authorized external custodian; do not synthesize or relabel repository fixtures as held-out evidence."],
+      "acceptanceCriteria": ["Custody, unlock, blinded evaluation, reviewer evidence and digests are independently recorded under a later owner gate."],
+      "deferredUntil": ["external custody availability"],
+      "reopenConditions": ["Human owner supplies an authorized external custody transition"]
+    }
+  ],
+  "governance": {
+    "offlineOnly": true,
+    "providerExperimentationStopped": true,
+    "providerCalls": 0,
+    "runtimeRemediationAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "providerExecutionAuthorized": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "nextGate": "S12-RM-53_OWNER_CLOSURE_REVIEW_RM52_PACKET_AND_ERROR_BACKLOG",
+  "claimBoundary": "Prioritized offline backlog only. It records failures, unknowns and custody lessons; it does not claim Sprint 12, G5 or G6 completion or quality."
+}

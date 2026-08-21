@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.local/s12-f-12-rm52-offline-closure.schema.v1.json",
+  "type": "object",
+  "required": ["artifactVersion", "status", "experimentId", "taskId", "predecessor", "custody", "accountingSummary", "classification", "governance", "nextGate", "claimBoundary"],
+  "properties": {
+    "artifactVersion": {"const": "s12.s12-f-12.rm52-offline-closure.v1"},
+    "status": {"const": "OFFLINE_F12_CLOSURE_PACKET_PREPARED_PENDING_RM53_OWNER_REVIEW"},
+    "experimentId": {"const": "s12-f-12"},
+    "taskId": {"const": "S12-RM-52"},
+    "predecessor": {"type": "object"},
+    "custody": {"type": "object"},
+    "accountingSummary": {"type": "object"},
+    "classification": {"type": "object"},
+    "governance": {"type": "object"},
+    "nextGate": {"const": "S12-RM-53_OWNER_CLOSURE_REVIEW_RM52_PACKET_AND_ERROR_BACKLOG"},
+    "claimBoundary": {"type": "string"}
+  }
+}

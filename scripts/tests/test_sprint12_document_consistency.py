@@ -59,7 +59,7 @@ def test_rm25_transition_remains_historical_and_current_state_agrees_after_rm33(
     authorization_path = OPT / "s12-f-12-rm25-authorization.v1.json"
     review_path = OPT / "s12-f-12-rm25-owner-review.v1.json"
 
-    assert current["status"] == "G5_F12_V9_STAGE_A_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY"
+    assert current["status"] == "G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY"
     assert g5["status"] == "G5_F12_V8_AUTHORIZED_PENDING_EXECUTION"
     assert transition["authorization"]["digest"] == _digest(authorization_path)
     assert transition["ownerReview"]["digest"] == _digest(review_path)
@@ -90,7 +90,7 @@ def test_rm33_issuance_is_digest_bound_and_provider_locked() -> None:
     assert packet["issuanceTransition"]["digest"] == _digest(transition_path)
     assert current["currentEvidence"]["rm33OwnerReview"]["digest"] == _digest(owner_path)
     assert current["currentEvidence"]["rm33IssuanceTransition"]["digest"] == _digest(transition_path)
-    assert current["status"] == "G5_F12_V9_STAGE_A_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY"
+    assert current["status"] == "G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY"
     assert current["currentEvidence"]["rm35Authorization"]["expectedStatus"] == (
         "APPROVED_FOR_DEVELOPMENT_STAGE_A"
     )
@@ -139,7 +139,7 @@ def test_rm27_owner_decision_transition_and_current_state_bind_closed_lineage() 
         "F12_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_REMEDIATION_PREPARATION_ONLY"
     )
     assert g5["status"] == "G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY"
-    assert current["status"] == "G5_F12_V9_STAGE_A_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY"
+    assert current["status"] == "G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY"
     assert report["decision"]["status"] == "COMPLETED_REJECTED_HARD_GATE"
     assert report["accounting"]["providerCallsAttempted"] == 144
     assert report["accounting"]["retryCount"] == 0
@@ -178,8 +178,8 @@ def test_rm27_owner_decision_transition_and_current_state_bind_closed_lineage() 
     }
     assert current["experimentState"]["candidateSelection"] == "NO_SELECTION"
     assert current["nextTasks"] == [
-        "S12-RM-48_PREPARE_OFFLINE_V6_V9_ERROR_COMPARISON_AND_REMEDIATION_OPTIONS",
-        "S12-RM-49_OWNER_REVIEW_OFFLINE_ERROR_ANALYSIS_PREPARATION",
+        "S12-RM-52_PREPARE_OFFLINE_F12_CLOSURE_AND_PRIORITIZED_ERROR_BACKLOG",
+        "S12-RM-53_OWNER_CLOSURE_REVIEW_RM52_PACKET_AND_ERROR_BACKLOG",
     ]
 
 
@@ -196,7 +196,7 @@ def test_rm37_closes_v8_and_binds_authoritative_packet() -> None:
     assert packet["status"] == (
         "G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
     )
-    assert current["status"] == "G5_F12_V9_STAGE_A_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY"
+    assert current["status"] == "G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY"
     assert packet["ownerReview"]["digest"] == _digest(
         OPT / "s12-f-12-rm43-owner-review.v1.json"
     )
@@ -209,7 +209,7 @@ def test_rm37_closes_v8_and_binds_authoritative_packet() -> None:
         "PREPARE_OFFLINE_RM36_RECONCILIATION_FAILURE_DIAGNOSIS_AND_REMEDIATION"
     )
     assert current["currentEvidence"]["g5Packet"]["path"] == (
-        "evaluation/sprint-12/optimization/g5-packet.v33.rm47-closure.json"
+        "evaluation/sprint-12/optimization/g5-packet.v36.rm51-closure-only.json"
     )
     assert current["experimentState"]["supersededLineages"]["v8"]["providerCallsPerformed"] == 3
     assert current["experimentState"]["supersededLineages"]["v8"]["relationBranchOutputs"] is None
@@ -218,6 +218,9 @@ def test_rm37_closes_v8_and_binds_authoritative_packet() -> None:
     )
     assert current["experimentState"]["currentGovernance"][
         "offlineErrorAnalysisPreparationAuthorized"
+    ] is False
+    assert current["experimentState"]["currentGovernance"][
+        "offlineClosureDocumentationAuthorized"
     ] is True
 
 
@@ -244,9 +247,9 @@ def test_rm43_issues_v9_only_and_opens_rm44_rm45() -> None:
     assert transition["ownerReview"]["digest"] == _digest(owner_path)
     assert current["currentEvidence"]["rm43OwnerReview"]["digest"] == _digest(owner_path)
     assert current["currentEvidence"]["rm43IssuanceTransition"]["digest"] == _digest(transition_path)
-    current_packet_path = OPT / "g5-packet.v33.rm47-closure.json"
+    current_packet_path = OPT / "g5-packet.v36.rm51-closure-only.json"
     assert current["currentEvidence"]["g5Packet"]["digest"] == _digest(current_packet_path)
-    assert current["status"] == "G5_F12_V9_STAGE_A_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY"
+    assert current["status"] == "G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY"
     assert owner["decision"]["preregistrationIssued"] is True
     assert owner["decision"]["technicalFreezeIssued"] is True
     for key in (
@@ -268,8 +271,8 @@ def test_rm43_issues_v9_only_and_opens_rm44_rm45() -> None:
     assert current["experimentState"]["currentLineage"]["stageAReportExists"] is True
     assert current["experimentState"]["supersededLineages"]["v8"]["providerCallsPerformed"] == 3
     assert current["nextTasks"] == [
-        "S12-RM-48_PREPARE_OFFLINE_V6_V9_ERROR_COMPARISON_AND_REMEDIATION_OPTIONS",
-        "S12-RM-49_OWNER_REVIEW_OFFLINE_ERROR_ANALYSIS_PREPARATION",
+        "S12-RM-52_PREPARE_OFFLINE_F12_CLOSURE_AND_PRIORITIZED_ERROR_BACKLOG",
+        "S12-RM-53_OWNER_CLOSURE_REVIEW_RM52_PACKET_AND_ERROR_BACKLOG",
     ]
 
 
@@ -297,7 +300,7 @@ def test_current_documents_do_not_repeat_superseded_statuses() -> None:
 
     assert "sprint-12/current-state.md" in sprint_plan
     assert "sprint-12/g5-optimization.v23.rm35-authorization.md" in sprint_plan
-    assert "G5_F12_V9_STAGE_A_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY" in global_plan
+    assert "G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY" in global_plan
     assert "g5-optimization.v25.rm37-closure.md" in sprint_plan
     assert "Handoff K — RM-37 closure to RM-38 offline diagnosis" in handoffs
     assert "CURRENT_F12_V9_ISSUED_AUTHORIZATION_HANDOFF" in handoffs

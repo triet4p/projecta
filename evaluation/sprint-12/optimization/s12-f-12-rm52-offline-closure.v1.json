@@ -1,0 +1,208 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm52-offline-closure.v1",
+  "status": "OFFLINE_F12_CLOSURE_PACKET_PREPARED_PENDING_RM53_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-52",
+  "predecessor": {
+    "ownerDecision": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm51-owner-decision.v1.json",
+      "digest": "sha256:f2177fa9c9d5d3b82c491578ef4a3f322832e175926b15ff2f59256b5fbdfb76",
+      "status": "RM50_REJECTED_OPTION_C_STOP_PROVIDER_EXPERIMENTATION"
+    },
+    "decisionTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm51-decision-transition.v1.json",
+      "digest": "sha256:7dd4f1aadecdca2051fcee302f17fe17c7d1d968297165b6d4ef4716a848de9e",
+      "status": "F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY"
+    }
+  },
+  "custody": {
+    "immutableReports": {
+      "v6": {
+        "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+        "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+        "providerCallsAttempted": 144,
+        "responsesReceived": 144,
+        "relationBranchOutputs": 96,
+        "retryCount": 0,
+        "schemaValidResponses": 138,
+        "schemaInvalid": 6,
+        "invalidEvidence": 17,
+        "knownCostUsd": "0.00592500",
+        "status": "COMPLETED_REJECTED_HARD_GATE"
+      },
+      "v9": {
+        "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json",
+        "digest": "sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e",
+        "providerCallsAttempted": 144,
+        "responsesReceived": 144,
+        "relationBranchOutputs": 96,
+        "retryCount": 0,
+        "schemaValidResponses": 139,
+        "schemaInvalid": 5,
+        "invalidEvidence": 20,
+        "knownCostUsd": "0.00599700",
+        "status": "COMPLETED_REJECTED_HARD_GATE"
+      }
+    },
+    "failedV8Execution": {
+      "executionFact": {
+        "path": "evaluation/sprint-12/optimization/s12-f-12-rm36-execution-transition.v1.json",
+        "digest": "sha256:738d3bdada83af5f152a2a5974af1a73e856247d88c226cafd3d5d60d6899d45",
+        "providerCallsAttempted": 3,
+        "responsesReceived": 3,
+        "retryCount": 0,
+        "reportPersisted": false,
+        "costUsd": null,
+        "accountingComplete": false
+      },
+      "closureDecision": {
+        "path": "evaluation/sprint-12/optimization/s12-f-12-rm37-owner-decision.v1.json",
+        "digest": "sha256:d4f6725d4b1e44007a7da35dc8030b496eb075bc1bdbfd653b3e321d3c14550d"
+      },
+      "closureTransition": {
+        "path": "evaluation/sprint-12/optimization/s12-f-12-rm37-decision-transition.v1.json",
+        "digest": "sha256:87b1abbba0323c72dd73152305beeac696113a5238514af5a1a9e53eecf03098"
+      },
+      "report": {
+        "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json",
+        "exists": false,
+        "digest": null
+      }
+    },
+    "spentAuthorizations": {
+      "v7": {
+        "authorization": {
+          "path": "evaluation/sprint-12/optimization/s12-f-12-rm25-authorization.v1.json",
+          "digest": "sha256:f72f7701d20b97674a1d1403c375eaa0c52fd282887cb03e2e65ca45697c7a03"
+        },
+        "transition": {
+          "path": "evaluation/sprint-12/optimization/s12-f-12-rm25-authorization-transition.v1.json",
+          "digest": "sha256:2f4593836aa3fd181f777b12c96cd0db695538323cde0dacf6e8f4a940d37550"
+        },
+        "spent": true,
+        "providerCalls": 144,
+        "knownCostUsd": "0.00592500"
+      },
+      "v8": {
+        "authorization": {
+          "path": "evaluation/sprint-12/optimization/s12-f-12-rm35-authorization.v8.json",
+          "digest": "sha256:d3e3fd1f4f8520133f91e088e280d415935e1ed38656b6ef0b55a9b4ea84f00a"
+        },
+        "transition": {
+          "path": "evaluation/sprint-12/optimization/s12-f-12-rm35-authorization-transition.v1.json",
+          "digest": "sha256:45e9091877d51a273e224a5314902bbb28dd2953faf09d06876d14e4f29c5fa1"
+        },
+        "spent": true,
+        "providerCalls": 3,
+        "knownCostUsd": null
+      },
+      "v9": {
+        "authorization": {
+          "path": "evaluation/sprint-12/optimization/s12-f-12-rm45-authorization.v9.json",
+          "digest": "sha256:ad84eaad496458cc2f5064be59016d7e2497aa4d3ad898e807cf8d496d77a0c8"
+        },
+        "transition": {
+          "path": "evaluation/sprint-12/optimization/s12-f-12-rm45-authorization-transition.v1.json",
+          "digest": "sha256:68a69e313e203aa7d5e88209efacf3d7b8eab293a2d015810f0953fdb0dc6234"
+        },
+        "spent": true,
+        "providerCalls": 144,
+        "knownCostUsd": "0.00599700"
+      }
+    },
+    "ownerDecisions": {
+      "rm47": {
+        "path": "evaluation/sprint-12/optimization/s12-f-12-rm47-owner-decision.v1.json",
+        "digest": "sha256:bbb10126bf61fe0272c2421bc02d45af28ec9d9f4b9abb920258280385dd9ca5"
+      },
+      "rm47Transition": {
+        "path": "evaluation/sprint-12/optimization/s12-f-12-rm47-decision-transition.v1.json",
+        "digest": "sha256:262b090d8b55c46dfeb1730d1235513a57fc1db68452839f900aad2f842a76fb"
+      },
+      "rm51": {
+        "path": "evaluation/sprint-12/optimization/s12-f-12-rm51-owner-decision.v1.json",
+        "digest": "sha256:f2177fa9c9d5d3b82c491578ef4a3f322832e175926b15ff2f59256b5fbdfb76"
+      },
+      "rm51Transition": {
+        "path": "evaluation/sprint-12/optimization/s12-f-12-rm51-decision-transition.v1.json",
+        "digest": "sha256:7dd4f1aadecdca2051fcee302f17fe17c7d1d968297165b6d4ef4716a848de9e"
+      }
+    },
+    "rejectedRm50Artifacts": {
+      "package": {
+        "path": "evaluation/sprint-12/optimization/s12-f-12-rm50-offline-remediation.v1.json",
+        "digest": "sha256:16926e64543bc827138191a63d3cb039e55ce8dbd0efbc754457192a271aa7ea"
+      },
+      "diagnosticReport": {
+        "path": "evaluation/sprint-12/optimization/s12-f-12-rm50-offline-diagnostic-report.v1.json",
+        "digest": "sha256:62a660e80e37b05e5b8cf7ec471610e5237d9c5cc30d966d44f76c7027c17a16"
+      },
+      "parityFixtures": {
+        "path": "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-fixtures.v1.json",
+        "digest": "sha256:988cb21c0b8d18845fdf0f0400ad5aadc3d90d782309bf2358b431ea44fe3095"
+      },
+      "parityReport": {
+        "path": "evaluation/sprint-12/optimization/s12-f-12-rm50-parity-report.v1.json",
+        "digest": "sha256:69b422aa195dbf4f3b479ea1deb8f70fe82a80e5e32069c4693b173f6c00cc6d"
+      },
+      "rejectionReason": "RM-50 accepts coordinated mutations to provider calls, responses, pricing, usage, cost ceiling and hard-failure accounting; these are not immutably reconciled to v6/v9 sources."
+    }
+  },
+  "accountingSummary": {
+    "authorizedExecutions": 3,
+    "providerCallsAttempted": 291,
+    "providerResponsesReceived": 291,
+    "retryCount": 0,
+    "knownCostUsd": "0.01192200",
+    "totalCostUsd": null,
+    "costComplete": false,
+    "v8CostReason": "No aggregate cost was persisted before the report-less failure.",
+    "reportCount": 2,
+    "reportPaths": [
+      "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+      "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json"
+    ],
+    "failedV8ReportAbsent": true
+  },
+  "classification": {
+    "bugsFixedInOfflineScopes": [
+      "RM-40 aligned evidence diagnostics with the exact semantic-pair scorer domain and projected endpoint span tuples without retaining raw payloads.",
+      "RM-50 closed finite diagnostic reason allowlists, raw-data aliases, fixture identity and deterministic scorer/materializer parity boundaries."
+    ],
+    "residualProductQualityFailures": [
+      "v9 still has five out-of-source entity spans and twenty invalid-evidence findings; hard, threshold and slice gates fail.",
+      "RM-50 accounting remains mutable against immutable v6/v9 source reports, so parity evidence is rejected for promotion or execution use.",
+      "No quality improvement, candidate, business-quality or tenant-readiness claim is established."
+    ],
+    "toolingAndGovernanceLessons": [
+      "Exact Git-blob custody must be distinguished from working-tree bytes, including Windows CRLF normalization.",
+      "Historical tests that delete or overwrite immutable reports must be quarantined from the safe regression suite and run only on disposable copies."
+    ],
+    "externalCustodyBlockers": [
+      "G6 still requires an external held-out custodian, blinded review and target-role human evidence; repository artifacts cannot satisfy those controls."
+    ]
+  },
+  "governance": {
+    "offlineOnly": true,
+    "providerExperimentationStopped": true,
+    "offlineClosureDocumentationAuthorized": true,
+    "errorBacklogPreparationAuthorized": true,
+    "providerCalls": 0,
+    "runtimeRemediationAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "preregistrationIssued": false,
+    "technicalFreezeIssued": false,
+    "newAuthorizationIssued": false,
+    "providerExecutionAuthorized": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "downstreamAccessAuthorized": false
+  },
+  "nextGate": "S12-RM-53_OWNER_CLOSURE_REVIEW_RM52_PACKET_AND_ERROR_BACKLOG",
+  "claimBoundary": "Non-authoritative offline closure preparation only. This packet does not complete Sprint 12, G5 or G6, does not establish quality, and does not authorize provider, runtime, lineage or downstream work."
+}

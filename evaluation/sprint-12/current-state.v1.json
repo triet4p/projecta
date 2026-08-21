@@ -1,7 +1,7 @@
 {
   "artifactVersion": "s12.current-state.v1",
   "asOf": "2026-08-22",
-  "status": "G5_F12_V9_STAGE_A_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY",
+  "status": "G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY",
   "sourcePrecedence": [
     "this current-state index",
     "latest explicit owner decision or transition record",
@@ -127,6 +127,16 @@
       "digest": "sha256:262b090d8b55c46dfeb1730d1235513a57fc1db68452839f900aad2f842a76fb",
       "expectedStatus": "V9_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY"
     },
+    "rm51OwnerDecision": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm51-owner-decision.v1.json",
+      "digest": "sha256:f2177fa9c9d5d3b82c491578ef4a3f322832e175926b15ff2f59256b5fbdfb76",
+      "expectedStatus": "RM50_REJECTED_OPTION_C_STOP_PROVIDER_EXPERIMENTATION"
+    },
+    "rm51DecisionTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm51-decision-transition.v1.json",
+      "digest": "sha256:7dd4f1aadecdca2051fcee302f17fe17c7d1d968297165b6d4ef4716a848de9e",
+      "expectedStatus": "F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY"
+    },
     "stageAReport": {
       "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
       "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
@@ -138,9 +148,9 @@
       "status": "COMPLETED_REJECTED_HARD_GATE"
     },
     "g5Packet": {
-      "path": "evaluation/sprint-12/optimization/g5-packet.v33.rm47-closure.json",
-      "digest": "sha256:a0973bfa97bab65ef763dc0b2a0397f0f1ad859c7aa59482ee4cbaa7cfcc9605",
-      "version": "s12.g5.packet.v33.rm47-closure"
+      "path": "evaluation/sprint-12/optimization/g5-packet.v36.rm51-closure-only.json",
+      "digest": "sha256:f71d756c2810992abc563db845c42aefe0bf1bb5ecd7a2136f29ce725a432524",
+      "version": "s12.g5.packet.v36.rm51-closure-only"
     },
     "humanSummary": "docs/sprint-plans/sprint-12/current-state.md"
   },
@@ -154,7 +164,7 @@
     "G3.1-C": "APPROVED_WITH_SCOPE_LIMITS",
     "G4": "RUNTIME_BACKED_BASELINE_WITH_FAILURES",
     "G4.1": "CONTRACT_ALIGNED_STABILITY_FAILED",
-    "G5": "F12_V9_STAGE_A_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_ERROR_ANALYSIS_PREPARATION_ONLY",
+    "G5": "F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY",
     "G6": "BLOCKED_CUSTODY_OR_CANDIDATE",
     "G7": "NOT_STARTED"
   },
@@ -226,8 +236,10 @@
       "stageBAuthorized": false,
       "candidateSelectionAuthorized": false,
       "promotionAuthorized": false,
-      "offlineErrorAnalysisPreparationAuthorized": true,
+      "offlineErrorAnalysisPreparationAuthorized": false,
       "offlineRemediationImplementationAuthorized": false,
+      "offlineClosureDocumentationAuthorized": true,
+      "errorBacklogPreparationAuthorized": true,
       "supersedingLineagePreparationAuthorized": false,
       "rerunAuthorized": false,
       "retryAuthorized": false,
@@ -252,8 +264,8 @@
       "downstreamAccessAuthorized": false
   },
     "nextTasks": [
-    "S12-RM-48_PREPARE_OFFLINE_V6_V9_ERROR_COMPARISON_AND_REMEDIATION_OPTIONS",
-    "S12-RM-49_OWNER_REVIEW_OFFLINE_ERROR_ANALYSIS_PREPARATION"
+    "S12-RM-52_PREPARE_OFFLINE_F12_CLOSURE_AND_PRIORITIZED_ERROR_BACKLOG",
+    "S12-RM-53_OWNER_CLOSURE_REVIEW_RM52_PACKET_AND_ERROR_BACKLOG"
   ],
-  "claimBoundary": "RM-47 closes the completed rejected v9 Stage A with no Stage B and permits only offline v6/v9 error-comparison and remediation-option preparation. It establishes no quality improvement, candidate, business-quality, tenant-readiness or downstream claim. The v6 and v9 reports remain immutable and the failed v8 report remains absent."
+  "claimBoundary": "RM-51 stops f12 provider experimentation and permits only offline closure documentation and error-backlog preparation. It establishes no Sprint 12, G5 or G6 completion, quality, candidate, business-quality, tenant-readiness or downstream claim. The v6 and v9 reports remain immutable and the failed v8 report remains absent."
 }

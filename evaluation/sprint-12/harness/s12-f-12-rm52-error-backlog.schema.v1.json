@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.local/s12-f-12-rm52-error-backlog.schema.v1.json",
+  "type": "object",
+  "required": ["artifactVersion", "status", "experimentId", "taskId", "sourceReports", "items", "governance", "nextGate", "claimBoundary"],
+  "properties": {
+    "artifactVersion": {"const": "s12.s12-f-12.rm52-error-backlog.v1"},
+    "status": {"const": "PRIORITIZED_OFFLINE_ERROR_BACKLOG_PREPARED_PENDING_RM53_OWNER_REVIEW"},
+    "experimentId": {"const": "s12-f-12"},
+    "taskId": {"const": "S12-RM-52"},
+    "sourceReports": {"type": "object"},
+    "items": {"type": "array", "minItems": 7, "items": {"type": "object", "required": ["id", "priority", "category", "measuredEvidence", "affectedArms", "affectedSlices", "recommendedNonProviderNextWork", "acceptanceCriteria", "deferredUntil", "reopenConditions"]}},
+    "governance": {"type": "object"},
+    "nextGate": {"const": "S12-RM-53_OWNER_CLOSURE_REVIEW_RM52_PACKET_AND_ERROR_BACKLOG"},
+    "claimBoundary": {"type": "string"}
+  }
+}
