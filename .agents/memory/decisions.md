@@ -477,3 +477,10 @@ next highest-value work.
 **Alternatives considered:** Open Stage B despite failed gates; reuse the spent RM-25 authorization; close Sprint 12 without diagnosis; or authorize an immediate rerun against the existing v7 lineage.
 **Reason:** The immutable Stage A report is complete and schema-valid as evidence, but the candidate produced six schema-invalid responses, 17 invalid-evidence findings and failed registered threshold and slice gates. The passing gold-relations control does not waive candidate hard failures, while sanitized evidence is insufficient to attribute sole causality to one provider, prompt or runtime component.
 **Consequences:** The v6 report and RM-25 authorization remain immutable and non-reusable. Provider execution, validation, held-out access, Stage B, selection, freeze and promotion stay closed. Any future run requires offline remediation, a superseding governed lineage, exact-commit review and new owner authorization.
+
+## [2026-08-22] Approve S12-f-12 offline diagnostic remediation implementation only
+
+**Decision:** Approve the RM-28 finite schema/evidence diagnostic contract for offline implementation and deterministic mock testing only.
+**Alternatives considered:** Reject the package because sanitized evidence cannot reveal exact malformed fields; authorize immediate superseding-lineage preparation; reuse the existing report contract without finite reasons; or infer provider/prompt causality from aggregate failures.
+**Reason:** RM-28 truthfully localizes the six schema failures and 17 unsupported-evidence findings while preserving unknown validation paths and causality. Finite sanitized reason codes and reconciliation tests improve the next evidence boundary without exposing raw payloads or pretending the rejected candidate passed.
+**Consequences:** Offline code and mock tests may be implemented, but superseding-lineage preparation, preregistration, freeze, provider execution, validation, held-out access, Stage B, selection and promotion remain closed pending another owner review.

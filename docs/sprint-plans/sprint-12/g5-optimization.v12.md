@@ -1,7 +1,7 @@
 # Sprint 12 G5 Optimization Packet v12
 
 > Historical gate snapshot. The authoritative current packet is
-> [G5 Optimization Packet v15](g5-optimization.v15.md).
+> [G5 Optimization Packet v17](g5-optimization.v17.md).
 
 **Status:** `G5_F12_ISSUED_PROVIDER_AUTHORIZATION_PENDING`
 

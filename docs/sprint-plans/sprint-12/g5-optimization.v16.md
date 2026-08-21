@@ -1,5 +1,8 @@
 # Sprint 12 G5 Optimization Next-State Preparation v16
 
+> Non-authoritative preparation snapshot. The authoritative current packet is
+> [G5 Optimization Packet v17](g5-optimization.v17.md).
+
 **Role:** non-authoritative offline next-state preparation
 
 **Current owner state remains:** `G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY`

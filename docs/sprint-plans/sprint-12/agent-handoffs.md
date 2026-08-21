@@ -1,6 +1,6 @@
 # Sprint 12 Current Handoffs
 
-**Status:** `CURRENT_OFFLINE_F12_REMEDIATION_PREPARATION_HANDOFF`
+**Status:** `CURRENT_OFFLINE_F12_REMEDIATION_IMPLEMENTATION_HANDOFF`
 
 This revision supersedes the old baseline and generic-optimization handoffs.
 Those tasks are complete or historically closed. Use
@@ -79,15 +79,18 @@ failures from the passing gold-relations control and preserve the limits of the
 sanitized report: exact malformed fields and sole provider/prompt causality are
 not established.
 
-This handoff may prepare a superseding design only. It does not authorize a
-provider call, rerun, validation, held-out access, Stage B or selection.
+This handoff may implement the approved finite diagnostic/remediation contract
+and deterministic mock tests only. It does not authorize a superseding
+execution lineage, provider call, rerun, validation, held-out access, Stage B
+or selection.
 
 **RM-28 status:** complete for offline preparation. The non-authoritative
 remediation package records the proven arm/stage locations, the unsupported
 evidence bucket with exact semantic matches and resolved endpoints, and finite
 sanitized diagnostics. Exact malformed fields and provider causality remain
-unknown. The next gate is owner review; any run still requires a superseding
-lineage and new authorization.
+unknown. RM-29 approved offline implementation only; any execution-lineage
+preparation still requires a separate owner review, and any run requires a new
+authorization.
 
 ## External-only work — custody and G6
 

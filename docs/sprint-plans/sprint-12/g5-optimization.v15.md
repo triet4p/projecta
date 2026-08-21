@@ -1,9 +1,12 @@
 # Sprint 12 G5 Optimization Packet v15
 
+> Historical gate snapshot. The authoritative current packet is
+> [G5 Optimization Packet v17](g5-optimization.v17.md).
+
 **Status:** `G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY`
 
-This is the current G5 packet. Version 14 and earlier packets remain immutable
-historical evidence.
+This packet captured the closed-rejected/offline-preparation state. It and
+earlier packets remain immutable historical evidence.
 
 ## Owner decision
 

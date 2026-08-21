@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY`
+Status: `G5_F12_OFFLINE_REMEDIATION_APPROVED_IMPLEMENTATION_ONLY`
 
 Current state: [Sprint 12 Current State](sprint-12/current-state.md)
 
@@ -12,7 +12,7 @@ G4 packet: [Baseline Evaluation Review Packet](sprint-12/g4-baseline.md)
 
 G4.1 packet: [Contract Alignment and Failure Diagnosis](sprint-12/g4.1-contract-alignment.md)
 
-G5 packet: [Controlled Optimization Review Packet v15](sprint-12/g5-optimization.v15.md)
+G5 packet: [Controlled Optimization Review Packet v17](sprint-12/g5-optimization.v17.md)
 
 G6 packet: [Held-out Business Evaluation Packet](sprint-12/g6-business-evaluation.md)
 
@@ -859,6 +859,14 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   unknowns preserved by report sanitation. Any new run requires a superseding
   governed lineage and separate owner authorization; RM-28 does not authorize
   execution.
+- [x] **S12-RM-29 — Owner-review RM-28 offline remediation:** Approve the finite
+  sanitized diagnostic contract and offline implementation only. No
+  preregistration, freeze, provider execution or superseding lineage
+  preparation is authorized.
+- [ ] **S12-RM-30 — Implement offline f12 diagnostic remediation:** Version the
+  future schema/evidence diagnostic path, preserve typed-span identity and
+  denominator reconciliation, and prove it with deterministic mock tests. Stop
+  for separate owner review before preparing any execution lineage.
 
 #### Phase F-S — Candidate Selection Resume Path
 
