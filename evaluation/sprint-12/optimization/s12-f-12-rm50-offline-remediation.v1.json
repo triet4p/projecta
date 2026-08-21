@@ -55,7 +55,7 @@
     "goldRelationsControlClean": true,
     "providerCalls": 0,
     "rawReconstruction": false,
-    "safeTestsPassed": 5
+    "safeTestsPassed": 6
   },
   "historicalCustody": {
     "v6ReportImmutable": true,
