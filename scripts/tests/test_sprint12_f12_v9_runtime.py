@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
+import subprocess
 import sys
+import tempfile
 from decimal import Decimal
 from pathlib import Path
 from types import SimpleNamespace
@@ -206,3 +209,171 @@ def test_v9_prospective_custody_is_144_96_once_no_retry_no_overwrite() -> None:
     assert custody["retryCount"] == 0
     with pytest.raises(rm40.RM40ReconciliationError):
         rm40.prospective_custody(output_exists_before=True)
+
+
+def _git_blob_digest(commit: str, path: str) -> str:
+    blob = subprocess.run(
+        ["git", "show", f"{commit}:{path}"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+    ).stdout
+    return "sha256:" + hashlib.sha256(blob).hexdigest()
+
+
+def _write_json(path: Path, value: object) -> None:
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def test_v9_guarded_mock_e2e_reaches_schema_and_persists_once() -> None:
+    output = ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json"
+    assert not output.exists()
+    package_source = json.loads(
+        (ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm32-execution-package.v8.json").read_text()
+    )
+    prereg_source = json.loads(
+        (ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm32-preregistration.v8.json").read_text()
+    )
+    freeze_source = json.loads(
+        (ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm32-technical-freeze.v8.json").read_text()
+    )
+    auth_source = json.loads(
+        (ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm35-authorization.v8.json").read_text()
+    )
+    commit = subprocess.run(
+        ["git", "rev-parse", "HEAD"], cwd=ROOT, check=True, capture_output=True, text=True
+    ).stdout.strip()
+    runtime_paths = (
+        "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json",
+        "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json",
+        "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v9.json",
+        "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v9.json",
+        "evaluation/sprint-12/harness/s12-f-12-stage-1-entity-envelope.schema.v2.json",
+        "evaluation/sprint-12/harness/s12-f-12-stage-2-relation-envelope.schema.v2.json",
+        "evaluation/sprint-12/harness/s12-f-12-runtime-configuration.v1.json",
+        "scripts/run_sprint12_f12_stage_a_v2.py",
+        "scripts/run_sprint12_f12_stage_a_v3.py",
+        "scripts/run_sprint12_f12_stage_a_v4.py",
+        "scripts/run_sprint12_f12_stage_a_v9.py",
+        "scripts/s12_f12_rm30_diagnostic_remediation.py",
+        "scripts/s12_f12_rm40_offline_runtime.py",
+        "scripts/sprint12_f12_two_step_contracts_v2.py",
+        "scripts/sprint12_f12_two_step_contracts_v4.py",
+        "scripts/sprint12_f12_two_step_contracts_v5.py",
+    )
+    package_source.update(
+        {
+            "artifactVersion": "s12.s12-f-12.execution-package.v9",
+            "status": "EXECUTION_PACKAGE_PREPARED_PENDING_RM43_OWNER_ISSUANCE_REVIEW",
+            "executionCommitSha": commit,
+            "lineageVersion": "v9",
+            "runtimeBoundDigests": {path: _git_blob_digest(commit, path) for path in runtime_paths},
+            "preparationEvidence": {},
+        }
+    )
+    prereg_source.update(
+        {
+            "artifactVersion": "s12.s12-f-12.preregistration.v9",
+            "executionCommitSha": commit,
+            "lineageVersion": "v9",
+        }
+    )
+    freeze_source.update(
+        {
+            "artifactVersion": "s12.s12-f-12.technical-freeze.v9",
+            "executionCommitSha": commit,
+            "lineageVersion": "v9",
+            "status": "TECHNICAL_FREEZE_PREPARED_PENDING_RM43_OWNER_ISSUANCE_REVIEW",
+        }
+    )
+    auth_source.update(
+        {
+            "artifactVersion": "s12-f-12.authorization.v9",
+            "executionCommitSha": commit,
+            "outputPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json",
+        }
+    )
+    with tempfile.TemporaryDirectory() as directory:
+        temp = Path(directory)
+        package_path = temp / "package.json"
+        prereg_path = temp / "prereg.json"
+        freeze_path = temp / "freeze.json"
+        authorization_path = temp / "authorization.json"
+        _write_json(package_path, package_source)
+        _write_json(prereg_path, prereg_source)
+        freeze_source["executionPackageDigest"] = "sha256:" + hashlib.sha256(
+            package_path.read_bytes()
+        ).hexdigest()
+        freeze_source["preregistrationDigest"] = "sha256:" + hashlib.sha256(
+            prereg_path.read_bytes()
+        ).hexdigest()
+        _write_json(freeze_path, freeze_source)
+        auth_source["executionPackageDigest"] = "sha256:" + hashlib.sha256(
+            package_path.read_bytes()
+        ).hexdigest()
+        auth_source["technicalFreezeDigest"] = "sha256:" + hashlib.sha256(
+            freeze_path.read_bytes()
+        ).hexdigest()
+        _write_json(authorization_path, auth_source)
+
+        old_relative = v9._relative
+
+        def relative(path: Path) -> str:
+            try:
+                return old_relative(path)
+            except ValueError:
+                return path.name
+
+        v9._relative = relative
+        v9.PACKAGE = package_path
+        v9.PREREG = prereg_path
+        v9.FREEZE = freeze_path
+        v9.OUTPUT = output
+        v9._configure()
+
+        class MockAdapter:
+            def __init__(self) -> None:
+                self.calls = 0
+
+            def capture_stage(self, **kwargs: object) -> ProviderCapture:
+                self.calls += 1
+                if kwargs["stage"] == "stage1":
+                    payload = {
+                        "schemaVersion": "s12-f-12.stage1.entity-envelope.v2",
+                        "entities": [],
+                        "abstention": {"required": True, "reason": "mock"},
+                    }
+                else:
+                    payload = {
+                        "schemaVersion": "s12-f-12.stage2.relation-envelope.v2",
+                        "relations": [],
+                        "abstention": {"required": True, "reason": "mock"},
+                    }
+                return ProviderCapture(
+                    payload=payload,
+                    usage={
+                        "promptCacheHitTokens": 0,
+                        "promptCacheMissTokens": 1,
+                        "outputTokens": 1,
+                    },
+                    retry_count=0,
+                )
+
+        adapter = MockAdapter()
+        try:
+            report = v9.run_stage_a(
+                provider_adapter=adapter,
+                authorization_path=authorization_path,
+                output_path=output,
+                package_path=package_path,
+            )
+            assert adapter.calls == 144
+            assert report["accounting"]["providerCallsAttempted"] == 144
+            assert report["accounting"]["retryCount"] == 0
+            assert report["diagnostics"]["evidenceFailureTotal"] == 0
+            assert output.exists()
+            assert json.loads(output.read_text())["artifactVersion"] == "s12-f-12.stage-a-report.v9"
+        finally:
+            v9._relative = old_relative
+            if output.exists():
+                output.unlink()
