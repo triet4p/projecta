@@ -1,0 +1,67 @@
+{
+  "packetVersion": "s12.g5.packet.v25.rm37-closure",
+  "status": "G5_F12_V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY",
+  "packetRole": "authoritative-current-g5-packet",
+  "asOf": "2026-08-22",
+  "supersedesForCurrentState": {
+    "path": "evaluation/sprint-12/optimization/g5-packet.v24.rm36-execution-failure.json",
+    "digest": "sha256:5448b77876d6ed1d95163b5c8d9303dad7c9c5d55607f814f32164c2c923e403"
+  },
+  "ownerDecision": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm37-owner-decision.v1.json",
+    "digest": "sha256:d4f6725d4b1e44007a7da35dc8030b496eb075bc1bdbfd653b3e321d3c14550d",
+    "status": "COMPLETED_FAILED_BEFORE_REPORT_NO_RERUN_OFFLINE_REMEDIATION_PREPARATION_ONLY"
+  },
+  "decisionTransition": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm37-decision-transition.v1.json",
+    "digest": "sha256:87b1abbba0323c72dd73152305beeac696113a5238514af5a1a9e53eecf03098",
+    "status": "V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY"
+  },
+  "executionEvidence": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm36-execution-transition.v1.json",
+    "digest": "sha256:738d3bdada83af5f152a2a5974af1a73e856247d88c226cafd3d5d60d6899d45",
+    "invocationCount": 1,
+    "providerCallsAttempted": 3,
+    "providerResponsesReceived": 3,
+    "retryCount": 0,
+    "reportV8Exists": false,
+    "accountingComplete": false,
+    "aggregateCostAvailable": false,
+    "relationBranchAggregateAvailable": false,
+    "failure": "evidence reason counts do not reconcile with arm materializer failures"
+  },
+  "authorizationBoundary": {
+    "authorizationSpent": true,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "authorizedExecutions": 1,
+    "authorizedProviderCalls": 144,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "outputOverwriteAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "offlineFailureDiagnosisPreparationAuthorized": true,
+    "offlineRuntimeRemediationPreparationAuthorized": true,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedTask": "S12-RM-38_OFFLINE_RM36_RECONCILIATION_FAILURE_DIAGNOSIS_AND_REMEDIATION_PREPARATION"
+  },
+  "historicalLineage": {
+    "lineageVersion": "v7",
+    "providerCallsPerformed": 144,
+    "relationBranchOutputs": 96,
+    "retryCount": 0,
+    "stageAReportDigest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+  },
+  "claimBoundary": {
+    "v8QualityResultAvailable": false,
+    "candidateEvaluationAvailable": false,
+    "accuracyImprovementEstablished": false,
+    "businessQualityEstablished": false,
+    "tenantReadinessEstablished": false,
+    "humanEvidence": false
+  }
+}

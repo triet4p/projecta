@@ -1,7 +1,7 @@
 {
   "artifactVersion": "s12.current-state.v1",
   "asOf": "2026-08-22",
-  "status": "G5_F12_V8_AUTHORIZED_PENDING_EXECUTION",
+  "status": "G5_F12_V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY",
   "sourcePrecedence": [
     "this current-state index",
     "latest explicit owner decision or transition record",
@@ -67,15 +67,30 @@
       "digest": "sha256:45e9091877d51a273e224a5314902bbb28dd2953faf09d06876d14e4f29c5fa1",
       "expectedStatus": "ONE_BOUNDED_V8_DEVELOPMENT_STAGE_A_AUTHORIZED_PENDING_EXECUTION"
     },
+    "rm36ExecutionTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm36-execution-transition.v1.json",
+      "digest": "sha256:738d3bdada83af5f152a2a5974af1a73e856247d88c226cafd3d5d60d6899d45",
+      "expectedStatus": "ONE_BOUNDED_V8_DEVELOPMENT_STAGE_A_EXECUTION_FAILED_BEFORE_REPORT_PERSISTENCE_PENDING_RM37_OWNER_DECISION"
+    },
+    "rm37OwnerDecision": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm37-owner-decision.v1.json",
+      "digest": "sha256:d4f6725d4b1e44007a7da35dc8030b496eb075bc1bdbfd653b3e321d3c14550d",
+      "expectedStatus": "COMPLETED_FAILED_BEFORE_REPORT_NO_RERUN_OFFLINE_REMEDIATION_PREPARATION_ONLY"
+    },
+    "rm37DecisionTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm37-decision-transition.v1.json",
+      "digest": "sha256:87b1abbba0323c72dd73152305beeac696113a5238514af5a1a9e53eecf03098",
+      "expectedStatus": "V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY"
+    },
     "stageAReport": {
       "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
       "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
       "status": "COMPLETED_REJECTED_HARD_GATE"
     },
     "g5Packet": {
-      "path": "evaluation/sprint-12/optimization/g5-packet.v23.rm35-authorization.json",
-      "digest": "sha256:be98da4bfa83f1b994a51da47b01d2c8cb562181e97fe316a5ccedc77b90c949",
-      "version": "s12.g5.packet.v23.rm35-authorization"
+      "path": "evaluation/sprint-12/optimization/g5-packet.v25.rm37-closure.json",
+      "digest": "sha256:e419ccc113c6f412cc8bd2867f8527b2137de6adc89a80a306ef5a01bcf5749c",
+      "version": "s12.g5.packet.v25.rm37-closure"
     },
     "humanSummary": "docs/sprint-plans/sprint-12/current-state.md"
   },
@@ -89,7 +104,7 @@
     "G3.1-C": "APPROVED_WITH_SCOPE_LIMITS",
     "G4": "RUNTIME_BACKED_BASELINE_WITH_FAILURES",
     "G4.1": "CONTRACT_ALIGNED_STABILITY_FAILED",
-    "G5": "F12_V8_AUTHORIZED_PENDING_EXECUTION",
+    "G5": "F12_V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY",
     "G6": "BLOCKED_CUSTODY_OR_CANDIDATE",
     "G7": "NOT_STARTED"
   },
@@ -112,22 +127,26 @@
       "technicalFreezeIssued": true,
       "authorizedExecutions": 1,
       "authorizedProviderCalls": 144,
-      "providerCallsPerformed": 0,
-      "relationBranchOutputs": 0,
+      "providerCallsPerformed": 3,
+      "providerResponsesReceived": 3,
+      "relationBranchOutputs": null,
       "retryCount": 0,
+      "accountingComplete": false,
+      "aggregateCostAvailable": false,
       "stageAReportExists": false,
-      "providerExecutionAuthorized": true,
-      "newAuthorizationIssued": true
+      "providerExecutionAuthorized": false,
+      "newAuthorizationIssued": false,
+      "authorizationSpent": true
     },
     "currentGovernance": {
-      "supersedingLineagePreparationAuthorized": true,
+      "supersedingLineagePreparationAuthorized": false,
       "preregistrationPreparationAuthorized": true,
       "technicalFreezePreparationAuthorized": true,
       "executionPackagePreparationAuthorized": true,
       "preregistrationIssued": true,
       "technicalFreezeIssued": true,
-      "providerExecutionAuthorized": true,
-      "newAuthorizationIssued": true,
+      "providerExecutionAuthorized": false,
+      "newAuthorizationIssued": false,
       "validationAccessAuthorized": false,
       "heldOutAccessAuthorized": false,
       "stageBAuthorized": false,
@@ -142,12 +161,16 @@
     "candidateSelection": "NO_SELECTION",
     "candidateFrozen": false,
     "heldOutInspected": false,
-    "offlineRemediationPreparationAuthorized": true,
-    "offlineDiagnosticImplementationAuthorized": true
+      "offlineRemediationPreparationAuthorized": true,
+      "offlineDiagnosticImplementationAuthorized": true,
+      "offlineFailureDiagnosisPreparationAuthorized": true,
+      "offlineRuntimeRemediationPreparationAuthorized": true,
+      "authorizationSpent": true,
+      "rerunAuthorized": false,
+      "retryAuthorized": false
   },
   "nextTasks": [
-    "S12-RM-36_EXECUTE_EXACT_V8_STAGE_A_ONCE",
-    "S12-RM-37_OWNER_POST_RUN_DECISION"
+    "S12-RM-38_OFFLINE_RM36_RECONCILIATION_FAILURE_DIAGNOSIS_AND_REMEDIATION_PREPARATION"
   ],
-  "claimBoundary": "No accuracy improvement, candidate selection, tenant readiness or business-quality result may be claimed before new execution evidence passes its registered gates."
+  "claimBoundary": "The v8 execution closed failed before report persistence; no quality result, candidate selection, tenant readiness or business-quality result may be claimed. Offline diagnosis and deterministic remediation preparation are the only newly permitted activities."
 }
