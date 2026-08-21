@@ -1,67 +1,1764 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "s12-f-12.stage-a-report.v8",
-  "type": "object",
-  "additionalProperties": false,
-  "required": ["artifactVersion", "experimentId", "custody", "configuration", "accounting", "metrics", "caseRecords", "sliceRecords", "decision", "diagnostics"],
-  "properties": {
-    "artifactVersion": {"const": "s12-f-12.stage-a-report.v8"},
-    "experimentId": {"const": "s12-f-12"},
-    "custody": {"type": "object"},
-    "configuration": {"type": "object"},
-    "accounting": {"type": "object"},
-    "metrics": {"type": "object"},
-    "caseRecords": {"type": "array"},
-    "sliceRecords": {"type": "array"},
-    "decision": {"type": "object"},
-    "diagnostics": {"$ref": "#/$defs/diagnostics"}
-  },
   "$defs": {
-    "schemaCounts": {
-      "type": "object",
+    "abstention": {
       "additionalProperties": false,
-      "required": ["envelope_unbound_field", "envelope_version_mismatch", "entity_candidate_invalid", "entity_candidate_identity_duplicate", "entity_span_out_of_source", "relation_candidate_invalid", "relation_endpoint_not_in_server_table", "relation_evidence_invalid", "validation_detail_unavailable"],
       "properties": {
-        "envelope_unbound_field": {"type": "integer", "minimum": 0},
-        "envelope_version_mismatch": {"type": "integer", "minimum": 0},
-        "entity_candidate_invalid": {"type": "integer", "minimum": 0},
-        "entity_candidate_identity_duplicate": {"type": "integer", "minimum": 0},
-        "entity_span_out_of_source": {"type": "integer", "minimum": 0},
-        "relation_candidate_invalid": {"type": "integer", "minimum": 0},
-        "relation_endpoint_not_in_server_table": {"type": "integer", "minimum": 0},
-        "relation_evidence_invalid": {"type": "integer", "minimum": 0},
-        "validation_detail_unavailable": {"type": "integer", "minimum": 0}
-      }
+        "f1": {
+          "type": "number"
+        },
+        "falseNegative": {
+          "type": "integer"
+        },
+        "falsePositive": {
+          "type": "integer"
+        },
+        "gold": {
+          "type": "integer"
+        },
+        "precision": {
+          "type": "number"
+        },
+        "predicted": {
+          "type": "integer"
+        },
+        "recall": {
+          "type": "number"
+        },
+        "truePositive": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "gold",
+        "predicted",
+        "truePositive",
+        "falsePositive",
+        "falseNegative",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "type": "object"
     },
-    "evidenceCounts": {
-      "type": "object",
+    "accounting": {
       "additionalProperties": false,
-      "required": ["trigger_quote_missing", "trigger_quote_digest_mismatch", "trigger_occurrence_missing", "trigger_occurrence_outside_sentence", "trigger_occurrence_outside_clause", "evidence_span_missing", "evidence_span_out_of_source", "evidence_does_not_contain_trigger", "evidence_does_not_contain_endpoints", "materializer_detail_unavailable"],
       "properties": {
-        "trigger_quote_missing": {"type": "integer", "minimum": 0},
-        "trigger_quote_digest_mismatch": {"type": "integer", "minimum": 0},
-        "trigger_occurrence_missing": {"type": "integer", "minimum": 0},
-        "trigger_occurrence_outside_sentence": {"type": "integer", "minimum": 0},
-        "trigger_occurrence_outside_clause": {"type": "integer", "minimum": 0},
-        "evidence_span_missing": {"type": "integer", "minimum": 0},
-        "evidence_span_out_of_source": {"type": "integer", "minimum": 0},
-        "evidence_does_not_contain_trigger": {"type": "integer", "minimum": 0},
-        "evidence_does_not_contain_endpoints": {"type": "integer", "minimum": 0},
-        "materializer_detail_unavailable": {"type": "integer", "minimum": 0}
-      }
+        "callSchedule": {
+          "additionalProperties": false,
+          "properties": {
+            "stage1PredictedEntities": {
+              "const": 48
+            },
+            "stage2GoldEntities": {
+              "const": 48
+            },
+            "stage2PredictedEntities": {
+              "const": 48
+            }
+          },
+          "required": [
+            "stage1PredictedEntities",
+            "stage2PredictedEntities",
+            "stage2GoldEntities"
+          ],
+          "type": "object"
+        },
+        "costCeilingUsd": {
+          "const": "10.00"
+        },
+        "denominators": {
+          "additionalProperties": false,
+          "properties": {
+            "abstentionInstances": {
+              "const": 12
+            },
+            "caseRuns": {
+              "const": 48
+            },
+            "relationInstances": {
+              "const": 24
+            }
+          },
+          "required": [
+            "caseRuns",
+            "relationInstances",
+            "abstentionInstances"
+          ],
+          "type": "object"
+        },
+        "failureClasses": {
+          "additionalProperties": false,
+          "properties": {
+            "endpointContractFailure": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "missingOutput": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "schemaInvalid": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "sharedConfigurationMismatch": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "schemaInvalid",
+            "missingOutput",
+            "endpointContractFailure",
+            "sharedConfigurationMismatch"
+          ],
+          "type": "object"
+        },
+        "pricedCalls": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "pricingFailureCount": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "providerCallsAttempted": {
+          "const": 144
+        },
+        "responsesReceived": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "retryCount": {
+          "const": 0
+        },
+        "schemaValidResponses": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "totalCostUsd": {
+          "type": "string"
+        },
+        "usageValidResponses": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "providerCallsAttempted",
+        "responsesReceived",
+        "schemaValidResponses",
+        "usageValidResponses",
+        "pricedCalls",
+        "retryCount",
+        "pricingFailureCount",
+        "totalCostUsd",
+        "costCeilingUsd",
+        "denominators",
+        "failureClasses",
+        "callSchedule"
+      ],
+      "type": "object"
+    },
+    "arm": {
+      "additionalProperties": false,
+      "properties": {
+        "abstention": {
+          "$ref": "#/$defs/abstention"
+        },
+        "caseRuns": {
+          "type": "integer"
+        },
+        "diagnostics": {
+          "$ref": "#/$defs/diagnosticArm"
+        },
+        "entity": {
+          "$ref": "#/$defs/entity"
+        },
+        "goldAbstentionInstances": {
+          "type": "integer"
+        },
+        "goldRelationInstances": {
+          "type": "integer"
+        },
+        "relation": {
+          "$ref": "#/$defs/relation"
+        },
+        "thresholdFailures": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "thresholdsPass": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "caseRuns",
+        "goldRelationInstances",
+        "goldAbstentionInstances",
+        "entity",
+        "abstention",
+        "relation",
+        "thresholdsPass",
+        "thresholdFailures",
+        "diagnostics"
+      ],
+      "type": "object"
+    },
+    "caseArm": {
+      "additionalProperties": false,
+      "properties": {
+        "abstention": {
+          "$ref": "#/$defs/abstention"
+        },
+        "configurationFingerprint": {
+          "type": "string"
+        },
+        "configurationMismatch": {
+          "type": "integer"
+        },
+        "diagnostics": {
+          "$ref": "#/$defs/diagnosticArm"
+        },
+        "endpointContractFailure": {
+          "type": "integer"
+        },
+        "entity": {
+          "$ref": "#/$defs/entity"
+        },
+        "invalidEvidenceCount": {
+          "type": "integer"
+        },
+        "relation": {
+          "$ref": "#/$defs/relation"
+        },
+        "stage1": {
+          "$ref": "#/$defs/stage"
+        },
+        "stage2": {
+          "$ref": "#/$defs/stage"
+        }
+      },
+      "required": [
+        "stage1",
+        "stage2",
+        "entity",
+        "abstention",
+        "relation",
+        "configurationFingerprint",
+        "invalidEvidenceCount",
+        "endpointContractFailure",
+        "configurationMismatch",
+        "diagnostics"
+      ],
+      "type": "object"
+    },
+    "caseRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "arms": {
+          "additionalProperties": false,
+          "properties": {
+            "gold-entities": {
+              "$ref": "#/$defs/caseArm"
+            },
+            "gold-relations": {
+              "$ref": "#/$defs/caseArm"
+            },
+            "predicted-entities": {
+              "$ref": "#/$defs/caseArm"
+            }
+          },
+          "required": [
+            "predicted-entities",
+            "gold-entities",
+            "gold-relations"
+          ],
+          "type": "object"
+        },
+        "caseId": {
+          "type": "string"
+        },
+        "goldAbstentionRequired": {
+          "type": "boolean"
+        },
+        "goldRelationCount": {
+          "type": "integer"
+        },
+        "journeyId": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "runId": {
+          "enum": [
+            1,
+            2,
+            3
+          ],
+          "type": "integer"
+        }
+      },
+      "required": [
+        "caseId",
+        "runId",
+        "journeyId",
+        "language",
+        "goldRelationCount",
+        "goldAbstentionRequired",
+        "arms"
+      ],
+      "type": "object"
+    },
+    "configuration": {
+      "additionalProperties": false,
+      "properties": {
+        "commitSha": {
+          "pattern": "^[0-9a-f]{40}$",
+          "type": "string"
+        },
+        "maxOutputTokens": {
+          "type": "integer"
+        },
+        "model": {
+          "const": "deepseek-v4-flash"
+        },
+        "promptDigest": {
+          "type": "string"
+        },
+        "runtimeDigest": {
+          "type": "string"
+        },
+        "sampling": {
+          "additionalProperties": false,
+          "properties": {
+            "temperature": {
+              "type": "number"
+            },
+            "topP": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "temperature",
+            "topP"
+          ],
+          "type": "object"
+        },
+        "stage1SchemaDigest": {
+          "type": "string"
+        },
+        "stage2SchemaDigest": {
+          "type": "string"
+        },
+        "thresholds": {
+          "$ref": "#/$defs/thresholds"
+        },
+        "timeoutSeconds": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "commitSha",
+        "runtimeDigest",
+        "promptDigest",
+        "stage1SchemaDigest",
+        "stage2SchemaDigest",
+        "model",
+        "sampling",
+        "timeoutSeconds",
+        "maxOutputTokens",
+        "thresholds"
+      ],
+      "type": "object"
+    },
+    "counts": {
+      "additionalProperties": false,
+      "properties": {
+        "exactMatch": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "extraRelation": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "missingRelation": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "reversedEndpoint": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "wrongEndpoint": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "wrongPredicate": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "exactMatch",
+        "wrongPredicate",
+        "reversedEndpoint",
+        "wrongEndpoint",
+        "missingRelation",
+        "extraRelation"
+      ],
+      "type": "object"
+    },
+    "custody": {
+      "additionalProperties": false,
+      "properties": {
+        "heldOutAccess": {
+          "const": false
+        },
+        "overwrite": {
+          "const": false
+        },
+        "rawProviderPayloadStored": {
+          "const": false
+        },
+        "rawSourceTextStored": {
+          "const": false
+        },
+        "retryPolicy": {
+          "const": "none"
+        }
+      },
+      "required": [
+        "rawSourceTextStored",
+        "rawProviderPayloadStored",
+        "heldOutAccess",
+        "overwrite",
+        "retryPolicy"
+      ],
+      "type": "object"
+    },
+    "decision": {
+      "additionalProperties": false,
+      "properties": {
+        "costCeilingPass": {
+          "type": "boolean"
+        },
+        "failedGates": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "goldRelationsIntegrityPass": {
+          "type": "boolean"
+        },
+        "hardGatesPass": {
+          "type": "boolean"
+        },
+        "outputPath": {
+          "type": "string"
+        },
+        "sliceGatesPass": {
+          "type": "boolean"
+        },
+        "status": {
+          "enum": [
+            "COMPLETED",
+            "COMPLETED_REJECTED_HARD_GATE"
+          ]
+        },
+        "thresholdsPass": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "status",
+        "hardGatesPass",
+        "thresholdsPass",
+        "sliceGatesPass",
+        "goldRelationsIntegrityPass",
+        "costCeilingPass",
+        "failedGates",
+        "outputPath"
+      ],
+      "type": "object"
+    },
+    "diagnosticArm": {
+      "additionalProperties": false,
+      "properties": {
+        "evidenceReasonCounts": {
+          "$ref": "#/$defs/diagnosticEvidenceCounts"
+        },
+        "rawDataIncluded": {
+          "const": false
+        },
+        "schemaReasonCounts": {
+          "$ref": "#/$defs/diagnosticSchemaCounts"
+        }
+      },
+      "required": [
+        "schemaReasonCounts",
+        "evidenceReasonCounts",
+        "rawDataIncluded"
+      ],
+      "type": "object"
+    },
+    "diagnosticEvidenceCounts": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_does_not_contain_endpoints": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "evidence_does_not_contain_trigger": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "evidence_span_missing": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "evidence_span_out_of_source": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "materializer_detail_unavailable": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "trigger_occurrence_missing": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "trigger_occurrence_outside_clause": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "trigger_occurrence_outside_sentence": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "trigger_quote_digest_mismatch": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "trigger_quote_missing": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "trigger_quote_missing",
+        "trigger_quote_digest_mismatch",
+        "trigger_occurrence_missing",
+        "trigger_occurrence_outside_sentence",
+        "trigger_occurrence_outside_clause",
+        "evidence_span_missing",
+        "evidence_span_out_of_source",
+        "evidence_does_not_contain_trigger",
+        "evidence_does_not_contain_endpoints",
+        "materializer_detail_unavailable"
+      ],
+      "type": "object"
+    },
+    "diagnosticSchemaCounts": {
+      "additionalProperties": false,
+      "properties": {
+        "entity_candidate_identity_duplicate": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "entity_candidate_invalid": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "entity_span_out_of_source": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "envelope_unbound_field": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "envelope_version_mismatch": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "relation_candidate_invalid": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "relation_endpoint_not_in_server_table": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "relation_evidence_invalid": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "validation_detail_unavailable": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "envelope_unbound_field",
+        "envelope_version_mismatch",
+        "entity_candidate_invalid",
+        "entity_candidate_identity_duplicate",
+        "entity_span_out_of_source",
+        "relation_candidate_invalid",
+        "relation_endpoint_not_in_server_table",
+        "relation_evidence_invalid",
+        "validation_detail_unavailable"
+      ],
+      "type": "object"
     },
     "diagnostics": {
-      "type": "object",
       "additionalProperties": false,
-      "required": ["schemaReasonCounts", "evidenceReasonCounts", "schemaFailureTotal", "evidenceFailureTotal", "reasonCountsReconciled", "rawDataPolicy"],
       "properties": {
-        "schemaReasonCounts": {"type": "object", "additionalProperties": false, "required": ["predicted-entities", "gold-entities", "gold-relations"], "properties": {"predicted-entities": {"$ref": "#/$defs/schemaCounts"}, "gold-entities": {"$ref": "#/$defs/schemaCounts"}, "gold-relations": {"$ref": "#/$defs/schemaCounts"}}},
-        "evidenceReasonCounts": {"type": "object", "additionalProperties": false, "required": ["predicted-entities", "gold-entities", "gold-relations"], "properties": {"predicted-entities": {"$ref": "#/$defs/evidenceCounts"}, "gold-entities": {"$ref": "#/$defs/evidenceCounts"}, "gold-relations": {"$ref": "#/$defs/evidenceCounts"}}},
-        "schemaFailureTotal": {"type": "integer", "minimum": 0},
-        "evidenceFailureTotal": {"type": "integer", "minimum": 0},
-        "reasonCountsReconciled": {"const": true},
-        "rawDataPolicy": {"type": "object", "additionalProperties": false, "required": ["rawSourceTextIncluded", "rawProviderPayloadIncluded", "rawValidationDetailIncluded", "rawTriggerQuoteIncluded"], "properties": {"rawSourceTextIncluded": {"const": false}, "rawProviderPayloadIncluded": {"const": false}, "rawValidationDetailIncluded": {"const": false}, "rawTriggerQuoteIncluded": {"const": false}}}
-      }
+        "evidenceFailureTotal": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "evidenceReasonCounts": {
+          "additionalProperties": false,
+          "properties": {
+            "gold-entities": {
+              "$ref": "#/$defs/diagnosticEvidenceCounts"
+            },
+            "gold-relations": {
+              "$ref": "#/$defs/diagnosticEvidenceCounts"
+            },
+            "predicted-entities": {
+              "$ref": "#/$defs/diagnosticEvidenceCounts"
+            }
+          },
+          "required": [
+            "predicted-entities",
+            "gold-entities",
+            "gold-relations"
+          ],
+          "type": "object"
+        },
+        "rawDataPolicy": {
+          "additionalProperties": false,
+          "properties": {
+            "rawProviderPayloadIncluded": {
+              "const": false
+            },
+            "rawSourceTextIncluded": {
+              "const": false
+            },
+            "rawTriggerQuoteIncluded": {
+              "const": false
+            },
+            "rawValidationDetailIncluded": {
+              "const": false
+            }
+          },
+          "required": [
+            "rawSourceTextIncluded",
+            "rawProviderPayloadIncluded",
+            "rawValidationDetailIncluded",
+            "rawTriggerQuoteIncluded"
+          ],
+          "type": "object"
+        },
+        "reasonCountsReconciled": {
+          "const": true
+        },
+        "schemaFailureTotal": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "schemaReasonCounts": {
+          "additionalProperties": false,
+          "properties": {
+            "gold-entities": {
+              "$ref": "#/$defs/diagnosticSchemaCounts"
+            },
+            "gold-relations": {
+              "$ref": "#/$defs/diagnosticSchemaCounts"
+            },
+            "predicted-entities": {
+              "$ref": "#/$defs/diagnosticSchemaCounts"
+            }
+          },
+          "required": [
+            "predicted-entities",
+            "gold-entities",
+            "gold-relations"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "schemaReasonCounts",
+        "evidenceReasonCounts",
+        "schemaFailureTotal",
+        "evidenceFailureTotal",
+        "reasonCountsReconciled",
+        "rawDataPolicy"
+      ],
+      "type": "object"
+    },
+    "endpoint": {
+      "additionalProperties": false,
+      "properties": {
+        "denominator": {
+          "type": "integer"
+        },
+        "mappingEntityCount": {
+          "type": "integer"
+        },
+        "missing": {
+          "type": "integer"
+        },
+        "missingEndpointRate": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "reconciled": {
+          "type": "boolean"
+        },
+        "resolved": {
+          "type": "integer"
+        },
+        "wrong": {
+          "type": "integer"
+        },
+        "wrongEndpointRate": {
+          "type": [
+            "number",
+            "string"
+          ]
+        }
+      },
+      "required": [
+        "resolved",
+        "wrong",
+        "missing",
+        "denominator",
+        "reconciled"
+      ],
+      "type": "object"
+    },
+    "entity": {
+      "additionalProperties": false,
+      "properties": {
+        "byType": {
+          "additionalProperties": {
+            "$ref": "#/$defs/entityType"
+          },
+          "type": "object"
+        },
+        "denominatorReconciled": {
+          "type": "boolean"
+        },
+        "entityF1": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "entityMacroF1": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "gold": {
+          "type": "integer"
+        },
+        "hallucinationRate": {
+          "type": "number"
+        },
+        "predicted": {
+          "type": "integer"
+        },
+        "spanExact": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "truePositive": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "gold",
+        "predicted",
+        "truePositive",
+        "entityF1",
+        "entityMacroF1",
+        "spanExact",
+        "hallucinationRate",
+        "byType",
+        "denominatorReconciled"
+      ],
+      "type": "object"
+    },
+    "entityType": {
+      "additionalProperties": false,
+      "properties": {
+        "f1": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "gold": {
+          "type": "integer"
+        },
+        "predicted": {
+          "type": "integer"
+        },
+        "truePositive": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "gold",
+        "predicted",
+        "truePositive",
+        "f1"
+      ],
+      "type": "object"
+    },
+    "evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "applicable": {
+          "type": "integer"
+        },
+        "counts": {
+          "$ref": "#/$defs/evidenceCounts"
+        },
+        "exactRate": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "reconciled": {
+          "type": "boolean"
+        },
+        "semanticTruePositiveDenominator": {
+          "type": "integer"
+        },
+        "supportRate": {
+          "type": [
+            "number",
+            "string"
+          ]
+        }
+      },
+      "required": [
+        "counts",
+        "semanticTruePositiveDenominator",
+        "applicable",
+        "reconciled",
+        "supportRate",
+        "exactRate"
+      ],
+      "type": "object"
+    },
+    "evidenceCounts": {
+      "additionalProperties": false,
+      "properties": {
+        "exact": {
+          "type": "integer"
+        },
+        "missing": {
+          "type": "integer"
+        },
+        "notApplicable": {
+          "type": "integer"
+        },
+        "supportedNonExact": {
+          "type": "integer"
+        },
+        "unsupported": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "exact",
+        "supportedNonExact",
+        "unsupported",
+        "missing",
+        "notApplicable"
+      ],
+      "type": "object"
+    },
+    "hardGates": {
+      "additionalProperties": false,
+      "properties": {
+        "endpointContractFailure": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "heldOutInspected": {
+          "const": false
+        },
+        "invalidEvidence": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "missingOutput": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "pricingFailure": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "rawSensitiveDataIncluded": {
+          "const": false
+        },
+        "retryCount": {
+          "const": 0
+        },
+        "schemaInvalid": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "sharedConfigurationMismatch": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "schemaInvalid",
+        "invalidEvidence",
+        "missingOutput",
+        "endpointContractFailure",
+        "sharedConfigurationMismatch",
+        "retryCount",
+        "pricingFailure",
+        "rawSensitiveDataIncluded",
+        "heldOutInspected"
+      ],
+      "type": "object"
+    },
+    "metrics": {
+      "additionalProperties": false,
+      "properties": {
+        "arms": {
+          "additionalProperties": false,
+          "properties": {
+            "gold-entities": {
+              "$ref": "#/$defs/arm"
+            },
+            "gold-relations": {
+              "$ref": "#/$defs/arm"
+            },
+            "predicted-entities": {
+              "$ref": "#/$defs/arm"
+            }
+          },
+          "required": [
+            "predicted-entities",
+            "gold-entities",
+            "gold-relations"
+          ],
+          "type": "object"
+        },
+        "goldRelationsIntegrityScore": {
+          "type": "number"
+        },
+        "goldRelationsMaterializerFailures": {
+          "type": "integer"
+        },
+        "hardGates": {
+          "$ref": "#/$defs/hardGates"
+        },
+        "sliceGatesPass": {
+          "type": "boolean"
+        },
+        "thresholds": {
+          "$ref": "#/$defs/thresholds"
+        }
+      },
+      "required": [
+        "arms",
+        "hardGates",
+        "thresholds",
+        "goldRelationsIntegrityScore",
+        "goldRelationsMaterializerFailures",
+        "sliceGatesPass"
+      ],
+      "type": "object"
+    },
+    "predicate": {
+      "additionalProperties": false,
+      "properties": {
+        "f1": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "gold": {
+          "type": "integer"
+        },
+        "predicted": {
+          "type": "integer"
+        },
+        "truePositive": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "gold",
+        "predicted",
+        "truePositive",
+        "f1"
+      ],
+      "type": "object"
+    },
+    "relation": {
+      "additionalProperties": false,
+      "properties": {
+        "configurationMismatch": {
+          "type": "integer"
+        },
+        "endpointContractFailure": {
+          "type": "integer"
+        },
+        "endpointResolution": {
+          "$ref": "#/$defs/endpoint"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence"
+        },
+        "invalidEvidenceCount": {
+          "type": "integer"
+        },
+        "semantic": {
+          "$ref": "#/$defs/semantic"
+        }
+      },
+      "required": [
+        "semantic",
+        "endpointResolution",
+        "evidence",
+        "invalidEvidenceCount",
+        "endpointContractFailure",
+        "configurationMismatch"
+      ],
+      "type": "object"
+    },
+    "semantic": {
+      "additionalProperties": false,
+      "properties": {
+        "byPredicate": {
+          "additionalProperties": {
+            "$ref": "#/$defs/predicate"
+          },
+          "type": "object"
+        },
+        "counts": {
+          "$ref": "#/$defs/counts"
+        },
+        "endpointDirectionAccuracy": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "gold": {
+          "type": "integer"
+        },
+        "goldReconciled": {
+          "type": "boolean"
+        },
+        "hallucinationRate": {
+          "type": "number"
+        },
+        "macroF1": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "microF1": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "missingEndpointRate": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "predicateAccuracy": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "predicted": {
+          "type": "integer"
+        },
+        "predictedReconciled": {
+          "type": "boolean"
+        },
+        "reversedEndpointRate": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "truePositive": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "counts",
+        "gold",
+        "predicted",
+        "truePositive",
+        "microF1",
+        "macroF1",
+        "byPredicate",
+        "predicateAccuracy",
+        "endpointDirectionAccuracy",
+        "missingEndpointRate",
+        "reversedEndpointRate",
+        "hallucinationRate",
+        "goldReconciled",
+        "predictedReconciled"
+      ],
+      "type": "object"
+    },
+    "sliceExact0": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/sliceRecord"
+        },
+        {
+          "properties": {
+            "denominator": {
+              "const": 48
+            },
+            "dimension": {
+              "const": "all-development"
+            },
+            "label": {
+              "const": "all-development"
+            }
+          },
+          "type": "object"
+        }
+      ]
+    },
+    "sliceExact1": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/sliceRecord"
+        },
+        {
+          "properties": {
+            "denominator": {
+              "const": 24
+            },
+            "dimension": {
+              "const": "relation-positive"
+            },
+            "label": {
+              "const": "relation-positive"
+            }
+          },
+          "type": "object"
+        }
+      ]
+    },
+    "sliceExact10": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/sliceRecord"
+        },
+        {
+          "properties": {
+            "denominator": {
+              "const": 6
+            },
+            "dimension": {
+              "const": "journey"
+            },
+            "label": {
+              "const": "J6"
+            }
+          },
+          "type": "object"
+        }
+      ]
+    },
+    "sliceExact11": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/sliceRecord"
+        },
+        {
+          "properties": {
+            "denominator": {
+              "const": 6
+            },
+            "dimension": {
+              "const": "language"
+            },
+            "label": {
+              "const": "en"
+            }
+          },
+          "type": "object"
+        }
+      ]
+    },
+    "sliceExact12": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/sliceRecord"
+        },
+        {
+          "properties": {
+            "denominator": {
+              "const": 6
+            },
+            "dimension": {
+              "const": "language"
+            },
+            "label": {
+              "const": "ja"
+            }
+          },
+          "type": "object"
+        }
+      ]
+    },
+    "sliceExact13": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/sliceRecord"
+        },
+        {
+          "properties": {
+            "denominator": {
+              "const": 30
+            },
+            "dimension": {
+              "const": "language"
+            },
+            "label": {
+              "const": "mixed"
+            }
+          },
+          "type": "object"
+        }
+      ]
+    },
+    "sliceExact14": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/sliceRecord"
+        },
+        {
+          "properties": {
+            "denominator": {
+              "const": 6
+            },
+            "dimension": {
+              "const": "language"
+            },
+            "label": {
+              "const": "vi"
+            }
+          },
+          "type": "object"
+        }
+      ]
+    },
+    "sliceExact2": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/sliceRecord"
+        },
+        {
+          "properties": {
+            "denominator": {
+              "const": 12
+            },
+            "dimension": {
+              "const": "relation-negative"
+            },
+            "label": {
+              "const": "relation-negative"
+            }
+          },
+          "type": "object"
+        }
+      ]
+    },
+    "sliceExact3": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/sliceRecord"
+        },
+        {
+          "properties": {
+            "denominator": {
+              "const": 12
+            },
+            "dimension": {
+              "const": "abstention-required"
+            },
+            "label": {
+              "const": "abstention-required"
+            }
+          },
+          "type": "object"
+        }
+      ]
+    },
+    "sliceExact4": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/sliceRecord"
+        },
+        {
+          "properties": {
+            "denominator": {
+              "const": 36
+            },
+            "dimension": {
+              "const": "abstention-not-required"
+            },
+            "label": {
+              "const": "abstention-not-required"
+            }
+          },
+          "type": "object"
+        }
+      ]
+    },
+    "sliceExact5": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/sliceRecord"
+        },
+        {
+          "properties": {
+            "denominator": {
+              "const": 6
+            },
+            "dimension": {
+              "const": "journey"
+            },
+            "label": {
+              "const": "J1"
+            }
+          },
+          "type": "object"
+        }
+      ]
+    },
+    "sliceExact6": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/sliceRecord"
+        },
+        {
+          "properties": {
+            "denominator": {
+              "const": 12
+            },
+            "dimension": {
+              "const": "journey"
+            },
+            "label": {
+              "const": "J2"
+            }
+          },
+          "type": "object"
+        }
+      ]
+    },
+    "sliceExact7": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/sliceRecord"
+        },
+        {
+          "properties": {
+            "denominator": {
+              "const": 12
+            },
+            "dimension": {
+              "const": "journey"
+            },
+            "label": {
+              "const": "J3"
+            }
+          },
+          "type": "object"
+        }
+      ]
+    },
+    "sliceExact8": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/sliceRecord"
+        },
+        {
+          "properties": {
+            "denominator": {
+              "const": 6
+            },
+            "dimension": {
+              "const": "journey"
+            },
+            "label": {
+              "const": "J4"
+            }
+          },
+          "type": "object"
+        }
+      ]
+    },
+    "sliceExact9": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/sliceRecord"
+        },
+        {
+          "properties": {
+            "denominator": {
+              "const": 6
+            },
+            "dimension": {
+              "const": "journey"
+            },
+            "label": {
+              "const": "J5"
+            }
+          },
+          "type": "object"
+        }
+      ]
+    },
+    "sliceRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "denominator": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "dimension": {
+          "enum": [
+            "all-development",
+            "relation-positive",
+            "relation-negative",
+            "abstention-required",
+            "abstention-not-required",
+            "journey",
+            "language"
+          ]
+        },
+        "label": {
+          "type": "string"
+        },
+        "metrics": {
+          "additionalProperties": false,
+          "properties": {
+            "arms": {
+              "additionalProperties": false,
+              "properties": {
+                "gold-entities": {
+                  "$ref": "#/$defs/arm"
+                },
+                "gold-relations": {
+                  "$ref": "#/$defs/arm"
+                },
+                "predicted-entities": {
+                  "$ref": "#/$defs/arm"
+                }
+              },
+              "required": [
+                "predicted-entities",
+                "gold-entities",
+                "gold-relations"
+              ],
+              "type": "object"
+            },
+            "gate": {
+              "additionalProperties": false,
+              "properties": {
+                "gold-entities": {
+                  "type": "boolean"
+                },
+                "predicted-entities": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "predicted-entities",
+                "gold-entities"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "arms",
+            "gate"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "dimension",
+        "label",
+        "denominator",
+        "metrics"
+      ],
+      "type": "object"
+    },
+    "stage": {
+      "additionalProperties": false,
+      "properties": {
+        "candidateTableDigest": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "failureClass": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "responseDigest": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "responseReceived": {
+          "type": "boolean"
+        },
+        "schemaValid": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "responseReceived",
+        "schemaValid",
+        "failureClass",
+        "responseDigest"
+      ],
+      "type": "object"
+    },
+    "thresholds": {
+      "additionalProperties": false,
+      "properties": {
+        "abstentionF1Min": {
+          "const": 0.9
+        },
+        "abstentionPrecisionMin": {
+          "const": 0.9
+        },
+        "abstentionRecallMin": {
+          "const": 0.9
+        },
+        "endpointDirectionAccuracyMin": {
+          "const": 0.9
+        },
+        "entityHallucinationRateMax": {
+          "const": 0.05
+        },
+        "entityMacroF1Min": {
+          "const": 0.85
+        },
+        "entitySpanExactMin": {
+          "const": 0.95
+        },
+        "goldRelationsIntegrityScore": {
+          "const": 1
+        },
+        "goldRelationsMaterializerFailures": {
+          "const": 0
+        },
+        "hardFailureCount": {
+          "const": 0
+        },
+        "missingEndpointRateMax": {
+          "const": 0.05
+        },
+        "predicateAccuracyMin": {
+          "const": 0.85
+        },
+        "pricingFailureCount": {
+          "const": 0
+        },
+        "relationEvidenceExactMin": {
+          "const": 0.85
+        },
+        "relationEvidenceSupportMin": {
+          "const": 0.85
+        },
+        "relationHallucinationRateMax": {
+          "const": 0.05
+        },
+        "relationSemanticMacroF1Min": {
+          "const": 0.8
+        },
+        "relationSemanticMicroF1Min": {
+          "const": 0.8
+        },
+        "retryCount": {
+          "const": 0
+        },
+        "reversedEndpointRateMax": {
+          "const": 0.05
+        }
+      },
+      "required": [
+        "entityMacroF1Min",
+        "entitySpanExactMin",
+        "entityHallucinationRateMax",
+        "abstentionPrecisionMin",
+        "abstentionRecallMin",
+        "abstentionF1Min",
+        "relationSemanticMicroF1Min",
+        "relationSemanticMacroF1Min",
+        "predicateAccuracyMin",
+        "endpointDirectionAccuracyMin",
+        "missingEndpointRateMax",
+        "reversedEndpointRateMax",
+        "relationEvidenceSupportMin",
+        "relationEvidenceExactMin",
+        "relationHallucinationRateMax",
+        "hardFailureCount",
+        "retryCount",
+        "pricingFailureCount",
+        "goldRelationsIntegrityScore",
+        "goldRelationsMaterializerFailures"
+      ],
+      "type": "object"
     }
-  }
+  },
+  "$id": "s12-f-12.stage-a-report.v8",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "accounting": {
+      "$ref": "#/$defs/accounting"
+    },
+    "artifactVersion": {
+      "const": "s12-f-12.stage-a-report.v8"
+    },
+    "caseRecords": {
+      "items": {
+        "$ref": "#/$defs/caseRecord"
+      },
+      "maxItems": 48,
+      "minItems": 48,
+      "type": "array"
+    },
+    "configuration": {
+      "$ref": "#/$defs/configuration"
+    },
+    "custody": {
+      "$ref": "#/$defs/custody"
+    },
+    "decision": {
+      "$ref": "#/$defs/decision"
+    },
+    "diagnostics": {
+      "$ref": "#/$defs/diagnostics"
+    },
+    "experimentId": {
+      "const": "s12-f-12"
+    },
+    "metrics": {
+      "$ref": "#/$defs/metrics"
+    },
+    "sliceRecords": {
+      "items": false,
+      "maxItems": 15,
+      "minItems": 15,
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/sliceExact0"
+        },
+        {
+          "$ref": "#/$defs/sliceExact1"
+        },
+        {
+          "$ref": "#/$defs/sliceExact2"
+        },
+        {
+          "$ref": "#/$defs/sliceExact3"
+        },
+        {
+          "$ref": "#/$defs/sliceExact4"
+        },
+        {
+          "$ref": "#/$defs/sliceExact5"
+        },
+        {
+          "$ref": "#/$defs/sliceExact6"
+        },
+        {
+          "$ref": "#/$defs/sliceExact7"
+        },
+        {
+          "$ref": "#/$defs/sliceExact8"
+        },
+        {
+          "$ref": "#/$defs/sliceExact9"
+        },
+        {
+          "$ref": "#/$defs/sliceExact10"
+        },
+        {
+          "$ref": "#/$defs/sliceExact11"
+        },
+        {
+          "$ref": "#/$defs/sliceExact12"
+        },
+        {
+          "$ref": "#/$defs/sliceExact13"
+        },
+        {
+          "$ref": "#/$defs/sliceExact14"
+        }
+      ],
+      "type": "array"
+    }
+  },
+  "required": [
+    "artifactVersion",
+    "experimentId",
+    "custody",
+    "configuration",
+    "accounting",
+    "metrics",
+    "caseRecords",
+    "sliceRecords",
+    "decision",
+    "diagnostics"
+  ],
+  "type": "object"
 }

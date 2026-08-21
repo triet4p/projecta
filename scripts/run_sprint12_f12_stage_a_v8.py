@@ -165,16 +165,35 @@ def _arm_record_v8(*args: Any, **kwargs: Any) -> dict[str, Any]:
     is_gold = bool(kwargs["is_gold_arm"])
     schema_counts = _zero_counts(SCHEMA_REASON_CODES)
     if not is_gold:
+        stage1_failure = kwargs.get("stage1_failure")
+        stage2_failure = kwargs.get("stage2_failure")
         schema_counts = _merge_counts(
-            _take_schema_reasons("stage1", 1), _take_schema_reasons("stage2", 1)
+            _take_schema_reasons("stage1", int(stage1_failure == "schema_invalid")),
+            _take_schema_reasons("stage2", int(stage2_failure == "schema_invalid")),
         )
-    elif kwargs.get("stage1") is not None or kwargs.get("stage2") is not None:
+    elif kwargs.get("stage2_failure") == "schema_invalid":
         schema_counts = _take_schema_reasons("stage2", 1)
+    evidence_counts = _zero_counts(EVIDENCE_REASON_CODES)
+    # The gold-relations arm is a deterministic control, not a provider
+    # response. Its source-proof metadata is outside the materializer-failure
+    # denominator and must not create diagnostic failures.
+    if not is_gold or kwargs.get("stage2") is not None:
+        evidence_counts = _evidence_reasons(
+            case, relations, predicted_entities, gold_candidates, is_gold
+        )
+    expected_schema_failures = sum(
+        int(value == "schema_invalid")
+        for value in (kwargs.get("stage1_failure"), kwargs.get("stage2_failure"))
+    )
+    if sum(schema_counts.values()) != expected_schema_failures:
+        raise F12StageAV8Error("schema reason counts do not reconcile with arm failures")
+    if sum(evidence_counts.values()) != int(result["relation"]["invalidEvidenceCount"]):
+        raise F12StageAV8Error(
+            "evidence reason counts do not reconcile with arm materializer failures"
+        )
     result["diagnostics"] = {
         "schemaReasonCounts": schema_counts,
-        "evidenceReasonCounts": _evidence_reasons(
-            case, relations, predicted_entities, gold_candidates, is_gold
-        ),
+        "evidenceReasonCounts": evidence_counts,
         "rawDataIncluded": False,
     }
     return result
@@ -232,7 +251,26 @@ def _top_level_diagnostics(report: Mapping[str, Any]) -> dict[str, Any]:
 
 def _validate_report_schema_v8(report: dict[str, Any]) -> None:
     report["artifactVersion"] = "s12-f-12.stage-a-report.v8"
-    report["diagnostics"] = _top_level_diagnostics(report)
+    if _PENDING_SCHEMA_REASONS:
+        raise F12StageAV8Error("unconsumed schema diagnostic reason")
+    diagnostics = _top_level_diagnostics(report)
+    hard_gates = report.get("metrics", {}).get("hardGates", {})
+    failure_classes = report.get("accounting", {}).get("failureClasses", {})
+    if diagnostics["schemaFailureTotal"] != int(hard_gates.get("schemaInvalid", -1)):
+        raise F12StageAV8Error(
+            "schema diagnostic total does not reconcile with schemaInvalid hard gate"
+        )
+    if diagnostics["schemaFailureTotal"] != int(
+        failure_classes.get("schemaInvalid", -1)
+    ):
+        raise F12StageAV8Error(
+            "schema diagnostic total does not reconcile with accounting schemaInvalid"
+        )
+    if diagnostics["evidenceFailureTotal"] != int(hard_gates.get("invalidEvidence", -1)):
+        raise F12StageAV8Error(
+            "evidence diagnostic total does not reconcile with invalidEvidence hard gate"
+        )
+    report["diagnostics"] = diagnostics
     try:
         from jsonschema import Draft202012Validator
     except ImportError as error:  # pragma: no cover - environment guard
