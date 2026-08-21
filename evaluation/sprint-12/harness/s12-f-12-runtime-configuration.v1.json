@@ -1,0 +1,39 @@
+{
+  "artifactVersion": "s12.s12-f-12.runtime-configuration.v1",
+  "status": "PREPARED_NON_SECRET_RUNTIME_CONTRACT_PENDING_OWNER_REVIEW",
+  "providerType": "openai-response",
+  "transport": "deepseek-chat-completions",
+  "baseUrlEnv": "PROJECTA_LLM_BASE_URL",
+  "apiKeyEnv": "PROJECTA_LLM_API_KEY",
+  "model": "deepseek-v4-flash",
+  "promptVersion": "m3.prompt.v7-v2.two-step-extraction",
+  "promptPath": "evaluation/sprint-12/optimization/s12-f-12-m3-prompt-v7-v2-two-step-extraction.v1.txt",
+  "stage1Schema": "s12-f-12.stage1.entity-envelope.v2",
+  "stage1SchemaPath": "evaluation/sprint-12/harness/s12-f-12-stage-1-entity-envelope.schema.v2.json",
+  "stage2Schema": "s12-f-12.stage2.relation-envelope.v2",
+  "stage2SchemaPath": "evaluation/sprint-12/harness/s12-f-12-stage-2-relation-envelope.schema.v2.json",
+  "timeoutSeconds": 60.0,
+  "maxOutputTokens": 4096,
+  "maxInputTokensPerCall": 50000,
+  "temperature": 0.0,
+  "topP": 1.0,
+  "retryPolicy": "none",
+  "callSchedule": {
+    "stage1PredictedEntities": 48,
+    "stage2PredictedEntities": 48,
+    "stage2GoldEntities": 48,
+    "goldRelationsIntegrityControl": 0,
+    "totalProviderCalls": 144,
+    "relationBranchOutputs": 96,
+    "stage1Outputs": 48,
+    "totalModelOutputs": 144
+  },
+  "worstCaseCostUsd": "1.17315072",
+  "costProof": {
+    "formula": "144 * ((50000 * 0.14 + 4096 * 0.28) / 1000000)",
+    "ceilingUsd": "10.00",
+    "strictlyBelowCeiling": true
+  },
+  "apiKeyStored": false,
+  "providerPayloadStored": false
+}

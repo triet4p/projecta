@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "s12-f-12.stage-a-report.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifactVersion", "experimentId", "custody", "accounting", "metrics", "caseRecords", "sliceRecords"],
+  "properties": {
+    "artifactVersion": {"const": "s12-f-12.stage-a-report.v1"},
+    "experimentId": {"const": "s12-f-12"},
+    "custody": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rawSourceTextStored", "rawProviderPayloadStored", "heldOutAccess", "overwrite", "retryPolicy"],
+      "properties": {
+        "rawSourceTextStored": {"const": false},
+        "rawProviderPayloadStored": {"const": false},
+        "heldOutAccess": {"const": false},
+        "overwrite": {"const": false},
+        "retryPolicy": {"const": "none"}
+      }
+    },
+    "accounting": {"type": "object", "additionalProperties": false},
+    "metrics": {"type": "object", "additionalProperties": false},
+    "caseRecords": {"type": "array", "items": {"type": "object", "additionalProperties": false}},
+    "sliceRecords": {"type": "array", "items": {"type": "object", "additionalProperties": false}}
+  }
+}

@@ -720,9 +720,23 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   source/target, cycles, normalization and source-content mismatch with zero
   provider calls. V5 validation is offline (`5 passed`, Ruff and diff-check
   pass); no provider call was issued.
-- [ ] **S12-RM-21C — Owner re-review of the superseding f12 package:** Review the
-  RM-20D package independently. Preregistration preparation, execution freeze
-  and provider execution remain closed until this review passes.
+- [x] **S12-RM-21C — Owner re-review of the superseding f12 package:** V5 passed
+  with `OWNER_REVIEW_APPROVED_FOR_PREREGISTRATION_PREPARATION_ONLY`. Regression,
+  preflight, shared-source/shared-target/cycle and Unicode custody checks pass;
+  provider calls remain zero. This does not issue a preregistration or authorize
+  execution.
+- [x] **S12-RM-22 — Prepare f12 preregistration and execution package:** Bind
+  offline package/review v5, case and slice selection, the approved minimum
+  denominators, paired oracle-arm schedule, model/prompt/schema/runtime digests,
+  pricing ceiling, sanitized report schema and guarded no-retry/no-overwrite
+  runner. Preparation is offline with zero provider calls and sealed held-out.
+  Completed with `F12_RM22_READY_ZERO_CALL_V1`; 144 future provider calls and
+  96 relation branches are bound, but issuance and provider authorization remain
+  withheld. See `artifacts/task_S12-RM-22_summary.md`.
+- [ ] **S12-RM-23 — Owner issuance review for f12 package:** Independently review
+  the preregistration, execution package, technical freeze and zero-call
+  preflight. Issuance does not itself authorize provider execution; any live run
+  requires a later, separate authorization artifact.
 
 #### Phase F-S — Candidate Selection Resume Path
 

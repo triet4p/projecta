@@ -1,0 +1,170 @@
+{
+  "artifactVersion": "s12.s12-f-12.preregistration-draft.v1",
+  "status": "PREPARED_PENDING_RM23_OWNER_ISSUANCE_REVIEW",
+  "experimentId": "s12-f-12",
+  "preparationScope": "S12-RM-22",
+  "decisionBoundary": "Preparation artifact only; not issued and not provider authorization.",
+  "providerExecutionAuthorized": false,
+  "preregistrationIssued": false,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false,
+  "offlineBasis": {
+    "offlineContractPath": "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v5.json",
+    "executionPackagePath": "evaluation/sprint-12/optimization/s12-f-12-rm22-execution-package.v1.json",
+    "reviewPath": "evaluation/sprint-12/optimization/s12-f-12-offline-contracts-review.v5.json",
+    "reviewDigest": "sha256:73b69bf2a17d126c8e2219828e140723a0e945fd959720bd19ca043c850bb7ec",
+    "reviewStatus": "OWNER_REVIEW_APPROVED_FOR_PREREGISTRATION_PREPARATION_ONLY"
+  },
+  "dataset": {
+    "datasetVersion": "s12.corpus.atomic.v3.frozen",
+    "atomicPath": "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json",
+    "scenarioPath": "evaluation/sprint-12/corpus/v3-frozen/scenario-v3.frozen.v1.json",
+    "atomicManifestPath": "evaluation/sprint-12/corpus/v3-frozen/atomic-manifest.v1.json",
+    "scenarioManifestPath": "evaluation/sprint-12/corpus/v3-frozen/scenario-manifest.v1.json",
+    "freezeManifestPath": "evaluation/sprint-12/corpus/v3-frozen/freeze-manifest.v1.json",
+    "split": "development",
+    "heldOutInspected": false
+  },
+  "caseSelection": {
+    "path": "evaluation/sprint-12/optimization/s12-f-10-case-selection.v2.json",
+    "caseCount": 16,
+    "independentRuns": 3,
+    "caseRuns": 48,
+    "selectionProfile": {
+      "positiveRelationCases": 8,
+      "abstentionRequiredCases": 4,
+      "hardNegativeCases": 4,
+      "journeysRepresented": ["J1", "J2", "J3", "J4", "J5", "J6"],
+      "languagesRepresented": ["en", "ja", "mixed", "vi"]
+    }
+  },
+  "denominators": {
+    "caseRuns": 48,
+    "goldRelationInstancesPerModelArm": 24,
+    "goldAbstentionInstancesPerModelArm": 12,
+    "zeroDenominatorPolicy": "not-applicable-and-not-a-pass",
+    "namedSliceMinimums": {
+      "all-development": 48,
+      "relation-positive": 24,
+      "relation-negative": 12,
+      "abstention-required": 12,
+      "abstention-not-required": 36,
+      "journey": 6,
+      "language": 6
+    },
+    "denominatorPolicy": "aggregate only from per-case-run records; missing output retains the gold denominator and scores zero"
+  },
+  "oracleArms": {
+    "gold-relations": {
+      "providerCalls": 0,
+      "role": "zero-provider integrity control",
+      "modelScore": false
+    },
+    "predicted-entities": {
+      "stage1ProviderCalls": 48,
+      "stage2ProviderCalls": 48,
+      "totalProviderCalls": 96,
+      "candidateTable": "server-owned-stage1-predictions",
+      "role": "end-to-end two-step arm"
+    },
+    "gold-entities": {
+      "stage1ProviderCalls": 0,
+      "stage2ProviderCalls": 48,
+      "totalProviderCalls": 48,
+      "candidateTable": "server-owned-frozen-gold-entities",
+      "role": "relation/predicate/endpoint/evidence oracle arm"
+    },
+    "pairing": {
+      "pairedBy": ["caseId", "runId"],
+      "sameConfiguration": true,
+      "sameSourceContextPolicy": true,
+      "samePrompt": true,
+      "predictedAndGoldStage2ResponsesShared": false,
+      "candidateTableOnlyIntendedArmDifference": true
+    }
+  },
+  "execution": {
+    "stage1PredictedEntitiesCalls": 48,
+    "stage2PredictedEntitiesCalls": 48,
+    "stage2GoldEntitiesCalls": 48,
+    "providerCalls": 144,
+    "stage1Outputs": 48,
+    "relationBranchOutputs": 96,
+    "totalModelOutputs": 144,
+    "retryPolicy": "none",
+    "outputOverwrite": false,
+    "oneAttemptPerCaseStageArm": true
+  },
+  "runtime": {
+    "configurationPath": "evaluation/sprint-12/harness/s12-f-12-runtime-configuration.v1.json",
+    "model": "deepseek-v4-flash",
+    "promptVersion": "m3.prompt.v7-v2.two-step-extraction",
+    "promptPath": "evaluation/sprint-12/optimization/s12-f-12-m3-prompt-v7-v2-two-step-extraction.v1.txt",
+    "stage1Schema": "s12-f-12.stage1.entity-envelope.v2",
+    "stage2Schema": "s12-f-12.stage2.relation-envelope.v2",
+    "sampling": {"temperature": 0.0, "topP": 1.0},
+    "timeoutSeconds": 60.0,
+    "maxInputTokensPerCall": 50000,
+    "maxOutputTokens": 4096,
+    "retryPolicy": "none"
+  },
+  "measurement": {
+    "offlineContract": "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v5.json",
+    "metricContract": "evaluation/sprint-12/harness/metric-contract.v2.json",
+    "sliceContract": "evaluation/sprint-12/harness/slice-threshold-contract.v1.json",
+    "triggerContract": "evaluation/sprint-12/harness/relation-trigger-contract.v1.json",
+    "scorer": "scripts/sprint12_f12_two_step_contracts_v5.py",
+    "allApplicableNamedSlicesRequired": true,
+    "aggregateFromPerCaseRecordsOnly": true,
+    "thresholds": {
+      "entityMacroF1Min": 0.85,
+      "entitySpanExactMin": 0.95,
+      "entityHallucinationRateMax": 0.05,
+      "abstentionPrecisionMin": 0.9,
+      "abstentionRecallMin": 0.9,
+      "abstentionF1Min": 0.9,
+      "relationSemanticMicroF1Min": 0.8,
+      "relationSemanticMacroF1Min": 0.8,
+      "predicateAccuracyMin": 0.85,
+      "endpointDirectionAccuracyMin": 0.9,
+      "missingEndpointRateMax": 0.05,
+      "reversedEndpointRateMax": 0.05,
+      "relationEvidenceSupportMin": 0.85,
+      "relationEvidenceExactMin": 0.85,
+      "relationHallucinationRateMax": 0.05,
+      "hardFailureCount": 0,
+      "retryCount": 0,
+      "pricingFailureCount": 0,
+      "goldRelationsIntegrityScore": 1.0,
+      "goldRelationsMaterializerFailures": 0
+    }
+  },
+  "pricing": {
+    "artifact": "evaluation/sprint-12/optimization/s12-f-08-pricing-deepseek-v4-flash.v1.json",
+    "providerCalls": 144,
+    "worstCaseCostUsd": "1.17315072",
+    "costCeilingUsd": "10.00",
+    "totalCostMustNotExceedCeiling": true
+  },
+  "report": {
+    "schema": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v1.json",
+    "outputPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v1.json",
+    "sanitizedOnly": true,
+    "rawSourceTextStored": false,
+    "rawProviderPayloadStored": false,
+    "diagnosticAllowlist": ["errorType", "errorPath", "topLevelKeySignature", "arrayCounts", "failureClass"]
+  },
+  "governance": {
+    "providerExecutionAuthorized": false,
+    "preregistrationIssued": false,
+    "executionFreezeIssued": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextGate": "RM-23 independent owner issuance review, followed by separate provider authorization"
+  },
+  "executionPackagePath": "evaluation/sprint-12/optimization/s12-f-12-rm22-execution-package.v1.json",
+  "technicalFreezePath": "evaluation/sprint-12/optimization/s12-f-12-rm22-technical-freeze.v1.json"
+}

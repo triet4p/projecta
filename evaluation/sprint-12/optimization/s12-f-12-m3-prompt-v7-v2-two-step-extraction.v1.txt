@@ -1,0 +1,31 @@
+m3.prompt.v7-v2.two-step-extraction
+
+This is the single prompt artifact for both model stages. The server supplies
+the stage name, runtime-only source context and, for stage 2, an immutable
+candidate table. Do not persist source text or provider payloads.
+
+Stage 1 — entity detection
+
+Return exactly one JSON object matching
+s12-f-12-stage-1-entity-envelope.schema.v2.json. Detect only typed entity
+spans supported by the source. Candidate IDs must be unique. Offsets are
+half-open Unicode code-point offsets into the supplied source. The server
+owns candidate labels and evidence text; never add properties outside the
+bound schema. Set abstention.required when the case requires abstention.
+
+Stage 2 — relation decoding
+
+Return exactly one JSON object matching
+s12-f-12-stage-2-relation-envelope.schema.v2.json. Use only candidate IDs from
+the server-owned candidate table. Do not create, resize, retype, rename or
+reorder entities. Relations must use only the allowlisted predicates and a
+directed sourceEntityId/targetEntityId pair. Bind one non-empty triggerQuote
+and evidence span to each relation. Evidence offsets are half-open Unicode
+code-point offsets into the same runtime-only source. Abstain when no
+ontology-grounded relation is supported.
+
+The predicted-entities and gold-entities stage-2 calls are separate calls,
+paired by case ID and run ID, with the same model, prompt, schema, sampling,
+timeout and token bounds. The candidate table is the only intended arm
+difference. The gold-relations arm is a deterministic zero-provider
+integrity control and is never a model-quality score.

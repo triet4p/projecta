@@ -1,0 +1,66 @@
+{
+  "artifactVersion": "s12.s12-f-12.offline-contracts-review.v5",
+  "status": "OWNER_REVIEW_APPROVED_FOR_PREREGISTRATION_PREPARATION_ONLY",
+  "experimentId": "s12-f-12",
+  "decisionType": "RM-21C_OWNER_REREVIEW",
+  "decisionDate": "2026-08-21",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedArtifact": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v5.json",
+    "commit": "cc48c4a"
+  },
+  "verifiedEvidence": {
+    "regressionTests": "31 passed",
+    "targetedV5Tests": "5 passed",
+    "preflightStatus": "OFFLINE_CONTRACTS_READY_ZERO_CALL_V5",
+    "ruff": "pass",
+    "gitDiffCheck": "pass",
+    "providerCalls": 0,
+    "providerExecutionAuthorized": false,
+    "preregistrationIssued": false,
+    "heldOutAccess": false,
+    "historicalPackagesPreserved": true,
+    "sharedSourceResolution": {"resolved": 4, "wrong": 0},
+    "additionalSharedTargetResolution": {"resolved": 4, "wrong": 0},
+    "additionalCycleResolution": {"resolved": 4, "wrong": 0},
+    "runtimeSourceSliceDigestDerived": true,
+    "sourceAndMetadataTamperFailClosed": true,
+    "unicodeCodePointExactPasses": true,
+    "unicodeNormalizationMismatchFailsClosed": true,
+    "exactNonEmptyBindingSetEnforced": true,
+    "rawSourcePersistedInReports": false
+  },
+  "findings": [],
+  "decision": {
+    "rm20dImplementationRecorded": true,
+    "rm21cReviewCompleted": true,
+    "rm21cApproved": true,
+    "offlineMeasurementContractApproved": true,
+    "preregistrationPreparationAuthorized": true,
+    "executionPackagePreparationAuthorized": true,
+    "technicalFreezePreparationAuthorized": true,
+    "preregistrationIssued": false,
+    "executionFreezeIssued": false,
+    "providerExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "offline-preregistration-and-execution-package-preparation-with-separate-owner-issuance-review"
+  },
+  "limitations": [
+    "This approval validates offline contract correctness and custody only; it is not evidence of model or business quality.",
+    "The oracle fixtures are deterministic synthetic controls and do not satisfy live execution denominators.",
+    "A preregistration must bind the approved minimum denominators, case selection, paired arm schedule, pricing and cost ceiling, immutable code/schema/data/configuration digests, no-retry/no-overwrite behavior and sanitized per-case reporting.",
+    "No preregistration, technical freeze or provider authorization is issued by this review artifact.",
+    "Validation and held-out data remain sealed."
+  ],
+  "requiredNextGateEvidence": [
+    "Draft preregistration and execution package bound to offline package v5 and review v5.",
+    "At least 24 gold relation instances and 12 gold abstention instances per applicable arm, plus every preregistered slice minimum.",
+    "Exact provider-call accounting, model/prompt/schema/sampling/timeout/token bindings and worst-case pricing proof.",
+    "Guarded runner proving unauthorized paths make zero calls and authorized execution cannot retry or overwrite.",
+    "Separate owner review before preregistration/freeze issuance and separate execution authorization afterward."
+  ]
+}

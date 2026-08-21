@@ -1,0 +1,34 @@
+{
+  "artifactVersion": "s12.s12-f-12.technical-freeze.v1",
+  "status": "TECHNICAL_FREEZE_PREPARED_PENDING_RM23_OWNER_REVIEW",
+  "experimentId": "s12-f-12",
+  "commitSha": null,
+  "executionPackage": "evaluation/sprint-12/optimization/s12-f-12-rm22-execution-package.v1.json",
+  "executionPackageDigest": "sha256:ccadbab0af7f9c8dd632baab392d6b8ec729efdb2122c9b162010bc251c99fa0",
+  "preregistration": "evaluation/sprint-12/optimization/s12-f-12-rm22-prereg-draft.v1.json",
+  "preregistrationDigest": "sha256:13d20dbe73da19837e03212af7442b50be3a5db755a0d8508e3a554117abf104",
+  "offlineContractPath": "evaluation/sprint-12/optimization/s12-f-12-offline-contracts.v5.json",
+  "offlineReviewPath": "evaluation/sprint-12/optimization/s12-f-12-offline-contracts-review.v5.json",
+  "runtimeConfigurationDigest": "sha256:a672d1c17a174c5c2697859118e2394b89007c3877a270e82ee5db25b357dd0b",
+  "runnerDigest": "sha256:cb04849523055dc9424008c4a11b72c1f1ed561b6af33251eef339f5b7a6316a",
+  "preflightDigest": "sha256:66387eb5a8377e7f22baa2cd99071eed0fe4724181edf3fdcc4ef405e3dc82b7",
+  "providerExecutionAuthorized": false,
+  "preregistrationIssued": false,
+  "heldOutInspected": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false,
+  "issuance": {
+    "status": "NOT_ISSUED",
+    "requiresRM23OwnerReview": true,
+    "requiresSeparateProviderAuthorization": true,
+    "mustBindExactCommitSha": true,
+    "mustBindExactPackageDigest": true
+  },
+  "constraints": [
+    "RM-22 preparation only; this record is not a preregistration issuance.",
+    "No provider call, validation access, held-out access, Stage B, selection or promotion is permitted.",
+    "The commit SHA remains null until owner issuance review binds the committed lineage.",
+    "The future execution must use 144 calls, no retry and no overwrite under a separate authorization."
+  ]
+}
