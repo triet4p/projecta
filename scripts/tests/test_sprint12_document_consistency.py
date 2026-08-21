@@ -52,14 +52,14 @@ def test_rm23f_transition_preserves_history_and_sets_current_state() -> None:
     assert transition["currentDecisionState"]["providerExecutionAuthorized"] is False
 
 
-def test_rm25_transition_and_current_state_agree() -> None:
+def test_rm25_transition_remains_historical_and_current_state_agrees_after_rm27() -> None:
     current = _json(EVAL / "current-state.v1.json")
-    g5 = _json(OPT / "g5-packet.v14.json")
+    g5 = _json(OPT / "g5-packet.v15.json")
     transition = _json(OPT / "s12-f-12-rm25-authorization-transition.v1.json")
     authorization_path = OPT / "s12-f-12-rm25-authorization.v1.json"
     review_path = OPT / "s12-f-12-rm25-owner-review.v1.json"
 
-    expected = "G5_F12_STAGE_A_COMPLETED_REJECTED_HARD_GATE_PENDING_OWNER_DECISION"
+    expected = "G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY"
     assert current["status"] == expected
     assert g5["status"] == expected
     assert transition["authorization"]["digest"] == _digest(authorization_path)
@@ -67,12 +67,86 @@ def test_rm25_transition_and_current_state_agree() -> None:
     assert current["experimentState"]["candidateSelection"] == "NO_SELECTION"
     assert g5["selection"]["status"] == "NO_SELECTION"
     assert current["experimentState"]["providerExecutionAuthorized"] is False
-    assert g5["activeExperiment"]["providerExecutionAuthorized"] is False
+    assert g5["authorizationBoundary"]["providerExecutionAuthorized"] is False
     assert current["experimentState"]["providerCallsPerformed"] == 144
     assert current["experimentState"]["stageAReportExists"] is True
-    assert current["experimentState"]["stageAStatus"] == "COMPLETED_REJECTED_HARD_GATE"
+    assert current["experimentState"]["stageAStatus"] == "COMPLETED_REJECTED_NO_STAGE_B"
     assert current["experimentState"]["heldOutInspected"] is False
     assert g5["authorizationBoundary"]["heldOutAccessAuthorized"] is False
+
+
+def test_rm27_owner_decision_transition_and_current_state_bind_closed_lineage() -> None:
+    current = _json(EVAL / "current-state.v1.json")
+    decision_path = OPT / "s12-f-12-stage-a-decision.v1.json"
+    transition_path = OPT / "s12-f-12-rm27-decision-transition.v1.json"
+    g5_path = OPT / "g5-packet.v15.json"
+    decision = _json(decision_path)
+    transition = _json(transition_path)
+    g5 = _json(g5_path)
+    report_path = OPT / "s12-f-12-stage-a-report.v6.json"
+    report = _json(report_path)
+
+    assert decision["status"] == "COMPLETED_REJECTED_NO_STAGE_B"
+    assert decision["decision"]["experimentClosedRejected"] is True
+    assert decision["decision"]["preserveReport"] is True
+    assert decision["decision"]["doNotRetryThisAuthorization"] is True
+    assert decision["evidence"]["report"]["digest"] == _index_digest(report_path)
+    assert transition["ownerDecision"]["digest"] == _digest(decision_path)
+    assert transition["immutableReport"]["digest"] == _index_digest(report_path)
+    assert g5["activeDecision"]["ownerDecision"]["digest"] == _digest(decision_path)
+    assert g5["activeDecision"]["decisionTransition"]["digest"] == _digest(
+        transition_path
+    )
+    assert current["currentEvidence"]["ownerDecision"]["expectedStatus"] == (
+        "COMPLETED_REJECTED_NO_STAGE_B"
+    )
+    assert current["currentEvidence"]["decisionTransition"]["expectedStatus"] == (
+        "F12_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_REMEDIATION_PREPARATION_ONLY"
+    )
+    assert current["status"] == g5["status"]
+    assert current["status"] == (
+        "G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY"
+    )
+    assert report["decision"]["status"] == "COMPLETED_REJECTED_HARD_GATE"
+    assert report["accounting"]["providerCallsAttempted"] == 144
+    assert report["accounting"]["retryCount"] == 0
+    assert transition["currentDecisionState"]["authorizationSpent"] is True
+
+    common_locks = (
+        "providerExecutionAuthorized",
+        "validationAccessAuthorized",
+        "heldOutAccessAuthorized",
+        "stageBAuthorized",
+        "candidateSelectionAuthorized",
+        "promotionAuthorized",
+    )
+    for artifact in (decision["decision"], transition["currentDecisionState"]):
+        for name in common_locks:
+            assert artifact[name] is False
+        assert artifact["offlineRemediationPreparationAuthorized"] is True
+    for name in (
+        "providerExecutionAuthorized",
+        "heldOutAccessAuthorized",
+        "stageBAuthorized",
+        "candidateSelectionAuthorized",
+        "promotionAuthorized",
+        "retryAuthorized",
+        "outputOverwriteAuthorized",
+        "validationAuthorized",
+    ):
+        assert g5["authorizationBoundary"][name] is False
+    assert g5["authorizationBoundary"]["offlineRemediationPreparationAuthorized"] is True
+
+    assert g5["selection"] == {
+        "status": "NO_SELECTION",
+        "candidateAvailable": False,
+        "candidateFreezeAuthorized": False,
+        "reason": "S12-f-12 is closed rejected by RM-27 after hard, threshold and slice gate failures.",
+    }
+    assert current["experimentState"]["candidateSelection"] == "NO_SELECTION"
+    assert current["nextTasks"] == [
+        "PREPARE_OFFLINE_F12_SCHEMA_AND_EVIDENCE_REMEDIATION"
+    ]
 
 
 def test_f12_stage_a_execution_transition_and_report_are_immutable_evidence() -> None:
@@ -98,9 +172,9 @@ def test_current_documents_do_not_repeat_superseded_statuses() -> None:
     handoffs = (DOCS / "agent-handoffs.md").read_text(encoding="utf-8")
 
     assert "sprint-12/current-state.md" in sprint_plan
-    assert "sprint-12/g5-optimization.v14.md" in sprint_plan
-    assert "G5_F12_STAGE_A_COMPLETED_REJECTED_HARD_GATE_PENDING_OWNER_DECISION" in global_plan
-    assert "CURRENT_POST_RUN_OWNER_DECISION_HANDOFF" in handoffs
+    assert "sprint-12/g5-optimization.v15.md" in sprint_plan
+    assert "G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY" in global_plan
+    assert "CURRENT_OFFLINE_F12_REMEDIATION_PREPARATION_HANDOFF" in handoffs
     assert "Handoff A — Runtime-backed" not in handoffs
 
     stale_phrases = (
@@ -126,4 +200,4 @@ def test_historical_gate_packets_are_labeled_as_snapshots() -> None:
     for name in historical:
         text = (DOCS / name).read_text(encoding="utf-8")
         assert "Historical gate snapshot" in text
-        assert "current-state.md" in text or "g5-optimization.v13.md" in text
+        assert "current-state.md" in text or "g5-optimization.v15.md" in text

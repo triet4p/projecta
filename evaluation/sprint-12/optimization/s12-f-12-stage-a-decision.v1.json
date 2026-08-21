@@ -1,0 +1,110 @@
+{
+  "artifactVersion": "s12.s12-f-12.stage-a-decision.v1",
+  "status": "COMPLETED_REJECTED_NO_STAGE_B",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-27",
+  "decisionType": "OWNER_POST_RUN_STAGE_A_DECISION",
+  "decisionDate": "2026-08-21",
+  "decisionAuthority": "project-owner-delegated-codex-reviewer",
+  "decisionRule": "A Stage A result with any hard-gate, registered-threshold or required-slice failure is rejected and cannot open Stage B or selection.",
+  "evidence": {
+    "report": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+      "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+      "status": "COMPLETED_REJECTED_HARD_GATE"
+    },
+    "executionTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-execution-transition.v1.json",
+      "digest": "sha256:c72ae6250d6bb35c9d7f58943dbfa030df6ab9bd590fc3468126e5161a31bf51"
+    },
+    "authorization": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm25-authorization.v1.json",
+      "digest": "sha256:f72f7701d20b97674a1d1403c375eaa0c52fd282887cb03e2e65ca45697c7a03",
+      "spent": true
+    },
+    "preregistration": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22d-issuance-draft.v7.json",
+      "digest": "sha256:9e52308abb73fa7a0696f8bd8ae11c1eed064bd63fcdc7266e1c1b3bd7844808"
+    },
+    "executionPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22d-execution-package.v7.json",
+      "digest": "sha256:22c47dd77ea4a348b479a21d5d42b97684c6f04a1fa54b06857bd82f2c9bc641"
+    },
+    "technicalFreeze": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22d-technical-freeze.v7.json",
+      "digest": "sha256:20bf9ed82b629c9e26067b42acbb9efdf2b78de243ffd40cc0a707f46901a772"
+    },
+    "executionCommit": "e047911e2e2d513f2b8751965dd702b2c1fe9d5a"
+  },
+  "accounting": {
+    "providerCallsAttempted": 144,
+    "responsesReceived": 144,
+    "schemaValidResponses": 138,
+    "usageValidResponses": 144,
+    "pricedCalls": 144,
+    "relationBranchOutputs": 96,
+    "retryCount": 0,
+    "pricingFailureCount": 0,
+    "totalCostUsd": "0.00592500",
+    "costCeilingUsd": "10.00"
+  },
+  "gateResults": {
+    "hardGatesPass": false,
+    "thresholdsPass": false,
+    "sliceGatesPass": false,
+    "goldRelationsIntegrityPass": true,
+    "failureCounts": {
+      "schemaInvalid": 6,
+      "invalidEvidence": 17,
+      "missingOutput": 0,
+      "endpointContractFailure": 0,
+      "sharedConfigurationMismatch": 0,
+      "retryCount": 0,
+      "pricingFailureCount": 0
+    },
+    "thresholdFailures": {
+      "predictedEntities": 10,
+      "goldEntities": 7,
+      "goldRelationsControl": 0
+    },
+    "sliceFailures": {
+      "predictedEntities": "15/15",
+      "goldEntities": "14/15"
+    }
+  },
+  "rootCauseBoundary": {
+    "supportedFindings": [
+      "Five schema-invalid responses occurred in predicted-entities Stage 1 and one occurred in gold-entities Stage 2.",
+      "All 17 invalid-evidence findings occurred in the gold-entities arm and were classified as unsupported evidence.",
+      "Predicted-entities entity extraction and endpoint identity resolution failed materially while the gold-relations control passed.",
+      "Gold-relation integrity and materializer gates passed."
+    ],
+    "unsupportedClaims": [
+      "The sanitized report cannot identify the exact malformed provider fields.",
+      "The evidence is insufficient to assign sole causality to the provider, prompt, runner or materializer.",
+      "The rejected development result establishes no accuracy, business-quality or tenant-readiness improvement."
+    ]
+  },
+  "decision": {
+    "experimentClosedRejected": true,
+    "preserveReport": true,
+    "doNotRetryThisAuthorization": true,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "candidateFreezeAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "promotionAuthorized": false,
+    "offlineRemediationPreparationAuthorized": true,
+    "providerExecutionAuthorized": false,
+    "supersedingPackageRequiredForAnyRerun": true,
+    "newOwnerAuthorizationRequiredForAnyRerun": true,
+    "nextPermittedAction": "PREPARE_OFFLINE_F12_SCHEMA_AND_EVIDENCE_REMEDIATION"
+  },
+  "constraints": [
+    "The immutable v6 report and spent RM-25 authorization must not be overwritten, relabeled or reused.",
+    "Offline remediation may inspect only repository-visible development evidence and sanitized diagnostics.",
+    "No provider call, rerun, validation access, held-out access, Stage B, selection or promotion is authorized by this decision.",
+    "Any future execution requires a superseding preregistration, package, freeze, exact-commit review and new owner authorization."
+  ]
+}

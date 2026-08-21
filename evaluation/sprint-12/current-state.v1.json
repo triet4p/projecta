@@ -1,7 +1,7 @@
 {
   "artifactVersion": "s12.current-state.v1",
   "asOf": "2026-08-21",
-  "status": "G5_F12_STAGE_A_COMPLETED_REJECTED_HARD_GATE_PENDING_OWNER_DECISION",
+  "status": "G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY",
   "sourcePrecedence": [
     "this current-state index",
     "latest explicit owner decision or transition record",
@@ -18,14 +18,22 @@
       "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-execution-transition.v1.json",
       "expectedStatus": "ONE_BOUNDED_STAGE_A_EXECUTED_COMPLETED_REJECTED_HARD_GATE_PENDING_OWNER_DECISION"
     },
+    "ownerDecision": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-decision.v1.json",
+      "expectedStatus": "COMPLETED_REJECTED_NO_STAGE_B"
+    },
+    "decisionTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm27-decision-transition.v1.json",
+      "expectedStatus": "F12_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_REMEDIATION_PREPARATION_ONLY"
+    },
     "stageAReport": {
       "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
       "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
       "status": "COMPLETED_REJECTED_HARD_GATE"
     },
     "g5Packet": {
-      "path": "evaluation/sprint-12/optimization/g5-packet.v14.json",
-      "version": "s12.g5.packet.v14"
+      "path": "evaluation/sprint-12/optimization/g5-packet.v15.json",
+      "version": "s12.g5.packet.v15"
     },
     "humanSummary": "docs/sprint-plans/sprint-12/current-state.md"
   },
@@ -39,7 +47,7 @@
     "G3.1-C": "APPROVED_WITH_SCOPE_LIMITS",
     "G4": "RUNTIME_BACKED_BASELINE_WITH_FAILURES",
     "G4.1": "CONTRACT_ALIGNED_STABILITY_FAILED",
-    "G5": "F12_STAGE_A_COMPLETED_REJECTED_HARD_GATE_PENDING_OWNER_DECISION",
+    "G5": "F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY",
     "G6": "BLOCKED_CUSTODY_OR_CANDIDATE",
     "G7": "NOT_STARTED"
   },
@@ -54,7 +62,8 @@
     "relationBranchOutputs": 96,
     "stageAReportExists": true,
     "stageAReportSchemaValid": true,
-    "stageAStatus": "COMPLETED_REJECTED_HARD_GATE",
+    "stageAStatus": "COMPLETED_REJECTED_NO_STAGE_B",
+    "experimentClosedRejected": true,
     "retryCount": 0,
     "totalCostUsd": "0.00592500",
     "stageBAuthorized": false,
@@ -62,10 +71,11 @@
     "candidateFrozen": false,
     "validationAccessAuthorized": false,
     "heldOutAccessAuthorized": false,
-    "heldOutInspected": false
+    "heldOutInspected": false,
+    "offlineRemediationPreparationAuthorized": true
   },
   "nextTasks": [
-    "SEPARATE_POST_RUN_OWNER_DECISION_ON_IMMUTABLE_F12_STAGE_A_REPORT"
+    "PREPARE_OFFLINE_F12_SCHEMA_AND_EVIDENCE_REMEDIATION"
   ],
   "claimBoundary": "No accuracy improvement, candidate selection, tenant readiness or business-quality result may be claimed before new execution evidence passes its registered gates."
 }

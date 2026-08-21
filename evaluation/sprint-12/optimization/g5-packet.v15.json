@@ -1,0 +1,71 @@
+{
+  "packetVersion": "s12.g5.packet.v15",
+  "status": "G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY",
+  "asOf": "2026-08-21",
+  "supersedesForCurrentState": {
+    "path": "evaluation/sprint-12/optimization/g5-packet.v14.json",
+    "digest": "sha256:c0320a51358969fbcce58d18173de2711d37e67bcd38f59aca294cb7de25790c"
+  },
+  "activeDecision": {
+    "experimentId": "s12-f-12",
+    "ownerDecision": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-decision.v1.json",
+      "digest": "sha256:eda1ef53bdd3e48febc4a3dd55ff90b450415205ab6233944ee92f97089bf05e",
+      "status": "COMPLETED_REJECTED_NO_STAGE_B"
+    },
+    "decisionTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm27-decision-transition.v1.json",
+      "digest": "sha256:6fee3e57ed69132ce49249818f6edd9112c2c1981b3a2258943080234cf014af",
+      "status": "F12_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_REMEDIATION_PREPARATION_ONLY"
+    },
+    "report": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+      "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+    },
+    "executionCommit": "e047911e2e2d513f2b8751965dd702b2c1fe9d5a",
+    "providerCallsPerformed": 144,
+    "retryCount": 0,
+    "totalCostUsd": "0.00592500"
+  },
+  "gateResults": {
+    "hardGatesPass": false,
+    "thresholdsPass": false,
+    "sliceGatesPass": false,
+    "goldRelationsIntegrityPass": true,
+    "failedGates": ["schemaInvalid", "invalidEvidence", "thresholds", "sliceGates"],
+    "failureCounts": {
+      "schemaInvalid": 6,
+      "invalidEvidence": 17,
+      "missingOutput": 0,
+      "endpointContractFailure": 0,
+      "sharedConfigurationMismatch": 0
+    }
+  },
+  "selection": {
+    "status": "NO_SELECTION",
+    "candidateAvailable": false,
+    "candidateFreezeAuthorized": false,
+    "reason": "S12-f-12 is closed rejected by RM-27 after hard, threshold and slice gate failures."
+  },
+  "authorizationBoundary": {
+    "nextPermittedTask": "PREPARE_OFFLINE_F12_SCHEMA_AND_EVIDENCE_REMEDIATION",
+    "offlineRemediationPreparationAuthorized": true,
+    "providerExecutionAuthorized": false,
+    "authorizationSpent": true,
+    "retryAuthorized": false,
+    "outputOverwriteAuthorized": false,
+    "validationAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "supersedingPackageRequiredForAnyRerun": true,
+    "newOwnerAuthorizationRequiredForAnyRerun": true
+  },
+  "claimBoundary": {
+    "accuracyImprovementEstablished": false,
+    "businessQualityEstablished": false,
+    "tenantReadinessEstablished": false,
+    "humanEvidence": false
+  }
+}

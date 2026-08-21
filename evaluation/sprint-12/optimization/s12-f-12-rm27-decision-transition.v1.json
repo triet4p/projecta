@@ -1,0 +1,41 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm27-decision-transition.v1",
+  "status": "F12_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_REMEDIATION_PREPARATION_ONLY",
+  "experimentId": "s12-f-12",
+  "transitionDate": "2026-08-21",
+  "transitionAuthority": "project-owner-delegated-codex-reviewer",
+  "precedenceRule": "This RM-27 owner transition closes the executed f12 lineage as rejected without mutating the immutable report or historical authorization artifacts.",
+  "ownerDecision": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-decision.v1.json",
+    "digest": "sha256:eda1ef53bdd3e48febc4a3dd55ff90b450415205ab6233944ee92f97089bf05e",
+    "status": "COMPLETED_REJECTED_NO_STAGE_B"
+  },
+  "immutableReport": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+    "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+    "status": "COMPLETED_REJECTED_HARD_GATE"
+  },
+  "fromState": "G5_F12_STAGE_A_COMPLETED_REJECTED_HARD_GATE_PENDING_OWNER_DECISION",
+  "currentDecisionState": {
+    "experimentClosedRejected": true,
+    "stageAStatus": "COMPLETED_REJECTED_NO_STAGE_B",
+    "authorizationSpent": true,
+    "providerExecutionAuthorized": false,
+    "retryAuthorized": false,
+    "outputOverwriteAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "candidateFreezeAuthorized": false,
+    "promotionAuthorized": false,
+    "offlineRemediationPreparationAuthorized": true,
+    "nextPermittedAction": "PREPARE_OFFLINE_F12_SCHEMA_AND_EVIDENCE_REMEDIATION"
+  },
+  "constraints": [
+    "RM-27 authorizes offline remediation preparation only.",
+    "The spent authorization cannot be reused and the report cannot be overwritten.",
+    "No provider execution, validation, held-out access, Stage B, selection, freeze or promotion is authorized.",
+    "A future run requires a superseding governed lineage and a new owner authorization."
+  ]
+}
