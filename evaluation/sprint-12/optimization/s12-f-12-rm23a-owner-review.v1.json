@@ -1,0 +1,116 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm23a-owner-review.v1",
+  "status": "OWNER_ISSUANCE_REVIEW_WITHHELD_MEASUREMENT_AND_LINEAGE_BLOCKERS",
+  "experimentId": "s12-f-12",
+  "decisionType": "RM-23A_OWNER_ISSUANCE_REVIEW",
+  "decisionDate": "2026-08-21",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedLineage": {
+    "implementationCommit": "dc12237",
+    "planCommit": "f590fea",
+    "preregistrationDraft": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22a-issuance-draft.v2.json",
+      "digest": "sha256:9c32c4dcbfb472131495df042114b7e509b759257b0d20a1e36b5f522db85979"
+    },
+    "executionPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22a-execution-package.v2.json",
+      "digest": "sha256:f80c6ea8e3180290b786970475fd1a0db4aa780bc6a32eb8030c9bf46e36ea44"
+    },
+    "technicalFreeze": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22a-technical-freeze.v2.json",
+      "digest": "sha256:3fd530fca1bb50d9d6e333c85f9e143d1fcf43b877e1d9d549f17e8b4163e21e"
+    },
+    "runner": {
+      "path": "scripts/run_sprint12_f12_stage_a_v2.py",
+      "digest": "sha256:d211de99191d7f403b4344d876ad143e6b34cb02244b928cf2c6044dc5ed81cd"
+    },
+    "reportSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v2.json",
+      "digest": "sha256:3619136f3192a63b5b6f729e54956a2ce632d59a385f8896ccd9bd7d69b73669"
+    }
+  },
+  "verifiedEvidence": {
+    "fullF12Regression": "41 passed",
+    "warning": "pytest cache directory unavailable; test outcomes unaffected",
+    "rm22aPreflightStatus": "F12_RM22A_READY_ZERO_CALL_V2",
+    "ruff": "pass",
+    "gitDiffCheckBeforeReviewArtifacts": "pass",
+    "providerCalls": 0,
+    "heldOutAccess": false,
+    "reportPathExists": false,
+    "preparedSchedule": {
+      "stage1PredictedEntities": 48,
+      "stage2PredictedEntities": 48,
+      "stage2GoldEntities": 48,
+      "totalProviderCalls": 144,
+      "relationBranchOutputs": 96
+    },
+    "corpusDerivedDenominators": {
+      "selectedDevelopmentCases": 16,
+      "positiveRelationCases": 8,
+      "goldRelationInstancesPerRun": 8,
+      "goldRelationInstancesPerArmAcrossThreeRuns": 24,
+      "abstentionRequiredCases": 4,
+      "goldAbstentionInstancesPerArmAcrossThreeRuns": 12
+    },
+    "worstCaseCostUsd": "1.17315072",
+    "costCeilingUsd": "10.00",
+    "costBoundPasses": true,
+    "mockAuthorizedCalls": 144,
+    "unauthorizedPreflightProviderCalls": 0
+  },
+  "blockingFindings": [
+    {
+      "id": "F12-RM23A-01",
+      "severity": "P1",
+      "summary": "The guarded runner cannot enforce the package's exact-commit authorization contract.",
+      "evidence": "The package requires authorization to bind the exact commit, while validate_preparation rejects every freeze whose commitSha is non-null. validate_authorization checks package digest, freeze digest, output path and ceiling but never checks an exact commit or ancestry.",
+      "impact": "An issued freeze bound to a real commit cannot pass preparation validation, while the preparation-only null-commit freeze can be authorized without commit custody. Either path violates the registered lineage contract.",
+      "requiredRemediation": "Publish a superseding issued preregistration/package/freeze lineage with a non-null exact commit. Validate that exact commit and required ancestry before any provider call; add zero-call tests for null, wrong and non-ancestor commit bindings."
+    },
+    {
+      "id": "F12-RM23A-02",
+      "severity": "P1",
+      "summary": "The runner produces incorrect registered denominators and incomplete aggregate metrics.",
+      "evidence": "caseRecords already contains all three runs, but gold_relation_instances and gold_abstention_instances sum those records and multiply by three again, producing 72 relations and 36 abstentions instead of 24 and 12. _aggregate retains only record counts and reconciliation booleans rather than the registered semantic/evidence numerators, denominators and F1/rate metrics.",
+      "impact": "The final report cannot support the preregistered quality claims or compare predicted-entity and gold-entity arms on the approved metrics.",
+      "requiredRemediation": "Aggregate once from the 48 immutable per-case-run records, reconcile to exactly 24 gold relations and 12 gold abstentions per applicable arm, and emit every approved stage-1, stage-2, end-to-end and integrity-control metric with explicit numerators and denominators."
+    },
+    {
+      "id": "F12-RM23A-03",
+      "severity": "P1",
+      "summary": "Approved thresholds and hard gates were dropped or are not enforced by the decision.",
+      "evidence": "The v2 draft/package/report omit endpointContractFailure and sharedConfigurationMismatch from the approved hard-gate set. The draft does not freeze the approved numeric thresholds. The runner hard-codes invalidEvidence to zero and its decision ignores invalidEvidence, all semantic/evidence thresholds, all slice gates and the gold-relations integrity control; status can also be COMPLETED when cost exceeds the ceiling.",
+      "impact": "A low-quality or contract-invalid run can be labeled COMPLETED and appear eligible despite failing the owner-approved measurement contract.",
+      "requiredRemediation": "Restore the complete approved hard-gate and threshold set verbatim, derive every gate from recorded evidence, and make the final status fail closed on cost, contract integrity, both applicable model arms, gold-relations control and every eligible named slice."
+    },
+    {
+      "id": "F12-RM23A-04",
+      "severity": "P1",
+      "summary": "The report schema and runner do not preserve or validate the required evidence surface.",
+      "evidence": "The runner emits only all-development, relation-positive and abstention-required slices, omitting relation-negative, abstention-not-required, journey and language. The report schema leaves arm metrics, per-case arms and slice metrics as unrestricted objects, permits more than 48 case records, lacks accounting reconciliation constraints and accepts arbitrary decision status. The runner never validates its report against the bound JSON Schema before persistence; the test only checks that selected field names exist in the schema.",
+      "impact": "Missing, malformed or non-reconciling evidence can be persisted as the sole immutable report without being rejected, and required slice regressions cannot be detected.",
+      "requiredRemediation": "Version a closed report schema for exact 48 case-runs, exact three arms, failure/usage/pricing records, semantic/evidence buckets, all named slices and a constrained decision. Validate the staged report before single persistence and add positive plus adversarial schema/E2E tests."
+    }
+  ],
+  "decision": {
+    "rm22aPreparationRecorded": true,
+    "rm23aReviewCompleted": true,
+    "rm23aApproved": false,
+    "preregistrationIssued": false,
+    "executionFreezeIssued": false,
+    "providerExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "offline-rm22b-measurement-lineage-remediation-only"
+  },
+  "constraints": [
+    "Preserve RM-22 and RM-22A artifacts as historical preparation evidence.",
+    "Do not issue or mutate the v2 preregistration/freeze and do not authorize provider execution.",
+    "Do not create Stage A output, inspect validation or held-out data, open Stage B, select or promote a candidate during RM-22B.",
+    "A superseding package requires a new independent owner issuance review and a later separate provider authorization."
+  ]
+}

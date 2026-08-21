@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "s12-f-12.stage-a-report.v3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifactVersion", "experimentId", "custody", "configuration", "accounting", "metrics", "caseRecords", "sliceRecords", "decision"],
+  "properties": {
+    "artifactVersion": {"const": "s12-f-12.stage-a-report.v3"},
+    "experimentId": {"const": "s12-f-12"},
+    "custody": {"$ref": "#/$defs/custody"},
+    "configuration": {"$ref": "#/$defs/configuration"},
+    "accounting": {"$ref": "#/$defs/accounting"},
+    "metrics": {"$ref": "#/$defs/metrics"},
+    "caseRecords": {"type": "array", "minItems": 48, "maxItems": 48, "items": {"$ref": "#/$defs/caseRecord"}},
+    "sliceRecords": {
+      "type": "array",
+      "minItems": 14,
+      "maxItems": 14,
+      "prefixItems": [
+        {"$ref": "#/$defs/sliceRecord"}, {"$ref": "#/$defs/sliceRecord"}, {"$ref": "#/$defs/sliceRecord"}, {"$ref": "#/$defs/sliceRecord"}, {"$ref": "#/$defs/sliceRecord"},
+        {"$ref": "#/$defs/sliceRecord"}, {"$ref": "#/$defs/sliceRecord"}, {"$ref": "#/$defs/sliceRecord"}, {"$ref": "#/$defs/sliceRecord"},
+        {"$ref": "#/$defs/sliceRecord"}, {"$ref": "#/$defs/sliceRecord"}, {"$ref": "#/$defs/sliceRecord"}, {"$ref": "#/$defs/sliceRecord"},
+        {"$ref": "#/$defs/sliceRecord"}, {"$ref": "#/$defs/sliceRecord"}
+      ],
+      "items": false
+    },
+    "decision": {"$ref": "#/$defs/decision"}
+  },
+  "$defs": {
+    "custody": {
+      "type": "object", "additionalProperties": false,
+      "required": ["rawSourceTextStored", "rawProviderPayloadStored", "heldOutAccess", "overwrite", "retryPolicy"],
+      "properties": {"rawSourceTextStored": {"const": false}, "rawProviderPayloadStored": {"const": false}, "heldOutAccess": {"const": false}, "overwrite": {"const": false}, "retryPolicy": {"const": "none"}}
+    },
+    "configuration": {
+      "type": "object", "additionalProperties": false,
+      "required": ["commitSha", "runtimeDigest", "promptDigest", "stage1SchemaDigest", "stage2SchemaDigest", "model", "sampling", "timeoutSeconds", "maxOutputTokens", "thresholds"],
+      "properties": {"commitSha": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "runtimeDigest": {"type": "string"}, "promptDigest": {"type": "string"}, "stage1SchemaDigest": {"type": "string"}, "stage2SchemaDigest": {"type": "string"}, "model": {"const": "deepseek-v4-flash"}, "sampling": {"type": "object", "additionalProperties": false, "required": ["temperature", "topP"], "properties": {"temperature": {"type": "number"}, "topP": {"type": "number"}}}, "timeoutSeconds": {"type": "number"}, "maxOutputTokens": {"type": "integer"}, "thresholds": {"type": "object", "additionalProperties": {"type": "number"}}}
+    },
+    "accounting": {
+      "type": "object", "additionalProperties": false,
+      "required": ["providerCallsAttempted", "responsesReceived", "schemaValidResponses", "usageValidResponses", "pricedCalls", "retryCount", "pricingFailureCount", "totalCostUsd", "costCeilingUsd", "denominators", "failureClasses", "callSchedule"],
+      "properties": {
+        "providerCallsAttempted": {"const": 144}, "responsesReceived": {"type": "integer", "minimum": 0}, "schemaValidResponses": {"type": "integer", "minimum": 0}, "usageValidResponses": {"type": "integer", "minimum": 0}, "pricedCalls": {"type": "integer", "minimum": 0}, "retryCount": {"const": 0}, "pricingFailureCount": {"type": "integer", "minimum": 0}, "totalCostUsd": {"type": "string"}, "costCeilingUsd": {"const": "10.00"},
+        "denominators": {"type": "object", "additionalProperties": false, "required": ["caseRuns", "relationInstances", "abstentionInstances"], "properties": {"caseRuns": {"const": 48}, "relationInstances": {"const": 24}, "abstentionInstances": {"const": 12}}},
+        "failureClasses": {"type": "object", "additionalProperties": false, "required": ["schemaInvalid", "missingOutput", "endpointContractFailure", "sharedConfigurationMismatch"], "properties": {"schemaInvalid": {"type": "integer", "minimum": 0}, "missingOutput": {"type": "integer", "minimum": 0}, "endpointContractFailure": {"type": "integer", "minimum": 0}, "sharedConfigurationMismatch": {"type": "integer", "minimum": 0}}},
+        "callSchedule": {"type": "object", "additionalProperties": false, "required": ["stage1PredictedEntities", "stage2PredictedEntities", "stage2GoldEntities"], "properties": {"stage1PredictedEntities": {"const": 48}, "stage2PredictedEntities": {"const": 48}, "stage2GoldEntities": {"const": 48}}}
+      }
+    },
+    "hardGates": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schemaInvalid", "invalidEvidence", "missingOutput", "endpointContractFailure", "sharedConfigurationMismatch", "retryCount", "pricingFailure", "rawSensitiveDataIncluded", "heldOutInspected"],
+      "properties": {"schemaInvalid": {"type": "integer", "minimum": 0}, "invalidEvidence": {"type": "integer", "minimum": 0}, "missingOutput": {"type": "integer", "minimum": 0}, "endpointContractFailure": {"type": "integer", "minimum": 0}, "sharedConfigurationMismatch": {"type": "integer", "minimum": 0}, "retryCount": {"const": 0}, "pricingFailure": {"type": "integer", "minimum": 0}, "rawSensitiveDataIncluded": {"const": false}, "heldOutInspected": {"const": false}}
+    },
+    "entity": {"type": "object", "required": ["gold", "predicted", "truePositive", "entityF1", "entityMacroF1", "spanExact", "hallucinationRate", "byType", "denominatorReconciled"], "properties": {"gold": {"type": "integer"}, "predicted": {"type": "integer"}, "truePositive": {"type": "integer"}, "entityF1": {"type": ["number", "string"]}, "entityMacroF1": {"type": ["number", "string"]}, "spanExact": {"type": ["number", "string"]}, "hallucinationRate": {"type": "number"}, "byType": {"type": "object"}, "denominatorReconciled": {"type": "boolean"}}, "additionalProperties": false},
+    "abstention": {"type": "object", "additionalProperties": false, "required": ["gold", "predicted", "truePositive", "falsePositive", "falseNegative", "precision", "recall", "f1"], "properties": {"gold": {"type": "integer"}, "predicted": {"type": "integer"}, "truePositive": {"type": "integer"}, "falsePositive": {"type": "integer"}, "falseNegative": {"type": "integer"}, "precision": {"type": "number"}, "recall": {"type": "number"}, "f1": {"type": "number"}}},
+    "relation": {"type": "object", "additionalProperties": false, "required": ["semantic", "endpointResolution", "evidence", "invalidEvidenceCount", "endpointContractFailure", "configurationMismatch"], "properties": {"semantic": {"type": "object"}, "endpointResolution": {"type": "object"}, "evidence": {"type": "object"}, "invalidEvidenceCount": {"type": "integer", "minimum": 0}, "endpointContractFailure": {"type": "integer", "minimum": 0}, "configurationMismatch": {"type": "integer", "minimum": 0}}},
+    "arm": {"type": "object", "additionalProperties": false, "required": ["caseRuns", "goldRelationInstances", "goldAbstentionInstances", "entity", "abstention", "relation", "thresholdsPass", "thresholdFailures"], "properties": {"caseRuns": {"type": "integer"}, "goldRelationInstances": {"type": "integer"}, "goldAbstentionInstances": {"type": "integer"}, "entity": {"$ref": "#/$defs/entity"}, "abstention": {"$ref": "#/$defs/abstention"}, "relation": {"$ref": "#/$defs/relation"}, "thresholdsPass": {"type": "boolean"}, "thresholdFailures": {"type": "array", "items": {"type": "string"}}}},
+    "metrics": {"type": "object", "additionalProperties": false, "required": ["arms", "hardGates", "thresholds", "goldRelationsIntegrityScore", "goldRelationsMaterializerFailures", "sliceGatesPass"], "properties": {"arms": {"type": "object", "additionalProperties": false, "required": ["predicted-entities", "gold-entities", "gold-relations"], "properties": {"predicted-entities": {"$ref": "#/$defs/arm"}, "gold-entities": {"$ref": "#/$defs/arm"}, "gold-relations": {"$ref": "#/$defs/arm"}}}, "hardGates": {"$ref": "#/$defs/hardGates"}, "thresholds": {"type": "object"}, "goldRelationsIntegrityScore": {"type": "number"}, "goldRelationsMaterializerFailures": {"type": "integer"}, "sliceGatesPass": {"type": "boolean"}}},
+    "stage": {"type": "object", "additionalProperties": false, "required": ["responseReceived", "schemaValid", "failureClass", "responseDigest"], "properties": {"responseReceived": {"type": "boolean"}, "schemaValid": {"type": "boolean"}, "failureClass": {"type": ["string", "null"]}, "responseDigest": {"type": ["string", "null"]}}},
+    "caseArm": {"type": "object", "additionalProperties": false, "required": ["stage1", "stage2", "entity", "abstention", "relation", "configurationFingerprint", "invalidEvidenceCount", "endpointContractFailure", "configurationMismatch"], "properties": {"stage1": {"$ref": "#/$defs/stage"}, "stage2": {"$ref": "#/$defs/stage"}, "entity": {"type": "object"}, "abstention": {"type": "object"}, "relation": {"type": "object"}, "configurationFingerprint": {"type": "string"}, "invalidEvidenceCount": {"type": "integer"}, "endpointContractFailure": {"type": "integer"}, "configurationMismatch": {"type": "integer"}}},
+    "caseRecord": {"type": "object", "additionalProperties": false, "required": ["caseId", "runId", "journeyId", "language", "goldRelationCount", "goldAbstentionRequired", "arms"], "properties": {"caseId": {"type": "string"}, "runId": {"type": "integer", "enum": [1, 2, 3]}, "journeyId": {"type": "string"}, "language": {"type": "string"}, "goldRelationCount": {"type": "integer", "minimum": 0}, "goldAbstentionRequired": {"type": "boolean"}, "arms": {"type": "object", "additionalProperties": false, "required": ["predicted-entities", "gold-entities", "gold-relations"], "properties": {"predicted-entities": {"$ref": "#/$defs/caseArm"}, "gold-entities": {"$ref": "#/$defs/caseArm"}, "gold-relations": {"$ref": "#/$defs/caseArm"}}}}},
+    "sliceRecord": {"type": "object", "additionalProperties": false, "required": ["dimension", "label", "denominator", "metrics"], "properties": {"dimension": {"enum": ["all-development", "relation-positive", "relation-negative", "abstention-required", "abstention-not-required", "journey", "language"]}, "label": {"type": "string"}, "denominator": {"type": "integer", "minimum": 0}, "metrics": {"type": "object", "additionalProperties": false, "required": ["arms", "gate"], "properties": {"arms": {"type": "object", "additionalProperties": false, "required": ["predicted-entities", "gold-entities", "gold-relations"], "properties": {"predicted-entities": {"$ref": "#/$defs/arm"}, "gold-entities": {"$ref": "#/$defs/arm"}, "gold-relations": {"$ref": "#/$defs/arm"}}}, "gate": {"type": "object", "additionalProperties": false, "required": ["predicted-entities", "gold-entities"], "properties": {"predicted-entities": {"type": "boolean"}, "gold-entities": {"type": "boolean"}}}}}},
+    "decision": {"type": "object", "additionalProperties": false, "required": ["status", "hardGatesPass", "thresholdsPass", "sliceGatesPass", "goldRelationsIntegrityPass", "costCeilingPass", "failedGates", "outputPath"], "properties": {"status": {"enum": ["COMPLETED", "COMPLETED_REJECTED_HARD_GATE"]}, "hardGatesPass": {"type": "boolean"}, "thresholdsPass": {"type": "boolean"}, "sliceGatesPass": {"type": "boolean"}, "goldRelationsIntegrityPass": {"type": "boolean"}, "costCeilingPass": {"type": "boolean"}, "failedGates": {"type": "array", "items": {"type": "string"}}, "outputPath": {"type": "string"}}}
+    }
+  }
+}
