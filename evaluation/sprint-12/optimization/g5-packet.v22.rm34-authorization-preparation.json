@@ -10,7 +10,7 @@
   },
   "authorizationPreparation": {
     "path": "evaluation/sprint-12/optimization/s12-f-12-rm34-authorization-preparation.v1.json",
-    "digest": "sha256:fda11a139dd473ef0f260d4fa47e406b2ce27a74b48b2aabc134f5dec349303a",
+    "digest": "sha256:b53cc0132a536bc8aeeff9be14d26f03c634ea43fccf17b5b3073b3082bcab4e",
     "status": "PREPARED_PENDING_RM35_OWNER_AUTHORIZATION"
   },
   "ownerCustodyErratum": {

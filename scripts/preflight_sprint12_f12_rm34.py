@@ -20,6 +20,7 @@ PREREG = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm32-preregistration
 FREEZE = ROOT / "evaluation/sprint-12/optimization/s12-f-12-rm32-technical-freeze.v8.json"
 REPORT_V6 = ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json"
 OUTPUT_V8 = ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json"
+RM34_PREFLIGHT = ROOT / "scripts/preflight_sprint12_f12_rm34.py"
 
 
 def digest(path: Path) -> str:
@@ -43,6 +44,31 @@ def require_digest(path: Path, expected: str) -> None:
         raise ValueError(f"working-tree digest mismatch: {path}")
 
 
+def require_preparation_evidence(preparation: dict[str, Any]) -> str:
+    """Verify this preflight from a digest stored in the external preparation.
+
+    The preparation JSON is external to this script, so the check is not
+    self-referential.  This is deliberately a working-tree byte digest: RM-34
+    is an offline preparation gate, while the 22 exact runtime bindings remain
+    Git-blob digests for the v8 execution commit.
+    """
+
+    evidence = preparation.get("preparationEvidence")
+    if not isinstance(evidence, dict) or evidence.get("digestMode") != "working_tree_sha256":
+        raise ValueError("RM-34 preparation evidence digest mode is not explicit")
+    binding = evidence.get("rm34Preflight")
+    if not isinstance(binding, dict):
+        raise ValueError("RM-34 preflight preparation evidence is missing")
+    expected_path = "scripts/preflight_sprint12_f12_rm34.py"
+    if binding.get("path") != expected_path:
+        raise ValueError("RM-34 preflight preparation evidence path is not bound")
+    expected = binding.get("digest")
+    if not isinstance(expected, str) or not expected.startswith("sha256:"):
+        raise ValueError("RM-34 preflight preparation evidence digest is invalid")
+    require_digest(RM34_PREFLIGHT, expected)
+    return expected
+
+
 def run_preflight() -> dict[str, object]:
     preparation = load(PREPARATION)
     current = load(CURRENT)
@@ -61,6 +87,8 @@ def run_preflight() -> dict[str, object]:
         raise ValueError("RM-34 preparation opens provider execution")
     if preparation.get("newAuthorizationIssued") is not False:
         raise ValueError("RM-34 preparation issues a new authorization")
+
+    preparation_preflight_digest = require_preparation_evidence(preparation)
 
     for key in (
         "providerExecutionAuthorized",
@@ -125,6 +153,11 @@ def run_preflight() -> dict[str, object]:
         binding = preparation["exactRuntimeBindings"][name]
         if git_blob_digest(commit, binding["path"]) != binding["digest"]:
             raise ValueError(f"named runtime binding mismatch: {name}")
+    preflight_binding = preparation["exactRuntimeBindings"].get("preflight")
+    if not isinstance(preflight_binding, dict):
+        raise ValueError("RM-34 exact runtime preflight binding is missing")
+    if git_blob_digest(commit, preflight_binding["path"]) != preflight_binding["digest"]:
+        raise ValueError("RM-32 preflight exact runtime binding mismatch")
     if preparation["integrityFindings"]["ownerReviewReconciliationRequired"] is not False:
         raise ValueError("RM-33 custody reconciliation remains open")
     if preparation["integrityFindings"]["ownerReviewReconciled"] is not True:
@@ -163,6 +196,7 @@ def run_preflight() -> dict[str, object]:
         "nextGate": "S12-RM-35_OWNER_AUTHORIZATION_REVIEW",
         "ownerReviewReconciliationRequired": preparation["integrityFindings"]["ownerReviewReconciliationRequired"],
         "ownerReviewReconciled": preparation["integrityFindings"]["ownerReviewReconciled"],
+        "preparationPreflightDigest": preparation_preflight_digest,
     }
 
 

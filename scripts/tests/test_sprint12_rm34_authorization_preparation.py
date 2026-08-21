@@ -6,6 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 
+import pytest
 from jsonschema import Draft202012Validator
 
 import preflight_sprint12_f12_rm34 as preflight
@@ -39,6 +40,13 @@ def test_rm34_preparation_is_exactly_bound_and_zero_call() -> None:
     )
     assert preparation["exactRuntimeBindings"]["reportSchema"]["digest"] == (
         "sha256:c65a4f039d948e6f3a59750001e58199bfc98e57e2f2f3ac838070ef5f6f6ad5"
+    )
+    assert preparation["exactRuntimeBindings"]["preflight"]["digest"] == (
+        "sha256:492cc4c9815c168233039c096d5f7bc6121773a2b7f6f84443ed587fea1f8d3e"
+    )
+    assert preparation["preparationEvidence"]["digestMode"] == "working_tree_sha256"
+    assert preparation["preparationEvidence"]["rm34Preflight"]["path"] == (
+        "scripts/preflight_sprint12_f12_rm34.py"
     )
     assert preparation["integrityFindings"]["ownerReviewReconciliationRequired"] is False
     assert preparation["integrityFindings"]["ownerReviewReconciled"] is True
@@ -83,3 +91,29 @@ def test_rm34_preserves_immutable_v6_accounting() -> None:
     assert report["accounting"]["providerCallsAttempted"] == 144
     assert report["accounting"]["retryCount"] == 0
     assert not (ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json").exists()
+
+
+def test_rm34_rejects_the_previous_rm32_preflight_digest_typo(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    preparation = _json(PREPARATION)
+    preparation["exactRuntimeBindings"]["preflight"]["digest"] = (
+        "sha256:492cc4c9815c168233039c096d5f7bc6121773a2b6f7f84443ed587fea1f8d3e"
+    )
+    path = tmp_path / "preparation-typo.json"
+    path.write_text(json.dumps(preparation), encoding="utf-8")
+    monkeypatch.setattr(preflight, "PREPARATION", path)
+
+    with pytest.raises(ValueError, match="RM-32 preflight exact runtime binding mismatch"):
+        preflight.run_preflight()
+
+
+def test_rm34_rejects_one_character_tamper_of_its_own_preflight(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    tampered = tmp_path / "preflight-tampered.py"
+    tampered.write_bytes((ROOT / "scripts/preflight_sprint12_f12_rm34.py").read_bytes() + b"\n# tamper\n")
+    monkeypatch.setattr(preflight, "RM34_PREFLIGHT", tampered)
+
+    with pytest.raises(ValueError, match="working-tree digest mismatch"):
+        preflight.run_preflight()

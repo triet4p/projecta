@@ -77,7 +77,7 @@
     },
     "preflight": {
       "path": "scripts/preflight_sprint12_f12_rm32.py",
-      "digest": "sha256:492cc4c9815c168233039c096d5f7bc6121773a2b6f7f84443ed587fea1f8d3e"
+      "digest": "sha256:492cc4c9815c168233039c096d5f7bc6121773a2b7f6f84443ed587fea1f8d3e"
     },
     "runtimeConfiguration": {
       "path": "evaluation/sprint-12/harness/s12-f-12-runtime-configuration.v1.json",
@@ -108,6 +108,14 @@
     "relationBranchOutputs": 96,
     "worstCaseCostUsd": "1.17315072",
     "costCeilingUsd": "10.00"
+  },
+  "preparationEvidence": {
+    "digestMode": "working_tree_sha256",
+    "rm34Preflight": {
+      "path": "scripts/preflight_sprint12_f12_rm34.py",
+      "digest": "sha256:ed78c94f97f9ed866a58779541d2bac6178adc0ab58741c40909c5c6413c5e63"
+    },
+    "excludedFromExactRuntimeBindings": true
   },
   "executionBounds": {
     "providerCalls": 144,
