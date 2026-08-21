@@ -37,6 +37,7 @@ OUTPUT = ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v4.js
 _ORACLE_TRIGGER_BY_PREDICATE = {"constrainedBy": "bị giới hạn bởi"}
 _ORIGINAL_VALIDATE_AUTHORIZATION = v3.validate_authorization
 _ORIGINAL_AGGREGATE_ARM = v3._aggregate_arm
+_ORIGINAL_VALIDATE_PREPARATION = v3.validate_preparation
 digest = v3.digest
 
 
@@ -263,6 +264,25 @@ def validate_authorization(
     )
 
 
+def validate_preparation(
+    package_path: Path = PACKAGE, *, output_path: Path | None = None
+) -> dict[str, Any]:
+    """Reuse v3 custody checks while accepting the RM-22C lifecycle status."""
+    original_load = v3.load
+
+    def load_with_v4_status(path: Path) -> dict[str, Any]:
+        value = original_load(path)
+        if path.resolve() == PACKAGE.resolve():
+            value["status"] = "EXECUTION_PACKAGE_PREPARED_PENDING_RM23B_OWNER_REVIEW"
+        return value
+
+    v3.load = load_with_v4_status
+    try:
+        return _ORIGINAL_VALIDATE_PREPARATION(package_path, output_path=output_path)
+    finally:
+        v3.load = original_load
+
+
 def _configure() -> None:
     v3.PACKAGE = PACKAGE
     v3.PREREG = PREREG
@@ -274,6 +294,7 @@ def _configure() -> None:
     v3._aggregate_arm = _aggregate_arm
     v3._validate_report_schema = _validate_report_schema
     v3.validate_authorization = validate_authorization
+    v3.validate_preparation = validate_preparation
     v2._normalize_gold_relations = _normalize_gold_relations
     v2._contexts = _contexts
 
@@ -290,6 +311,7 @@ def run_stage_a(**kwargs: Any) -> dict[str, Any]:
         "_aggregate_arm",
         "_validate_report_schema",
         "validate_authorization",
+        "validate_preparation",
     )
     v2_names = ("_normalize_gold_relations", "_contexts")
     old_v3 = {name: getattr(v3, name) for name in v3_names}

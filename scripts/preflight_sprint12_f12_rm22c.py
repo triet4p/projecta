@@ -28,6 +28,7 @@ def _derive_denominators_at_commit(commit_sha: str) -> dict[str, Any]:
         if not case["gold"]["relations"]
         and not case["gold"]["abstention"]["required"]
     ]
+    derived["hardNegativeCases"] = len(hard_negative)
     derived["namedSliceDenominators"]["relation-negative"] = len(hard_negative) * 3
     return derived
 
