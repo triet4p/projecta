@@ -38,6 +38,7 @@ _ORACLE_TRIGGER_BY_PREDICATE = {"constrainedBy": "bị giới hạn bởi"}
 _ORIGINAL_VALIDATE_AUTHORIZATION = v3.validate_authorization
 _ORIGINAL_AGGREGATE_ARM = v3._aggregate_arm
 _ORIGINAL_VALIDATE_PREPARATION = v3.validate_preparation
+_ORIGINAL_ARM_RECORD = v3._arm_record
 digest = v3.digest
 
 
@@ -218,6 +219,14 @@ def _aggregate_arm(
     return result
 
 
+def _arm_record(*args: Any, **kwargs: Any) -> dict[str, Any]:
+    result = _ORIGINAL_ARM_RECORD(*args, **kwargs)
+    result["abstention"] = v3.score_abstention_records(
+        [(result["abstention"]["gold"], result["abstention"]["predicted"])]
+    )
+    return result
+
+
 def _validate_report_schema(report: dict[str, Any]) -> None:
     report["artifactVersion"] = "s12-f-12.stage-a-report.v4"
     try:
@@ -292,6 +301,7 @@ def _configure() -> None:
     v3._gold_relation_candidates = _gold_relation_candidates
     v3._slice_groups = _slice_groups
     v3._aggregate_arm = _aggregate_arm
+    v3._arm_record = _arm_record
     v3._validate_report_schema = _validate_report_schema
     v3.validate_authorization = validate_authorization
     v3.validate_preparation = validate_preparation
@@ -309,6 +319,7 @@ def run_stage_a(**kwargs: Any) -> dict[str, Any]:
         "_gold_relation_candidates",
         "_slice_groups",
         "_aggregate_arm",
+        "_arm_record",
         "_validate_report_schema",
         "validate_authorization",
         "validate_preparation",
