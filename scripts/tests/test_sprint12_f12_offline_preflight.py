@@ -5,6 +5,8 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts"))
 
@@ -17,14 +19,9 @@ REVIEW = (
 )
 
 
-def test_f12_preflight_is_offline_and_unissued() -> None:
-    result = run_preflight()
-    assert result["status"] == "OFFLINE_CONTRACTS_READY_ZERO_CALL"
-    assert result["providerCalls"] == 0
-    assert result["providerExecutionAuthorized"] is False
-    assert result["preregistrationIssued"] is False
-    assert result["heldOutAccess"] is False
-    assert result["oracleFixtureCount"] == 3
+def test_historical_f12_preflight_rejects_after_rm25_authorization() -> None:
+    with pytest.raises(ValueError, match="f12 authorization artifact exists"):
+        run_preflight()
 
 
 def test_rm21_review_withholds_preregistration_for_measurement_blockers() -> None:

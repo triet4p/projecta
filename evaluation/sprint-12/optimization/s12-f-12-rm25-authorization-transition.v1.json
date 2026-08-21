@@ -1,0 +1,52 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm25-authorization-transition.v1",
+  "status": "ONE_BOUNDED_DEVELOPMENT_STAGE_A_AUTHORIZED_PENDING_EXECUTION",
+  "experimentId": "s12-f-12",
+  "transitionDate": "2026-08-21",
+  "transitionAuthority": "project-owner-delegated-codex-reviewer",
+  "precedenceRule": "This explicit RM-25 transition is authoritative for current provider-execution authority and does not mutate the immutable v7 preparation lineage or the RM-24 preparation artifact.",
+  "preparation": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm24-preparation.v1.json",
+    "digest": "sha256:b4d68a849b80f38ccde799fb4c16052231bfd84c06dede08c47ceb9fa712dcf7",
+    "status": "PREPARED_PENDING_RM25_OWNER_AUTHORIZATION"
+  },
+  "ownerReview": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm25-owner-review.v1.json",
+    "digest": "sha256:fb568a382364122b714ba3cb03edbe18d7bb0c6de396bc4860b4498c7aae5ed9",
+    "status": "OWNER_REVIEW_APPROVED_ONE_BOUNDED_STAGE_A"
+  },
+  "authorization": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm25-authorization.v1.json",
+    "digest": "sha256:f72f7701d20b97674a1d1403c375eaa0c52fd282887cb03e2e65ca45697c7a03",
+    "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A"
+  },
+  "authorizedLineage": {
+    "executionCommit": "e047911e2e2d513f2b8751965dd702b2c1fe9d5a",
+    "executionPackageDigest": "sha256:22c47dd77ea4a348b479a21d5d42b97684c6f04a1fa54b06857bd82f2c9bc641",
+    "technicalFreezeDigest": "sha256:20bf9ed82b629c9e26067b42acbb9efdf2b78de243ffd40cc0a707f46901a772",
+    "runtimeConfigurationDigest": "sha256:a672d1c17a174c5c2697859118e2394b89007c3877a270e82ee5db25b357dd0b",
+    "runnerDigest": "sha256:f572254610653edf0510e3a8a67c017bacdacad44336fc7bdbd3d3db7bd582da",
+    "outputPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+    "costCeilingUsd": "10.00"
+  },
+  "currentDecisionState": {
+    "providerExecutionAuthorized": true,
+    "authorizedExecutions": 1,
+    "authorizedProviderCalls": 144,
+    "providerCallsPerformed": 0,
+    "stageAReportExists": false,
+    "retryAuthorized": false,
+    "outputOverwriteAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "EXECUTE_EXACT_S12_F12_DEVELOPMENT_STAGE_A_ONCE"
+  },
+  "constraints": [
+    "Authorization is single-use and limited to exactly 144 provider calls for development Stage A.",
+    "No retry, report overwrite, validation access, held-out access, Stage B, selection or promotion is authorized.",
+    "The authorization is not a quality result and is spent when the authorized execution starts."
+  ]
+}

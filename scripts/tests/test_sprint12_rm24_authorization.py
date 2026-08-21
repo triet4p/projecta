@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import copy
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -14,12 +14,12 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import preflight_sprint12_f12_rm24 as rm24
 
 
-def test_rm24_preflight_is_zero_call_and_pending_rm25() -> None:
-    result = rm24.run_preflight(require_clean_tree=False)
-    assert result["status"] == "S12_RM24_READY_ZERO_CALL_PENDING_RM25"
-    assert result["providerCalls"] == 0
-    assert result["providerExecutionAuthorized"] is False
-    assert result["outputPathAbsent"] is True
+def test_rm24_preparation_remains_zero_call_historical_evidence() -> None:
+    preparation = json.loads(PREPARATION.read_text(encoding="utf-8"))
+    assert preparation["status"] == "PREPARED_PENDING_RM25_OWNER_AUTHORIZATION"
+    assert preparation["providerCallsPerformedAtPreparation"] == 0
+    assert preparation["providerExecutionAuthorized"] is False
+    assert preparation["offlineEvidence"]["reportPathMustBeAbsent"] is True
 
 
 def test_rm24_binds_owner_review_and_exact_execution_commit() -> None:
@@ -29,16 +29,17 @@ def test_rm24_binds_owner_review_and_exact_execution_commit() -> None:
     assert preparation["nextGate"] == "S12-RM-25_OWNER_REVIEW_AND_OPTIONAL_ONE_RUN_AUTHORIZATION"
 
 
-def test_rm24_rejects_tampered_owner_review_digest(monkeypatch: pytest.MonkeyPatch) -> None:
-    original = rm24._load
-
-    def tampered(path: Path) -> dict[str, object]:
-        value = original(path)
-        if path == PREPARATION:
-            value = copy.deepcopy(value)
-            value["ownerReview"]["digest"] = "sha256:" + ("0" * 64)
-        return value
-
-    monkeypatch.setattr(rm24, "_load", tampered)
-    with pytest.raises(ValueError, match="digest mismatch"):
+def test_rm24_preflight_cannot_be_reused_after_rm25_transition() -> None:
+    with pytest.raises(ValueError, match="current-state digest mismatch"):
         rm24.run_preflight()
+
+
+def test_rm25_review_digest_binds_immutable_rm24_preparation() -> None:
+    review = json.loads(
+        (
+            ROOT
+            / "evaluation/sprint-12/optimization/s12-f-12-rm25-owner-review.v1.json"
+        ).read_text(encoding="utf-8")
+    )
+    expected = "sha256:" + hashlib.sha256(PREPARATION.read_bytes()).hexdigest()
+    assert review["reviewedPreparation"]["digest"] == expected

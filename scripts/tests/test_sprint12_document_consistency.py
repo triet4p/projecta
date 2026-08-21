@@ -45,17 +45,23 @@ def test_rm23f_transition_preserves_history_and_sets_current_state() -> None:
     assert transition["currentDecisionState"]["providerExecutionAuthorized"] is False
 
 
-def test_current_state_and_g5_packet_agree() -> None:
+def test_rm25_transition_and_current_state_agree() -> None:
     current = _json(EVAL / "current-state.v1.json")
-    g5 = _json(OPT / "g5-packet.v12.json")
+    g5 = _json(OPT / "g5-packet.v13.json")
+    transition = _json(OPT / "s12-f-12-rm25-authorization-transition.v1.json")
+    authorization_path = OPT / "s12-f-12-rm25-authorization.v1.json"
+    review_path = OPT / "s12-f-12-rm25-owner-review.v1.json"
 
-    expected = "G5_F12_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
+    expected = "G5_F12_STAGE_A_AUTHORIZED_PENDING_EXECUTION"
     assert current["status"] == expected
     assert g5["status"] == expected
+    assert transition["authorization"]["digest"] == _digest(authorization_path)
+    assert transition["ownerReview"]["digest"] == _digest(review_path)
     assert current["experimentState"]["candidateSelection"] == "NO_SELECTION"
     assert g5["selection"]["status"] == "NO_SELECTION"
-    assert current["experimentState"]["providerExecutionAuthorized"] is False
-    assert g5["activeExperiment"]["providerExecutionAuthorized"] is False
+    assert current["experimentState"]["providerExecutionAuthorized"] is True
+    assert g5["activeExperiment"]["providerExecutionAuthorized"] is True
+    assert current["experimentState"]["providerCallsPerformed"] == 0
     assert current["experimentState"]["heldOutInspected"] is False
     assert g5["authorizationBoundary"]["heldOutAccessAuthorized"] is False
 
@@ -67,9 +73,9 @@ def test_current_documents_do_not_repeat_superseded_statuses() -> None:
     handoffs = (DOCS / "agent-handoffs.md").read_text(encoding="utf-8")
 
     assert "sprint-12/current-state.md" in sprint_plan
-    assert "sprint-12/g5-optimization.v12.md" in sprint_plan
-    assert "G5_F12_ISSUED_PROVIDER_AUTHORIZATION_PENDING" in global_plan
-    assert "CURRENT_RM24_RM25_AUTHORIZATION_AND_EXECUTION_HANDOFFS" in handoffs
+    assert "sprint-12/g5-optimization.v13.md" in sprint_plan
+    assert "G5_F12_STAGE_A_AUTHORIZED_PENDING_EXECUTION" in global_plan
+    assert "CURRENT_AUTHORIZED_STAGE_A_EXECUTION_HANDOFF" in handoffs
     assert "Handoff A — Runtime-backed" not in handoffs
 
     stale_phrases = (
@@ -95,4 +101,4 @@ def test_historical_gate_packets_are_labeled_as_snapshots() -> None:
     for name in historical:
         text = (DOCS / name).read_text(encoding="utf-8")
         assert "Historical gate snapshot" in text
-        assert "current-state.md" in text or "g5-optimization.v12.md" in text
+        assert "current-state.md" in text or "g5-optimization.v13.md" in text

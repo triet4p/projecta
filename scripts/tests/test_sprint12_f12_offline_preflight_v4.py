@@ -6,10 +6,9 @@ from preflight_sprint12_f12_offline_contracts_v4 import (
 )
 
 
-def test_v4_preflight_runs_local_id_and_occurrence_fixtures():
-    result = run_preflight()
-    assert result["status"] == "OFFLINE_CONTRACTS_READY_ZERO_CALL_V4"
-    assert result["providerCalls"] == 0
+def test_historical_v4_preflight_rejects_after_rm25_authorization():
+    with pytest.raises(ValueError, match="f12 authorization or preregistration artifact exists"):
+        run_preflight()
 
 
 def test_v4_preflight_rejects_removed_or_extra_binding():

@@ -1,0 +1,81 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm25-owner-review.v1",
+  "status": "OWNER_REVIEW_APPROVED_ONE_BOUNDED_STAGE_A",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-25",
+  "decisionType": "INDEPENDENT_OWNER_REVIEW_BEFORE_STAGE_A",
+  "decisionDate": "2026-08-21",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewBaseCommit": "c1b74dfdd7072eb67e05afbd5b63bdb0a2c2458f",
+  "reviewedPreparation": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm24-preparation.v1.json",
+    "digest": "sha256:b4d68a849b80f38ccde799fb4c16052231bfd84c06dede08c47ceb9fa712dcf7",
+    "status": "PREPARED_PENDING_RM25_OWNER_AUTHORIZATION"
+  },
+  "issuedAuthorization": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm25-authorization.v1.json",
+    "digest": "sha256:f72f7701d20b97674a1d1403c375eaa0c52fd282887cb03e2e65ca45697c7a03",
+    "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A"
+  },
+  "reviewedLineage": {
+    "executionCommit": "e047911e2e2d513f2b8751965dd702b2c1fe9d5a",
+    "executionPackage": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22d-execution-package.v7.json",
+      "digest": "sha256:22c47dd77ea4a348b479a21d5d42b97684c6f04a1fa54b06857bd82f2c9bc641"
+    },
+    "technicalFreeze": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm22d-technical-freeze.v7.json",
+      "digest": "sha256:20bf9ed82b629c9e26067b42acbb9efdf2b78de243ffd40cc0a707f46901a772"
+    },
+    "runner": {
+      "path": "scripts/run_sprint12_f12_stage_a_v6.py",
+      "digest": "sha256:f572254610653edf0510e3a8a67c017bacdacad44336fc7bdbd3d3db7bd582da"
+    },
+    "runtimeConfiguration": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-runtime-configuration.v1.json",
+      "digest": "sha256:a672d1c17a174c5c2697859118e2394b89007c3877a270e82ee5db25b357dd0b"
+    },
+    "authorizationSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-authorization.schema.v2.json",
+      "digest": "sha256:452cbddf0af489b21c21b0fa97f4147d0672c8a8f840c1df33c74b292f0987ea"
+    },
+    "reportSchema": {
+      "path": "evaluation/sprint-12/harness/s12-f-12-stage-a-report.schema.v6.json",
+      "digest": "sha256:22f0b96df89bc65d7d290e46879ea9d13092e98b47c1694bbe9a4102bf054346"
+    }
+  },
+  "verifiedEvidence": {
+    "rm24PreflightStatus": "S12_RM24_READY_ZERO_CALL_PENDING_RM25",
+    "targetedTests": "14 passed",
+    "authorizationSchemaValidation": "pass",
+    "exactCommitAndBlobCustody": "pass",
+    "executionCommitIsAncestor": true,
+    "workingTreeCleanBeforeIssuance": true,
+    "stageAReportExists": false,
+    "providerCallsPerformed": 0,
+    "heldOutInspected": false
+  },
+  "blockingFindings": [],
+  "decision": {
+    "rm25ReviewCompleted": true,
+    "authorizationIssued": true,
+    "providerExecutionAuthorized": true,
+    "authorizedProviderCalls": 144,
+    "authorizedExecutions": 1,
+    "retryAuthorized": false,
+    "outputOverwriteAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "EXECUTE_EXACT_S12_F12_DEVELOPMENT_STAGE_A_ONCE"
+  },
+  "constraints": [
+    "This authorization permits exactly one 144-call development Stage A execution against the exact v7 lineage and execution commit.",
+    "The runner must fail before provider capture if any digest, commit, schema, runtime, output path or cost binding differs.",
+    "No retry or output overwrite is authorized; the authorization is spent when execution starts and cannot be reused.",
+    "Validation and held-out data remain sealed; Stage B, candidate selection and promotion remain unauthorized.",
+    "Authorization does not establish candidate quality, accuracy improvement, business quality or tenant readiness."
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "packetVersion": "s12.g5.packet.v13",
+  "status": "G5_F12_STAGE_A_AUTHORIZED_PENDING_EXECUTION",
+  "asOf": "2026-08-21",
+  "supersedesForCurrentState": {
+    "path": "evaluation/sprint-12/optimization/g5-packet.v12.json",
+    "digest": "sha256:f4b908d3b71caeee3c2a4e44927e06e639061a5f8837aadd70c074f30c0fbf74"
+  },
+  "activeExperiment": {
+    "experimentId": "s12-f-12",
+    "design": "two-step entity-then-relation extraction with predicted-entity and gold-entity diagnostic arms",
+    "authorizationTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm25-authorization-transition.v1.json",
+      "digest": "sha256:2f4593836aa3fd181f777b12c96cd0db695538323cde0dacf6e8f4a940d37550"
+    },
+    "executionCommit": "e047911e2e2d513f2b8751965dd702b2c1fe9d5a",
+    "preregistrationIssued": true,
+    "executionFreezeIssued": true,
+    "providerExecutionAuthorized": true,
+    "authorizedProviderCalls": 144,
+    "providerCallsPerformed": 0,
+    "stageAReportExists": false
+  },
+  "selection": {
+    "status": "NO_SELECTION",
+    "candidateAvailable": false,
+    "candidateFreezeAuthorized": false,
+    "reason": "S12-f-12 is authorized but has not executed; prior f07-f11 candidates were rejected."
+  },
+  "authorizationBoundary": {
+    "nextPermittedTask": "EXECUTE_EXACT_S12_F12_DEVELOPMENT_STAGE_A_ONCE",
+    "authorizedExecutions": 1,
+    "authorizedProviderCalls": 144,
+    "retryAuthorized": false,
+    "outputOverwriteAuthorized": false,
+    "validationAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "promotionAuthorized": false
+  },
+  "claimBoundary": {
+    "accuracyImprovementEstablished": false,
+    "businessQualityEstablished": false,
+    "tenantReadinessEstablished": false,
+    "humanEvidence": false
+  }
+}

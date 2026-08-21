@@ -1,4 +1,3 @@
-import json
 from pathlib import Path
 
 import pytest
@@ -10,10 +9,8 @@ from preflight_sprint12_f12_offline_contracts_v2 import (
 
 
 def test_v2_preflight_runs_bound_zero_call_fixtures():
-    result = run_preflight()
-    assert result["status"] == "OFFLINE_CONTRACTS_READY_ZERO_CALL_V2"
-    assert result["providerCalls"] == 0
-    assert result["oracleArms"] == 3
+    with pytest.raises(ValueError, match="f12 authorization artifact exists"):
+        run_preflight()
 
 
 def test_v2_preflight_rejects_tampered_bound_digest():
@@ -34,7 +31,7 @@ def test_v2_preflight_rejects_missing_bound_artifact():
         )
 
 
-def test_v2_allows_rm24_preparation_but_rejects_true_authorization():
+def test_v2_distinguishes_rm24_preparation_from_true_authorization():
     preparation = Path(
         offline_preflight.ROOT
         / "evaluation/sprint-12/optimization/s12-f-12-rm24-preparation.v1.json"
@@ -45,25 +42,14 @@ def test_v2_allows_rm24_preparation_but_rejects_true_authorization():
             "evaluation/sprint-12/optimization/s12-f-12-*-authorization*.json"
         )
     )
-    result = run_preflight()
-    assert result["providerCalls"] == 0
-
     authorization = (
         offline_preflight.ROOT
-        / "evaluation/sprint-12/optimization/s12-f-12-rm25-test-authorization.v1.json"
+        / "evaluation/sprint-12/optimization/s12-f-12-rm25-authorization.v1.json"
     )
-    authorization.write_text(
-        json.dumps(
-            {
-                "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A",
-                "experimentId": "s12-f-12",
-                "providerExecutionAuthorized": True,
-            }
-        ),
-        encoding="utf-8",
+    assert authorization in list(
+        offline_preflight.ROOT.glob(
+            "evaluation/sprint-12/optimization/s12-f-12-*-authorization*.json"
+        )
     )
-    try:
-        with pytest.raises(ValueError, match="f12 authorization artifact exists"):
-            run_preflight()
-    finally:
-        authorization.unlink(missing_ok=True)
+    with pytest.raises(ValueError, match="f12 authorization artifact exists"):
+        run_preflight()

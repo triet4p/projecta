@@ -1,0 +1,22 @@
+{
+  "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A",
+  "experimentId": "s12-f-12",
+  "providerExecutionAuthorized": true,
+  "providerCalls": 144,
+  "retryPolicy": "none",
+  "commitSha": "e047911e2e2d513f2b8751965dd702b2c1fe9d5a",
+  "executionPackage": {
+    "digest": "sha256:22c47dd77ea4a348b479a21d5d42b97684c6f04a1fa54b06857bd82f2c9bc641"
+  },
+  "freezeRecord": {
+    "digest": "sha256:20bf9ed82b629c9e26067b42acbb9efdf2b78de243ffd40cc0a707f46901a772"
+  },
+  "outputPath": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+  "costCeilingUsd": "10.00",
+  "heldOutInspected": false,
+  "heldOutAccessAuthorized": false,
+  "validationAccessAuthorized": false,
+  "stageBAuthorized": false,
+  "candidateSelectionAuthorized": false,
+  "promotionAuthorized": false
+}

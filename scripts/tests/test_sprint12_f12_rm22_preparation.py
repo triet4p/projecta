@@ -12,13 +12,9 @@ from preflight_sprint12_f12_rm22_preparation import run_preflight
 from run_sprint12_f12_stage_a import F12StageAError, run_stage_a, validate_preparation
 
 
-def test_rm22_preflight_is_ready_without_provider_calls() -> None:
-    result = run_preflight()
-    assert result["status"] == "F12_RM22_READY_ZERO_CALL_V1"
-    assert result["providerCalls"] == 0
-    assert result["preparedProviderCalls"] == 144
-    assert result["denominators"]["goldRelationInstancesPerModelArm"] == 24
-    assert result["denominators"]["goldAbstentionInstancesPerModelArm"] == 12
+def test_historical_rm22_preflight_rejects_after_rm25_authorization() -> None:
+    with pytest.raises(ValueError, match="f12 authorization already exists"):
+        run_preflight()
 
 
 def test_unauthorized_runner_path_never_calls_adapter() -> None:
