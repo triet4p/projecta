@@ -59,9 +59,7 @@ def test_rm25_transition_remains_historical_and_current_state_agrees_after_rm33(
     authorization_path = OPT / "s12-f-12-rm25-authorization.v1.json"
     review_path = OPT / "s12-f-12-rm25-owner-review.v1.json"
 
-    assert current["status"] == (
-        "G5_F12_V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY"
-    )
+    assert current["status"] == "G5_F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY"
     assert g5["status"] == "G5_F12_V8_AUTHORIZED_PENDING_EXECUTION"
     assert transition["authorization"]["digest"] == _digest(authorization_path)
     assert transition["ownerReview"]["digest"] == _digest(review_path)
@@ -92,9 +90,7 @@ def test_rm33_issuance_is_digest_bound_and_provider_locked() -> None:
     assert packet["issuanceTransition"]["digest"] == _digest(transition_path)
     assert current["currentEvidence"]["rm33OwnerReview"]["digest"] == _digest(owner_path)
     assert current["currentEvidence"]["rm33IssuanceTransition"]["digest"] == _digest(transition_path)
-    assert current["status"] == (
-        "G5_F12_V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY"
-    )
+    assert current["status"] == "G5_F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY"
     assert current["currentEvidence"]["rm35Authorization"]["expectedStatus"] == (
         "APPROVED_FOR_DEVELOPMENT_STAGE_A"
     )
@@ -143,9 +139,7 @@ def test_rm27_owner_decision_transition_and_current_state_bind_closed_lineage() 
         "F12_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_REMEDIATION_PREPARATION_ONLY"
     )
     assert g5["status"] == "G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY"
-    assert current["status"] == (
-        "G5_F12_V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY"
-    )
+    assert current["status"] == "G5_F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY"
     assert report["decision"]["status"] == "COMPLETED_REJECTED_HARD_GATE"
     assert report["accounting"]["providerCallsAttempted"] == 144
     assert report["accounting"]["retryCount"] == 0
@@ -184,7 +178,7 @@ def test_rm27_owner_decision_transition_and_current_state_bind_closed_lineage() 
     }
     assert current["experimentState"]["candidateSelection"] == "NO_SELECTION"
     assert current["nextTasks"] == [
-        "S12-RM-38_OFFLINE_RM36_RECONCILIATION_FAILURE_DIAGNOSIS_AND_REMEDIATION_PREPARATION"
+        "S12-RM-40_OFFLINE_RM36_RECONCILIATION_REMEDIATION_AND_REGRESSIONS"
     ]
 
 
@@ -198,7 +192,10 @@ def test_rm37_closes_v8_and_binds_authoritative_packet() -> None:
     transition = _json(transition_path)
 
     assert packet["packetRole"] == "authoritative-current-g5-packet"
-    assert packet["status"] == current["status"]
+    assert packet["status"] == (
+        "G5_F12_V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY"
+    )
+    assert current["status"] == "G5_F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY"
     assert packet["ownerDecision"]["digest"] == _digest(decision_path)
     assert packet["decisionTransition"]["digest"] == _digest(transition_path)
     assert decision["verifiedFacts"]["providerCallsAttempted"] == 3
@@ -214,6 +211,12 @@ def test_rm37_closes_v8_and_binds_authoritative_packet() -> None:
     )
     assert current["experimentState"]["currentLineage"]["providerCallsPerformed"] == 3
     assert current["experimentState"]["currentLineage"]["relationBranchOutputs"] is None
+    assert current["currentEvidence"]["rm39ApprovalTransition"]["expectedStatus"] == (
+        "OFFLINE_RUNTIME_REMEDIATION_APPROVED_IMPLEMENTATION_ONLY"
+    )
+    assert current["experimentState"]["currentGovernance"][
+        "offlineRuntimeRemediationImplementationAuthorized"
+    ] is True
 
 
 def test_f12_stage_a_execution_transition_and_report_are_immutable_evidence() -> None:
@@ -240,7 +243,7 @@ def test_current_documents_do_not_repeat_superseded_statuses() -> None:
 
     assert "sprint-12/current-state.md" in sprint_plan
     assert "sprint-12/g5-optimization.v23.rm35-authorization.md" in sprint_plan
-    assert "G5_F12_V8_EXECUTION_CLOSED_FAILED_OFFLINE_RUNTIME_REMEDIATION_PREPARATION_ONLY" in global_plan
+    assert "G5_F12_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTATION_APPROVED_ONLY" in global_plan
     assert "g5-optimization.v25.rm37-closure.md" in sprint_plan
     assert "Handoff K — RM-37 closure to RM-38 offline diagnosis" in handoffs
     assert "CURRENT_F12_V8_AUTHORIZED_EXECUTION_HANDOFF" in handoffs

@@ -1,0 +1,46 @@
+{
+  "packetVersion": "s12.g5.packet.v27.rm40-offline-runtime",
+  "status": "G5_F12_RM40_OFFLINE_RUNTIME_REMEDIATION_IMPLEMENTED_PENDING_RM41_OWNER_REVIEW",
+  "packetRole": "non-authoritative-rm40-preparation-snapshot",
+  "asOf": "2026-08-22",
+  "rm39Approval": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm39-approval-transition.v1.json",
+    "digest": "sha256:aa65539834d58e1a7b72cbeee7825f4209d14afb15fbfa7f6d4e81d98e293114"
+  },
+  "rm40Package": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm40-offline-runtime-package.v1.json",
+    "digest": "sha256:b203bb1e7a7518b10ed899ee8647efa035682965842a2bde1f3d54d4588b936f"
+  },
+  "executionEvidencePreserved": {
+    "rm36ProviderCallsAttempted": 3,
+    "rm36ReportExists": false,
+    "rm36AuthorizationSpent": true,
+    "historicalV6ReportDigest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+  },
+  "offlineRuntime": {
+    "providerCalls": 0,
+    "plannedProviderCalls": 144,
+    "plannedRelationBranchOutputs": 96,
+    "retryCount": 0,
+    "persistCount": 1,
+    "overwriteRejected": true,
+    "rawDataIncluded": false
+  },
+  "authorizationBoundary": {
+    "offlineRuntimeRemediationImplementationAuthorized": true,
+    "deterministicRegressionImplementationAuthorized": true,
+    "providerExecutionAuthorized": false,
+    "newAuthorizationIssued": false,
+    "rerunAuthorized": false,
+    "retryAuthorized": false,
+    "supersedingLineagePreparationAuthorized": false,
+    "issuanceAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedTask": "S12-RM-41_OWNER_REVIEW_RM40_OFFLINE_RUNTIME_REMEDIATION"
+  },
+  "claimBoundary": "This non-authoritative packet records offline remediation only and does not authorize a new lineage or provider call."
+}
