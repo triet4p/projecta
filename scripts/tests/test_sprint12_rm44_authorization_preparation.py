@@ -32,7 +32,7 @@ def test_rm44_preflight_is_zero_call_and_exactly_bound(tmp_path: Path) -> None:
     historical_state = tmp_path / "current-state.v1.json"
     historical_state.write_bytes(
         subprocess.check_output(
-            ["git", "show", "HEAD:evaluation/sprint-12/current-state.v1.json"],
+            ["git", "show", "f61f33d:evaluation/sprint-12/current-state.v1.json"],
             cwd=ROOT,
         )
     )
