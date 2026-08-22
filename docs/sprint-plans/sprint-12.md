@@ -17,6 +17,14 @@ G5 packet: [Controlled Optimization Review Packet v25 — RM-37 closure](sprint-
 Current G5 packet: [Controlled Optimization Review Packet v36 — RM-51
 closure-only stop](sprint-12/g5-optimization.v36.rm51-closure-only.md)
 
+Human-first extraction framework design (non-authoritative, pending
+`S12-RM-53` and separate owner approval):
+[Human-first Extraction Framework v1](sprint-12/human-first-extraction-framework.v1.md)
+
+This design link does not change the current G5 stop status and does not
+authorize provider, runtime, lineage, validation, held-out, Stage B, selection,
+or promotion work.
+
 Historical preparation snapshot: [Controlled Optimization Review Packet v30 —
 RM-44 exact v9 authorization preparation](sprint-12/g5-optimization.v30.rm44-authorization-preparation.md)
 
@@ -994,6 +1002,92 @@ provider, inspect validation/held-out data, or authorize candidate selection.
 - [ ] **S12-RM-53 — Owner closure review RM-52 packet and backlog:**
   Independently review custody, digests, absence of v8 output, classifications
   and governance locks before accepting or rejecting the offline closure.
+
+#### Phase F-RF — Human-First Extraction Framework
+
+This tranche is queued behind accepted `S12-RM-53` closure and a separate owner
+activation. Every task starts pending. Planning these tasks does not authorize
+provider calls, runtime execution, reruns, retries, validation, held-out access,
+Stage B, selection, or promotion. The design input is
+[Human-first Extraction Framework v1](sprint-12/human-first-extraction-framework.v1.md).
+
+- [ ] **S12-RM-54 — Review and disposition the human-first framework design:**
+  After accepted `S12-RM-53`, verify verbatim design custody, resolve open
+  policy questions, record non-goals, and accept, revise, or reject the design.
+  This gate approves only the design direction; implementation and provider
+  work require separate authorization.
+- [ ] **S12-RM-55 — Define the immutable SourceVersion and source-receipt
+  contract:** After accepted `S12-RM-54`, specify project-scoped source identity,
+  original and canonical content digests, version lineage, retention metadata,
+  and replay/fork detection. Acceptance requires deterministic receipt
+  verification without storing sensitive source content in telemetry.
+- [ ] **S12-RM-56 — Define the text-anchor coordinate contract:** After
+  `S12-RM-55`, specify source-version-bound, zero-based, half-open Unicode
+  code-point offsets plus deterministic original/canonical and UTF-16 display
+  mappings. Acceptance requires fail-closed behavior for missing, ambiguous,
+  reversed, empty, or out-of-source spans; silent fallback is forbidden.
+- [ ] **S12-RM-57 — Implement per-item validation and quarantine boundaries:**
+  After `S12-RM-56`, classify each entity, link, relation, and evidence item with
+  finite allowlisted reasons so one invalid item cannot contaminate or discard
+  unrelated valid items. Acceptance requires invalid items to remain
+  non-materializable and all unknown reasons to fail closed.
+- [ ] **S12-RM-58 — Implement the confirmed-entity relation gate:** After
+  `S12-RM-57`, permit relation processing only over server-resolved, project-
+  scoped, allowlisted entity handles confirmed under the active source version.
+  Acceptance rejects model-created global IDs, unknown handles, cross-project
+  leakage, self-relations, and stale confirmations.
+- [ ] **S12-RM-59 — Implement deterministic evidence selection:** After
+  `S12-RM-56` and `S12-RM-58`, materialize evidence from server-owned source blocks,
+  endpoint anchors, trigger anchors, and a deterministic smallest-valid-boundary
+  rule. Acceptance requires explicit abstain/review outcomes for missing or
+  equally ranked evidence rather than generated or guessed evidence.
+- [ ] **S12-RM-60 — Define and enforce the constrained relation contract:** After
+  `S12-RM-58` and `S12-RM-59`, bind allowlisted predicates, endpoint direction,
+  project scope, polarity, modality, temporal qualifiers, and evidence status.
+  Acceptance requires unsupported or ambiguous semantics to remain pending,
+  abstained, or quarantined instead of becoming asserted facts.
+- [ ] **S12-RM-61 — Implement durable review decision receipts:** After
+  `S12-RM-58` and `S12-RM-60`, persist append-only confirm, edit, reject, and
+  abstain decisions with actor authorization, candidate/source revisions,
+  optimistic concurrency, idempotency, and decision digests. Acceptance
+  rejects stale revisions and same-key/different-body replays without mutation.
+- [ ] **S12-RM-62 — Implement the human-first review workbench contract:** After
+  `S12-RM-61`, expose exact source anchors, endpoint/trigger/evidence highlights,
+  uncertainty, quarantine reasons, proposal-to-edit diffs, and keyboard-first
+  dispositions. Acceptance requires explicit human action and forbids hidden
+  auto-confirm or default bulk relation approval.
+- [ ] **S12-RM-63 — Implement approved-only assertion materialization:** After
+  `S12-RM-60` and `S12-RM-61`, build an atomic assertion plan from approved
+  candidate revisions only, validate SHACL/provenance/idempotency and expected
+  graph revision, and commit asserted facts and provenance together. Semantic
+  owner review is required before materialization can be enabled.
+- [ ] **S12-RM-64 — Implement inference invalidation and rebuild:** After
+  `S12-RM-63`, bind inferred projections to asserted/source/rule revisions and
+  mark them stale after correction, rejection, or supersession. Acceptance
+  preserves asserted truth across rebuild failures and publishes no stale
+  inference as current.
+- [ ] **S12-RM-65 — Implement correction-burden telemetry:** After `S12-RM-61`
+  through `S12-RM-64`, record allowlisted lifecycle IDs, digests, latency,
+  correction categories, review outcomes, conflicts, and burden per accepted
+  assertion. Acceptance excludes raw source text, secrets, provider payloads,
+  sensitive identifiers, and self-asserted reconciliation flags.
+- [ ] **S12-RM-66 — Add offline property, mutation, adversarial, and default-path
+  tests:** After `S12-RM-55` through `S12-RM-65`, cover Unicode/newline/span
+  boundaries, repeated and nested mentions, evidence containment, stale source,
+  receipt tampering, accounting mutation, prompt injection, project isolation,
+  replay, concurrency, and actual default paths. Acceptance requires zero
+  provider calls and proves tests cannot overwrite immutable v6/v9 artifacts or
+  create the absent v8 report.
+- [ ] **S12-RM-67 — Define the human correction-burden evaluation contract:**
+  After `S12-RM-61` through `S12-RM-65`, define unchanged/minor/major corrections,
+  review time, semantic edit count, rejection, missing output, reviewer
+  agreement, unsupported finalized assertions, and manual-entry baseline by
+  role and slice. Owner sets thresholds; F1 cannot substitute for human evidence.
+- [ ] **S12-RM-68 — Preregister the human-first evaluation:** After `S12-RM-65`
+  through `S12-RM-67` and external custody readiness, bind dataset, configuration,
+  metric and protocol digests; target roles; blinded or counterbalanced review;
+  manual baseline; correction-burden gates; and abort rules. Preregistration
+  authorizes neither held-out access nor execution.
 
 #### Phase F-S — Candidate Selection Resume Path
 

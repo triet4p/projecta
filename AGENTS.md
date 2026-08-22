@@ -32,6 +32,11 @@ Load the applicable source rather than duplicating it:
 - Markdown: `.agents/rules/markdown.md`
 - Python: `.agents/rules/python.md`
 - Changelog: `.agents/rules/changelog.md`
+- Subagent workflow: read and follow both
+  `.agents/rules/subagent-workflow.md` and
+  `~/.agents/rules/subagent-workflow.md`; both are mandatory synchronized
+  requirements. If they differ, apply the stricter compatible interpretation
+  and report the divergence to the primary owner.
 - Ontology evolution: `$projecta-evolve-ontology`
 
 For ontology work, the project skill and human review gate are mandatory.

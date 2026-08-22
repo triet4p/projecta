@@ -117,8 +117,11 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   sanitized comparison/options packet; RM-49 approved sequential offline
   diagnostics then parity-fixture work, and RM-50 completed it. RM-51 rejected
   RM-50 under Option C; RM-52 is preparing only an offline closure packet and
-  prioritized error backlog, with RM-53 owner review next. Validation, held-out access, remediation
-  implementation, lineage preparation, provider execution, Stage B, selection
+  prioritized error backlog, with RM-53 owner review next. A
+  [non-authoritative human-first extraction framework design](sprint-plans/sprint-12/human-first-extraction-framework.v1.md)
+  and its pending atomic-task tranche are queued behind accepted RM-53 closure
+  and separate owner approval. Validation, held-out access, remediation
+  implementation, lineage preparation, provider execution, Stage B, selection,
   and promotion remain closed.
   No business-quality claim is made, and new connector/outbound breadth remains
   deferred. The authoritative dashboard is the
