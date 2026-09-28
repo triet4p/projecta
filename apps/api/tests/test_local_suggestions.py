@@ -432,6 +432,83 @@ async def test_main_app_preserves_safe_review_receipt_unavailable_error(
 
 
 @pytest.mark.asyncio
+async def test_main_app_preserves_source_bound_manual_rejection_error(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    app, core = _make_production_app(monkeypatch)
+    headers = _production_headers()
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        capture = await client.post(
+            "/v1/quick-notes",
+            headers=headers | {"Idempotency-Key": "main-manual-rejection-capture"},
+            json={
+                "title": "Planning",
+                "rawText": _SOURCE_TEXT,
+                "segments": [
+                    {
+                        "type": "task",
+                        "startOffset": 0,
+                        "endOffset": len(_SOURCE_TEXT),
+                        "text": _SOURCE_TEXT,
+                    }
+                ],
+            },
+        )
+        assert capture.status_code == 201, capture.text
+        candidate_handle = core.candidate_handle
+        base = f"/v1/projects/{_PROJECT_HANDLE}/candidates/{candidate_handle}"
+        validation = await client.post(f"{base}/validations", headers=headers)
+        assert validation.status_code == 200, validation.text
+
+        metrics_path = f"/v1/projects/{_PROJECT_HANDLE}/authoring-metrics"
+        metrics_before = await client.get(metrics_path, headers=headers)
+        assert metrics_before.status_code == 200, metrics_before.text
+        assert metrics_before.json()["reviewReceiptCount"] == 0
+
+        legacy_rejection = await client.post(
+            f"{base}/rejections",
+            headers=headers | {"Idempotency-Key": "main-manual-rejection-legacy"},
+            json={"reason": "use source-bound receipt"},
+        )
+        assert legacy_rejection.status_code == 409
+        assert legacy_rejection.json()["code"] == "REVIEW_RECEIPT_REQUIRED"
+        assert legacy_rejection.json()["detail"] == (
+            "Manual Note rejection must use the source-bound receipt route."
+        )
+
+        metrics_after_legacy = await client.get(metrics_path, headers=headers)
+        assert metrics_after_legacy.status_code == 200, metrics_after_legacy.text
+        assert metrics_after_legacy.json()["reviewReceiptCount"] == 0
+
+        source_context = {
+            name: value
+            for name, value in core.source_contexts[candidate_handle].items()
+            if name != "projectId"
+        }
+        verified = resolve_manual_capture(_PROJECT_ID, source_context)
+        manual_rejection = await client.post(
+            f"{base}/manual-rejections",
+            headers=headers | {"Idempotency-Key": "main-manual-rejection-receipt"},
+            json={
+                "candidateRevision": verified.candidate_revision,
+                "expectedCandidateRevision": 0,
+                "sourceVersionId": verified.source_version.source_version_id,
+                "sourceVersionRevision": 1,
+                "anchorQuoteDigest": verified.anchor.quote_digest,
+                "reason": "source does not support this candidate",
+            },
+        )
+        assert manual_rejection.status_code == 201, manual_rejection.text
+        assert manual_rejection.json()["receipt"]["decision"] == "reject"
+        metrics_after_receipt = await client.get(metrics_path, headers=headers)
+        assert metrics_after_receipt.status_code == 200, metrics_after_receipt.text
+        assert metrics_after_receipt.json()["reviewReceiptCount"] == 1
+
+    assert core.assertion_writes == []
+
+
+
+@pytest.mark.asyncio
 async def test_main_app_preserves_controlled_relation_errors_without_graph_writes(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

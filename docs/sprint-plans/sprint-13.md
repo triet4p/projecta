@@ -1,6 +1,6 @@
 # Sprint 13 Plan — Evidence-first Assisted Authoring
 
-Status: `SPRINT_REVIEW_PENDING_AFTER_DOCKER_ACCEPTANCE`
+Status: `IMPLEMENTATION_REVIEW_CLOSED_OFFLINE_EVALUATION_DEFERRED`
 
 Contract: [Evidence-first Assisted Authoring v1](sprint-13/evidence-first-assisted-authoring.v1.md)
 
@@ -21,8 +21,7 @@ Status legend: [ ] pending / [~] in progress / [x] done / [-] explicitly deferre
 
 - [x] **S13-01 — Align direction and closure records:** Publish the evidence-first
   contract, mark Sprint 12 historical/closed, and remove active-plan language
-  that treats whole-document extraction as the next product path. See
-  [S13-01 summary](sprint-13/artifacts/task_S13-01_direction-alignment_summary.md).
+  that treats whole-document extraction as the next product path.
 - [x] **S13-02 — Implement zero-model entity capture:** Build the first vertical
   slice from human task/question or structured note through scoped evidence,
   server-owned SourceVersion/TextAnchor/opaque identity, append-only receipt,
@@ -59,11 +58,13 @@ distinct unconfigured and unavailable local-model errors: the no-model request
 spent no budget, and the configured request without Ollama recorded one failed
 attempt without an assertion or graph write. Successful local-model inference
 was not exercised; a model was not provisioned in the API network namespace.
-The receipt, relation, and final Docker API error-envelope corrections passed
-fresh task-level evidence gates. Production API requests preserve actionable
-relation and receipt reason codes without graph writes, and the API regression
-suite remains green. Sprint-wide differential re-review is pending. S13-08
-remains deferred; the owner-waived project graph refresh remains stale.
+The receipt, relation, and Docker API error-envelope corrections passed fresh
+task-level gates. The final manual-rejection reason code is preserved by the
+production API, with a source-bound receipt persisted across container restart
+and no write on the rejected legacy path. The sprint-wide differential review
+passed after these corrections. Sprint 13's implementation review is closed,
+not released to production or authorized for external evaluation. S13-08 stays
+explicitly deferred; the owner-waived project graph refresh remains stale.
 
 ## Notes / Blockers
 

@@ -115,16 +115,19 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   `31767397618` passed. Sanitized evidence was retained and disposable runtime
   resources were torn down. M7 remains open.*
 
-## Active Sprint
-
 - [Sprint 13 — Evidence-first Assisted Authoring](sprint-plans/sprint-13.md)
-  — *Real Docker browser-to-live-backend capture, review, relation and
-  PostgreSQL receipt flows passed the S13-07 evidence gate. The optional
-  local-model Compose boundary and fail-closed runtime errors passed the
-  corrected S13-07 gate. Receipt and relation error handling passed their
-  corrected task gates; sprint-wide differential re-review remains pending.
+  — *Implementation review closed 2026-09-29 after passing task evidence and
+  sprint-wide differential gates. Full Docker browser-to-live-backend capture,
+  review, relation and persisted receipt flows passed; manual rejection,
+  controlled-relation and optional local-model failure boundaries were verified
+  through the live Docker API. No successful model inference was claimed.
   Offline evaluation/R6/R7 remain deferred, production materialization remains
   locked, and the owner-waived project graph remains stale.*
+
+## Active Sprint
+
+No active sprint. Sprint 13 implementation review is closed; the separately
+deferred offline evaluation and production enablement require new authority.
 
 ## Historical / Closed Sprint
 

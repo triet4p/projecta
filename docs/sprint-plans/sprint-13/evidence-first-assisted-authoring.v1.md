@@ -1,6 +1,6 @@
 # Evidence-first Assisted Authoring v1
 
-Status: `IMPLEMENTED_SPRINT_REVIEW_PENDING_AFTER_DOCKER_ACCEPTANCE`
+Status: `IMPLEMENTED_REVIEWED_OFFLINE_EVALUATION_DEFERRED`
 
 This contract makes evidence-first assisted authoring the active successor to
 Sprint 12. It does not reopen provider execution, RM-68 external validation,

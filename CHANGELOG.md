@@ -43,6 +43,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Preserved actionable controlled-relation reason codes and their 409/422/503
   statuses through the API error envelope while sanitizing unrecognized codes.
 
+- Preserved the safe `REVIEW_RECEIPT_REQUIRED` 409 response for legacy manual
+  Note rejection requests, directing reviewers to the source-bound receipt route.
+
 - Corrected manual candidate edit metrics so date-only changes stay outside
   correction categories while date plus a classified field retains its RM-67
   category.
