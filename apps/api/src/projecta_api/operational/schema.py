@@ -221,3 +221,72 @@ class ConnectorAuditRecord(Base):
     correlation_id: Mapped[str] = mapped_column(String(128), nullable=False)
     revision: Mapped[int | None] = mapped_column(Integer)
     recorded_at: Mapped[datetime] = mapped_column(Timestamp, nullable=False)
+
+
+class ReviewDecisionReceipt(Base):
+    """Append-only, raw-content-free human review decision custody."""
+
+    __tablename__ = "review_decision_receipts"
+    __table_args__ = (
+        UniqueConstraint("project_id", "idempotency_digest"),
+        UniqueConstraint("project_id", "item_kind", "item_handle_digest", "sequence"),
+        Index(
+            "ix_review_decision_receipts_project_item_sequence",
+            "project_id",
+            "item_kind",
+            "item_handle_digest",
+            "sequence",
+        ),
+    )
+
+    receipt_id: Mapped[str] = mapped_column(String(128), primary_key=True)
+    project_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    actor_digest: Mapped[str] = mapped_column(String(71), nullable=False)
+    authorization_digest: Mapped[str] = mapped_column(String(71), nullable=False)
+    item_kind: Mapped[str] = mapped_column(String(32), nullable=False)
+    item_handle_digest: Mapped[str] = mapped_column(String(71), nullable=False)
+    decision: Mapped[str] = mapped_column(String(16), nullable=False)
+    candidate_revision: Mapped[int] = mapped_column(Integer, nullable=False)
+    source_version_digest: Mapped[str] = mapped_column(String(71), nullable=False)
+    source_version_revision: Mapped[int] = mapped_column(Integer, nullable=False)
+    constrained_contract_version: Mapped[str] = mapped_column(String(64), nullable=False)
+    evidence_digest: Mapped[str | None] = mapped_column(String(71))
+    previous_decision_digest: Mapped[str | None] = mapped_column(String(71))
+    idempotency_digest: Mapped[str] = mapped_column(String(71), nullable=False)
+    request_digest: Mapped[str] = mapped_column(String(71), nullable=False)
+    sequence: Mapped[int] = mapped_column(Integer, nullable=False)
+    occurred_at: Mapped[datetime] = mapped_column(Timestamp, nullable=False)
+    receipt_digest: Mapped[str] = mapped_column(String(71), nullable=False, unique=True)
+
+
+class CorrectionBurdenEvent(Base):
+    """Append-only, raw-content-free correction-burden telemetry."""
+
+    __tablename__ = "correction_burden_events"
+    __table_args__ = (
+        UniqueConstraint("project_id", "idempotency_digest"),
+        UniqueConstraint("event_digest"),
+        Index("ix_correction_burden_project_occurred", "project_id", "occurred_at", "event_id"),
+    )
+
+    event_id: Mapped[str] = mapped_column(String(128), primary_key=True)
+    project_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    item_kind: Mapped[str] = mapped_column(String(32), nullable=False)
+    item_digest: Mapped[str] = mapped_column(String(71), nullable=False)
+    assertion_digest: Mapped[str] = mapped_column(String(71), nullable=False)
+    source_version_digest: Mapped[str] = mapped_column(String(71), nullable=False)
+    source_version_revision: Mapped[int] = mapped_column(Integer, nullable=False)
+    review_receipt_digest: Mapped[str] = mapped_column(String(71), nullable=False)
+    materialization_revision: Mapped[str | None] = mapped_column(String(71))
+    inference_revision: Mapped[str | None] = mapped_column(String(71))
+    correction_category: Mapped[str] = mapped_column(String(16), nullable=False)
+    correction_dimensions: Mapped[list[str]] = mapped_column(JSON, nullable=False)
+    review_outcome: Mapped[str] = mapped_column(String(32), nullable=False)
+    semantic_edit_count: Mapped[int] = mapped_column(Integer, nullable=False)
+    review_latency_ms: Mapped[int] = mapped_column(BigInteger, nullable=False)
+    materialization_state: Mapped[str] = mapped_column(String(32), nullable=False)
+    inference_state: Mapped[str] = mapped_column(String(32), nullable=False)
+    idempotency_digest: Mapped[str] = mapped_column(String(71), nullable=False)
+    request_digest: Mapped[str] = mapped_column(String(71), nullable=False)
+    occurred_at: Mapped[datetime] = mapped_column(Timestamp, nullable=False)
+    event_digest: Mapped[str] = mapped_column(String(71), nullable=False, unique=True)

@@ -40,8 +40,13 @@ class Settings(BaseSettings):
     llm_base_url: AnyHttpUrl | None = Field(default=None, validation_alias="PROJECTA_LLM_BASE_URL")
     llm_api_key: SecretStr = Field(default=SecretStr(""), validation_alias="PROJECTA_LLM_API_KEY")
     llm_model: str = Field(default="", validation_alias="PROJECTA_LLM_MODEL")
+    local_suggestion_model: str = Field(
+        default="", max_length=128, validation_alias="PROJECTA_LOCAL_SUGGESTION_MODEL"
+    )
     runtime_mode: Literal["headless", "experience", "production"] = "headless"
-    operational_database_path: str = ":memory:"
+    operational_database_path: str = Field(
+        default=":memory:", validation_alias="PROJECTA_API_OPERATIONAL_DATABASE_PATH"
+    )
     connector_database_host: str = Field(default="", validation_alias="PROJECTA_CONNECTOR_DATABASE_HOST")
     connector_database_port: int = Field(default=5432, validation_alias="PROJECTA_CONNECTOR_DATABASE_PORT")
     connector_database_name: str = Field(default="", validation_alias="PROJECTA_CONNECTOR_DATABASE_NAME")

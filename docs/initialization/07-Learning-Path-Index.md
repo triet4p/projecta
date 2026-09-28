@@ -166,33 +166,36 @@ Một event được ingest an toàn, không duplicate và có thể replay.
 
 ---
 
-## Phase 5 — LLM Candidate Extraction
+## Phase 5 — Evidence-first Assisted Authoring
 
 ### Học
 
-- Structured output.
+- Human-authored structured capture.
+- Bounded local suggestions on demand.
 - JSON Schema.
-- Evidence span extraction.
+- Server-owned SourceVersion/TextAnchor and evidence selection.
 - Ontology-constrained classification.
-- Confidence calibration.
+- Explicit review receipts and candidate lifecycle.
+- Cost budgets, cache/dedup and zero-model fallback.
 - Prompt/version evaluation.
 - Model gateway abstraction.
 
 ### Xây
 
-- Quick Note extractor.
-- Relation candidate extractor.
-- Entity-linking pipeline.
-- Evaluation dataset.
-- Error taxonomy.
+- Human occurrence/entity capture slice.
+- One-item suggestion workflow.
+- Relation-on-demand after confirmed endpoints.
+- Mutation/adversarial contract tests.
 
 ### Deliverable
 
 ```text
-Natural language note
-→ typed candidates
-→ evidence
-→ SHACL validation
+Human task/question or structured note
+→ scoped evidence
+→ confirmed occurrence/entity
+→ optional bounded suggestion
+→ human receipt
+→ approved-only RDF
 ```
 
 ---

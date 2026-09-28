@@ -247,14 +247,19 @@ Có thể dùng Keycloak cho self-hosted identity hoặc Microsoft Entra ID tron
 Trace cần nối được:
 
 ```text
-Connector Event
-→ Candidate Extraction
-→ SHACL Validation
-→ Confirmation
-→ RDF Update
+Human task/question hoặc structured note
+→ Scoped Evidence Retrieval
+→ Human Occurrence/Entity Capture
+→ Optional Bounded Local Suggestion
+→ SHACL Validation + Review Receipt
+→ Approved RDF Update
 → Rule Inference
 → Outbound Action
 ```
+
+Model calls are optional and on-demand; manual capture must work with zero
+model calls. Cost telemetry records the bounded suggestion workflow without raw
+prompt or provider payloads.
 
 ---
 

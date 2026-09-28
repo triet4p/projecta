@@ -12,6 +12,9 @@ import type {
   InferenceRebuildResponse,
   CandidateHistoryResponse,
   CandidateQueueResponse,
+  ReviewAbstainRequest,
+  ReviewAbstainResponse,
+  ReviewWorkbenchDetailResponse,
   ConnectorCatalogResponse,
   ConnectorInstallation,
   ConnectorInstallationListResponse,
@@ -46,6 +49,18 @@ import type {
   StructuredNoteImportResponse,
   StructuredNoteListResponse,
 } from "./generated";
+import type {
+  ControlledRelationDecisionRequest,
+  ControlledRelationRequest,
+  LocalSuggestionDecisionRequest,
+  LocalSuggestionResponse,
+  ManualCaptureApprovalRequest,
+  ManualCaptureApprovalResponse,
+  ManualCaptureRejectionRequest,
+  ManualCaptureRejectionResponse,
+  ManualReviewWorkbenchDetailResponse,
+  RelationSuggestionTargetsResponse,
+} from "./manual-capture";
 
 export class ApiError extends Error {
   readonly problem: Problem;
@@ -287,6 +302,150 @@ export class ProjectaApiClient {
     return this.request<CandidateQueueResponse>(
       `/v1/projects/${encodeURIComponent(handle)}/candidates?status=pending-review&limit=${limit}`,
       { method: "GET" },
+    );
+  }
+
+  async getReviewCandidateDetail(
+    projectHandle: string,
+    candidateHandle: string,
+  ): Promise<ManualReviewWorkbenchDetailResponse> {
+    return this.request<ManualReviewWorkbenchDetailResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/candidates/${encodeURIComponent(candidateHandle)}/review-detail`,
+      { method: "GET" },
+    );
+  }
+
+  async approveManualCandidate(
+    projectHandle: string,
+    candidateHandle: string,
+    payload: ManualCaptureApprovalRequest,
+    idempotencyKey: string,
+  ): Promise<ManualCaptureApprovalResponse> {
+    return this.request<ManualCaptureApprovalResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/candidates/${encodeURIComponent(candidateHandle)}/manual-approvals`,
+      { method: "POST", body: payload, idempotencyKey },
+    );
+  }
+
+  async rejectManualCandidate(
+    projectHandle: string,
+    candidateHandle: string,
+    payload: ManualCaptureRejectionRequest,
+    idempotencyKey: string,
+  ): Promise<ManualCaptureRejectionResponse> {
+    return this.request<ManualCaptureRejectionResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/candidates/${encodeURIComponent(candidateHandle)}/manual-rejections`,
+      { method: "POST", body: payload, idempotencyKey },
+    );
+  }
+
+  async getLocalSuggestion(
+    projectHandle: string,
+    candidateHandle: string,
+  ): Promise<LocalSuggestionResponse> {
+    return this.request<LocalSuggestionResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/candidates/${encodeURIComponent(candidateHandle)}/local-suggestions`,
+      { method: "GET" },
+    );
+  }
+
+  async requestLocalSuggestion(
+    projectHandle: string,
+    candidateHandle: string,
+    retry: boolean,
+    idempotencyKey: string,
+  ): Promise<LocalSuggestionResponse> {
+    return this.request<LocalSuggestionResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/candidates/${encodeURIComponent(candidateHandle)}/local-suggestions`,
+      { method: "POST", body: { retry }, idempotencyKey },
+    );
+  }
+
+  async decideLocalSuggestion(
+    projectHandle: string,
+    candidateHandle: string,
+    suggestionId: string,
+    payload: LocalSuggestionDecisionRequest,
+    idempotencyKey: string,
+  ): Promise<LocalSuggestionResponse> {
+    return this.request<LocalSuggestionResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/candidates/${encodeURIComponent(candidateHandle)}/local-suggestions/${encodeURIComponent(suggestionId)}/decisions`,
+      { method: "POST", body: payload, idempotencyKey },
+    );
+  }
+
+  async getRelationSuggestionTargets(
+    projectHandle: string,
+    candidateHandle: string,
+  ): Promise<RelationSuggestionTargetsResponse> {
+    return this.request<RelationSuggestionTargetsResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/candidates/${encodeURIComponent(candidateHandle)}/relation-suggestion-targets`,
+      { method: "GET" },
+    );
+  }
+
+  async getControlledRelationSuggestionState(
+    projectHandle: string,
+    candidateHandle: string,
+    payload: ControlledRelationRequest,
+  ): Promise<LocalSuggestionResponse> {
+    const query = new URLSearchParams({
+      targetCandidateHandle: payload.targetCandidateHandle,
+      direction: payload.direction,
+      mode: payload.mode,
+    });
+    if (payload.predicate) query.set("predicate", payload.predicate);
+    return this.request<LocalSuggestionResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/candidates/${encodeURIComponent(candidateHandle)}/relation-suggestions?${query.toString()}`,
+      { method: "GET" },
+    );
+  }
+
+  async requestControlledRelationSuggestion(
+    projectHandle: string,
+    candidateHandle: string,
+    payload: ControlledRelationRequest,
+    idempotencyKey: string,
+  ): Promise<LocalSuggestionResponse> {
+    return this.request<LocalSuggestionResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/candidates/${encodeURIComponent(candidateHandle)}/relation-suggestions`,
+      { method: "POST", body: payload, idempotencyKey },
+    );
+  }
+
+  async getControlledRelationSuggestion(
+    projectHandle: string,
+    candidateHandle: string,
+    suggestionId: string,
+  ): Promise<LocalSuggestionResponse> {
+    return this.request<LocalSuggestionResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/candidates/${encodeURIComponent(candidateHandle)}/relation-suggestions/${encodeURIComponent(suggestionId)}`,
+      { method: "GET" },
+    );
+  }
+
+  async decideControlledRelationSuggestion(
+    projectHandle: string,
+    candidateHandle: string,
+    suggestionId: string,
+    payload: ControlledRelationDecisionRequest,
+    idempotencyKey: string,
+  ): Promise<LocalSuggestionResponse> {
+    return this.request<LocalSuggestionResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/candidates/${encodeURIComponent(candidateHandle)}/relation-suggestions/${encodeURIComponent(suggestionId)}/decisions`,
+      { method: "POST", body: payload, idempotencyKey },
+    );
+  }
+
+  async abstainSelectedCandidate(
+    projectHandle: string,
+    candidateHandle: string,
+    payload: ReviewAbstainRequest,
+    idempotencyKey: string,
+  ): Promise<ReviewAbstainResponse> {
+    return this.request<ReviewAbstainResponse>(
+      `/v1/projects/${encodeURIComponent(projectHandle)}/candidates/${encodeURIComponent(candidateHandle)}/abstentions`,
+      { method: "POST", body: payload, idempotencyKey },
     );
   }
 

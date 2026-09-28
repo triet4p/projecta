@@ -693,3 +693,252 @@ backlog. RM-50 remains rejected evidence; no more patch loop, runtime lineage,
 provider execution, validation, held-out access, Stage B, selection or
 promotion is authorized. Reopening requires a new owner decision and a complete
 immutable accounting contract outside this closed track.
+
+## [2026-08-22] Adopt the human-first extraction kernel for RM-55 contract work
+
+**Decision:** Adopt the revised human-first extraction kernel as the design
+contract for RM-55 and later work: immutable source-version-bound Unicode
+anchors, fail-closed finite candidate lifecycles, server-owned project-scoped
+handles, deterministic evidence, append-only revision-bound review receipts,
+approved-only atomic assertion plans, revision-bound inference invalidation and
+raw-data-excluding telemetry.
+**Alternatives considered:** Accept framework v1 without policy resolution;
+implement the existing extraction path incrementally without a source-version
+kernel; or postpone the design until provider or held-out evaluation work.
+**Reason:** RM-52/RM-53 custody is offline-only and the framework must prevent
+the observed out-of-source evidence failures, stale or cross-project identity,
+implicit approval, and mutable accounting/custody claims before any contract or
+runtime implementation proceeds. The v2 design resolves the kernel defaults
+while keeping owner-gated study decisions and ontology production changes
+outside this gate.
+**Consequences:** RM-55 may define the immutable SourceVersion/source-receipt
+contract only. No provider reopening, auto-approval, bulk relation approval,
+ontology release, held-out/validation access, Stage B, selection, promotion or
+release is authorized; future ontology terms require the separate ontology
+governance workflow and human approval.
+
+## [2026-08-22] Defer RM-68 external validation during development
+
+**Decision:** Mark Phase F-RF as `DEVELOPMENT_COMPLETE_EXTERNAL_VALIDATION_DEFERRED_DEV_ONLY` while keeping RM-68 a blocked, unchecked, non-preregistration packet until an explicit owner reopen decision verifies external custody and a frozen evaluable candidate.
+**Alternatives considered:** Fabricate or infer custody readiness from repository-visible material; issue the RM-68 preregistration without a non-reconstructible payload; leave development status ambiguous; or continue provider, held-out, human-execution, selection, or promotion work.
+**Reason:** RM-53 through RM-67 have sufficient development-contract, implementation, and offline-gate evidence, but the authoritative RM-68 prerequisites remain absent: no external custodian, non-reconstructible payload, frozen candidate, or human records. A finite dev-only waiver records the achieved engineering boundary without converting preparation into external or business evidence.
+**Consequences:** Future agents may continue bounded development maintenance and must preserve all RM68 issuance/execution locks. Reopening RM-68 requires new owner authority plus custody receipt, non-reconstructibility, opaque dataset/configuration/evaluator bindings, and frozen candidate evidence; no provider, held-out, human, business-validation, selection, promotion, or release path is enabled by this decision.
+
+## [2026-08-22] Supersede RM-68 defer with an internal agent-proxy PoC
+
+**Decision:** Supersede the development-only RM-68 defer only for a bounded internal synthetic PoC: use a versioned representative dataset, the deterministic/offline default path, and explicitly non-human agent-proxy review evidence; keep RM-68 external validation, business-quality acceptance, provider execution, held-out access, and production authority closed.
+**Alternatives considered:** Wait indefinitely for external custody; treat repository-visible synthetic fixtures as external evidence; call a provider to obtain candidate outputs; or let the agent-proxy results satisfy the RM-67 human-study contract.
+**Reason:** The user confirmed that external custody will not be available and authorized a transparent engineering proof of concept. A synthetic, digest-bound selection and fail-closed default-path run can test protocol plumbing and accounting without fabricating human or external evidence; missing candidate output must remain a scored failure rather than being replaced by invented success.
+**Consequences:** The internal PoC may produce diagnostic dataset, proxy-review, and correction-burden artifacts labeled `INTERNAL_DEV_POC_ONLY`. It cannot issue RM-68, satisfy independent reviewer agreement or manual-baseline requirements, claim business quality, or enable provider/held-out/human/production paths. The prior defer entry remains immutable historical context; any external or business evaluation still requires a distinct owner decision and real custody evidence.
+
+## [2026-08-22] Accept the internal source-only agent-proxy PoC boundary
+
+**Decision:** Replace the development defer path with a versioned internal source-only agent-candidate and primary-agent-proxy correction-burden PoC, accepting F-RF only as `F_RF_POC_COMPLETE_AGENT_PROXY_ACCEPTED` while keeping external human, business-quality, provider, held-out, and production claims closed.
+**Alternatives considered:** Keep the prior internal PoC failure as the terminal development result; treat the synthetic records as external human evidence; or reopen external custody and human-study execution.
+**Reason:** The owner supplied a frozen v5 candidate and explicit primary-agent judgments showing 60 source-supported finalized-for-review assertions, zero unsupported assertions, 12/12 unchanged items, and zero provider calls; this is sufficient to establish the bounded engineering PoC without fabricating independent human evidence or custody.
+**Consequences:** RM-68 may be accepted only for the internal PoC scope and must retain the historical blocked non-preregistration packet. Any later external study or business claim requires new owner authority and fresh custody/evaluable-candidate evidence; timing, independent agreement, and human-study thresholds remain unclaimed.
+
+## [2026-08-22] Narrow F-RF PoC acceptance after dense-hard v1 failure
+
+**Decision:** Retain the v5 internal source-only agent-proxy result only as a
+bounded baseline under `F_RF_POC_BASELINE_ACCEPTED_DENSE_HARD_V1_FAILED_REMEDIATION_REQUIRED`.
+The dense-hard v1 evaluation is authoritative diagnostic evidence: its frozen
+candidate fails the edit-burden gate. The v5 result must not be generalized to
+a “good enough,” low-correction, or broad extraction-quality claim.
+
+**Alternatives considered:** Tune or rerun the frozen v1 candidate; merge the
+dense-hard failure into the v5 score; reopen provider or human validation; or
+discard the v5 baseline entirely.
+
+**Reason:** The immutable dense-hard v1 recomputation reports 0/24 unchanged,
+0/24 minor, 8 major, 2 reject, and 14 abstain items; 74 semantic edits (mean
+3.0833333333), entity F1 0.5685279188, relation F1 0.1758241758, and 74/138
+unsupported finalized assertions. These results are incompatible with the
+RM-67 edit-burden thresholds even though the earlier v5 proxy packet remains a
+valid bounded engineering baseline.
+
+**Consequences:** S12-DH-01 through S12-DH-03 are complete for v1 evidence;
+remediation is pending new authority and must be evaluated on fresh dense-hard
+v2 cases with no source/gold/candidate reuse. Provider, human, external,
+held-out, production, selection, promotion, and release claims remain closed.
+
+## [2026-08-23] Authorize bounded dense-hard remediation and fresh v2 benchmark
+
+**Decision:** Authorize DH-04/DH-05 to implement a generic offline source-only
+candidate protocol and guard, and to author one fresh synthetic dense-hard v2
+benchmark packet. This authority covers protocol and benchmark artifacts only;
+it does not authorize a v2 candidate, scoring, review, provider call, or state
+transition.
+**Alternatives considered:** Tune or reuse the frozen v1 packet; expose v1 gold
+or case content through a remediation fixture; create a candidate before the
+guard contract is independently checked; or reopen human, provider, external,
+held-out, production, selection, promotion, or release work.
+**Reason:** The v1 failure identifies finite remediation classes requiring a
+generic occurrence/anchor, type, relation-grounding, abstention, and quarantine
+contract. A fresh packet is needed to test the contract without leaking or
+reusing v1 source, gold, IDs, digests, or sentences.
+**Consequences:** The v2 protocol and benchmark remain synthetic,
+non-production, source-only, and offline. This author is ineligible to produce
+or judge a v2 candidate because the private gold and manifest are visible here.
+Any v2 candidate/evaluation requires new authority, fresh bindings, and an
+independent evaluator; all provider, human, external, held-out, production,
+selection, promotion, and release claims remain closed.
+
+## [2026-08-23] Authorize DH-09/DH-10 fresh dense-hard v3 protocol and benchmark
+
+**Decision:** Authorize bounded offline DH-09/DH-10 work to publish a corrected
+source-only v3 protocol/evaluator contract and author one fresh synthetic
+dense-hard v3 benchmark. The authority covers protocol, schemas, source, gold,
+manifest, validator, and no-reuse lineage artifacts only; it does not authorize
+a candidate, evaluation, provider call, review, or state transition.
+**Alternatives considered:** Reuse or patch v1/v2 cases; score type without a
+public semantic rubric; allow type uncertainty to cascade into relation or
+abstention metrics; or reopen provider, human, external, held-out, production,
+selection, promotion, or release work.
+**Reason:** The v2.1 audit identified missing public type semantics and evidence
+boundary ambiguity. A fresh v3 packet must publish finite type decision rules,
+occurrence-independent typing, punctuation-normalized evidence identity,
+explicit abstention/quarantine rules, and RM-67 definitions before any future
+candidate can be considered.
+**Consequences:** v3 remains synthetic, non-production, source-only, and
+offline. No v1/v2 IDs, raw text, normalized sentences, source digests, or
+artifacts may be reused. Any v3 candidate/evaluation requires new authority and
+an independent evaluator; provider, human, external, held-out, production,
+selection, promotion, and release claims remain closed.
+
+## [2026-08-24] Authorize fresh dense-hard v4 offline source-only packet
+
+**Decision:** Authorize DH-12/DH-13 to publish an immutable v3.1 stratified
+adjudication of the frozen v3 diagnostic and a fresh synthetic dense-hard v4
+source-only protocol, evaluator contract, and 32-case benchmark packet. The
+authority is limited to offline schemas, validators, tests, digests, lineage,
+and documentation; it does not authorize a v4 candidate, evaluation, review,
+provider call, human/external/held-out run, state transition, selection,
+promotion, or release claim.
+**Alternatives considered:** Pool correction and safety cases under one
+denominator; reuse or patch v1-v3 cases; create a v4 candidate or evaluation;
+or reopen provider, human, external, held-out, production, selection,
+promotion, or release work.
+**Reason:** The v3 diagnostic exposed a denominator design failure rather than
+unsafe behavior. A stratified adjudication makes that historical result
+interpretable, while a fresh 24-utility/8-safety packet tests the revised
+source-only contract without leaking prior IDs, text, sentences, or digests.
+**Consequences:** v3.1 remains a non-authoritative offline adjudication of the
+frozen v3 candidate, and pooled v3 remains diagnostic only. v4 is synthetic,
+non-production, source-only, and candidate-free; the author is ineligible to
+produce or judge a v4 candidate. All provider, human, external, held-out,
+production, selection, promotion, and release claims remain closed.
+
+## [2026-08-24] Close dense-hard v4 failure and require strategy redesign
+
+**Decision:** Accept the immutable dense-hard v4 evaluation as authoritative
+offline diagnostic evidence for the bounded internal track and set the current
+status to `F_RF_POC_BASELINE_ACCEPTED_DENSE_HARD_V4_FAILED_STRATEGY_REDESIGN_REQUIRED`.
+Retain the v5 easy internal agent-proxy result only as historical baseline
+evidence; retain v1, v2, v3, v3.1, and v4 diagnostics and their measurement
+corrections without pooling or generalized low-correction claims. Authorize
+only the finite offline remediation/strategy-redesign backlog in
+`docs/sprint-plans/sprint-12/dense-hard-v4-remediation-backlog.v1.md`.
+
+**Alternatives considered:** Treat v4 as a passing safety result because
+abstention mode precision/recall passed; average v4 with v3.1 or the v5 easy
+baseline; tune or rerun the frozen candidate; authorize v5, provider, human,
+external, held-out, production, selection, promotion, or release work; or
+silently weaken the stratified gates.
+
+**Reason:** The immutable v4 candidate fails the utility correction gate
+(unchanged 0.0416666667, unchanged-or-minor 0.0416666667, mean edits 3.625,
+26 unsupported finalized assertions) and the safety gate (8 unsafe finalized
+assertions and quarantine recall 0.5), despite exact full/partial abstention
+mode rates. The residuals require strategy redesign across occurrence coverage,
+relation grounding, proposition-level quarantine, and utility/safety routing;
+the evidence does not justify a low-correction or generalized quality claim.
+
+**Consequences:** The v4 evaluation and remediation backlog are offline,
+synthetic, and non-production. No v5 candidate, provider call, human study,
+external custody, held-out inspection, production enablement, selection,
+promotion, release, or generalized quality claim is authorized. The v5 easy
+baseline remains historical only; any future candidate requires a new owner
+decision, a fresh packet/strategy, independent evaluation, and explicit safety
+and correction gates.
+
+## [2026-08-31] Make evidence-first assisted authoring the active product direction
+
+**Decision:** Supersede AI-first full-document extraction as the active product
+direction with human-authored structured capture and bounded, optional,
+on-demand local AI suggestions, while preserving candidate/asserted/inferred
+separation and all historical Sprint 12 evidence.
+**Alternatives considered:** Continue dense-hard extraction remediation as the
+primary product path; stop AI assistance entirely; or keep whole-document
+candidate extraction as the default and add stronger review gates afterward.
+**Reason:** Dense-hard v4 shows that whole-document extraction creates too much
+correction and unsafe finalization risk, while the accepted RM-55--RM-67
+contracts already support source-versioned anchors, confirmed identities,
+deterministic evidence, append-only receipts, approved-only materialization,
+and adversarial guards. Starting from a human task/question or structured note
+keeps the user in control, permits a zero-model path, and makes retrieval and
+one bounded suggestion useful without paying for unnecessary document-wide
+calls.
+**Consequences:** Sprint 13 must deliver human-authored entity capture first,
+then optional local suggestions and controlled relations. AI may propose only
+bounded local items after scoped evidence and human selection; it may not create
+global IDs or offsets, auto-approve, bulk-materialize, call providers in the
+background, or become authoritative. Retrieval is context only. Per-user and
+per-project budgets, caching/deduplication, and cost-per-accepted-assertion
+telemetry are required. Sprint 12 dense-hard v1--v4 and the v5 easy baseline
+remain immutable historical diagnostics; RM-68 external/human/business/provider
+and held-out claims stay closed, and R6/R7 require a separate owner decision.
+
+## [2026-09-28] Keep optional suggestions on an explicit loopback Ollama path
+
+**Decision:** Route user-requested Sprint 13 item/type/link suggestions through
+the Ollama generate API at `127.0.0.1:11434` only, with no proxy inheritance,
+redirects, retries, startup health calls, or model downloads. Select the model
+only through `PROJECTA_LOCAL_SUGGESTION_MODEL`; leave it disabled when that
+setting is empty and unconditionally disabled in production. Persist workflow
+state, proposal output, idempotency, and UTC daily budget counters in the
+existing private operational SQLite database, while binding human decisions to
+the existing append-only review receipt service.
+
+**Alternatives considered:** Reuse the configurable LLM profile/provider path,
+allow a caller-supplied model endpoint, start or download a local runtime from
+the API, or keep suggestion and budget state only in process memory.
+
+**Reason:** The active contract authorizes optional local inference but no
+provider execution. A fixed loopback destination with `trust_env=False` makes
+the privacy boundary independent of external profile settings, and an explicit
+model setting avoids implicit inference. SQLite provides transactional
+deduplication and shared budget checks across API requests without adding a
+second storage convention.
+
+**Consequences:** Operators must run Ollama separately inside the API process's
+network namespace and configure a model before local suggestions are available.
+The API never starts Ollama or pulls a model. Production exposes no suggestion
+generation or decision capability, and a suggestion decision does not write a
+graph assertion.
+
+## [2026-09-28] Accept S13-05 telemetry denominators and date classification
+
+**Decision:** The owner chose “Accept current §5 metrics” for S13-05. A mean
+local-attempt cost is null when no cost-known accepted assertions exist.
+Review-latency samples require a recorded workflow start and durable receipt
+time; without a recorded start, the sample is excluded rather than imputed. A
+manual date field contributes to edit counts but adds no RM-65 dimension: a
+date-only edit has no correction category, while composite edits are classified
+from their recognized dimensions using RM-67 major-over-minor precedence.
+
+**Alternatives considered:** Treat an empty accepted-assertion denominator as
+zero; impute missing review starts; exclude every edit containing a date from
+category counts; classify date-only edits as `unchanged`; or add date as an
+RM-65 dimension.
+
+**Reason:** This records the owner's acceptance of the existing denominator and
+latency behavior and clarifies the per-field date exclusion. It prevents an
+unclassified date from masking a category supplied by recognized dimensions in
+a composite edit. These metrics remain descriptive product telemetry, not
+RM-67 study results.
+
+**Consequences:** Contract §5 documents this decision as provenance. Null means,
+missing-start latency exclusion, date-only category omission, and composite
+RM-67 precedence remain the accepted behavior. No provider, human study, or
+RM-68 evaluation is authorized.

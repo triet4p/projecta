@@ -140,6 +140,13 @@ public final class SemanticCoreApplication {
                         context.json(queries.candidates(
                                 trusted.projectId(), boundedGraphLimit(context.queryParam("limit"), 1, 100, 50)));
                     })
+                    .get("/v1/projects/{projectId}/candidates/{candidateHandle}/source-context", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        var candidateId = queries.resolveCandidateHandle(
+                                trusted.projectId(), context.pathParam("candidateHandle"));
+                        context.json(queries.manualCaptureSourceContext(trusted.projectId(), candidateId));
+                    })
                     .get("/v1/projects/{projectId}/knowledge", context -> {
                         var trusted = trustedContext(context);
                         requireProjectPath(context, trusted);

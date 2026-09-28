@@ -85,4 +85,43 @@ describe("ProjectaApiClient", () => {
     );
     vi.unstubAllGlobals();
   });
+
+  it("posts a project-scoped abstain receipt with an idempotency key", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          requestId: "req-abstain",
+          contractVersion: "review-receipt.v1",
+          decision: "abstain",
+          outcome: "accepted",
+          receipt: { receiptDigest: "sha256:" + "a".repeat(64) },
+        }),
+        {
+          status: 200,
+          headers: { "content-type": "application/json", "X-Request-Id": "req-abstain" },
+        },
+      ),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    await new ProjectaApiClient().abstainSelectedCandidate(
+      "project-h-alpha",
+      "candidate-h-1",
+      {
+        candidateRevision: 1,
+        expectedCandidateRevision: 0,
+        sourceVersionId: "sv_" + "b".repeat(64),
+        sourceVersionRevision: 1,
+        constrainedContractVersion: "constrained-relation.v1",
+      },
+      "abstain-1",
+    );
+    const [input, init] = fetchMock.mock.calls[0] as [RequestInfo | URL, RequestInit];
+    expect(String(input)).toContain("/abstentions");
+    expect(new Headers(init.headers).get("Idempotency-Key")).toBe("abstain-1");
+    const body = JSON.parse(String(init.body)) as { decision?: unknown; candidateRevision: number };
+    expect(body.candidateRevision).toBe(1);
+    expect(body.decision).toBeUndefined();
+    vi.unstubAllGlobals();
+  });
 });

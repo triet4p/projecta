@@ -38,6 +38,19 @@ from projecta_api.connectors.teams_setup import PostgresTeamsSetupRegistry
 from projecta_api.context import LocalExperienceContextMiddleware
 from projecta_api.correlation import resolve_correlation
 from projecta_api.evidence.local import LocalEvidenceStore
+from projecta_api.extraction.correction_burden import (
+    CorrectionBurdenTelemetryService,
+    PostgresCorrectionBurdenRepository,
+)
+from projecta_api.extraction.local_suggestion_store import LocalSuggestionRepository
+from projecta_api.extraction.local_suggestions import (
+    LocalSuggestionService,
+    OllamaLocalSuggestionGateway,
+)
+from projecta_api.extraction.review_receipts import (
+    PostgresReviewDecisionReceiptRepository,
+    ReviewDecisionReceiptService,
+)
 from projecta_api.extraction.service import ExtractionOrchestrator
 from projecta_api.identity.middleware import CsrfMiddleware
 from projecta_api.identity.oidc import IdentityError, IdentityService
@@ -121,6 +134,18 @@ def create_app(
     identity_service = IdentityService(actual_settings, identity_repository_value, audit_sink=security_audit)  # type: ignore[arg-type]
     structured_note_draft_store = StructuredNoteDraftStore(database)
     structured_candidate_edit_store = StructuredCandidateEditStore(database)
+    local_model_id = actual_settings.local_suggestion_model.strip()
+    local_suggestion_gateway = (
+        OllamaLocalSuggestionGateway(local_model_id)
+        if local_model_id and actual_settings.runtime_mode != "production"
+        else None
+    )
+    local_suggestion_service = LocalSuggestionService(
+        LocalSuggestionRepository(database),
+        local_suggestion_gateway,
+        model_id=local_model_id,
+        production_disabled=actual_settings.runtime_mode == "production",
+    )
     configuration_audit = ConfigurationAudit(database)
     composed_connector_runtime = connector_runtime or _build_connector_runtime(actual_settings, client, connector_secret_store, identity_service, security_audit)
     configuration: RuntimeConfigurationProvider
@@ -131,6 +156,9 @@ def create_app(
     else:
         configuration = EnvironmentRuntimeConfigurationProvider(actual_settings)
     if gateway is None:
+
+        review_receipt_service = _build_review_receipt_service(actual_settings)
+        correction_burden_service = _build_correction_burden_service(actual_settings)
 
         def gateway_factory(snapshot: LLMConfigurationSnapshot) -> LLMGateway:
             return ResilientGateway(
@@ -150,6 +178,9 @@ def create_app(
             timeout_seconds=90.0,
             configuration_provider=configuration,
             gateway_factory=gateway_factory,
+            review_receipt_service=review_receipt_service,
+            correction_burden_service=correction_burden_service,
+            authoring_telemetry_service=local_suggestion_service.authoring_telemetry,
         )
     else:
         extraction = ExtractionOrchestrator(
@@ -159,6 +190,9 @@ def create_app(
             client,
             actual_settings.llm_model,
             timeout_seconds=90.0,
+            review_receipt_service=_build_review_receipt_service(actual_settings),
+            correction_burden_service=_build_correction_burden_service(actual_settings),
+            authoring_telemetry_service=local_suggestion_service.authoring_telemetry,
         )
     retrieval = RetrievalService(client)
     app = FastAPI(title="Projecta Application API", version="0.6.0")
@@ -204,6 +238,15 @@ def create_app(
                 "CANDIDATE_EDIT_CONFLICT",
                 "INVALID_PROJECT_HANDLE",
                 "INVALID_NAVIGATION_HANDLE",
+                "REVIEW_RECEIPT_UNAVAILABLE",
+                "REVIEW_SOURCE_RECEIPT_UNAVAILABLE",
+                "REVIEW_ITEM_INVALID",
+                "REVIEW_RECEIPT_STALE",
+                "REVIEW_RECEIPT_CONFLICT",
+                "REVIEW_UNAUTHORIZED",
+                "MANUAL_CAPTURE_INVALID",
+                "MANUAL_CAPTURE_NOT_VALIDATED",
+                "MATERIALIZATION_NOT_AUTHORIZED",
             }
             else "SEMANTIC_CONTRACT_UNAVAILABLE"
         )
@@ -223,6 +266,15 @@ def create_app(
             "CANDIDATE_EDIT_CONFLICT": "The candidate edit revision is stale.",
             "INVALID_PROJECT_HANDLE": "The project handle is invalid.",
             "INVALID_NAVIGATION_HANDLE": "The navigation handle is invalid.",
+            "REVIEW_RECEIPT_UNAVAILABLE": "Review receipt persistence is unavailable.",
+            "REVIEW_SOURCE_RECEIPT_UNAVAILABLE": "The selected item has no verified source receipt.",
+            "REVIEW_ITEM_INVALID": "The selected review item is invalid.",
+            "REVIEW_RECEIPT_STALE": "The review source or candidate revision is stale.",
+            "REVIEW_RECEIPT_CONFLICT": "The review receipt conflicts with existing history.",
+            "REVIEW_UNAUTHORIZED": "The reviewer is not authorized for this item.",
+            "MANUAL_CAPTURE_INVALID": "The manual source anchor could not be verified.",
+            "MANUAL_CAPTURE_NOT_VALIDATED": "Validate this Note item before approval.",
+            "MATERIALIZATION_NOT_AUTHORIZED": "Approved assertion materialization is not owner-authorized.",
             "SEMANTIC_CONTRACT_UNAVAILABLE": "The semantic service is temporarily unavailable.",
         }[code]
         return _problem(request, status_code, code, "Semantic Core request failed", detail)
@@ -399,6 +451,7 @@ def create_app(
             connection_checker=OpenAIConnectionChecker(),
             configuration_audit=configuration_audit,
             connector_runtime=composed_connector_runtime,
+            local_suggestions=local_suggestion_service,
         )
     )
     return app
@@ -459,6 +512,26 @@ def _build_connector_runtime(
             audit_sink,
         )
     except (ValueError, ConnectorAuthorizationError, OSError):
+        return None
+
+
+def _build_review_receipt_service(settings: Settings) -> ReviewDecisionReceiptService | None:
+    """Use the existing PostgreSQL operational boundary when it is configured."""
+
+    try:
+        database = ConnectorDatabase(settings)
+        return ReviewDecisionReceiptService(PostgresReviewDecisionReceiptRepository(database))
+    except (ValueError, OSError):
+        return None
+
+
+def _build_correction_burden_service(settings: Settings) -> CorrectionBurdenTelemetryService | None:
+    """Use the existing PostgreSQL operational boundary when configured."""
+
+    try:
+        database = ConnectorDatabase(settings)
+        return CorrectionBurdenTelemetryService(PostgresCorrectionBurdenRepository(database))
+    except (ValueError, OSError):
         return None
 
 

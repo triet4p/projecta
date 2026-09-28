@@ -70,8 +70,8 @@ Chức năng:
 
 - Intent interpretation.
 - Tool selection.
-- Structured extraction.
-- Entity linking.
+- Bounded local suggestion on demand.
+- Occurrence/entity linking after human selection.
 - Research planning.
 - Natural-language synthesis.
 - Draft generation.
@@ -92,8 +92,9 @@ Model được truy cập qua `LLM Gateway` để tránh vendor lock-in.
 Bao gồm các workflow xác định:
 
 - Capture note.
-- Extract candidate knowledge.
-- Confirm/reject candidate.
+- Select/confirm source occurrence and entity.
+- Propose one bounded item/type/link/relation (optional).
+- Confirm/edit/reject suggestion with receipt.
 - Prepare meeting brief.
 - Research topic.
 - Generate project update.
@@ -108,12 +109,18 @@ Ví dụ:
 
 ```text
 get_project_context(project_id, user_id)
-propose_knowledge(source_artifact_id)
+retrieve_scoped_evidence(project_id, question)
+capture_entity_occurrence(source_version_id, anchor, reviewer_id)
+suggest_one_item(confirmed_occurrence_handle, request_context)
 validate_candidate(candidate_graph_id)
-confirm_candidate(candidate_id, reviewer_id)
+record_review_receipt(candidate_id, decision, reviewer_id)
+materialize_approved_assertion(approved_plan_id)
 prepare_meeting_brief(project_id, meeting_id)
 send_approved_message(action_id)
 ```
+
+AI suggestion là optional, local và on-demand. Không có tool nào được phép
+gọi provider nền, tự cấp global ID/offset, auto-approve hoặc ghi asserted graph.
 
 ---
 
@@ -211,17 +218,21 @@ sequenceDiagram
     participant H as Human Reviewer
     participant R as Rule Engine
 
-    C->>I: Raw message / Quick Note
+    C->>I: User task/question / structured Quick Note
     I->>O: Save event metadata, idempotency, source reference
     I->>S: Canonical source artifact
     S->>K: Store source/provenance graph
-    S->>L: Request structured candidate extraction
-    L-->>S: Candidate entities, relations, evidence
-    S->>S: SHACL and ontology validation
-    S->>K: Store candidate graph
-    S-->>H: Present candidate for review
-    H->>S: Confirm / edit / reject
-    S->>K: Update asserted graph + provenance
+    H->>S: Select/confirm occurrence/entity
+    S->>S: Resolve SourceVersion + TextAnchor + opaque handle
+    opt User requests one bounded suggestion
+        S->>L: Scoped evidence + local suggestion request
+        L-->>S: One proposed item/type/link/relation
+        S->>S: Validate allowlists and deterministic evidence
+    end
+    S-->>H: Present capture/suggestion for review
+    H->>S: Confirm / edit / reject + append-only receipt
+    S->>S: Build approved-only assertion plan
+    S->>K: Materialize approved asserted graph + provenance
     S->>R: Run affected rules
     R-->>S: Inferred triples
     S->>K: Update inferred graph
@@ -242,7 +253,7 @@ flowchart LR
     RDF -->|domain truth| SC
     PG -->|workflow and connector state| SC
     OBJ -->|raw payload and files| SC
-    IDX -->|candidate retrieval| SC
+    IDX -->|scoped evidence/context retrieval| SC
 ```
 
 ### RDF store
@@ -279,7 +290,7 @@ flowchart LR
 
 - Full-text retrieval.
 - Embedding retrieval.
-- Candidate entity linking.
+- Optional local suggestion context and entity linking.
 - Similar note/document detection.
 
 ---
@@ -380,8 +391,11 @@ Local development và early production dùng Docker Compose với cùng OCI appl
 
 - Không connector nào được trở thành domain center.
 - Không LLM nào được trở thành source of truth.
+- Không có whole-document extraction mặc định; AI suggestion chỉ chạy theo
+  yêu cầu, bounded và phải qua human receipt.
 - Không vector index nào được coi là project memory duy nhất.
 - Không fact nào được assertion mà thiếu provenance.
 - Không external action nào bỏ qua policy.
 - Không requirement evolution nào bị overwrite mất lịch sử.
 - Không thành phần semantic core nào bị loại bỏ dưới nhãn MVP.
+- Manual structured capture phải hoạt động với zero model calls.

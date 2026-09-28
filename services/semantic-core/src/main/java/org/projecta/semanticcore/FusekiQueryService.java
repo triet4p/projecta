@@ -262,6 +262,64 @@ public final class FusekiQueryService {
                 rows.size() > limit);
     }
 
+    /** Returns the immutable manual Note evidence bound to a same-project candidate. */
+    public Map<String, Object> manualCaptureSourceContext(ProjectId project, String candidateId) {
+        var candidateIri = candidate(project, candidateId);
+        var projectIri = "https://w3id.org/projecta/data/project/" + project.value();
+        var sourceRows = rows(gateway.select("""
+                SELECT ?status ?generator ?note ?title ?rawText ?sourceText ?itemType ?startOffset ?endOffset
+                WHERE {
+                  GRAPH <%s> {
+                    <%s> a <%sCandidate> ; <%scandidateStatus> ?status ; <%sgenerator> ?generator ;
+                      <http://www.w3.org/ns/prov#wasDerivedFrom> ?source ;
+                      <%sbelongsToProject> <%s> .
+                  }
+                  FILTER(?generator = "manual-quick-note-v0.3.0")
+                  GRAPH <%s> {
+                    ?source <%sisItemOf> ?note ; <%scontentText> ?sourceText ;
+                      <%shasItemType> ?itemType ; <%sevidenceStartOffset> ?startOffset ;
+                      <%sevidenceEndOffset> ?endOffset .
+                    ?note a <%sNote> ; <%sbelongsToProject> <%s> ; <%sname> ?title ; <%srawText> ?rawText .
+                  }
+                }
+                """.formatted(
+                        router.route(project, GraphRole.CANDIDATES),
+                        candidateIri,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        projectIri,
+                        router.route(project, GraphRole.SOURCES),
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        PROJECTA,
+                        projectIri,
+                        PROJECTA,
+                        PROJECTA)));
+        if (sourceRows.size() != 1) {
+            throw new ProjectScopedQueryService.ResourceNotFoundException(
+                    "manual candidate source is not uniquely visible in this project");
+        }
+        var row = sourceRows.getFirst();
+        var result = new LinkedHashMap<String, Object>();
+        result.put("candidateId", candidateId);
+        result.put("candidateRevision", 1);
+        result.put("candidateStatus", localName(required(row, "status")));
+        result.put("sourceArtifactId", localName(required(row, "note")));
+        result.put("title", required(row, "title"));
+        result.put("rawText", required(row, "rawText"));
+        result.put("evidenceText", required(row, "sourceText"));
+        result.put("entityType", entityType(localName(required(row, "itemType"))));
+        result.put("startOffset", Integer.parseInt(required(row, "startOffset")));
+        result.put("endOffset", Integer.parseInt(required(row, "endOffset")));
+        return result;
+    }
+
     /** Returns the finite current knowledge collection using opaque handles. */
     public Map<String, Object> knowledge(ProjectId project, int limit) {
         if (limit < 1 || limit > 100) {
@@ -691,6 +749,21 @@ public final class FusekiQueryService {
         var slash = iri.lastIndexOf('/');
         var hash = iri.lastIndexOf('#');
         return iri.substring(Math.max(slash, hash) + 1);
+    }
+
+    private static String entityType(String itemType) {
+        return switch (itemType) {
+            case "requirement" -> "Requirement";
+            case "decision" -> "Decision";
+            case "question" -> "Question";
+            case "task" -> "Task";
+            case "risk" -> "Risk";
+            case "assumption" -> "Assumption";
+            case "constraint" -> "Constraint";
+            case "progress-update" -> "ProgressClaim";
+            case "research-need" -> "ResearchFinding";
+            default -> throw new IllegalArgumentException("manual Note item type is not allowlisted");
+        };
     }
 
     private static String required(Map<String, String> row, String field) {

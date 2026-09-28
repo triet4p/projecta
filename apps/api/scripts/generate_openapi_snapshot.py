@@ -19,6 +19,7 @@ SNAPSHOT = ROOT / "docs" / "architecture" / "application-api.sprint7.openapi.jso
 INTERNAL_PATHS = {"/v1/entities/link-context"}
 FORBIDDEN_HEADER = "X-Projecta-Context-Secret"
 OPERATION_IDS = {
+    ("/v1/projects/{handle}/authoring-metrics", "get"): "readAuthoringMetrics",
     ("/v1/projects/{handle}/notes/drafts", "post"): "createNoteDraft",
     ("/v1/projects/{handle}/notes/drafts/{draftHandle}", "get"): "readNoteDraft",
     ("/v1/projects/{handle}/notes/drafts/{draftHandle}", "put"): "updateNoteDraft",

@@ -56,12 +56,14 @@ Bao gồm:
 
 - Tạo note theo project.
 - Hỗ trợ note chứa nhiều đoạn hoặc nhiều loại nội dung.
-- Tách note thành atomic note items.
-- Gợi ý requirement, task, decision, question, risk hoặc assumption.
-- Chọn evidence span.
-- Gợi ý liên kết với entity hiện có.
-- Review, edit, confirm hoặc reject candidate.
-- Ghi provenance khi candidate được xác nhận.
+- Human tạo task/question hoặc structured note và chọn evidence context theo
+  project scope.
+- Chọn/xác nhận occurrence/entity; server resolve SourceVersion, TextAnchor và
+  opaque project-scoped identity.
+- Tuỳ chọn gọi AI on-demand để đề xuất đúng một item/type/link/relation bounded.
+- Review, edit, confirm hoặc reject bằng append-only receipt.
+- Chỉ approved item mới được materialize vào asserted graph và chạy inference.
+- Manual path phải hoàn chỉnh với zero model calls.
 
 ---
 
@@ -82,8 +84,9 @@ Bao gồm:
 - Hiểu user intent.
 - Chọn workflow hoặc tool.
 - Truy xuất knowledge graph.
-- Gợi ý entity/relation candidate.
-- Entity linking.
+- Gợi ý một entity/relation candidate cục bộ khi user yêu cầu và đã có
+  occurrence/evidence context.
+- Entity linking trong cùng project sau khi human xác nhận occurrence.
 - Research planning.
 - Soạn meeting brief.
 - Soạn project update.
@@ -92,7 +95,9 @@ Bao gồm:
 - Soạn message hoặc email.
 - Giải thích inference và recommendation bằng evidence.
 
-Agent không được bỏ qua policy, SHACL hoặc confirmation workflow.
+Agent không được bỏ qua policy, SHACL hoặc confirmation workflow; không được
+extract toàn bộ document tự động, tạo global ID/offset, gọi provider nền,
+auto-approve, bulk-approve relation hoặc materialize unreviewed output.
 
 ---
 
@@ -160,6 +165,8 @@ Bắt buộc hỗ trợ:
 - Duyệt outbound action có rủi ro.
 - Phân biệt AI suggestion, inferred fact và human-confirmed fact.
 - Audit người đã xác nhận hoặc sửa.
+- Bắt đầu từ human-authored capture; AI suggestion là optional và luôn có thể
+  tắt.
 
 ---
 
@@ -270,6 +277,21 @@ Agent roles có thể được tách logic, nhưng vẫn vận hành trong workf
 
 ---
 
+## 3.8. Automatic whole-document graph extraction
+
+Đây không phải active product path của Projecta. Không bao gồm:
+
+- Gửi toàn bộ document cho model để tự tạo graph.
+- Tự sinh hoặc tự chốt model-authored offset, global ID, relation endpoint hay
+  assertion.
+- Background provider calls hoặc materialization khi chưa có human decision.
+- Bulk relation approval hoặc dùng retrieval similarity làm fact.
+
+Source-only dense-hard v1--v4 và v5 easy baseline vẫn là historical offline
+evidence; mọi fresh benchmark/evaluation cần owner authorization riêng.
+
+---
+
 ## 4. Boundary Decisions
 
 | Chủ đề | Quyết định |
@@ -296,14 +318,14 @@ Delivery tăng dần theo vertical slice nhưng mỗi slice phải sử dụng k
 Ví dụ slice đầu tiên:
 
 ```text
-Quick Note
-→ Canonical Source Artifact
-→ LLM Candidate Extraction
-→ SHACL Validation
-→ Human Confirmation
-→ Asserted RDF
-→ Rule Inference
-→ Project Context Query
+Human task/question hoặc structured Quick Note
+→ Scoped retrieval/evidence
+→ Human occurrence/entity capture
+→ Server-owned SourceVersion/TextAnchor/opaque identity
+→ Optional bounded local AI suggestion
+→ Human decision + append-only receipt
+→ Approved-only asserted RDF
+→ Rule inference và project context query
 ```
 
 Slice tiếp theo có thể thay Quick Note bằng Teams message nhưng không thay đổi semantic lifecycle.

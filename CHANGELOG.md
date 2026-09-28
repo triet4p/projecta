@@ -6,7 +6,28 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
-No unreleased changes.
+### Added
+
+- Added explicitly requested, locally routed item/type/link suggestions for
+  confirmed manual captures, with revision-bound caching, daily budgets, and
+  append-only human decisions. No model call runs during capture or reads;
+  production remains disabled and suggestions do not write graph assertions.
+
+- Added controlled relations between distinct, same-project manual captures
+  with current confirmation receipts and deterministic shared-source evidence.
+  Manual predicate selection is zero-model; local assistance can propose only
+  an allowlisted predicate. Confirm/reject decisions append receipts and never
+  materialize graph relations.
+- Added digest-only, project- and actor-scoped authoring metrics for local
+  inference attempts, zero-model workflows, correction burden, and
+  receipt-backed accepted assertions. Confirm receipts alone do not count as
+  materialization; no source text, prompts, or provider payloads enter telemetry.
+
+### Fixed
+
+- Corrected manual candidate edit metrics so date-only changes stay outside
+  correction categories while date plus a classified field retains its RM-67
+  category.
 
 ## [0.6.0] - 2026-08-14
 

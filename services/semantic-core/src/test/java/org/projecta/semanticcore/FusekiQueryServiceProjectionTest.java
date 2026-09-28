@@ -37,6 +37,26 @@ class FusekiQueryServiceProjectionTest {
     }
 
     @Test
+    void manualCandidateSourceContextReturnsProjectScopedCanonicalEvidence() {
+        var gateway = new ProjectionGateway();
+        var service = new FusekiQueryService(gateway, new GraphIriRouter(), null);
+
+        var result = service.manualCaptureSourceContext(new ProjectId("project-alpha"), "note-1-1");
+
+        assertEquals("note-1-1", result.get("candidateId"));
+        assertEquals(1, result.get("candidateRevision"));
+        assertEquals("extracted", result.get("candidateStatus"));
+        assertEquals("note-1", result.get("sourceArtifactId"));
+        assertEquals("Capture a follow-up about rollout readiness.", result.get("rawText"));
+        assertEquals("follow-up about rollout readiness", result.get("evidenceText"));
+        assertEquals("Requirement", result.get("entityType"));
+        assertEquals(10, result.get("startOffset"));
+        assertEquals(43, result.get("endOffset"));
+        assertTrue(gateway.queries.getFirst().contains("manual-quick-note-v0.3.0"));
+        assertTrue(gateway.queries.getFirst().contains(PROJECT));
+    }
+
+    @Test
     void candidateQueueProjectsManualLabelAndTypeFromCanonicalSourceItem() {
         var gateway = new ProjectionGateway();
         var service = new FusekiQueryService(gateway, new GraphIriRouter(), null);
@@ -72,6 +92,19 @@ class FusekiQueryServiceProjectionTest {
         @Override
         public String select(String query) {
             queries.add(query);
+            if (query.contains("SELECT ?status ?generator")) {
+                return rows(row(
+                        "status", PROJECTA + "extracted",
+                        "generator", "manual-quick-note-v0.3.0",
+                        "note", NOTE,
+                        "title", "Meeting 10/08",
+                        "rawText", "Capture a follow-up about rollout readiness.",
+                        "sourceText", "follow-up about rollout readiness",
+                        "itemType", PROJECTA + "requirement",
+                        "startOffset", "10",
+                        "endOffset", "43"));
+            }
+
             if (query.contains("SELECT DISTINCT ?resource")) return nodeRows();
             if (query.contains("SELECT DISTINCT ?source")) return edgeRows();
             if (query.contains("SELECT DISTINCT ?candidate")) return candidateRows();

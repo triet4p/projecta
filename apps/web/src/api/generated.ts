@@ -608,6 +608,7 @@ export interface CandidateQueueItem {
   proposedType: string;
   proposedRelations: string[];
   validationState: string;
+  constrainedContractVersion: string;
   confidence?: number | null;
   age?: string | null;
   lifecycleState: GraphLifecycleState;
@@ -620,6 +621,104 @@ export interface CandidateQueueResponse {
   stale: boolean;
   candidates: CandidateQueueItem[];
   hasMore: boolean;
+}
+export interface ReviewSourceVersion {
+  revision: number;
+  sourceVersionId?: string | null;
+  canonicalizationVersion?: string | null;
+  coordinateSystemVersion?: string | null;
+  originalDigest?: string | null;
+  canonicalDigest?: string | null;
+}
+export interface ReviewAbstainRequest {
+  candidateRevision: number;
+  expectedCandidateRevision: number;
+  sourceVersionId: string;
+  sourceVersionRevision: number;
+  constrainedContractVersion: string;
+  evidenceDigest?: string | null;
+  previousDecisionDigest?: string | null;
+}
+export interface ReviewReceiptRecord {
+  contractVersion: "review-receipt.v1";
+  outcome: "accepted" | "replayed";
+  receiptId: string;
+  projectDigest: string;
+  actorDigest: string;
+  authorizationDigest: string;
+  itemKind: "entity" | "relation";
+  itemHandleDigest: string;
+  decision: "confirm" | "edit" | "reject" | "abstain";
+  candidateRevision: number;
+  sourceVersionDigest: string;
+  sourceVersionRevision: number;
+  constrainedContractVersion: string;
+  evidenceDigest?: string | null;
+  previousDecisionDigest?: string | null;
+  idempotencyDigest: string;
+  sequence: number;
+  occurredAt: string;
+  receiptDigest: string;
+}
+export interface ReviewAbstainResponse {
+  contractVersion: "review-receipt.v1";
+  requestId: string;
+  decision: "abstain";
+  outcome: "accepted" | "replayed";
+  receipt: ReviewReceiptRecord;
+}
+export interface ReviewAnchor {
+  kind: "endpoint" | "trigger" | "evidence";
+  startOffset: number;
+  endOffset: number;
+  displayStartOffset?: number | null;
+  displayEndOffset?: number | null;
+  originalByteStart?: number | null;
+  originalByteEnd?: number | null;
+  utf16Start?: number | null;
+  utf16End?: number | null;
+  quote?: string | null;
+  quoteDigest?: string | null;
+}
+export interface ReviewEvidence {
+  status: "selected" | "review-required" | "abstained" | "quarantined" | "unavailable";
+  digest?: string | null;
+  highlights: ReviewAnchor[];
+}
+export interface ReviewReceiptState {
+  state: "not-recorded" | "accepted" | "rejected" | "abstained" | "stale" | "quarantined";
+  receiptDigest?: string | null;
+  candidateRevision: number;
+  sourceVersionRevision: number;
+}
+export interface ReviewProposal {
+  label?: string | null;
+  semanticType?: string | null;
+  predicate?: string | null;
+}
+export interface ReviewWorkbenchDetailResponse {
+  detailVersion: "review-workbench.v1";
+  requestId: string;
+  projectHandle: string;
+  itemHandle: string;
+  projectScope: "selected";
+  sourceVersion: ReviewSourceVersion;
+  candidateRevision: number;
+  label: string;
+  semanticType: string;
+  lifecycleState: GraphLifecycleState;
+  validationState: string;
+  constrainedContractVersion: string;
+  confidence?: number | null;
+  sourceText?: string | null;
+  proposed: ReviewProposal;
+  edited?: ReviewProposal | null;
+  evidence: ReviewEvidence;
+  uncertaintyReasons: string[];
+  stale: boolean;
+  quarantined: boolean;
+  abstainReason?: string | null;
+  reviewReceipt: ReviewReceiptState;
 }
 export interface KnowledgeCollectionItem {
   handle: string;
@@ -659,6 +758,12 @@ export interface Paths {
     get: { response: GraphLifecycleResponse };
   };
   "/v1/projects/{handle}/candidates": { get: { response: CandidateQueueResponse } };
+  "/v1/projects/{handle}/candidates/{candidateHandle}/review-detail": {
+    get: { response: ReviewWorkbenchDetailResponse };
+  };
+  "/v1/projects/{handle}/candidates/{candidateHandle}/abstentions": {
+    post: { body: ReviewAbstainRequest; response: ReviewAbstainResponse };
+  };
   "/v1/projects/{handle}/candidates/{candidateHandle}/validations": {
     post: { response: ValidationResult };
   };

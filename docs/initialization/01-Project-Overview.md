@@ -130,9 +130,35 @@ BrSE có thể ghi nhanh:
 - Progress update.
 - Research need.
 
-Một note có thể chứa nhiều nội dung. Hệ thống tách note thành các candidate knowledge items nhưng không tự động biến chúng thành fact chính thức.
+Một note có thể chứa nhiều nội dung. Người dùng chọn hoặc xác nhận từng
+ occurrence/entity và tạo structured capture; server giữ source-version,
+ text-anchor và project-scoped identity. AI chỉ được gọi khi người dùng yêu
+ cầu để gợi ý một item/type/link/relation cục bộ. Mọi suggestion đều phải qua
+ quyết định rõ ràng và append-only receipt trước khi trở thành asserted fact;
+ đường manual hoạt động đầy đủ với zero model calls.
 
-### 6.2. Project memory
+### 6.2. Evidence-first assisted authoring
+
+Luồng chính bắt đầu từ task/question hoặc structured note do human tạo:
+
+```text
+Human task/question hoặc structured note
+→ scoped retrieval/evidence
+→ human chọn/xác nhận occurrence/entity
+→ server resolve SourceVersion + TextAnchor + opaque identity
+→ (tuỳ chọn) AI đề xuất một item/type/link/relation bounded
+→ human confirm/edit/reject + append-only receipt
+→ approved-only asserted materialization
+→ inference và projection
+```
+
+Retrieval chỉ là context không authoritative. Relation chỉ được đề xuất sau
+khi hai endpoint cùng project đã confirmed, có evidence deterministic và
+predicate/direction allowlist. Không có automatic whole-document extraction,
+background provider call, model-authored offset/global ID hoặc unreviewed
+materialization.
+
+### 6.3. Project memory
 
 Hệ thống trả lời được các câu hỏi như:
 
@@ -144,7 +170,7 @@ Hệ thống trả lời được các câu hỏi như:
 - Những thay đổi nào xảy ra kể từ lần cập nhật trước?
 - Những fact nào chưa được xác nhận?
 
-### 6.3. Work coordination
+### 6.4. Work coordination
 
 - Gợi ý task và assignee.
 - Gợi ý dependency và blocker.
@@ -153,7 +179,7 @@ Hệ thống trả lời được các câu hỏi như:
 - Chuẩn bị câu hỏi cần hỏi Dev hoặc khách hàng.
 - Tổng hợp project health dựa trên fact đã xác nhận và inference rule.
 
-### 6.4. Research support
+### 6.5. Research support
 
 - Phân rã research question.
 - Tìm nguồn.
@@ -161,7 +187,7 @@ Hệ thống trả lời được các câu hỏi như:
 - Liên kết research finding với question, decision, requirement hoặc risk.
 - So sánh lựa chọn kỹ thuật theo tiêu chí của dự án.
 
-### 6.5. Meeting preparation
+### 6.6. Meeting preparation
 
 - Lấy task đang mở.
 - Lấy question chưa được giải quyết.
@@ -172,7 +198,7 @@ Hệ thống trả lời được các câu hỏi như:
 
 Hệ thống không phụ thuộc transcript. Trong cuộc họp, BrSE có thể mở quick note và ghi thông tin do mình hiểu và chịu trách nhiệm.
 
-### 6.6. Communication assistance
+### 6.7. Communication assistance
 
 - Soạn Teams/Slack message.
 - Soạn email.
@@ -191,7 +217,9 @@ Ontology, provenance, lifecycle, validation, connector abstraction và policy l�
 
 ### 7.2. Candidate before assertion
 
-LLM hoặc rule có thể đề xuất entity, relation hoặc action. Chỉ semantic core và quy trình xác nhận mới đưa chúng vào asserted knowledge.
+Human-authored capture là đường mặc định. LLM hoặc rule chỉ có thể đề xuất
+bounded entity/relation/action sau khi có scoped evidence; chỉ semantic core và
+quy trình xác nhận mới đưa chúng vào asserted knowledge.
 
 ### 7.3. Deterministic where possible
 
@@ -205,7 +233,14 @@ LLM hoặc rule có thể đề xuất entity, relation hoặc action. Chỉ sem
 
 Transcript không phải nguồn dữ liệu cốt lõi. Hệ thống ưu tiên quick note, message, document, task system và nguồn do BrSE chủ động chọn.
 
-### 7.5. Core is not MVP
+### 7.5. Cost-aware optional assistance
+
+Deterministic capture và retrieval chạy trước. Mỗi lần gọi model phải do user
+hoặc workflow được phép yêu cầu, giới hạn ở một suggestion bounded, có cache /
+dedup theo source-item-revision, budget theo project/user và telemetry về cost
+trên accepted assertion. Không gọi model vẫn phải hoàn thành được manual flow.
+
+### 7.6. Core is not MVP
 
 Không thành phần nào sau đây được coi là tùy chọn MVP:
 
@@ -251,3 +286,5 @@ Sản phẩm là:
 - Connector mới được thêm mà không sửa domain ontology cốt lõi.
 - LLM có thể thay đổi mà không phải viết lại semantic core.
 - Hệ thống giải thích được vì sao một risk, blocker hoặc recommendation được đưa ra.
+- Người dùng có thể capture assertion có evidence với zero model calls; AI chỉ
+  được coi là copilot đề xuất, không phải nguồn sự thật.

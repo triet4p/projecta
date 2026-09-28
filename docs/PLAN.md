@@ -38,16 +38,43 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 - [~] **M7 — Connector and Production Evolution (Sprint 10+):** Mock/manual
   connector framework, connector thật đầu tiên, authentication/authorization,
   security và production hardening. Sprint 11 and `v0.6.0` are complete. M7
-  remains open, but additional connector/outbound breadth is paused until the
-  Sprint 12 business-quality evidence is reviewed.
-- [~] **M8 — Business Semantic Quality and Evaluation (Sprint 12):** Governed
+  remains open; sequencing of additional connector/outbound breadth follows the
+  active Sprint 13 evidence-first authoring slice and measured bottlenecks.
+- [x] **M8 — Business Semantic Quality and Evaluation (Sprint 12):** Governed
   atomic and longitudinal datasets, leakage-resistant splits,
   ontology/graph/retrieval metrics, controlled optimization, sealed held-out
   evaluation, and target-role business acceptance. The historical synthetic
   corpus and rejected prompt experiments are retained as evidence. G3.1-A/B/C
   are complete with scope limits; M8 has completed the single bounded v9
   development Stage A execution, which is preserved as a hard-gate-rejected
-  report pending the separate RM-47 owner decision.
+  report. RM-47 closed the v9 run rejected with no Stage B; RM-52 prepared the
+  offline closure packet and prioritized error backlog; RM-53 accepted offline
+  custody only; RM-54 accepted the revised human-first design for RM-55
+  contract definition only; RM-55 accepted the SourceVersion/source-receipt
+  contract; RM-56 accepted the versioned TextAnchor coordinate contract and
+  RM-57 accepted the per-item validation/quarantine boundary; RM-58 accepted
+  the confirmed-entity relation gate; RM-59 accepted deterministic relation
+  evidence selection; RM-60 accepted the constrained relation contract and
+  RM-61 accepted durable append-only review decision receipts; RM-62 accepted
+  the source-first review workbench contract; RM-63 accepted the disabled-by-
+  default approved-only assertion materialization boundary; RM-64 accepted
+  versioned inference invalidation/rebuild; RM-65 accepted correction-burden
+  telemetry; RM-66 accepted the offline adversarial/default-path gate and
+  RM-67 accepted the closed-world human correction-burden contract. The frozen
+  v5 source-only candidate and primary-agent proxy review remain preserved as
+  a bounded baseline, but dense-hard v1 is now authoritative diagnostic
+  evidence and fails the edit-burden gate. Phase F-RF is therefore
+  `F_RF_POC_BASELINE_ACCEPTED_DENSE_HARD_V4_FAILED_STRATEGY_REDESIGN_REQUIRED`:
+  the v5 60 supported finalized-for-review assertions, zero unsupported
+  assertions, 12/12 unchanged items, and zero provider calls remain historical
+  baseline evidence only. Dense-hard v1/v2/v3/v3.1/v4 diagnostics remain
+  separate; v4 fails both stratified gates and requires the finite strategy-
+  redesign backlog. No generalized “good enough” or low-correction claim
+  follows. RM-68 remains internal-only and blocked for external validation;
+  remediation requires new authority and a fresh strategy/packet.
+  No external human, business-quality, provider, held-out, production,
+  selection, promotion, or release claim follows. Sprint 12 is now historical
+  and closed for the active product direction; Sprint 13 is its successor.
 
 ## Completed Sprints
 
@@ -87,11 +114,26 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   commit `4a4fa99e010f22a69667119554580c91e2fc7b7e`; CI/publish run
   `31767397618` passed. Sanitized evidence was retained and disposable runtime
   resources were torn down. M7 remains open.*
+- [Sprint 13 — Evidence-first Assisted Authoring](sprint-plans/sprint-13.md)
+  — *Internal implementation review complete: human-first zero-model capture,
+  on-demand local suggestions, controlled relations, privacy-scoped telemetry,
+  adversarial gates and review receipts passed task and sprint-wide gates.
+  Production materialization stays locked; offline evaluation/R6/R7 remain
+  explicitly deferred. Owner-deferred Graphify semantic refresh leaves the
+  project graph stale; no provider, human, held-out, production or release
+  authorization follows.*
 
-## Active Sprints
+## Active Sprint
+
+No active sprint selected. Sprint 14+ requires a separately scoped plan.
+
+## Historical / Closed Sprint
 
 - [Sprint 12 — Business Semantic Quality and Evaluation](sprint-plans/sprint-12.md)
-  — *In progress at `G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY`.
+  — *Development-complete with the v5 internal agent-proxy PoC retained as a
+  historical baseline under
+  `F_RF_POC_BASELINE_ACCEPTED_DENSE_HARD_V4_FAILED_STRATEGY_REDESIGN_REQUIRED`;
+  dense-hard v4 fails both stratified gates and external validation remains closed.
   Dataset v3,
   measurement remediation and the two-step f12 development execution package
   are frozen. RM-23F issued the preregistration/freeze and RM-25 authorized one
@@ -116,23 +158,37 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   comparison does not establish quality improvement. RM-48 has prepared the
   sanitized comparison/options packet; RM-49 approved sequential offline
   diagnostics then parity-fixture work, and RM-50 completed it. RM-51 rejected
-  RM-50 under Option C; RM-52 is preparing only an offline closure packet and
-  prioritized error backlog, with RM-53 owner review next. A
-  [non-authoritative human-first extraction framework design](sprint-plans/sprint-12/human-first-extraction-framework.v1.md)
-  and its pending atomic-task tranche are queued behind accepted RM-53 closure
-  and separate owner approval. Validation, held-out access, remediation
-  implementation, lineage preparation, provider execution, Stage B, selection,
-  and promotion remain closed.
-  No business-quality claim is made, and new connector/outbound breadth remains
-  deferred. The authoritative dashboard is the
-  [Sprint 12 current-state index](sprint-plans/sprint-12/current-state.md).*
+  RM-50 under Option C; RM-52 prepared the offline closure packet and
+  prioritized error backlog; RM-53 accepted offline custody only and RM-54
+  accepted the revised design for RM-55 contract definition only. RM-55
+  accepted the SourceVersion/source-receipt contract; RM-56 accepted the
+  TextAnchor coordinate contract; RM-57 accepted the per-item
+  validation/quarantine boundary; RM-58 accepted the confirmed-entity
+  relation gate; RM-59 accepted deterministic relation evidence selection and
+  RM-60 accepted the constrained relation contract; RM-61 accepted durable
+  append-only review decision receipts; RM-62 accepted the source-first review
+  workbench contract and RM-63 accepted the disabled-by-default approved-only
+  assertion materialization boundary; RM-64 accepted versioned inference
+  invalidation/rebuild; RM-65 accepted correction-burden telemetry; RM-66
+  accepted the offline adversarial/default-path gate and RM-67 accepted the
+  closed-world human correction-burden contract for RM-68 preregistration only.
+  RM-68 is accepted only for the internal PoC; the historical bounded packet
+  is `DRAFT_BLOCKED_EXTERNAL_CUSTODY`, not a preregistration. A
+  [accepted human-first extraction framework design](sprint-plans/sprint-12/human-first-extraction-framework.v2.md)
+  remains preserved historical design input; the owner-approved Sprint 13 plan
+  now operationalizes its evidence-first successor. Validation, held-out access,
+  remediation implementation, lineage preparation, provider execution, Stage B,
+  selection, and promotion remain closed. No business-quality claim is made.
+  The dense-hard R1--R5 concerns are mapped into Sprint 13; R6/R7 and any fresh
+  evaluation remain closed pending a separate owner decision. The authoritative
+  dashboard is the [Sprint 12 current-state index](sprint-plans/sprint-12/current-state.md).*
 
 ## Planned Sprints
 
-- **Sprint 13+:** Selected from Sprint 12 evidence. Resume governed outbound
-  actions, continuous synchronization, additional connectors, broader tenant
-  administration, managed adapters, or HA only when the measured business
-  bottleneck justifies that work.
+- **Sprint 14+:** Select from Sprint 13 measured authoring friction and approved
+  business value. Resume governed outbound actions, continuous synchronization,
+  additional connectors, broader tenant administration, managed adapters, or HA
+  only when the measured bottleneck justifies that work.
 
 ## Backlog / Future Work
 
@@ -142,6 +198,10 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   server-owned project membership and finite capabilities.
 - Managed storage, backup/restore drills và production observability.
 - Search engine hoặc event broker khi PostgreSQL-based baseline không còn đáp ứng.
+- Dense-hard R1--R5 concerns are mapped into Sprint 13's human-first design;
+  R6/R7 and any fresh evaluation remain closed pending a separate owner
+  decision. Do not tune or rerun frozen candidates or reuse frozen
+  source/gold/candidate evidence.
 - Tauri desktop companion, native keyring, tray/global shortcut và offline draft
   chỉ khi có requirement native hoặc local-first cụ thể; desktop không đóng gói
   lại backend Compose mặc định.

@@ -71,11 +71,103 @@ class OperationalDatabase:
                     latency_ms INTEGER,
                     recorded_at TEXT NOT NULL
                 );
+                CREATE TABLE IF NOT EXISTS local_suggestion_workflows (
+                    workflow_id TEXT PRIMARY KEY,
+                    project_id TEXT NOT NULL,
+                    source_version_digest TEXT NOT NULL,
+                    source_version_revision INTEGER NOT NULL CHECK (source_version_revision >= 1),
+                    item_handle_digest TEXT NOT NULL,
+                    item_revision INTEGER NOT NULL CHECK (item_revision >= 1),
+                    evidence_digest TEXT NOT NULL,
+                    state TEXT NOT NULL CHECK (state IN (
+                        'new', 'pending', 'failed', 'proposed', 'edited',
+                        'confirmed', 'rejected', 'abstained'
+                    )),
+                    proposal_json TEXT,
+                    proposal_revision INTEGER NOT NULL DEFAULT 0 CHECK (proposal_revision >= 0),
+                    current_attempt_digest TEXT,
+                    attempt_started_at TEXT,
+                    model_id TEXT,
+                    error_code TEXT,
+                    latest_receipt_digest TEXT,
+                    created_at TEXT NOT NULL,
+                    updated_at TEXT NOT NULL,
+                    UNIQUE (
+                        project_id, source_version_digest, source_version_revision,
+                        item_handle_digest, item_revision, evidence_digest
+                    )
+                );
+                CREATE TABLE IF NOT EXISTS local_suggestion_attempts (
+                    attempt_id TEXT PRIMARY KEY,
+                    project_id TEXT NOT NULL,
+                    actor_digest TEXT NOT NULL,
+                    workflow_id TEXT NOT NULL,
+                    idempotency_digest TEXT NOT NULL,
+                    request_digest TEXT NOT NULL,
+                    state TEXT NOT NULL CHECK (state IN ('pending', 'completed', 'failed')),
+                    error_code TEXT,
+                    requested_at TEXT NOT NULL,
+                    UNIQUE (project_id, actor_digest, idempotency_digest),
+                    FOREIGN KEY (workflow_id) REFERENCES local_suggestion_workflows(workflow_id)
+                );
+                CREATE INDEX IF NOT EXISTS ix_local_suggestion_attempts_budget
+                    ON local_suggestion_attempts(project_id, actor_digest, requested_at);
+                CREATE TABLE IF NOT EXISTS local_suggestion_budget_counters (
+                    project_id TEXT NOT NULL,
+                    scope TEXT NOT NULL CHECK (scope IN ('user', 'project')),
+                    scope_digest TEXT NOT NULL,
+                    window_date TEXT NOT NULL,
+                    request_count INTEGER NOT NULL CHECK (request_count >= 0),
+                    PRIMARY KEY (project_id, scope, scope_digest, window_date)
+                );
+                CREATE TABLE IF NOT EXISTS authoring_cost_events (
+                    event_id TEXT PRIMARY KEY,
+                    project_digest TEXT NOT NULL,
+                    actor_digest TEXT NOT NULL,
+                    workflow_digest TEXT,
+                    workflow_kind TEXT NOT NULL CHECK (workflow_kind IN ('entity', 'relation')),
+                    event_type TEXT NOT NULL CHECK (event_type IN (
+                        'manual_workflow', 'local_request', 'local_attempt',
+                        'manual_edit', 'review', 'accepted_assertion'
+                    )),
+                    attempt_digest TEXT,
+                    receipt_digest TEXT,
+                    assertion_digest TEXT,
+                    decision TEXT CHECK (decision IN ('confirm', 'edit', 'reject', 'abstain')),
+                    local_inference_units INTEGER NOT NULL DEFAULT 0
+                        CHECK (local_inference_units >= 0),
+                    correction_category TEXT CHECK (
+                        correction_category IN ('unchanged', 'minor', 'major')
+                    ),
+                    correction_dimensions TEXT NOT NULL DEFAULT '[]',
+                    semantic_edit_count INTEGER NOT NULL DEFAULT 0
+                        CHECK (semantic_edit_count >= 0),
+                    review_latency_ms INTEGER CHECK (
+                        review_latency_ms IS NULL OR review_latency_ms BETWEEN 0 AND 31536000000
+                    ),
+                    occurred_at TEXT NOT NULL
+                );
+                CREATE INDEX IF NOT EXISTS ix_authoring_cost_scope_workflow
+                    ON authoring_cost_events(project_digest, actor_digest, workflow_digest);
+                CREATE TRIGGER IF NOT EXISTS authoring_cost_events_append_only_update
+                    BEFORE UPDATE ON authoring_cost_events
+                    BEGIN SELECT RAISE(ABORT, 'authoring_cost_events is append-only'); END;
+                CREATE TRIGGER IF NOT EXISTS authoring_cost_events_append_only_delete
+                    BEFORE DELETE ON authoring_cost_events
+                    BEGIN SELECT RAISE(ABORT, 'authoring_cost_events is append-only'); END;
                 """
             )
             self._connection.execute(
                 "INSERT OR IGNORE INTO schema_migrations(version, applied_at) VALUES (?, ?)",
                 (1, utc_now()),
+            )
+            self._connection.execute(
+                "INSERT OR IGNORE INTO schema_migrations(version, applied_at) VALUES (?, ?)",
+                (2, utc_now()),
+            )
+            self._connection.execute(
+                "INSERT OR IGNORE INTO schema_migrations(version, applied_at) VALUES (?, ?)",
+                (3, utc_now()),
             )
 
     @contextmanager

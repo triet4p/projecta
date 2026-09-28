@@ -927,6 +927,90 @@
         }
       }
     },
+    "/v1/projects/{handle}/candidates/{candidateHandle}/review-detail": {
+      "get": {
+        "tags": [
+          "Candidate Review"
+        ],
+        "operationId": "getReviewCandidateDetail",
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "candidateHandle",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Source-first review workbench detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "404": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/v1/projects/{handle}/candidates/{candidateHandle}/abstentions": {
+      "post": {
+        "tags": [
+          "Candidate Review"
+        ],
+        "operationId": "abstainSelectedCandidate",
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "candidateHandle",
+            "in": "path",
+            "required": true
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Idempotent replay or accepted abstention receipt"
+          },
+          "403": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "409": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
     "/v1/projects/{handle}/knowledge": {
       "get": {
         "tags": [
@@ -3455,6 +3539,1604 @@
           }
         }
       }
+    },
+    "/v1/projects/{handle}/candidates/{candidateHandle}/local-suggestions": {
+      "get": {
+        "summary": "Local Suggestion State",
+        "description": "Read cached suggestion and remaining budgets without invoking inference.",
+        "operationId": "local_suggestion_state_v1_projects__handle__candidates__candidate_handle__local_suggestions_get",
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Handle"
+            }
+          },
+          {
+            "name": "candidate_handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Candidate Handle"
+            }
+          },
+          {
+            "name": "X-Projecta-Project-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Project-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Actor-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Actor-Id"
+            }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Request-Id"
+            }
+          },
+          {
+            "name": "X-Operation-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Operation-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Selection-Revision",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Selection-Revision"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocalSuggestionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Request Local Suggestion",
+        "description": "Make at most one local inference call after a current human confirmation.",
+        "operationId": "request_local_suggestion_v1_projects__handle__candidates__candidate_handle__local_suggestions_post",
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Handle"
+            }
+          },
+          {
+            "name": "candidate_handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Candidate Handle"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          },
+          {
+            "name": "X-Projecta-Project-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Project-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Actor-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Actor-Id"
+            }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Request-Id"
+            }
+          },
+          {
+            "name": "X-Operation-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Operation-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Selection-Revision",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Selection-Revision"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocalSuggestionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocalSuggestionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/projects/{handle}/candidates/{candidateHandle}/local-suggestions/{suggestionId}/decisions": {
+      "post": {
+        "summary": "Decide Local Suggestion",
+        "description": "Record an explicit proposal decision; never materialize an assertion.",
+        "operationId": "decide_local_suggestion_v1_projects__handle__candidates__candidate_handle__local_suggestions__suggestion_id__decisions_post",
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Handle"
+            }
+          },
+          {
+            "name": "candidate_handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Candidate Handle"
+            }
+          },
+          {
+            "name": "suggestion_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Suggestion Id"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          },
+          {
+            "name": "X-Projecta-Project-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Project-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Actor-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Actor-Id"
+            }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Request-Id"
+            }
+          },
+          {
+            "name": "X-Operation-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Operation-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Selection-Revision",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Selection-Revision"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocalSuggestionDecisionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocalSuggestionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/projects/{handle}/candidates/{candidateHandle}/manual-approvals": {
+      "post": {
+        "summary": "Approve Manual Candidate",
+        "description": "Record explicit approval for a verified manual Note without bypassing RM-63.",
+        "operationId": "approve_manual_candidate_v1_projects__handle__candidates__candidate_handle__manual_approvals_post",
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Handle"
+            }
+          },
+          {
+            "name": "candidate_handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Candidate Handle"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          },
+          {
+            "name": "X-Projecta-Project-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Project-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Actor-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Actor-Id"
+            }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Request-Id"
+            }
+          },
+          {
+            "name": "X-Operation-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Operation-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Selection-Revision",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Selection-Revision"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManualCaptureApprovalRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManualCaptureApprovalResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/projects/{handle}/candidates/{candidateHandle}/manual-rejections": {
+      "post": {
+        "summary": "Reject Manual Candidate",
+        "description": "Record a source-bound RM-61 rejection without mutating Semantic Core.",
+        "operationId": "reject_manual_candidate_v1_projects__handle__candidates__candidate_handle__manual_rejections_post",
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Handle"
+            }
+          },
+          {
+            "name": "candidate_handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Candidate Handle"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          },
+          {
+            "name": "X-Projecta-Project-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Project-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Actor-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Actor-Id"
+            }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Request-Id"
+            }
+          },
+          {
+            "name": "X-Operation-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Operation-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Selection-Revision",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Selection-Revision"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManualCaptureRejectionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManualCaptureRejectionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/projects/{handle}/candidates/{candidateHandle}/relation-suggestion-targets": {
+      "get": {
+        "summary": "Relation Suggestion Targets",
+        "description": "List same-project, current-confirmed manual endpoints with deterministic evidence.",
+        "operationId": "relation_suggestion_targets_v1_projects__handle__candidates__candidate_handle__relation_suggestion_targets_get",
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Handle"
+            }
+          },
+          {
+            "name": "candidate_handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Candidate Handle"
+            }
+          },
+          {
+            "name": "X-Projecta-Project-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Project-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Actor-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Actor-Id"
+            }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Request-Id"
+            }
+          },
+          {
+            "name": "X-Operation-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Operation-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Selection-Revision",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Selection-Revision"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RelationSuggestionTargetsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/projects/{handle}/candidates/{candidateHandle}/relation-suggestions": {
+      "get": {
+        "summary": "Read Controlled Relation Suggestion",
+        "description": "Read current pair-specific suggestion state without invoking inference.",
+        "operationId": "read_controlled_relation_suggestion_v1_projects__handle__candidates__candidate_handle__relation_suggestions_get",
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Handle"
+            }
+          },
+          {
+            "name": "candidate_handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Candidate Handle"
+            }
+          },
+          {
+            "name": "targetCandidateHandle",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Targetcandidatehandle"
+            }
+          },
+          {
+            "name": "direction",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "enum": [
+                "source-to-target",
+                "target-to-source"
+              ],
+              "type": "string",
+              "title": "Direction"
+            }
+          },
+          {
+            "name": "mode",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "enum": [
+                "manual",
+                "local"
+              ],
+              "type": "string",
+              "title": "Mode"
+            }
+          },
+          {
+            "name": "predicate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 64
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Predicate"
+            }
+          },
+          {
+            "name": "X-Projecta-Project-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Project-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Actor-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Actor-Id"
+            }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Request-Id"
+            }
+          },
+          {
+            "name": "X-Operation-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Operation-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Selection-Revision",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Selection-Revision"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocalSuggestionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Request Controlled Relation Suggestion",
+        "description": "Create a server-evidenced relation proposal from two confirmed endpoints.",
+        "operationId": "request_controlled_relation_suggestion_v1_projects__handle__candidates__candidate_handle__relation_suggestions_post",
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Handle"
+            }
+          },
+          {
+            "name": "candidate_handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Candidate Handle"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          },
+          {
+            "name": "X-Projecta-Project-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Project-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Actor-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Actor-Id"
+            }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Request-Id"
+            }
+          },
+          {
+            "name": "X-Operation-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Operation-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Selection-Revision",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Selection-Revision"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ControlledRelationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocalSuggestionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/projects/{handle}/candidates/{candidateHandle}/relation-suggestions/{suggestionId}": {
+      "get": {
+        "summary": "Controlled Relation Suggestion State",
+        "description": "Read and revalidate the stored relation proposal without invoking inference.",
+        "operationId": "controlled_relation_suggestion_state_v1_projects__handle__candidates__candidate_handle__relation_suggestions__suggestion_id__get",
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Handle"
+            }
+          },
+          {
+            "name": "candidate_handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Candidate Handle"
+            }
+          },
+          {
+            "name": "suggestion_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Suggestion Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Project-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Project-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Actor-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Actor-Id"
+            }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Request-Id"
+            }
+          },
+          {
+            "name": "X-Operation-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Operation-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Selection-Revision",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Selection-Revision"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocalSuggestionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/projects/{handle}/candidates/{candidateHandle}/relation-suggestions/{suggestionId}/decisions": {
+      "post": {
+        "summary": "Decide Controlled Relation Suggestion",
+        "description": "Append an explicit relation confirm/reject receipt after stale-anchor checks.",
+        "operationId": "decide_controlled_relation_suggestion_v1_projects__handle__candidates__candidate_handle__relation_suggestions__suggestion_id__decisions_post",
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Handle"
+            }
+          },
+          {
+            "name": "candidate_handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Candidate Handle"
+            }
+          },
+          {
+            "name": "suggestion_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Suggestion Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          },
+          {
+            "name": "X-Projecta-Project-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Project-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Actor-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Actor-Id"
+            }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Request-Id"
+            }
+          },
+          {
+            "name": "X-Operation-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Operation-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Selection-Revision",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Selection-Revision"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ControlledRelationDecisionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocalSuggestionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/projects/{handle}/authoring-metrics": {
+      "get": {
+        "summary": "Authoring Cost Metrics",
+        "description": "Read user- and project-scoped digest-only authoring metrics.",
+        "operationId": "readAuthoringMetrics",
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Handle"
+            }
+          },
+          {
+            "name": "X-Projecta-Project-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Project-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Actor-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Actor-Id"
+            }
+          },
+          {
+            "name": "X-Request-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Request-Id"
+            }
+          },
+          {
+            "name": "X-Operation-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Operation-Id"
+            }
+          },
+          {
+            "name": "X-Projecta-Selection-Revision",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Projecta-Selection-Revision"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthoringCostMetrics"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3501,6 +5183,472 @@
       }
     },
     "schemas": {
+      "LocalSuggestionBudgetView": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "userDailyLimit",
+          "userRemaining",
+          "projectDailyLimit",
+          "projectRemaining",
+          "resetsAt"
+        ],
+        "properties": {
+          "userDailyLimit": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "userRemaining": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "projectDailyLimit": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "projectRemaining": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "resetsAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "LocalSuggestionDecisionRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "expectedProposalRevision",
+          "decision"
+        ],
+        "properties": {
+          "expectedProposalRevision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "confirm",
+              "edit",
+              "reject"
+            ]
+          },
+          "edit": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LocalSuggestionEdit"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "LocalSuggestionEdit": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "itemText": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "entityType": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "Requirement",
+                  "Decision",
+                  "Question",
+                  "Task",
+                  "Risk",
+                  "Assumption",
+                  "Constraint",
+                  "ProgressClaim",
+                  "ResearchFinding"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "targetHandle": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "LocalSuggestionLinkOption": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "handle",
+          "label"
+        ],
+        "properties": {
+          "handle": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "description": "Server-projected same-project entity handle shown for link review/editing."
+      },
+      "LocalSuggestionRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "retry": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "LocalSuggestionResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "requestId",
+          "state",
+          "modelAvailable",
+          "budget"
+        ],
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "ready",
+              "unavailable",
+              "proposed",
+              "edited",
+              "confirmed",
+              "rejected",
+              "abstained",
+              "in-progress",
+              "failed",
+              "budget-exhausted"
+            ]
+          },
+          "modelAvailable": {
+            "type": "boolean"
+          },
+          "availabilityReason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "local_model_not_configured",
+                  "production_disabled"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "budget": {
+            "$ref": "#/components/schemas/LocalSuggestionBudgetView"
+          },
+          "suggestion": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LocalSuggestionView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "linkOptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LocalSuggestionLinkOption"
+            }
+          },
+          "failureCode": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "local_runtime_unavailable",
+                  "local_output_invalid",
+                  "source_too_large",
+                  "suggestion_budget_exhausted"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "receipt": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReviewDecisionReceiptRecord"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      },
+      "LocalSuggestionView": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "suggestionId",
+          "revision",
+          "kind",
+          "sourceVersionRevision",
+          "evidenceDigest"
+        ],
+        "properties": {
+          "suggestionId": {
+            "type": "string",
+            "pattern": "^ls1_[0-9a-f]{64}$"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "item",
+              "type",
+              "link",
+              "relation",
+              "abstain"
+            ]
+          },
+          "itemText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "entityType": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "Requirement",
+                  "Decision",
+                  "Question",
+                  "Task",
+                  "Risk",
+                  "Assumption",
+                  "Constraint",
+                  "ProgressClaim",
+                  "ResearchFinding"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "targetHandle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "targetLabel": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "abstentionCode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "selectedCandidateHandle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "targetCandidateHandle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "relationId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^rel_[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sourceHandle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "predicate": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "direction": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "source-to-target",
+                  "target-to-source"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "relationEvidenceDigest": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "relationMode": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "manual",
+                  "local"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "relationEvidence": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RelationEvidenceSelection"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sourceVersionRevision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "evidenceDigest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "receiptDigest": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "materializationState": {
+            "type": "string",
+            "const": "blocked",
+            "default": "blocked"
+          }
+        }
+      },
       "LLMProfile": {
         "type": "object",
         "required": [
@@ -7017,6 +9165,1625 @@
           "expectedInstallationRevision"
         ],
         "title": "SyncRequest"
+      },
+      "ManualCaptureApprovalRequest": {
+        "properties": {
+          "candidateRevision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Candidaterevision"
+          },
+          "expectedCandidateRevision": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Expectedcandidaterevision"
+          },
+          "sourceVersionId": {
+            "type": "string",
+            "pattern": "^sv_[0-9a-f]{64}$",
+            "title": "Sourceversionid"
+          },
+          "sourceVersionRevision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Sourceversionrevision"
+          },
+          "anchorQuoteDigest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "title": "Anchorquotedigest"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "candidateRevision",
+          "expectedCandidateRevision",
+          "sourceVersionId",
+          "sourceVersionRevision",
+          "anchorQuoteDigest"
+        ],
+        "title": "ManualCaptureApprovalRequest",
+        "description": "Optimistic input for a human approval of a verified manual Note item."
+      },
+      "ManualCaptureApprovalResponse": {
+        "properties": {
+          "contractVersion": {
+            "type": "string",
+            "const": "manual-capture-approval.v1",
+            "title": "Contractversion"
+          },
+          "requestId": {
+            "type": "string",
+            "title": "Requestid"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "accepted",
+              "replayed"
+            ],
+            "title": "Outcome"
+          },
+          "receipt": {
+            "$ref": "#/components/schemas/ReviewDecisionReceiptRecord"
+          },
+          "materializationState": {
+            "type": "string",
+            "const": "blocked",
+            "title": "Materializationstate"
+          },
+          "reasonCode": {
+            "type": "string",
+            "const": "MATERIALIZATION_NOT_AUTHORIZED",
+            "title": "Reasoncode"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "requestId",
+          "outcome",
+          "receipt",
+          "materializationState",
+          "reasonCode"
+        ],
+        "title": "ManualCaptureApprovalResponse",
+        "description": "Recorded approval receipt with the locked materialization result made explicit."
+      },
+      "ManualCaptureInfo": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "const": "human-authored-zero-model",
+            "title": "Mode"
+          },
+          "entityHandle": {
+            "type": "string",
+            "pattern": "^eh1_[0-9a-f]{64}$",
+            "title": "Entityhandle"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "mode",
+          "entityHandle"
+        ],
+        "title": "ManualCaptureInfo"
+      },
+      "ReviewAbstainRequest": {
+        "properties": {
+          "candidateRevision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Candidaterevision"
+          },
+          "expectedCandidateRevision": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Expectedcandidaterevision"
+          },
+          "sourceVersionId": {
+            "type": "string",
+            "pattern": "^sv_[0-9a-f]{64}$",
+            "title": "Sourceversionid"
+          },
+          "sourceVersionRevision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Sourceversionrevision"
+          },
+          "constrainedContractVersion": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Constrainedcontractversion"
+          },
+          "evidenceDigest": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidencedigest"
+          },
+          "previousDecisionDigest": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previousdecisiondigest"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "candidateRevision",
+          "expectedCandidateRevision",
+          "sourceVersionId",
+          "sourceVersionRevision",
+          "constrainedContractVersion"
+        ],
+        "title": "ReviewAbstainRequest",
+        "description": "Trusted-boundary input for an explicit, receipt-backed abstention."
+      },
+      "ReviewAbstainResponse": {
+        "properties": {
+          "contractVersion": {
+            "type": "string",
+            "const": "review-receipt.v1",
+            "title": "Contractversion"
+          },
+          "requestId": {
+            "type": "string",
+            "title": "Requestid"
+          },
+          "decision": {
+            "type": "string",
+            "const": "abstain",
+            "title": "Decision"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "accepted",
+              "replayed"
+            ],
+            "title": "Outcome"
+          },
+          "receipt": {
+            "$ref": "#/components/schemas/ReviewDecisionReceiptRecord"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "requestId",
+          "decision",
+          "outcome",
+          "receipt"
+        ],
+        "title": "ReviewAbstainResponse"
+      },
+      "ReviewAnchor": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "endpoint",
+              "trigger",
+              "evidence"
+            ],
+            "title": "Kind"
+          },
+          "startOffset": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Startoffset"
+          },
+          "endOffset": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Endoffset"
+          },
+          "displayStartOffset": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Displaystartoffset"
+          },
+          "displayEndOffset": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Displayendoffset"
+          },
+          "originalByteStart": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalbytestart"
+          },
+          "originalByteEnd": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originalbyteend"
+          },
+          "utf16Start": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Utf16Start"
+          },
+          "utf16End": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Utf16End"
+          },
+          "quote": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quote"
+          },
+          "quoteDigest": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quotedigest"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "startOffset",
+          "endOffset"
+        ],
+        "title": "ReviewAnchor"
+      },
+      "ReviewDecisionReceiptRecord": {
+        "properties": {
+          "contractVersion": {
+            "type": "string",
+            "const": "review-receipt.v1",
+            "title": "Contractversion"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "accepted",
+              "replayed"
+            ],
+            "title": "Outcome"
+          },
+          "receiptId": {
+            "type": "string",
+            "pattern": "^rr1_[0-9a-f]{64}$",
+            "title": "Receiptid"
+          },
+          "projectDigest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "title": "Projectdigest"
+          },
+          "actorDigest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "title": "Actordigest"
+          },
+          "authorizationDigest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "title": "Authorizationdigest"
+          },
+          "itemKind": {
+            "type": "string",
+            "enum": [
+              "entity",
+              "relation"
+            ],
+            "title": "Itemkind"
+          },
+          "itemHandleDigest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "title": "Itemhandledigest"
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "confirm",
+              "edit",
+              "reject",
+              "abstain"
+            ],
+            "title": "Decision"
+          },
+          "candidateRevision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Candidaterevision"
+          },
+          "sourceVersionDigest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "title": "Sourceversiondigest"
+          },
+          "sourceVersionRevision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Sourceversionrevision"
+          },
+          "constrainedContractVersion": {
+            "type": "string",
+            "title": "Constrainedcontractversion"
+          },
+          "evidenceDigest": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidencedigest"
+          },
+          "previousDecisionDigest": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previousdecisiondigest"
+          },
+          "idempotencyDigest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "title": "Idempotencydigest"
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Sequence"
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Occurredat"
+          },
+          "receiptDigest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "title": "Receiptdigest"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "outcome",
+          "receiptId",
+          "projectDigest",
+          "actorDigest",
+          "authorizationDigest",
+          "itemKind",
+          "itemHandleDigest",
+          "decision",
+          "candidateRevision",
+          "sourceVersionDigest",
+          "sourceVersionRevision",
+          "constrainedContractVersion",
+          "idempotencyDigest",
+          "sequence",
+          "occurredAt",
+          "receiptDigest"
+        ],
+        "title": "ReviewDecisionReceiptRecord",
+        "description": "Raw-content-free receipt returned to callers and telemetry."
+      },
+      "ReviewEvidence": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "selected",
+              "review-required",
+              "abstained",
+              "quarantined",
+              "unavailable"
+            ],
+            "title": "Status"
+          },
+          "digest": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Digest"
+          },
+          "highlights": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewAnchor"
+            },
+            "type": "array",
+            "title": "Highlights"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "highlights"
+        ],
+        "title": "ReviewEvidence"
+      },
+      "ReviewProposal": {
+        "properties": {
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "semanticType": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Semantictype"
+          },
+          "predicate": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Predicate"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ReviewProposal"
+      },
+      "ReviewReceiptState": {
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "not-recorded",
+              "accepted",
+              "rejected",
+              "abstained",
+              "stale",
+              "quarantined"
+            ],
+            "title": "State"
+          },
+          "receiptDigest": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Receiptdigest"
+          },
+          "candidateRevision": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Candidaterevision"
+          },
+          "sourceVersionRevision": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Sourceversionrevision"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "state",
+          "candidateRevision",
+          "sourceVersionRevision"
+        ],
+        "title": "ReviewReceiptState"
+      },
+      "ReviewSourceVersion": {
+        "properties": {
+          "revision": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Revision"
+          },
+          "sourceVersionId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sourceversionid"
+          },
+          "canonicalizationVersion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Canonicalizationversion"
+          },
+          "coordinateSystemVersion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coordinatesystemversion"
+          },
+          "originalDigest": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Originaldigest"
+          },
+          "canonicalDigest": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Canonicaldigest"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "revision"
+        ],
+        "title": "ReviewSourceVersion"
+      },
+      "ReviewWorkbenchDetailResponse": {
+        "properties": {
+          "detailVersion": {
+            "type": "string",
+            "const": "review-workbench.v1",
+            "title": "Detailversion"
+          },
+          "requestId": {
+            "type": "string",
+            "title": "Requestid"
+          },
+          "projectHandle": {
+            "type": "string",
+            "title": "Projecthandle"
+          },
+          "itemHandle": {
+            "type": "string",
+            "title": "Itemhandle"
+          },
+          "projectScope": {
+            "type": "string",
+            "const": "selected",
+            "title": "Projectscope"
+          },
+          "sourceVersion": {
+            "$ref": "#/components/schemas/ReviewSourceVersion"
+          },
+          "candidateRevision": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Candidaterevision"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "semanticType": {
+            "type": "string",
+            "title": "Semantictype"
+          },
+          "lifecycleState": {
+            "type": "string",
+            "enum": [
+              "current",
+              "pending-review",
+              "confirmed",
+              "rejected",
+              "superseded",
+              "retracted",
+              "stale"
+            ],
+            "title": "Lifecyclestate"
+          },
+          "validationState": {
+            "type": "string",
+            "title": "Validationstate"
+          },
+          "constrainedContractVersion": {
+            "type": "string",
+            "title": "Constrainedcontractversion",
+            "default": "constrained-relation.v1"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence"
+          },
+          "sourceText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sourcetext"
+          },
+          "proposed": {
+            "$ref": "#/components/schemas/ReviewProposal"
+          },
+          "edited": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReviewProposal"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "evidence": {
+            "$ref": "#/components/schemas/ReviewEvidence"
+          },
+          "uncertaintyReasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Uncertaintyreasons"
+          },
+          "stale": {
+            "type": "boolean",
+            "title": "Stale"
+          },
+          "quarantined": {
+            "type": "boolean",
+            "title": "Quarantined"
+          },
+          "abstainReason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Abstainreason"
+          },
+          "reviewReceipt": {
+            "$ref": "#/components/schemas/ReviewReceiptState"
+          },
+          "manualCapture": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ManualCaptureInfo"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "detailVersion",
+          "requestId",
+          "projectHandle",
+          "itemHandle",
+          "projectScope",
+          "sourceVersion",
+          "candidateRevision",
+          "label",
+          "semanticType",
+          "lifecycleState",
+          "validationState",
+          "proposed",
+          "evidence",
+          "uncertaintyReasons",
+          "stale",
+          "quarantined",
+          "reviewReceipt"
+        ],
+        "title": "ReviewWorkbenchDetailResponse"
+      },
+      "ManualCaptureRejectionRequest": {
+        "properties": {
+          "candidateRevision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Candidaterevision"
+          },
+          "expectedCandidateRevision": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Expectedcandidaterevision"
+          },
+          "sourceVersionId": {
+            "type": "string",
+            "pattern": "^sv_[0-9a-f]{64}$",
+            "title": "Sourceversionid"
+          },
+          "sourceVersionRevision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Sourceversionrevision"
+          },
+          "anchorQuoteDigest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "title": "Anchorquotedigest"
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 4096,
+            "minLength": 1,
+            "title": "Reason"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "candidateRevision",
+          "expectedCandidateRevision",
+          "sourceVersionId",
+          "sourceVersionRevision",
+          "anchorQuoteDigest",
+          "reason"
+        ],
+        "title": "ManualCaptureRejectionRequest",
+        "description": "Optimistic rejection input bound to the current manual Note anchor."
+      },
+      "ManualCaptureRejectionResponse": {
+        "properties": {
+          "contractVersion": {
+            "type": "string",
+            "const": "manual-capture-decision.v1",
+            "title": "Contractversion"
+          },
+          "requestId": {
+            "type": "string",
+            "title": "Requestid"
+          },
+          "decision": {
+            "type": "string",
+            "const": "rejected",
+            "title": "Decision"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "accepted",
+              "replayed"
+            ],
+            "title": "Outcome"
+          },
+          "receipt": {
+            "$ref": "#/components/schemas/ReviewDecisionReceiptRecord"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "requestId",
+          "decision",
+          "outcome",
+          "receipt"
+        ],
+        "title": "ManualCaptureRejectionResponse"
+      },
+      "ControlledRelationDecisionRequest": {
+        "properties": {
+          "expectedProposalRevision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expectedproposalrevision"
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "confirm",
+              "reject"
+            ],
+            "title": "Decision"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 256,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expectedProposalRevision",
+          "decision"
+        ],
+        "title": "ControlledRelationDecisionRequest",
+        "description": "Record an explicit confirm or reject decision against one proposal revision."
+      },
+      "ControlledRelationRequest": {
+        "properties": {
+          "targetCandidateHandle": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Targetcandidatehandle"
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "source-to-target",
+              "target-to-source"
+            ],
+            "title": "Direction"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "manual",
+              "local"
+            ],
+            "title": "Mode"
+          },
+          "predicate": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Predicate"
+          },
+          "retry": {
+            "type": "boolean",
+            "title": "Retry",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "targetCandidateHandle",
+          "direction",
+          "mode"
+        ],
+        "title": "ControlledRelationRequest",
+        "description": "Select a confirmed endpoint pair and choose manual or local predicate assistance."
+      },
+      "RelationEvidenceSelection": {
+        "properties": {
+          "contractVersion": {
+            "type": "string",
+            "const": "relation-evidence.v1",
+            "title": "Contractversion",
+            "default": "relation-evidence.v1"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "selected",
+              "review-required",
+              "abstained",
+              "quarantined"
+            ],
+            "title": "Outcome"
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "SELECTED",
+              "SOURCE_MISSING",
+              "PROJECT_MISMATCH",
+              "SOURCE_VERSION_MISMATCH",
+              "SOURCE_STALE",
+              "SOURCE_TAMPERED",
+              "ENDPOINT_MISSING",
+              "TRIGGER_MISSING",
+              "ANCHOR_INVALID",
+              "ANCHOR_OUT_OF_BLOCK",
+              "NO_COMMON_BOUNDARY",
+              "TIED_BOUNDARIES",
+              "UNSUPPORTED_PREDICATE",
+              "MALFORMED_REQUEST",
+              "UNSUPPORTED_BLOCK_VERSION"
+            ],
+            "title": "Reason"
+          },
+          "materializable": {
+            "type": "boolean",
+            "title": "Materializable"
+          },
+          "relationId": {
+            "type": "string",
+            "pattern": "^rel_[0-9a-f]{64}$",
+            "title": "Relationid"
+          },
+          "sourceVersionId": {
+            "type": "string",
+            "pattern": "^sv_[0-9a-f]{64}$",
+            "title": "Sourceversionid"
+          },
+          "sourceHandle": {
+            "type": "string",
+            "pattern": "^eh1_[0-9a-f]{64}$",
+            "title": "Sourcehandle"
+          },
+          "targetHandle": {
+            "type": "string",
+            "pattern": "^eh1_[0-9a-f]{64}$",
+            "title": "Targethandle"
+          },
+          "predicate": {
+            "type": "string",
+            "title": "Predicate"
+          },
+          "block": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceBlock"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sourceAnchorDigest": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sourceanchordigest"
+          },
+          "targetAnchorDigest": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Targetanchordigest"
+          },
+          "triggerAnchorDigest": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Triggeranchordigest"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "outcome",
+          "reason",
+          "materializable",
+          "relationId",
+          "sourceVersionId",
+          "sourceHandle",
+          "targetHandle",
+          "predicate"
+        ],
+        "title": "RelationEvidenceSelection",
+        "description": "Safe selection outcome bound to relation endpoints and source version."
+      },
+      "RelationSuggestionTarget": {
+        "properties": {
+          "candidateHandle": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Candidatehandle"
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 512,
+            "minLength": 1,
+            "title": "Label"
+          },
+          "entityType": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Entitytype"
+          },
+          "allowedPredicates": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "propertyNames": {
+              "enum": [
+                "source-to-target",
+                "target-to-source"
+              ]
+            },
+            "type": "object",
+            "title": "Allowedpredicates"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "candidateHandle",
+          "label",
+          "entityType",
+          "allowedPredicates"
+        ],
+        "title": "RelationSuggestionTarget",
+        "description": "Same-source, receipt-confirmed endpoint offered for explicit pairing."
+      },
+      "RelationSuggestionTargetsResponse": {
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Requestid"
+          },
+          "targets": {
+            "items": {
+              "$ref": "#/components/schemas/RelationSuggestionTarget"
+            },
+            "type": "array",
+            "title": "Targets"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "requestId",
+          "targets"
+        ],
+        "title": "RelationSuggestionTargetsResponse"
+      },
+      "SourceBlock": {
+        "properties": {
+          "contractVersion": {
+            "type": "string",
+            "const": "source-block.v1",
+            "title": "Contractversion",
+            "default": "source-block.v1"
+          },
+          "blockId": {
+            "type": "string",
+            "pattern": "^block_[0-9a-f]{64}$",
+            "title": "Blockid"
+          },
+          "sourceVersionId": {
+            "type": "string",
+            "pattern": "^sv_[0-9a-f]{64}$",
+            "title": "Sourceversionid"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "sentence",
+              "clause"
+            ],
+            "title": "Kind"
+          },
+          "startOffset": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Startoffset"
+          },
+          "endOffset": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Endoffset"
+          },
+          "contentDigest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "title": "Contentdigest"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "blockId",
+          "sourceVersionId",
+          "kind",
+          "startOffset",
+          "endOffset",
+          "contentDigest"
+        ],
+        "title": "SourceBlock",
+        "description": "Safe source block metadata; source text is deliberately not retained."
+      },
+      "AcceptedAssertionCostRecord": {
+        "properties": {
+          "assertionDigest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "title": "Assertiondigest"
+          },
+          "reviewReceiptDigest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "title": "Reviewreceiptdigest"
+          },
+          "workflowDigest": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Workflowdigest"
+          },
+          "costKnown": {
+            "type": "boolean",
+            "title": "Costknown"
+          },
+          "localInferenceAttempts": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Localinferenceattempts"
+          },
+          "semanticEditCount": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Semanticeditcount"
+          },
+          "reviewLatencyMs": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reviewlatencyms"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "assertionDigest",
+          "reviewReceiptDigest",
+          "costKnown"
+        ],
+        "title": "AcceptedAssertionCostRecord",
+        "description": "Cost attribution for one receipt-backed accepted materialization."
+      },
+      "AuthoringCostMetrics": {
+        "properties": {
+          "contractVersion": {
+            "type": "string",
+            "const": "authoring-cost.v1",
+            "title": "Contractversion"
+          },
+          "costBasis": {
+            "type": "string",
+            "const": "local-inference-attempt",
+            "title": "Costbasis"
+          },
+          "projectDigest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "title": "Projectdigest"
+          },
+          "actorDigest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "title": "Actordigest"
+          },
+          "workflowCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Workflowcount"
+          },
+          "manualWorkflowCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Manualworkflowcount"
+          },
+          "localRequestCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Localrequestcount"
+          },
+          "localAttemptedWorkflowCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Localattemptedworkflowcount"
+          },
+          "zeroModelWorkflowCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Zeromodelworkflowcount"
+          },
+          "localInferenceAttemptCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Localinferenceattemptcount"
+          },
+          "reviewReceiptCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Reviewreceiptcount"
+          },
+          "correctionEventCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Correctioneventcount"
+          },
+          "semanticEditCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Semanticeditcount"
+          },
+          "reviewLatencyMsTotal": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Reviewlatencymstotal"
+          },
+          "reviewLatencySampleCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Reviewlatencysamplecount"
+          },
+          "correctionCategories": {
+            "$ref": "#/components/schemas/CorrectionCategoryCounts"
+          },
+          "acceptedAssertionCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Acceptedassertioncount"
+          },
+          "costKnownAcceptedAssertionCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Costknownacceptedassertioncount"
+          },
+          "meanLocalInferenceAttemptsPerAcceptedAssertion": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meanlocalinferenceattemptsperacceptedassertion"
+          },
+          "workflows": {
+            "items": {
+              "$ref": "#/components/schemas/WorkflowCostRecord"
+            },
+            "type": "array",
+            "maxItems": 10000,
+            "title": "Workflows",
+            "default": []
+          },
+          "acceptedAssertions": {
+            "items": {
+              "$ref": "#/components/schemas/AcceptedAssertionCostRecord"
+            },
+            "type": "array",
+            "maxItems": 10000,
+            "title": "Acceptedassertions",
+            "default": []
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "contractVersion",
+          "costBasis",
+          "projectDigest",
+          "actorDigest",
+          "workflowCount",
+          "manualWorkflowCount",
+          "localRequestCount",
+          "localAttemptedWorkflowCount",
+          "zeroModelWorkflowCount",
+          "localInferenceAttemptCount",
+          "reviewReceiptCount",
+          "correctionEventCount",
+          "semanticEditCount",
+          "reviewLatencyMsTotal",
+          "reviewLatencySampleCount",
+          "correctionCategories",
+          "acceptedAssertionCount",
+          "costKnownAcceptedAssertionCount"
+        ],
+        "title": "AuthoringCostMetrics",
+        "description": "Derived metrics for the trusted user's workflows in one project."
+      },
+      "CorrectionCategoryCounts": {
+        "properties": {
+          "unchanged": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Unchanged"
+          },
+          "minor": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Minor"
+          },
+          "major": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Major"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "unchanged",
+          "minor",
+          "major"
+        ],
+        "title": "CorrectionCategoryCounts"
+      },
+      "WorkflowCostRecord": {
+        "properties": {
+          "workflowDigest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "title": "Workflowdigest"
+          },
+          "workflowKind": {
+            "type": "string",
+            "enum": [
+              "entity",
+              "relation"
+            ],
+            "title": "Workflowkind"
+          },
+          "workflowMode": {
+            "type": "string",
+            "enum": [
+              "manual",
+              "local",
+              "mixed"
+            ],
+            "title": "Workflowmode"
+          },
+          "modelUsage": {
+            "type": "string",
+            "enum": [
+              "none",
+              "local-attempted"
+            ],
+            "title": "Modelusage"
+          },
+          "localRequestCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Localrequestcount"
+          },
+          "localInferenceAttempts": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Localinferenceattempts"
+          },
+          "zeroModel": {
+            "type": "boolean",
+            "title": "Zeromodel"
+          },
+          "reviewReceiptCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Reviewreceiptcount"
+          },
+          "correctionEventCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Correctioneventcount"
+          },
+          "semanticEditCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Semanticeditcount"
+          },
+          "reviewLatencyMs": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reviewlatencyms"
+          },
+          "reviewLatencySampleCount": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Reviewlatencysamplecount"
+          },
+          "correctionCategories": {
+            "$ref": "#/components/schemas/CorrectionCategoryCounts"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "workflowDigest",
+          "workflowKind",
+          "workflowMode",
+          "modelUsage",
+          "localRequestCount",
+          "localInferenceAttempts",
+          "zeroModel",
+          "reviewReceiptCount",
+          "correctionEventCount",
+          "semanticEditCount",
+          "reviewLatencyMs",
+          "reviewLatencySampleCount",
+          "correctionCategories"
+        ],
+        "title": "WorkflowCostRecord",
+        "description": "User-scoped cost and correction counters for one opaque workflow digest."
       }
     }
   },

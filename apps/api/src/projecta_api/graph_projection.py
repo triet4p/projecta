@@ -29,6 +29,11 @@ LifecycleState = Literal[
 ProvenanceState = Literal["source-backed", "human-confirmed", "rule-derived", "candidate-proposed"]
 EvidenceFilter = Literal["any", "with-evidence", "without-evidence"]
 EvidenceState = Literal["available", "unavailable", "stale"]
+ReviewAnchorKind = Literal["endpoint", "trigger", "evidence"]
+ReviewEvidenceStatus = Literal["selected", "review-required", "abstained", "quarantined", "unavailable"]
+ReviewReceiptStatus = Literal[
+    "not-recorded", "accepted", "rejected", "abstained", "stale", "quarantined"
+]
 
 NODE_TYPES = (
     "Project",
@@ -206,6 +211,98 @@ class CandidateQueueResponse(BaseModel):
     stale: bool
     candidates: list[CandidateQueueItem]
     has_more: bool = Field(alias="hasMore")
+
+
+class ReviewSourceVersion(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    revision: int = Field(ge=0)
+    source_version_id: str | None = Field(default=None, alias="sourceVersionId")
+    canonicalization_version: str | None = Field(default=None, alias="canonicalizationVersion")
+    coordinate_system_version: str | None = Field(default=None, alias="coordinateSystemVersion")
+    original_digest: str | None = Field(default=None, alias="originalDigest")
+    canonical_digest: str | None = Field(default=None, alias="canonicalDigest")
+
+
+class ReviewAnchor(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    kind: ReviewAnchorKind
+    start_offset: int = Field(alias="startOffset", ge=0)
+    end_offset: int = Field(alias="endOffset", ge=0)
+    display_start_offset: int | None = Field(default=None, alias="displayStartOffset", ge=0)
+    display_end_offset: int | None = Field(default=None, alias="displayEndOffset", ge=0)
+    original_byte_start: int | None = Field(default=None, alias="originalByteStart", ge=0)
+    original_byte_end: int | None = Field(default=None, alias="originalByteEnd", ge=0)
+    utf16_start: int | None = Field(default=None, alias="utf16Start", ge=0)
+    utf16_end: int | None = Field(default=None, alias="utf16End", ge=0)
+    quote: str | None = None
+    quote_digest: str | None = Field(default=None, alias="quoteDigest")
+
+
+class ReviewEvidence(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    status: ReviewEvidenceStatus
+    digest: str | None = None
+    highlights: list[ReviewAnchor]
+
+
+class ReviewReceiptState(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    state: ReviewReceiptStatus
+    receipt_digest: str | None = Field(default=None, alias="receiptDigest")
+    candidate_revision: int = Field(alias="candidateRevision", ge=0)
+    source_version_revision: int = Field(alias="sourceVersionRevision", ge=0)
+
+
+class ReviewProposal(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    label: str | None = None
+    semantic_type: str | None = Field(default=None, alias="semanticType")
+    predicate: str | None = None
+
+
+class ManualCaptureInfo(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    mode: Literal["human-authored-zero-model"]
+    entity_handle: str = Field(alias="entityHandle", pattern=r"^eh1_[0-9a-f]{64}$")
+
+
+class ReviewWorkbenchDetailResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    detail_version: Literal["review-workbench.v1"] = Field(alias="detailVersion")
+    request_id: str = Field(alias="requestId")
+    project_handle: str = Field(alias="projectHandle")
+    item_handle: str = Field(alias="itemHandle")
+    project_scope: Literal["selected"] = Field(alias="projectScope")
+    source_version: ReviewSourceVersion = Field(alias="sourceVersion")
+    candidate_revision: int = Field(alias="candidateRevision", ge=0)
+    label: str
+    semantic_type: str = Field(alias="semanticType")
+    lifecycle_state: LifecycleState = Field(alias="lifecycleState")
+    validation_state: str = Field(alias="validationState")
+    constrained_contract_version: str = Field(
+        default="constrained-relation.v1", alias="constrainedContractVersion"
+    )
+    confidence: float | None = Field(default=None, ge=0, le=1)
+    source_text: str | None = Field(default=None, alias="sourceText")
+    proposed: ReviewProposal
+    edited: ReviewProposal | None = None
+    evidence: ReviewEvidence
+    uncertainty_reasons: list[str] = Field(alias="uncertaintyReasons")
+    stale: bool
+    quarantined: bool
+    abstain_reason: str | None = Field(default=None, alias="abstainReason")
+    review_receipt: ReviewReceiptState = Field(alias="reviewReceipt")
+    manual_capture: ManualCaptureInfo | None = Field(
+        default=None, alias="manualCapture"
+    )
+
 
 
 class KnowledgeCollectionItem(BaseModel):
@@ -399,6 +496,189 @@ def project_candidate_queue(
             "hasMore": required(raw, "hasMore"),
         }
     )
+
+
+def project_review_detail(
+    payload: object, request_id: str, project_handle: str, item_handle: str
+) -> ReviewWorkbenchDetailResponse:
+    """Project one selected candidate into the source-first review contract."""
+
+    raw = mapping(payload)
+    candidate = mapping(raw.get("candidate", raw))
+    source = mapping(candidate.get("sourceVersion", raw.get("sourceVersion", {})))
+    source_revision = _bounded_int(
+        source.get("revision", candidate.get("sourceRevision", raw.get("sourceRevision", 0))), 0
+    )
+    candidate_revision = _bounded_int(
+        candidate.get("candidateRevision", candidate.get("revision", 0)), 0
+    )
+    evidence_raw = mapping(candidate.get("evidence", raw.get("evidence", {})))
+    anchors, anchor_error = _review_anchors(
+        candidate.get("anchors", candidate.get("highlights", evidence_raw.get("highlights", [])))
+    )
+    evidence_status = evidence_raw.get("status", "unavailable")
+    if evidence_status not in {"selected", "review-required", "abstained", "quarantined", "unavailable"}:
+        evidence_status = "quarantined"
+    evidence_digest = evidence_raw.get("digest")
+    evidence = {
+        "status": evidence_status,
+        "digest": evidence_digest if isinstance(evidence_digest, str) else None,
+        "highlights": anchors,
+    }
+    stale = candidate.get("stale", raw.get("stale", False)) is True
+    quarantined = candidate.get("quarantined", False) is True or anchor_error is not None
+    uncertainty = _review_reasons(candidate.get("uncertaintyReasons", []))
+    if anchor_error is not None:
+        uncertainty.append(anchor_error)
+    if stale:
+        uncertainty.append("STALE_SOURCE")
+    if evidence_status == "unavailable":
+        uncertainty.append("EVIDENCE_UNAVAILABLE")
+    confidence = candidate.get("confidence")
+    bounded_confidence = confidence if isinstance(confidence, (int, float)) and 0 <= confidence <= 1 else None
+    receipt = mapping(candidate.get("reviewReceipt", {}))
+    receipt_state = receipt.get("state", "not-recorded")
+    if receipt_state not in {"not-recorded", "accepted", "rejected", "abstained", "stale", "quarantined"}:
+        receipt_state = "quarantined"
+    source_text = candidate.get("sourceText", candidate.get("sourceExcerpt"))
+    return ReviewWorkbenchDetailResponse.model_validate(
+        {
+            "detailVersion": "review-workbench.v1",
+            "requestId": request_id,
+            "projectHandle": project_handle,
+            "itemHandle": item_handle,
+            "projectScope": "selected",
+            "sourceVersion": {
+            "revision": source_revision,
+            "sourceVersionId": _optional_source_version_id(
+                source.get("sourceVersionId", source.get("id"))
+            ),
+                "canonicalizationVersion": _optional_string(source.get("canonicalizationVersion")),
+                "coordinateSystemVersion": _optional_string(source.get("coordinateSystemVersion")),
+                "originalDigest": _optional_digest(source.get("originalDigest")),
+                "canonicalDigest": _optional_digest(source.get("canonicalDigest")),
+            },
+            "candidateRevision": candidate_revision,
+            "label": _required_display_string(candidate.get("label"), "Selected item"),
+            "semanticType": _required_display_string(candidate.get("proposedType"), "Unknown"),
+            "lifecycleState": _lifecycle(candidate.get("lifecycleState")),
+            "validationState": _required_display_string(candidate.get("validationState"), "unavailable"),
+            "constrainedContractVersion": _required_display_string(
+                candidate.get("constrainedContractVersion"), "constrained-relation.v1"
+            ),
+            "confidence": bounded_confidence,
+            "sourceText": source_text if isinstance(source_text, str) else None,
+            "proposed": {
+                "label": _optional_string(candidate.get("label")),
+                "semanticType": _optional_string(candidate.get("proposedType")),
+                "predicate": _optional_string(candidate.get("predicate")),
+            },
+            "edited": _review_proposal(candidate.get("edited")),
+            "evidence": evidence,
+            "uncertaintyReasons": list(dict.fromkeys(uncertainty)),
+            "stale": stale,
+            "quarantined": quarantined,
+            "abstainReason": _optional_string(candidate.get("abstainReason"))
+            or ("INVALID_SOURCE_ANCHOR" if anchor_error else None),
+            "reviewReceipt": {
+                "state": receipt_state,
+                "receiptDigest": _optional_digest(receipt.get("receiptDigest")),
+                "candidateRevision": _bounded_int(receipt.get("candidateRevision", candidate_revision), 0),
+                "sourceVersionRevision": _bounded_int(
+                    receipt.get("sourceVersionRevision", source_revision), 0
+                ),
+            },
+            "manualCapture": raw.get("manualCapture"),
+        }
+    )
+
+
+def _review_anchors(value: object) -> tuple[list[dict[str, object]], str | None]:
+    if value is None:
+        return [], None
+    if not isinstance(value, list):
+        return [], "INVALID_SOURCE_ANCHOR"
+    result: list[dict[str, object]] = []
+    for item in cast(list[object], value):
+        row = mapping(item)
+        start = row.get("startOffset")
+        end = row.get("endOffset")
+        kind = row.get("kind", "evidence")
+        if not isinstance(start, int) or not isinstance(end, int) or start < 0 or end < start:
+            return [], "INVALID_SOURCE_ANCHOR"
+        if kind not in {"endpoint", "trigger", "evidence"}:
+            return [], "INVALID_SOURCE_ANCHOR"
+        result.append(
+            {
+                "kind": kind,
+                "startOffset": start,
+                "endOffset": end,
+                "displayStartOffset": _optional_nonnegative(row.get("displayStartOffset")),
+                "displayEndOffset": _optional_nonnegative(row.get("displayEndOffset")),
+                "originalByteStart": _optional_nonnegative(row.get("originalByteStart")),
+                "originalByteEnd": _optional_nonnegative(row.get("originalByteEnd")),
+                "utf16Start": _optional_nonnegative(row.get("utf16Start")),
+                "utf16End": _optional_nonnegative(row.get("utf16End")),
+                "quote": row.get("quote") if isinstance(row.get("quote"), str) else None,
+                "quoteDigest": _optional_digest(row.get("quoteDigest")),
+            }
+        )
+    return result, None
+
+
+def _review_reasons(value: object) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    allowed = {
+        "LOW_CONFIDENCE",
+        "EVIDENCE_UNAVAILABLE",
+        "STALE_SOURCE",
+        "QUARANTINED_ITEM",
+        "VALIDATION_REQUIRED",
+        "AMBIGUOUS_RELATION",
+    }
+    return [item if isinstance(item, str) and item in allowed else "UNSPECIFIED" for item in value]
+
+
+def _review_proposal(value: object) -> dict[str, str | None] | None:
+    if not isinstance(value, dict):
+        return None
+    row = cast(dict[object, object], value)
+    return {
+        "label": _optional_string(row.get("label")),
+        "semanticType": _optional_string(row.get("semanticType", row.get("type"))),
+        "predicate": _optional_string(row.get("predicate")),
+    }
+
+
+def _bounded_int(value: object, default: int) -> int:
+    return value if isinstance(value, int) and not isinstance(value, bool) and value >= 0 else default
+
+
+def _optional_nonnegative(value: object) -> int | None:
+    return value if isinstance(value, int) and not isinstance(value, bool) and value >= 0 else None
+
+
+def _optional_string(value: object) -> str | None:
+    return value if isinstance(value, str) and value else None
+
+
+def _optional_digest(value: object) -> str | None:
+    return value if isinstance(value, str) and value.startswith("sha256:") else None
+
+
+def _optional_source_version_id(value: object) -> str | None:
+    return value if isinstance(value, str) and value.startswith("sv_") and len(value) == 67 else None
+
+
+def _required_display_string(value: object, default: str) -> str:
+    return value if isinstance(value, str) and value else default
+
+
+def _lifecycle(value: object) -> LifecycleState:
+    return cast(LifecycleState, value) if value in {
+        "current", "pending-review", "confirmed", "rejected", "superseded", "retracted", "stale"
+    } else "pending-review"
 
 
 def project_knowledge_collection(

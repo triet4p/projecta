@@ -93,9 +93,9 @@ project:task-17
 
 ### Vai trò
 
-Lưu tri thức do:
+Lưu các đề xuất cục bộ, có scope và chưa được human chấp thuận do:
 
-- LLM đề xuất.
+- AI suggestion được gọi on-demand sau khi đã có source/evidence context.
 - Rule gợi ý.
 - Entity linker đề xuất.
 - Connector mapping phát hiện.
@@ -108,10 +108,11 @@ Lưu tri thức do:
 ### Thuộc tính cần có
 
 - Candidate type.
-- Proposed class.
-- Proposed predicate.
+- Proposed class/type (nếu có).
+- Proposed predicate/direction (chỉ trong allowlist).
 - Confidence.
-- Evidence span.
+- SourceVersion và TextAnchor do server resolve; không nhận offset/global ID
+  do model tự quyết.
 - Source artifact.
 - Model/version.
 - Created time.
@@ -121,9 +122,11 @@ Lưu tri thức do:
 ### Lifecycle
 
 ```text
-PROPOSED
+HUMAN_CAPTURED
+→ (optional) SUGGESTED
 → VALIDATED
 → CONFIRMED
+→ APPROVED_ASSERTION_PLAN
 → ASSERTED
 
 hoặc
@@ -234,11 +237,10 @@ Retrieval memory chỉ trả candidate context. Similarity không tạo ra seman
 ### Ví dụ pipeline
 
 ```text
-Mention "login API"
-→ vector/full-text retrieve Task T12, T19
-→ project/type filter
-→ LLM rerank
-→ candidate entity link
+Human task/question hoặc structured note
+→ vector/full-text retrieve trong project scope
+→ human chọn/xác nhận occurrence/entity
+→ (optional) một AI suggestion bounded
 → human/rule confirmation
 ```
 
@@ -362,7 +364,8 @@ Connector event
 → Operational deduplication
 → Raw source storage
 → Source RDF metadata
-→ Candidate extraction
+→ Available evidence for human-authored capture
+→ Optional on-demand bounded suggestion
 ```
 
 ### Rebuild capability
@@ -372,11 +375,24 @@ Phải có khả năng:
 - Rebuild inferred graph từ asserted graph.
 - Rebuild projection từ RDF.
 - Rebuild vector index từ source và entity text.
-- Reprocess source artifact bằng model mới mà không mất assertion cũ.
+- Reprocess source artifact bằng model mới chỉ khi user/workflow yêu cầu, không
+  tự động và không mất assertion cũ.
 
 ---
 
-## 13. Memory isolation
+## 13. Cost boundary for assistance
+
+- Deterministic capture và scoped retrieval chạy trước mọi model call.
+- Một workflow chỉ được gọi tối đa một bounded suggestion khi user yêu cầu;
+  manual mode phải dùng được với zero model calls.
+- Cache/deduplicate theo source, item và revision; không gọi lại cùng suggestion
+  nếu không có thay đổi hoặc explicit retry được phép.
+- Enforce budget theo project/user và ghi cost trên workflow/accepted assertion.
+- Cost telemetry không chứa raw source, prompt nhạy cảm hoặc provider payload.
+
+---
+
+## 14. Memory isolation
 
 Mỗi truy vấn phải có:
 
@@ -391,7 +407,7 @@ Named graph chỉ là một phần của isolation. Authorization vẫn nằm �
 
 ---
 
-## 14. Điều không được làm
+## 15. Điều không được làm
 
 - Dùng chat history của LLM làm project memory.
 - Dùng vector similarity làm fact.
@@ -400,3 +416,5 @@ Named graph chỉ là một phần của isolation. Authorization vẫn nằm �
 - Để projection trở thành source of truth.
 - Để agent tự sửa operational state ngoài workflow.
 - Xóa requirement cũ khi có requirement mới thay thế.
+- Dùng whole-document extraction, background model calls hoặc unreviewed
+  candidate materialization làm đường mặc định.

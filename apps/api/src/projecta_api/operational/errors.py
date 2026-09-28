@@ -15,3 +15,7 @@ class IdempotencyConflict(ConnectorOperationalError):
 
 class RevisionConflict(ConnectorOperationalError):
     """An optimistic revision check failed."""
+
+
+class TelemetryIntegrityError(ConnectorOperationalError):
+    """An append-only telemetry row failed independent integrity verification."""

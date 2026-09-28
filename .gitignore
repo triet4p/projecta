@@ -34,3 +34,6 @@ Thumbs.db
 
 # Graphify
 graphify-out
+
+# Sprint task evidence (implement-atomic-task artifacts; never committed)
+artifacts/
