@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 
 import type { ReviewWorkbenchDetailResponse } from "./api/generated";
 import { reviewDecisionDisabled, reviewStatusLabel } from "./screens/review-workbench";
-import type { ManualReviewWorkbenchDetailResponse } from "./api/manual-capture";
 
 const detail = (
   overrides: Partial<ReviewWorkbenchDetailResponse> = {},
@@ -36,8 +35,8 @@ const detail = (
   ...overrides,
 });
 const manualDetail = (
-  overrides: Partial<ManualReviewWorkbenchDetailResponse> = {},
-): ManualReviewWorkbenchDetailResponse =>
+  overrides: Partial<ReviewWorkbenchDetailResponse> = {},
+): ReviewWorkbenchDetailResponse =>
   ({
     ...detail({
       sourceVersion: { revision: 1, sourceVersionId: "sv_" + "b".repeat(64) },
@@ -64,7 +63,7 @@ const manualDetail = (
       entityHandle: "eh1_" + "d".repeat(64),
     },
     ...overrides,
-  }) as ManualReviewWorkbenchDetailResponse;
+  });
 
 
 describe("review workbench decision guard", () => {

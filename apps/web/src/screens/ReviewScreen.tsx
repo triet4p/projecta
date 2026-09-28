@@ -8,6 +8,7 @@ import type {
   DecisionResponse,
   ReviewAbstainResponse,
   ValidationResult,
+  ReviewWorkbenchDetailResponse,
 } from "../api/generated";
 import type {
   ControlledRelationDecisionRequest,
@@ -17,7 +18,6 @@ import type {
   LocalSuggestionResponse,
   ManualCaptureApprovalResponse,
   ManualCaptureRejectionResponse,
-  ManualReviewWorkbenchDetailResponse,
   RelationDirection,
   RelationSuggestionTargetsResponse,
 } from "../api/manual-capture";
@@ -35,7 +35,7 @@ export function ReviewScreen({
   const [queue, setQueue] = useState<CandidateQueueResponse | null>(null);
   const [editOptions, setEditOptions] = useState<CandidateEditOptionsResponse | null>(null);
   const [selected, setSelected] = useState<CandidateQueueItem | null>(null);
-  const [detail, setDetail] = useState<ManualReviewWorkbenchDetailResponse | null>(null);
+  const [detail, setDetail] = useState<ReviewWorkbenchDetailResponse | null>(null);
   const [detailBusy, setDetailBusy] = useState(false);
   const [abstainNotice, setAbstainNotice] = useState<string | null>(null);
   const [abstainReceipt, setAbstainReceipt] = useState<ReviewAbstainResponse | null>(null);

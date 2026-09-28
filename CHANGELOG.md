@@ -23,11 +23,41 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   receipt-backed accepted assertions. Confirm receipts alone do not count as
   materialization; no source text, prompts, or provider payloads enter telemetry.
 
+- Exposed human-authored exact-span capture from Notes and returned completed
+  captures directly to the Review Queue, making the zero-model workflow
+  reachable through normal workspace navigation.
+
+### Changed
+
+- Forwarded the optional `PROJECTA_LOCAL_SUGGESTION_MODEL` setting to the Compose
+  API with an empty default; suggestions remain operator-enabled and disabled in
+  production.
+
 ### Fixed
+
+- Preserved the API's finite local-suggestion error codes and safe reason details
+  for disabled, unconfigured, and unreachable local models.
+
+- Preserved the finite `REVIEW_RECEIPTS_UNAVAILABLE` reason and a safe 503
+  detail when review receipt history is unavailable.
+- Preserved actionable controlled-relation reason codes and their 409/422/503
+  statuses through the API error envelope while sanitizing unrecognized codes.
 
 - Corrected manual candidate edit metrics so date-only changes stay outside
   correction categories while date plus a classified field retains its RM-67
   category.
+
+- Separated the connector migration service image from the API development
+  image so full Compose startup can run migrations before starting the API.
+
+- Preserved already-opaque Semantic Core candidate handles when listing supported
+  manual relation targets, avoiding a second hash that hid eligible targets.
+
+- Documented the required connector PostgreSQL settings and secure Fernet-key
+  initialization in the local Docker Compose quick start.
+
+- Aligned the web review-workbench response type with its OpenAPI
+  `manualCapture` field.
 
 ## [0.6.0] - 2026-08-14
 

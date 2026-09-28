@@ -1,11 +1,4 @@
-import type { ReviewReceiptRecord, ReviewWorkbenchDetailResponse } from "./generated";
-
-export type ManualReviewWorkbenchDetailResponse = ReviewWorkbenchDetailResponse & {
-  manualCapture?: {
-    mode: "human-authored-zero-model";
-    entityHandle: string;
-  } | null;
-};
+import type { ReviewReceiptRecord } from "./generated";
 
 export interface ManualCaptureApprovalRequest {
   candidateRevision: number;

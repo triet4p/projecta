@@ -77,6 +77,49 @@ from projecta_api.semantic_core import (
 from projecta_api.startup import validate_startup
 from projecta_api.structured_candidate_store import StructuredCandidateEditStore
 from projecta_api.structured_note_store import StructuredNoteDraftStore
+_CONTROLLED_RELATION_PUBLIC_ERRORS: dict[str, tuple[frozenset[int], str]] = {
+    "CONTROLLED_RELATION_REQUEST_INVALID": (
+        frozenset({422}),
+        "Select a predicate only for manual relation suggestions.",
+    ),
+    "CONTROLLED_RELATION_UNAVAILABLE": (
+        frozenset({503}),
+        "The relation context is temporarily unavailable; retry later.",
+    ),
+    "CONTROLLED_RELATION_UNSUPPORTED": (
+        frozenset({409, 422}),
+        "Select an allowlisted predicate for these endpoint types and direction, or choose another endpoint pair.",
+    ),
+    "CONTROLLED_RELATION_EVIDENCE_UNAVAILABLE": (
+        frozenset({409}),
+        "Choose a relation predicate supported by the current source evidence.",
+    ),
+    "CONTROLLED_RELATION_CONFLICT": (
+        frozenset({409}),
+        "Refresh the relation suggestion and review its current receipt before retrying.",
+    ),
+    "CONTROLLED_RELATION_NOT_DECIDABLE": (
+        frozenset({409}),
+        "Only a proposed relation can be confirmed or rejected.",
+    ),
+    "CONTROLLED_RELATION_STALE": (
+        frozenset({409}),
+        "Refresh the relation suggestion and revalidate both endpoints and current evidence.",
+    ),
+    "CONTROLLED_RELATION_REQUIRES_VALIDATION": (
+        frozenset({409}),
+        "Validate both manual occurrences before relating them.",
+    ),
+    "CONTROLLED_RELATION_REQUIRES_CONFIRMATION": (
+        frozenset({409}),
+        "Confirm both manual occurrences before relating them.",
+    ),
+    "CONTROLLED_RELATION_INVALID_PAIR": (
+        frozenset({409, 422}),
+        "Use two distinct endpoints sharing one current source version.",
+    ),
+}
+
 
 
 async def live() -> dict[str, str]:
@@ -216,12 +259,30 @@ def create_app(
     @app.exception_handler(SemanticCoreProblem)
     async def semantic_problem(request: Request, error: SemanticCoreProblem) -> JSONResponse:
         """Map downstream details to the public problem contract."""
-        status_code = (
-            error.status_code if error.status_code in {400, 403, 404, 409, 422, 503} else 503
-        )
+        relation_problem = _CONTROLLED_RELATION_PUBLIC_ERRORS.get(error.code)
+        if relation_problem is None:
+            safe_relation_detail = None
+            status_code = (
+                error.status_code
+                if error.status_code in {400, 403, 404, 409, 422, 503}
+                or (
+                    error.code == "LOCAL_SUGGESTION_SOURCE_TOO_LARGE"
+                    and error.status_code == 413
+                )
+                or (
+                    error.code == "LOCAL_SUGGESTION_INVALID" and error.status_code == 502
+                )
+                else 503
+            )
+        else:
+            relation_statuses, safe_relation_detail = relation_problem
+            status_code = (
+                error.status_code if error.status_code in relation_statuses else 503
+            )
         code = (
             error.code
-            if error.code
+            if relation_problem is not None
+            or error.code
             in {
                 "INVALID_REQUEST",
                 "RESOURCE_NOT_FOUND",
@@ -239,6 +300,7 @@ def create_app(
                 "INVALID_PROJECT_HANDLE",
                 "INVALID_NAVIGATION_HANDLE",
                 "REVIEW_RECEIPT_UNAVAILABLE",
+                "REVIEW_RECEIPTS_UNAVAILABLE",
                 "REVIEW_SOURCE_RECEIPT_UNAVAILABLE",
                 "REVIEW_ITEM_INVALID",
                 "REVIEW_RECEIPT_STALE",
@@ -247,36 +309,65 @@ def create_app(
                 "MANUAL_CAPTURE_INVALID",
                 "MANUAL_CAPTURE_NOT_VALIDATED",
                 "MATERIALIZATION_NOT_AUTHORIZED",
+                "LOCAL_SUGGESTION_DISABLED",
+                "LOCAL_MODEL_NOT_CONFIGURED",
+                "LOCAL_MODEL_UNAVAILABLE",
+                "LOCAL_SUGGESTION_INVALID",
+                "LOCAL_SUGGESTION_SOURCE_TOO_LARGE",
+                "LOCAL_SUGGESTION_UNAVAILABLE",
+                "LOCAL_SUGGESTION_CONFLICT",
+                "LOCAL_SUGGESTION_STALE",
+                "LOCAL_SUGGESTION_TARGET_STALE",
+                "LOCAL_SUGGESTION_EDIT_INVALID",
+                "LOCAL_SUGGESTION_REQUIRES_VALIDATION",
+                "LOCAL_SUGGESTION_REQUIRES_CONFIRMATION",
             }
             else "SEMANTIC_CONTRACT_UNAVAILABLE"
         )
-        detail = {
-            "INVALID_REQUEST": "The request does not meet the published contract.",
-            "RESOURCE_NOT_FOUND": "The resource is not visible in this project.",
-            "CANDIDATE_INVALID": "The candidate does not conform to the semantic contract.",
-            "INVALID_LIFECYCLE_STATE": "The requested transition is not allowed.",
-            "DECISION_CONFLICT": "A conflicting terminal decision already exists.",
-            "IDEMPOTENCY_KEY_REUSED": "The idempotency key belongs to a different request.",
-            "PROJECT_CATALOG_UNAVAILABLE": "The authorized project catalog is temporarily unavailable.",
-            "PROJECT_NOT_FOUND": "The project is not visible in the authorized catalog.",
-            "PROJECT_FORBIDDEN": "The project is not available to this actor.",
-            "PROJECT_SELECTION_STALE": "The active project selection is stale and must be revalidated.",
-            "PROJECT_SELECTION_REQUIRED": "Select an authorized project before using this workspace.",
-            "NOTE_DRAFT_CONFLICT": "The Note draft revision is stale or already committed.",
-            "CANDIDATE_EDIT_CONFLICT": "The candidate edit revision is stale.",
-            "INVALID_PROJECT_HANDLE": "The project handle is invalid.",
-            "INVALID_NAVIGATION_HANDLE": "The navigation handle is invalid.",
-            "REVIEW_RECEIPT_UNAVAILABLE": "Review receipt persistence is unavailable.",
-            "REVIEW_SOURCE_RECEIPT_UNAVAILABLE": "The selected item has no verified source receipt.",
-            "REVIEW_ITEM_INVALID": "The selected review item is invalid.",
-            "REVIEW_RECEIPT_STALE": "The review source or candidate revision is stale.",
-            "REVIEW_RECEIPT_CONFLICT": "The review receipt conflicts with existing history.",
-            "REVIEW_UNAUTHORIZED": "The reviewer is not authorized for this item.",
-            "MANUAL_CAPTURE_INVALID": "The manual source anchor could not be verified.",
-            "MANUAL_CAPTURE_NOT_VALIDATED": "Validate this Note item before approval.",
-            "MATERIALIZATION_NOT_AUTHORIZED": "Approved assertion materialization is not owner-authorized.",
-            "SEMANTIC_CONTRACT_UNAVAILABLE": "The semantic service is temporarily unavailable.",
-        }[code]
+        detail = (
+            safe_relation_detail
+            if safe_relation_detail is not None
+            else {
+                "INVALID_REQUEST": "The request does not meet the published contract.",
+                "RESOURCE_NOT_FOUND": "The resource is not visible in this project.",
+                "CANDIDATE_INVALID": "The candidate does not conform to the semantic contract.",
+                "INVALID_LIFECYCLE_STATE": "The requested transition is not allowed.",
+                "DECISION_CONFLICT": "A conflicting terminal decision already exists.",
+                "IDEMPOTENCY_KEY_REUSED": "The idempotency key belongs to a different request.",
+                "PROJECT_CATALOG_UNAVAILABLE": "The authorized project catalog is temporarily unavailable.",
+                "PROJECT_NOT_FOUND": "The project is not visible in the authorized catalog.",
+                "PROJECT_FORBIDDEN": "The project is not available to this actor.",
+                "PROJECT_SELECTION_STALE": "The active project selection is stale and must be revalidated.",
+                "PROJECT_SELECTION_REQUIRED": "Select an authorized project before using this workspace.",
+                "NOTE_DRAFT_CONFLICT": "The Note draft revision is stale or already committed.",
+                "CANDIDATE_EDIT_CONFLICT": "The candidate edit revision is stale.",
+                "INVALID_PROJECT_HANDLE": "The project handle is invalid.",
+                "INVALID_NAVIGATION_HANDLE": "The navigation handle is invalid.",
+                "REVIEW_RECEIPT_UNAVAILABLE": "Review receipt persistence is unavailable.",
+                "REVIEW_RECEIPTS_UNAVAILABLE": "Review receipt persistence is temporarily unavailable.",
+                "REVIEW_SOURCE_RECEIPT_UNAVAILABLE": "The selected item has no verified source receipt.",
+                "REVIEW_ITEM_INVALID": "The selected review item is invalid.",
+                "REVIEW_RECEIPT_STALE": "The review source or candidate revision is stale.",
+                "REVIEW_RECEIPT_CONFLICT": "The review receipt conflicts with existing history.",
+                "REVIEW_UNAUTHORIZED": "The reviewer is not authorized for this item.",
+                "MANUAL_CAPTURE_INVALID": "The manual source anchor could not be verified.",
+                "MANUAL_CAPTURE_NOT_VALIDATED": "Validate this Note item before approval.",
+                "MATERIALIZATION_NOT_AUTHORIZED": "Approved assertion materialization is not owner-authorized.",
+                "LOCAL_SUGGESTION_DISABLED": "Local suggestions are disabled in this runtime.",
+                "LOCAL_MODEL_NOT_CONFIGURED": "Configure a local model before requesting a suggestion.",
+                "LOCAL_MODEL_UNAVAILABLE": "The configured local model runtime is unavailable.",
+                "LOCAL_SUGGESTION_INVALID": "The local model returned an unsupported proposal.",
+                "LOCAL_SUGGESTION_SOURCE_TOO_LARGE": "This Note is too large for one bounded local suggestion.",
+                "LOCAL_SUGGESTION_UNAVAILABLE": "The local suggestion operation failed safely.",
+                "LOCAL_SUGGESTION_CONFLICT": "The suggestion request is stale or conflicting.",
+                "LOCAL_SUGGESTION_STALE": "The proposal revision is stale or no longer pending.",
+                "LOCAL_SUGGESTION_TARGET_STALE": "The same-project link target is no longer visible.",
+                "LOCAL_SUGGESTION_EDIT_INVALID": "The suggestion edit does not match the pending proposal.",
+                "LOCAL_SUGGESTION_REQUIRES_VALIDATION": "Validate the manual occurrence first.",
+                "LOCAL_SUGGESTION_REQUIRES_CONFIRMATION": "Confirm this occurrence before requesting a local suggestion.",
+                "SEMANTIC_CONTRACT_UNAVAILABLE": "The semantic service is temporarily unavailable.",
+            }[code]
+        )
         return _problem(request, status_code, code, "Semantic Core request failed", detail)
 
     @app.exception_handler(NormalizedGatewayError)

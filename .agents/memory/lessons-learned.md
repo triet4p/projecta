@@ -887,3 +887,40 @@ pooled composition; redesign the benchmark and evaluator contract instead.
 **Root cause:** A generation-time absence invariant was encoded as a permanent packet invariant, even though source-only and gold-excluded guarantees belong to artifact bindings and the evaluator's phase contract.
 **Fix / workaround:** Keep default validation focused on immutable schema, digest, lineage, source-only, and cross-artifact bindings; expose the directory-absence assertion only through an explicit pre-candidate/pre-freeze mode.
 **Watch out for:** Never make a post-run custody validator reject the frozen evidence it is required to validate; phase-sensitive checks must name their lifecycle mode and be tested in both phases.
+
+## [2026-09-28] A Compose development build overwrites the migration runtime image
+
+**Symptom:** Full web-profile Compose startup failed in `connector-migrate` with `ModuleNotFoundError: No module named 'projecta_api'`, although the migration service declared the runtime target.
+**Root cause:** `connector-migrate` and `api` shared `projecta-api:local` while the development overlay changed the API target to `development`; each build reused the same tag, so the migration container ran the API development image, which did not set the runtime `PYTHONPATH`.
+**Fix / workaround:** Give the migration service a distinct `projecta-api-migrate:local` image while retaining its runtime target.
+**Watch out for:** Compose services using different build targets must not share one mutable image tag; otherwise a later target build can silently replace the image another service expects.
+
+## [2026-09-28] Preserve already-opaque Core handles during relation lookup
+
+**Symptom:** A real confirmed Task-to-Requirement pair shared one current source version and had a valid sentence boundary, but the manual relation target list was empty.
+**Root cause:** Relation target lookup always hashed Core candidate handles, unlike the candidate queue projection that preserves handles already in opaque navigation form; this made target source-context lookups miss.
+**Fix / workaround:** Normalize raw Core identifiers with the existing `opaque_or_hashed` helper so both URI-backed and already-opaque candidate IDs resolve to the same navigation handle.
+**Watch out for:** Core adapters may return either raw resource IDs or an opaque handle. Keep the projection and every candidate lookup path on the same normalization contract.
+
+## [2026-09-28] Keep implemented capture screens reachable
+
+**Symptom:** The exact-span manual-capture screen and API existed, but the normal Notes route only exposed the separate note composer, leaving source-anchored capture unavailable through workspace navigation.
+**Root cause:** The application shell did not reference the capture screen or provide a navigation path to it.
+**Fix / workaround:** Add an explicit Notes entry point for exact-span capture and route successful capture back to the Review Queue.
+**Watch out for:** A compiled screen is not necessarily a usable feature; smoke the intended entry point and its return path through the real application shell.
+
+## [2026-09-29] Production API allowlists must preserve local suggestion reasons
+
+**Symptom:** Local-suggestion routes emitted `LOCAL_MODEL_NOT_CONFIGURED` and
+`LOCAL_MODEL_UNAVAILABLE`, but the running application API returned the generic
+`SEMANTIC_CONTRACT_UNAVAILABLE`; router tests with a custom FastAPI exception
+handler still passed.
+**Root cause:** The production composition root's finite `SemanticCoreProblem`
+allowlist omitted route-sanctioned local-suggestion codes, while the test app
+registered a handler that forwarded route codes directly.
+**Fix / workaround:** Explicitly allow the finite local-suggestion codes and
+fixed safe details in the `create_app` exception handler, keep unknown codes
+and arbitrary details sanitized, and exercise that handler through `create_app`.
+**Watch out for:** A router test with a hand-built FastAPI app cannot verify
+application-level error sanitization; use the real composition root whenever
+the public reason code or status depends on its exception handler.

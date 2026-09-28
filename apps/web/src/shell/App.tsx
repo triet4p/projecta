@@ -73,7 +73,11 @@ export function App(): ReactElement {
         );
       case "Notes":
         return activeProject ? (
-          <NotesScreen api={api} projectHandle={activeProject.handle} />
+          <NotesScreen
+            api={api}
+            onCandidate={() => setActive("Review Queue")}
+            projectHandle={activeProject.handle}
+          />
         ) : (
           <ProjectsScreen api={api} onSelected={selectProject} />
         );

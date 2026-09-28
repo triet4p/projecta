@@ -12,6 +12,7 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from httpx import ASGITransport, AsyncClient
 
+import projecta_api.main as main_module
 from projecta_api.config import Settings
 from projecta_api.configuration.storage import OperationalDatabase
 from projecta_api.context import TrustedRequestContext, trusted_context
@@ -24,8 +25,10 @@ from projecta_api.extraction.local_suggestion_store import (
 from projecta_api.extraction.local_suggestions import (
     LocalSuggestionError,
     LocalSuggestionGateway,
+    LocalSuggestionModelContext,
     LocalSuggestionModelOutput,
     LocalSuggestionService,
+    LocalSuggestionSubject,
     LocalSuggestionTarget,
     OllamaLocalSuggestionGateway,
     _validate_model_proposal,
@@ -58,6 +61,7 @@ class _ManualCore:
         self.source_contexts: dict[str, dict[str, object]] = {}
         self.candidate_ids: dict[str, str] = {}
         self.candidate_handle = ""
+        self.return_opaque_candidate_handles = False
         self.capture_count = 0
         self.assertion_writes: list[str] = []
 
@@ -131,7 +135,9 @@ class _ManualCore:
         if method == "GET" and path.split("?", 1)[0].endswith("/candidates"):
             return {
                 "candidates": [
-                    {"handle": raw_id}
+                    {
+                        "handle": handle if self.return_opaque_candidate_handles else raw_id
+                    }
                     for handle, raw_id in self.candidate_ids.items()
                     if self.source_contexts[handle]["projectId"] == context.project_id
                 ]
@@ -212,6 +218,343 @@ def _make_app(
     return app, core, database
 
 
+def _make_production_app(
+    monkeypatch: pytest.MonkeyPatch,
+    *,
+    model_id: str = "",
+    local_gateway: LocalSuggestionGateway | None = None,
+    core: _ManualCore | None = None,
+) -> tuple[FastAPI, _ManualCore]:
+    """Build the real API app with isolated Core and receipt boundaries."""
+    semantic_core = core or _ManualCore()
+    review_receipts = ReviewDecisionReceiptService(InMemoryReviewDecisionReceiptRepository())
+    monkeypatch.setattr(main_module, "_build_review_receipt_service", lambda _: review_receipts)
+    if local_gateway is not None:
+        monkeypatch.setattr(
+            main_module, "OllamaLocalSuggestionGateway", lambda _: local_gateway
+        )
+    settings = Settings(
+        _env_file=None,
+        runtime_mode="headless",
+        trusted_context_secret="test-secret",
+        local_suggestion_model=model_id,
+        operational_database_path=":memory:",
+        connector_database_host="",
+        connector_database_name="",
+        connector_database_user="",
+        connector_database_password="",
+        connector_database_url=None,
+    )
+    app = main_module.create_app(settings=settings, semantic_client=semantic_core)  # type: ignore[arg-type]
+    return app, semantic_core
+
+
+def _production_headers() -> dict[str, str]:
+    return {
+        "X-Projecta-Project-Id": _PROJECT_ID,
+        "X-Projecta-Actor-Id": "reviewer-1",
+        "X-Projecta-Context-Secret": "test-secret",
+        "X-Request-Id": "req-main-local-suggestion",
+        "X-Projecta-Selection-Handle": _PROJECT_HANDLE,
+    }
+
+
+async def _capture_and_confirm_main_app_candidate(
+    client: AsyncClient, core: _ManualCore, headers: dict[str, str]
+) -> tuple[str, str]:
+    capture = await client.post(
+        "/v1/quick-notes",
+        headers=headers | {"Idempotency-Key": "main-local-capture"},
+        json={
+            "title": "Planning",
+            "rawText": _SOURCE_TEXT,
+            "segments": [
+                {
+                    "type": "task",
+                    "startOffset": 0,
+                    "endOffset": len(_SOURCE_TEXT),
+                    "text": _SOURCE_TEXT,
+                }
+            ],
+        },
+    )
+    assert capture.status_code == 201, capture.text
+    candidate_handle = core.candidate_handle
+    base = f"/v1/projects/{_PROJECT_HANDLE}/candidates/{candidate_handle}"
+    validation = await client.post(f"{base}/validations", headers=headers)
+    assert validation.status_code == 200, validation.text
+
+    source_context = {
+        name: value
+        for name, value in core.source_contexts[candidate_handle].items()
+        if name != "projectId"
+    }
+    verified = resolve_manual_capture(_PROJECT_ID, source_context)
+    approval = await client.post(
+        f"{base}/manual-approvals",
+        headers=headers | {"Idempotency-Key": "main-local-approval"},
+        json={
+            "candidateRevision": verified.candidate_revision,
+            "expectedCandidateRevision": 0,
+            "sourceVersionId": verified.source_version.source_version_id,
+            "sourceVersionRevision": 1,
+            "anchorQuoteDigest": verified.anchor.quote_digest,
+        },
+    )
+    assert approval.status_code == 201, approval.text
+    assert approval.json()["materializationState"] == "blocked"
+    return candidate_handle, base
+
+
+@pytest.mark.asyncio
+async def test_main_app_preserves_unconfigured_model_error_without_spending_budget(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    app, core = _make_production_app(monkeypatch)
+    headers = _production_headers()
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        _, base = await _capture_and_confirm_main_app_candidate(client, core, headers)
+        suggestion_path = f"{base}/local-suggestions"
+        state = await client.get(suggestion_path, headers=headers)
+        assert state.status_code == 200, state.text
+        assert state.json()["modelAvailable"] is False
+        assert state.json()["budget"]["userRemaining"] == 5
+        assert state.json()["budget"]["projectRemaining"] == 25
+
+        unavailable = await client.post(
+            suggestion_path,
+            headers=headers | {"Idempotency-Key": "main-no-model"},
+            json={"retry": False},
+        )
+        assert unavailable.status_code == 503
+        assert unavailable.json()["code"] == "LOCAL_MODEL_NOT_CONFIGURED"
+        assert unavailable.json()["detail"] == (
+            "Configure a local model before requesting a suggestion."
+        )
+
+        state_after = await client.get(suggestion_path, headers=headers)
+        metrics_response = await client.get(
+            f"/v1/projects/{_PROJECT_HANDLE}/authoring-metrics", headers=headers
+        )
+        assert state_after.status_code == 200, state_after.text
+        assert state_after.json()["budget"]["userRemaining"] == 5
+        assert state_after.json()["budget"]["projectRemaining"] == 25
+        assert metrics_response.status_code == 200, metrics_response.text
+        metrics = metrics_response.json()
+        assert metrics["localInferenceAttemptCount"] == 0
+        assert metrics["acceptedAssertionCount"] == 0
+        assert _SOURCE_TEXT not in json.dumps(metrics)
+        assert core.assertion_writes == []
+
+
+@pytest.mark.asyncio
+async def test_main_app_sanitizes_unreachable_model_error_and_records_failed_attempt(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class UnreachableGateway:
+        calls = 0
+
+        async def suggest(
+            self, context: LocalSuggestionModelContext
+        ) -> LocalSuggestionModelOutput:
+            del context
+            self.calls += 1
+            raise LocalSuggestionError("local_runtime_unavailable")
+
+    gateway = UnreachableGateway()
+    app, core = _make_production_app(
+        monkeypatch, model_id="process-local-test-model", local_gateway=gateway
+    )
+    headers = _production_headers()
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        _, base = await _capture_and_confirm_main_app_candidate(client, core, headers)
+        suggestion_path = f"{base}/local-suggestions"
+        state = await client.get(suggestion_path, headers=headers)
+        assert state.status_code == 200, state.text
+        assert state.json()["modelAvailable"] is True
+        assert state.json()["budget"]["userRemaining"] == 5
+        assert state.json()["budget"]["projectRemaining"] == 25
+
+        unavailable = await client.post(
+            suggestion_path,
+            headers=headers | {"Idempotency-Key": "main-unreachable-model"},
+            json={"retry": False},
+        )
+        assert unavailable.status_code == 503
+        assert unavailable.json()["code"] == "LOCAL_MODEL_UNAVAILABLE"
+        assert unavailable.json()["detail"] == (
+            "The configured local model runtime is unavailable."
+        )
+        assert "process-local-test-model" not in unavailable.text
+        assert gateway.calls == 1
+
+        state_after = await client.get(suggestion_path, headers=headers)
+        metrics_response = await client.get(
+            f"/v1/projects/{_PROJECT_HANDLE}/authoring-metrics", headers=headers
+        )
+        assert state_after.status_code == 200, state_after.text
+        assert state_after.json()["budget"]["userRemaining"] == 4
+        assert state_after.json()["budget"]["projectRemaining"] == 24
+        assert metrics_response.status_code == 200, metrics_response.text
+        metrics = metrics_response.json()
+        assert metrics["localInferenceAttemptCount"] == 1
+        assert metrics["acceptedAssertionCount"] == 0
+        assert _SOURCE_TEXT not in json.dumps(metrics)
+        assert core.assertion_writes == []
+
+
+@pytest.mark.asyncio
+async def test_main_app_preserves_safe_review_receipt_unavailable_error(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    app, core = _make_production_app(monkeypatch)
+    headers = _production_headers()
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        _, base = await _capture_and_confirm_main_app_candidate(client, core, headers)
+
+        def fail_review_history(
+            service: ReviewDecisionReceiptService,
+            actor: ReviewActorContext,
+            item_kind: str,
+            item_handle: str,
+        ) -> list[ReviewDecisionReceiptRecord]:
+            del service, actor, item_kind, item_handle
+            raise RuntimeError("private receipt-store diagnostic")
+
+        monkeypatch.setattr(ReviewDecisionReceiptService, "history", fail_review_history)
+        response = await client.get(f"{base}/local-suggestions", headers=headers)
+
+    assert response.status_code == 503
+    assert response.json()["code"] == "REVIEW_RECEIPTS_UNAVAILABLE"
+    assert response.json()["detail"] == "Review receipt persistence is temporarily unavailable."
+    assert "private receipt-store diagnostic" not in response.text
+    assert core.assertion_writes == []
+
+
+@pytest.mark.asyncio
+async def test_main_app_preserves_controlled_relation_errors_without_graph_writes(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    app, core = _make_production_app(monkeypatch)
+    headers = _production_headers()
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        _, base = await _capture_and_confirm_main_app_candidate(client, core, headers)
+        relation_path = f"{base}/relation-suggestions"
+
+        unconfirmed_handle = core.add_candidate(
+            "relation-unconfirmed",
+            entity_type="Requirement",
+            evidence_text="rollout",
+            start_offset=7,
+            end_offset=14,
+        )
+        unconfirmed_base = (
+            f"/v1/projects/{_PROJECT_HANDLE}/candidates/{unconfirmed_handle}"
+        )
+        validation = await client.post(f"{unconfirmed_base}/validations", headers=headers)
+        assert validation.status_code == 200, validation.text
+        writes_before_unconfirmed = core.assertion_writes.copy()
+        unconfirmed = await client.post(
+            relation_path,
+            headers=headers | {"Idempotency-Key": "main-relation-unconfirmed"},
+            json={
+                "targetCandidateHandle": unconfirmed_handle,
+                "direction": "source-to-target",
+                "mode": "manual",
+                "predicate": "implements",
+            },
+        )
+        assert unconfirmed.status_code == 409
+        assert unconfirmed.json()["code"] == "CONTROLLED_RELATION_REQUIRES_CONFIRMATION"
+        assert unconfirmed.json()["detail"] == (
+            "Confirm both manual occurrences before relating them."
+        )
+        assert core.assertion_writes == writes_before_unconfirmed
+
+        unsupported_target = core.add_candidate(
+            "relation-unsupported-predicate",
+            entity_type="Requirement",
+            evidence_text="rollout",
+            start_offset=7,
+            end_offset=14,
+        )
+        await _approve_manual_candidate(
+            client, core, headers, unsupported_target, "unsupported-predicate"
+        )
+        writes_before_unsupported = core.assertion_writes.copy()
+        unsupported = await client.post(
+            relation_path,
+            headers=headers | {"Idempotency-Key": "main-relation-unsupported-predicate"},
+            json={
+                "targetCandidateHandle": unsupported_target,
+                "direction": "source-to-target",
+                "mode": "manual",
+                "predicate": "constrainedBy",
+            },
+        )
+        assert unsupported.status_code == 422
+        assert unsupported.json()["code"] == "CONTROLLED_RELATION_UNSUPPORTED"
+        assert unsupported.json()["detail"] == (
+            "Select an allowlisted predicate for these endpoint types and direction, "
+            "or choose another endpoint pair."
+        )
+        assert core.assertion_writes == writes_before_unsupported
+
+
+@pytest.mark.asyncio
+async def test_main_app_sanitizes_unrecognized_controlled_relation_codes_and_details(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class UnapprovedRelationErrorCore(_ManualCore):
+        expose_unapproved_error = False
+
+        async def request(
+            self,
+            context: TrustedRequestContext,
+            method: str,
+            path: str,
+            body: object | None = None,
+            key: str | None = None,
+        ) -> object:
+            if self.expose_unapproved_error and path.endswith("/source-context"):
+                raise SemanticCoreProblem(
+                    503, "CONTROLLED_RELATION_PRIVATE_ERROR", "private upstream diagnostic"
+                )
+            return await super().request(context, method, path, body, key)
+
+    core = UnapprovedRelationErrorCore()
+    app, _ = _make_production_app(monkeypatch, core=core)
+    headers = _production_headers()
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        _, base = await _capture_and_confirm_main_app_candidate(client, core, headers)
+        target_handle = core.add_candidate(
+            "relation-private-error-target",
+            entity_type="Requirement",
+            evidence_text="rollout",
+            start_offset=7,
+            end_offset=14,
+        )
+        core.expose_unapproved_error = True
+        writes_before_error = core.assertion_writes.copy()
+        response = await client.post(
+            f"{base}/relation-suggestions",
+            headers=headers | {"Idempotency-Key": "main-relation-private-error"},
+            json={
+                "targetCandidateHandle": target_handle,
+                "direction": "source-to-target",
+                "mode": "manual",
+                "predicate": "implements",
+            },
+        )
+
+    assert response.status_code == 503
+    assert response.json()["code"] == "SEMANTIC_CONTRACT_UNAVAILABLE"
+    assert response.json()["detail"] == "The semantic service is temporarily unavailable."
+    assert "CONTROLLED_RELATION_PRIVATE_ERROR" not in response.text
+    assert "private upstream diagnostic" not in response.text
+    assert core.assertion_writes == writes_before_error
+
+
 @pytest.mark.asyncio
 async def test_suggestion_requires_validated_confirmed_capture_and_never_infers_on_read() -> None:
     app, core, database = _make_app()
@@ -285,13 +628,6 @@ async def test_suggestion_requires_validated_confirmed_capture_and_never_infers_
         assert state.json()["modelAvailable"] is False
         assert state.json()["budget"]["userRemaining"] == 5
 
-        unavailable = await client.post(
-            suggestion_path,
-            headers=headers | {"Idempotency-Key": "suggestion-without-local-runtime"},
-            json={"retry": False},
-        )
-        assert unavailable.status_code == 503
-        assert unavailable.json()["code"] == "LOCAL_MODEL_NOT_CONFIGURED"
         metrics_response = await client.get(
             f"/v1/projects/{_PROJECT_HANDLE}/authoring-metrics", headers=headers
         )
@@ -321,6 +657,64 @@ async def test_suggestion_requires_validated_confirmed_capture_and_never_infers_
         assert core.assertion_writes == []
 
     database.close()
+
+
+@pytest.mark.asyncio
+async def test_configured_local_model_stays_disabled_in_production() -> None:
+    class ForbiddenGateway:
+        def __init__(self) -> None:
+            self.calls = 0
+
+        async def suggest(
+            self, context: LocalSuggestionModelContext
+        ) -> LocalSuggestionModelOutput:
+            del context
+            self.calls += 1
+            raise AssertionError(
+                "production must not invoke the local suggestion gateway"
+            )
+
+    database = OperationalDatabase(":memory:")
+    gateway = ForbiddenGateway()
+    key = LocalSuggestionKey(
+        _PROJECT_ID,
+        "sv_" + "a" * 64,
+        1,
+        "candidate-h-production-test",
+        1,
+        "sha256:" + "b" * 64,
+    )
+    subject = LocalSuggestionSubject(
+        key,
+        "Production-disabled local suggestion",
+        "Plan rollout",
+        "Plan",
+        "Task",
+        (),
+    )
+    service = LocalSuggestionService(
+        LocalSuggestionRepository(database),
+        gateway,
+        model_id="configured-local-model",
+        production_disabled=True,
+    )
+    try:
+        state = service.read(key, "reviewer-1", [])
+        assert state.model_available is False
+        assert state.availability_reason == "production_disabled"
+
+        with pytest.raises(LocalSuggestionError, match="production_disabled") as error:
+            await service.request(
+                subject,
+                "reviewer-1",
+                "production-disabled-attempt",
+                retry=False,
+                link_options=[],
+            )
+        assert error.value.code == "production_disabled"
+        assert gateway.calls == 0
+    finally:
+        database.close()
 
 
 def test_suggestion_retries_consume_budgets_and_replays_do_not() -> None:
@@ -1050,6 +1444,39 @@ async def test_manual_relation_requires_two_current_confirmations_and_records_re
             assert replay.json()["receipt"]["outcome"] == "replayed"
             assert replay.json()["receipt"]["receiptDigest"] == receipt["receiptDigest"]
             assert core.assertion_writes == []
+    finally:
+        database.close()
+
+
+@pytest.mark.asyncio
+async def test_relation_targets_preserve_opaque_core_candidate_handles() -> None:
+    app, core, database = _make_app()
+    headers = {"X-Projecta-Selection-Handle": _PROJECT_HANDLE}
+    try:
+        async with AsyncClient(
+            transport=ASGITransport(app=app), base_url="http://test"
+        ) as client:
+            source_handle, target_handle = await _capture_confirmed_relation_pair(
+                client, core, headers
+            )
+            core.return_opaque_candidate_handles = True
+
+            targets = await client.get(
+                f"/v1/projects/{_PROJECT_HANDLE}/candidates/{source_handle}/relation-suggestion-targets",
+                headers=headers,
+            )
+
+            assert targets.status_code == 200, targets.text
+            target = next(
+                (
+                    value
+                    for value in targets.json()["targets"]
+                    if value["candidateHandle"] == target_handle
+                ),
+                None,
+            )
+            assert target is not None
+            assert "implements" in target["allowedPredicates"]["source-to-target"]
     finally:
         database.close()
 

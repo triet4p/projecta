@@ -114,18 +114,17 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   commit `4a4fa99e010f22a69667119554580c91e2fc7b7e`; CI/publish run
   `31767397618` passed. Sanitized evidence was retained and disposable runtime
   resources were torn down. M7 remains open.*
-- [Sprint 13 — Evidence-first Assisted Authoring](sprint-plans/sprint-13.md)
-  — *Internal implementation review complete: human-first zero-model capture,
-  on-demand local suggestions, controlled relations, privacy-scoped telemetry,
-  adversarial gates and review receipts passed task and sprint-wide gates.
-  Production materialization stays locked; offline evaluation/R6/R7 remain
-  explicitly deferred. Owner-deferred Graphify semantic refresh leaves the
-  project graph stale; no provider, human, held-out, production or release
-  authorization follows.*
 
 ## Active Sprint
 
-No active sprint selected. Sprint 14+ requires a separately scoped plan.
+- [Sprint 13 — Evidence-first Assisted Authoring](sprint-plans/sprint-13.md)
+  — *Real Docker browser-to-live-backend capture, review, relation and
+  PostgreSQL receipt flows passed the S13-07 evidence gate. The optional
+  local-model Compose boundary and fail-closed runtime errors passed the
+  corrected S13-07 gate. Receipt and relation error handling passed their
+  corrected task gates; sprint-wide differential re-review remains pending.
+  Offline evaluation/R6/R7 remain deferred, production materialization remains
+  locked, and the owner-waived project graph remains stale.*
 
 ## Historical / Closed Sprint
 

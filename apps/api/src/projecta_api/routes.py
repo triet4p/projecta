@@ -84,6 +84,7 @@ from projecta_api.graph_projection import (
     ReviewWorkbenchDetailResponse,
     finite_types,
     mapping,
+    opaque_or_hashed,
     opaque_navigation_handle,
     project_candidate_queue,
     project_graph_page,
@@ -1359,7 +1360,7 @@ def create_router(
             raw_handle = row.get("handle")
             if not isinstance(raw_handle, str) or not raw_handle:
                 continue
-            target_handle = opaque_navigation_handle(raw_handle, "candidate")
+            target_handle = opaque_or_hashed(raw_handle, "candidate")
             if target_handle == candidate_handle or target_handle in seen:
                 continue
             seen.add(target_handle)

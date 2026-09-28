@@ -1,6 +1,6 @@
 # Sprint 13 Plan — Evidence-first Assisted Authoring
 
-Status: `COMPLETED_INTERNAL_IMPLEMENTATION_REVIEW`
+Status: `SPRINT_REVIEW_PENDING_AFTER_DOCKER_ACCEPTANCE`
 
 Contract: [Evidence-first Assisted Authoring v1](sprint-13/evidence-first-assisted-authoring.v1.md)
 
@@ -48,12 +48,22 @@ Status legend: [ ] pending / [~] in progress / [x] done / [-] explicitly deferre
   No offline protocol, R6 fresh benchmark, or R7 independent evaluation is
   authorized within this sprint.
 
-S13-01--S13-07 passed their task evidence gates and the sprint-wide differential
-review. S13-08 is an explicit owner deferral, not an authorization to run an
-offline evaluation. The owner also deferred the Graphify semantic refresh for
-S13-07 and the reopened S13-05 correction: the project graph remains stale
-relative to pending code and documents. No production enablement or release
-follows from this internal implementation review.
+The reopened runtime gate passed after an isolated full Docker Compose build
+and a real browser-to-live-backend manual capture, review and controlled
+relation flow. The earlier API/Java and controlled-browser evidence remains
+separate; the Docker session verified receipt persistence and blocked graph
+materialization, not optional live local-model inference or production release.
+The documented Compose startup, web response contract, and optional-model
+environment forwarding passed their task gates. The live Docker API preserved
+distinct unconfigured and unavailable local-model errors: the no-model request
+spent no budget, and the configured request without Ollama recorded one failed
+attempt without an assertion or graph write. Successful local-model inference
+was not exercised; a model was not provisioned in the API network namespace.
+The receipt, relation, and final Docker API error-envelope corrections passed
+fresh task-level evidence gates. Production API requests preserve actionable
+relation and receipt reason codes without graph writes, and the API regression
+suite remains green. Sprint-wide differential re-review is pending. S13-08
+remains deferred; the owner-waived project graph refresh remains stale.
 
 ## Notes / Blockers
 

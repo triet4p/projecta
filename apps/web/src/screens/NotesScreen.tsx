@@ -9,6 +9,7 @@ import type {
   StructuredNoteListResponse,
 } from "../api/generated";
 import { Card, ErrorMessage, operationKey, StateMessage, StatusBadge } from "../ui";
+import { CaptureScreen } from "./CaptureScreen";
 import { moveNoteItem } from "./note-composer";
 
 const types: EntityType[] = [
@@ -26,9 +27,10 @@ const types: EntityType[] = [
 interface Props {
   api: ProjectaApiClient;
   projectHandle: string;
+  onCandidate: (candidateHandle: string) => void;
 }
 
-export function NotesScreen({ api, projectHandle }: Props): ReactElement {
+export function NotesScreen({ api, projectHandle, onCandidate }: Props): ReactElement {
   const [title, setTitle] = useState("Untitled Note");
   const [items, setItems] = useState<StructuredNoteDraftInput["items"]>([]);
   const [draft, setDraft] = useState<StructuredNoteDraftResponse | null>(null);
@@ -38,6 +40,7 @@ export function NotesScreen({ api, projectHandle }: Props): ReactElement {
   const [notice, setNotice] = useState<string | null>(null);
   const [error, setError] = useState<unknown>(null);
   const [busy, setBusy] = useState(false);
+  const [manualCaptureOpen, setManualCaptureOpen] = useState(false);
 
   const loadNotes = useCallback(async () => {
     try {
@@ -125,6 +128,24 @@ export function NotesScreen({ api, projectHandle }: Props): ReactElement {
     setItems(items.filter((_, itemIndex) => itemIndex !== index));
   const moveItem = (index: number, direction: -1 | 1) =>
     setItems(moveNoteItem(items, index, direction));
+  if (manualCaptureOpen) {
+    return (
+      <div className="workspace-page">
+        <div className="workspace-header">
+          <p className="eyebrow">Manual Quick Note capture</p>
+          <button
+            className="secondary"
+            onClick={() => setManualCaptureOpen(false)}
+            type="button"
+          >
+            Back to Notes
+          </button>
+        </div>
+        <CaptureScreen api={api} onCandidate={onCandidate} />
+      </div>
+    );
+  }
+
 
   return (
     <div className="workspace-page">
@@ -136,6 +157,13 @@ export function NotesScreen({ api, projectHandle }: Props): ReactElement {
             Compose typed source items; the server derives canonical text and evidence offsets.
           </p>
         </div>
+        <button
+          className="secondary"
+          onClick={() => setManualCaptureOpen(true)}
+          type="button"
+        >
+          Capture exact spans
+        </button>
       </div>
       <div className="screen-grid two-column">
         <Card>

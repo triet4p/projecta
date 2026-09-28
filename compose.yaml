@@ -185,7 +185,7 @@ services:
     build:
       context: ./apps/api
       target: runtime
-    image: projecta-api:local
+    image: projecta-api-migrate:local
     depends_on:
       connector-postgres:
         condition: service_healthy
@@ -230,6 +230,7 @@ services:
       PROJECTA_LLM_BASE_URL: ${PROJECTA_LLM_BASE_URL:-}
       PROJECTA_LLM_API_KEY: ${PROJECTA_LLM_API_KEY:-}
       PROJECTA_LLM_MODEL: ${PROJECTA_LLM_MODEL:-}
+      PROJECTA_LOCAL_SUGGESTION_MODEL: ${PROJECTA_LOCAL_SUGGESTION_MODEL:-}
     volumes:
       - projecta-api-operational:/var/lib/projecta
       - projecta-evidence:/var/lib/projecta/evidence

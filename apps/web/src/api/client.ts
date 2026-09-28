@@ -58,7 +58,6 @@ import type {
   ManualCaptureApprovalResponse,
   ManualCaptureRejectionRequest,
   ManualCaptureRejectionResponse,
-  ManualReviewWorkbenchDetailResponse,
   RelationSuggestionTargetsResponse,
 } from "./manual-capture";
 
@@ -308,8 +307,8 @@ export class ProjectaApiClient {
   async getReviewCandidateDetail(
     projectHandle: string,
     candidateHandle: string,
-  ): Promise<ManualReviewWorkbenchDetailResponse> {
-    return this.request<ManualReviewWorkbenchDetailResponse>(
+  ): Promise<ReviewWorkbenchDetailResponse> {
+    return this.request<ReviewWorkbenchDetailResponse>(
       `/v1/projects/${encodeURIComponent(projectHandle)}/candidates/${encodeURIComponent(candidateHandle)}/review-detail`,
       { method: "GET" },
     );

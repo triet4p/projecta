@@ -696,6 +696,11 @@ export interface ReviewProposal {
   semanticType?: string | null;
   predicate?: string | null;
 }
+export interface ManualCaptureInfo {
+  mode: "human-authored-zero-model";
+  entityHandle: string;
+}
+
 export interface ReviewWorkbenchDetailResponse {
   detailVersion: "review-workbench.v1";
   requestId: string;
@@ -719,6 +724,7 @@ export interface ReviewWorkbenchDetailResponse {
   quarantined: boolean;
   abstainReason?: string | null;
   reviewReceipt: ReviewReceiptState;
+  manualCapture?: ManualCaptureInfo | null;
 }
 export interface KnowledgeCollectionItem {
   handle: string;
