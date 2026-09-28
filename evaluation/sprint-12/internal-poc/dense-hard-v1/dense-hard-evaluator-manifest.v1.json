@@ -1,0 +1,332 @@
+{
+  "abstentionCaseCount": 11,
+  "artifactVersion": "s12.dense-hard.evaluator-manifest.v1",
+  "caseCount": 24,
+  "datasetKind": "SYNTHETIC_NON_PRODUCTION",
+  "goldDigest": "sha256:cb1998d03380665e72e7aa69eee055366618f00f967a0ec0530f52eafde2b7a7",
+  "goldPath": "evaluation/sprint-12/internal-poc/dense-hard-v1/dense-hard-gold.v1.json",
+  "manifestDigest": "sha256:94f2dc356a638de254c0cd1d534a3df04a225bbe6f817af2d9be46c01b59f80b",
+  "nonClaims": [
+    "no candidate output, review, score, provider call, held-out material, or benchmark pass is produced by this packet",
+    "gold is private evaluator input and is not present in the source-only payload"
+  ],
+  "records": [
+    {
+      "abstentionRequired": false,
+      "caseId": "dh-001",
+      "entityCount": 4,
+      "language": "en",
+      "relationCount": 3,
+      "scenarioId": "dh-s-001",
+      "slices": [
+        "multi-hop",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionRequired": false,
+      "caseId": "dh-002",
+      "entityCount": 4,
+      "language": "en",
+      "relationCount": 3,
+      "scenarioId": "dh-s-002",
+      "slices": [
+        "multi-hop",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionRequired": false,
+      "caseId": "dh-003",
+      "entityCount": 4,
+      "language": "vi",
+      "relationCount": 3,
+      "scenarioId": "dh-s-003",
+      "slices": [
+        "multi-hop",
+        "mixed-unicode"
+      ]
+    },
+    {
+      "abstentionRequired": false,
+      "caseId": "dh-004",
+      "entityCount": 4,
+      "language": "ja",
+      "relationCount": 3,
+      "scenarioId": "dh-s-004",
+      "slices": [
+        "multi-hop",
+        "mixed-unicode"
+      ]
+    },
+    {
+      "abstentionRequired": true,
+      "caseId": "dh-005",
+      "entityCount": 5,
+      "language": "en",
+      "relationCount": 3,
+      "scenarioId": "dh-s-005",
+      "slices": [
+        "repeated-labels",
+        "different-occurrences"
+      ]
+    },
+    {
+      "abstentionRequired": true,
+      "caseId": "dh-006",
+      "entityCount": 5,
+      "language": "en",
+      "relationCount": 3,
+      "scenarioId": "dh-s-006",
+      "slices": [
+        "repeated-labels",
+        "different-occurrences"
+      ]
+    },
+    {
+      "abstentionRequired": true,
+      "caseId": "dh-007",
+      "entityCount": 3,
+      "language": "en",
+      "relationCount": 0,
+      "scenarioId": "dh-s-007",
+      "slices": [
+        "negation",
+        "non-assertion",
+        "abstention"
+      ]
+    },
+    {
+      "abstentionRequired": true,
+      "caseId": "dh-008",
+      "entityCount": 3,
+      "language": "en",
+      "relationCount": 0,
+      "scenarioId": "dh-s-008",
+      "slices": [
+        "ambiguity",
+        "abstention"
+      ]
+    },
+    {
+      "abstentionRequired": false,
+      "caseId": "dh-009",
+      "entityCount": 6,
+      "language": "en",
+      "relationCount": 3,
+      "scenarioId": "dh-s-009",
+      "slices": [
+        "temporal-supersession",
+        "stale-statement"
+      ]
+    },
+    {
+      "abstentionRequired": false,
+      "caseId": "dh-010",
+      "entityCount": 6,
+      "language": "en",
+      "relationCount": 3,
+      "scenarioId": "dh-s-010",
+      "slices": [
+        "temporal-supersession",
+        "stale-statement"
+      ]
+    },
+    {
+      "abstentionRequired": false,
+      "caseId": "dh-011",
+      "entityCount": 4,
+      "language": "en",
+      "relationCount": 3,
+      "scenarioId": "dh-s-011",
+      "slices": [
+        "cross-sentence-dependency",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionRequired": false,
+      "caseId": "dh-012",
+      "entityCount": 4,
+      "language": "en",
+      "relationCount": 3,
+      "scenarioId": "dh-s-012",
+      "slices": [
+        "cross-sentence-dependency",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionRequired": false,
+      "caseId": "dh-013",
+      "entityCount": 8,
+      "language": "en",
+      "relationCount": 3,
+      "scenarioId": "dh-s-013",
+      "slices": [
+        "distractors",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionRequired": false,
+      "caseId": "dh-014",
+      "entityCount": 6,
+      "language": "en",
+      "relationCount": 3,
+      "scenarioId": "dh-s-014",
+      "slices": [
+        "distractors",
+        "cross-sentence-dependency"
+      ]
+    },
+    {
+      "abstentionRequired": false,
+      "caseId": "dh-015",
+      "entityCount": 4,
+      "language": "mixed",
+      "relationCount": 3,
+      "scenarioId": "dh-s-015",
+      "slices": [
+        "mixed-unicode",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionRequired": false,
+      "caseId": "dh-016",
+      "entityCount": 4,
+      "language": "mixed",
+      "relationCount": 3,
+      "scenarioId": "dh-s-016",
+      "slices": [
+        "mixed-unicode",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionRequired": false,
+      "caseId": "dh-017",
+      "entityCount": 4,
+      "language": "mixed",
+      "relationCount": 3,
+      "scenarioId": "dh-s-017",
+      "slices": [
+        "mixed-unicode",
+        "emoji",
+        "combining-mark"
+      ]
+    },
+    {
+      "abstentionRequired": true,
+      "caseId": "dh-018",
+      "entityCount": 3,
+      "language": "en",
+      "relationCount": 0,
+      "scenarioId": "dh-s-018",
+      "slices": [
+        "ambiguity",
+        "abstention"
+      ]
+    },
+    {
+      "abstentionRequired": true,
+      "caseId": "dh-019",
+      "entityCount": 3,
+      "language": "en",
+      "relationCount": 0,
+      "scenarioId": "dh-s-019",
+      "slices": [
+        "adversarial-instruction",
+        "abstention"
+      ]
+    },
+    {
+      "abstentionRequired": true,
+      "caseId": "dh-020",
+      "entityCount": 3,
+      "language": "en",
+      "relationCount": 1,
+      "scenarioId": "dh-s-020",
+      "slices": [
+        "unsupported-relation",
+        "partial-abstention"
+      ]
+    },
+    {
+      "abstentionRequired": true,
+      "caseId": "dh-021",
+      "entityCount": 4,
+      "language": "mixed",
+      "relationCount": 1,
+      "scenarioId": "dh-s-021",
+      "slices": [
+        "cross-project",
+        "partial-abstention"
+      ]
+    },
+    {
+      "abstentionRequired": true,
+      "caseId": "dh-022",
+      "entityCount": 5,
+      "language": "en",
+      "relationCount": 1,
+      "scenarioId": "dh-s-022",
+      "slices": [
+        "negation",
+        "non-assertion",
+        "partial-abstention"
+      ]
+    },
+    {
+      "abstentionRequired": true,
+      "caseId": "dh-023",
+      "entityCount": 3,
+      "language": "en",
+      "relationCount": 1,
+      "scenarioId": "dh-s-023",
+      "slices": [
+        "unsupported-relation",
+        "partial-abstention"
+      ]
+    },
+    {
+      "abstentionRequired": true,
+      "caseId": "dh-024",
+      "entityCount": 2,
+      "language": "en",
+      "relationCount": 0,
+      "scenarioId": "dh-s-024",
+      "slices": [
+        "ambiguity",
+        "abstention",
+        "stale-statement"
+      ]
+    }
+  ],
+  "scenarioCount": 24,
+  "sliceCounts": {
+    "abstention": 5,
+    "adversarial-instruction": 1,
+    "ambiguity": 3,
+    "combining-mark": 1,
+    "cross-project": 1,
+    "cross-sentence-dependency": 3,
+    "different-occurrences": 2,
+    "distractors": 2,
+    "emoji": 1,
+    "mixed-unicode": 5,
+    "multi-hop": 4,
+    "multi-relation": 7,
+    "negation": 2,
+    "non-assertion": 2,
+    "partial-abstention": 4,
+    "repeated-labels": 2,
+    "stale-statement": 3,
+    "temporal-supersession": 2,
+    "unsupported-relation": 2
+  },
+  "sourcePayloadDigest": "sha256:65e6a044767f97298dee4511d19e3373878483224b9b7cf2606b94acdefc1409",
+  "sourcePayloadPath": "evaluation/sprint-12/internal-poc/dense-hard-v1/dense-hard-source-payload.v1.json",
+  "status": "FROZEN_EVALUATOR_MANIFEST"
+}

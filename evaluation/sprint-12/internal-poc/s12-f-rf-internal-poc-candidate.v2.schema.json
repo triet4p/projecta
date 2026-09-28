@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.example/schemas/s12-f-rf-internal-poc-candidate.v2.json",
+  "title": "Sprint 12 F-RF Deterministic Internal Candidate v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifactVersion", "status", "candidateVersion", "candidateKind", "scope", "caseCount", "caseResults", "providerCalls", "heldOutInspection", "assertedGraphMutation", "inferencePublication", "rawSensitiveDataIncluded", "pocProtocolDigest", "candidateCodeDigest", "statusReason"],
+  "properties": {
+    "artifactVersion": {"const": "s12.f-rf.internal-poc-candidate.v2"},
+    "status": {"const": "INTERNAL_DEV_POC_EXECUTED"},
+    "candidateVersion": {"const": "m3.v2"},
+    "candidateKind": {"const": "deterministic-rule-boundary"},
+    "scope": {"const": "internal-development-representative-cases-only"},
+    "caseCount": {"const": 12},
+    "caseResults": {"type": "array", "minItems": 12, "maxItems": 12, "items": {"$ref": "#/$defs/caseResult"}},
+    "providerCalls": {"const": 0},
+    "heldOutInspection": {"const": false},
+    "assertedGraphMutation": {"const": false},
+    "inferencePublication": {"const": false},
+    "rawSensitiveDataIncluded": {"const": false},
+    "pocProtocolDigest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+    "candidateCodeDigest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+    "statusReason": {"const": "deterministic local rule candidate; no provider runtime or human evidence"}
+  },
+  "$defs": {
+    "caseResult": {"type": "object", "additionalProperties": false, "required": ["caseId", "scenarioId", "status", "entityCount", "abstentionReason", "sourceVersion", "score"], "properties": {"caseId": {"pattern": "^s12-a-[0-9]{4}$"}, "scenarioId": {"pattern": "^s12-s-[0-9]{3}$"}, "status": {"const": "abstained"}, "entityCount": {"const": 0}, "abstentionReason": {"enum": ["internal_poc_adversarial_input_abstain", "internal_poc_no_allowlisted_signal"]}, "sourceVersion": {"type": "object", "additionalProperties": false, "required": ["contractVersion", "sourceVersionId", "projectScopeId", "sourceArtifactScopeId", "originalContentDigest", "canonicalContentDigest", "canonicalizationVersion", "coordinateSystemVersion", "retention", "replayKey", "receiptDigest"], "properties": {"contractVersion": {"const": "source-version.v1"}, "sourceVersionId": {"pattern": "^sv_[0-9a-f]{64}$"}, "projectScopeId": {"pattern": "^project_[0-9a-f]{64}$"}, "sourceArtifactScopeId": {"pattern": "^artifact_[0-9a-f]{64}$"}, "originalContentDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}, "canonicalContentDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}, "canonicalizationVersion": {"const": "crlf-lf.v1"}, "coordinateSystemVersion": {"const": "unicode-codepoint.v1"}, "retention": {"type": "object"}, "parentSourceVersionId": {"type": ["string", "null"]}, "parentCanonicalContentDigest": {"type": ["string", "null"]}, "replayKey": {"pattern": "^replay_[0-9a-f]{64}$"}, "receiptDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}}}, "score": {"type": "object"}}}
+  }
+}

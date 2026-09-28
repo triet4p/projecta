@@ -1,6 +1,6 @@
 # Sprint 12 Plan — Business Semantic Quality and Evaluation
 
-Status: `G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY`
+Status: `F_RF_POC_BASELINE_ACCEPTED_DENSE_HARD_V4_FAILED_STRATEGY_REDESIGN_REQUIRED`
 
 Current state: [Sprint 12 Current State](sprint-12/current-state.md)
 
@@ -17,11 +17,11 @@ G5 packet: [Controlled Optimization Review Packet v25 — RM-37 closure](sprint-
 Current G5 packet: [Controlled Optimization Review Packet v36 — RM-51
 closure-only stop](sprint-12/g5-optimization.v36.rm51-closure-only.md)
 
-Human-first extraction framework design (non-authoritative, pending
-`S12-RM-53` and separate owner approval):
-[Human-first Extraction Framework v1](sprint-12/human-first-extraction-framework.v1.md)
+Human-first extraction framework design (v2 accepted for RM-55 contract
+definition only; v1 remains immutable source):
+[Human-first Extraction Framework v2](sprint-12/human-first-extraction-framework.v2.md)
 
-This design link does not change the current G5 stop status and does not
+This design link does not open implementation or change the provider stop and does not
 authorize provider, runtime, lineage, validation, held-out, Stage B, selection,
 or promotion work.
 
@@ -999,95 +999,251 @@ provider, inspect validation/held-out data, or authorize candidate selection.
   failures, unknown prompt/model causality, custody lessons and external
   blockers without opening provider or downstream work. RM-53 owner review is
   required next.
-- [ ] **S12-RM-53 — Owner closure review RM-52 packet and backlog:**
-  Independently review custody, digests, absence of v8 output, classifications
-  and governance locks before accepting or rejecting the offline closure.
+- [x] **S12-BF-01 — Repair Sprint 12 status and document drift:** Replace the
+  stale Phase F status assertion with the durable machine-state contract,
+  synchronize RM-47/RM-52/RM-53 wording, and label the v33 packet as historical
+  while retaining v36 as current.
+- [x] **S12-BF-02 — Make the historical test suite non-destructive and current-state
+  compatible:** Route mock v6/v9 executions to test-owned temporary outputs,
+  assert archived/default paths fail closed with zero provider calls, update
+  historical snapshots to distinguish archived transitions from authoritative
+  current state, and guard immutable v6/v9 digests plus absent v8 across the
+  complete suite.
+- [x] **S12-BF-03 — Make the dense-hard v2 packet lifecycle phase-aware:** Keep
+  post-evaluation candidate/evaluation siblings immutable and digest-bound,
+  while exposing an explicit pre-candidate audit that rejects those siblings.
+  The complete historical suite remains green; frozen dense-hard evidence is
+  unchanged. See
+  `sprint-12/artifacts/task_S12-BF-03_dense-hard-v2-lifecycle_summary.md`.
+- [x] **S12-RM-53 — Owner closure review RM-52 packet and backlog:**
+  The delegated owner review verified RM-52 schemas, custody digests, the
+  absent v8 report, immutable v6/v9 evidence, measured classifications and
+  RM-51 governance locks. It accepted offline closure custody only; no human
+  business-quality claim, implementation, provider, runtime, validation,
+  held-out, Stage B, selection or promotion authority follows.
 
 #### Phase F-RF — Human-First Extraction Framework
+
+Development status: `F_RF_POC_BASELINE_ACCEPTED_DENSE_HARD_V4_FAILED_STRATEGY_REDESIGN_REQUIRED`
+for the bounded internal source-only agent-proxy baseline. RM-53 through RM-67
+are complete for development contracts, implementation, and offline gates.
+Dense-hard v1 through v4 are separate authoritative diagnostics; v4 fails both
+stratified gates. The v5 result remains historical bounded evidence only and
+cannot support a generalized “good enough” or low-correction claim. RM-68 is
+accepted only for this internal scope; external validation, human-study, and
+business-quality evidence remain closed. Any strategy redesign is finite,
+offline-only, and requires new authority before fresh benchmark or candidate work.
 
 This tranche is queued behind accepted `S12-RM-53` closure and a separate owner
 activation. Every task starts pending. Planning these tasks does not authorize
 provider calls, runtime execution, reruns, retries, validation, held-out access,
-Stage B, selection, or promotion. The design input is
-[Human-first Extraction Framework v1](sprint-12/human-first-extraction-framework.v1.md).
+Stage B, selection, or promotion. The accepted design input is
+[Human-first Extraction Framework v2](sprint-12/human-first-extraction-framework.v2.md),
+which preserves v1 as its immutable source.
 
-- [ ] **S12-RM-54 — Review and disposition the human-first framework design:**
-  After accepted `S12-RM-53`, verify verbatim design custody, resolve open
-  policy questions, record non-goals, and accept, revise, or reject the design.
-  This gate approves only the design direction; implementation and provider
-  work require separate authorization.
-- [ ] **S12-RM-55 — Define the immutable SourceVersion and source-receipt
-  contract:** After accepted `S12-RM-54`, specify project-scoped source identity,
-  original and canonical content digests, version lineage, retention metadata,
-  and replay/fork detection. Acceptance requires deterministic receipt
-  verification without storing sensitive source content in telemetry.
-- [ ] **S12-RM-56 — Define the text-anchor coordinate contract:** After
-  `S12-RM-55`, specify source-version-bound, zero-based, half-open Unicode
-  code-point offsets plus deterministic original/canonical and UTF-16 display
-  mappings. Acceptance requires fail-closed behavior for missing, ambiguous,
-  reversed, empty, or out-of-source spans; silent fallback is forbidden.
-- [ ] **S12-RM-57 — Implement per-item validation and quarantine boundaries:**
-  After `S12-RM-56`, classify each entity, link, relation, and evidence item with
-  finite allowlisted reasons so one invalid item cannot contaminate or discard
-  unrelated valid items. Acceptance requires invalid items to remain
-  non-materializable and all unknown reasons to fail closed.
-- [ ] **S12-RM-58 — Implement the confirmed-entity relation gate:** After
-  `S12-RM-57`, permit relation processing only over server-resolved, project-
-  scoped, allowlisted entity handles confirmed under the active source version.
-  Acceptance rejects model-created global IDs, unknown handles, cross-project
-  leakage, self-relations, and stale confirmations.
-- [ ] **S12-RM-59 — Implement deterministic evidence selection:** After
-  `S12-RM-56` and `S12-RM-58`, materialize evidence from server-owned source blocks,
-  endpoint anchors, trigger anchors, and a deterministic smallest-valid-boundary
-  rule. Acceptance requires explicit abstain/review outcomes for missing or
-  equally ranked evidence rather than generated or guessed evidence.
-- [ ] **S12-RM-60 — Define and enforce the constrained relation contract:** After
-  `S12-RM-58` and `S12-RM-59`, bind allowlisted predicates, endpoint direction,
-  project scope, polarity, modality, temporal qualifiers, and evidence status.
-  Acceptance requires unsupported or ambiguous semantics to remain pending,
-  abstained, or quarantined instead of becoming asserted facts.
-- [ ] **S12-RM-61 — Implement durable review decision receipts:** After
+- [x] **S12-RM-54 — Review and disposition the human-first framework design:**
+  The delegated review verified v1 custody, accepted the revised v2 design,
+  resolved the kernel policy categories with fail-closed defaults, recorded
+  owner-gated RM-67/RM-68 deferrals and explicit non-goals. This gate accepts
+  design direction for RM-55 contract definition only; implementation,
+  ontology release and provider work remain separately unauthorized.
+- [x] **S12-RM-55 — Define the immutable SourceVersion and source-receipt
+  contract:** The extraction boundary now provides a versioned opt-in contract
+  with project-scoped stable IDs, strict UTF-8, original/canonical SHA-256
+  digests, deterministic CRLF/CR-to-LF canonicalization, coordinate/version
+  metadata, optional parent lineage, retention metadata and fail-closed
+  replay/fork receipt verification. Legacy extraction remains compatible.
+- [x] **S12-RM-56 — Define the text-anchor coordinate contract:** The
+  application extraction boundary now provides an explicit opt-in, versioned
+  TextAnchor contract bound to a verified SourceVersion and canonical content.
+  It uses zero-based half-open Unicode code-point offsets, exact-quote and
+  digest verification, deterministic original code-point/UTF-8-byte and
+  UTF-16 display mappings across CRLF/CR-to-LF canonicalization, and finite
+  fail-closed reasons. Raw quotes are excluded from safe serialization; legacy
+  extraction remains unchanged.
+- [x] **S12-RM-57 — Implement per-item validation and quarantine boundaries:**
+  The explicit opt-in application boundary independently classifies entity,
+  entity-link, relation, and evidence items with finite allowlisted reasons and
+  lifecycle outcomes (`contract-valid`, `review-pending`, `abstained`,
+  `quarantined`, or `stale`). Unknown kinds, statuses, reasons, schema fields,
+  project/source/anchor mismatches, malformed payloads, and stale content fail
+  closed; invalid outcomes can never be materializable. Legacy extraction is
+  unchanged.
+- [x] **S12-RM-58 — Implement the confirmed-entity relation gate:** The
+  explicit opt-in application boundary issues deterministic opaque,
+  project-scoped entity handles only from contract-valid or review-confirmed
+  entity items under the active SourceVersion. Relation requests resolve both
+  handles server-side and reject model/global/free-text IDs, unknown or
+  malformed handles, cross-project/source-version access, unconfirmed or stale
+  confirmations, type mismatches, self-relations, duplicate relations, and
+  conflicting replays. Legacy extraction and persistence boundaries remain
+  unchanged.
+- [x] **S12-RM-59 — Implement deterministic evidence selection:** The explicit
+  opt-in application boundary segments verified canonical source into versioned
+  sentence/clause blocks and selects the smallest valid boundary containing
+  confirmed endpoint anchors and an optional/required trigger anchor. Missing,
+  stale, tampered, out-of-block, cross-sentence, unsupported, and tied inputs
+  fail closed to finite abstain/review/quarantine outcomes; no model-authored
+  evidence text or first-match fallback is used.
+- [x] **S12-RM-60 — Define and enforce the constrained relation contract:** The
+  explicit opt-in contract binds released allowlisted predicates and endpoint
+  type/direction rules, project/source/ontology contract versions, polarity,
+  modality, temporal qualifiers, evidence status/digest, and confirmed-handle
+  revisions. Only unambiguous semantics with selected deterministic evidence
+  become non-materializing `review-pending`; unsupported, ambiguous, stale,
+  mismatched, missing, or self relations remain abstained/quarantined.
+- [x] **S12-RM-61 — Implement durable review decision receipts:** After
   `S12-RM-58` and `S12-RM-60`, persist append-only confirm, edit, reject, and
   abstain decisions with actor authorization, candidate/source revisions,
-  optimistic concurrency, idempotency, and decision digests. Acceptance
-  rejects stale revisions and same-key/different-body replays without mutation.
-- [ ] **S12-RM-62 — Implement the human-first review workbench contract:** After
+  optimistic concurrency, idempotency, and decision digests. The explicit
+  PostgreSQL-backed boundary rejects stale revisions and same-key/different-body
+  replays without mutation; receipts record authorized reviewer actions only.
+- [x] **S12-RM-62 — Implement the human-first review workbench contract:** After
   `S12-RM-61`, expose exact source anchors, endpoint/trigger/evidence highlights,
   uncertainty, quarantine reasons, proposal-to-edit diffs, and keyboard-first
-  dispositions. Acceptance requires explicit human action and forbids hidden
-  auto-confirm or default bulk relation approval.
-- [ ] **S12-RM-63 — Implement approved-only assertion materialization:** After
-  `S12-RM-60` and `S12-RM-61`, build an atomic assertion plan from approved
+  dispositions. The same-origin API and React workbench show evidence before
+  actions, preserve source/candidate revisions and durable receipt state, and
+  fail closed for stale or quarantined items. Acceptance requires explicit human
+  action and forbids hidden auto-confirm or default bulk relation approval.
+- [x] **S12-RM-63 — Implement approved-only assertion materialization:** After
+  `S12-RM-60`, `S12-RM-61`, and `S12-RM-62`, build an atomic assertion plan from approved
   candidate revisions only, validate SHACL/provenance/idempotency and expected
-  graph revision, and commit asserted facts and provenance together. Semantic
-  owner review is required before materialization can be enabled.
-- [ ] **S12-RM-64 — Implement inference invalidation and rebuild:** After
+  graph revision, and commit asserted facts and provenance together. The versioned
+  boundary is disabled by default; explicit semantic-owner authorization is required
+  and no production enablement or ontology change was made. See
+  `sprint-12/artifacts/task_S12-RM-63_summary.md`.
+- [x] **S12-RM-64 — Implement inference invalidation and rebuild:** After
   `S12-RM-63`, bind inferred projections to asserted/source/rule revisions and
   mark them stale after correction, rejection, or supersession. Acceptance
   preserves asserted truth across rebuild failures and publishes no stale
-  inference as current.
-- [ ] **S12-RM-65 — Implement correction-burden telemetry:** After `S12-RM-61`
+  inference as current. The versioned boundary is disabled by default, uses
+  released M4 vocabulary/shapes/rules without ontology edits. RM-65 was the
+  next action at that historical transition. See
+  `sprint-12/artifacts/task_S12-RM-64_summary.md`.
+- [x] **S12-RM-65 — Implement correction-burden telemetry:** After `S12-RM-61`
   through `S12-RM-64`, record allowlisted lifecycle IDs, digests, latency,
   correction categories, review outcomes, conflicts, and burden per accepted
   assertion. Acceptance excludes raw source text, secrets, provider payloads,
-  sensitive identifiers, and self-asserted reconciliation flags.
-- [ ] **S12-RM-66 — Add offline property, mutation, adversarial, and default-path
+  sensitive identifiers, and self-asserted reconciliation flags. The append-only
+  PostgreSQL boundary, event-derived reducer, and explicit review hook are
+  accepted; no human-study threshold or production/provider authority is opened.
+  RM-66 was the next action at that historical transition. See
+  `sprint-12/artifacts/task_S12-RM-65_summary.md`.
+- [x] **S12-RM-66 — Add offline property, mutation, adversarial, and default-path
   tests:** After `S12-RM-55` through `S12-RM-65`, cover Unicode/newline/span
   boundaries, repeated and nested mentions, evidence containment, stale source,
   receipt tampering, accounting mutation, prompt injection, project isolation,
   replay, concurrency, and actual default paths. Acceptance requires zero
   provider calls and proves tests cannot overwrite immutable v6/v9 artifacts or
-  create the absent v8 report.
-- [ ] **S12-RM-67 — Define the human correction-burden evaluation contract:**
-  After `S12-RM-61` through `S12-RM-65`, define unchanged/minor/major corrections,
-  review time, semantic edit count, rejection, missing output, reviewer
-  agreement, unsupported finalized assertions, and manual-entry baseline by
-  role and slice. Owner sets thresholds; F1 cannot substitute for human evidence.
-- [ ] **S12-RM-68 — Preregister the human-first evaluation:** After `S12-RM-65`
-  through `S12-RM-67` and external custody readiness, bind dataset, configuration,
-  metric and protocol digests; target roles; blinded or counterbalanced review;
-  manual baseline; correction-burden gates; and abort rules. Preregistration
-  authorizes neither held-out access nor execution.
+  create the absent v8 report. PostgreSQL Compose execution is recorded as an
+  environment skip when Docker is unavailable; it is not treated as a pass.
+  See `sprint-12/artifacts/task_S12-RM-66_summary.md`.
+- [x] **S12-RM-67 — Define the human correction-burden evaluation contract:**
+  After `S12-RM-61` through `S12-RM-66`, RM-67 accepted the owner-delegated,
+  source-bound closed-world contract with exact thresholds, taxonomy precedence,
+  timing/denominator rules, missing-output/rejection/abstention handling,
+  adjudication, confidence intervals, target roles, scenario and reviewer-record
+  minima, and language/journey/threat/ambiguity slices. F1 remains diagnostic only
+  and cannot substitute for human evidence. No human execution, results, custody
+  claim, held-out inspection, or provider call is recorded. See
+  `sprint-12/artifacts/task_S12-RM-67_summary.md` and
+  `sprint-12/human-correction-burden-contract.v1.md`.
+- [x] **S12-RM-68 — Retain the bounded v5 baseline only:** The v5 source-only
+  candidate and primary-agent proxy review remain preserved as bounded
+  baseline evidence under
+  `F_RF_POC_BASELINE_ACCEPTED_DENSE_HARD_V4_FAILED_STRATEGY_REDESIGN_REQUIRED`:
+  12/12
+  unchanged, 60 supported finalized-for-review assertions, zero unsupported
+  assertions, and zero provider calls. Timing, independent agreement, external
+  custody, human-study, business-quality, provider, held-out, production,
+  selection, promotion, and release claims remain closed. The historical
+  `DRAFT_BLOCKED_EXTERNAL_CUSTODY` packet remains non-preregistration context;
+  any later external study requires new owner authority and fresh custody and
+  evaluable-candidate evidence. See `sprint-12/artifacts/task_S12-RM-68_summary.md`.
+
+#### S12-DH-01/DH-02/DH-03 — Dense-hard internal benchmark and evaluation
+
+- [x] **S12-DH-01 — Design and freeze the dense-hard source-only packet:** The
+  synthetic non-production packet contains 24 cases spanning multi-hop,
+  repeated-occurrence, negation, temporal, cross-sentence, distractor,
+  multilingual Unicode, ambiguity, adversarial-text, and unsupported-relation
+  slices. The source payload is strictly separated from private evaluator gold.
+- [x] **S12-DH-02 — Add deterministic benchmark contracts and validators:**
+  Strict Draft 2020-12 schemas, source/gold/manifest digest bindings, exact
+  Unicode code-point anchors, complexity checks, and fail-closed mutation tests
+  are present. This is `IMPLEMENTED_PACKET_ONLY_NOT_EVALUATED`: no candidate,
+  review, score, provider call, held-out inspection, or benchmark pass is
+  claimed, and the accepted F-RF v5 state is unchanged. See
+  `sprint-12/artifacts/task_S12-DH-01-DH-02_dense-hard-benchmark_summary.md`.
+- [x] **S12-DH-03 — Evaluate the frozen dense-hard v1 candidate:** The offline
+  evaluator verified source/gold/manifest/candidate bindings and produced
+  immutable diagnostics for all 19 slices and three difficulty tiers. The
+  candidate has 0 unchanged, 0 minor, 8 major, 2 reject, and 14 abstain items;
+  74 semantic edits and 74/138 unsupported finalized assertions, so the RM-67
+  edit-burden gate fails. v1 evidence is complete; remediation is pending new
+  authority and must use fresh dense-hard v2 cases without source/gold/candidate
+  reuse. See `sprint-12/artifacts/task_S12-DH-03_dense-hard-evaluation_summary.md`.
+
+#### S12-DH-04/DH-05 — Offline remediation protocol and fresh v2 benchmark
+
+- [x] **S12-DH-04 — Implement the generic source-only remediation guard:** The
+  versioned v2 protocol defines a finite entity-type policy, proposition and
+  occurrence registry, explicit relation trigger and endpoint grounding,
+  Unicode half-open anchors, full/partial abstention modes, and quarantine of
+  unsupported assertions. Guard tests cover each DH-RB-01 through DH-RB-05
+  class without using v1 case IDs, text, gold, or candidate output. This author
+  is ineligible to produce or judge a v2 candidate.
+- [x] **S12-DH-05 — Author a fresh dense-hard v2 benchmark:** The new synthetic
+  packet has 28 cases, 113 entity assertions, 49 relation assertions, 21
+  slices, 10 abstention cases (6 full and 4 partial), strict Draft 2020-12
+  source/gold/manifest/protocol schemas, and a fail-closed no-reuse lineage
+  report. No v2 candidate, score, review, provider call, or current-state
+  transition is created. Any v2 evaluation requires new authority and an
+  independent evaluator. See the DH-04 and DH-05 task summaries.
+
+#### S12-DH-09/DH-10 — Corrected v3 contract and fresh benchmark
+
+- [x] **S12-DH-09 — Publish the corrected v3 source-only protocol and evaluator
+  contract:** The public finite type rubric, occurrence identity independent of
+  type, predicate-plus-anchored-occurrence relation identity, evidence
+  normalization, non-cascading type diagnostics, abstention matrix, quarantine
+  rules, and RM-67 definitions are digest-bound before any candidate exists.
+- [x] **S12-DH-10 — Author a fresh dense-hard v3 benchmark:** The synthetic
+  packet contains 30 cases, 104 entity assertions, 44 relation assertions, 22
+  slices, 12 abstention cases (5 full and 7 partial), strict Draft 2020-12
+  schemas, and a fail-closed v1/v2 no-reuse lineage report. No v3 candidate,
+  evaluation, current-state transition, provider call, or Graphify state is
+  created; this benchmark author is ineligible to produce or judge a v3
+  candidate. See the DH-09 and DH-10 task summaries.
+
+#### S12-DH-12/DH-13 — Stratified v3.1 adjudication and fresh v4 benchmark
+
+- [x] **S12-DH-12 — Adjudicate v3 by registered strata:** Preserve the pooled
+  v3 evaluation as a non-authoritative diagnostic, score the 18 expected-none
+  utility cases under the unchanged/minor, mean-edit, and zero-unsafe RM-67
+  thresholds, and score the 12 full/partial safety cases under abstention,
+  quarantine, and zero-unsafe gates. Require both strata for overall pass; no
+  threshold is changed.
+- [x] **S12-DH-13 — Author fresh dense-hard v4:** Publish a new v4 protocol,
+  evaluator contract, 32-case source/gold/manifest packet, strict schemas,
+  freshness lineage, generator, validator, and mutation tests. The packet has
+  24 expected-none utility cases and 8 full/partial safety cases across at
+  least 22 slices. Distractors are ignored when non-propositional; partial
+  abstention requires an explicit unsafe/ambiguous proposition alongside safe
+  propositions, and full abstention requires zero safe propositions. No v4
+  candidate, evaluation, provider call, human claim, or state transition is
+  produced.
+- [x] **S12-DH-15 — Independently evaluate the frozen v4 candidate:** Bind the
+  candidate, source, gold, manifest, protocol, and contract digests and produce
+  an immutable per-item, entity, relation, type, slice, tier, worst-case, and
+  stratified-gate report. Utility RM-67 and safety abstention/quarantine/
+  zero-unsafe gates remain separate; the result is diagnostic and non-pooled
+  with v3.1, with no provider, human, held-out, state, selection, promotion,
+   or release claim. The immutable result fails the utility gate (1/24
+   unchanged, 1/24 unchanged-or-minor, mean edits 3.625, unsupported 26/119)
+   and the safety gate (unsafe finalized 8/10); overall status is
+   `DENSE_HARD_V4_EVALUATED_STRATIFIED_GATES_FAILED`. Remediation is tracked
+   only in `dense-hard-v4-remediation-backlog.v1.md` and does not authorize v5.
 
 #### Phase F-S — Candidate Selection Resume Path
 
@@ -1213,3 +1369,15 @@ Stage B, selection, or promotion. The design input is
   that the current product already meets them.
 - Dataset work may expose ontology gaps. Such gaps are findings, not permission
   to change the ontology or redefine operational state as RDF domain truth.
+
+## Successor / Closure Note — 2026-08-31
+
+Sprint 12 is closed as historical evidence for the dense-hard track. The v5
+easy baseline and dense-hard v1--v4 diagnostics remain immutable, separate and
+non-generalizing; dense-hard v4 failed the stratified utility and safety gates.
+The owner-approved active successor is [Sprint 13 Evidence-first Assisted
+Authoring](sprint-13.md): human-authored structured capture with a zero-model
+fallback, followed only when requested by bounded local suggestions and
+controlled relations. This note does not rewrite any historical task,
+evaluation, digest or claim boundary, and does not authorize R6/R7, provider,
+human, held-out, production, selection, promotion or release work.

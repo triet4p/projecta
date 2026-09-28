@@ -1,0 +1,2388 @@
+{
+  "artifactVersion": "s12.dense-hard.candidate.v1",
+  "status": "CANDIDATE_FROZEN_SOURCE_ONLY",
+  "candidateModel": "gpt-5.6-luna",
+  "reasoning": "high",
+  "agentCandidateCalls": 24,
+  "providerCalls": 0,
+  "payloadPath": "evaluation/sprint-12/internal-poc/dense-hard-v1/dense-hard-source-payload.v1.json",
+  "payloadDigest": "sha256:65e6a044767f97298dee4511d19e3373878483224b9b7cf2606b94acdefc1409",
+  "projectScopeId": "projecta.synthetic.s12.dense-hard",
+  "records": [
+    {
+      "caseId": "dh-001",
+      "scenarioId": "dh-s-001",
+      "language": "en",
+      "sourceDigest": "sha256:5cf61379f79c1e95ad3b21ddafe147b903d6e3dccff34a25802ba7174db93dbe",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-001.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:5cf61379f79c1e95ad3b21ddafe147b903d6e3dccff34a25802ba7174db93dbe",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:42af82750dc3bd723c5f99623b7480023f40eb2a66500c6bb6ee2d7e24aad077",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:5cf61379f79c1e95ad3b21ddafe147b903d6e3dccff34a25802ba7174db93dbe",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-001.source.v1:sha256:5cf61379f79c1e95ad3b21ddafe147b903d6e3dccff34a25802ba7174db93dbe",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-001-e01",
+            "type": "Task",
+            "label": "Release train",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 13,
+              "text": "Release train"
+            }
+          },
+          {
+            "entityId": "dh-001-e02",
+            "type": "Requirement",
+            "label": "API contract",
+            "evidence": {
+              "startOffset": 25,
+              "endOffset": 37,
+              "text": "API contract"
+            }
+          },
+          {
+            "entityId": "dh-001-e03",
+            "type": "Task",
+            "label": "schema registry",
+            "evidence": {
+              "startOffset": 63,
+              "endOffset": 78,
+              "text": "schema registry"
+            }
+          },
+          {
+            "entityId": "dh-001-e04",
+            "type": "Risk",
+            "label": "unsafe migration",
+            "evidence": {
+              "startOffset": 103,
+              "endOffset": 119,
+              "text": "unsafe migration"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "relationId": "dh-001-r01",
+            "predicate": "dependsOn",
+            "sourceEntityId": "dh-001-e01",
+            "targetEntityId": "dh-001-e02",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 37,
+              "text": "Release train depends on API contract"
+            }
+          },
+          {
+            "relationId": "dh-001-r02",
+            "predicate": "implements",
+            "sourceEntityId": "dh-001-e02",
+            "targetEntityId": "dh-001-e03",
+            "evidence": {
+              "startOffset": 39,
+              "endOffset": 78,
+              "text": "API contract implements schema registry"
+            }
+          },
+          {
+            "relationId": "dh-001-r03",
+            "predicate": "blocks",
+            "sourceEntityId": "dh-001-e03",
+            "targetEntityId": "dh-001-e04",
+            "evidence": {
+              "startOffset": 80,
+              "endOffset": 119,
+              "text": "Schema registry blocks unsafe migration"
+            }
+          }
+        ],
+        "abstention": {
+          "status": "none",
+          "abstentionReason": null,
+          "withheldAssertions": []
+        }
+      },
+      "responseDigest": "sha256:c6b2aecf52bea5b9b244be6a728a9b0278658e8bf07fb77cc7c7edccdcea5883"
+    },
+    {
+      "caseId": "dh-002",
+      "scenarioId": "dh-s-002",
+      "language": "en",
+      "sourceDigest": "sha256:0ee7a65f3c451fd54c4b4a26a9932da109077ba91777616f3312434b936a3509",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-002.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:0ee7a65f3c451fd54c4b4a26a9932da109077ba91777616f3312434b936a3509",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:e81e16d5b045747403bea4867bb37027d47ae0d403a9d303152405243d17dae8",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:0ee7a65f3c451fd54c4b4a26a9932da109077ba91777616f3312434b936a3509",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-002.source.v1:sha256:0ee7a65f3c451fd54c4b4a26a9932da109077ba91777616f3312434b936a3509",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-002-e01",
+            "type": "Requirement",
+            "label": "Ops runbook",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 11,
+              "text": "Ops runbook"
+            }
+          },
+          {
+            "entityId": "dh-002-e02",
+            "type": "Task",
+            "label": "Incident bridge",
+            "evidence": {
+              "startOffset": 38,
+              "endOffset": 53,
+              "text": "Incident bridge"
+            }
+          },
+          {
+            "entityId": "dh-002-e03",
+            "type": "Question",
+            "label": "Escalation question",
+            "evidence": {
+              "startOffset": 83,
+              "endOffset": 102,
+              "text": "Escalation question"
+            }
+          },
+          {
+            "entityId": "dh-002-e04",
+            "type": "Constraint",
+            "label": "on-call roster",
+            "evidence": {
+              "startOffset": 113,
+              "endOffset": 127,
+              "text": "on-call roster"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "relationId": "dh-002-r01",
+            "predicate": "supports",
+            "sourceEntityId": "dh-002-e01",
+            "targetEntityId": "dh-002-e02",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 36,
+              "text": "Ops runbook supports incident bridge"
+            }
+          },
+          {
+            "relationId": "dh-002-r02",
+            "predicate": "answers",
+            "sourceEntityId": "dh-002-e02",
+            "targetEntityId": "dh-002-e03",
+            "evidence": {
+              "startOffset": 38,
+              "endOffset": 81,
+              "text": "Incident bridge answers escalation question"
+            }
+          },
+          {
+            "relationId": "dh-002-r03",
+            "predicate": "dependsOn",
+            "sourceEntityId": "dh-002-e03",
+            "targetEntityId": "dh-002-e04",
+            "evidence": {
+              "startOffset": 83,
+              "endOffset": 127,
+              "text": "Escalation question dependsOn on-call roster"
+            }
+          }
+        ],
+        "abstention": {
+          "status": "none",
+          "abstentionReason": null,
+          "withheldAssertions": []
+        }
+      },
+      "responseDigest": "sha256:97ee380a8f80d91b733cd5e68ab46b1a7dae1f0f10230711c202b13d217f78d4"
+    },
+    {
+      "caseId": "dh-003",
+      "scenarioId": "dh-s-003",
+      "language": "vi",
+      "sourceDigest": "sha256:28f32c4b248bd039526850b7689a7d31dfc723a98a590557854bbf4246142fe3",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-003.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:28f32c4b248bd039526850b7689a7d31dfc723a98a590557854bbf4246142fe3",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:114e81462fd955e2a6b343cc5b02a1257d297fe15d161908b808acc5bcb482cb",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:28f32c4b248bd039526850b7689a7d31dfc723a98a590557854bbf4246142fe3",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-003.source.v1:sha256:28f32c4b248bd039526850b7689a7d31dfc723a98a590557854bbf4246142fe3",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-003-e01",
+            "type": "Task",
+            "label": "Quy trình thanh toán",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 20,
+              "text": "Quy trình thanh toán"
+            }
+          },
+          {
+            "entityId": "dh-003-e02",
+            "type": "Task",
+            "label": "cổng đối soát",
+            "evidence": {
+              "startOffset": 35,
+              "endOffset": 48,
+              "text": "cổng đối soát"
+            }
+          },
+          {
+            "entityId": "dh-003-e03",
+            "type": "Task",
+            "label": "Ledger nội bộ",
+            "evidence": {
+              "startOffset": 86,
+              "endOffset": 99,
+              "text": "Ledger nội bộ"
+            }
+          },
+          {
+            "entityId": "dh-003-e04",
+            "type": "Risk",
+            "label": "dữ liệu thiếu",
+            "evidence": {
+              "startOffset": 112,
+              "endOffset": 125,
+              "text": "dữ liệu thiếu"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "relationId": "dh-003-r01",
+            "predicate": "dependsOn",
+            "sourceEntityId": "dh-003-e01",
+            "targetEntityId": "dh-003-e02",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 48,
+              "text": "Quy trình thanh toán phụ thuộc vào cổng đối soát"
+            }
+          },
+          {
+            "relationId": "dh-003-r02",
+            "predicate": "supports",
+            "sourceEntityId": "dh-003-e02",
+            "targetEntityId": "dh-003-e03",
+            "evidence": {
+              "startOffset": 50,
+              "endOffset": 84,
+              "text": "Cổng đối soát hỗ trợ ledger nội bộ"
+            }
+          },
+          {
+            "relationId": "dh-003-r03",
+            "predicate": "blocks",
+            "sourceEntityId": "dh-003-e04",
+            "targetEntityId": "dh-003-e03",
+            "evidence": {
+              "startOffset": 86,
+              "endOffset": 125,
+              "text": "Ledger nội bộ bị chặn bởi dữ liệu thiếu"
+            }
+          }
+        ],
+        "abstention": {
+          "status": "none",
+          "abstentionReason": null,
+          "withheldAssertions": []
+        }
+      },
+      "responseDigest": "sha256:5317c3b72f909a8d74c95a077eebe6967471ce8229f24da77642a83ddbd4118c"
+    },
+    {
+      "caseId": "dh-004",
+      "scenarioId": "dh-s-004",
+      "language": "ja",
+      "sourceDigest": "sha256:88c1e5c44f02aa8b1450d5fdf7356798fb8330efb995cb93324d787ee46da9f2",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-004.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:88c1e5c44f02aa8b1450d5fdf7356798fb8330efb995cb93324d787ee46da9f2",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:8e797ca779771562bdeeee1d96f3c249e39d5a8e27a3d286c25383b3e8eab87a",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:88c1e5c44f02aa8b1450d5fdf7356798fb8330efb995cb93324d787ee46da9f2",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-004.source.v1:sha256:88c1e5c44f02aa8b1450d5fdf7356798fb8330efb995cb93324d787ee46da9f2",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-004-e01",
+            "type": "Task",
+            "label": "監査計画",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 4,
+              "text": "監査計画"
+            }
+          },
+          {
+            "entityId": "dh-004-e02",
+            "type": "Task",
+            "label": "証跡台帳",
+            "evidence": {
+              "startOffset": 5,
+              "endOffset": 9,
+              "text": "証跡台帳"
+            }
+          },
+          {
+            "entityId": "dh-004-e03",
+            "type": "Requirement",
+            "label": "保持方針",
+            "evidence": {
+              "startOffset": 20,
+              "endOffset": 24,
+              "text": "保持方針"
+            }
+          },
+          {
+            "entityId": "dh-004-e04",
+            "type": "Task",
+            "label": "古い記録の削除",
+            "evidence": {
+              "startOffset": 35,
+              "endOffset": 42,
+              "text": "古い記録の削除"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "relationId": "dh-004-r01",
+            "predicate": "dependsOn",
+            "sourceEntityId": "dh-004-e01",
+            "targetEntityId": "dh-004-e02",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 14,
+              "text": "監査計画は証跡台帳に依存する"
+            }
+          },
+          {
+            "relationId": "dh-004-r02",
+            "predicate": "implements",
+            "sourceEntityId": "dh-004-e02",
+            "targetEntityId": "dh-004-e03",
+            "evidence": {
+              "startOffset": 15,
+              "endOffset": 29,
+              "text": "証跡台帳は保持方針を実装する"
+            }
+          },
+          {
+            "relationId": "dh-004-r03",
+            "predicate": "blocks",
+            "sourceEntityId": "dh-004-e03",
+            "targetEntityId": "dh-004-e04",
+            "evidence": {
+              "startOffset": 30,
+              "endOffset": 45,
+              "text": "保持方針は古い記録の削除を防ぐ"
+            }
+          }
+        ],
+        "abstention": {
+          "status": "none",
+          "abstentionReason": null,
+          "withheldAssertions": []
+        }
+      },
+      "responseDigest": "sha256:aa15de1f68a65b74aecd81d8ea0053c0392279f1df22d88d620bf44e97dcf15e"
+    },
+    {
+      "caseId": "dh-005",
+      "scenarioId": "dh-s-005",
+      "language": "en",
+      "sourceDigest": "sha256:cccd68c4316bd494ff379bf495f5b7bb25751113e89035de95d04c070b3b25e6",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-005.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:cccd68c4316bd494ff379bf495f5b7bb25751113e89035de95d04c070b3b25e6",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:afd26d59623d38008e66b59e715350b83a67c834de6736d40e0c85e6b6c2ec85",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:cccd68c4316bd494ff379bf495f5b7bb25751113e89035de95d04c070b3b25e6",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-005.source.v1:sha256:cccd68c4316bd494ff379bf495f5b7bb25751113e89035de95d04c070b3b25e6",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-005-e01",
+            "type": "Task",
+            "label": "Review queue",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 12,
+              "text": "Review queue"
+            }
+          },
+          {
+            "entityId": "dh-005-e02",
+            "type": "ResearchFinding",
+            "label": "owner note",
+            "evidence": {
+              "startOffset": 20,
+              "endOffset": 30,
+              "text": "owner note"
+            }
+          },
+          {
+            "entityId": "dh-005-e03",
+            "type": "ResearchFinding",
+            "label": "owner note",
+            "evidence": {
+              "startOffset": 75,
+              "endOffset": 85,
+              "text": "owner note"
+            }
+          },
+          {
+            "entityId": "dh-005-e04",
+            "type": "Task",
+            "label": "archive job",
+            "evidence": {
+              "startOffset": 93,
+              "endOffset": 104,
+              "text": "archive job"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "relationId": "dh-005-r01",
+            "predicate": "supports",
+            "sourceEntityId": "dh-005-e02",
+            "targetEntityId": "dh-005-e01",
+            "evidence": {
+              "startOffset": 32,
+              "endOffset": 64,
+              "text": "Owner note supports review queue"
+            }
+          },
+          {
+            "relationId": "dh-005-r02",
+            "predicate": "blocks",
+            "sourceEntityId": "dh-005-e03",
+            "targetEntityId": "dh-005-e04",
+            "evidence": {
+              "startOffset": 66,
+              "endOffset": 104,
+              "text": "A second owner note blocks archive job"
+            }
+          }
+        ],
+        "abstention": {
+          "status": "none",
+          "abstentionReason": null,
+          "withheldAssertions": []
+        }
+      },
+      "responseDigest": "sha256:6632b31d4f57ea5fcc783755b6cfba207a6bd146218b0d47065a34fd010cfa95"
+    },
+    {
+      "caseId": "dh-006",
+      "scenarioId": "dh-s-006",
+      "language": "en",
+      "sourceDigest": "sha256:7129f24a9ba313eb0dac1088f64ffe9d1c7991e9ad4952ae17e3780e98ee0113",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-006.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:7129f24a9ba313eb0dac1088f64ffe9d1c7991e9ad4952ae17e3780e98ee0113",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:551c05e39b07c27be3e74a0ce5b68fb51374a79c7fb457893b436448b2422bb3",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:7129f24a9ba313eb0dac1088f64ffe9d1c7991e9ad4952ae17e3780e98ee0113",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-006.source.v1:sha256:7129f24a9ba313eb0dac1088f64ffe9d1c7991e9ad4952ae17e3780e98ee0113",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-006-e01",
+            "type": "Constraint",
+            "label": "Policy label",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 12,
+              "text": "Policy label"
+            }
+          },
+          {
+            "entityId": "dh-006-e02",
+            "type": "Task",
+            "label": "intake form",
+            "evidence": {
+              "startOffset": 24,
+              "endOffset": 35,
+              "text": "intake form"
+            }
+          },
+          {
+            "entityId": "dh-006-e03",
+            "type": "Constraint",
+            "label": "Policy label",
+            "evidence": {
+              "startOffset": 37,
+              "endOffset": 49,
+              "text": "Policy label"
+            }
+          },
+          {
+            "entityId": "dh-006-e04",
+            "type": "Task",
+            "label": "audit form",
+            "evidence": {
+              "startOffset": 64,
+              "endOffset": 74,
+              "text": "audit form"
+            }
+          },
+          {
+            "entityId": "dh-006-e05",
+            "type": "Constraint",
+            "label": "policy label",
+            "evidence": {
+              "startOffset": 97,
+              "endOffset": 109,
+              "text": "policy label"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "relationId": "dh-006-r01",
+            "predicate": "constrainedBy",
+            "sourceEntityId": "dh-006-e02",
+            "targetEntityId": "dh-006-e01",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 35,
+              "text": "Policy label constrains intake form"
+            }
+          },
+          {
+            "relationId": "dh-006-r02",
+            "predicate": "supports",
+            "sourceEntityId": "dh-006-e03",
+            "targetEntityId": "dh-006-e04",
+            "evidence": {
+              "startOffset": 37,
+              "endOffset": 74,
+              "text": "Policy label also supports audit form"
+            }
+          },
+          {
+            "relationId": "dh-006-r03",
+            "predicate": "dependsOn",
+            "sourceEntityId": "dh-006-e04",
+            "targetEntityId": "dh-006-e05",
+            "evidence": {
+              "startOffset": 76,
+              "endOffset": 109,
+              "text": "Audit form dependsOn policy label"
+            }
+          }
+        ],
+        "abstention": {
+          "status": "none",
+          "abstentionReason": null,
+          "withheldAssertions": []
+        }
+      },
+      "responseDigest": "sha256:ce66ecc1e6d348a6f120a26be756ea6b3d29e78ca4d9d516427c17eaba8e6c5c"
+    },
+    {
+      "caseId": "dh-007",
+      "scenarioId": "dh-s-007",
+      "language": "en",
+      "sourceDigest": "sha256:637ed7dccbb8544fb5b392351b21ce1f177358a9aa8a76d8d43852169b650ff6",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-007.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:637ed7dccbb8544fb5b392351b21ce1f177358a9aa8a76d8d43852169b650ff6",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:d43679d047ed5d0e8a7d21c2c8e52824da73a9b892ef3f2ac3475645994401ba",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:637ed7dccbb8544fb5b392351b21ce1f177358a9aa8a76d8d43852169b650ff6",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-007.source.v1:sha256:637ed7dccbb8544fb5b392351b21ce1f177358a9aa8a76d8d43852169b650ff6",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-007-e01",
+            "type": "Task",
+            "label": "Cache refresh",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 13,
+              "text": "Cache refresh"
+            }
+          },
+          {
+            "entityId": "dh-007-e02",
+            "type": "Task",
+            "label": "deploy",
+            "evidence": {
+              "startOffset": 29,
+              "endOffset": 35,
+              "text": "deploy"
+            }
+          },
+          {
+            "entityId": "dh-007-e03",
+            "type": "Requirement",
+            "label": "release gate",
+            "evidence": {
+              "startOffset": 94,
+              "endOffset": 106,
+              "text": "release gate"
+            }
+          }
+        ],
+        "relations": [],
+        "abstention": {
+          "status": "partial",
+          "abstentionReason": "The source negates blocking and explicitly forbids the proposed supports assertion; no positive relation is authorized.",
+          "withheldAssertions": [
+            "Cache refresh blocks deploy",
+            "Cache refresh supports release gate"
+          ]
+        }
+      },
+      "responseDigest": "sha256:a6fcb484a0aab9bc5253a8a09b35b798854e80c299b635f933f31b9f937a85dc"
+    },
+    {
+      "caseId": "dh-008",
+      "scenarioId": "dh-s-008",
+      "language": "en",
+      "sourceDigest": "sha256:e25ceb53c205f015d1ebde3dc13854c0ca2825d1d3d76f67f6b27df8a434f333",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-008.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:e25ceb53c205f015d1ebde3dc13854c0ca2825d1d3d76f67f6b27df8a434f333",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:27fecae35af0c41869b2892239d61bc3570cd566c30a81e64bbeecb1205f143f",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:e25ceb53c205f015d1ebde3dc13854c0ca2825d1d3d76f67f6b27df8a434f333",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-008.source.v1:sha256:e25ceb53c205f015d1ebde3dc13854c0ca2825d1d3d76f67f6b27df8a434f333",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-008-e01",
+            "type": "Task",
+            "label": "vendor portal",
+            "evidence": {
+              "startOffset": 10,
+              "endOffset": 23,
+              "text": "vendor portal"
+            }
+          },
+          {
+            "entityId": "dh-008-e02",
+            "type": "Requirement",
+            "label": "billing rule",
+            "evidence": {
+              "startOffset": 39,
+              "endOffset": 51,
+              "text": "billing rule"
+            }
+          },
+          {
+            "entityId": "dh-008-e03",
+            "type": "Task",
+            "label": "payment",
+            "evidence": {
+              "startOffset": 99,
+              "endOffset": 106,
+              "text": "payment"
+            }
+          }
+        ],
+        "relations": [],
+        "abstention": {
+          "status": "partial",
+          "abstentionReason": "Both candidate relations are hedged or explicitly unclear, so entities are retained but relations are withheld.",
+          "withheldAssertions": [
+            "vendor portal implements billing rule",
+            "billing rule blocks payment"
+          ]
+        }
+      },
+      "responseDigest": "sha256:6fb8b66553662b20e024f5ab21ece92fa95cab6245b33328f11a43eb880f494c"
+    },
+    {
+      "caseId": "dh-009",
+      "scenarioId": "dh-s-009",
+      "language": "en",
+      "sourceDigest": "sha256:6792011e3d7e31cf10c4a47d017f40b5604777668277779afc93f53a63c0a1e8",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-009.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:6792011e3d7e31cf10c4a47d017f40b5604777668277779afc93f53a63c0a1e8",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:4c3e4f7a7ec4ac39f458a11bfc417b36367c9fa0c44a64d79e9632111ef4f560",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:6792011e3d7e31cf10c4a47d017f40b5604777668277779afc93f53a63c0a1e8",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-009.source.v1:sha256:6792011e3d7e31cf10c4a47d017f40b5604777668277779afc93f53a63c0a1e8",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-009-e01",
+            "type": "Requirement",
+            "label": "Version 1 runbook",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 17,
+              "text": "Version 1 runbook"
+            }
+          },
+          {
+            "entityId": "dh-009-e02",
+            "type": "Task",
+            "label": "old queue",
+            "evidence": {
+              "startOffset": 31,
+              "endOffset": 40,
+              "text": "old queue"
+            }
+          },
+          {
+            "entityId": "dh-009-e03",
+            "type": "Requirement",
+            "label": "version 1 runbook",
+            "evidence": {
+              "startOffset": 71,
+              "endOffset": 88,
+              "text": "version 1 runbook"
+            }
+          },
+          {
+            "entityId": "dh-009-e04",
+            "type": "Requirement",
+            "label": "Version 2 runbook",
+            "evidence": {
+              "startOffset": 42,
+              "endOffset": 59,
+              "text": "Version 2 runbook"
+            }
+          },
+          {
+            "entityId": "dh-009-e05",
+            "type": "Task",
+            "label": "current queue",
+            "evidence": {
+              "startOffset": 94,
+              "endOffset": 107,
+              "text": "current queue"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "relationId": "dh-009-r01",
+            "predicate": "dependsOn",
+            "sourceEntityId": "dh-009-e05",
+            "targetEntityId": "dh-009-e04",
+            "evidence": {
+              "startOffset": 90,
+              "endOffset": 135,
+              "text": "The current queue dependsOn version 2 runbook"
+            }
+          }
+        ],
+        "abstention": {
+          "status": "partial",
+          "abstentionReason": "The version-1 support statement is stale after supersession, and supersedes is not a released predicate.",
+          "withheldAssertions": [
+            "Version 1 runbook supports the old queue",
+            "Version 2 runbook supersedes version 1 runbook"
+          ]
+        }
+      },
+      "responseDigest": "sha256:b80275baf8da30bcdcd4c853821e3ac645864b7eb732d7634cb4202fe794c8ae"
+    },
+    {
+      "caseId": "dh-010",
+      "scenarioId": "dh-s-010",
+      "language": "en",
+      "sourceDigest": "sha256:517786103d564891f5f834cb6c8e6c579c11dae2ce1f2c9c78abdfbe7f0ba04b",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-010.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:517786103d564891f5f834cb6c8e6c579c11dae2ce1f2c9c78abdfbe7f0ba04b",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:3833396dda08b07270f9316de8cfb5443636d257eacc53a0be3ec16069ef1122",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:517786103d564891f5f834cb6c8e6c579c11dae2ce1f2c9c78abdfbe7f0ba04b",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-010.source.v1:sha256:517786103d564891f5f834cb6c8e6c579c11dae2ce1f2c9c78abdfbe7f0ba04b",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-010-e01",
+            "type": "Requirement",
+            "label": "Yesterday's policy",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 18,
+              "text": "Yesterday's policy"
+            }
+          },
+          {
+            "entityId": "dh-010-e02",
+            "type": "Requirement",
+            "label": "yesterday's policy",
+            "evidence": {
+              "startOffset": 69,
+              "endOffset": 87,
+              "text": "yesterday's policy"
+            }
+          },
+          {
+            "entityId": "dh-010-e03",
+            "type": "Task",
+            "label": "legacy path",
+            "evidence": {
+              "startOffset": 30,
+              "endOffset": 41,
+              "text": "legacy path"
+            }
+          },
+          {
+            "entityId": "dh-010-e04",
+            "type": "Requirement",
+            "label": "Today's policy",
+            "evidence": {
+              "startOffset": 43,
+              "endOffset": 57,
+              "text": "Today's policy"
+            }
+          },
+          {
+            "entityId": "dh-010-e05",
+            "type": "Requirement",
+            "label": "today's policy",
+            "evidence": {
+              "startOffset": 115,
+              "endOffset": 129,
+              "text": "today's policy"
+            }
+          },
+          {
+            "entityId": "dh-010-e06",
+            "type": "Task",
+            "label": "active path",
+            "evidence": {
+              "startOffset": 93,
+              "endOffset": 104,
+              "text": "active path"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "relationId": "dh-010-r01",
+            "predicate": "dependsOn",
+            "sourceEntityId": "dh-010-e06",
+            "targetEntityId": "dh-010-e05",
+            "evidence": {
+              "startOffset": 89,
+              "endOffset": 129,
+              "text": "The active path dependsOn today's policy"
+            }
+          }
+        ],
+        "abstention": {
+          "status": "partial",
+          "abstentionReason": "The yesterday policy claim is stale after supersession, and supersedes is not a released predicate.",
+          "withheldAssertions": [
+            "Yesterday's policy blocks the legacy path",
+            "Today's policy supersedes yesterday's policy"
+          ]
+        }
+      },
+      "responseDigest": "sha256:b9f5602c3f3f99b915943286c1a181d4fee6f4e50217a46c3beb009b5212f794"
+    },
+    {
+      "caseId": "dh-011",
+      "scenarioId": "dh-s-011",
+      "language": "en",
+      "sourceDigest": "sha256:03fb785f5ccfc1fff17104cb521628179dec8ac65d65a70a7d136274839e0606",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-011.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:03fb785f5ccfc1fff17104cb521628179dec8ac65d65a70a7d136274839e0606",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:937e85cb46b40f0f2eab73e3df0a778100a7fd0326f10b2046b6facf6871e533",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:03fb785f5ccfc1fff17104cb521628179dec8ac65d65a70a7d136274839e0606",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-011.source.v1:sha256:03fb785f5ccfc1fff17104cb521628179dec8ac65d65a70a7d136274839e0606",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-011-e01",
+            "type": "ResearchFinding",
+            "label": "Design note",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 11,
+              "text": "Design note"
+            }
+          },
+          {
+            "entityId": "dh-011-e02",
+            "type": "Constraint",
+            "label": "service boundary",
+            "evidence": {
+              "startOffset": 22,
+              "endOffset": 38,
+              "text": "service boundary"
+            }
+          },
+          {
+            "entityId": "dh-011-e03",
+            "type": "Task",
+            "label": "ingestion task",
+            "evidence": {
+              "startOffset": 67,
+              "endOffset": 81,
+              "text": "ingestion task"
+            }
+          },
+          {
+            "entityId": "dh-011-e04",
+            "type": "Requirement",
+            "label": "schema check",
+            "evidence": {
+              "startOffset": 116,
+              "endOffset": 128,
+              "text": "schema check"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "relationId": "dh-011-r01",
+            "predicate": "supports",
+            "sourceEntityId": "dh-011-e02",
+            "targetEntityId": "dh-011-e03",
+            "evidence": {
+              "startOffset": 40,
+              "endOffset": 81,
+              "text": "That boundary supports the ingestion task"
+            }
+          },
+          {
+            "relationId": "dh-011-r02",
+            "predicate": "dependsOn",
+            "sourceEntityId": "dh-011-e03",
+            "targetEntityId": "dh-011-e04",
+            "evidence": {
+              "startOffset": 83,
+              "endOffset": 128,
+              "text": "The ingestion task dependsOn the schema check"
+            }
+          }
+        ],
+        "abstention": {
+          "status": "partial",
+          "abstentionReason": "The source uses names, which is not a released predicate; the grounded supports and dependsOn edges are retained.",
+          "withheldAssertions": [
+            "Design note names the service boundary"
+          ]
+        }
+      },
+      "responseDigest": "sha256:d9ec05bc9c41b5712188b889e0700beea597ca1bbd24c10e33debf19a7b6ce17"
+    },
+    {
+      "caseId": "dh-012",
+      "scenarioId": "dh-s-012",
+      "language": "en",
+      "sourceDigest": "sha256:453bd211c4e01f272c48154d625a2cac95dcaf4a42d56f78b0e4c94be9e8326d",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-012.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:453bd211c4e01f272c48154d625a2cac95dcaf4a42d56f78b0e4c94be9e8326d",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:caf7d669ce84a3bd2a3e91c02eea81aad0251287220304ae98f442482114b0f2",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:453bd211c4e01f272c48154d625a2cac95dcaf4a42d56f78b0e4c94be9e8326d",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-012.source.v1:sha256:453bd211c4e01f272c48154d625a2cac95dcaf4a42d56f78b0e4c94be9e8326d",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-012-e01",
+            "type": "Requirement",
+            "label": "Data contract",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 13,
+              "text": "Data contract"
+            }
+          },
+          {
+            "entityId": "dh-012-e02",
+            "type": "Task",
+            "label": "event stream",
+            "evidence": {
+              "startOffset": 24,
+              "endOffset": 36,
+              "text": "event stream"
+            }
+          },
+          {
+            "entityId": "dh-012-e03",
+            "type": "Task",
+            "label": "event stream",
+            "evidence": {
+              "startOffset": 42,
+              "endOffset": 54,
+              "text": "event stream"
+            }
+          },
+          {
+            "entityId": "dh-012-e04",
+            "type": "Requirement",
+            "label": "validation rule",
+            "evidence": {
+              "startOffset": 66,
+              "endOffset": 81,
+              "text": "validation rule"
+            }
+          },
+          {
+            "entityId": "dh-012-e05",
+            "type": "Risk",
+            "label": "malformed payload",
+            "evidence": {
+              "startOffset": 110,
+              "endOffset": 127,
+              "text": "malformed payload"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "relationId": "dh-012-r01",
+            "predicate": "implements",
+            "sourceEntityId": "dh-012-e03",
+            "targetEntityId": "dh-012-e04",
+            "evidence": {
+              "startOffset": 38,
+              "endOffset": 81,
+              "text": "The event stream implements validation rule"
+            }
+          },
+          {
+            "relationId": "dh-012-r02",
+            "predicate": "blocks",
+            "sourceEntityId": "dh-012-e04",
+            "targetEntityId": "dh-012-e05",
+            "evidence": {
+              "startOffset": 83,
+              "endOffset": 127,
+              "text": "The validation rule blocks malformed payload"
+            }
+          }
+        ],
+        "abstention": {
+          "status": "partial",
+          "abstentionReason": "Describes is not a released predicate, so only the two released grounded edges are materialized.",
+          "withheldAssertions": [
+            "Data contract describes event stream"
+          ]
+        }
+      },
+      "responseDigest": "sha256:177824d641981e530228136ca0498382766998ce7d9087d307094c32efc66f54"
+    },
+    {
+      "caseId": "dh-013",
+      "scenarioId": "dh-s-013",
+      "language": "en",
+      "sourceDigest": "sha256:e2b2dc99f15571973712a5375df100757d20c52cb0d251cd82a2d8bab4049866",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-013.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:e2b2dc99f15571973712a5375df100757d20c52cb0d251cd82a2d8bab4049866",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:3f71b71dd1f06d0cf9263f34077a4b24fa06afa2842e2e1a6f2d9e8d9ac607b3",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:e2b2dc99f15571973712a5375df100757d20c52cb0d251cd82a2d8bab4049866",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-013.source.v1:sha256:e2b2dc99f15571973712a5375df100757d20c52cb0d251cd82a2d8bab4049866",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-013-e01",
+            "type": "Task",
+            "label": "Deployment plan",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 15,
+              "text": "Deployment plan"
+            }
+          },
+          {
+            "entityId": "dh-013-e02",
+            "type": "Requirement",
+            "label": "release gate",
+            "evidence": {
+              "startOffset": 27,
+              "endOffset": 39,
+              "text": "release gate"
+            }
+          },
+          {
+            "entityId": "dh-013-e03",
+            "type": "Risk",
+            "label": "unverified artifact",
+            "evidence": {
+              "startOffset": 61,
+              "endOffset": 80,
+              "text": "unverified artifact"
+            }
+          },
+          {
+            "entityId": "dh-013-e04",
+            "type": "Requirement",
+            "label": "checksum",
+            "evidence": {
+              "startOffset": 203,
+              "endOffset": 211,
+              "text": "checksum"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "relationId": "dh-013-r01",
+            "predicate": "implements",
+            "sourceEntityId": "dh-013-e01",
+            "targetEntityId": "dh-013-e02",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 39,
+              "text": "Deployment plan implements release gate"
+            }
+          },
+          {
+            "relationId": "dh-013-r02",
+            "predicate": "blocks",
+            "sourceEntityId": "dh-013-e02",
+            "targetEntityId": "dh-013-e03",
+            "evidence": {
+              "startOffset": 41,
+              "endOffset": 80,
+              "text": "Release gate blocks unverified artifact"
+            }
+          },
+          {
+            "relationId": "dh-013-r03",
+            "predicate": "dependsOn",
+            "sourceEntityId": "dh-013-e03",
+            "targetEntityId": "dh-013-e04",
+            "evidence": {
+              "startOffset": 173,
+              "endOffset": 211,
+              "text": "Unverified artifact dependsOn checksum"
+            }
+          }
+        ],
+        "abstention": {
+          "status": "none",
+          "abstentionReason": null,
+          "withheldAssertions": []
+        }
+      },
+      "responseDigest": "sha256:6cab0254a89ad355b90d1b45ca83fc2dccb50036836a2c06258cd83376cfc0f9"
+    },
+    {
+      "caseId": "dh-014",
+      "scenarioId": "dh-s-014",
+      "language": "en",
+      "sourceDigest": "sha256:c3d89945257da63a018ae2bb4fd9c68b89785f9e08812a8520eb0e58ae20ce97",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-014.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:c3d89945257da63a018ae2bb4fd9c68b89785f9e08812a8520eb0e58ae20ce97",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:12a53464aa42623d542180e48a6c4cf46fc60cc5edb3f6e915bbd13036f7752d",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:c3d89945257da63a018ae2bb4fd9c68b89785f9e08812a8520eb0e58ae20ce97",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-014.source.v1:sha256:c3d89945257da63a018ae2bb4fd9c68b89785f9e08812a8520eb0e58ae20ce97",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-014-e01",
+            "type": "ResearchFinding",
+            "label": "Project brief",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 13,
+              "text": "Project brief"
+            }
+          },
+          {
+            "entityId": "dh-014-e02",
+            "type": "Task",
+            "label": "delivery plan",
+            "evidence": {
+              "startOffset": 23,
+              "endOffset": 36,
+              "text": "delivery plan"
+            }
+          },
+          {
+            "entityId": "dh-014-e03",
+            "type": "Task",
+            "label": "delivery plan",
+            "evidence": {
+              "startOffset": 62,
+              "endOffset": 75,
+              "text": "delivery plan"
+            }
+          },
+          {
+            "entityId": "dh-014-e04",
+            "type": "Requirement",
+            "label": "owner approval",
+            "evidence": {
+              "startOffset": 129,
+              "endOffset": 143,
+              "text": "owner approval"
+            }
+          },
+          {
+            "entityId": "dh-014-e05",
+            "type": "Risk",
+            "label": "unauthorized launch",
+            "evidence": {
+              "startOffset": 167,
+              "endOffset": 186,
+              "text": "unauthorized launch"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "relationId": "dh-014-r01",
+            "predicate": "supports",
+            "sourceEntityId": "dh-014-e01",
+            "targetEntityId": "dh-014-e02",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 36,
+              "text": "Project brief supports delivery plan"
+            }
+          },
+          {
+            "relationId": "dh-014-r02",
+            "predicate": "dependsOn",
+            "sourceEntityId": "dh-014-e03",
+            "targetEntityId": "dh-014-e04",
+            "evidence": {
+              "startOffset": 105,
+              "endOffset": 143,
+              "text": "Delivery plan dependsOn owner approval"
+            }
+          },
+          {
+            "relationId": "dh-014-r03",
+            "predicate": "blocks",
+            "sourceEntityId": "dh-014-e04",
+            "targetEntityId": "dh-014-e05",
+            "evidence": {
+              "startOffset": 145,
+              "endOffset": 186,
+              "text": "Owner approval blocks unauthorized launch"
+            }
+          }
+        ],
+        "abstention": {
+          "status": "partial",
+          "abstentionReason": "The news article mention is explicitly unrelated project evidence and is not used to create an edge.",
+          "withheldAssertions": [
+            "news article supports delivery plan"
+          ]
+        }
+      },
+      "responseDigest": "sha256:a20e9d7b6eb66bdb4c414fd1ac975ad01bf00e6c9348f5807d132eedf4374fe7"
+    },
+    {
+      "caseId": "dh-015",
+      "scenarioId": "dh-s-015",
+      "language": "mixed",
+      "sourceDigest": "sha256:77ab77989f3bf702d5470de70a9b6265e4bd28686ce4d6cfa1eafb4a73185336",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-015.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:77ab77989f3bf702d5470de70a9b6265e4bd28686ce4d6cfa1eafb4a73185336",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:0b4b98c36f69c3206113e77b452fbf364e76b35036f8f3ce30fee2c0e83ff471",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:77ab77989f3bf702d5470de70a9b6265e4bd28686ce4d6cfa1eafb4a73185336",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-015.source.v1:sha256:77ab77989f3bf702d5470de70a9b6265e4bd28686ce4d6cfa1eafb4a73185336",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-015-e01",
+            "type": "Task",
+            "label": "Ticket thanh toán",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 17,
+              "text": "Ticket thanh toán"
+            }
+          },
+          {
+            "entityId": "dh-015-e02",
+            "type": "Requirement",
+            "label": "billing rule",
+            "evidence": {
+              "startOffset": 27,
+              "endOffset": 39,
+              "text": "billing rule"
+            }
+          },
+          {
+            "entityId": "dh-015-e03",
+            "type": "Requirement",
+            "label": "Billing rule",
+            "evidence": {
+              "startOffset": 41,
+              "endOffset": 53,
+              "text": "Billing rule"
+            }
+          },
+          {
+            "entityId": "dh-015-e04",
+            "type": "Task",
+            "label": "ledger chính",
+            "evidence": {
+              "startOffset": 68,
+              "endOffset": 80,
+              "text": "ledger chính"
+            }
+          },
+          {
+            "entityId": "dh-015-e05",
+            "type": "Task",
+            "label": "Ledger chính",
+            "evidence": {
+              "startOffset": 82,
+              "endOffset": 94,
+              "text": "Ledger chính"
+            }
+          },
+          {
+            "entityId": "dh-015-e06",
+            "type": "Risk",
+            "label": "giao dịch thiếu mã",
+            "evidence": {
+              "startOffset": 102,
+              "endOffset": 120,
+              "text": "giao dịch thiếu mã"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "relationId": "dh-015-r01",
+            "predicate": "supports",
+            "sourceEntityId": "dh-015-e01",
+            "targetEntityId": "dh-015-e02",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 39,
+              "text": "Ticket thanh toán supports billing rule"
+            }
+          },
+          {
+            "relationId": "dh-015-r02",
+            "predicate": "dependsOn",
+            "sourceEntityId": "dh-015-e03",
+            "targetEntityId": "dh-015-e04",
+            "evidence": {
+              "startOffset": 41,
+              "endOffset": 80,
+              "text": "Billing rule phụ thuộc vào ledger chính"
+            }
+          },
+          {
+            "relationId": "dh-015-r03",
+            "predicate": "blocks",
+            "sourceEntityId": "dh-015-e05",
+            "targetEntityId": "dh-015-e06",
+            "evidence": {
+              "startOffset": 82,
+              "endOffset": 120,
+              "text": "Ledger chính blocks giao dịch thiếu mã"
+            }
+          }
+        ],
+        "abstention": {
+          "status": "none",
+          "abstentionReason": null,
+          "withheldAssertions": []
+        }
+      },
+      "responseDigest": "sha256:deb9baca35f4b9ad34dbc7cf639b71e1a03c7bd12430a7d4f577b09342d220c0"
+    },
+    {
+      "caseId": "dh-016",
+      "scenarioId": "dh-s-016",
+      "language": "mixed",
+      "sourceDigest": "sha256:b82e980ff466aea1a84b6ab00294421573538896e25a60ea94c2b6a3807b9ca5",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-016.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:b82e980ff466aea1a84b6ab00294421573538896e25a60ea94c2b6a3807b9ca5",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:6299e8c0c092ae0780c7aa814495f6fb23c511ae4d04f2a03ce5992751f280d9",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:b82e980ff466aea1a84b6ab00294421573538896e25a60ea94c2b6a3807b9ca5",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-016.source.v1:sha256:b82e980ff466aea1a84b6ab00294421573538896e25a60ea94c2b6a3807b9ca5",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-016-e01",
+            "type": "ResearchFinding",
+            "label": "監査メモ",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 4,
+              "text": "監査メモ"
+            }
+          },
+          {
+            "entityId": "dh-016-e02",
+            "type": "Task",
+            "label": "audit queue",
+            "evidence": {
+              "startOffset": 14,
+              "endOffset": 25,
+              "text": "audit queue"
+            }
+          },
+          {
+            "entityId": "dh-016-e03",
+            "type": "Task",
+            "label": "証跡台帳",
+            "evidence": {
+              "startOffset": 40,
+              "endOffset": 44,
+              "text": "証跡台帳"
+            }
+          },
+          {
+            "entityId": "dh-016-e04",
+            "type": "Task",
+            "label": "証跡台帳",
+            "evidence": {
+              "startOffset": 50,
+              "endOffset": 54,
+              "text": "証跡台帳"
+            }
+          },
+          {
+            "entityId": "dh-016-e05",
+            "type": "Risk",
+            "label": "削除予定",
+            "evidence": {
+              "startOffset": 62,
+              "endOffset": 66,
+              "text": "削除予定"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "relationId": "dh-016-r01",
+            "predicate": "supports",
+            "sourceEntityId": "dh-016-e01",
+            "targetEntityId": "dh-016-e02",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 25,
+              "text": "監査メモ supports audit queue"
+            }
+          },
+          {
+            "relationId": "dh-016-r02",
+            "predicate": "dependsOn",
+            "sourceEntityId": "dh-016-e02",
+            "targetEntityId": "dh-016-e03",
+            "evidence": {
+              "startOffset": 27,
+              "endOffset": 49,
+              "text": "Audit queue は証跡台帳に依存する"
+            }
+          },
+          {
+            "relationId": "dh-016-r03",
+            "predicate": "blocks",
+            "sourceEntityId": "dh-016-e04",
+            "targetEntityId": "dh-016-e05",
+            "evidence": {
+              "startOffset": 50,
+              "endOffset": 66,
+              "text": "証跡台帳 blocks 削除予定"
+            }
+          }
+        ],
+        "abstention": {
+          "status": "none",
+          "abstentionReason": null,
+          "withheldAssertions": []
+        }
+      },
+      "responseDigest": "sha256:e4eb938822bb673f64130399070f1a99e943acc01faf3d8ee354d53302fe8783"
+    },
+    {
+      "caseId": "dh-017",
+      "scenarioId": "dh-s-017",
+      "language": "mixed",
+      "sourceDigest": "sha256:d81d6b4bdf9685ea952776be9afd7add8fe3322712c13613d66a036e6403ad33",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-017.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:d81d6b4bdf9685ea952776be9afd7add8fe3322712c13613d66a036e6403ad33",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:79de7075645056647441fcf68b774ac1ca46bb3bb8a6ba61bb84b4a7c9ae13e1",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:d81d6b4bdf9685ea952776be9afd7add8fe3322712c13613d66a036e6403ad33",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-017.source.v1:sha256:d81d6b4bdf9685ea952776be9afd7add8fe3322712c13613d66a036e6403ad33",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-017-e01",
+            "type": "Task",
+            "label": "Résumé task",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 11,
+              "text": "Résumé task"
+            }
+          },
+          {
+            "entityId": "dh-017-e02",
+            "type": "Task",
+            "label": "café review",
+            "evidence": {
+              "startOffset": 21,
+              "endOffset": 32,
+              "text": "café review"
+            }
+          },
+          {
+            "entityId": "dh-017-e03",
+            "type": "Task",
+            "label": "Café review",
+            "evidence": {
+              "startOffset": 34,
+              "endOffset": 45,
+              "text": "Café review"
+            }
+          },
+          {
+            "entityId": "dh-017-e04",
+            "type": "ResearchFinding",
+            "label": "🧪 test note",
+            "evidence": {
+              "startOffset": 56,
+              "endOffset": 67,
+              "text": "🧪 test note"
+            }
+          },
+          {
+            "entityId": "dh-017-e05",
+            "type": "ResearchFinding",
+            "label": "Test note",
+            "evidence": {
+              "startOffset": 69,
+              "endOffset": 78,
+              "text": "Test note"
+            }
+          },
+          {
+            "entityId": "dh-017-e06",
+            "type": "Risk",
+            "label": "stale build",
+            "evidence": {
+              "startOffset": 86,
+              "endOffset": 97,
+              "text": "stale build"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "relationId": "dh-017-r01",
+            "predicate": "supports",
+            "sourceEntityId": "dh-017-e01",
+            "targetEntityId": "dh-017-e02",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 32,
+              "text": "Résumé task supports café review"
+            }
+          },
+          {
+            "relationId": "dh-017-r02",
+            "predicate": "dependsOn",
+            "sourceEntityId": "dh-017-e03",
+            "targetEntityId": "dh-017-e04",
+            "evidence": {
+              "startOffset": 34,
+              "endOffset": 67,
+              "text": "Café review dependsOn 🧪 test note"
+            }
+          },
+          {
+            "relationId": "dh-017-r03",
+            "predicate": "blocks",
+            "sourceEntityId": "dh-017-e05",
+            "targetEntityId": "dh-017-e06",
+            "evidence": {
+              "startOffset": 69,
+              "endOffset": 97,
+              "text": "Test note blocks stale build"
+            }
+          }
+        ],
+        "abstention": {
+          "status": "none",
+          "abstentionReason": null,
+          "withheldAssertions": []
+        }
+      },
+      "responseDigest": "sha256:dc47aafd30139b40c75f7b0a3d8881f40db4c87669888ff1a42bf2c264c70990"
+    },
+    {
+      "caseId": "dh-018",
+      "scenarioId": "dh-s-018",
+      "language": "en",
+      "sourceDigest": "sha256:c6bfd69b228feb834f3d568209900579abc5acf332e542a59da5c10be9ab7ac2",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-018.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:c6bfd69b228feb834f3d568209900579abc5acf332e542a59da5c10be9ab7ac2",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:94f6548888c0d2fb9d9106c0a9faa073e060bf0bf7e020d1528b0dd277f14bc3",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:c6bfd69b228feb834f3d568209900579abc5acf332e542a59da5c10be9ab7ac2",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-018.source.v1:sha256:c6bfd69b228feb834f3d568209900579abc5acf332e542a59da5c10be9ab7ac2",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-018-e01",
+            "type": "Task",
+            "label": "draft plan",
+            "evidence": {
+              "startOffset": 11,
+              "endOffset": 21,
+              "text": "draft plan"
+            }
+          },
+          {
+            "entityId": "dh-018-e02",
+            "type": "Task",
+            "label": "fallback plan",
+            "evidence": {
+              "startOffset": 29,
+              "endOffset": 42,
+              "text": "fallback plan"
+            }
+          },
+          {
+            "entityId": "dh-018-e03",
+            "type": "Task",
+            "label": "migration",
+            "evidence": {
+              "startOffset": 59,
+              "endOffset": 68,
+              "text": "migration"
+            }
+          }
+        ],
+        "relations": [],
+        "abstention": {
+          "status": "full",
+          "abstentionReason": "The source gives an either/or hedge and explicitly says which plan is active is unidentified.",
+          "withheldAssertions": [
+            "draft plan supports migration",
+            "fallback plan supports migration"
+          ]
+        }
+      },
+      "responseDigest": "sha256:1062840f932038a7f2ff76dd5f019f2715d0c9a2b08df1d2d46898b2b3431e13"
+    },
+    {
+      "caseId": "dh-019",
+      "scenarioId": "dh-s-019",
+      "language": "en",
+      "sourceDigest": "sha256:bdb4e756dcc56bc4279c33da90877e6fe3f9d24cc951c515b417d69e9ede30d9",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-019.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:bdb4e756dcc56bc4279c33da90877e6fe3f9d24cc951c515b417d69e9ede30d9",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:78d7cb4ee0502281ec2784dcfeaeecec762b558eee35e74a292aa9c49a365be5",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:bdb4e756dcc56bc4279c33da90877e6fe3f9d24cc951c515b417d69e9ede30d9",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-019.source.v1:sha256:bdb4e756dcc56bc4279c33da90877e6fe3f9d24cc951c515b417d69e9ede30d9",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [],
+        "relations": [],
+        "abstention": {
+          "status": "full",
+          "abstentionReason": "The instruction text is explicitly data and establishes neither a relation nor tool authority.",
+          "withheldAssertions": [
+            "provider call",
+            "any asserted relation"
+          ]
+        }
+      },
+      "responseDigest": "sha256:05751da566a87fe422f867d664e9311b9c7465741c3992a9ff198d3202d32286"
+    },
+    {
+      "caseId": "dh-020",
+      "scenarioId": "dh-s-020",
+      "language": "en",
+      "sourceDigest": "sha256:2e0da6c2cf6af20357bdd4af21fb9d507a3630a815b2d0c6022eeea7c6b3c1e0",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-020.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:2e0da6c2cf6af20357bdd4af21fb9d507a3630a815b2d0c6022eeea7c6b3c1e0",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:005f157a0392f5aeaa2c3341b07008affc6de2b743b0838ae67d3e733ad2e773",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:2e0da6c2cf6af20357bdd4af21fb9d507a3630a815b2d0c6022eeea7c6b3c1e0",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-020.source.v1:sha256:2e0da6c2cf6af20357bdd4af21fb9d507a3630a815b2d0c6022eeea7c6b3c1e0",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-020-e01",
+            "type": "Task",
+            "label": "alpha",
+            "evidence": {
+              "startOffset": 15,
+              "endOffset": 20,
+              "text": "alpha"
+            }
+          },
+          {
+            "entityId": "dh-020-e02",
+            "type": "Task",
+            "label": "Beta",
+            "evidence": {
+              "startOffset": 98,
+              "endOffset": 102,
+              "text": "Beta"
+            }
+          },
+          {
+            "entityId": "dh-020-e03",
+            "type": "Requirement",
+            "label": "review",
+            "evidence": {
+              "startOffset": 113,
+              "endOffset": 119,
+              "text": "review"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "relationId": "dh-020-r01",
+            "predicate": "dependsOn",
+            "sourceEntityId": "dh-020-e02",
+            "targetEntityId": "dh-020-e03",
+            "evidence": {
+              "startOffset": 98,
+              "endOffset": 119,
+              "text": "Beta dependsOn review"
+            }
+          }
+        ],
+        "abstention": {
+          "status": "partial",
+          "abstentionReason": "adjacentTo is explicitly unreleased and is quarantined; the released dependsOn edge is retained.",
+          "withheldAssertions": [
+            "alpha adjacentTo beta"
+          ]
+        }
+      },
+      "responseDigest": "sha256:704a54b1d93e879f197555ac1cf19bbcbfcc5461a64412ddbf65a3a44def05fc"
+    },
+    {
+      "caseId": "dh-021",
+      "scenarioId": "dh-s-021",
+      "language": "mixed",
+      "sourceDigest": "sha256:589213317aabbff52e172c01ffd4db3b9f649f8118b77a8527c127ae132e7ca3",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-021.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:589213317aabbff52e172c01ffd4db3b9f649f8118b77a8527c127ae132e7ca3",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:411c9098d4d8d426586794d333da13e0d568492ca31934a4bb6325e10e4438f9",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:589213317aabbff52e172c01ffd4db3b9f649f8118b77a8527c127ae132e7ca3",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-021.source.v1:sha256:589213317aabbff52e172c01ffd4db3b9f649f8118b77a8527c127ae132e7ca3",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-021-e01",
+            "type": "Task",
+            "label": "shared task",
+            "evidence": {
+              "startOffset": 36,
+              "endOffset": 47,
+              "text": "shared task"
+            }
+          },
+          {
+            "entityId": "dh-021-e02",
+            "type": "Task",
+            "label": "local task",
+            "evidence": {
+              "startOffset": 57,
+              "endOffset": 67,
+              "text": "local task"
+            }
+          },
+          {
+            "entityId": "dh-021-e03",
+            "type": "Task",
+            "label": "Local task",
+            "evidence": {
+              "startOffset": 95,
+              "endOffset": 105,
+              "text": "Local task"
+            }
+          },
+          {
+            "entityId": "dh-021-e04",
+            "type": "Requirement",
+            "label": "owner check",
+            "evidence": {
+              "startOffset": 116,
+              "endOffset": 127,
+              "text": "owner check"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "relationId": "dh-021-r01",
+            "predicate": "dependsOn",
+            "sourceEntityId": "dh-021-e03",
+            "targetEntityId": "dh-021-e04",
+            "evidence": {
+              "startOffset": 95,
+              "endOffset": 127,
+              "text": "Local task dependsOn owner check"
+            }
+          }
+        ],
+        "abstention": {
+          "status": "partial",
+          "abstentionReason": "The claimed supports edge is cross-project with unknown scope and is withheld; the local edge is grounded.",
+          "withheldAssertions": [
+            "shared task supports local task"
+          ]
+        }
+      },
+      "responseDigest": "sha256:6370f2ac0abb160d2adb7f743889b1e4f39e74961161016393dde379e4155654"
+    },
+    {
+      "caseId": "dh-022",
+      "scenarioId": "dh-s-022",
+      "language": "en",
+      "sourceDigest": "sha256:258469ebaa5fa432684aa6a23e55343a20d1de4469994e3e457fe5001044cf3a",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-022.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:258469ebaa5fa432684aa6a23e55343a20d1de4469994e3e457fe5001044cf3a",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:83d665b68117ab4381c011af5316fa25e55c60ed4464fcddf2f2730cb88728d8",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:258469ebaa5fa432684aa6a23e55343a20d1de4469994e3e457fe5001044cf3a",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-022.source.v1:sha256:258469ebaa5fa432684aa6a23e55343a20d1de4469994e3e457fe5001044cf3a",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-022-e01",
+            "type": "Risk",
+            "label": "old alert",
+            "evidence": {
+              "startOffset": 3,
+              "endOffset": 12,
+              "text": "old alert"
+            }
+          },
+          {
+            "entityId": "dh-022-e02",
+            "type": "Risk",
+            "label": "current alert",
+            "evidence": {
+              "startOffset": 36,
+              "endOffset": 49,
+              "text": "current alert"
+            }
+          },
+          {
+            "entityId": "dh-022-e03",
+            "type": "Risk",
+            "label": "current alert",
+            "evidence": {
+              "startOffset": 55,
+              "endOffset": 68,
+              "text": "current alert"
+            }
+          },
+          {
+            "entityId": "dh-022-e04",
+            "type": "Task",
+            "label": "deployment",
+            "evidence": {
+              "startOffset": 76,
+              "endOffset": 86,
+              "text": "deployment"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "relationId": "dh-022-r01",
+            "predicate": "blocks",
+            "sourceEntityId": "dh-022-e03",
+            "targetEntityId": "dh-022-e04",
+            "evidence": {
+              "startOffset": 51,
+              "endOffset": 86,
+              "text": "The current alert blocks deployment"
+            }
+          }
+        ],
+        "abstention": {
+          "status": "partial",
+          "abstentionReason": "The source negates supersession and forbids inferring approval from silence; supersedes is also unreleased.",
+          "withheldAssertions": [
+            "old alert supersedes current alert",
+            "silence supports approval"
+          ]
+        }
+      },
+      "responseDigest": "sha256:3cba048a107be6a0a9ad95232c164668f49abd7fd4f8101fdbf2b583fe1e3384"
+    },
+    {
+      "caseId": "dh-023",
+      "scenarioId": "dh-s-023",
+      "language": "en",
+      "sourceDigest": "sha256:cf336d622ea0638a791868d198c88cc1b4eb7e80a5153050ea79cee304eca968",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-023.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:cf336d622ea0638a791868d198c88cc1b4eb7e80a5153050ea79cee304eca968",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:4d6ccbb80f995c4d86ff9351d680c19d6f585827cb7c26cf86ccb5f31a533ede",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:cf336d622ea0638a791868d198c88cc1b4eb7e80a5153050ea79cee304eca968",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-023.source.v1:sha256:cf336d622ea0638a791868d198c88cc1b4eb7e80a5153050ea79cee304eca968",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-023-e01",
+            "type": "Task",
+            "label": "Service A",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 9,
+              "text": "Service A"
+            }
+          },
+          {
+            "entityId": "dh-023-e02",
+            "type": "Task",
+            "label": "Service B",
+            "evidence": {
+              "startOffset": 20,
+              "endOffset": 29,
+              "text": "Service B"
+            }
+          },
+          {
+            "entityId": "dh-023-e03",
+            "type": "Task",
+            "label": "Service B",
+            "evidence": {
+              "startOffset": 52,
+              "endOffset": 61,
+              "text": "Service B"
+            }
+          },
+          {
+            "entityId": "dh-023-e04",
+            "type": "Task",
+            "label": "release plan",
+            "evidence": {
+              "startOffset": 71,
+              "endOffset": 83,
+              "text": "release plan"
+            }
+          }
+        ],
+        "relations": [
+          {
+            "relationId": "dh-023-r01",
+            "predicate": "supports",
+            "sourceEntityId": "dh-023-e03",
+            "targetEntityId": "dh-023-e04",
+            "evidence": {
+              "startOffset": 52,
+              "endOffset": 83,
+              "text": "Service B supports release plan"
+            }
+          }
+        ],
+        "abstention": {
+          "status": "partial",
+          "abstentionReason": "relatesTo is explicitly unsupported and quarantined; the released supports edge is retained.",
+          "withheldAssertions": [
+            "Service A relatesTo Service B"
+          ]
+        }
+      },
+      "responseDigest": "sha256:e1f6e04fefc467b9f267367b9bd8a79976fdb86247f272d4f7f6319c9ee38df8"
+    },
+    {
+      "caseId": "dh-024",
+      "scenarioId": "dh-s-024",
+      "language": "en",
+      "sourceDigest": "sha256:d48203b7e40539f29ae87ef023ab2cdd26a80b6b6c8174dce53b566298e51338",
+      "sourceVersion": {
+        "sourceVersionId": "s12.dense-hard.dh-024.source.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "canonicalContentDigest": "sha256:d48203b7e40539f29ae87ef023ab2cdd26a80b6b6c8174dce53b566298e51338",
+        "coordinateSystemVersion": "unicode-code-point-half-open.v1",
+        "receiptDigest": "sha256:f3e413f8a1f4f824e85712ee37176f773635e14c2e5df68abc27ad1047337cae",
+        "canonicalizationVersion": "utf8-exact-source.v1",
+        "contractVersion": "dense-hard-output.v1",
+        "originalContentDigest": "sha256:d48203b7e40539f29ae87ef023ab2cdd26a80b6b6c8174dce53b566298e51338",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "replayKey": "s12.dense-hard.dh-024.source.v1:sha256:d48203b7e40539f29ae87ef023ab2cdd26a80b6b6c8174dce53b566298e51338",
+        "retention": {
+          "expiresOn": null,
+          "policy": "synthetic-source-only"
+        },
+        "sourceArtifactScopeId": "projecta.synthetic.s12.dense-hard"
+      },
+      "response": {
+        "schemaVersion": "dense-hard-output.v1",
+        "projectScopeId": "projecta.synthetic.s12.dense-hard",
+        "entities": [
+          {
+            "entityId": "dh-024-e01",
+            "type": "Task",
+            "label": "Draft checklist",
+            "evidence": {
+              "startOffset": 0,
+              "endOffset": 15,
+              "text": "Draft checklist"
+            }
+          }
+        ],
+        "relations": [],
+        "abstention": {
+          "status": "full",
+          "abstentionReason": "The possible dependency names no owner, and the draft is explicitly stale; finalization is prohibited.",
+          "withheldAssertions": [
+            "Draft checklist dependsOn unknown owner"
+          ]
+        }
+      },
+      "responseDigest": "sha256:9e9d5d7f86e529070c70ea6a45053d80a3af09273f13e1422f29317b9ebfd7ca"
+    }
+  ],
+  "goldIncluded": false,
+  "priorReviewsIncluded": false,
+  "heldOutInspection": false,
+  "rawSensitiveDataIncluded": false,
+  "reviewOrScoringPerformed": false,
+  "nonClaims": [
+    "No gold artifact, evaluator manifest, prior review, or score was inspected.",
+    "No provider or external tool call was made.",
+    "Predicates outside the released allowlist are withheld, not inferred."
+  ],
+  "codeDigest": "sha256:8ae3fa156e1ab4d69d3796286180756e630045719a899e48ae86b47ca3dcf218",
+  "candidateDigest": "sha256:24300cccf1f774329a4bbb2772b2fb952e32e398eec61cf09c060e2eaac7ceba"
+}

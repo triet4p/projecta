@@ -1,0 +1,107 @@
+{
+  "artifactVersion": "s12.f-rf.blinded-source-payload.v3",
+  "candidateModel": "gpt-5.6-luna",
+  "goldIncluded": false,
+  "heldOutInspection": false,
+  "payloadDigest": "sha256:14fe2fed10c3bd33b4c7c9d4d2f8cec61727cfd2ddeed1dde6832ceb33480f2e",
+  "priorReviewsIncluded": false,
+  "priorScoresIncluded": false,
+  "providerCalls": 0,
+  "reasoning": "high",
+  "records": [
+    {
+      "caseId": "s12-a-4001",
+      "language": "vi",
+      "rawText": "Hạng mục cargo-routing phải chốt trước ca bàn giao.",
+      "scenarioId": "s12-s-201",
+      "sourceDigest": "sha256:f819e04d5af8f0a582b396edea3f5616abe895fb07b07c13106e374fd1141de0"
+    },
+    {
+      "caseId": "s12-a-4011",
+      "language": "mixed",
+      "rawText": "invoice queue worker hỗ trợ tax receipt nhưng vẫn constrainedBy trong vendor-invoice.",
+      "scenarioId": "s12-s-202",
+      "sourceDigest": "sha256:5d8f5f7c7797ada99cb69cd7be15fb0ad19bfc95b4c9f91ca6dabeb4360ac35a"
+    },
+    {
+      "caseId": "s12-a-4021",
+      "language": "ja",
+      "rawText": "案件 roster-planning の確認は完了しました。",
+      "scenarioId": "s12-s-203",
+      "sourceDigest": "sha256:3c79f39f07cc6a5e03ba969247fe7062d31dafccda40e962b331d8fa1c671ff9"
+    },
+    {
+      "caseId": "s12-a-4031",
+      "language": "vi",
+      "rawText": "kiểm tra mobile-wallet bị giới hạn bởi kiểm soát mobile-wallet trong đợt này.",
+      "scenarioId": "s12-s-204",
+      "sourceDigest": "sha256:f38b457203e618b709ccac1db43f9e115be1e646b55713b89c6c4c535dd54326"
+    },
+    {
+      "caseId": "s12-a-4033",
+      "language": "vi",
+      "rawText": "Hạng mục lab-sample phải chốt trước ca bàn giao.",
+      "scenarioId": "s12-s-205",
+      "sourceDigest": "sha256:5c1b2fa1a2f18395170c950535b3ee64f73e9bc7f16176cf5d14d20724cc2343"
+    },
+    {
+      "caseId": "s12-a-4043",
+      "language": "mixed",
+      "rawText": "inspection form worker hỗ trợ service hold nhưng vẫn supports trong fleet-inspection.",
+      "scenarioId": "s12-s-206",
+      "sourceDigest": "sha256:88ac05c716de8635dfe786ad637d8b2f55792554a2e2a0a0767fc446a181e1e0"
+    },
+    {
+      "caseId": "s12-a-4053",
+      "language": "ja",
+      "rawText": "案件 member-renewal の確認は完了しました。",
+      "scenarioId": "s12-s-207",
+      "sourceDigest": "sha256:2ebbce8d2a2e3b491aefe56ebf9fee81948111346a056c93dcf701179ac024e7"
+    },
+    {
+      "caseId": "s12-a-4063",
+      "language": "vi",
+      "rawText": "kiểm tra course-enrolment bị giới hạn bởi kiểm soát course-enrolment trong đợt này.",
+      "scenarioId": "s12-s-208",
+      "sourceDigest": "sha256:1c75fbbda9e55406457cfaa5bf8e920613662481aa9cb6fc138afb0fc0ee8533"
+    },
+    {
+      "caseId": "s12-a-4065",
+      "language": "vi",
+      "rawText": "Hạng mục sensor-calibration phải chốt trước ca bàn giao.",
+      "scenarioId": "s12-s-209",
+      "sourceDigest": "sha256:621c59713e2d3fbfe7cd5fadcc9225123114c79df3590d49b712932afb45f77f"
+    },
+    {
+      "caseId": "s12-a-4075",
+      "language": "mixed",
+      "rawText": "grant packet worker hỗ trợ missing appendix nhưng vẫn blocks trong grant-review.",
+      "scenarioId": "s12-s-210",
+      "sourceDigest": "sha256:aa5bbf385580fc7b21febb4340c252c66cbe7d3bdce11930c54a370b5057c02e"
+    },
+    {
+      "caseId": "s12-a-4085",
+      "language": "ja",
+      "rawText": "案件 order-forecast の確認は完了しました。",
+      "scenarioId": "s12-s-211",
+      "sourceDigest": "sha256:ba407c680bd1013c47d57b0b21f2bac2510ccb6a3a49e1e30ce26f1e75324bba"
+    },
+    {
+      "caseId": "s12-a-4095",
+      "language": "vi",
+      "rawText": "kiểm tra access-badge bị giới hạn bởi kiểm soát access-badge trong đợt này.",
+      "scenarioId": "s12-s-212",
+      "sourceDigest": "sha256:8c5ed96cb01bb40629cbeffbf3707222163dc6fba273aac52b5ccd8071269868"
+    }
+  ],
+  "requiredOutputSchema": {
+    "abstention": "abstentionReason when no safe candidate is supportable",
+    "anchorRule": "zero-based Unicode code-point half-open offsets; exact evidence text",
+    "entities": "candidateId,type,label,evidence{startOffset,endOffset,text},confidence",
+    "links": "mention,targetEntityId,evidence,confidence",
+    "relations": "predicate,sourceEntityId,targetEntityId,evidence,confidence",
+    "schemaVersion": "m3.v2"
+  },
+  "sourceOnly": true,
+  "status": "FROZEN_SOURCE_ONLY_FOR_CANDIDATE"
+}

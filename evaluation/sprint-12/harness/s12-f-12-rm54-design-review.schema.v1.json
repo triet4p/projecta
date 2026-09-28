@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.local/s12-f-12-rm54-design-review.schema.v1.json",
+  "title": "Sprint 12 RM-54 human-first design review",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifactVersion",
+    "status",
+    "experimentId",
+    "taskId",
+    "reviewAuthority",
+    "sourceDesign",
+    "revisedDesign",
+    "predecessor",
+    "verification",
+    "disposition",
+    "resolvedPolicyCategories",
+    "ownerGatedDeferrals",
+    "nonGoals",
+    "nextPermittedAction",
+    "claimBoundary"
+  ],
+  "properties": {
+    "artifactVersion": {"const": "s12.s12-f-12.rm54-design-review.v1"},
+    "status": {"const": "REVISED_AND_ACCEPTED_FOR_RM55_CONTRACT_DEFINITION_ONLY"},
+    "experimentId": {"const": "s12-f-12"},
+    "taskId": {"const": "S12-RM-54"},
+    "reviewDate": {"type": "string", "format": "date"},
+    "reviewAuthority": {"const": "project-owner-delegated-codex-reviewer"},
+    "sourceDesign": {"$ref": "#/$defs/documentRef"},
+    "revisedDesign": {"$ref": "#/$defs/documentRef"},
+    "predecessor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rm53Decision", "rm53Transition"],
+      "properties": {
+        "rm53Decision": {"$ref": "#/$defs/documentRef"},
+        "rm53Transition": {"$ref": "#/$defs/documentRef"}
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceDesignUnchanged",
+        "sourceDigestVerified",
+        "revisedDesignSchemaValid",
+        "policyCategoriesResolved",
+        "failClosedDefaultsRecorded",
+        "ownerGatedDeferralsRecorded",
+        "nonGoalsRecorded",
+        "noOntologyArtifacts",
+        "providerCalls",
+        "humanBusinessEvidencePresent"
+      ],
+      "properties": {
+        "sourceDesignUnchanged": {"const": true},
+        "sourceDigestVerified": {"const": true},
+        "revisedDesignSchemaValid": {"const": true},
+        "policyCategoriesResolved": {"const": true},
+        "failClosedDefaultsRecorded": {"const": true},
+        "ownerGatedDeferralsRecorded": {"const": true},
+        "nonGoalsRecorded": {"const": true},
+        "noOntologyArtifacts": {"const": true},
+        "providerCalls": {"const": 0},
+        "humanBusinessEvidencePresent": {"const": false}
+      }
+    },
+    "disposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "revisedAndAccepted",
+        "designDirectionOnly",
+        "implementationAuthorized",
+        "providerExecutionAuthorized",
+        "validationAccessAuthorized",
+        "heldOutAccessAuthorized",
+        "stageBAuthorized",
+        "candidateSelectionAuthorized",
+        "promotionAuthorized",
+        "ontologyProductionChangeAuthorized",
+        "humanBusinessQualityClaim"
+      ],
+      "properties": {
+        "revisedAndAccepted": {"const": true},
+        "designDirectionOnly": {"const": true},
+        "implementationAuthorized": {"const": false},
+        "providerExecutionAuthorized": {"const": false},
+        "validationAccessAuthorized": {"const": false},
+        "heldOutAccessAuthorized": {"const": false},
+        "stageBAuthorized": {"const": false},
+        "candidateSelectionAuthorized": {"const": false},
+        "promotionAuthorized": {"const": false},
+        "ontologyProductionChangeAuthorized": {"const": false},
+        "humanBusinessQualityClaim": {"const": false}
+      }
+    },
+    "resolvedPolicyCategories": {
+      "type": "array",
+      "minItems": 10,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "ownerGatedDeferrals": {
+      "type": "array",
+      "minItems": 2,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "nonGoals": {
+      "type": "array",
+      "minItems": 8,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "nextPermittedAction": {"const": "S12-RM-55_DEFINE_IMMUTABLE_SOURCEVERSION_AND_SOURCE_RECEIPT_CONTRACT"},
+    "claimBoundary": {"type": "string", "minLength": 1}
+  },
+  "$defs": {
+    "documentRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "digest"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "digest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+        "status": {"type": "string"}
+      }
+    }
+  }
+}

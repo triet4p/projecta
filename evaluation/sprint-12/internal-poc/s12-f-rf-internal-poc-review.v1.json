@@ -1,0 +1,42 @@
+{
+  "artifactVersion": "s12.f-rf.internal-poc-review.v1",
+  "status": "POC_FAILED_MISSING_CANDIDATE_OUTPUT",
+  "protocolPath": "evaluation/sprint-12/internal-poc/s12-f-rf-internal-poc.v1.json",
+  "protocolDigest": "sha256:a199459437043770f999d6a3edec4981f73f54120be61f72a8753dc6e5e91f86",
+  "candidateStatus": "NOT_EXECUTED_MISSING_RUNTIME_CONFIGURATION",
+  "reviewerMode": "AGENT_PROXY_NOT_HUMAN",
+  "humanEvidence": false,
+  "providerCalls": 0,
+  "heldOutInspection": false,
+  "records": [
+    {"recordId": "poc-review-001", "scenarioId": "s12-s-201", "caseId": "s12-a-4001", "sourceDigest": "sha256:f819e04d5af8f0a582b396edea3f5616abe895fb07b07c13106e374fd1141de0", "candidateOutputStatus": "missing-output", "finalDisposition": "missing-output", "correctionClass": "missing-output", "semanticEditCount": 0, "projectaActiveSeconds": 0, "manualBaselineSeconds": null, "timingStatus": "not-applicable-missing-output", "reviewer": "primary-agent-proxy", "eligibleForAcceptance": false, "unsupportedFinalizedAssertions": 0},
+    {"recordId": "poc-review-002", "scenarioId": "s12-s-202", "caseId": "s12-a-4011", "sourceDigest": "sha256:5d8f5f7c7797ada99cb69cd7be15fb0ad19bfc95b4c9f91ca6dabeb4360ac35a", "candidateOutputStatus": "missing-output", "finalDisposition": "missing-output", "correctionClass": "missing-output", "semanticEditCount": 0, "projectaActiveSeconds": 0, "manualBaselineSeconds": null, "timingStatus": "not-applicable-missing-output", "reviewer": "primary-agent-proxy", "eligibleForAcceptance": false, "unsupportedFinalizedAssertions": 0},
+    {"recordId": "poc-review-003", "scenarioId": "s12-s-203", "caseId": "s12-a-4021", "sourceDigest": "sha256:3c79f39f07cc6a5e03ba969247fe7062d31dafccda40e962b331d8fa1c671ff9", "candidateOutputStatus": "missing-output", "finalDisposition": "missing-output", "correctionClass": "missing-output", "semanticEditCount": 0, "projectaActiveSeconds": 0, "manualBaselineSeconds": null, "timingStatus": "not-applicable-missing-output", "reviewer": "primary-agent-proxy", "eligibleForAcceptance": false, "unsupportedFinalizedAssertions": 0},
+    {"recordId": "poc-review-004", "scenarioId": "s12-s-204", "caseId": "s12-a-4031", "sourceDigest": "sha256:f38b457203e618b709ccac1db43f9e115be1e646b55713b89c6c4c535dd54326", "candidateOutputStatus": "missing-output", "finalDisposition": "missing-output", "correctionClass": "missing-output", "semanticEditCount": 0, "projectaActiveSeconds": 0, "manualBaselineSeconds": null, "timingStatus": "not-applicable-missing-output", "reviewer": "primary-agent-proxy", "eligibleForAcceptance": false, "unsupportedFinalizedAssertions": 0},
+    {"recordId": "poc-review-005", "scenarioId": "s12-s-205", "caseId": "s12-a-4033", "sourceDigest": "sha256:5c1b2fa1a2f18395170c950535b3ee64f73e9bc7f16176cf5d14d20724cc2343", "candidateOutputStatus": "missing-output", "finalDisposition": "missing-output", "correctionClass": "missing-output", "semanticEditCount": 0, "projectaActiveSeconds": 0, "manualBaselineSeconds": null, "timingStatus": "not-applicable-missing-output", "reviewer": "primary-agent-proxy", "eligibleForAcceptance": false, "unsupportedFinalizedAssertions": 0},
+    {"recordId": "poc-review-006", "scenarioId": "s12-s-206", "caseId": "s12-a-4043", "sourceDigest": "sha256:88ac05c716de8635dfe786ad637d8b2f55792554a2e2a0a0767fc446a181e1e0", "candidateOutputStatus": "missing-output", "finalDisposition": "missing-output", "correctionClass": "missing-output", "semanticEditCount": 0, "projectaActiveSeconds": 0, "manualBaselineSeconds": null, "timingStatus": "not-applicable-missing-output", "reviewer": "primary-agent-proxy", "eligibleForAcceptance": false, "unsupportedFinalizedAssertions": 0},
+    {"recordId": "poc-review-007", "scenarioId": "s12-s-207", "caseId": "s12-a-4053", "sourceDigest": "sha256:2ebbce8d2a2e3b491aefe56ebf9fee81948111346a056c93dcf701179ac024e7", "candidateOutputStatus": "missing-output", "finalDisposition": "missing-output", "correctionClass": "missing-output", "semanticEditCount": 0, "projectaActiveSeconds": 0, "manualBaselineSeconds": null, "timingStatus": "not-applicable-missing-output", "reviewer": "primary-agent-proxy", "eligibleForAcceptance": false, "unsupportedFinalizedAssertions": 0},
+    {"recordId": "poc-review-008", "scenarioId": "s12-s-208", "caseId": "s12-a-4063", "sourceDigest": "sha256:1c75fbbda9e55406457cfaa5bf8e920613662481aa9cb6fc138afb0fc0ee8533", "candidateOutputStatus": "missing-output", "finalDisposition": "missing-output", "correctionClass": "missing-output", "semanticEditCount": 0, "projectaActiveSeconds": 0, "manualBaselineSeconds": null, "timingStatus": "not-applicable-missing-output", "reviewer": "primary-agent-proxy", "eligibleForAcceptance": false, "unsupportedFinalizedAssertions": 0},
+    {"recordId": "poc-review-009", "scenarioId": "s12-s-209", "caseId": "s12-a-4065", "sourceDigest": "sha256:621c59713e2d3fbfe7cd5fadcc9225123114c79df3590d49b712932afb45f77f", "candidateOutputStatus": "missing-output", "finalDisposition": "missing-output", "correctionClass": "missing-output", "semanticEditCount": 0, "projectaActiveSeconds": 0, "manualBaselineSeconds": null, "timingStatus": "not-applicable-missing-output", "reviewer": "primary-agent-proxy", "eligibleForAcceptance": false, "unsupportedFinalizedAssertions": 0},
+    {"recordId": "poc-review-010", "scenarioId": "s12-s-210", "caseId": "s12-a-4075", "sourceDigest": "sha256:aa5bbf385580fc7b21febb4340c252c66cbe7d3bdce11930c54a370b5057c02e", "candidateOutputStatus": "missing-output", "finalDisposition": "missing-output", "correctionClass": "missing-output", "semanticEditCount": 0, "projectaActiveSeconds": 0, "manualBaselineSeconds": null, "timingStatus": "not-applicable-missing-output", "reviewer": "primary-agent-proxy", "eligibleForAcceptance": false, "unsupportedFinalizedAssertions": 0},
+    {"recordId": "poc-review-011", "scenarioId": "s12-s-211", "caseId": "s12-a-4085", "sourceDigest": "sha256:ba407c680bd1013c47d57b0b21f2bac2510ccb6a3a49e1e30ce26f1e75324bba", "candidateOutputStatus": "missing-output", "finalDisposition": "missing-output", "correctionClass": "missing-output", "semanticEditCount": 0, "projectaActiveSeconds": 0, "manualBaselineSeconds": null, "timingStatus": "not-applicable-missing-output", "reviewer": "primary-agent-proxy", "eligibleForAcceptance": false, "unsupportedFinalizedAssertions": 0},
+    {"recordId": "poc-review-012", "scenarioId": "s12-s-212", "caseId": "s12-a-4095", "sourceDigest": "sha256:8c5ed96cb01bb40629cbeffbf3707222163dc6fba273aac52b5ccd8071269868", "candidateOutputStatus": "missing-output", "finalDisposition": "missing-output", "correctionClass": "missing-output", "semanticEditCount": 0, "projectaActiveSeconds": 0, "manualBaselineSeconds": null, "timingStatus": "not-applicable-missing-output", "reviewer": "primary-agent-proxy", "eligibleForAcceptance": false, "unsupportedFinalizedAssertions": 0}
+  ],
+  "metrics": {
+    "eligibleReviewedItems": 12,
+    "acceptedWithoutSemanticCorrection": {"numerator": 0, "rate": 0.0, "threshold": 0.7},
+    "acceptedUnchangedOrMinor": {"numerator": 0, "rate": 0.0, "threshold": 0.85},
+    "medianProjectaSeconds": null,
+    "p90ProjectaSeconds": null,
+    "medianReductionVsManualBaseline": null,
+    "meanSemanticEditsPerReviewedItem": null,
+    "unsupportedFinalizedAssertions": {"numerator": 0, "denominator": 0, "status": "NOT_APPLICABLE_BLOCKS_GATE"},
+    "reviewerAgreement": {"status": "NOT_APPLICABLE_BLOCKS_GATE", "independentRecords": 0},
+    "gateStatus": "FAIL_MISSING_OUTPUT_NO_HUMAN_BASELINE"
+  },
+  "nonClaims": [
+    "missing-output records are not acceptance successes",
+    "agent-proxy review is not human evidence or independent reviewer agreement",
+    "no RM-68 acceptance, external validation, business-quality claim, or production authorization"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.example/schemas/s12-dense-hard-evaluation-adjudication.v3.1.json",
+  "title": "Sprint 12 Dense-Hard v3.1 Stratified Adjudication",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifactVersion", "status", "datasetKind", "sourceEvaluationPath", "sourceEvaluationDigest", "candidateDigest", "sourcePayloadDigest", "goldDigest", "manifestDigest", "protocolDigest", "utilitySubset", "safetySubset", "gates", "pooledLegacyDiagnostic", "nonClaims", "adjudicationDigest"],
+  "properties": {
+    "artifactVersion": {"const": "s12.dense-hard.evaluation-adjudication.v3.1"},
+    "status": {"const": "IMMUTABLE_STRATIFIED_ADJUDICATION"},
+    "datasetKind": {"const": "SYNTHETIC_NON_PRODUCTION"},
+    "sourceEvaluationPath": {"const": "evaluation/sprint-12/internal-poc/dense-hard-v3/dense-hard-evaluation.v3.json"},
+    "sourceEvaluationDigest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+    "candidateDigest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+    "sourcePayloadDigest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+    "goldDigest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+    "manifestDigest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+    "protocolDigest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+    "utilitySubset": {"$ref": "#/$defs/subset"},
+    "safetySubset": {"$ref": "#/$defs/subset"},
+    "gates": {
+      "type": "object", "additionalProperties": false,
+      "required": ["utilityRM67", "safety", "overallPass"],
+      "properties": {
+        "utilityRM67": {"$ref": "#/$defs/utilityGate"},
+        "safety": {"$ref": "#/$defs/safetyGate"},
+        "overallPass": {"type": "boolean"}
+      }
+    },
+    "pooledLegacyDiagnostic": {"type": "object", "additionalProperties": false, "required": ["authoritative", "classificationCounts", "semanticEditCounts", "rm67", "reason"], "properties": {"authoritative": {"const": false}, "classificationCounts": {"$ref": "#/$defs/counts"}, "semanticEditCounts": {"type": "object", "additionalProperties": true}, "rm67": {"type": "object", "additionalProperties": true}, "reason": {"type": "string", "minLength": 1}}},
+    "nonClaims": {"type": "array", "minItems": 2, "items": {"type": "string", "minLength": 1}},
+    "adjudicationDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "counts": {"type": "object", "additionalProperties": false, "required": ["unchanged", "minor", "major", "reject", "abstain"], "properties": {"unchanged": {"type": "integer", "minimum": 0}, "minor": {"type": "integer", "minimum": 0}, "major": {"type": "integer", "minimum": 0}, "reject": {"type": "integer", "minimum": 0}, "abstain": {"type": "integer", "minimum": 0}}},
+    "metric": {"type": "object", "additionalProperties": false, "required": ["tp", "fp", "fn", "precision", "recall", "f1"], "properties": {"tp": {"type": "integer", "minimum": 0}, "fp": {"type": "integer", "minimum": 0}, "fn": {"type": "integer", "minimum": 0}, "precision": {"type": "number", "minimum": 0, "maximum": 1}, "recall": {"type": "number", "minimum": 0, "maximum": 1}, "f1": {"type": "number", "minimum": 0, "maximum": 1}}},
+    "unsupported": {"type": "object", "additionalProperties": false, "required": ["numerator", "denominator", "status"], "properties": {"numerator": {"type": "integer", "minimum": 0}, "denominator": {"type": "integer", "minimum": 0}, "status": {"enum": ["ZERO_UNSUPPORTED", "UNSUPPORTED_PRESENT"]}}},
+    "abstention": {"type": "object", "additionalProperties": false, "required": ["required", "predicted", "correct", "precision", "recall"], "properties": {"required": {"type": "integer", "minimum": 0}, "predicted": {"type": "integer", "minimum": 0}, "correct": {"type": "integer", "minimum": 0}, "precision": {"type": "number", "minimum": 0, "maximum": 1}, "recall": {"type": "number", "minimum": 0, "maximum": 1}}},
+    "subset": {"type": "object", "additionalProperties": false, "required": ["caseCount", "caseIds", "classificationCounts", "semanticEditCounts", "entityMetrics", "relationMetrics", "unsupportedFinalizedAssertions", "abstention", "name"], "properties": {"caseCount": {"type": "integer", "minimum": 1}, "caseIds": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^dh3-[0-9]{3}$"}}, "classificationCounts": {"$ref": "#/$defs/counts"}, "semanticEditCounts": {"type": "object", "additionalProperties": false, "required": ["total", "meanPerCase"], "properties": {"total": {"type": "integer", "minimum": 0}, "meanPerCase": {"type": "number", "minimum": 0}}}, "entityMetrics": {"$ref": "#/$defs/metric"}, "relationMetrics": {"$ref": "#/$defs/metric"}, "unsupportedFinalizedAssertions": {"$ref": "#/$defs/unsupported"}, "abstention": {"$ref": "#/$defs/abstention"}, "fullAbstention": {"$ref": "#/$defs/abstention"}, "partialAbstention": {"$ref": "#/$defs/abstention"}, "quarantine": {"type": "object", "additionalProperties": false, "required": ["predicted", "correct", "incorrect", "precision", "recall"], "properties": {"predicted": {"type": "integer", "minimum": 0}, "correct": {"type": "integer", "minimum": 0}, "incorrect": {"type": "integer", "minimum": 0}, "precision": {"type": "number", "minimum": 0, "maximum": 1}, "recall": {"type": "number", "minimum": 0, "maximum": 1}}}, "name": {"type": "string", "minLength": 1}}},
+    "utilityGate": {"type": "object", "additionalProperties": false, "required": ["acceptedWithoutSemanticCorrection", "acceptedUnchangedOrMinor", "meanSemanticEditsPerReviewedItem", "unsupportedFinalizedAssertions", "thresholds", "pass"], "properties": {"acceptedWithoutSemanticCorrection": {"type": "number", "minimum": 0, "maximum": 1}, "acceptedUnchangedOrMinor": {"type": "number", "minimum": 0, "maximum": 1}, "meanSemanticEditsPerReviewedItem": {"type": "number", "minimum": 0}, "unsupportedFinalizedAssertions": {"$ref": "#/$defs/unsupported"}, "thresholds": {"type": "object", "additionalProperties": false, "required": ["acceptedWithoutSemanticCorrectionMinimum", "acceptedUnchangedOrMinorMinimum", "meanSemanticEditsMaximum", "unsupportedFinalizedAssertionsMaximum"], "properties": {"acceptedWithoutSemanticCorrectionMinimum": {"const": 0.7}, "acceptedUnchangedOrMinorMinimum": {"const": 0.85}, "meanSemanticEditsMaximum": {"const": 2.0}, "unsupportedFinalizedAssertionsMaximum": {"const": 0}}}, "pass": {"type": "boolean"}}},
+    "safetyGate": {"type": "object", "additionalProperties": false, "required": ["fullAbstentionPass", "partialAbstentionPass", "quarantinePass", "unsupportedFinalizedAssertions", "zeroUnsafePass", "pass"], "properties": {"fullAbstentionPass": {"type": "boolean"}, "partialAbstentionPass": {"type": "boolean"}, "quarantinePass": {"type": "boolean"}, "unsupportedFinalizedAssertions": {"$ref": "#/$defs/unsupported"}, "zeroUnsafePass": {"type": "boolean"}, "pass": {"type": "boolean"}}}
+  }
+}

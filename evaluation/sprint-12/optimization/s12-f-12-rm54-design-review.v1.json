@@ -1,0 +1,85 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm54-design-review.v1",
+  "status": "REVISED_AND_ACCEPTED_FOR_RM55_CONTRACT_DEFINITION_ONLY",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-54",
+  "reviewDate": "2026-08-22",
+  "reviewAuthority": "project-owner-delegated-codex-reviewer",
+  "sourceDesign": {
+    "path": "docs/sprint-plans/sprint-12/human-first-extraction-framework.v1.md",
+    "digest": "sha256:724e24098b88904c27fde8959eefb12bdd0a8ae1318c14408b3530c183939699",
+    "status": "PROPOSAL_NON_AUTHORITATIVE_IMMUTABLE_INPUT"
+  },
+  "revisedDesign": {
+    "path": "docs/sprint-plans/sprint-12/human-first-extraction-framework.v2.md",
+    "digest": "sha256:89a8f5d90e6df9e5ec76dc016eaae2e85df2ce680dab826f690dd1448951a5cd",
+    "status": "REVISED_AND_ACCEPTED_FOR_RM55_CONTRACT_DEFINITION_ONLY"
+  },
+  "predecessor": {
+    "rm53Decision": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm53-owner-decision.v1.json",
+      "digest": "sha256:9455d1be116c1458c97930dcdb3226dfa3fe17e172d5ef06a1d5e7b186fdf952",
+      "status": "RM53_ACCEPTED_OFFLINE_CLOSURE_ONLY"
+    },
+    "rm53Transition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm53-decision-transition.v1.json",
+      "digest": "sha256:c3570b1105416276e4c8e989bd8a42c444579eea32e446b9085533b01f09df71",
+      "status": "F12_OFFLINE_CLOSURE_ACCEPTED_HUMAN_FIRST_DESIGN_REVIEW_PENDING"
+    }
+  },
+  "verification": {
+    "sourceDesignUnchanged": true,
+    "sourceDigestVerified": true,
+    "revisedDesignSchemaValid": true,
+    "policyCategoriesResolved": true,
+    "failClosedDefaultsRecorded": true,
+    "ownerGatedDeferralsRecorded": true,
+    "nonGoalsRecorded": true,
+    "noOntologyArtifacts": true,
+    "providerCalls": 0,
+    "humanBusinessEvidencePresent": false
+  },
+  "disposition": {
+    "revisedAndAccepted": true,
+    "designDirectionOnly": true,
+    "implementationAuthorized": false,
+    "providerExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "ontologyProductionChangeAuthorized": false,
+    "humanBusinessQualityClaim": false
+  },
+  "resolvedPolicyCategories": [
+    "immutable_source_version_identity_canonicalization_retention",
+    "unicode_utf16_newline_coordinate_mapping",
+    "finite_lifecycle_quarantine_abstain_stale_transitions",
+    "ontology_versioned_allowlists_project_isolation",
+    "deterministic_evidence_boundary_and_tie_review",
+    "reviewer_authority_and_quarantine_release",
+    "revision_bound_receipts_and_idempotency",
+    "approved_assertion_plan_atomic_commit_and_recovery",
+    "inference_invalidation_and_stale_projection_safety",
+    "raw_data_excluding_telemetry_and_retention",
+    "prompt_injection_data_only_and_no_tool_authority"
+  ],
+  "ownerGatedDeferrals": [
+    "S12-RM-67 human correction-burden evaluation contract",
+    "S12-RM-68 preregistered human-first evaluation",
+    "future ontology terms and release through ontology governance"
+  ],
+  "nonGoals": [
+    "provider reopening",
+    "runtime implementation or execution",
+    "auto-approval or hidden confirmation",
+    "bulk relation approval",
+    "production ontology change or release",
+    "validation or held-out access",
+    "Stage B, candidate selection or promotion",
+    "release, deployment, tenant readiness or business-quality claim"
+  ],
+  "nextPermittedAction": "S12-RM-55_DEFINE_IMMUTABLE_SOURCEVERSION_AND_SOURCE_RECEIPT_CONTRACT",
+  "claimBoundary": "RM-54 accepts the revised human-first extraction design for RM-55 contract definition only. It records no human-study or business-quality evidence, creates no ontology production artifact, and authorizes no application implementation, provider/runtime execution, validation, held-out access, Stage B, selection, promotion or release."
+}

@@ -1,0 +1,1841 @@
+{
+  "artifactVersion": "s12.dense-hard.gold.v1",
+  "goldDigest": "sha256:cb1998d03380665e72e7aa69eee055366618f00f967a0ec0530f52eafde2b7a7",
+  "records": [
+    {
+      "caseId": "dh-001",
+      "expected": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 13,
+              "startOffset": 0,
+              "text": "Release train"
+            },
+            "label": "Release train",
+            "type": "Task"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 37,
+              "startOffset": 25,
+              "text": "API contract"
+            },
+            "label": "API contract",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 78,
+              "startOffset": 63,
+              "text": "schema registry"
+            },
+            "label": "schema registry",
+            "type": "Constraint"
+          },
+          {
+            "entityId": "e4",
+            "evidence": {
+              "endOffset": 119,
+              "startOffset": 103,
+              "text": "unsafe migration"
+            },
+            "label": "unsafe migration",
+            "type": "Risk"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 37,
+              "startOffset": 0,
+              "text": "Release train depends on API contract"
+            },
+            "predicate": "dependsOn",
+            "relationId": "r1",
+            "sourceEntityId": "e1",
+            "targetEntityId": "e2"
+          },
+          {
+            "evidence": {
+              "endOffset": 78,
+              "startOffset": 39,
+              "text": "API contract implements schema registry"
+            },
+            "predicate": "implements",
+            "relationId": "r2",
+            "sourceEntityId": "e2",
+            "targetEntityId": "e3"
+          },
+          {
+            "evidence": {
+              "endOffset": 119,
+              "startOffset": 80,
+              "text": "Schema registry blocks unsafe migration"
+            },
+            "predicate": "blocks",
+            "relationId": "r3",
+            "sourceEntityId": "e3",
+            "targetEntityId": "e4"
+          }
+        ]
+      },
+      "scenarioId": "dh-s-001",
+      "sourceDigest": "sha256:5cf61379f79c1e95ad3b21ddafe147b903d6e3dccff34a25802ba7174db93dbe"
+    },
+    {
+      "caseId": "dh-002",
+      "expected": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 11,
+              "startOffset": 0,
+              "text": "Ops runbook"
+            },
+            "label": "Ops runbook",
+            "type": "Task"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 36,
+              "startOffset": 21,
+              "text": "incident bridge"
+            },
+            "label": "incident bridge",
+            "type": "Task"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 81,
+              "startOffset": 62,
+              "text": "escalation question"
+            },
+            "label": "escalation question",
+            "type": "Question"
+          },
+          {
+            "entityId": "e4",
+            "evidence": {
+              "endOffset": 127,
+              "startOffset": 113,
+              "text": "on-call roster"
+            },
+            "label": "on-call roster",
+            "type": "Requirement"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 36,
+              "startOffset": 0,
+              "text": "Ops runbook supports incident bridge"
+            },
+            "predicate": "supports",
+            "relationId": "r1",
+            "sourceEntityId": "e1",
+            "targetEntityId": "e2"
+          },
+          {
+            "evidence": {
+              "endOffset": 81,
+              "startOffset": 38,
+              "text": "Incident bridge answers escalation question"
+            },
+            "predicate": "answers",
+            "relationId": "r2",
+            "sourceEntityId": "e2",
+            "targetEntityId": "e3"
+          },
+          {
+            "evidence": {
+              "endOffset": 127,
+              "startOffset": 83,
+              "text": "Escalation question dependsOn on-call roster"
+            },
+            "predicate": "dependsOn",
+            "relationId": "r3",
+            "sourceEntityId": "e3",
+            "targetEntityId": "e4"
+          }
+        ]
+      },
+      "scenarioId": "dh-s-002",
+      "sourceDigest": "sha256:0ee7a65f3c451fd54c4b4a26a9932da109077ba91777616f3312434b936a3509"
+    },
+    {
+      "caseId": "dh-003",
+      "expected": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 20,
+              "startOffset": 0,
+              "text": "Quy trình thanh toán"
+            },
+            "label": "Quy trình thanh toán",
+            "type": "Task"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 48,
+              "startOffset": 35,
+              "text": "cổng đối soát"
+            },
+            "label": "cổng đối soát",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 84,
+              "startOffset": 71,
+              "text": "ledger nội bộ"
+            },
+            "label": "ledger nội bộ",
+            "type": "Task"
+          },
+          {
+            "entityId": "e4",
+            "evidence": {
+              "endOffset": 125,
+              "startOffset": 112,
+              "text": "dữ liệu thiếu"
+            },
+            "label": "dữ liệu thiếu",
+            "type": "Risk"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 48,
+              "startOffset": 0,
+              "text": "Quy trình thanh toán phụ thuộc vào cổng đối soát"
+            },
+            "predicate": "dependsOn",
+            "relationId": "r1",
+            "sourceEntityId": "e1",
+            "targetEntityId": "e2"
+          },
+          {
+            "evidence": {
+              "endOffset": 84,
+              "startOffset": 50,
+              "text": "Cổng đối soát hỗ trợ ledger nội bộ"
+            },
+            "predicate": "supports",
+            "relationId": "r2",
+            "sourceEntityId": "e2",
+            "targetEntityId": "e3"
+          },
+          {
+            "evidence": {
+              "endOffset": 125,
+              "startOffset": 86,
+              "text": "Ledger nội bộ bị chặn bởi dữ liệu thiếu"
+            },
+            "predicate": "blocks",
+            "relationId": "r3",
+            "sourceEntityId": "e3",
+            "targetEntityId": "e4"
+          }
+        ]
+      },
+      "scenarioId": "dh-s-003",
+      "sourceDigest": "sha256:28f32c4b248bd039526850b7689a7d31dfc723a98a590557854bbf4246142fe3"
+    },
+    {
+      "caseId": "dh-004",
+      "expected": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 4,
+              "startOffset": 0,
+              "text": "監査計画"
+            },
+            "label": "監査計画",
+            "type": "Task"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 9,
+              "startOffset": 5,
+              "text": "証跡台帳"
+            },
+            "label": "証跡台帳",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 24,
+              "startOffset": 20,
+              "text": "保持方針"
+            },
+            "label": "保持方針",
+            "type": "Constraint"
+          },
+          {
+            "entityId": "e4",
+            "evidence": {
+              "endOffset": 42,
+              "startOffset": 35,
+              "text": "古い記録の削除"
+            },
+            "label": "古い記録の削除",
+            "type": "Risk"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 14,
+              "startOffset": 0,
+              "text": "監査計画は証跡台帳に依存する"
+            },
+            "predicate": "dependsOn",
+            "relationId": "r1",
+            "sourceEntityId": "e1",
+            "targetEntityId": "e2"
+          },
+          {
+            "evidence": {
+              "endOffset": 29,
+              "startOffset": 15,
+              "text": "証跡台帳は保持方針を実装する"
+            },
+            "predicate": "implements",
+            "relationId": "r2",
+            "sourceEntityId": "e2",
+            "targetEntityId": "e3"
+          },
+          {
+            "evidence": {
+              "endOffset": 45,
+              "startOffset": 30,
+              "text": "保持方針は古い記録の削除を防ぐ"
+            },
+            "predicate": "blocks",
+            "relationId": "r3",
+            "sourceEntityId": "e3",
+            "targetEntityId": "e4"
+          }
+        ]
+      },
+      "scenarioId": "dh-s-004",
+      "sourceDigest": "sha256:88c1e5c44f02aa8b1450d5fdf7356798fb8330efb995cb93324d787ee46da9f2"
+    },
+    {
+      "caseId": "dh-005",
+      "expected": {
+        "abstentionReason": "REPEATED_LABEL_OCCURRENCE_REQUIRES_EXPLICIT_BINDING",
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 12,
+              "startOffset": 0,
+              "text": "Review queue"
+            },
+            "label": "Review queue",
+            "type": "Task"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 42,
+              "startOffset": 32,
+              "text": "Owner note"
+            },
+            "label": "Owner note",
+            "type": "Decision"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 64,
+              "startOffset": 52,
+              "text": "review queue"
+            },
+            "label": "review queue",
+            "type": "Task"
+          },
+          {
+            "entityId": "e4",
+            "evidence": {
+              "endOffset": 85,
+              "startOffset": 75,
+              "text": "owner note"
+            },
+            "label": "owner note",
+            "type": "Decision"
+          },
+          {
+            "entityId": "e5",
+            "evidence": {
+              "endOffset": 104,
+              "startOffset": 93,
+              "text": "archive job"
+            },
+            "label": "archive job",
+            "type": "Task"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 30,
+              "startOffset": 0,
+              "text": "Review queue tracks owner note"
+            },
+            "predicate": "dependsOn",
+            "relationId": "r1",
+            "sourceEntityId": "e1",
+            "targetEntityId": "e2"
+          },
+          {
+            "evidence": {
+              "endOffset": 64,
+              "startOffset": 32,
+              "text": "Owner note supports review queue"
+            },
+            "predicate": "supports",
+            "relationId": "r2",
+            "sourceEntityId": "e2",
+            "targetEntityId": "e1"
+          },
+          {
+            "evidence": {
+              "endOffset": 104,
+              "startOffset": 75,
+              "text": "owner note blocks archive job"
+            },
+            "predicate": "blocks",
+            "relationId": "r3",
+            "sourceEntityId": "e4",
+            "targetEntityId": "e5"
+          }
+        ]
+      },
+      "scenarioId": "dh-s-005",
+      "sourceDigest": "sha256:cccd68c4316bd494ff379bf495f5b7bb25751113e89035de95d04c070b3b25e6"
+    },
+    {
+      "caseId": "dh-006",
+      "expected": {
+        "abstentionReason": "REPEATED_LABEL_OCCURRENCE_REQUIRES_EXPLICIT_BINDING",
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 12,
+              "startOffset": 0,
+              "text": "Policy label"
+            },
+            "label": "Policy label",
+            "type": "Constraint"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 35,
+              "startOffset": 24,
+              "text": "intake form"
+            },
+            "label": "intake form",
+            "type": "Task"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 49,
+              "startOffset": 37,
+              "text": "Policy label"
+            },
+            "label": "Policy label",
+            "type": "Constraint"
+          },
+          {
+            "entityId": "e4",
+            "evidence": {
+              "endOffset": 74,
+              "startOffset": 64,
+              "text": "audit form"
+            },
+            "label": "audit form",
+            "type": "Task"
+          },
+          {
+            "entityId": "e5",
+            "evidence": {
+              "endOffset": 109,
+              "startOffset": 97,
+              "text": "policy label"
+            },
+            "label": "policy label",
+            "type": "Requirement"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 35,
+              "startOffset": 0,
+              "text": "Policy label constrains intake form"
+            },
+            "predicate": "constrainedBy",
+            "relationId": "r1",
+            "sourceEntityId": "e2",
+            "targetEntityId": "e1"
+          },
+          {
+            "evidence": {
+              "endOffset": 74,
+              "startOffset": 37,
+              "text": "Policy label also supports audit form"
+            },
+            "predicate": "supports",
+            "relationId": "r2",
+            "sourceEntityId": "e3",
+            "targetEntityId": "e4"
+          },
+          {
+            "evidence": {
+              "endOffset": 109,
+              "startOffset": 76,
+              "text": "Audit form dependsOn policy label"
+            },
+            "predicate": "dependsOn",
+            "relationId": "r3",
+            "sourceEntityId": "e4",
+            "targetEntityId": "e5"
+          }
+        ]
+      },
+      "scenarioId": "dh-s-006",
+      "sourceDigest": "sha256:7129f24a9ba313eb0dac1088f64ffe9d1c7991e9ad4952ae17e3780e98ee0113"
+    },
+    {
+      "caseId": "dh-007",
+      "expected": {
+        "abstentionReason": "NEGATED_AND_NON_ASSERTIVE_RELATIONS_ABSTAIN",
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 13,
+              "startOffset": 0,
+              "text": "Cache refresh"
+            },
+            "label": "Cache refresh",
+            "type": "Task"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 35,
+              "startOffset": 29,
+              "text": "deploy"
+            },
+            "label": "deploy",
+            "type": "Task"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 106,
+              "startOffset": 94,
+              "text": "release gate"
+            },
+            "label": "release gate",
+            "type": "Constraint"
+          }
+        ],
+        "relations": []
+      },
+      "scenarioId": "dh-s-007",
+      "sourceDigest": "sha256:637ed7dccbb8544fb5b392351b21ce1f177358a9aa8a76d8d43852169b650ff6"
+    },
+    {
+      "caseId": "dh-008",
+      "expected": {
+        "abstentionReason": "AMBIGUOUS_MODALITY_ABSTAIN",
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 23,
+              "startOffset": 10,
+              "text": "vendor portal"
+            },
+            "label": "vendor portal",
+            "type": "Task"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 51,
+              "startOffset": 39,
+              "text": "billing rule"
+            },
+            "label": "billing rule",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 106,
+              "startOffset": 99,
+              "text": "payment"
+            },
+            "label": "payment",
+            "type": "Task"
+          }
+        ],
+        "relations": []
+      },
+      "scenarioId": "dh-s-008",
+      "sourceDigest": "sha256:e25ceb53c205f015d1ebde3dc13854c0ca2825d1d3d76f67f6b27df8a434f333"
+    },
+    {
+      "caseId": "dh-009",
+      "expected": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 17,
+              "startOffset": 0,
+              "text": "Version 1 runbook"
+            },
+            "label": "Version 1 runbook",
+            "type": "Task"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 40,
+              "startOffset": 31,
+              "text": "old queue"
+            },
+            "label": "old queue",
+            "type": "Task"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 59,
+              "startOffset": 42,
+              "text": "Version 2 runbook"
+            },
+            "label": "Version 2 runbook",
+            "type": "Task"
+          },
+          {
+            "entityId": "e4",
+            "evidence": {
+              "endOffset": 88,
+              "startOffset": 71,
+              "text": "version 1 runbook"
+            },
+            "label": "Version 1 runbook",
+            "type": "Task"
+          },
+          {
+            "entityId": "e5",
+            "evidence": {
+              "endOffset": 107,
+              "startOffset": 94,
+              "text": "current queue"
+            },
+            "label": "current queue",
+            "type": "Task"
+          },
+          {
+            "entityId": "e6",
+            "evidence": {
+              "endOffset": 135,
+              "startOffset": 118,
+              "text": "version 2 runbook"
+            },
+            "label": "version 2 runbook",
+            "type": "Task"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 40,
+              "startOffset": 0,
+              "text": "Version 1 runbook supports the old queue"
+            },
+            "predicate": "supports",
+            "relationId": "r1",
+            "sourceEntityId": "e1",
+            "targetEntityId": "e2"
+          },
+          {
+            "evidence": {
+              "endOffset": 88,
+              "startOffset": 42,
+              "text": "Version 2 runbook supersedes version 1 runbook"
+            },
+            "predicate": "supersedes",
+            "relationId": "r2",
+            "sourceEntityId": "e3",
+            "targetEntityId": "e4"
+          },
+          {
+            "evidence": {
+              "endOffset": 135,
+              "startOffset": 90,
+              "text": "The current queue dependsOn version 2 runbook"
+            },
+            "predicate": "dependsOn",
+            "relationId": "r3",
+            "sourceEntityId": "e5",
+            "targetEntityId": "e6"
+          }
+        ]
+      },
+      "scenarioId": "dh-s-009",
+      "sourceDigest": "sha256:6792011e3d7e31cf10c4a47d017f40b5604777668277779afc93f53a63c0a1e8"
+    },
+    {
+      "caseId": "dh-010",
+      "expected": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 18,
+              "startOffset": 0,
+              "text": "Yesterday's policy"
+            },
+            "label": "Yesterday's policy",
+            "type": "Constraint"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 41,
+              "startOffset": 30,
+              "text": "legacy path"
+            },
+            "label": "legacy path",
+            "type": "Risk"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 57,
+              "startOffset": 43,
+              "text": "Today's policy"
+            },
+            "label": "Today's policy",
+            "type": "Constraint"
+          },
+          {
+            "entityId": "e4",
+            "evidence": {
+              "endOffset": 87,
+              "startOffset": 69,
+              "text": "yesterday's policy"
+            },
+            "label": "yesterday's policy",
+            "type": "Constraint"
+          },
+          {
+            "entityId": "e5",
+            "evidence": {
+              "endOffset": 104,
+              "startOffset": 93,
+              "text": "active path"
+            },
+            "label": "active path",
+            "type": "Task"
+          },
+          {
+            "entityId": "e6",
+            "evidence": {
+              "endOffset": 129,
+              "startOffset": 115,
+              "text": "today's policy"
+            },
+            "label": "today's policy",
+            "type": "Constraint"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 41,
+              "startOffset": 0,
+              "text": "Yesterday's policy blocks the legacy path"
+            },
+            "predicate": "blocks",
+            "relationId": "r1",
+            "sourceEntityId": "e1",
+            "targetEntityId": "e2"
+          },
+          {
+            "evidence": {
+              "endOffset": 87,
+              "startOffset": 43,
+              "text": "Today's policy supersedes yesterday's policy"
+            },
+            "predicate": "supersedes",
+            "relationId": "r2",
+            "sourceEntityId": "e3",
+            "targetEntityId": "e4"
+          },
+          {
+            "evidence": {
+              "endOffset": 129,
+              "startOffset": 89,
+              "text": "The active path dependsOn today's policy"
+            },
+            "predicate": "dependsOn",
+            "relationId": "r3",
+            "sourceEntityId": "e5",
+            "targetEntityId": "e6"
+          }
+        ]
+      },
+      "scenarioId": "dh-s-010",
+      "sourceDigest": "sha256:517786103d564891f5f834cb6c8e6c579c11dae2ce1f2c9c78abdfbe7f0ba04b"
+    },
+    {
+      "caseId": "dh-011",
+      "expected": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 11,
+              "startOffset": 0,
+              "text": "Design note"
+            },
+            "label": "Design note",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 38,
+              "startOffset": 22,
+              "text": "service boundary"
+            },
+            "label": "service boundary",
+            "type": "Constraint"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 81,
+              "startOffset": 67,
+              "text": "ingestion task"
+            },
+            "label": "ingestion task",
+            "type": "Task"
+          },
+          {
+            "entityId": "e4",
+            "evidence": {
+              "endOffset": 128,
+              "startOffset": 116,
+              "text": "schema check"
+            },
+            "label": "schema check",
+            "type": "Requirement"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 38,
+              "startOffset": 0,
+              "text": "Design note names the service boundary"
+            },
+            "predicate": "supports",
+            "relationId": "r1",
+            "sourceEntityId": "e1",
+            "targetEntityId": "e2"
+          },
+          {
+            "evidence": {
+              "endOffset": 81,
+              "startOffset": 40,
+              "text": "That boundary supports the ingestion task"
+            },
+            "predicate": "supports",
+            "relationId": "r2",
+            "sourceEntityId": "e2",
+            "targetEntityId": "e3"
+          },
+          {
+            "evidence": {
+              "endOffset": 128,
+              "startOffset": 83,
+              "text": "The ingestion task dependsOn the schema check"
+            },
+            "predicate": "dependsOn",
+            "relationId": "r3",
+            "sourceEntityId": "e3",
+            "targetEntityId": "e4"
+          }
+        ]
+      },
+      "scenarioId": "dh-s-011",
+      "sourceDigest": "sha256:03fb785f5ccfc1fff17104cb521628179dec8ac65d65a70a7d136274839e0606"
+    },
+    {
+      "caseId": "dh-012",
+      "expected": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 13,
+              "startOffset": 0,
+              "text": "Data contract"
+            },
+            "label": "Data contract",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 36,
+              "startOffset": 24,
+              "text": "event stream"
+            },
+            "label": "event stream",
+            "type": "Task"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 81,
+              "startOffset": 66,
+              "text": "validation rule"
+            },
+            "label": "validation rule",
+            "type": "Constraint"
+          },
+          {
+            "entityId": "e4",
+            "evidence": {
+              "endOffset": 127,
+              "startOffset": 110,
+              "text": "malformed payload"
+            },
+            "label": "malformed payload",
+            "type": "Risk"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 36,
+              "startOffset": 0,
+              "text": "Data contract describes event stream"
+            },
+            "predicate": "supports",
+            "relationId": "r1",
+            "sourceEntityId": "e1",
+            "targetEntityId": "e2"
+          },
+          {
+            "evidence": {
+              "endOffset": 81,
+              "startOffset": 38,
+              "text": "The event stream implements validation rule"
+            },
+            "predicate": "implements",
+            "relationId": "r2",
+            "sourceEntityId": "e2",
+            "targetEntityId": "e3"
+          },
+          {
+            "evidence": {
+              "endOffset": 127,
+              "startOffset": 83,
+              "text": "The validation rule blocks malformed payload"
+            },
+            "predicate": "blocks",
+            "relationId": "r3",
+            "sourceEntityId": "e3",
+            "targetEntityId": "e4"
+          }
+        ]
+      },
+      "scenarioId": "dh-s-012",
+      "sourceDigest": "sha256:453bd211c4e01f272c48154d625a2cac95dcaf4a42d56f78b0e4c94be9e8326d"
+    },
+    {
+      "caseId": "dh-013",
+      "expected": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 15,
+              "startOffset": 0,
+              "text": "Deployment plan"
+            },
+            "label": "Deployment plan",
+            "type": "Task"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 39,
+              "startOffset": 27,
+              "text": "release gate"
+            },
+            "label": "release gate",
+            "type": "Constraint"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 80,
+              "startOffset": 61,
+              "text": "unverified artifact"
+            },
+            "label": "unverified artifact",
+            "type": "Risk"
+          },
+          {
+            "entityId": "e4",
+            "evidence": {
+              "endOffset": 96,
+              "startOffset": 82,
+              "text": "Marketing copy"
+            },
+            "label": "Marketing copy",
+            "type": "ProgressClaim"
+          },
+          {
+            "entityId": "e5",
+            "evidence": {
+              "endOffset": 120,
+              "startOffset": 106,
+              "text": "launch promise"
+            },
+            "label": "launch promise",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "e6",
+            "evidence": {
+              "endOffset": 132,
+              "startOffset": 122,
+              "text": "Lunch menu"
+            },
+            "label": "Lunch menu",
+            "type": "Task"
+          },
+          {
+            "entityId": "e7",
+            "evidence": {
+              "endOffset": 154,
+              "startOffset": 142,
+              "text": "release gate"
+            },
+            "label": "release gate",
+            "type": "Constraint"
+          },
+          {
+            "entityId": "e8",
+            "evidence": {
+              "endOffset": 211,
+              "startOffset": 203,
+              "text": "checksum"
+            },
+            "label": "checksum",
+            "type": "Requirement"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 39,
+              "startOffset": 0,
+              "text": "Deployment plan implements release gate"
+            },
+            "predicate": "implements",
+            "relationId": "r1",
+            "sourceEntityId": "e1",
+            "targetEntityId": "e2"
+          },
+          {
+            "evidence": {
+              "endOffset": 80,
+              "startOffset": 41,
+              "text": "Release gate blocks unverified artifact"
+            },
+            "predicate": "blocks",
+            "relationId": "r2",
+            "sourceEntityId": "e2",
+            "targetEntityId": "e3"
+          },
+          {
+            "evidence": {
+              "endOffset": 211,
+              "startOffset": 173,
+              "text": "Unverified artifact dependsOn checksum"
+            },
+            "predicate": "dependsOn",
+            "relationId": "r3",
+            "sourceEntityId": "e3",
+            "targetEntityId": "e8"
+          }
+        ]
+      },
+      "scenarioId": "dh-s-013",
+      "sourceDigest": "sha256:e2b2dc99f15571973712a5375df100757d20c52cb0d251cd82a2d8bab4049866"
+    },
+    {
+      "caseId": "dh-014",
+      "expected": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 13,
+              "startOffset": 0,
+              "text": "Project brief"
+            },
+            "label": "Project brief",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 36,
+              "startOffset": 23,
+              "text": "delivery plan"
+            },
+            "label": "delivery plan",
+            "type": "Task"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 52,
+              "startOffset": 40,
+              "text": "news article"
+            },
+            "label": "news article",
+            "type": "ProgressClaim"
+          },
+          {
+            "entityId": "e4",
+            "evidence": {
+              "endOffset": 75,
+              "startOffset": 62,
+              "text": "delivery plan"
+            },
+            "label": "delivery plan",
+            "type": "Task"
+          },
+          {
+            "entityId": "e5",
+            "evidence": {
+              "endOffset": 143,
+              "startOffset": 129,
+              "text": "owner approval"
+            },
+            "label": "owner approval",
+            "type": "Decision"
+          },
+          {
+            "entityId": "e6",
+            "evidence": {
+              "endOffset": 186,
+              "startOffset": 167,
+              "text": "unauthorized launch"
+            },
+            "label": "unauthorized launch",
+            "type": "Risk"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 36,
+              "startOffset": 0,
+              "text": "Project brief supports delivery plan"
+            },
+            "predicate": "supports",
+            "relationId": "r1",
+            "sourceEntityId": "e1",
+            "targetEntityId": "e2"
+          },
+          {
+            "evidence": {
+              "endOffset": 143,
+              "startOffset": 105,
+              "text": "Delivery plan dependsOn owner approval"
+            },
+            "predicate": "dependsOn",
+            "relationId": "r2",
+            "sourceEntityId": "e4",
+            "targetEntityId": "e5"
+          },
+          {
+            "evidence": {
+              "endOffset": 186,
+              "startOffset": 145,
+              "text": "Owner approval blocks unauthorized launch"
+            },
+            "predicate": "blocks",
+            "relationId": "r3",
+            "sourceEntityId": "e5",
+            "targetEntityId": "e6"
+          }
+        ]
+      },
+      "scenarioId": "dh-s-014",
+      "sourceDigest": "sha256:c3d89945257da63a018ae2bb4fd9c68b89785f9e08812a8520eb0e58ae20ce97"
+    },
+    {
+      "caseId": "dh-015",
+      "expected": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 17,
+              "startOffset": 0,
+              "text": "Ticket thanh toán"
+            },
+            "label": "Ticket thanh toán",
+            "type": "Task"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 39,
+              "startOffset": 27,
+              "text": "billing rule"
+            },
+            "label": "billing rule",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 80,
+              "startOffset": 68,
+              "text": "ledger chính"
+            },
+            "label": "ledger chính",
+            "type": "Task"
+          },
+          {
+            "entityId": "e4",
+            "evidence": {
+              "endOffset": 120,
+              "startOffset": 102,
+              "text": "giao dịch thiếu mã"
+            },
+            "label": "giao dịch thiếu mã",
+            "type": "Risk"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 39,
+              "startOffset": 0,
+              "text": "Ticket thanh toán supports billing rule"
+            },
+            "predicate": "supports",
+            "relationId": "r1",
+            "sourceEntityId": "e1",
+            "targetEntityId": "e2"
+          },
+          {
+            "evidence": {
+              "endOffset": 80,
+              "startOffset": 41,
+              "text": "Billing rule phụ thuộc vào ledger chính"
+            },
+            "predicate": "dependsOn",
+            "relationId": "r2",
+            "sourceEntityId": "e2",
+            "targetEntityId": "e3"
+          },
+          {
+            "evidence": {
+              "endOffset": 120,
+              "startOffset": 82,
+              "text": "Ledger chính blocks giao dịch thiếu mã"
+            },
+            "predicate": "blocks",
+            "relationId": "r3",
+            "sourceEntityId": "e3",
+            "targetEntityId": "e4"
+          }
+        ]
+      },
+      "scenarioId": "dh-s-015",
+      "sourceDigest": "sha256:77ab77989f3bf702d5470de70a9b6265e4bd28686ce4d6cfa1eafb4a73185336"
+    },
+    {
+      "caseId": "dh-016",
+      "expected": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 4,
+              "startOffset": 0,
+              "text": "監査メモ"
+            },
+            "label": "監査メモ",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 25,
+              "startOffset": 14,
+              "text": "audit queue"
+            },
+            "label": "audit queue",
+            "type": "Task"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 44,
+              "startOffset": 40,
+              "text": "証跡台帳"
+            },
+            "label": "証跡台帳",
+            "type": "Constraint"
+          },
+          {
+            "entityId": "e4",
+            "evidence": {
+              "endOffset": 66,
+              "startOffset": 62,
+              "text": "削除予定"
+            },
+            "label": "削除予定",
+            "type": "Risk"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 25,
+              "startOffset": 0,
+              "text": "監査メモ supports audit queue"
+            },
+            "predicate": "supports",
+            "relationId": "r1",
+            "sourceEntityId": "e1",
+            "targetEntityId": "e2"
+          },
+          {
+            "evidence": {
+              "endOffset": 49,
+              "startOffset": 27,
+              "text": "Audit queue は証跡台帳に依存する"
+            },
+            "predicate": "dependsOn",
+            "relationId": "r2",
+            "sourceEntityId": "e2",
+            "targetEntityId": "e3"
+          },
+          {
+            "evidence": {
+              "endOffset": 66,
+              "startOffset": 50,
+              "text": "証跡台帳 blocks 削除予定"
+            },
+            "predicate": "blocks",
+            "relationId": "r3",
+            "sourceEntityId": "e3",
+            "targetEntityId": "e4"
+          }
+        ]
+      },
+      "scenarioId": "dh-s-016",
+      "sourceDigest": "sha256:b82e980ff466aea1a84b6ab00294421573538896e25a60ea94c2b6a3807b9ca5"
+    },
+    {
+      "caseId": "dh-017",
+      "expected": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 11,
+              "startOffset": 0,
+              "text": "Résumé task"
+            },
+            "label": "Résumé task",
+            "type": "Task"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 32,
+              "startOffset": 21,
+              "text": "café review"
+            },
+            "label": "café review",
+            "type": "Task"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 67,
+              "startOffset": 56,
+              "text": "🧪 test note"
+            },
+            "label": "🧪 test note",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "e4",
+            "evidence": {
+              "endOffset": 97,
+              "startOffset": 86,
+              "text": "stale build"
+            },
+            "label": "stale build",
+            "type": "Risk"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 32,
+              "startOffset": 0,
+              "text": "Résumé task supports café review"
+            },
+            "predicate": "supports",
+            "relationId": "r1",
+            "sourceEntityId": "e1",
+            "targetEntityId": "e2"
+          },
+          {
+            "evidence": {
+              "endOffset": 67,
+              "startOffset": 34,
+              "text": "Café review dependsOn 🧪 test note"
+            },
+            "predicate": "dependsOn",
+            "relationId": "r2",
+            "sourceEntityId": "e2",
+            "targetEntityId": "e3"
+          },
+          {
+            "evidence": {
+              "endOffset": 97,
+              "startOffset": 69,
+              "text": "Test note blocks stale build"
+            },
+            "predicate": "blocks",
+            "relationId": "r3",
+            "sourceEntityId": "e3",
+            "targetEntityId": "e4"
+          }
+        ]
+      },
+      "scenarioId": "dh-s-017",
+      "sourceDigest": "sha256:d81d6b4bdf9685ea952776be9afd7add8fe3322712c13613d66a036e6403ad33"
+    },
+    {
+      "caseId": "dh-018",
+      "expected": {
+        "abstentionReason": "AMBIGUOUS_ALTERNATIVE_ENDPOINT_ABSTAIN",
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 21,
+              "startOffset": 11,
+              "text": "draft plan"
+            },
+            "label": "draft plan",
+            "type": "Task"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 42,
+              "startOffset": 29,
+              "text": "fallback plan"
+            },
+            "label": "fallback plan",
+            "type": "Task"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 68,
+              "startOffset": 59,
+              "text": "migration"
+            },
+            "label": "migration",
+            "type": "Task"
+          }
+        ],
+        "relations": []
+      },
+      "scenarioId": "dh-s-018",
+      "sourceDigest": "sha256:c6bfd69b228feb834f3d568209900579abc5acf332e542a59da5c10be9ab7ac2"
+    },
+    {
+      "caseId": "dh-019",
+      "expected": {
+        "abstentionReason": "PROMPT_INJECTION_IS_DATA_NO_TOOL_AUTHORITY",
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 68,
+              "startOffset": 52,
+              "text": "instruction text"
+            },
+            "label": "instruction text",
+            "type": "ProgressClaim"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 42,
+              "startOffset": 34,
+              "text": "provider"
+            },
+            "label": "provider call",
+            "type": "Task"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 128,
+              "startOffset": 114,
+              "text": "tool authority"
+            },
+            "label": "tool authority",
+            "type": "Constraint"
+          }
+        ],
+        "relations": []
+      },
+      "scenarioId": "dh-s-019",
+      "sourceDigest": "sha256:bdb4e756dcc56bc4279c33da90877e6fe3f9d24cc951c515b417d69e9ede30d9"
+    },
+    {
+      "caseId": "dh-020",
+      "expected": {
+        "abstentionReason": "UNSUPPORTED_PREDICATE_ADJACENTTO_QUARANTINE",
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 20,
+              "startOffset": 15,
+              "text": "alpha"
+            },
+            "label": "alpha",
+            "type": "Task"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 39,
+              "startOffset": 35,
+              "text": "beta"
+            },
+            "label": "beta",
+            "type": "Task"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 119,
+              "startOffset": 113,
+              "text": "review"
+            },
+            "label": "review",
+            "type": "Requirement"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 119,
+              "startOffset": 98,
+              "text": "Beta dependsOn review"
+            },
+            "predicate": "dependsOn",
+            "relationId": "r1",
+            "sourceEntityId": "e2",
+            "targetEntityId": "e3"
+          }
+        ]
+      },
+      "scenarioId": "dh-s-020",
+      "sourceDigest": "sha256:2e0da6c2cf6af20357bdd4af21fb9d507a3630a815b2d0c6022eeea7c6b3c1e0"
+    },
+    {
+      "caseId": "dh-021",
+      "expected": {
+        "abstentionReason": "CROSS_PROJECT_SCOPE_UNKNOWN_ABSTAIN_EXTERNAL_RELATION",
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 23,
+              "startOffset": 0,
+              "text": "External project record"
+            },
+            "label": "External project record",
+            "type": "ProgressClaim"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 47,
+              "startOffset": 36,
+              "text": "shared task"
+            },
+            "label": "shared task",
+            "type": "Task"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 67,
+              "startOffset": 57,
+              "text": "local task"
+            },
+            "label": "local task",
+            "type": "Task"
+          },
+          {
+            "entityId": "e4",
+            "evidence": {
+              "endOffset": 127,
+              "startOffset": 116,
+              "text": "owner check"
+            },
+            "label": "owner check",
+            "type": "Requirement"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 127,
+              "startOffset": 95,
+              "text": "Local task dependsOn owner check"
+            },
+            "predicate": "dependsOn",
+            "relationId": "r1",
+            "sourceEntityId": "e3",
+            "targetEntityId": "e4"
+          }
+        ]
+      },
+      "scenarioId": "dh-s-021",
+      "sourceDigest": "sha256:589213317aabbff52e172c01ffd4db3b9f649f8118b77a8527c127ae132e7ca3"
+    },
+    {
+      "caseId": "dh-022",
+      "expected": {
+        "abstentionReason": "NEGATED_SUPERSESSION_AND_NON_ASSERTIVE_APPROVAL_ABSTAIN",
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 12,
+              "startOffset": 3,
+              "text": "old alert"
+            },
+            "label": "old alert",
+            "type": "Risk"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 49,
+              "startOffset": 36,
+              "text": "current alert"
+            },
+            "label": "current alert",
+            "type": "Risk"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 86,
+              "startOffset": 76,
+              "text": "deployment"
+            },
+            "label": "deployment",
+            "type": "Task"
+          },
+          {
+            "entityId": "e4",
+            "evidence": {
+              "endOffset": 113,
+              "startOffset": 106,
+              "text": "silence"
+            },
+            "label": "silence",
+            "type": "ProgressClaim"
+          },
+          {
+            "entityId": "e5",
+            "evidence": {
+              "endOffset": 128,
+              "startOffset": 120,
+              "text": "approval"
+            },
+            "label": "approval",
+            "type": "Decision"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 86,
+              "startOffset": 51,
+              "text": "The current alert blocks deployment"
+            },
+            "predicate": "blocks",
+            "relationId": "r1",
+            "sourceEntityId": "e2",
+            "targetEntityId": "e3"
+          }
+        ]
+      },
+      "scenarioId": "dh-s-022",
+      "sourceDigest": "sha256:258469ebaa5fa432684aa6a23e55343a20d1de4469994e3e457fe5001044cf3a"
+    },
+    {
+      "caseId": "dh-023",
+      "expected": {
+        "abstentionReason": "UNSUPPORTED_PREDICATE_RELATESTO_QUARANTINE",
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 9,
+              "startOffset": 0,
+              "text": "Service A"
+            },
+            "label": "Service A",
+            "type": "Task"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 29,
+              "startOffset": 20,
+              "text": "Service B"
+            },
+            "label": "Service B",
+            "type": "Task"
+          },
+          {
+            "entityId": "e3",
+            "evidence": {
+              "endOffset": 83,
+              "startOffset": 71,
+              "text": "release plan"
+            },
+            "label": "release plan",
+            "type": "Task"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 83,
+              "startOffset": 52,
+              "text": "Service B supports release plan"
+            },
+            "predicate": "supports",
+            "relationId": "r1",
+            "sourceEntityId": "e2",
+            "targetEntityId": "e3"
+          }
+        ]
+      },
+      "scenarioId": "dh-s-023",
+      "sourceDigest": "sha256:cf336d622ea0638a791868d198c88cc1b4eb7e80a5153050ea79cee304eca968"
+    },
+    {
+      "caseId": "dh-024",
+      "expected": {
+        "abstentionReason": "UNKNOWN_ENDPOINT_AND_STALE_STATEMENT_ABSTAIN",
+        "entities": [
+          {
+            "entityId": "e1",
+            "evidence": {
+              "endOffset": 15,
+              "startOffset": 0,
+              "text": "Draft checklist"
+            },
+            "label": "Draft checklist",
+            "type": "Task"
+          },
+          {
+            "entityId": "e2",
+            "evidence": {
+              "endOffset": 45,
+              "startOffset": 32,
+              "text": "unknown owner"
+            },
+            "label": "unknown owner",
+            "type": "Requirement"
+          }
+        ],
+        "relations": []
+      },
+      "scenarioId": "dh-s-024",
+      "sourceDigest": "sha256:d48203b7e40539f29ae87ef023ab2cdd26a80b6b6c8174dce53b566298e51338"
+    }
+  ],
+  "sourcePayloadDigest": "sha256:65e6a044767f97298dee4511d19e3373878483224b9b7cf2606b94acdefc1409",
+  "sourcePayloadPath": "evaluation/sprint-12/internal-poc/dense-hard-v1/dense-hard-source-payload.v1.json",
+  "status": "PRIVATE_FOR_EVALUATOR_ONLY"
+}

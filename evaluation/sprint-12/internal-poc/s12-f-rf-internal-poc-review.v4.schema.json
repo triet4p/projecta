@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.example/schemas/s12-f-rf-internal-poc-review.v4.json",
+  "title": "Sprint 12 F-RF Owner Proxy Review v4",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifactVersion", "status", "candidatePath", "candidateDigest", "reviewerMode", "humanEvidence", "providerCalls", "heldOutInspection", "records", "metrics", "nonClaims", "reviewDigest"],
+  "properties": {
+    "artifactVersion": {"const": "s12.f-rf.internal-poc-review.v4"},
+    "status": {"const": "POC_FAILED_ACCEPTANCE_AND_EDIT_BURDEN"},
+    "candidatePath": {"const": "evaluation/sprint-12/internal-poc/s12-f-rf-internal-poc-candidate.v4.json"},
+    "candidateDigest": {"const": "sha256:1f33496ac57a1acf3fb21e7e2e6d3da039b582026858a3e238e7af849c9d1ca6"},
+    "reviewerMode": {"const": "PRIMARY_AGENT_PROXY_OWNER_JUDGMENT"},
+    "humanEvidence": {"const": false}, "providerCalls": {"const": 0}, "heldOutInspection": {"const": false},
+    "records": {"type": "array", "minItems": 12, "maxItems": 12, "items": {"$ref": "#/$defs/record"}},
+    "metrics": {"$ref": "#/$defs/metrics"},
+    "nonClaims": {"type": "array", "minItems": 3, "items": {"type": "string", "minLength": 1}},
+    "reviewDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "record": {"type": "object", "additionalProperties": false, "required": ["recordId", "caseId", "scenarioId", "sourceDigest", "candidateDigest", "reviewerMode", "humanEvidence", "finalDisposition", "correctionClass", "semanticEditCount", "reason", "timingStatus", "manualBaselineSeconds", "independentAgreement", "unsupportedFinalizedAssertions"], "properties": {"recordId": {"pattern": "^poc-review-v4-[0-9]{3}$"}, "caseId": {"pattern": "^s12-a-[0-9]{4}$"}, "scenarioId": {"pattern": "^s12-s-[0-9]{3}$"}, "sourceDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}, "candidateDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}, "reviewerMode": {"const": "PRIMARY_AGENT_PROXY_OWNER_JUDGMENT"}, "humanEvidence": {"const": false}, "finalDisposition": {"const": "confirmed"}, "correctionClass": {"enum": ["unchanged", "major"]}, "semanticEditCount": {"type": "integer", "enum": [0, 1, 3]}, "reason": {"type": "string", "minLength": 1}, "timingStatus": {"const": "UNMEASURED"}, "manualBaselineSeconds": {"type": "null"}, "independentAgreement": {"const": "NOT_APPLICABLE_NO_INDEPENDENT_REVIEWER"}, "unsupportedFinalizedAssertions": {"const": 0}}},
+    "rate": {"type": "object", "additionalProperties": false, "required": ["numerator", "rate", "threshold"], "properties": {"numerator": {"const": 2}, "rate": {"const": 0.1666667}, "threshold": {"type": "number", "minimum": 0, "maximum": 1}}},
+    "metrics": {"type": "object", "additionalProperties": false, "required": ["eligibleReviewedItems", "acceptedWithoutSemanticCorrection", "acceptedUnchangedOrMinor", "totalSemanticEdits", "meanSemanticEditsPerReviewedItem", "medianReviewTimeSeconds", "p90ReviewTimeSeconds", "medianReductionVsManualBaseline", "reviewerAgreement", "unsupportedFinalizedAssertions", "gateStatus"], "properties": {"eligibleReviewedItems": {"const": 12}, "acceptedWithoutSemanticCorrection": {"$ref": "#/$defs/rate"}, "acceptedUnchangedOrMinor": {"$ref": "#/$defs/rate"}, "totalSemanticEdits": {"const": 28}, "meanSemanticEditsPerReviewedItem": {"const": 2.333333}, "medianReviewTimeSeconds": {"type": "null"}, "p90ReviewTimeSeconds": {"type": "null"}, "medianReductionVsManualBaseline": {"type": "null"}, "reviewerAgreement": {"type": "object", "additionalProperties": false, "required": ["status", "independentRecords"], "properties": {"status": {"const": "NOT_APPLICABLE_BLOCKS_GATE"}, "independentRecords": {"const": 0}}}, "unsupportedFinalizedAssertions": {"type": "object", "additionalProperties": false, "required": ["numerator", "denominator", "status"], "properties": {"numerator": {"const": 0}, "denominator": {"const": 0}, "status": {"const": "NOT_APPLICABLE_BLOCKS_GATE"}}}, "gateStatus": {"const": "FAIL_ACCEPTANCE_AND_EDIT_BURDEN"}}}
+  }
+}

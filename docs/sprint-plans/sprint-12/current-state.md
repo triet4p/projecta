@@ -1,8 +1,8 @@
 # Sprint 12 Current State
 
-**As of:** 2026-08-22
+**As of:** 2026-08-24
 
-**Status:** `G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY`
+**Status:** `F_RF_POC_BASELINE_ACCEPTED_DENSE_HARD_V4_FAILED_STRATEGY_REDESIGN_REQUIRED`
 
 RM-37 accepted the RM-36 execution fact and closed v8 as failed before report
 persistence. RM-39 subsequently approved only offline runtime remediation and
@@ -15,11 +15,28 @@ The latest authoritative G5 packet is
 `evaluation/sprint-12/optimization/g5-packet.v36.rm51-closure-only.json`.
 RM-47's immutable owner decision and transition close the single RM-45-
 authorized v9 Stage A as rejected with no Stage B. RM-51 rejected the RM-50
-accounting implementation under Option C and stopped provider experimentation.
-The v6 and v9 reports are immutable; only offline closure documentation and
-error-backlog preparation are permitted. Runtime remediation, new lineage
-preparation, provider execution, rerun, retry, validation, held-out access,
-selection and promotion remain closed.
+accounting implementation under Option C and stopped provider experimentation;
+RM-53 then accepted the RM-52 offline closure and backlog custody. The v6 and
+v9 reports are immutable and the failed v8 report remains absent. RM-54
+accepted the revised human-first extraction design and RM-55 accepted the
+versioned SourceVersion/source-receipt contract. RM-56 accepted the versioned
+TextAnchor coordinate contract; RM-57 accepted the per-item validation and
+quarantine boundary; RM-58 accepted the confirmed-entity relation gate; RM-59
+accepted deterministic evidence selection, and
+RM-60 accepted the constrained relation contract; RM-61 accepted the durable
+append-only review decision receipt contract, and RM-62 accepted the human-first
+review workbench contract. RM-63 accepted the disabled-by-default approved-only
+assertion materialization boundary. RM-64 accepted versioned invalidation and
+transactional rebuild with no stale current projection. RM-65 accepted the
+append-only correction-burden telemetry boundary; RM-66 accepted the offline
+adversarial/default-path gate, and RM-67 accepted the closed-world human
+correction-burden contract for the RM-68 gate. The v5 internal source-only
+agent-proxy PoC remains historical bounded evidence only. The immutable
+dense-hard v1 through v4 evaluations are separate diagnostics; v4 fails both
+stratified gates and requires the finite offline strategy-redesign backlog. No
+generalized quality or low-correction claim is permitted. Provider execution,
+rerun, retry, external validation, held-out access, selection and promotion
+remain closed.
 
 This is the human-readable current-state index for Sprint 12. Machine consumers
 must use `evaluation/sprint-12/current-state.v1.json`.
@@ -327,8 +344,11 @@ branches, no retry and no overwrite. Issuance and the read-only preflight
 performed zero provider calls; the v9 report was absent before RM-46 consumed
 the authorization.
 
-The authoritative G5 packet is
-`evaluation/sprint-12/optimization/g5-packet.v33.rm47-closure.json`.
+The RM-47-era historical G5 packet was
+`evaluation/sprint-12/optimization/g5-packet.v33.rm47-closure.json`; it was
+authoritative for that closure decision at the time, but it is not the current
+packet. The current packet remains the v36 RM-51 closure-only packet named in
+the header above.
 RM-47 has closed the exact v9 command's schema-valid but hard-gate-rejected
 report at `evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json`
 with digest `sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e`.
@@ -345,8 +365,11 @@ the sanitized comparison and remediation options at
 RM-49 approved the sequential offline diagnostic-hardening and parity-fixture
 path, and RM-50 completed both stages after Option A stop criteria passed. RM-51
 rejected the package because accounting mutations can detach it from immutable
-v6/v9 evidence. RM-52 now prepares only offline closure custody and a
-prioritized error backlog; RM-53 is the next owner review.
+v6/v9 evidence. RM-52 prepared the offline closure custody and prioritized
+error backlog, and RM-53 accepted that custody under the delegated owner-review
+boundary. RM-54 accepted the revised human-first framework for RM-55 contract
+definition only. RM-55 accepted the SourceVersion/source-receipt contract;
+RM-56 is now the sole permitted action.
 Remediation implementation, lineage preparation, provider/new authorization,
 rerun, retry, validation, held-out access, Stage B, selection, promotion and
 downstream access remain closed. The v6 and v9 reports remain immutable and
@@ -363,3 +386,304 @@ authorizations, RM-47/RM-51 decisions and rejected RM-50 artifacts. Known cost
 is `$0.01192200`; v8 aggregate cost is unknown because no report persisted.
 The backlog distinguishes bounded offline fixes, residual product-quality
 failures, tooling/governance lessons and external custody blockers.
+
+## RM-53 closure decision
+
+RM-53 accepted the immutable RM-52 closure packet and backlog through the
+delegated Codex review records:
+
+- `evaluation/sprint-12/optimization/s12-f-12-rm53-owner-decision.v1.json`
+- `evaluation/sprint-12/optimization/s12-f-12-rm53-decision-transition.v1.json`
+
+This is an offline custody decision only. It makes no human business-quality
+claim and authorizes no implementation, provider execution, runtime work,
+validation, held-out access, Stage B, selection or promotion. RM-54's separate
+design review is closed and RM-55's SourceVersion/source-receipt contract is
+accepted. RM-56 remains pending for the text-anchor coordinate contract.
+
+## RM-54 human-first design disposition
+
+RM-54 revised and accepted the human-first extraction design for RM-55 contract
+definition only. The review binds the unchanged v1 source and revised v2
+design at:
+
+- `docs/sprint-plans/sprint-12/human-first-extraction-framework.v1.md`
+- `docs/sprint-plans/sprint-12/human-first-extraction-framework.v2.md`
+- `evaluation/sprint-12/optimization/s12-f-12-rm54-design-review.v1.json`
+
+The v2 contract resolves source/version, coordinate, lifecycle, project
+isolation, evidence, review receipt, atomic materialization, inference,
+telemetry and prompt-injection defaults. Human-study parameters remain
+owner-gated RM-67/RM-68 work. No ontology production change, implementation,
+provider/runtime execution, validation, held-out access, Stage B, selection,
+promotion or release is authorized.
+
+## RM-55 SourceVersion/source-receipt contract
+
+The extraction boundary now exposes the versioned opt-in contract and focused
+tests:
+
+- `apps/api/src/projecta_api/extraction/source_version.py`
+- `apps/api/tests/test_source_version.py`
+
+The contract performs strict UTF-8 decoding, deterministic CRLF/CR-to-LF
+canonicalization without Unicode normalization, original/canonical SHA-256
+digests, opaque project/artifact/version IDs, optional parent lineage,
+retention metadata, deterministic safe receipts and fail-closed replay/fork,
+project-scope and tamper verification. Receipts contain no raw source or raw
+project/artifact identifiers. Existing extraction remains compatible because
+SourceVersion creation is explicit opt-in; RM-56's TextAnchor contract,
+RM-57's per-item validation/quarantine boundary, RM-58's confirmed-entity
+relation gate, and RM-59's deterministic evidence selection are accepted;
+RM-60's constrained relation contract and RM-61's durable receipts are
+accepted; RM-62 is the next gate.
+
+## RM-56 TextAnchor coordinate contract
+
+The extraction boundary now exposes the explicit opt-in
+`apps/api/src/projecta_api/extraction/text_anchor.py` contract and focused
+tests at `apps/api/tests/test_text_anchor.py`. Anchors bind a verified
+SourceVersion and canonical content, use zero-based half-open Unicode
+code-point offsets, verify the exact quote and digest, and derive original
+code-point/UTF-8-byte plus UTF-16 display mappings across CRLF/CR-to-LF
+canonicalization. Repeated quotes require an explicit occurrence; missing,
+stale, tampered, malformed, unsupported, or ambiguous inputs fail closed with
+finite reasons. Safe serialization excludes raw quotes and content. Existing
+extraction behavior remains unchanged unless this contract is explicitly
+requested. RM-57 through RM-61 are accepted and RM-62 is the sole next permitted action; no provider, runtime,
+ontology, validation, held-out, Stage B, selection, promotion, or release
+authority is opened.
+
+## RM-57 Per-item validation and quarantine boundary
+
+The explicit opt-in application boundary is implemented in
+`apps/api/src/projecta_api/extraction/item_validation.py` with focused tests at
+`apps/api/tests/test_item_validation.py`. It independently classifies entity,
+entity-link, relation, and evidence items, preserving input order and unrelated
+valid results. Outcomes are finite (`contract-valid`, `review-pending`,
+`abstained`, `quarantined`, or `stale`); unknown kinds, statuses, reasons,
+schema fields, malformed payloads, project/source/anchor mismatches, and stale
+content fail closed. Only a `contract-valid` result with reason `VALID` may
+pass the downstream materialization guard. Safe results contain no raw item
+payload or quote. RM-58 through RM-61 are accepted and RM-62 is the sole next permitted action; this gate opens no
+provider, runtime, ontology, relation, validation, held-out, Stage B, selection,
+promotion, or release authority.
+
+## RM-58 Confirmed-entity relation gate
+
+The explicit opt-in relation boundary is implemented in
+`apps/api/src/projecta_api/extraction/confirmed_entity_gate.py` with focused
+tests at `apps/api/tests/test_confirmed_entity_gate.py`. The in-memory registry
+issues deterministic opaque project-scoped handles only from contract-valid or
+review-confirmed entity validation results under the active SourceVersion.
+Relation requests resolve both handles server-side and allow only released
+entity types and predicates. Model/global/free-text IDs, unknown or malformed
+handles, cross-project/source-version access, unconfirmed or stale handles,
+type/version mismatches, self-relations, duplicates, and conflicting replay
+are rejected fail-closed. Safe serialization excludes candidate keys and raw
+payloads. RM-59 through RM-61 are accepted and RM-62 is the sole next permitted action; no provider, runtime,
+ontology, evidence-selection, held-out, Stage B, selection, promotion, or
+release authority is opened.
+
+## RM-59 Deterministic relation evidence selection
+
+The explicit opt-in selector is implemented in
+`apps/api/src/projecta_api/extraction/relation_evidence_selection.py` with
+focused tests at `apps/api/tests/test_relation_evidence_selection.py`. It
+verifies SourceVersion custody, builds deterministic canonical sentence/clause
+source blocks, and selects the smallest valid boundary containing confirmed
+endpoint anchors and an optional or required trigger anchor. Cross-sentence,
+missing, stale, tampered, out-of-block, unsupported, and equally ranked
+boundaries fail closed to finite abstain/review/quarantine outcomes. The result
+binds source version, relation handles, anchor digests, trigger digest, and
+block digest while excluding raw source/evidence text. RM-59 and RM-60 are
+accepted and RM-61 is implemented; RM-62 is the sole next permitted action; no provider, runtime, ontology,
+constrained-relation, held-out, Stage B, selection, promotion, or release
+authority is opened.
+
+## RM-61 Durable review decision receipts
+
+The explicit opt-in review boundary is implemented in
+`apps/api/src/projecta_api/extraction/review_receipts.py` with focused tests at
+`apps/api/tests/test_review_receipts.py`. It records confirm, edit, reject and
+abstain actions as append-only receipts in the existing PostgreSQL operational
+persistence boundary, with an in-memory adapter only for deterministic unit
+tests. Receipts bind project scope, actor authorization context, item kind and
+opaque-handle digest, candidate/source revisions, constrained contract and
+evidence digests, predecessor digest, timestamp, idempotency digest and receipt
+digest. Optimistic concurrency, source/candidate staleness, cross-project
+scope, unauthorized actors, and same-key/different-body replays fail closed;
+exact replays are idempotent and do not mutate history. Storage and safe output
+exclude raw source/provider payloads and sensitive identifiers. These receipts
+record explicit authorized reviewer actions and do not claim human approval or
+materialization. RM-62 is the sole next permitted action; provider, runtime,
+ontology, held-out, Stage B, selection, promotion and release authority remain
+closed.
+
+## RM-62 Human-first review workbench
+
+The authorized same-origin Application API route
+`GET /v1/projects/{handle}/candidates/{candidateHandle}/review-detail` projects
+one selected, project-scoped item into `review-workbench.v1`. The React
+`ReviewScreen` renders source text and exact code-point/UTF-16 anchor mappings,
+endpoint/trigger/evidence highlights, source/candidate revisions, finite
+uncertainty/quarantine/abstain states, proposal-versus-edit values, and receipt
+state before any action. Confirm, edit, reject, and abstain are explicit
+controls; stale, quarantined, unavailable-evidence, and terminal-receipt states
+fail closed, with no hidden auto-confirm or bulk relation approval. Focused API
+and UI contract tests cover valid and invalid anchors plus decision guards. RM-63
+is the sole next permitted action; this gate opens no provider, runtime,
+ontology, materialization, held-out, Stage B, selection, promotion, or release
+authority.
+
+## RM-63 Approved-only assertion materialization
+
+RM-63 adds the versioned `ApprovedAssertionPlan` and a separate Semantic Core
+materialization boundary. It requires exact project/source/candidate revisions,
+review-receipt and evidence digests, released ontology/contract versions, an
+optimistic asserted-graph revision, provenance activity, and an idempotency key.
+Only confirmed candidates with a matching safe review-binding record can cross
+the boundary. Asserted facts, candidate lifecycle updates, provenance, and the
+idempotency receipt are committed in one Jena transaction; exact replays are
+read-only and failures roll back all writes. Materialization is disabled by
+default and the test-only opt-in does not authorize production enablement,
+provider execution, ontology changes, or downstream inference. RM-64 is
+accepted; RM-65 accepted correction-burden telemetry and RM-66 was the next
+permitted action at that transition.
+
+## RM-64 Inference invalidation and rebuild
+
+RM-64 adds `inference-rebuild-plan.v1` and a disabled-by-default Semantic Core
+boundary tied to the asserted graph revision, SourceVersion identity/revision
+and digest, released ontology version, M4 rule version, rebuild activity, and
+idempotency key. Correction, rejection, source supersession, assertion
+revision, rule change, and ontology change are finite invalidation causes that
+mark the current snapshot stale before rebuild. Rebuild stages a fresh
+projection, validates released M4 SHACL, and publishes the current snapshot
+only after the complete projection and provenance transaction succeeds.
+Previous projections remain historical, stale/current state is explicit, exact
+replays are read-only, and failures preserve asserted truth. No ontology,
+provider, production runtime, or downstream telemetry authority is opened.
+RM-65 is accepted; RM-66 is accepted and RM-67 is accepted for the closed-world
+contract. The internal v5 agent-proxy PoC is separately accepted only for
+development diagnostics.
+
+## RM-65 Correction-burden telemetry
+
+RM-65 adds `correction-burden.v1` append-only events to the existing PostgreSQL
+operational persistence boundary. Events retain only opaque project/item/
+assertion/source/review/materialization/inference digests, allowlisted
+correction categories and dimensions, finite lifecycle outcomes, edit counts,
+and bounded latency. The reducer derives summaries from immutable events and
+accepts no mutable totals, reconciliation flags, free-form reasons, raw source,
+quotes, provider payloads, secrets, credentials, or sensitive identifiers.
+Idempotency, conflict, project isolation, and an explicit review lifecycle hook
+are covered; PostgreSQL integration remains an RM-66 environment gate.
+No human-study threshold, provider execution, ontology change, or production
+enablement is claimed. RM-66 was the next permitted action at this transition.
+See `artifacts/task_S12-RM-65_summary.md` for the bounded implementation and
+validation record.
+
+## RM-66 Offline adversarial and default-path testing
+
+RM-66 accepts deterministic offline tests across RM-55 through RM-65. The gate
+covers Unicode/newline/UTF-16 coordinates, repeated and nested mentions,
+smallest evidence containment and cross-block failures, stale/tampered source
+and receipts, review concurrency/replay/conflict, RM-65 accounting mutation and
+append-only digests, prompt-injection quarantine as data only, project
+isolation, and legacy default paths with no implicit source/review/
+materialization/inference/telemetry enablement. Semantic Core tests preserve
+asserted truth and current-projection state across disabled, stale, replay, and
+failure paths. The gate records zero provider calls and verifies immutable v6/v9
+digests and absent v8. PostgreSQL Compose execution is an explicit environment
+skip when Docker is unavailable, not a pass. No human-study, provider,
+ontology, production, held-out, Stage B, selection, promotion, or release
+authority is opened. RM-67 is the sole next permitted action.
+See `artifacts/task_S12-RM-66_summary.md` for the evidence record.
+
+## RM-67 Human correction-burden evaluation contract
+
+RM-67 accepts an owner-delegated, versioned closed-world contract for the future
+RM-68 preregistration gate. It freezes at least 70% accepted without semantic
+correction, at least 85% unchanged/minor, at least 30% median review-time
+reduction against a counterbalanced same-reviewer manual baseline, median review
+time at most 45 seconds, p90 at most 90 seconds, mean semantic edits at most 2
+per reviewed item, zero unsupported finalized assertions, and agreement at least
+0.80 where applicable. It also freezes deterministic correction taxonomy
+precedence, timing/pause rules, denominators, missing/rejection/abstention and
+adjudication handling, confidence-interval reporting, three target roles, twelve
+scenarios, thirty-six reviewer records, language/journey/threat/ambiguity slices,
+and the matched manual baseline.
+
+The JSON contract, strict schema, source digests, and focused mutation-failure
+test are recorded at:
+
+- `evaluation/sprint-12/harness/s12-rm67-human-correction-burden-contract.v1.json`
+- `evaluation/sprint-12/harness/s12-rm67-human-correction-burden-contract.schema.v1.json`
+- `docs/sprint-plans/sprint-12/human-correction-burden-contract.v1.md`
+- `artifacts/task_S12-RM-67_summary.md`
+
+No independent human execution, timing baseline, agreement, or custody claim
+exists; the v5 result is primary-agent proxy evidence only. RM-53 through RM-67
+are complete for development contracts, implementation, and offline gates.
+Phase F-RF is
+`F_RF_POC_BASELINE_ACCEPTED_DENSE_HARD_V4_FAILED_STRATEGY_REDESIGN_REQUIRED`
+for the internal baseline. The v5 result remains historical bounded evidence
+only and does not support a generalized quality or low-correction claim.
+Dense-hard v1 through v4 are separate diagnostics; v4 fails both utility and
+safety gates. Remediation is limited to the finite offline strategy-redesign
+backlog and requires new authority before any fresh benchmark or candidate.
+RM-68 remains accepted only for that internal scope; external validation
+remains closed and the historical external packet remains blocked/non-
+preregistration.
+No provider/runtime, ontology, materialization, inference, production,
+selection, promotion, or release authority is granted.
+
+## RM-68 Internal PoC acceptance and historical external packet
+
+RM-68 remains accepted only as a historical bounded v5 baseline under
+`F_RF_POC_BASELINE_ACCEPTED_DENSE_HARD_V4_FAILED_STRATEGY_REDESIGN_REQUIRED`
+for the
+versioned internal source-only candidate and primary-agent proxy review. The
+accepted v5 review records 60 supported finalized-for-review assertions, zero
+unsupported assertions, 12/12 unchanged items, and zero provider calls; timing
+and independent agreement are unmeasured and not claimed. Dense-hard v1
+through v4 are authoritative separate diagnostics; v4 fails both stratified
+gates, so no generalized “good enough” or low-correction claim follows. The
+finite offline strategy-redesign backlog requires new authority before any
+fresh cases. The historical
+preparation packet remains `DRAFT_BLOCKED_EXTERNAL_CUSTODY`, not an issued
+preregistration. It records the absence of external custody and remains the
+authoritative boundary for any later external study.
+
+See `artifacts/task_S12-RM-68_summary.md` and
+`rm68-preregistration-blocked.v1.md`. A later external or business claim would
+require new owner authority, an external custody receipt and
+non-reconstructibility attestation, opaque dataset/manifest/payload digests,
+frozen evaluable candidate/configuration/evaluator digests, and owner-approved
+protocol authority. No external-study action is implied by the internal PoC.
+
+## Dense-hard v1 evaluation
+
+S12-DH-01 through S12-DH-03 are complete for the immutable synthetic benchmark
+evidence. The frozen v1 candidate evaluates to 0 unchanged, 0 minor, 8 major,
+2 reject, and 14 abstain items; 74 semantic edits (mean 3.0833333333), entity
+F1 0.5685279188, relation F1 0.1758241758, and 74/138 unsupported finalized
+assertions. The RM-67 edit-burden gate therefore fails. Remediation is pending
+new authority and must use fresh dense-hard v2 cases; v1 source, gold,
+manifest, candidate, and evaluation artifacts are immutable and may not be
+reused. Provider, human, external, held-out, production, selection, promotion,
+and release claims remain closed.
+
+## Successor / Closure Note — 2026-08-31
+
+This Sprint 12 index remains the historical authoritative record of the frozen
+dense-hard v1--v4 diagnostics and the v5 easy baseline. The owner-approved
+active successor is [Sprint 13 Evidence-first Assisted
+Authoring](../sprint-13.md), beginning with human-authored structured entity
+capture and a zero-model fallback, then optional bounded local suggestions and
+controlled relations. The machine snapshot is intentionally unchanged: its
+`DENSE_HARD_V4_STRATEGY_REDESIGN_REQUIRES_NEW_AUTHORITY` next action records the
+last Sprint 12 gate boundary, while Sprint 13 is the active product plan. This
+closure note does not authorize R6/R7, provider execution, human/business
+validation, held-out access, production, selection, promotion or release.

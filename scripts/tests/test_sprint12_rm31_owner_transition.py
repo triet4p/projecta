@@ -45,8 +45,11 @@ def test_rm31_current_state_and_g5_open_preparation_only() -> None:
     current = _json(CURRENT)
     g5 = _json(G5)
     current_g5 = _json(CURRENT_G5)
-    assert current["status"] == current_g5["status"]
-    assert current["currentEvidence"]["g5Packet"]["path"] == CURRENT_G5.relative_to(ROOT).as_posix()
+    assert current["status"] == "F_RF_POC_BASELINE_ACCEPTED_DENSE_HARD_V4_FAILED_STRATEGY_REDESIGN_REQUIRED"
+    assert current_g5["status"] == "G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
+    assert current["currentEvidence"]["g5Packet"]["path"] == (
+        "evaluation/sprint-12/optimization/g5-packet.v36.rm51-closure-only.json"
+    )
     assert current["currentEvidence"]["remediationImplementationOwnerReview"]["path"] == OWNER.relative_to(ROOT).as_posix()
     assert current["currentEvidence"]["remediationImplementationApprovalTransition"]["path"] == TRANSITION.relative_to(ROOT).as_posix()
     historical = current["experimentState"]["historicalLineage"]
@@ -78,7 +81,4 @@ def test_rm31_current_state_and_g5_open_preparation_only() -> None:
     assert governance["providerCallsPerformed"] == 0
     assert governance["preregistrationIssued"] is True
     assert governance["technicalFreezeIssued"] is True
-    assert current["nextTasks"] == [
-        "S12-RM-44_PREPARE_EXACT_V9_STAGE_A_AUTHORIZATION",
-        "S12-RM-45_OWNER_REVIEW_EXACT_V9_STAGE_A_AUTHORIZATION",
-    ]
+    assert current["nextTasks"] == ["DENSE_HARD_V4_STRATEGY_REDESIGN_REQUIRES_NEW_AUTHORITY"]

@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifactVersion": {
+      "const": "s12.dense-hard.evaluator-contract.v4"
+    },
+    "contractDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "evidenceNormalization": {
+      "const": "protocol.evidenceNormalization"
+    },
+    "metrics": {
+      "additionalProperties": false,
+      "properties": {
+        "abstention": {
+          "type": "string"
+        },
+        "edits": {
+          "type": "string"
+        },
+        "occurrence": {
+          "type": "string"
+        },
+        "quarantine": {
+          "type": "string"
+        },
+        "relations": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "occurrence",
+        "type",
+        "relations",
+        "abstention",
+        "quarantine",
+        "edits"
+      ],
+      "type": "object"
+    },
+    "noCandidateOrEvaluation": {
+      "const": true
+    },
+    "nonClaims": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "occurrenceScoring": {
+      "const": "protocol.occurrenceScoring"
+    },
+    "propositionAbstention": {
+      "const": "protocol.propositionAbstention"
+    },
+    "publicRubric": {
+      "const": "protocol.typeRubric"
+    },
+    "requiredBindings": {
+      "const": [
+        "sourcePayloadDigest",
+        "goldDigest",
+        "manifestDigest",
+        "protocolDigest"
+      ]
+    },
+    "status": {
+      "const": "CONTRACT_BEFORE_CANDIDATE"
+    }
+  },
+  "required": [
+    "artifactVersion",
+    "status",
+    "publicRubric",
+    "occurrenceScoring",
+    "evidenceNormalization",
+    "propositionAbstention",
+    "metrics",
+    "requiredBindings",
+    "noCandidateOrEvaluation",
+    "nonClaims",
+    "contractDigest"
+  ],
+  "title": "Dense-Hard v4 Evaluator Contract",
+  "type": "object"
+}

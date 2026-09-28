@@ -1,0 +1,120 @@
+{
+  "$id": "https://projecta.example/schemas/s12-dense-hard-source-payload.v2.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifactVersion": {
+      "const": "s12.dense-hard.source-payload.v2"
+    },
+    "datasetKind": {
+      "const": "SYNTHETIC_NON_PRODUCTION"
+    },
+    "evaluatorManifestIncluded": {
+      "const": false
+    },
+    "goldIncluded": {
+      "const": false
+    },
+    "heldOutInspection": {
+      "const": false
+    },
+    "payloadDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "providerCalls": {
+      "const": 0
+    },
+    "records": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "caseId": {
+            "pattern": "^dh2-[0-9]{3}$"
+          },
+          "language": {
+            "enum": [
+              "en",
+              "vi",
+              "ja",
+              "mixed"
+            ]
+          },
+          "rawText": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "scenarioId": {
+            "pattern": "^dh2-s-[0-9]{3}$"
+          },
+          "slices": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "sourceDigest": {
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "caseId",
+          "scenarioId",
+          "language",
+          "slices",
+          "rawText",
+          "sourceDigest"
+        ],
+        "type": "object"
+      },
+      "maxItems": 28,
+      "minItems": 28,
+      "type": "array"
+    },
+    "requiredOutputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "abstentionRule": {
+          "type": "string"
+        },
+        "anchorRule": {
+          "type": "string"
+        },
+        "protocolPath": {
+          "const": "evaluation/sprint-12/internal-poc/dense-hard-v2/dense-hard-source-only-protocol.v2.json"
+        },
+        "schemaVersion": {
+          "const": "dense-hard-output.v2"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "protocolPath",
+        "anchorRule",
+        "abstentionRule"
+      ],
+      "type": "object"
+    },
+    "sourceOnly": {
+      "const": true
+    },
+    "status": {
+      "const": "FROZEN_SOURCE_ONLY_FOR_CANDIDATE"
+    }
+  },
+  "required": [
+    "artifactVersion",
+    "status",
+    "datasetKind",
+    "sourceOnly",
+    "goldIncluded",
+    "evaluatorManifestIncluded",
+    "providerCalls",
+    "heldOutInspection",
+    "requiredOutputSchema",
+    "records",
+    "payloadDigest"
+  ],
+  "title": "Sprint 12 Dense-Hard Source-Only Payload v2",
+  "type": "object"
+}

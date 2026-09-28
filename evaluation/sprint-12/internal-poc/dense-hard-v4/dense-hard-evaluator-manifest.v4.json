@@ -1,0 +1,505 @@
+{
+  "artifactVersion": "s12.dense-hard.evaluator-manifest.v4",
+  "caseCount": 32,
+  "datasetKind": "SYNTHETIC_NON_PRODUCTION",
+  "goldDigest": "sha256:5c4fceeb73b50a89a327dd7414d064c07a1315e9f28a518b41f119365fb9c939",
+  "manifestDigest": "sha256:1339ae6134d9645c142b1c0d8f57a3e46ad6547283611479ffd82280c2061015",
+  "records": [
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-001",
+      "entityCount": 4,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-001",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "occurrence-scoring"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-002",
+      "entityCount": 4,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-002",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "proposition-boundary"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-003",
+      "entityCount": 4,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-003",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "cross-sentence-dependency"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-004",
+      "entityCount": 4,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-004",
+      "slices": [
+        "multi-relation",
+        "different-occurrences",
+        "evidence-normalization"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-005",
+      "entityCount": 4,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-005",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "proposition-boundary"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-006",
+      "entityCount": 4,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-006",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "distractors"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-007",
+      "entityCount": 6,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 3,
+      "scenarioId": "dh4-s-007",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "long-context"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-008",
+      "entityCount": 4,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-008",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "safe-unsafe-mix"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-009",
+      "entityCount": 4,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-009",
+      "slices": [
+        "temporal-supersession",
+        "stale-statement",
+        "repeated-labels",
+        "different-occurrences"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-010",
+      "entityCount": 4,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-010",
+      "slices": [
+        "temporal-supersession",
+        "stale-statement",
+        "repeated-labels",
+        "different-occurrences"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-011",
+      "entityCount": 4,
+      "expectedAbstention": false,
+      "language": "mixed",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-011",
+      "slices": [
+        "mixed-unicode",
+        "combining-mark",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-012",
+      "entityCount": 4,
+      "expectedAbstention": false,
+      "language": "mixed",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-012",
+      "slices": [
+        "mixed-unicode",
+        "emoji",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-013",
+      "entityCount": 5,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-013",
+      "slices": [
+        "distractors",
+        "repeated-labels",
+        "different-occurrences",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-014",
+      "entityCount": 6,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 3,
+      "scenarioId": "dh4-s-014",
+      "slices": [
+        "long-context",
+        "distractors",
+        "multi-hop",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-015",
+      "entityCount": 6,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 3,
+      "scenarioId": "dh4-s-015",
+      "slices": [
+        "long-context",
+        "multi-hop",
+        "multi-relation",
+        "proposition-boundary"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-016",
+      "entityCount": 4,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-016",
+      "slices": [
+        "multi-relation",
+        "occurrence-scoring",
+        "evidence-normalization"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-017",
+      "entityCount": 4,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-017",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "type-ambiguity"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-018",
+      "entityCount": 4,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-018",
+      "slices": [
+        "cross-sentence-dependency",
+        "multi-hop",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-019",
+      "entityCount": 4,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-019",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "safe-unsafe-mix"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-020",
+      "entityCount": 4,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-020",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "stale-statement"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-021",
+      "entityCount": 4,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-021",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "occurrence-scoring"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-022",
+      "entityCount": 4,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-022",
+      "slices": [
+        "temporal-supersession",
+        "multi-relation",
+        "different-occurrences"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-023",
+      "entityCount": 4,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-023",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "cross-sentence-dependency"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "caseId": "dh4-024",
+      "entityCount": 4,
+      "expectedAbstention": false,
+      "language": "en",
+      "quarantineCount": 0,
+      "relationCount": 2,
+      "scenarioId": "dh4-s-024",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "proposition-boundary"
+      ]
+    },
+    {
+      "abstentionMode": "partial",
+      "caseId": "dh4-025",
+      "entityCount": 1,
+      "expectedAbstention": true,
+      "language": "en",
+      "quarantineCount": 1,
+      "relationCount": 0,
+      "scenarioId": "dh4-s-025",
+      "slices": [
+        "cross-project",
+        "partial-abstention",
+        "abstention",
+        "proposition-boundary"
+      ]
+    },
+    {
+      "abstentionMode": "partial",
+      "caseId": "dh4-026",
+      "entityCount": 2,
+      "expectedAbstention": true,
+      "language": "en",
+      "quarantineCount": 1,
+      "relationCount": 0,
+      "scenarioId": "dh4-s-026",
+      "slices": [
+        "ambiguity",
+        "partial-abstention",
+        "abstention",
+        "safe-unsafe-mix"
+      ]
+    },
+    {
+      "abstentionMode": "partial",
+      "caseId": "dh4-027",
+      "entityCount": 1,
+      "expectedAbstention": true,
+      "language": "en",
+      "quarantineCount": 1,
+      "relationCount": 0,
+      "scenarioId": "dh4-s-027",
+      "slices": [
+        "unsupported-relation",
+        "partial-abstention",
+        "abstention",
+        "proposition-boundary"
+      ]
+    },
+    {
+      "abstentionMode": "partial",
+      "caseId": "dh4-028",
+      "entityCount": 2,
+      "expectedAbstention": true,
+      "language": "en",
+      "quarantineCount": 1,
+      "relationCount": 1,
+      "scenarioId": "dh4-s-028",
+      "slices": [
+        "type-ambiguity",
+        "partial-abstention",
+        "abstention",
+        "safe-unsafe-mix"
+      ]
+    },
+    {
+      "abstentionMode": "full",
+      "caseId": "dh4-029",
+      "entityCount": 0,
+      "expectedAbstention": true,
+      "language": "en",
+      "quarantineCount": 1,
+      "relationCount": 0,
+      "scenarioId": "dh4-s-029",
+      "slices": [
+        "adversarial-instruction",
+        "full-abstention",
+        "abstention",
+        "unsupported-relation"
+      ]
+    },
+    {
+      "abstentionMode": "full",
+      "caseId": "dh4-030",
+      "entityCount": 0,
+      "expectedAbstention": true,
+      "language": "en",
+      "quarantineCount": 1,
+      "relationCount": 0,
+      "scenarioId": "dh4-s-030",
+      "slices": [
+        "full-abstention",
+        "abstention",
+        "non-assertion",
+        "long-context"
+      ]
+    },
+    {
+      "abstentionMode": "full",
+      "caseId": "dh4-031",
+      "entityCount": 0,
+      "expectedAbstention": true,
+      "language": "en",
+      "quarantineCount": 1,
+      "relationCount": 0,
+      "scenarioId": "dh4-s-031",
+      "slices": [
+        "negation",
+        "non-assertion",
+        "full-abstention",
+        "abstention"
+      ]
+    },
+    {
+      "abstentionMode": "full",
+      "caseId": "dh4-032",
+      "entityCount": 0,
+      "expectedAbstention": true,
+      "language": "en",
+      "quarantineCount": 1,
+      "relationCount": 0,
+      "scenarioId": "dh4-s-032",
+      "slices": [
+        "adversarial-instruction",
+        "distractors",
+        "full-abstention",
+        "unsupported-relation"
+      ]
+    }
+  ],
+  "safetyCaseCount": 8,
+  "sourcePayloadDigest": "sha256:e2d2b40a58d6b7e9a8ec50fed6fbd7ff0304c0b5da976df666cfdfc7416f5711",
+  "utilityCaseCount": 24
+}

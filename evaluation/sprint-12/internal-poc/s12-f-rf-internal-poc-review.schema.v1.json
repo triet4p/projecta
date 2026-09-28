@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.example/schemas/s12-f-rf-internal-poc-review.v1.json",
+  "title": "Sprint 12 F-RF Internal Agent-Proxy Review v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifactVersion", "status", "protocolPath", "protocolDigest", "candidateStatus", "reviewerMode", "humanEvidence", "providerCalls", "heldOutInspection", "records", "metrics", "nonClaims"],
+  "properties": {
+    "artifactVersion": {"const": "s12.f-rf.internal-poc-review.v1"},
+    "status": {"const": "POC_FAILED_MISSING_CANDIDATE_OUTPUT"},
+    "protocolPath": {"const": "evaluation/sprint-12/internal-poc/s12-f-rf-internal-poc.v1.json"},
+    "protocolDigest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+    "candidateStatus": {"const": "NOT_EXECUTED_MISSING_RUNTIME_CONFIGURATION"},
+    "reviewerMode": {"const": "AGENT_PROXY_NOT_HUMAN"},
+    "humanEvidence": {"const": false},
+    "providerCalls": {"const": 0},
+    "heldOutInspection": {"const": false},
+    "records": {"type": "array", "minItems": 12, "maxItems": 12, "items": {"$ref": "#/$defs/record"}},
+    "metrics": {"$ref": "#/$defs/metrics"},
+    "nonClaims": {"type": "array", "minItems": 3, "items": {"type": "string", "minLength": 1}}
+  },
+  "$defs": {
+    "record": {"type": "object", "additionalProperties": false, "required": ["recordId", "scenarioId", "caseId", "sourceDigest", "candidateOutputStatus", "finalDisposition", "correctionClass", "semanticEditCount", "projectaActiveSeconds", "manualBaselineSeconds", "timingStatus", "reviewer", "eligibleForAcceptance", "unsupportedFinalizedAssertions"], "properties": {"recordId": {"pattern": "^poc-review-[0-9]{3}$"}, "scenarioId": {"pattern": "^s12-s-[0-9]{3}$"}, "caseId": {"pattern": "^s12-a-[0-9]{4}$"}, "sourceDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}, "candidateOutputStatus": {"const": "missing-output"}, "finalDisposition": {"const": "missing-output"}, "correctionClass": {"const": "missing-output"}, "semanticEditCount": {"const": 0}, "projectaActiveSeconds": {"const": 0}, "manualBaselineSeconds": {"type": ["integer", "null"], "minimum": 0}, "timingStatus": {"const": "not-applicable-missing-output"}, "reviewer": {"const": "primary-agent-proxy"}, "eligibleForAcceptance": {"const": false}, "unsupportedFinalizedAssertions": {"const": 0}}},
+    "metrics": {"type": "object", "additionalProperties": false, "required": ["eligibleReviewedItems", "acceptedWithoutSemanticCorrection", "acceptedUnchangedOrMinor", "medianProjectaSeconds", "p90ProjectaSeconds", "medianReductionVsManualBaseline", "meanSemanticEditsPerReviewedItem", "unsupportedFinalizedAssertions", "reviewerAgreement", "gateStatus"], "properties": {"eligibleReviewedItems": {"const": 12}, "acceptedWithoutSemanticCorrection": {"$ref": "#/$defs/rate"}, "acceptedUnchangedOrMinor": {"$ref": "#/$defs/rate"}, "medianProjectaSeconds": {"type": "null"}, "p90ProjectaSeconds": {"type": "null"}, "medianReductionVsManualBaseline": {"type": "null"}, "meanSemanticEditsPerReviewedItem": {"type": "null"}, "unsupportedFinalizedAssertions": {"type": "object", "additionalProperties": false, "required": ["numerator", "denominator", "status"], "properties": {"numerator": {"const": 0}, "denominator": {"const": 0}, "status": {"const": "NOT_APPLICABLE_BLOCKS_GATE"}}}, "reviewerAgreement": {"type": "object", "additionalProperties": false, "required": ["status", "independentRecords"], "properties": {"status": {"const": "NOT_APPLICABLE_BLOCKS_GATE"}, "independentRecords": {"const": 0}}}, "gateStatus": {"const": "FAIL_MISSING_OUTPUT_NO_HUMAN_BASELINE"}}},
+    "rate": {"type": "object", "additionalProperties": false, "required": ["numerator", "rate", "threshold"], "properties": {"numerator": {"const": 0}, "rate": {"const": 0.0}, "threshold": {"type": "number", "minimum": 0, "maximum": 1}}}
+  }
+}

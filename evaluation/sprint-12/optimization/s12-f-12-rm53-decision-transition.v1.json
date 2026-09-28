@@ -1,0 +1,32 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm53-decision-transition.v1",
+  "status": "F12_OFFLINE_CLOSURE_ACCEPTED_HUMAN_FIRST_DESIGN_REVIEW_PENDING",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-53",
+  "transitionDate": "2026-08-22",
+  "transitionAuthority": "project-owner-delegated-codex-reviewer",
+  "fromState": {
+    "status": "G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY",
+    "path": "evaluation/sprint-12/current-state.v1.json",
+    "digest": "sha256:3945f09086658173977d0e405129368598c22cc44c06f187592fa49ac6a63e6a"
+  },
+  "ownerDecision": {
+    "path": "evaluation/sprint-12/optimization/s12-f-12-rm53-owner-decision.v1.json",
+    "digest": "sha256:9455d1be116c1458c97930dcdb3226dfa3fe17e172d5ef06a1d5e7b186fdf952",
+    "status": "RM53_ACCEPTED_OFFLINE_CLOSURE_ONLY"
+  },
+  "currentDecisionState": {
+    "offlineClosureAccepted": true,
+    "providerExperimentationStopped": true,
+    "providerExecutionAuthorized": false,
+    "runtimeImplementationAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "nextPermittedAction": "S12-RM-54_REVIEW_HUMAN_FIRST_EXTRACTION_FRAMEWORK_DESIGN"
+  },
+  "nextPermittedAction": "S12-RM-54_REVIEW_HUMAN_FIRST_EXTRACTION_FRAMEWORK_DESIGN",
+  "claimBoundary": "RM-53 transitions only the governance state from RM-51 offline-closure-only to accepted offline closure with RM-54 design review pending. It opens no implementation, provider, runtime, validation, held-out, Stage B, selection or promotion authority and makes no human business-quality claim."
+}

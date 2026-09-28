@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.example/schemas/s12-f-rf-internal-poc-candidate.v4.json",
+  "title": "Sprint 12 F-RF Frozen Internal Agent Candidate v4",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifactVersion", "status", "candidateModel", "reasoning", "agentCandidateCalls", "providerCalls", "payloadPath", "payloadDigest", "records", "goldIncluded", "priorScoresIncluded", "priorReviewsIncluded", "heldOutInspection", "rawSensitiveDataIncluded", "reviewOrScoringPerformed", "nonClaims", "candidateDigest"],
+  "properties": {
+    "artifactVersion": {"const": "s12.f-rf.internal-poc-candidate.v4"},
+    "status": {"const": "CANDIDATE_FROZEN_FOR_PROXY_REVIEW_ONLY"},
+    "candidateModel": {"const": "gpt-5.6-luna"},
+    "reasoning": {"const": "high"},
+    "agentCandidateCalls": {"const": 12},
+    "providerCalls": {"const": 0},
+    "payloadPath": {"const": "evaluation/sprint-12/internal-poc/s12-f-rf-blinded-source-payload.v4.json"},
+    "payloadDigest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+    "records": {"type": "array", "minItems": 12, "maxItems": 12, "items": {"$ref": "#/$defs/record"}},
+    "goldIncluded": {"const": false},
+    "priorScoresIncluded": {"const": false},
+    "priorReviewsIncluded": {"const": false},
+    "heldOutInspection": {"const": false},
+    "rawSensitiveDataIncluded": {"const": false},
+    "reviewOrScoringPerformed": {"const": false},
+    "nonClaims": {"type": "array", "minItems": 3, "items": {"type": "string", "minLength": 1}},
+    "candidateDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "record": {
+      "type": "object", "additionalProperties": false,
+      "required": ["caseId", "scenarioId", "language", "sourceDigest", "sourceVersion", "response", "responseDigest"],
+      "properties": {
+        "caseId": {"pattern": "^s12-a-[0-9]{4}$"},
+        "scenarioId": {"pattern": "^s12-s-[0-9]{3}$"},
+        "language": {"enum": ["vi", "en", "ja", "mixed"]},
+        "sourceDigest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+        "sourceVersion": {"type": "object", "additionalProperties": false, "required": ["sourceVersionId", "projectScopeId", "canonicalContentDigest", "coordinateSystemVersion", "receiptDigest", "canonicalizationVersion", "contractVersion", "originalContentDigest", "parentCanonicalContentDigest", "parentSourceVersionId", "replayKey", "retention", "sourceArtifactScopeId"], "properties": {"sourceVersionId": {"type": "string"}, "projectScopeId": {"type": "string"}, "canonicalContentDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}, "coordinateSystemVersion": {"type": "string"}, "receiptDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}, "canonicalizationVersion": {"type": "string"}, "contractVersion": {"type": "string"}, "originalContentDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}, "parentCanonicalContentDigest": {"type": ["string", "null"]}, "parentSourceVersionId": {"type": ["string", "null"]}, "replayKey": {"type": "string"}, "retention": {"type": "object", "additionalProperties": false, "required": ["expiresOn", "policy"], "properties": {"expiresOn": {"type": ["string", "null"]}, "policy": {"type": "string"}}}, "sourceArtifactScopeId": {"type": "string"}}},
+        "response": {"type": "object", "additionalProperties": false, "required": ["schemaVersion", "modelId", "modelVersion", "entities", "relations", "links", "abstentionReason", "usage"], "properties": {"schemaVersion": {"const": "m3.v2"}, "modelId": {"const": "gpt-5.6-luna"}, "modelVersion": {"const": "internal-poc-v4"}, "entities": {"type": "array", "minItems": 1}, "relations": {"type": "array"}, "links": {"const": []}, "abstentionReason": {"type": ["string", "null"]}, "usage": {"type": ["object", "null"]}}},
+        "responseDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    }
+  }
+}

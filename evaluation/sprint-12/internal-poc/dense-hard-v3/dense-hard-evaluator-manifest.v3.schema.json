@@ -1,0 +1,129 @@
+{
+  "$id": "https://projecta.example/schemas/s12-dense-hard-manifest.v3.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "abstentionCaseCount": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "artifactVersion": {
+      "const": "s12.dense-hard.evaluator-manifest.v3"
+    },
+    "caseCount": {
+      "const": 30
+    },
+    "datasetKind": {
+      "const": "SYNTHETIC_NON_PRODUCTION"
+    },
+    "goldDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "manifestDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "records": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "abstentionMode": {
+            "enum": [
+              "none",
+              "partial",
+              "full"
+            ]
+          },
+          "abstentionRequired": {
+            "type": "boolean"
+          },
+          "caseId": {
+            "pattern": "^dh3-[0-9]{3}$"
+          },
+          "entityCount": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "language": {
+            "enum": [
+              "en",
+              "vi",
+              "ja",
+              "mixed"
+            ]
+          },
+          "quarantineCount": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "relationCount": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "scenarioId": {
+            "pattern": "^dh3-s-[0-9]{3}$"
+          },
+          "slices": {
+            "items": {
+              "enum": [
+                "multi-hop",
+                "multi-relation",
+                "repeated-labels",
+                "different-occurrences",
+                "negation",
+                "non-assertion",
+                "abstention",
+                "ambiguity",
+                "temporal-supersession",
+                "stale-statement",
+                "mixed-unicode",
+                "combining-mark",
+                "emoji",
+                "cross-sentence-dependency",
+                "distractors",
+                "cross-project",
+                "unsupported-relation",
+                "adversarial-instruction",
+                "partial-abstention",
+                "full-abstention",
+                "long-context",
+                "type-ambiguity"
+              ]
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "caseId",
+          "scenarioId",
+          "language",
+          "slices",
+          "entityCount",
+          "relationCount",
+          "abstentionRequired",
+          "abstentionMode",
+          "quarantineCount"
+        ],
+        "type": "object"
+      },
+      "maxItems": 30,
+      "minItems": 30,
+      "type": "array"
+    },
+    "sourcePayloadDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "artifactVersion",
+    "datasetKind",
+    "sourcePayloadDigest",
+    "goldDigest",
+    "caseCount",
+    "abstentionCaseCount",
+    "records",
+    "manifestDigest"
+  ],
+  "title": "Sprint 12 Dense-Hard v3 Private Manifest",
+  "type": "object"
+}

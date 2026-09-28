@@ -312,7 +312,18 @@ downstream access are all closed.
 
 ## Handoff S — RM-47 closure to RM-48/RM-49 offline error analysis
 
-**Status:** RM-51 Option C stop complete; RM-52 prepared offline; RM-53 pending owner review.
+**Status:** RM-51 Option C stop complete; RM-52 prepared offline; RM-53 closure
+accepted; RM-54 design accepted for RM-55 contract definition; RM-55 accepted;
+RM-56 accepted; RM-57 accepted; RM-58 accepted; RM-59 accepted; RM-60 accepted;
+RM-61 accepted; RM-62 accepted; RM-63 accepted the disabled-by-default
+approved-only assertion materialization boundary; RM-64 accepted versioned
+inference invalidation/rebuild; RM-65 accepted correction-burden telemetry;
+RM-66 accepted the offline adversarial/default-path gate; RM-67 accepted the
+closed-world human correction-burden contract. Phase F-RF is now
+`F_RF_POC_COMPLETE_AGENT_PROXY_ACCEPTED` for the bounded internal PoC; RM-68
+is accepted only for that scope. The historical external packet remains
+blocked and non-preregistration, and later external work requires new owner
+authority.
 
 The authoritative current G5 packet is
 `evaluation/sprint-12/optimization/g5-packet.v36.rm51-closure-only.json`, and the
@@ -335,8 +346,25 @@ the non-authoritative closure packet and prioritized backlog at
 `optimization/s12-f-12-rm52-error-backlog.v1.json`, binding v6/v9, the failed
 three-call/no-report v8 fact, spent authorizations, RM-47/RM-51 and rejected
 RM-50 artifacts. The v6/v9 reports remain immutable, v8 remains absent and no
-quality-improvement or causality claim is established. RM-53 must review the
-closure packet before acceptance.
+quality-improvement or causality claim is established. RM-53 accepted this
+offline custody boundary through its owner decision and transition. RM-54
+accepted the revised design for RM-55 contract definition only. RM-55 accepted
+the SourceVersion/source-receipt contract; RM-56 accepted the TextAnchor
+coordinate contract; RM-57 accepted the per-item validation/quarantine
+boundary; RM-58 accepted the confirmed-entity relation gate; RM-59 accepted
+deterministic relation evidence selection; RM-60 accepted the constrained
+relation contract; RM-61 accepted durable review decision receipts; RM-62
+accepted the source-first review workbench contract and RM-63 accepted the
+disabled-by-default approved-only assertion materialization boundary; RM-64
+accepted versioned inference invalidation/rebuild; RM-65 accepted
+correction-burden telemetry; RM-66 accepted the offline adversarial/default-path
+gate; RM-67 accepted the closed-world human correction-burden contract. The
+v5 internal source-only agent-proxy PoC is accepted for development scope;
+RM-68 is accepted only for that scope, while later external work requires a
+new owner decision and verified custody.
+Provider,
+runtime, validation, held-out, Stage B, selection and
+promotion remain closed.
 
 ## External-only work — custody and G6
 

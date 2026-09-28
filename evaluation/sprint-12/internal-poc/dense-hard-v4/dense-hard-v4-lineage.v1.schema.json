@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.example/schemas/s12-dense-hard-v4-lineage.v1.json",
+  "title": "Sprint 12 Dense-Hard v4 Freshness Lineage",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifactVersion", "status", "datasetKind", "sourcePayloadDigest", "goldDigest", "manifestDigest", "protocolDigest", "contractDigest", "caseCount", "utilityCaseCount", "safetyCaseCount", "sliceCount", "noReuseChecks", "authorIneligibleForCandidate", "providerCalls", "candidateOrEvaluationPresent", "nonClaims", "lineageDigest"],
+  "properties": {
+    "artifactVersion": {"const": "s12.dense-hard.v4-lineage.v1"},
+    "status": {"const": "VALIDATED_FRESH_NO_V1_V2_V3_REUSE"},
+    "datasetKind": {"const": "SYNTHETIC_NON_PRODUCTION"},
+    "sourcePayloadDigest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+    "goldDigest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+    "manifestDigest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+    "protocolDigest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+    "contractDigest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+    "caseCount": {"const": 32},
+    "utilityCaseCount": {"const": 24},
+    "safetyCaseCount": {"const": 8},
+    "sliceCount": {"type": "integer", "minimum": 22},
+    "noReuseChecks": {"type": "object", "minProperties": 15, "additionalProperties": false, "patternProperties": {".*": {"const": true}}},
+    "authorIneligibleForCandidate": {"const": true},
+    "providerCalls": {"const": 0},
+    "candidateOrEvaluationPresent": {"const": false},
+    "nonClaims": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "lineageDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}

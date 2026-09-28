@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.example/schemas/s12-dense-hard-gold.v1.json",
+  "title": "Sprint 12 Dense-Hard Private Evaluator Gold v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["artifactVersion", "status", "sourcePayloadPath", "sourcePayloadDigest", "records", "goldDigest"],
+  "properties": {"artifactVersion": {"const": "s12.dense-hard.gold.v1"}, "status": {"const": "PRIVATE_FOR_EVALUATOR_ONLY"}, "sourcePayloadPath": {"const": "evaluation/sprint-12/internal-poc/dense-hard-v1/dense-hard-source-payload.v1.json"}, "sourcePayloadDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}, "records": {"type": "array", "minItems": 24, "maxItems": 24, "items": {"$ref": "#/$defs/record"}}, "goldDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}},
+  "$defs": {
+    "evidence": {"type": "object", "additionalProperties": false, "required": ["startOffset", "endOffset", "text"], "properties": {"startOffset": {"type": "integer", "minimum": 0}, "endOffset": {"type": "integer", "exclusiveMinimum": 0}, "text": {"type": "string", "minLength": 1}}},
+    "entity": {"type": "object", "additionalProperties": false, "required": ["entityId", "type", "label", "evidence"], "properties": {"entityId": {"pattern": "^e[0-9]+$"}, "type": {"enum": ["Requirement", "Decision", "Question", "Task", "Risk", "Constraint", "ProgressClaim"]}, "label": {"type": "string", "minLength": 1}, "evidence": {"$ref": "#/$defs/evidence"}}},
+    "relation": {"type": "object", "additionalProperties": false, "required": ["relationId", "predicate", "sourceEntityId", "targetEntityId", "evidence"], "properties": {"relationId": {"pattern": "^r[0-9]+$"}, "predicate": {"enum": ["supports", "dependsOn", "blocks", "implements", "constrainedBy", "supersedes", "answers"]}, "sourceEntityId": {"pattern": "^e[0-9]+$"}, "targetEntityId": {"pattern": "^e[0-9]+$"}, "evidence": {"$ref": "#/$defs/evidence"}}},
+    "expected": {"type": "object", "additionalProperties": false, "required": ["entities", "relations", "abstentionReason"], "properties": {"entities": {"type": "array", "items": {"$ref": "#/$defs/entity"}}, "relations": {"type": "array", "items": {"$ref": "#/$defs/relation"}}, "abstentionReason": {"type": ["string", "null"]}}},
+    "record": {"type": "object", "additionalProperties": false, "required": ["caseId", "scenarioId", "sourceDigest", "expected"], "properties": {"caseId": {"pattern": "^dh-[0-9]{3}$"}, "scenarioId": {"pattern": "^dh-s-[0-9]{3}$"}, "sourceDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}, "expected": {"$ref": "#/$defs/expected"}}}
+  }
+}

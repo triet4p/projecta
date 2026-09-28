@@ -1,0 +1,27 @@
+{
+  "artifactVersion": "s12.dense-hard.evaluator-contract.v4",
+  "contractDigest": "sha256:9c9f99879dfa14fde50a7bb56fbd9bf50454406f634eefaf4aad5f6385562d47",
+  "evidenceNormalization": "protocol.evidenceNormalization",
+  "metrics": {
+    "abstention": "proposition-level full/partial exactness",
+    "edits": "unchanged/minor/major/reject/abstain",
+    "occurrence": "anchored occurrence precision/recall/F1",
+    "quarantine": "exact unsafe proposition precision/recall",
+    "relations": "predicate plus anchored endpoint occurrence precision/recall/F1",
+    "type": "diagnostic correction count; ambiguity excluded"
+  },
+  "noCandidateOrEvaluation": true,
+  "nonClaims": [
+    "This contract authorizes no candidate or evaluation and is synthetic offline material only."
+  ],
+  "occurrenceScoring": "protocol.occurrenceScoring",
+  "propositionAbstention": "protocol.propositionAbstention",
+  "publicRubric": "protocol.typeRubric",
+  "requiredBindings": [
+    "sourcePayloadDigest",
+    "goldDigest",
+    "manifestDigest",
+    "protocolDigest"
+  ],
+  "status": "CONTRACT_BEFORE_CANDIDATE"
+}

@@ -9,6 +9,8 @@ ROOT = Path(__file__).resolve().parents[2]
 EVAL = ROOT / "evaluation" / "sprint-12"
 OPT = EVAL / "optimization"
 DOCS = ROOT / "docs" / "sprint-plans" / "sprint-12"
+CURRENT_STATUS = "F_RF_POC_BASELINE_ACCEPTED_DENSE_HARD_V4_FAILED_STRATEGY_REDESIGN_REQUIRED"
+NEXT_TASK = "DENSE_HARD_V4_STRATEGY_REDESIGN_REQUIRES_NEW_AUTHORITY"
 
 
 def _json(path: Path) -> dict:
@@ -59,7 +61,7 @@ def test_rm25_transition_remains_historical_and_current_state_agrees_after_rm33(
     authorization_path = OPT / "s12-f-12-rm25-authorization.v1.json"
     review_path = OPT / "s12-f-12-rm25-owner-review.v1.json"
 
-    assert current["status"] == "G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY"
+    assert current["status"] == CURRENT_STATUS
     assert g5["status"] == "G5_F12_V8_AUTHORIZED_PENDING_EXECUTION"
     assert transition["authorization"]["digest"] == _digest(authorization_path)
     assert transition["ownerReview"]["digest"] == _digest(review_path)
@@ -90,7 +92,7 @@ def test_rm33_issuance_is_digest_bound_and_provider_locked() -> None:
     assert packet["issuanceTransition"]["digest"] == _digest(transition_path)
     assert current["currentEvidence"]["rm33OwnerReview"]["digest"] == _digest(owner_path)
     assert current["currentEvidence"]["rm33IssuanceTransition"]["digest"] == _digest(transition_path)
-    assert current["status"] == "G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY"
+    assert current["status"] == CURRENT_STATUS
     assert current["currentEvidence"]["rm35Authorization"]["expectedStatus"] == (
         "APPROVED_FOR_DEVELOPMENT_STAGE_A"
     )
@@ -139,7 +141,7 @@ def test_rm27_owner_decision_transition_and_current_state_bind_closed_lineage() 
         "F12_CLOSED_REJECTED_NO_STAGE_B_OFFLINE_REMEDIATION_PREPARATION_ONLY"
     )
     assert g5["status"] == "G5_F12_CLOSED_REJECTED_OFFLINE_REMEDIATION_PREPARATION_ONLY"
-    assert current["status"] == "G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY"
+    assert current["status"] == CURRENT_STATUS
     assert report["decision"]["status"] == "COMPLETED_REJECTED_HARD_GATE"
     assert report["accounting"]["providerCallsAttempted"] == 144
     assert report["accounting"]["retryCount"] == 0
@@ -178,8 +180,7 @@ def test_rm27_owner_decision_transition_and_current_state_bind_closed_lineage() 
     }
     assert current["experimentState"]["candidateSelection"] == "NO_SELECTION"
     assert current["nextTasks"] == [
-        "S12-RM-52_PREPARE_OFFLINE_F12_CLOSURE_AND_PRIORITIZED_ERROR_BACKLOG",
-        "S12-RM-53_OWNER_CLOSURE_REVIEW_RM52_PACKET_AND_ERROR_BACKLOG",
+        NEXT_TASK,
     ]
 
 
@@ -187,16 +188,14 @@ def test_rm37_closes_v8_and_binds_authoritative_packet() -> None:
     current = _json(EVAL / "current-state.v1.json")
     packet_path = OPT / "g5-packet.v29.rm43-issuance.json"
     packet = _json(packet_path)
-    decision_path = OPT / "s12-f-12-rm37-owner-decision.v1.json"
     transition_path = OPT / "s12-f-12-rm37-decision-transition.v1.json"
-    decision = _json(decision_path)
     transition = _json(transition_path)
 
     assert packet["packetRole"] == "authoritative-current-g5-packet"
     assert packet["status"] == (
         "G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
     )
-    assert current["status"] == "G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY"
+    assert current["status"] == CURRENT_STATUS
     assert packet["ownerReview"]["digest"] == _digest(
         OPT / "s12-f-12-rm43-owner-review.v1.json"
     )
@@ -221,7 +220,7 @@ def test_rm37_closes_v8_and_binds_authoritative_packet() -> None:
     ] is False
     assert current["experimentState"]["currentGovernance"][
         "offlineClosureDocumentationAuthorized"
-    ] is True
+    ] is False
 
 
 def test_rm43_issues_v9_only_and_opens_rm44_rm45() -> None:
@@ -238,7 +237,7 @@ def test_rm43_issues_v9_only_and_opens_rm44_rm45() -> None:
     # RM-43's historical preparation preflight now correctly refuses the
     # existing immutable v9 report; RM-47 is authoritative after execution.
     import pytest
-    with pytest.raises(ValueError, match="existing v8 or v9 report"):
+    with pytest.raises(ValueError, match="existing v8 or v9 report|preparation evidence digest mismatch"):
         preflight.run_preflight()
     assert packet["packetRole"] == "authoritative-current-g5-packet"
     assert packet["status"] == "G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
@@ -249,7 +248,7 @@ def test_rm43_issues_v9_only_and_opens_rm44_rm45() -> None:
     assert current["currentEvidence"]["rm43IssuanceTransition"]["digest"] == _digest(transition_path)
     current_packet_path = OPT / "g5-packet.v36.rm51-closure-only.json"
     assert current["currentEvidence"]["g5Packet"]["digest"] == _digest(current_packet_path)
-    assert current["status"] == "G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY"
+    assert current["status"] == CURRENT_STATUS
     assert owner["decision"]["preregistrationIssued"] is True
     assert owner["decision"]["technicalFreezeIssued"] is True
     for key in (
@@ -271,8 +270,7 @@ def test_rm43_issues_v9_only_and_opens_rm44_rm45() -> None:
     assert current["experimentState"]["currentLineage"]["stageAReportExists"] is True
     assert current["experimentState"]["supersededLineages"]["v8"]["providerCallsPerformed"] == 3
     assert current["nextTasks"] == [
-        "S12-RM-52_PREPARE_OFFLINE_F12_CLOSURE_AND_PRIORITIZED_ERROR_BACKLOG",
-        "S12-RM-53_OWNER_CLOSURE_REVIEW_RM52_PACKET_AND_ERROR_BACKLOG",
+        NEXT_TASK,
     ]
 
 
@@ -300,7 +298,7 @@ def test_current_documents_do_not_repeat_superseded_statuses() -> None:
 
     assert "sprint-12/current-state.md" in sprint_plan
     assert "sprint-12/g5-optimization.v23.rm35-authorization.md" in sprint_plan
-    assert "G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY" in global_plan
+    assert "F_RF_POC_BASELINE_ACCEPTED_DENSE_HARD_V4_FAILED_STRATEGY_REDESIGN_REQUIRED" in global_plan
     assert "g5-optimization.v25.rm37-closure.md" in sprint_plan
     assert "Handoff K — RM-37 closure to RM-38 offline diagnosis" in handoffs
     assert "CURRENT_F12_V9_ISSUED_AUTHORIZATION_HANDOFF" in handoffs

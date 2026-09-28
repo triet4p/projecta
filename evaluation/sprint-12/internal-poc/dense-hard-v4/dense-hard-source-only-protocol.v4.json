@@ -1,0 +1,93 @@
+{
+  "anchorPolicy": {
+    "evidenceMustEqualSourceSlice": true,
+    "indexUnit": "Unicode code point",
+    "interval": "half-open [startOffset,endOffset)"
+  },
+  "artifactVersion": "s12.dense-hard.source-only-protocol.v4",
+  "authorIneligibleForCandidate": true,
+  "datasetKind": "SYNTHETIC_NON_PRODUCTION",
+  "evidenceNormalization": {
+    "formatting": "unchanged",
+    "substantivePredicateEndpoint": "semantic edit",
+    "terminalPunctuation": "unchanged"
+  },
+  "finiteEntityTypes": [
+    "Task",
+    "Requirement",
+    "Constraint",
+    "Risk",
+    "System",
+    "Project",
+    "Document",
+    "Question",
+    "Decision",
+    "Dataset",
+    "Person",
+    "Control",
+    "Resource"
+  ],
+  "finiteRelationPredicates": [
+    "dependsOn",
+    "implements",
+    "blocks",
+    "supports",
+    "validates",
+    "tracks",
+    "constrains",
+    "supersedes",
+    "requires",
+    "answers",
+    "contains"
+  ],
+  "nonClaims": [
+    "No candidate, evaluation, review, provider call, human result, external result, held-out result, production result, selection, promotion, or release is produced."
+  ],
+  "occurrenceScoring": {
+    "identity": [
+      "startOffset",
+      "endOffset",
+      "text"
+    ],
+    "typeIndependent": true,
+    "typeMismatch": "one diagnostic correction; never changes occurrence or relation identity"
+  },
+  "propositionAbstention": {
+    "distractors": "ignore non-propositional distractors",
+    "full": "only when zero safe propositions can be finalized",
+    "none": "finalize all safe propositions and expose no unsafe finalization",
+    "partial": "only when explicit unsafe proposition(s) coexist with at least one safe proposition",
+    "scope": "abstention and quarantine are evaluated per proposition"
+  },
+  "protocolDigest": "sha256:1c44e28898ef3c27265a0f9340e4205ed8c54dde7238b5040bad941afea501f1",
+  "relationGrounding": {
+    "endpointsMustBeContained": true,
+    "identity": "predicate plus anchored source and target occurrence identities",
+    "triggerMustBeContained": true,
+    "typeMismatchDoesNotCascade": true
+  },
+  "status": "GENERIC_OFFLINE_GUARD",
+  "typeRubric": {
+    "decisionRules": [
+      "Use the most specific noun-phrase and predicate context supported by the source.",
+      "Occurrence identity is anchored start/end/text and is independent of type.",
+      "If type remains tied, quarantine only that proposition; never guess or escalate to full abstention."
+    ],
+    "rules": {
+      "Constraint": "public finite rubric rule for Constraint",
+      "Control": "public finite rubric rule for Control",
+      "Dataset": "public finite rubric rule for Dataset",
+      "Decision": "public finite rubric rule for Decision",
+      "Document": "public finite rubric rule for Document",
+      "Person": "public finite rubric rule for Person",
+      "Project": "public finite rubric rule for Project",
+      "Question": "public finite rubric rule for Question",
+      "Requirement": "public finite rubric rule for Requirement",
+      "Resource": "public finite rubric rule for Resource",
+      "Risk": "public finite rubric rule for Risk",
+      "System": "public finite rubric rule for System",
+      "Task": "public finite rubric rule for Task"
+    },
+    "typeUncertaintyCode": "UNSCORABLE_PROTOCOL_AMBIGUITY"
+  }
+}

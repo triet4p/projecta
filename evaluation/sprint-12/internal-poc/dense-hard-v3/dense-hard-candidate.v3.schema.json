@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.example/schemas/s12-dense-hard-candidate.v3.json",
+  "title": "Sprint 12 Dense-Hard v3 Source-Only Candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifactVersion", "datasetKind", "sourceOnly", "status",
+    "sourcePayloadDigest", "protocolDigest", "evaluatorContractDigest",
+    "buildCodeDigest", "candidateDigest", "agentModel", "reasoningEffort",
+    "agentCandidateCalls", "providerCalls", "goldUsed", "priorReviewUsed",
+    "scoringPerformed", "records"
+  ],
+  "properties": {
+    "artifactVersion": {"const": "s12.dense-hard.candidate.v3"},
+    "datasetKind": {"const": "SYNTHETIC_NON_PRODUCTION"},
+    "sourceOnly": {"const": true},
+    "status": {"const": "FROZEN_SOURCE_ONLY_CANDIDATE"},
+    "sourcePayloadDigest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "protocolDigest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "evaluatorContractDigest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "buildCodeDigest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "candidateDigest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "agentModel": {"const": "gpt-5.6-luna"},
+    "reasoningEffort": {"const": "high"},
+    "agentCandidateCalls": {"const": 30},
+    "providerCalls": {"const": 0},
+    "goldUsed": {"const": false},
+    "priorReviewUsed": {"const": false},
+    "scoringPerformed": {"const": false},
+    "records": {
+      "type": "array", "minItems": 30, "maxItems": 30,
+      "items": {"$ref": "#/$defs/record"}
+    }
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "occurrence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["startOffset", "endOffset", "text"],
+      "properties": {
+        "startOffset": {"type": "integer", "minimum": 0},
+        "endOffset": {"type": "integer", "minimum": 1},
+        "text": {"type": "string", "minLength": 1}
+      }
+    },
+    "evidence": {"$ref": "#/$defs/occurrence"},
+    "entity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["assertionId", "kind", "status", "type", "label", "occurrence"],
+      "properties": {
+        "assertionId": {"type": "string", "pattern": "^dh3-[0-9]{3}-e-[0-9]{2}$"},
+        "kind": {"const": "entity"},
+        "status": {"const": "finalized"},
+        "type": {"enum": ["Task", "Requirement", "Constraint", "Risk", "System", "Project", "Document", "Question", "Decision", "Dataset", "Person", "Control", "Resource"]},
+        "label": {"type": "string", "minLength": 1},
+        "occurrence": {"$ref": "#/$defs/occurrence"}
+      }
+    },
+    "relation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["assertionId", "kind", "status", "predicate", "sourceOccurrence", "targetOccurrence", "evidence", "triggerEvidence"],
+      "properties": {
+        "assertionId": {"type": "string", "pattern": "^dh3-[0-9]{3}-r-[0-9]{2}$"},
+        "kind": {"const": "relation"},
+        "status": {"const": "finalized"},
+        "predicate": {"enum": ["dependsOn", "implements", "blocks", "supports", "validates", "tracks", "constrains", "supersedes", "requires", "answers", "contains"]},
+        "sourceOccurrence": {"$ref": "#/$defs/occurrence"},
+        "targetOccurrence": {"$ref": "#/$defs/occurrence"},
+        "evidence": {"$ref": "#/$defs/evidence"},
+        "triggerEvidence": {"$ref": "#/$defs/evidence"}
+      }
+    },
+    "quarantine": {
+      "type": "object", "additionalProperties": false,
+      "required": ["assertionId", "kind", "reasonCode", "status", "evidence"],
+      "properties": {
+        "assertionId": {"type": "string", "pattern": "^dh3-[0-9]{3}-q-[0-9]{2}$"},
+        "kind": {"enum": ["entity", "relation", "proposition"]},
+        "reasonCode": {"enum": ["UNSCORABLE_PROTOCOL_AMBIGUITY", "STALE_PROPOSITION", "CROSS_PROJECT_SCOPE", "UNSUPPORTED_PREDICATE", "NEGATED_CONTENT", "ADVERSARIAL_CONTENT", "UNSUPPORTED_ASSERTION"]},
+        "status": {"const": "quarantined"},
+        "evidence": {"$ref": "#/$defs/evidence"}
+      }
+    },
+    "record": {
+      "type": "object", "additionalProperties": false,
+      "required": ["caseId", "scenarioId", "sourceDigest", "abstention", "entities", "relations", "quarantine"],
+      "properties": {
+        "caseId": {"type": "string", "pattern": "^dh3-[0-9]{3}$"},
+        "scenarioId": {"type": "string", "pattern": "^dh3-s-[0-9]{3}$"},
+        "sourceDigest": {"$ref": "#/$defs/digest"},
+        "abstention": {"enum": ["none", "partial", "full"]},
+        "entities": {"type": "array", "items": {"$ref": "#/$defs/entity"}},
+        "relations": {"type": "array", "items": {"$ref": "#/$defs/relation"}},
+        "quarantine": {"type": "array", "minItems": 0, "items": {"$ref": "#/$defs/quarantine"}}
+      }
+    }
+  }
+}

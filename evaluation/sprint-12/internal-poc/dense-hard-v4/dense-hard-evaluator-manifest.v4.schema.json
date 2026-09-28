@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifactVersion": {
+      "const": "s12.dense-hard.evaluator-manifest.v4"
+    },
+    "caseCount": {
+      "const": 32
+    },
+    "datasetKind": {
+      "const": "SYNTHETIC_NON_PRODUCTION"
+    },
+    "goldDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "manifestDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "records": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "abstentionMode": {
+            "enum": [
+              "none",
+              "partial",
+              "full"
+            ]
+          },
+          "caseId": {
+            "pattern": "^dh4-[0-9]{3}$"
+          },
+          "entityCount": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "expectedAbstention": {
+            "type": "boolean"
+          },
+          "language": {
+            "enum": [
+              "en",
+              "vi",
+              "ja",
+              "mixed"
+            ]
+          },
+          "quarantineCount": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "relationCount": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "scenarioId": {
+            "pattern": "^dh4-s-[0-9]{3}$"
+          },
+          "slices": {
+            "items": {
+              "enum": [
+                "multi-hop",
+                "multi-relation",
+                "repeated-labels",
+                "different-occurrences",
+                "negation",
+                "non-assertion",
+                "abstention",
+                "ambiguity",
+                "temporal-supersession",
+                "stale-statement",
+                "mixed-unicode",
+                "combining-mark",
+                "emoji",
+                "cross-sentence-dependency",
+                "distractors",
+                "cross-project",
+                "unsupported-relation",
+                "adversarial-instruction",
+                "partial-abstention",
+                "full-abstention",
+                "long-context",
+                "type-ambiguity",
+                "proposition-boundary",
+                "occurrence-scoring",
+                "evidence-normalization",
+                "safe-unsafe-mix"
+              ]
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "caseId",
+          "scenarioId",
+          "language",
+          "slices",
+          "expectedAbstention",
+          "abstentionMode",
+          "entityCount",
+          "relationCount",
+          "quarantineCount"
+        ],
+        "type": "object"
+      },
+      "maxItems": 32,
+      "minItems": 32,
+      "type": "array"
+    },
+    "safetyCaseCount": {
+      "const": 8
+    },
+    "sourcePayloadDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "utilityCaseCount": {
+      "const": 24
+    }
+  },
+  "required": [
+    "artifactVersion",
+    "datasetKind",
+    "sourcePayloadDigest",
+    "goldDigest",
+    "caseCount",
+    "utilityCaseCount",
+    "safetyCaseCount",
+    "records",
+    "manifestDigest"
+  ],
+  "title": "Dense-Hard v4 Private Manifest",
+  "type": "object"
+}

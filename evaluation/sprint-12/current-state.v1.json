@@ -1,7 +1,7 @@
 {
   "artifactVersion": "s12.current-state.v1",
-  "asOf": "2026-08-22",
-  "status": "G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY",
+  "asOf": "2026-08-24",
+  "status": "F_RF_POC_BASELINE_ACCEPTED_DENSE_HARD_V4_FAILED_STRATEGY_REDESIGN_REQUIRED",
   "sourcePrecedence": [
     "this current-state index",
     "latest explicit owner decision or transition record",
@@ -137,6 +137,253 @@
       "digest": "sha256:7dd4f1aadecdca2051fcee302f17fe17c7d1d968297165b6d4ef4716a848de9e",
       "expectedStatus": "F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY"
     },
+    "rm53OwnerDecision": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm53-owner-decision.v1.json",
+      "digest": "sha256:9455d1be116c1458c97930dcdb3226dfa3fe17e172d5ef06a1d5e7b186fdf952",
+      "expectedStatus": "RM53_ACCEPTED_OFFLINE_CLOSURE_ONLY"
+    },
+    "rm53DecisionTransition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm53-decision-transition.v1.json",
+      "digest": "sha256:c3570b1105416276e4c8e989bd8a42c444579eea32e446b9085533b01f09df71",
+      "expectedStatus": "F12_OFFLINE_CLOSURE_ACCEPTED_HUMAN_FIRST_DESIGN_REVIEW_PENDING"
+    },
+    "rm54DesignReview": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm54-design-review.v1.json",
+      "digest": "sha256:a6eb941a31f49757407e0cabf99f57b9f72e629729beb1d9ac7e6a49d052e488",
+      "expectedStatus": "REVISED_AND_ACCEPTED_FOR_RM55_CONTRACT_DEFINITION_ONLY"
+    },
+    "rm55SourceVersionContract": {
+      "path": "apps/api/src/projecta_api/extraction/source_version.py",
+      "digest": "sha256:3463ef0c68bc06554f988fe94aaaa97c5b8418755e9d07cac4d582f1264f74e7",
+      "testPath": "apps/api/tests/test_source_version.py",
+      "testDigest": "sha256:6568e4ccfd069dd385ceefb20b9d4c98db139bd219e39d513471bd55b7e3d8c5",
+      "expectedStatus": "SOURCEVERSION_CONTRACT_ACCEPTED_TEXT_ANCHOR_CONTRACT_PENDING"
+    },
+    "rm56TextAnchorContract": {
+      "path": "apps/api/src/projecta_api/extraction/text_anchor.py",
+      "digest": "sha256:bd708a9fa6c70dd083f9ea9dbae6e0c8ad548c8f45644f8eb27fc6a40d65494c",
+      "testPath": "apps/api/tests/test_text_anchor.py",
+      "testDigest": "sha256:ae455c9c386ef43392ed7b3bf2570c267998387e82c082c65087dee8596939aa",
+      "expectedStatus": "TEXT_ANCHOR_CONTRACT_ACCEPTED_PER_ITEM_VALIDATION_PENDING"
+    },
+    "rm57ItemValidationContract": {
+      "path": "apps/api/src/projecta_api/extraction/item_validation.py",
+      "digest": "sha256:5ed2c10d28151b6ca69961b1d283a4842d32345ef25faea9c3d69f340dfe2873",
+      "testPath": "apps/api/tests/test_item_validation.py",
+      "testDigest": "sha256:079c0b08e03bb1b084e779b7fddd559ee7cc02fc01015b1ca0773ed70e2c5c28",
+      "expectedStatus": "PER_ITEM_VALIDATION_ACCEPTED_RELATION_GATE_PENDING"
+    },
+    "rm58ConfirmedEntityRelationGate": {
+      "path": "apps/api/src/projecta_api/extraction/confirmed_entity_gate.py",
+      "digest": "sha256:db7c54d44ce75dc02f1a9508534e130c323b94a162e3bde0cb2b6866fd875f2a",
+      "testPath": "apps/api/tests/test_confirmed_entity_gate.py",
+      "testDigest": "sha256:a645e86a708cf7059df9937816b9338a8ed0c649f22b54825f23817c4eed80e1",
+      "expectedStatus": "CONFIRMED_ENTITY_RELATION_GATE_ACCEPTED_EVIDENCE_SELECTION_PENDING"
+    },
+    "rm59RelationEvidenceSelection": {
+      "path": "apps/api/src/projecta_api/extraction/relation_evidence_selection.py",
+      "digest": "sha256:8e2eda01318ea4762802fdf5bd4653c721743a010e013a658bc55fccf2b6a940",
+      "testPath": "apps/api/tests/test_relation_evidence_selection.py",
+      "testDigest": "sha256:e9795edf16e3d668ecc0c1c071af0969ff1aa248c9f054d2239b5ccbcc8fee3e",
+      "expectedStatus": "DETERMINISTIC_EVIDENCE_SELECTION_ACCEPTED_CONSTRAINED_RELATION_CONTRACT_PENDING"
+    },
+    "rm60ConstrainedRelationContract": {
+      "path": "apps/api/src/projecta_api/extraction/constrained_relation.py",
+      "digest": "sha256:7a98647b37883f710341f1a6e6b9b41426f44b699c562597bce5912efcef905b",
+      "testPath": "apps/api/tests/test_constrained_relation.py",
+      "testDigest": "sha256:cbf59fe9688a95022c840b691ec9d79bfc3e0bf5eee9952b8a80574e96beda89",
+      "expectedStatus": "CONSTRAINED_RELATION_CONTRACT_ACCEPTED_REVIEW_RECEIPT_PENDING"
+    },
+    "rm61ReviewDecisionReceipts": {
+      "path": "apps/api/src/projecta_api/extraction/review_receipts.py",
+      "digest": "sha256:866910adcf43b859a0ea2fdc54db7139a3f91a550314d73af7f77e09773252c5",
+      "testPath": "apps/api/tests/test_review_receipts.py",
+      "testDigest": "sha256:13cef755bf5ed14570ff99af27e1373cf589c452e86fc49141bcd5f993d5772c",
+      "expectedStatus": "REVIEW_DECISION_RECEIPTS_ACCEPTED_REVIEW_WORKBENCH_PENDING"
+    },
+    "rm62ReviewWorkbench": {
+      "paths": [
+        "apps/api/src/projecta_api/graph_projection.py",
+        "apps/api/src/projecta_api/routes.py",
+        "apps/web/src/screens/ReviewScreen.tsx"
+      ],
+      "testPaths": [
+        "apps/api/tests/test_review_workbench_contract.py",
+        "apps/web/src/review-workbench.test.ts"
+      ],
+      "contractVersion": "review-workbench.v1",
+      "expectedStatus": "REVIEW_WORKBENCH_ACCEPTED_ASSERTION_MATERIALIZATION_PENDING"
+    },
+    "rm63ApprovedAssertionMaterialization": {
+      "paths": [
+        "services/semantic-core/src/main/java/org/projecta/semanticcore/ApprovedAssertionPlan.java",
+        "services/semantic-core/src/main/java/org/projecta/semanticcore/ApprovedAssertionMaterializationService.java",
+        "services/semantic-core/src/main/java/org/projecta/semanticcore/MaterializationAuthorization.java"
+      ],
+      "testPath": "services/semantic-core/src/test/java/org/projecta/semanticcore/ApprovedAssertionMaterializationServiceTest.java",
+      "contractVersion": "approved-assertion-plan.v1",
+      "materializationEnabledByDefault": false,
+      "productionAuthorization": false,
+      "expectedStatus": "APPROVED_ASSERTION_MATERIALIZATION_ACCEPTED_INFERENCE_INVALIDATION_PENDING"
+    },
+    "rm64InferenceInvalidationRebuild": {
+      "paths": [
+        "services/semantic-core/src/main/java/org/projecta/semanticcore/InferenceRebuildPlan.java",
+        "services/semantic-core/src/main/java/org/projecta/semanticcore/InferenceInvalidation.java",
+        "services/semantic-core/src/main/java/org/projecta/semanticcore/InferenceInvalidationRebuildService.java"
+      ],
+      "testPath": "services/semantic-core/src/test/java/org/projecta/semanticcore/InferenceInvalidationRebuildServiceTest.java",
+      "contractVersion": "inference-rebuild-plan.v1",
+      "rebuildEnabledByDefault": false,
+      "productionAuthorization": false,
+      "expectedStatus": "INFERENCE_INVALIDATION_ACCEPTED_CORRECTION_BURDEN_TELEMETRY_PENDING"
+    },
+    "rm65CorrectionBurdenTelemetry": {
+      "paths": [
+        "apps/api/src/projecta_api/extraction/correction_burden.py",
+        "apps/api/src/projecta_api/operational/schema.py",
+        "apps/api/alembic/versions/0010_correction_burden_events.py",
+        "apps/api/src/projecta_api/extraction/service.py"
+      ],
+      "testPaths": [
+        "apps/api/tests/test_correction_burden.py",
+        "apps/api/tests/test_connector_operational_contract.py"
+      ],
+      "contractVersion": "correction-burden.v1",
+      "rawContentStored": false,
+      "mutableTotalsAccepted": false,
+      "productionAuthorization": false,
+      "expectedStatus": "CORRECTION_BURDEN_TELEMETRY_ACCEPTED_OFFLINE_ADVERSARIAL_TESTING_PENDING"
+    },
+    "rm66OfflineAdversarialGate": {
+      "paths": [
+        "apps/api/tests/test_rm66_adversarial_gate.py",
+        "scripts/tests/test_sprint12_rm66_adversarial_gate.py",
+        "services/semantic-core/src/test/java/org/projecta/semanticcore/ApprovedAssertionMaterializationServiceTest.java",
+        "services/semantic-core/src/test/java/org/projecta/semanticcore/InferenceInvalidationRebuildServiceTest.java"
+      ],
+      "contractVersion": "rm66-offline-adversarial-gate.v1",
+      "providerCalls": 0,
+      "humanEvidence": false,
+      "productionAuthorization": false,
+      "immutableV6Digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+      "immutableV9Digest": "sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e",
+      "v8ReportPresent": false,
+      "expectedStatus": "OFFLINE_ADVERSARIAL_TESTING_ACCEPTED_HUMAN_CORRECTION_BURDEN_CONTRACT_PENDING"
+    },
+    "rm67HumanCorrectionBurdenContract": {
+      "paths": [
+        "evaluation/sprint-12/harness/s12-rm67-human-correction-burden-contract.v1.json",
+        "evaluation/sprint-12/harness/s12-rm67-human-correction-burden-contract.schema.v1.json",
+        "docs/sprint-plans/sprint-12/human-correction-burden-contract.v1.md"
+      ],
+      "testPath": "scripts/tests/test_sprint12_rm67_human_correction_burden.py",
+      "contractVersion": "human-correction-burden.v1",
+      "observedHumanResults": false,
+      "heldOutInspection": false,
+      "providerCalls": 0,
+      "productionAuthorization": false,
+      "custodyStatus": "CUSTODY_NOT_ESTABLISHED",
+      "expectedStatus": "F_RF_POC_COMPLETE_AGENT_PROXY_ACCEPTED"
+    },
+    "rm68PrerequisiteAudit": {
+      "paths": [
+        "evaluation/sprint-12/harness/s12-rm68-preregistration-blocked.v1.json",
+        "evaluation/sprint-12/harness/s12-rm68-preregistration-blocked.schema.v1.json",
+        "docs/sprint-plans/sprint-12/rm68-preregistration-blocked.v1.md"
+      ],
+      "testPath": "scripts/tests/test_sprint12_rm68_prereq_audit.py",
+      "status": "DRAFT_BLOCKED_EXTERNAL_CUSTODY",
+      "disposition": "NOT_A_PREREGISTRATION",
+      "custodyStatus": "CUSTODY_NOT_ESTABLISHED",
+      "payloadPresent": false,
+      "payloadNonReconstructible": false,
+      "candidateFrozen": false,
+      "heldOutInspection": false,
+      "providerCalls": 0,
+      "productionAuthorization": false,
+      "expectedStatus": "F_RF_POC_BASELINE_ACCEPTED_DENSE_HARD_V4_FAILED_STRATEGY_REDESIGN_REQUIRED"
+    },
+    "internalDevelopmentPoc": {
+      "testPath": "scripts/tests/test_sprint12_f_rf_internal_poc.py",
+      "paths": [
+        "evaluation/sprint-12/internal-poc/s12-f-rf-internal-poc.v1.json",
+        "evaluation/sprint-12/internal-poc/s12-f-rf-internal-poc-review.v1.json",
+        "evaluation/sprint-12/internal-poc/s12-f-rf-internal-poc-candidate.v2.json",
+        "evaluation/sprint-12/internal-poc/s12-f-rf-internal-poc-review.v2.json",
+        "evaluation/sprint-12/internal-poc/s12-f-rf-blinded-source-payload.v3.json",
+        "evaluation/sprint-12/internal-poc/s12-f-rf-internal-poc-candidate.v3.json",
+        "evaluation/sprint-12/internal-poc/s12-f-rf-internal-poc-review.v3.json",
+        "evaluation/sprint-12/internal-poc/s12-f-rf-blinded-source-payload.v4.json",
+        "evaluation/sprint-12/internal-poc/s12-f-rf-internal-poc-candidate.v4.json",
+        "evaluation/sprint-12/internal-poc/s12-f-rf-internal-poc-review.v4.json",
+        "evaluation/sprint-12/internal-poc/s12-f-rf-blinded-source-payload.v5.json",
+        "evaluation/sprint-12/internal-poc/s12-f-rf-internal-poc-candidate.v5.json",
+        "evaluation/sprint-12/internal-poc/s12-f-rf-internal-poc-review.v5.json"
+      ],
+      "status": "F_RF_POC_BASELINE_ACCEPTED_DENSE_HARD_V4_FAILED_STRATEGY_REDESIGN_REQUIRED",
+      "reviewerMode": "PRIMARY_AGENT_PROXY_OWNER_JUDGMENT",
+      "humanEvidence": false,
+      "providerCalls": 0,
+      "heldOutInspection": false,
+      "manualBaseline": false,
+      "timingStatus": "UNMEASURED",
+      "independentAgreement": "NOT_CLAIMED",
+      "supportedFinalizedAssertions": 60,
+      "unsupportedFinalizedAssertions": 0,
+      "latestVersion": "v5",
+      "payloadDigest": "sha256:461c22c4adb8b493389c18278925408b4f9b41b3f02035d48f7d8d30e1182ef4",
+      "candidateDigest": "sha256:09679f2cccae8eaf6477e5b1c3dc3baaf0767441f6bbc0a67b3b103b3d1affa1",
+      "reviewDigest": "sha256:cd46ed7b3c646ab69a3ebfa00c9be8d3071970a2ab5fac8ec0774aa1902f5c34",
+      "acceptedWithoutSemanticCorrection": {"numerator": 12, "denominator": 12, "rate": 1.0},
+      "acceptedUnchangedOrMinor": {"numerator": 12, "denominator": 12, "rate": 1.0},
+      "meanSemanticEditsPerReviewedItem": 0.0,
+      "expectedStatus": "F_RF_POC_BASELINE_ACCEPTED_DENSE_HARD_V4_FAILED_STRATEGY_REDESIGN_REQUIRED"
+    },
+    "denseHardEvaluation": {
+      "paths": [
+        "evaluation/sprint-12/internal-poc/dense-hard-v1/dense-hard-evaluation.v1.json",
+        "evaluation/sprint-12/internal-poc/dense-hard-v1/dense-hard-evaluation.v1.schema.json",
+        "scripts/evaluate_s12_dense_hard_v1.py",
+        "scripts/tests/test_sprint12_dense_hard_evaluation.py"
+      ],
+      "status": "DENSE_HARD_V1_EVALUATED_EDIT_BURDEN_GATE_FAILED",
+      "evaluationDigest": "sha256:d15fba491c259e09c2d8625b3ac33305c9f3b39d662d8be9b7b6840fd9c8eb15",
+      "sourcePayloadDigest": "sha256:65e6a044767f97298dee4511d19e3373878483224b9b7cf2606b94acdefc1409",
+      "candidateDigest": "sha256:24300cccf1f774329a4bbb2772b2fb952e32e398eec61cf09c060e2eaac7ceba",
+      "caseCount": 24,
+      "unchanged": 0,
+      "minor": 0,
+      "major": 8,
+      "reject": 2,
+      "abstain": 14,
+      "semanticEdits": 74,
+      "unsupportedFinalizedAssertions": {"numerator": 74, "denominator": 138},
+      "editBurdenGate": false,
+      "remediationStatus": "PENDING_NEW_AUTHORITY_FRESH_DENSE_HARD_V2_CASES_NO_V1_REUSE"
+    },
+    "denseHardV4Evaluation": {
+      "paths": [
+        "evaluation/sprint-12/internal-poc/dense-hard-v4/dense-hard-evaluation.v4.json",
+        "evaluation/sprint-12/internal-poc/dense-hard-v4/dense-hard-evaluation.v4.schema.json",
+        "evaluation/sprint-12/internal-poc/dense-hard-v4/dense-hard-candidate.v4.json",
+        "scripts/evaluate_s12_dense_hard_v4.py",
+        "scripts/tests/test_sprint12_dense_hard_evaluation_v4.py"
+      ],
+      "status": "DENSE_HARD_V4_EVALUATED_STRATIFIED_GATES_FAILED",
+      "evaluationDigest": "sha256:4bef899a2b11f72d7286890ad7f137a30558cbf051e959eea4191bb707cd516a",
+      "sourcePayloadDigest": "sha256:e2d2b40a58d6b7e9a8ec50fed6fbd7ff0304c0b5da976df666cfdfc7416f5711",
+      "candidateDigest": "sha256:c1a3618eec4cfb0657c738b3dff6233a011a0ff7ae1bbe661b7a21490c4e4e35",
+      "caseCount": 32,
+      "utilityCaseCount": 24,
+      "safetyCaseCount": 8,
+      "utilityGate": false,
+      "safetyGate": false,
+      "overallPass": false,
+      "unsupportedFinalizedAssertions": {"numerator": 26, "denominator": 119},
+      "safetyUnsupportedFinalizedAssertions": {"numerator": 8, "denominator": 10},
+      "remediationStatus": "STRATEGY_REDESIGN_BACKLOG_REQUIRES_NEW_AUTHORITY"
+    },
     "stageAReport": {
       "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
       "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
@@ -164,7 +411,7 @@
     "G3.1-C": "APPROVED_WITH_SCOPE_LIMITS",
     "G4": "RUNTIME_BACKED_BASELINE_WITH_FAILURES",
     "G4.1": "CONTRACT_ALIGNED_STABILITY_FAILED",
-    "G5": "F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY",
+    "G5": "F12_DEVELOPMENT_COMPLETE_INTERNAL_POC_FAILED_EXTERNAL_VALIDATION_DEFERRED_DEV_ONLY",
     "G6": "BLOCKED_CUSTODY_OR_CANDIDATE",
     "G7": "NOT_STARTED"
   },
@@ -238,8 +485,43 @@
       "promotionAuthorized": false,
       "offlineErrorAnalysisPreparationAuthorized": false,
       "offlineRemediationImplementationAuthorized": false,
-      "offlineClosureDocumentationAuthorized": true,
-      "errorBacklogPreparationAuthorized": true,
+      "offlineClosureDocumentationAuthorized": false,
+      "errorBacklogPreparationAuthorized": false,
+      "offlineClosureAccepted": true,
+      "humanFirstDesignReviewAuthorized": false,
+      "humanFirstDesignAccepted": true,
+      "sourceVersionContractDefinitionAuthorized": false,
+      "sourceVersionContractAccepted": true,
+      "textAnchorContractDefinitionAuthorized": false,
+      "textAnchorContractAccepted": true,
+      "perItemValidationDefinitionAuthorized": false,
+      "perItemValidationAccepted": true,
+      "relationGateDefinitionAuthorized": false,
+      "relationGateAccepted": true,
+      "evidenceSelectionDefinitionAuthorized": false,
+      "evidenceSelectionAccepted": true,
+      "constrainedRelationDefinitionAuthorized": false,
+      "constrainedRelationAccepted": true,
+      "reviewReceiptDefinitionAuthorized": false,
+      "reviewReceiptContractAccepted": true,
+      "reviewWorkbenchDefinitionAuthorized": false,
+      "reviewWorkbenchAccepted": true,
+      "approvedAssertionPlanContractAccepted": true,
+      "approvedAssertionMaterializationEnabled": false,
+      "semanticOwnerMaterializationAuthorization": false,
+      "inferenceInvalidationRebuildContractAccepted": true,
+      "inferenceRebuildEnabledByDefault": false,
+      "semanticOwnerInferenceRebuildAuthorization": false,
+      "correctionBurdenTelemetryContractAccepted": true,
+      "correctionBurdenTelemetryEnabledByDefault": false,
+      "correctionBurdenTelemetryProductionAuthorization": false,
+      "offlineAdversarialTestingAccepted": true,
+      "offlineAdversarialTestingProviderCalls": 0,
+      "offlineAdversarialTestingProductionAuthorization": false,
+      "humanCorrectionBurdenContractAccepted": true,
+      "humanCorrectionBurdenExecutionAuthorized": false,
+      "humanCorrectionBurdenObservedResults": false,
+      "nextPermittedAction": "DENSE_HARD_V4_STRATEGY_REDESIGN_REQUIRES_NEW_AUTHORITY",
       "supersedingLineagePreparationAuthorized": false,
       "rerunAuthorized": false,
       "retryAuthorized": false,
@@ -253,7 +535,8 @@
     "candidateSelection": "NO_SELECTION",
     "candidateFrozen": false,
     "heldOutInspected": false,
-      "offlineErrorAnalysisPreparationAuthorized": true,
+    "nextPermittedAction": "DENSE_HARD_V4_STRATEGY_REDESIGN_REQUIRES_NEW_AUTHORITY",
+      "offlineErrorAnalysisPreparationAuthorized": false,
       "offlineRemediationImplementationAuthorized": false,
       "supersedingLineagePreparationAuthorized": false,
       "authorizationSpent": true,
@@ -264,8 +547,7 @@
       "downstreamAccessAuthorized": false
   },
     "nextTasks": [
-    "S12-RM-52_PREPARE_OFFLINE_F12_CLOSURE_AND_PRIORITIZED_ERROR_BACKLOG",
-    "S12-RM-53_OWNER_CLOSURE_REVIEW_RM52_PACKET_AND_ERROR_BACKLOG"
-  ],
-  "claimBoundary": "RM-51 stops f12 provider experimentation and permits only offline closure documentation and error-backlog preparation. It establishes no Sprint 12, G5 or G6 completion, quality, candidate, business-quality, tenant-readiness or downstream claim. The v6 and v9 reports remain immutable and the failed v8 report remains absent."
+      "DENSE_HARD_V4_STRATEGY_REDESIGN_REQUIRES_NEW_AUTHORITY"
+    ],
+  "claimBoundary": "RM-53 through RM-67 are complete for development contracts, implementation, and offline gates. The bounded v5 internal source-only agent-proxy PoC remains preserved as historical baseline evidence with 60 supported finalized-for-review assertions, zero unsupported assertions, 12/12 unchanged items, and zero provider calls; it is not a generalized quality or low-correction claim. Dense-hard v1, v2, v3, v3.1, and v4 remain separate synthetic offline diagnostics; v4 fails both stratified utility and safety gates and requires the finite strategy-redesign backlog. Timing, independent agreement, external custody, human-study, business-quality, provider, held-out, production, selection, promotion, and release claims remain closed. RM-68 remains internal-only and blocked for external validation. Any future candidate requires new owner authority, a fresh strategy/packet, and independent evaluation without prior packet reuse."
 }

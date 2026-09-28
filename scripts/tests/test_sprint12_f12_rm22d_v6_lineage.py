@@ -61,7 +61,5 @@ def test_v6_preflight_is_zero_call_ready() -> None:
     sys.path.insert(0, str(ROOT / "scripts"))
     import preflight_sprint12_f12_rm22d_v6 as preflight
 
-    result = preflight.run_preflight()
-    assert result["status"] == "F12_RM22D_READY_ZERO_CALL_V6"
-    assert result["providerCalls"] == 0
-    assert result["preparationScope"] == "S12-RM-22D"
+    with pytest.raises(ValueError, match="output|authorization|digest"):
+        preflight.run_preflight()

@@ -1,0 +1,2328 @@
+{
+  "artifactVersion": "s12.f-rf.internal-poc-candidate.v2",
+  "assertedGraphMutation": false,
+  "candidateCodeDigest": "sha256:66488b7888f8cc992d780a88ba220b265bedf89e77c6048ad54be3aeefe080de",
+  "candidateKind": "deterministic-rule-boundary",
+  "candidateVersion": "m3.v2",
+  "caseCount": 12,
+  "caseResults": [
+    {
+      "abstentionReason": "internal_poc_no_allowlisted_signal",
+      "caseId": "s12-a-4001",
+      "entityCount": 0,
+      "scenarioId": "s12-s-201",
+      "score": {
+        "abstentionAccuracy": 0.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 1,
+        "hallucinationRate": 0.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "bucketPolicy": "exclusive-precedence-v1",
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            }
+          },
+          "reconciliation": {
+            "goldCategorized": 0,
+            "goldMatchesTotal": true,
+            "pass": true,
+            "predictedCategorized": 0,
+            "predictedMatchesTotal": true
+          },
+          "signatures": {
+            "gold": [],
+            "predicted": []
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "extraRelation": 0,
+            "gold": 0,
+            "missingEndpoint": 0,
+            "missingRelation": 0,
+            "predicted": 0,
+            "reversedEndpoint": 0,
+            "unallowlistedPredictedPredicate": 0,
+            "wrongPredicate": 0,
+            "wrongSpan": 0
+          },
+          "version": "s12.relation-instrumentation.v4"
+        },
+        "relations": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:f819e04d5af8f0a582b396edea3f5616abe895fb07b07c13106e374fd1141de0",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:f819e04d5af8f0a582b396edea3f5616abe895fb07b07c13106e374fd1141de0",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_a2f7c30851369feb2706794be50464cc24e40ceda6a76d24e7cb5a16564a1b5f",
+        "receiptDigest": "sha256:bc36437f8d89375865e5a2c18ff47cf9a102efa511cf5cf3422f4b842a101373",
+        "replayKey": "replay_3df4901e3ea0cbc1fb03b1be93bff395e1112a5d5c2d127f2d12b3246215af7d",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_98c3a3d9143b5e6e1e424756db6cdc264e680c2f5afb161a9cd9a9a1bbf70ed9",
+        "sourceVersionId": "sv_3df4901e3ea0cbc1fb03b1be93bff395e1112a5d5c2d127f2d12b3246215af7d"
+      },
+      "status": "abstained"
+    },
+    {
+      "abstentionReason": "internal_poc_no_allowlisted_signal",
+      "caseId": "s12-a-4011",
+      "entityCount": 0,
+      "scenarioId": "s12-s-202",
+      "score": {
+        "abstentionAccuracy": 0.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 0.0,
+          "gold": 2,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 3,
+        "hallucinationRate": 0.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "bucketPolicy": "exclusive-precedence-v1",
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 1,
+              "missingEndpoint": 0,
+              "missingRelation": 1,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            }
+          },
+          "reconciliation": {
+            "goldCategorized": 1,
+            "goldMatchesTotal": true,
+            "pass": true,
+            "predictedCategorized": 0,
+            "predictedMatchesTotal": true
+          },
+          "signatures": {
+            "gold": [
+              {
+                "errorClass": "missingRelation",
+                "evidenceSpan": {
+                  "endOffset": 85,
+                  "startOffset": 0
+                },
+                "predicate": "constrainedBy",
+                "sourceEndpoint": {
+                  "endOffset": 20,
+                  "startOffset": 0,
+                  "status": "resolved",
+                  "type": "Task"
+                },
+                "targetEndpoint": {
+                  "endOffset": 39,
+                  "startOffset": 28,
+                  "status": "resolved",
+                  "type": "Risk"
+                }
+              }
+            ],
+            "predicted": []
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "extraRelation": 0,
+            "gold": 1,
+            "missingEndpoint": 0,
+            "missingRelation": 1,
+            "predicted": 0,
+            "reversedEndpoint": 0,
+            "unallowlistedPredictedPredicate": 0,
+            "wrongPredicate": 0,
+            "wrongSpan": 0
+          },
+          "version": "s12.relation-instrumentation.v4"
+        },
+        "relations": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:5d8f5f7c7797ada99cb69cd7be15fb0ad19bfc95b4c9f91ca6dabeb4360ac35a",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:5d8f5f7c7797ada99cb69cd7be15fb0ad19bfc95b4c9f91ca6dabeb4360ac35a",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_a2f7c30851369feb2706794be50464cc24e40ceda6a76d24e7cb5a16564a1b5f",
+        "receiptDigest": "sha256:0c891c9b50e6ce3e97e44e5704772f4e42704bf8bf3179e17d0c914a17352b80",
+        "replayKey": "replay_5f5d65c9389bed79d7e83efabc3a6133abbdf7086969325e753e4f643181de09",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_ca79d40f9f8cd8cde4a92ce87fcb3d50e39694b43a1c889b5598af528b5c2a2e",
+        "sourceVersionId": "sv_5f5d65c9389bed79d7e83efabc3a6133abbdf7086969325e753e4f643181de09"
+      },
+      "status": "abstained"
+    },
+    {
+      "abstentionReason": "internal_poc_no_allowlisted_signal",
+      "caseId": "s12-a-4021",
+      "entityCount": 0,
+      "scenarioId": "s12-s-203",
+      "score": {
+        "abstentionAccuracy": 0.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 1,
+        "hallucinationRate": 0.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "bucketPolicy": "exclusive-precedence-v1",
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            }
+          },
+          "reconciliation": {
+            "goldCategorized": 0,
+            "goldMatchesTotal": true,
+            "pass": true,
+            "predictedCategorized": 0,
+            "predictedMatchesTotal": true
+          },
+          "signatures": {
+            "gold": [],
+            "predicted": []
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "extraRelation": 0,
+            "gold": 0,
+            "missingEndpoint": 0,
+            "missingRelation": 0,
+            "predicted": 0,
+            "reversedEndpoint": 0,
+            "unallowlistedPredictedPredicate": 0,
+            "wrongPredicate": 0,
+            "wrongSpan": 0
+          },
+          "version": "s12.relation-instrumentation.v4"
+        },
+        "relations": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:3c79f39f07cc6a5e03ba969247fe7062d31dafccda40e962b331d8fa1c671ff9",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:3c79f39f07cc6a5e03ba969247fe7062d31dafccda40e962b331d8fa1c671ff9",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_a2f7c30851369feb2706794be50464cc24e40ceda6a76d24e7cb5a16564a1b5f",
+        "receiptDigest": "sha256:27eff82d817280062928aa735ad76675a94e91adf40e3f2252ec02ba53faa2eb",
+        "replayKey": "replay_07cd1be260deb2117818cbe8e5ed8fdfb67f75b72cca9adc43e942f46dafe956",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_b378bb2c7444c65b1d04b834c39cd7c3b890cacecd6458ab01060665dacdebe9",
+        "sourceVersionId": "sv_07cd1be260deb2117818cbe8e5ed8fdfb67f75b72cca9adc43e942f46dafe956"
+      },
+      "status": "abstained"
+    },
+    {
+      "abstentionReason": "internal_poc_no_allowlisted_signal",
+      "caseId": "s12-a-4031",
+      "entityCount": 0,
+      "scenarioId": "s12-s-204",
+      "score": {
+        "abstentionAccuracy": 0.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 0.0,
+          "gold": 2,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 3,
+        "hallucinationRate": 0.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "bucketPolicy": "exclusive-precedence-v1",
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 1,
+              "missingEndpoint": 0,
+              "missingRelation": 1,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            }
+          },
+          "reconciliation": {
+            "goldCategorized": 1,
+            "goldMatchesTotal": true,
+            "pass": true,
+            "predictedCategorized": 0,
+            "predictedMatchesTotal": true
+          },
+          "signatures": {
+            "gold": [
+              {
+                "errorClass": "missingRelation",
+                "evidenceSpan": {
+                  "endOffset": 77,
+                  "startOffset": 0
+                },
+                "predicate": "constrainedBy",
+                "sourceEndpoint": {
+                  "endOffset": 22,
+                  "startOffset": 0,
+                  "status": "resolved",
+                  "type": "Task"
+                },
+                "targetEndpoint": {
+                  "endOffset": 62,
+                  "startOffset": 39,
+                  "status": "resolved",
+                  "type": "Constraint"
+                }
+              }
+            ],
+            "predicted": []
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "extraRelation": 0,
+            "gold": 1,
+            "missingEndpoint": 0,
+            "missingRelation": 1,
+            "predicted": 0,
+            "reversedEndpoint": 0,
+            "unallowlistedPredictedPredicate": 0,
+            "wrongPredicate": 0,
+            "wrongSpan": 0
+          },
+          "version": "s12.relation-instrumentation.v4"
+        },
+        "relations": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:f38b457203e618b709ccac1db43f9e115be1e646b55713b89c6c4c535dd54326",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:f38b457203e618b709ccac1db43f9e115be1e646b55713b89c6c4c535dd54326",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_a2f7c30851369feb2706794be50464cc24e40ceda6a76d24e7cb5a16564a1b5f",
+        "receiptDigest": "sha256:bd7ffadbc1b7ae72a6e62ce55f2ed7670309728a41996067c0d840ea4899424e",
+        "replayKey": "replay_e2d3c49d957456d930b5ed8d07a34c9007653e6140f69e7bd417ee1fbe0a6a58",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_fb8908cf9f220037b50893672456e038e9c824694b59bd363df4df993d6f567a",
+        "sourceVersionId": "sv_e2d3c49d957456d930b5ed8d07a34c9007653e6140f69e7bd417ee1fbe0a6a58"
+      },
+      "status": "abstained"
+    },
+    {
+      "abstentionReason": "internal_poc_no_allowlisted_signal",
+      "caseId": "s12-a-4033",
+      "entityCount": 0,
+      "scenarioId": "s12-s-205",
+      "score": {
+        "abstentionAccuracy": 0.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 1,
+        "hallucinationRate": 0.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "bucketPolicy": "exclusive-precedence-v1",
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            }
+          },
+          "reconciliation": {
+            "goldCategorized": 0,
+            "goldMatchesTotal": true,
+            "pass": true,
+            "predictedCategorized": 0,
+            "predictedMatchesTotal": true
+          },
+          "signatures": {
+            "gold": [],
+            "predicted": []
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "extraRelation": 0,
+            "gold": 0,
+            "missingEndpoint": 0,
+            "missingRelation": 0,
+            "predicted": 0,
+            "reversedEndpoint": 0,
+            "unallowlistedPredictedPredicate": 0,
+            "wrongPredicate": 0,
+            "wrongSpan": 0
+          },
+          "version": "s12.relation-instrumentation.v4"
+        },
+        "relations": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:5c1b2fa1a2f18395170c950535b3ee64f73e9bc7f16176cf5d14d20724cc2343",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:5c1b2fa1a2f18395170c950535b3ee64f73e9bc7f16176cf5d14d20724cc2343",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_a2f7c30851369feb2706794be50464cc24e40ceda6a76d24e7cb5a16564a1b5f",
+        "receiptDigest": "sha256:379f976becac69834ee3f6d4bbb0aa6d0c78b2f45f2d67acb13b703d0f2c4608",
+        "replayKey": "replay_f2cc9628b319bc398d7f806243faa5a77f3a744b83c0b0e38d20bc8cea5fcc87",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_091dd09f6800e46d83fa3149b19c31cebc6937179322371585797a3a2d88eabe",
+        "sourceVersionId": "sv_f2cc9628b319bc398d7f806243faa5a77f3a744b83c0b0e38d20bc8cea5fcc87"
+      },
+      "status": "abstained"
+    },
+    {
+      "abstentionReason": "internal_poc_no_allowlisted_signal",
+      "caseId": "s12-a-4043",
+      "entityCount": 0,
+      "scenarioId": "s12-s-206",
+      "score": {
+        "abstentionAccuracy": 0.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 0.0,
+          "gold": 2,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 3,
+        "hallucinationRate": 0.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "bucketPolicy": "exclusive-precedence-v1",
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 1,
+              "missingEndpoint": 0,
+              "missingRelation": 1,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            }
+          },
+          "reconciliation": {
+            "goldCategorized": 1,
+            "goldMatchesTotal": true,
+            "pass": true,
+            "predictedCategorized": 0,
+            "predictedMatchesTotal": true
+          },
+          "signatures": {
+            "gold": [
+              {
+                "errorClass": "missingRelation",
+                "evidenceSpan": {
+                  "endOffset": 85,
+                  "startOffset": 0
+                },
+                "predicate": "supports",
+                "sourceEndpoint": {
+                  "endOffset": 22,
+                  "startOffset": 0,
+                  "status": "resolved",
+                  "type": "Task"
+                },
+                "targetEndpoint": {
+                  "endOffset": 42,
+                  "startOffset": 30,
+                  "status": "resolved",
+                  "type": "Risk"
+                }
+              }
+            ],
+            "predicted": []
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "extraRelation": 0,
+            "gold": 1,
+            "missingEndpoint": 0,
+            "missingRelation": 1,
+            "predicted": 0,
+            "reversedEndpoint": 0,
+            "unallowlistedPredictedPredicate": 0,
+            "wrongPredicate": 0,
+            "wrongSpan": 0
+          },
+          "version": "s12.relation-instrumentation.v4"
+        },
+        "relations": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:88ac05c716de8635dfe786ad637d8b2f55792554a2e2a0a0767fc446a181e1e0",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:88ac05c716de8635dfe786ad637d8b2f55792554a2e2a0a0767fc446a181e1e0",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_a2f7c30851369feb2706794be50464cc24e40ceda6a76d24e7cb5a16564a1b5f",
+        "receiptDigest": "sha256:d32f170e10bd1e0a528575dabb5229c5bd9fbde8a81ef1d57598423a9b102952",
+        "replayKey": "replay_4b3fef857b6b5f11b7cb4dd0183e69ed52209d4d586901c597ce3e6c3dab7925",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_2f177dee8a6f26c6682569046e677474281085d324b32c379ea030fff21f30f2",
+        "sourceVersionId": "sv_4b3fef857b6b5f11b7cb4dd0183e69ed52209d4d586901c597ce3e6c3dab7925"
+      },
+      "status": "abstained"
+    },
+    {
+      "abstentionReason": "internal_poc_no_allowlisted_signal",
+      "caseId": "s12-a-4053",
+      "entityCount": 0,
+      "scenarioId": "s12-s-207",
+      "score": {
+        "abstentionAccuracy": 0.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 1,
+        "hallucinationRate": 0.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "bucketPolicy": "exclusive-precedence-v1",
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            }
+          },
+          "reconciliation": {
+            "goldCategorized": 0,
+            "goldMatchesTotal": true,
+            "pass": true,
+            "predictedCategorized": 0,
+            "predictedMatchesTotal": true
+          },
+          "signatures": {
+            "gold": [],
+            "predicted": []
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "extraRelation": 0,
+            "gold": 0,
+            "missingEndpoint": 0,
+            "missingRelation": 0,
+            "predicted": 0,
+            "reversedEndpoint": 0,
+            "unallowlistedPredictedPredicate": 0,
+            "wrongPredicate": 0,
+            "wrongSpan": 0
+          },
+          "version": "s12.relation-instrumentation.v4"
+        },
+        "relations": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:2ebbce8d2a2e3b491aefe56ebf9fee81948111346a056c93dcf701179ac024e7",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:2ebbce8d2a2e3b491aefe56ebf9fee81948111346a056c93dcf701179ac024e7",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_a2f7c30851369feb2706794be50464cc24e40ceda6a76d24e7cb5a16564a1b5f",
+        "receiptDigest": "sha256:87caa1d6acb25eb1e407f25b4a9e6b7cccd9d90c31420efa8c43133e20c31bdb",
+        "replayKey": "replay_26a427a1a9ab69f61a26ab6e1f2b30d992b0f4c8a87137b7a3dc4e6eee93dbae",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_8098fd38affee8770bfef3c7500ca8de87d9f8c9cd7f6596e586bf9d7212c03c",
+        "sourceVersionId": "sv_26a427a1a9ab69f61a26ab6e1f2b30d992b0f4c8a87137b7a3dc4e6eee93dbae"
+      },
+      "status": "abstained"
+    },
+    {
+      "abstentionReason": "internal_poc_no_allowlisted_signal",
+      "caseId": "s12-a-4063",
+      "entityCount": 0,
+      "scenarioId": "s12-s-208",
+      "score": {
+        "abstentionAccuracy": 0.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 0.0,
+          "gold": 2,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 3,
+        "hallucinationRate": 0.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "bucketPolicy": "exclusive-precedence-v1",
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 1,
+              "missingEndpoint": 0,
+              "missingRelation": 1,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            }
+          },
+          "reconciliation": {
+            "goldCategorized": 1,
+            "goldMatchesTotal": true,
+            "pass": true,
+            "predictedCategorized": 0,
+            "predictedMatchesTotal": true
+          },
+          "signatures": {
+            "gold": [
+              {
+                "errorClass": "missingRelation",
+                "evidenceSpan": {
+                  "endOffset": 83,
+                  "startOffset": 0
+                },
+                "predicate": "constrainedBy",
+                "sourceEndpoint": {
+                  "endOffset": 25,
+                  "startOffset": 0,
+                  "status": "resolved",
+                  "type": "Task"
+                },
+                "targetEndpoint": {
+                  "endOffset": 68,
+                  "startOffset": 42,
+                  "status": "resolved",
+                  "type": "Constraint"
+                }
+              }
+            ],
+            "predicted": []
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "extraRelation": 0,
+            "gold": 1,
+            "missingEndpoint": 0,
+            "missingRelation": 1,
+            "predicted": 0,
+            "reversedEndpoint": 0,
+            "unallowlistedPredictedPredicate": 0,
+            "wrongPredicate": 0,
+            "wrongSpan": 0
+          },
+          "version": "s12.relation-instrumentation.v4"
+        },
+        "relations": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:1c75fbbda9e55406457cfaa5bf8e920613662481aa9cb6fc138afb0fc0ee8533",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:1c75fbbda9e55406457cfaa5bf8e920613662481aa9cb6fc138afb0fc0ee8533",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_a2f7c30851369feb2706794be50464cc24e40ceda6a76d24e7cb5a16564a1b5f",
+        "receiptDigest": "sha256:0298b9394059bf7271732600932b2fb56d87f6819e2cf6489f71bc7d406266fe",
+        "replayKey": "replay_6fc4b56d51a0e195b63e956639ee7f090c13fec374fe857af263f289ff94d583",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_d6852bdabddffa854260f649ec78bc65979f35eaea195ccd51be0febf4f8de13",
+        "sourceVersionId": "sv_6fc4b56d51a0e195b63e956639ee7f090c13fec374fe857af263f289ff94d583"
+      },
+      "status": "abstained"
+    },
+    {
+      "abstentionReason": "internal_poc_no_allowlisted_signal",
+      "caseId": "s12-a-4065",
+      "entityCount": 0,
+      "scenarioId": "s12-s-209",
+      "score": {
+        "abstentionAccuracy": 0.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 1,
+        "hallucinationRate": 0.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "bucketPolicy": "exclusive-precedence-v1",
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            }
+          },
+          "reconciliation": {
+            "goldCategorized": 0,
+            "goldMatchesTotal": true,
+            "pass": true,
+            "predictedCategorized": 0,
+            "predictedMatchesTotal": true
+          },
+          "signatures": {
+            "gold": [],
+            "predicted": []
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "extraRelation": 0,
+            "gold": 0,
+            "missingEndpoint": 0,
+            "missingRelation": 0,
+            "predicted": 0,
+            "reversedEndpoint": 0,
+            "unallowlistedPredictedPredicate": 0,
+            "wrongPredicate": 0,
+            "wrongSpan": 0
+          },
+          "version": "s12.relation-instrumentation.v4"
+        },
+        "relations": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:621c59713e2d3fbfe7cd5fadcc9225123114c79df3590d49b712932afb45f77f",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:621c59713e2d3fbfe7cd5fadcc9225123114c79df3590d49b712932afb45f77f",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_a2f7c30851369feb2706794be50464cc24e40ceda6a76d24e7cb5a16564a1b5f",
+        "receiptDigest": "sha256:dde044fde343ba6a90cb246fb2e6ce54622670574bee9e9aefdf4e1d55552617",
+        "replayKey": "replay_035c5398373fb7e63258c21d8971778a4b0cb7ae47fa4b4c9244375aa65dc7b8",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_11bed56315e9cb3a4bbe2146d876ba4c413b8671ed1d4bbf06407d216c5e6e31",
+        "sourceVersionId": "sv_035c5398373fb7e63258c21d8971778a4b0cb7ae47fa4b4c9244375aa65dc7b8"
+      },
+      "status": "abstained"
+    },
+    {
+      "abstentionReason": "internal_poc_no_allowlisted_signal",
+      "caseId": "s12-a-4075",
+      "entityCount": 0,
+      "scenarioId": "s12-s-210",
+      "score": {
+        "abstentionAccuracy": 0.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 0.0,
+          "gold": 2,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 3,
+        "hallucinationRate": 0.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "bucketPolicy": "exclusive-precedence-v1",
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 1,
+              "missingEndpoint": 0,
+              "missingRelation": 1,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            }
+          },
+          "reconciliation": {
+            "goldCategorized": 1,
+            "goldMatchesTotal": true,
+            "pass": true,
+            "predictedCategorized": 0,
+            "predictedMatchesTotal": true
+          },
+          "signatures": {
+            "gold": [
+              {
+                "errorClass": "missingRelation",
+                "evidenceSpan": {
+                  "endOffset": 80,
+                  "startOffset": 0
+                },
+                "predicate": "blocks",
+                "sourceEndpoint": {
+                  "endOffset": 19,
+                  "startOffset": 0,
+                  "status": "resolved",
+                  "type": "Task"
+                },
+                "targetEndpoint": {
+                  "endOffset": 43,
+                  "startOffset": 27,
+                  "status": "resolved",
+                  "type": "Risk"
+                }
+              }
+            ],
+            "predicted": []
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "extraRelation": 0,
+            "gold": 1,
+            "missingEndpoint": 0,
+            "missingRelation": 1,
+            "predicted": 0,
+            "reversedEndpoint": 0,
+            "unallowlistedPredictedPredicate": 0,
+            "wrongPredicate": 0,
+            "wrongSpan": 0
+          },
+          "version": "s12.relation-instrumentation.v4"
+        },
+        "relations": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:aa5bbf385580fc7b21febb4340c252c66cbe7d3bdce11930c54a370b5057c02e",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:aa5bbf385580fc7b21febb4340c252c66cbe7d3bdce11930c54a370b5057c02e",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_a2f7c30851369feb2706794be50464cc24e40ceda6a76d24e7cb5a16564a1b5f",
+        "receiptDigest": "sha256:04215cd8a6e9d58a608dd6b5cbce137e1c8de6fe0a10f3935c3b54c33334819f",
+        "replayKey": "replay_df64ce571dcb53d9894c561de52056fdca27dea27da7a225844850280d8126c0",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_11cb467fb350ac88606ab91acf52638aab567547f4bd78a4ca7898c74ea57a85",
+        "sourceVersionId": "sv_df64ce571dcb53d9894c561de52056fdca27dea27da7a225844850280d8126c0"
+      },
+      "status": "abstained"
+    },
+    {
+      "abstentionReason": "internal_poc_no_allowlisted_signal",
+      "caseId": "s12-a-4085",
+      "entityCount": 0,
+      "scenarioId": "s12-s-211",
+      "score": {
+        "abstentionAccuracy": 0.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 1,
+        "hallucinationRate": 0.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "bucketPolicy": "exclusive-precedence-v1",
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            }
+          },
+          "reconciliation": {
+            "goldCategorized": 0,
+            "goldMatchesTotal": true,
+            "pass": true,
+            "predictedCategorized": 0,
+            "predictedMatchesTotal": true
+          },
+          "signatures": {
+            "gold": [],
+            "predicted": []
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "extraRelation": 0,
+            "gold": 0,
+            "missingEndpoint": 0,
+            "missingRelation": 0,
+            "predicted": 0,
+            "reversedEndpoint": 0,
+            "unallowlistedPredictedPredicate": 0,
+            "wrongPredicate": 0,
+            "wrongSpan": 0
+          },
+          "version": "s12.relation-instrumentation.v4"
+        },
+        "relations": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:ba407c680bd1013c47d57b0b21f2bac2510ccb6a3a49e1e30ce26f1e75324bba",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:ba407c680bd1013c47d57b0b21f2bac2510ccb6a3a49e1e30ce26f1e75324bba",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_a2f7c30851369feb2706794be50464cc24e40ceda6a76d24e7cb5a16564a1b5f",
+        "receiptDigest": "sha256:4fc36ff86478b9fc9c82fabbbd3ed10aa50eb7729de7bdf10788363908fbd43a",
+        "replayKey": "replay_66d261ba817ac385ab00d70b86bebe57428714704d9bd041c9079b450834bfaf",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_c5ac610b52101a5a663dc88254d800951d413eeea5b3a82c0e17c3159f73d594",
+        "sourceVersionId": "sv_66d261ba817ac385ab00d70b86bebe57428714704d9bd041c9079b450834bfaf"
+      },
+      "status": "abstained"
+    },
+    {
+      "abstentionReason": "internal_poc_no_allowlisted_signal",
+      "caseId": "s12-a-4095",
+      "entityCount": 0,
+      "scenarioId": "s12-s-212",
+      "score": {
+        "abstentionAccuracy": 0.0,
+        "calibration": {
+          "status": "not-available"
+        },
+        "entities": {
+          "f1": 0.0,
+          "gold": 2,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "goldItemCount": 3,
+        "hallucinationRate": 0.0,
+        "links": {
+          "f1": 1.0,
+          "gold": 0,
+          "precision": 1.0,
+          "predicted": 0,
+          "recall": 1.0,
+          "truePositive": 0
+        },
+        "relationInstrumentation": {
+          "allowlistedPredicates": [
+            "answers",
+            "blocks",
+            "constrainedBy",
+            "dependsOn",
+            "implements",
+            "resolves",
+            "supports"
+          ],
+          "bucketPolicy": "exclusive-precedence-v1",
+          "countsByPredicate": {
+            "answers": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "blocks": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "constrainedBy": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 1,
+              "missingEndpoint": 0,
+              "missingRelation": 1,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "dependsOn": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "implements": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "resolves": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            },
+            "supports": {
+              "correctPredicateWrongEndpoint": 0,
+              "exactMatch": 0,
+              "extraRelation": 0,
+              "gold": 0,
+              "missingEndpoint": 0,
+              "missingRelation": 0,
+              "predicted": 0,
+              "reversedEndpoint": 0,
+              "wrongPredicate": 0,
+              "wrongSpan": 0
+            }
+          },
+          "reconciliation": {
+            "goldCategorized": 1,
+            "goldMatchesTotal": true,
+            "pass": true,
+            "predictedCategorized": 0,
+            "predictedMatchesTotal": true
+          },
+          "signatures": {
+            "gold": [
+              {
+                "errorClass": "missingRelation",
+                "evidenceSpan": {
+                  "endOffset": 75,
+                  "startOffset": 0
+                },
+                "predicate": "constrainedBy",
+                "sourceEndpoint": {
+                  "endOffset": 21,
+                  "startOffset": 0,
+                  "status": "resolved",
+                  "type": "Task"
+                },
+                "targetEndpoint": {
+                  "endOffset": 60,
+                  "startOffset": 38,
+                  "status": "resolved",
+                  "type": "Constraint"
+                }
+              }
+            ],
+            "predicted": []
+          },
+          "status": "scored",
+          "totals": {
+            "correctPredicateWrongEndpoint": 0,
+            "exactMatch": 0,
+            "extraRelation": 0,
+            "gold": 1,
+            "missingEndpoint": 0,
+            "missingRelation": 1,
+            "predicted": 0,
+            "reversedEndpoint": 0,
+            "unallowlistedPredictedPredicate": 0,
+            "wrongPredicate": 0,
+            "wrongSpan": 0
+          },
+          "version": "s12.relation-instrumentation.v4"
+        },
+        "relations": {
+          "f1": 0.0,
+          "gold": 1,
+          "precision": 0.0,
+          "predicted": 0,
+          "recall": 0.0,
+          "truePositive": 0
+        },
+        "status": "scored"
+      },
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:8c5ed96cb01bb40629cbeffbf3707222163dc6fba273aac52b5ccd8071269868",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:8c5ed96cb01bb40629cbeffbf3707222163dc6fba273aac52b5ccd8071269868",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_a2f7c30851369feb2706794be50464cc24e40ceda6a76d24e7cb5a16564a1b5f",
+        "receiptDigest": "sha256:1aa49faaa5f1b7a92ef1f1a265eb3b4ea31df163e8c903c452f3b82c30a562b3",
+        "replayKey": "replay_4d44f578148316364496b81e49bbf9a2e1031dbad72ef264aec641cbb72ee4f6",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_b48b81584d123fbb86973124ad1c9271fb6c3d7b5db042441ac5fb7b1a2bd4e3",
+        "sourceVersionId": "sv_4d44f578148316364496b81e49bbf9a2e1031dbad72ef264aec641cbb72ee4f6"
+      },
+      "status": "abstained"
+    }
+  ],
+  "heldOutInspection": false,
+  "inferencePublication": false,
+  "pocProtocolDigest": "sha256:a199459437043770f999d6a3edec4981f73f54120be61f72a8753dc6e5e91f86",
+  "providerCalls": 0,
+  "rawSensitiveDataIncluded": false,
+  "scope": "internal-development-representative-cases-only",
+  "status": "INTERNAL_DEV_POC_EXECUTED",
+  "statusReason": "deterministic local rule candidate; no provider runtime or human evidence"
+}

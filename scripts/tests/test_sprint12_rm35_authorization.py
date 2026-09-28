@@ -8,7 +8,6 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator
 
-
 ROOT = Path(__file__).resolve().parents[2]
 OPT = ROOT / "evaluation/sprint-12/optimization"
 AUTHORIZATION = OPT / "s12-f-12-rm35-authorization.v8.json"
@@ -60,15 +59,13 @@ def test_rm35_authorization_and_transition_are_digest_bound() -> None:
 def test_rm37_closure_preserves_spent_v7_and_immutable_v6_without_v8_output() -> None:
     current = _json(ROOT / "evaluation/sprint-12/current-state.v1.json")
     report_v6 = _json(REPORT_V6)
-    assert current["status"] == (
-        "G5_F12_CORRECTED_V9_LINEAGE_ISSUED_PROVIDER_AUTHORIZATION_PENDING"
-    )
+    assert current["status"] == "F_RF_POC_BASELINE_ACCEPTED_DENSE_HARD_V4_FAILED_STRATEGY_REDESIGN_REQUIRED"
     assert current["experimentState"]["historicalLineage"]["lineageVersion"] == "v7"
     assert current["experimentState"]["historicalLineage"]["providerCallsPerformed"] == 144
     assert current["experimentState"]["currentLineage"]["lineageVersion"] == "v9"
-    assert current["experimentState"]["currentLineage"]["providerCallsPerformed"] == 0
-    assert current["experimentState"]["currentLineage"]["providerResponsesReceived"] == 0
-    assert current["experimentState"]["currentLineage"]["relationBranchOutputs"] is None
+    assert current["experimentState"]["currentLineage"]["providerCallsPerformed"] == 144
+    assert current["experimentState"]["currentLineage"]["providerResponsesReceived"] == 144
+    assert current["experimentState"]["currentLineage"]["relationBranchOutputs"] == 96
     assert current["experimentState"]["currentLineage"]["providerExecutionAuthorized"] is False
     assert current["experimentState"]["supersededLineages"]["v8"]["providerCallsPerformed"] == 3
     assert current["experimentState"]["supersededLineages"]["v8"]["providerResponsesReceived"] == 3

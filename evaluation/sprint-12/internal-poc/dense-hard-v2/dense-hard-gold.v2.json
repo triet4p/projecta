@@ -1,0 +1,2326 @@
+{
+  "artifactVersion": "s12.dense-hard.gold.v2",
+  "goldDigest": "sha256:da295ae2f50832972a115d003f7fdbde3bbf517390751b9d51947d1b369068a7",
+  "records": [
+    {
+      "caseId": "dh2-001",
+      "expected": {
+        "abstentionMode": "none",
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "p01e1",
+            "evidence": {
+              "endOffset": 13,
+              "startOffset": 0,
+              "text": "Harbor intake"
+            },
+            "label": "Harbor intake",
+            "occurrenceKey": "harbor#1",
+            "type": "Task"
+          },
+          {
+            "entityId": "p01e2",
+            "evidence": {
+              "endOffset": 54,
+              "startOffset": 41,
+              "text": "cobalt ledger"
+            },
+            "label": "cobalt ledger",
+            "occurrenceKey": "cobalt#1",
+            "type": "System"
+          },
+          {
+            "entityId": "p01e3",
+            "evidence": {
+              "endOffset": 35,
+              "startOffset": 25,
+              "text": "tide token"
+            },
+            "label": "tide token",
+            "occurrenceKey": "tide#1",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "p01e4",
+            "evidence": {
+              "endOffset": 75,
+              "startOffset": 65,
+              "text": "tide token"
+            },
+            "label": "tide token",
+            "occurrenceKey": "tide#2",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "p01e5",
+            "evidence": {
+              "endOffset": 91,
+              "startOffset": 81,
+              "text": "tide token"
+            },
+            "label": "tide token",
+            "occurrenceKey": "tide#3",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "p01e6",
+            "evidence": {
+              "endOffset": 112,
+              "startOffset": 99,
+              "text": "unsafe export"
+            },
+            "label": "unsafe export",
+            "occurrenceKey": "unsafe#1",
+            "type": "Risk"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 35,
+              "startOffset": 0,
+              "text": "Harbor intake depends on tide token"
+            },
+            "predicate": "dependsOn",
+            "relationId": "p01r1",
+            "sourceEntityId": "p01e1",
+            "targetEntityId": "p01e3",
+            "triggerEvidence": {
+              "endOffset": 24,
+              "startOffset": 14,
+              "text": "depends on"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 75,
+              "startOffset": 37,
+              "text": "The cobalt ledger validates tide token"
+            },
+            "predicate": "validates",
+            "relationId": "p01r2",
+            "sourceEntityId": "p01e2",
+            "targetEntityId": "p01e4",
+            "triggerEvidence": {
+              "endOffset": 64,
+              "startOffset": 55,
+              "text": "validates"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 112,
+              "startOffset": 77,
+              "text": "The tide token blocks unsafe export"
+            },
+            "predicate": "blocks",
+            "relationId": "p01r3",
+            "sourceEntityId": "p01e5",
+            "targetEntityId": "p01e6",
+            "triggerEvidence": {
+              "endOffset": 98,
+              "startOffset": 92,
+              "text": "blocks"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "dh2-002",
+      "expected": {
+        "abstentionMode": "none",
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "p02e1",
+            "evidence": {
+              "endOffset": 17,
+              "startOffset": 0,
+              "text": "Juniper checklist"
+            },
+            "label": "Juniper checklist",
+            "occurrenceKey": "checklist#1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p02e2",
+            "evidence": {
+              "endOffset": 40,
+              "startOffset": 29,
+              "text": "slate index"
+            },
+            "label": "slate index",
+            "occurrenceKey": "slate#1",
+            "type": "Dataset"
+          },
+          {
+            "entityId": "p02e3",
+            "evidence": {
+              "endOffset": 57,
+              "startOffset": 46,
+              "text": "slate index"
+            },
+            "label": "slate index",
+            "occurrenceKey": "slate#2",
+            "type": "Dataset"
+          },
+          {
+            "entityId": "p02e4",
+            "evidence": {
+              "endOffset": 79,
+              "startOffset": 67,
+              "text": "ferry permit"
+            },
+            "label": "ferry permit",
+            "occurrenceKey": "ferry#1",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "p02e5",
+            "evidence": {
+              "endOffset": 97,
+              "startOffset": 85,
+              "text": "ferry permit"
+            },
+            "label": "ferry permit",
+            "occurrenceKey": "ferry#2",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "p02e6",
+            "evidence": {
+              "endOffset": 121,
+              "startOffset": 109,
+              "text": "dock release"
+            },
+            "label": "dock release",
+            "occurrenceKey": "dock#1",
+            "type": "Task"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 40,
+              "startOffset": 0,
+              "text": "Juniper checklist depends on slate index"
+            },
+            "predicate": "dependsOn",
+            "relationId": "p02r1",
+            "sourceEntityId": "p02e1",
+            "targetEntityId": "p02e2",
+            "triggerEvidence": {
+              "endOffset": 28,
+              "startOffset": 18,
+              "text": "depends on"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 79,
+              "startOffset": 42,
+              "text": "The slate index supports ferry permit"
+            },
+            "predicate": "supports",
+            "relationId": "p02r2",
+            "sourceEntityId": "p02e3",
+            "targetEntityId": "p02e4",
+            "triggerEvidence": {
+              "endOffset": 66,
+              "startOffset": 58,
+              "text": "supports"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 121,
+              "startOffset": 81,
+              "text": "The ferry permit constrains dock release"
+            },
+            "predicate": "constrains",
+            "relationId": "p02r3",
+            "sourceEntityId": "p02e5",
+            "targetEntityId": "p02e6",
+            "triggerEvidence": {
+              "endOffset": 108,
+              "startOffset": 98,
+              "text": "constrains"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "dh2-003",
+      "expected": {
+        "abstentionMode": "none",
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "p03e1",
+            "evidence": {
+              "endOffset": 12,
+              "startOffset": 0,
+              "text": "Copper relay"
+            },
+            "label": "Copper relay",
+            "occurrenceKey": "relay#1",
+            "type": "System"
+          },
+          {
+            "entityId": "p03e2",
+            "evidence": {
+              "endOffset": 35,
+              "startOffset": 24,
+              "text": "kiln schema"
+            },
+            "label": "kiln schema",
+            "occurrenceKey": "kiln#1",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "p03e3",
+            "evidence": {
+              "endOffset": 52,
+              "startOffset": 41,
+              "text": "kiln schema"
+            },
+            "label": "kiln schema",
+            "occurrenceKey": "kiln#2",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "p03e4",
+            "evidence": {
+              "endOffset": 72,
+              "startOffset": 60,
+              "text": "ember window"
+            },
+            "label": "ember window",
+            "occurrenceKey": "ember#1",
+            "type": "Constraint"
+          },
+          {
+            "entityId": "p03e5",
+            "evidence": {
+              "endOffset": 90,
+              "startOffset": 78,
+              "text": "ember window"
+            },
+            "label": "ember window",
+            "occurrenceKey": "ember#2",
+            "type": "Constraint"
+          },
+          {
+            "entityId": "p03e6",
+            "evidence": {
+              "endOffset": 111,
+              "startOffset": 98,
+              "text": "rushed launch"
+            },
+            "label": "rushed launch",
+            "occurrenceKey": "rushed#1",
+            "type": "Risk"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 35,
+              "startOffset": 0,
+              "text": "Copper relay implements kiln schema"
+            },
+            "predicate": "implements",
+            "relationId": "p03r1",
+            "sourceEntityId": "p03e1",
+            "targetEntityId": "p03e2",
+            "triggerEvidence": {
+              "endOffset": 23,
+              "startOffset": 13,
+              "text": "implements"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 72,
+              "startOffset": 37,
+              "text": "The kiln schema tracks ember window"
+            },
+            "predicate": "tracks",
+            "relationId": "p03r2",
+            "sourceEntityId": "p03e3",
+            "targetEntityId": "p03e4",
+            "triggerEvidence": {
+              "endOffset": 59,
+              "startOffset": 53,
+              "text": "tracks"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 111,
+              "startOffset": 74,
+              "text": "The ember window blocks rushed launch"
+            },
+            "predicate": "blocks",
+            "relationId": "p03r3",
+            "sourceEntityId": "p03e5",
+            "targetEntityId": "p03e6",
+            "triggerEvidence": {
+              "endOffset": 97,
+              "startOffset": 91,
+              "text": "blocks"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "dh2-004",
+      "expected": {
+        "abstentionMode": "none",
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "p04e1",
+            "evidence": {
+              "endOffset": 12,
+              "startOffset": 0,
+              "text": "Mica dossier"
+            },
+            "label": "Mica dossier",
+            "occurrenceKey": "dossier#1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p04e2",
+            "evidence": {
+              "endOffset": 35,
+              "startOffset": 22,
+              "text": "north archive"
+            },
+            "label": "north archive",
+            "occurrenceKey": "archive#1",
+            "type": "Resource"
+          },
+          {
+            "entityId": "p04e3",
+            "evidence": {
+              "endOffset": 54,
+              "startOffset": 41,
+              "text": "north archive"
+            },
+            "label": "north archive",
+            "occurrenceKey": "archive#2",
+            "type": "Resource"
+          },
+          {
+            "entityId": "p04e4",
+            "evidence": {
+              "endOffset": 74,
+              "startOffset": 63,
+              "text": "audit query"
+            },
+            "label": "audit query",
+            "occurrenceKey": "query#1",
+            "type": "Question"
+          },
+          {
+            "entityId": "p04e5",
+            "evidence": {
+              "endOffset": 91,
+              "startOffset": 80,
+              "text": "audit query"
+            },
+            "label": "audit query",
+            "occurrenceKey": "query#2",
+            "type": "Question"
+          },
+          {
+            "entityId": "p04e6",
+            "evidence": {
+              "endOffset": 116,
+              "startOffset": 103,
+              "text": "seal register"
+            },
+            "label": "seal register",
+            "occurrenceKey": "seal#1",
+            "type": "Dataset"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 35,
+              "startOffset": 0,
+              "text": "Mica dossier requires north archive"
+            },
+            "predicate": "requires",
+            "relationId": "p04r1",
+            "sourceEntityId": "p04e1",
+            "targetEntityId": "p04e2",
+            "triggerEvidence": {
+              "endOffset": 21,
+              "startOffset": 13,
+              "text": "requires"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 74,
+              "startOffset": 37,
+              "text": "The north archive answers audit query"
+            },
+            "predicate": "answers",
+            "relationId": "p04r2",
+            "sourceEntityId": "p04e3",
+            "targetEntityId": "p04e4",
+            "triggerEvidence": {
+              "endOffset": 62,
+              "startOffset": 55,
+              "text": "answers"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 116,
+              "startOffset": 76,
+              "text": "The audit query depends on seal register"
+            },
+            "predicate": "dependsOn",
+            "relationId": "p04r3",
+            "sourceEntityId": "p04e5",
+            "targetEntityId": "p04e6",
+            "triggerEvidence": {
+              "endOffset": 102,
+              "startOffset": 92,
+              "text": "depends on"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "dh2-005",
+      "expected": {
+        "abstentionMode": "none",
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "p05e1",
+            "evidence": {
+              "endOffset": 14,
+              "startOffset": 4,
+              "text": "aster memo"
+            },
+            "label": "aster memo",
+            "occurrenceKey": "memo1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p05e2",
+            "evidence": {
+              "endOffset": 54,
+              "startOffset": 44,
+              "text": "aster memo"
+            },
+            "label": "aster memo",
+            "occurrenceKey": "memo2",
+            "type": "Document"
+          },
+          {
+            "entityId": "p05e3",
+            "evidence": {
+              "endOffset": 33,
+              "startOffset": 21,
+              "text": "river permit"
+            },
+            "label": "river permit",
+            "occurrenceKey": "river#1",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "p05e4",
+            "evidence": {
+              "endOffset": 74,
+              "startOffset": 62,
+              "text": "river permit"
+            },
+            "label": "river permit",
+            "occurrenceKey": "river#2",
+            "type": "Requirement"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 33,
+              "startOffset": 0,
+              "text": "The aster memo cites river permit"
+            },
+            "predicate": "contains",
+            "relationId": "p05r1",
+            "sourceEntityId": "p05e1",
+            "targetEntityId": "p05e3",
+            "triggerEvidence": {
+              "endOffset": 20,
+              "startOffset": 15,
+              "text": "cites"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 74,
+              "startOffset": 35,
+              "text": "A second aster memo blocks river permit"
+            },
+            "predicate": "blocks",
+            "relationId": "p05r2",
+            "sourceEntityId": "p05e2",
+            "targetEntityId": "p05e4",
+            "triggerEvidence": {
+              "endOffset": 61,
+              "startOffset": 55,
+              "text": "blocks"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "dh2-006",
+      "expected": {
+        "abstentionMode": "none",
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "p06e1",
+            "evidence": {
+              "endOffset": 12,
+              "startOffset": 0,
+              "text": "Quartz label"
+            },
+            "label": "Quartz label",
+            "occurrenceKey": "label1",
+            "type": "Control"
+          },
+          {
+            "entityId": "p06e2",
+            "evidence": {
+              "endOffset": 49,
+              "startOffset": 37,
+              "text": "Quartz label"
+            },
+            "label": "Quartz label",
+            "occurrenceKey": "label2",
+            "type": "Control"
+          },
+          {
+            "entityId": "p06e3",
+            "evidence": {
+              "endOffset": 122,
+              "startOffset": 110,
+              "text": "quartz label"
+            },
+            "label": "quartz label",
+            "occurrenceKey": "label3#1",
+            "type": "Control"
+          },
+          {
+            "entityId": "p06e4",
+            "evidence": {
+              "endOffset": 35,
+              "startOffset": 22,
+              "text": "intake ledger"
+            },
+            "label": "intake ledger",
+            "occurrenceKey": "intake#1",
+            "type": "Dataset"
+          },
+          {
+            "entityId": "p06e5",
+            "evidence": {
+              "endOffset": 80,
+              "startOffset": 66,
+              "text": "transit ledger"
+            },
+            "label": "transit ledger",
+            "occurrenceKey": "transit#1",
+            "type": "Dataset"
+          },
+          {
+            "entityId": "p06e6",
+            "evidence": {
+              "endOffset": 100,
+              "startOffset": 86,
+              "text": "transit ledger"
+            },
+            "label": "transit ledger",
+            "occurrenceKey": "transit#2",
+            "type": "Dataset"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 35,
+              "startOffset": 0,
+              "text": "Quartz label supports intake ledger"
+            },
+            "predicate": "supports",
+            "relationId": "p06r1",
+            "sourceEntityId": "p06e1",
+            "targetEntityId": "p06e4",
+            "triggerEvidence": {
+              "endOffset": 21,
+              "startOffset": 13,
+              "text": "supports"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 80,
+              "startOffset": 37,
+              "text": "Quartz label also constrains transit ledger"
+            },
+            "predicate": "constrains",
+            "relationId": "p06r2",
+            "sourceEntityId": "p06e2",
+            "targetEntityId": "p06e5",
+            "triggerEvidence": {
+              "endOffset": 65,
+              "startOffset": 55,
+              "text": "constrains"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 122,
+              "startOffset": 82,
+              "text": "The transit ledger requires quartz label"
+            },
+            "predicate": "requires",
+            "relationId": "p06r3",
+            "sourceEntityId": "p06e6",
+            "targetEntityId": "p06e3",
+            "triggerEvidence": {
+              "endOffset": 109,
+              "startOffset": 101,
+              "text": "requires"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "dh2-007",
+      "expected": {
+        "abstentionMode": "full",
+        "abstentionReason": "NEGATED_CONTENT",
+        "entities": [],
+        "relations": []
+      }
+    },
+    {
+      "caseId": "dh2-008",
+      "expected": {
+        "abstentionMode": "full",
+        "abstentionReason": "EXPLICIT_NON_ASSERTION",
+        "entities": [],
+        "relations": []
+      }
+    },
+    {
+      "caseId": "dh2-009",
+      "expected": {
+        "abstentionMode": "partial",
+        "abstentionReason": "AMBIGUOUS_RELATION_SCOPE",
+        "entities": [
+          {
+            "entityId": "p09e1",
+            "evidence": {
+              "endOffset": 12,
+              "startOffset": 0,
+              "text": "Amber docket"
+            },
+            "label": "Amber docket",
+            "occurrenceKey": "docket#1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p09e2",
+            "evidence": {
+              "endOffset": 33,
+              "startOffset": 21,
+              "text": "secure audit"
+            },
+            "label": "secure audit",
+            "occurrenceKey": "audit#1",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "p09e3",
+            "evidence": {
+              "endOffset": 92,
+              "startOffset": 78,
+              "text": "remote archive"
+            },
+            "label": "remote archive",
+            "occurrenceKey": "archive#1",
+            "type": "Resource"
+          }
+        ],
+        "relations": []
+      }
+    },
+    {
+      "caseId": "dh2-010",
+      "expected": {
+        "abstentionMode": "partial",
+        "abstentionReason": "UNRESOLVED_PREDICATE",
+        "entities": [
+          {
+            "entityId": "p10e1",
+            "evidence": {
+              "endOffset": 11,
+              "startOffset": 0,
+              "text": "Violet plan"
+            },
+            "label": "Violet plan",
+            "occurrenceKey": "plan#1",
+            "type": "Task"
+          },
+          {
+            "entityId": "p10e2",
+            "evidence": {
+              "endOffset": 30,
+              "startOffset": 18,
+              "text": "winter queue"
+            },
+            "label": "winter queue",
+            "occurrenceKey": "queue#1",
+            "type": "System"
+          },
+          {
+            "entityId": "p10e3",
+            "evidence": {
+              "endOffset": 52,
+              "startOffset": 40,
+              "text": "winter queue"
+            },
+            "label": "winter queue",
+            "occurrenceKey": "queue#2",
+            "type": "System"
+          },
+          {
+            "entityId": "p10e4",
+            "evidence": {
+              "endOffset": 72,
+              "startOffset": 60,
+              "text": "review timer"
+            },
+            "label": "review timer",
+            "occurrenceKey": "timer#1",
+            "type": "Control"
+          }
+        ],
+        "relations": []
+      }
+    },
+    {
+      "caseId": "dh2-011",
+      "expected": {
+        "abstentionMode": "none",
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "p11e1",
+            "evidence": {
+              "endOffset": 17,
+              "startOffset": 0,
+              "text": "Old beacon policy"
+            },
+            "label": "Old beacon policy",
+            "occurrenceKey": "old#1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p11e2",
+            "evidence": {
+              "endOffset": 56,
+              "startOffset": 35,
+              "text": "current beacon policy"
+            },
+            "label": "current beacon policy",
+            "occurrenceKey": "current#1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p11e3",
+            "evidence": {
+              "endOffset": 83,
+              "startOffset": 62,
+              "text": "current beacon policy"
+            },
+            "label": "current beacon policy",
+            "occurrenceKey": "current#2",
+            "type": "Document"
+          },
+          {
+            "entityId": "p11e4",
+            "evidence": {
+              "endOffset": 107,
+              "startOffset": 93,
+              "text": "fresh dispatch"
+            },
+            "label": "fresh dispatch",
+            "occurrenceKey": "dispatch#1",
+            "type": "Task"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 56,
+              "startOffset": 0,
+              "text": "Old beacon policy is superseded by current beacon policy"
+            },
+            "predicate": "supersedes",
+            "relationId": "p11r1",
+            "sourceEntityId": "p11e2",
+            "targetEntityId": "p11e1",
+            "triggerEvidence": {
+              "endOffset": 34,
+              "startOffset": 21,
+              "text": "superseded by"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 107,
+              "startOffset": 58,
+              "text": "The current beacon policy supports fresh dispatch"
+            },
+            "predicate": "supports",
+            "relationId": "p11r2",
+            "sourceEntityId": "p11e3",
+            "targetEntityId": "p11e4",
+            "triggerEvidence": {
+              "endOffset": 92,
+              "startOffset": 84,
+              "text": "supports"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "dh2-012",
+      "expected": {
+        "abstentionMode": "none",
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "p12e1",
+            "evidence": {
+              "endOffset": 11,
+              "startOffset": 0,
+              "text": "Retired map"
+            },
+            "label": "Retired map",
+            "occurrenceKey": "retired#1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p12e2",
+            "evidence": {
+              "endOffset": 32,
+              "startOffset": 21,
+              "text": "prior route"
+            },
+            "label": "prior route",
+            "occurrenceKey": "prior#1",
+            "type": "Resource"
+          },
+          {
+            "entityId": "p12e3",
+            "evidence": {
+              "endOffset": 53,
+              "startOffset": 38,
+              "text": "replacement map"
+            },
+            "label": "replacement map",
+            "occurrenceKey": "replacement#1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p12e4",
+            "evidence": {
+              "endOffset": 74,
+              "startOffset": 62,
+              "text": "active route"
+            },
+            "label": "active route",
+            "occurrenceKey": "active#1",
+            "type": "Resource"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 32,
+              "startOffset": 0,
+              "text": "Retired map governed prior route"
+            },
+            "predicate": "tracks",
+            "relationId": "p12r1",
+            "sourceEntityId": "p12e1",
+            "targetEntityId": "p12e2",
+            "triggerEvidence": {
+              "endOffset": 20,
+              "startOffset": 12,
+              "text": "governed"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 74,
+              "startOffset": 34,
+              "text": "The replacement map governs active route"
+            },
+            "predicate": "supports",
+            "relationId": "p12r2",
+            "sourceEntityId": "p12e3",
+            "targetEntityId": "p12e4",
+            "triggerEvidence": {
+              "endOffset": 61,
+              "startOffset": 54,
+              "text": "governs"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "dh2-013",
+      "expected": {
+        "abstentionMode": "none",
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "p13e1",
+            "evidence": {
+              "endOffset": 6,
+              "startOffset": 0,
+              "text": "Sổ mây"
+            },
+            "label": "Sổ mây",
+            "occurrenceKey": "book#1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p13e2",
+            "evidence": {
+              "endOffset": 28,
+              "startOffset": 21,
+              "text": "cầu lọc"
+            },
+            "label": "cầu lọc",
+            "occurrenceKey": "filter#1",
+            "type": "System"
+          },
+          {
+            "entityId": "p13e3",
+            "evidence": {
+              "endOffset": 37,
+              "startOffset": 30,
+              "text": "cầu lọc"
+            },
+            "label": "cầu lọc",
+            "occurrenceKey": "filter#2",
+            "type": "System"
+          },
+          {
+            "entityId": "p13e4",
+            "evidence": {
+              "endOffset": 53,
+              "startOffset": 47,
+              "text": "mã neo"
+            },
+            "label": "mã neo",
+            "occurrenceKey": "anchor#1",
+            "type": "Control"
+          },
+          {
+            "entityId": "p13e5",
+            "evidence": {
+              "endOffset": 61,
+              "startOffset": 55,
+              "text": "mã neo"
+            },
+            "label": "mã neo",
+            "occurrenceKey": "anchor#2",
+            "type": "Control"
+          },
+          {
+            "entityId": "p13e6",
+            "evidence": {
+              "endOffset": 81,
+              "startOffset": 67,
+              "text": "chuyến gửi lỗi"
+            },
+            "label": "chuyến gửi lỗi",
+            "occurrenceKey": "shipment#1",
+            "type": "Risk"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 28,
+              "startOffset": 0,
+              "text": "Sổ mây phụ thuộc vào cầu lọc"
+            },
+            "predicate": "dependsOn",
+            "relationId": "p13r1",
+            "sourceEntityId": "p13e1",
+            "targetEntityId": "p13e2",
+            "triggerEvidence": {
+              "endOffset": 20,
+              "startOffset": 7,
+              "text": "phụ thuộc vào"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 53,
+              "startOffset": 30,
+              "text": "cầu lọc kiểm tra mã neo"
+            },
+            "predicate": "validates",
+            "relationId": "p13r2",
+            "sourceEntityId": "p13e3",
+            "targetEntityId": "p13e4",
+            "triggerEvidence": {
+              "endOffset": 46,
+              "startOffset": 38,
+              "text": "kiểm tra"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 81,
+              "startOffset": 55,
+              "text": "mã neo chặn chuyến gửi lỗi"
+            },
+            "predicate": "blocks",
+            "relationId": "p13r3",
+            "sourceEntityId": "p13e5",
+            "targetEntityId": "p13e6",
+            "triggerEvidence": {
+              "endOffset": 66,
+              "startOffset": 62,
+              "text": "chặn"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "dh2-014",
+      "expected": {
+        "abstentionMode": "none",
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "p14e1",
+            "evidence": {
+              "endOffset": 4,
+              "startOffset": 0,
+              "text": "青い台帳"
+            },
+            "label": "青い台帳",
+            "occurrenceKey": "ledger#1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p14e2",
+            "evidence": {
+              "endOffset": 9,
+              "startOffset": 5,
+              "text": "港の規則"
+            },
+            "label": "港の規則",
+            "occurrenceKey": "rule#1",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "p14e3",
+            "evidence": {
+              "endOffset": 18,
+              "startOffset": 14,
+              "text": "港の規則"
+            },
+            "label": "港の規則",
+            "occurrenceKey": "rule#2",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "p14e4",
+            "evidence": {
+              "endOffset": 22,
+              "startOffset": 19,
+              "text": "検査印"
+            },
+            "label": "検査印",
+            "occurrenceKey": "stamp#1",
+            "type": "Control"
+          },
+          {
+            "entityId": "p14e5",
+            "evidence": {
+              "endOffset": 32,
+              "startOffset": 29,
+              "text": "検査印"
+            },
+            "label": "検査印",
+            "occurrenceKey": "stamp#2",
+            "type": "Control"
+          },
+          {
+            "entityId": "p14e6",
+            "evidence": {
+              "endOffset": 37,
+              "startOffset": 33,
+              "text": "遅延出荷"
+            },
+            "label": "遅延出荷",
+            "occurrenceKey": "shipment#1",
+            "type": "Risk"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 13,
+              "startOffset": 0,
+              "text": "青い台帳は港の規則を支える"
+            },
+            "predicate": "supports",
+            "relationId": "p14r1",
+            "sourceEntityId": "p14e1",
+            "targetEntityId": "p14e2",
+            "triggerEvidence": {
+              "endOffset": 13,
+              "startOffset": 10,
+              "text": "支える"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 28,
+              "startOffset": 14,
+              "text": "港の規則は検査印を必要とする"
+            },
+            "predicate": "requires",
+            "relationId": "p14r2",
+            "sourceEntityId": "p14e3",
+            "targetEntityId": "p14e4",
+            "triggerEvidence": {
+              "endOffset": 28,
+              "startOffset": 23,
+              "text": "必要とする"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 41,
+              "startOffset": 29,
+              "text": "検査印は遅延出荷を止める"
+            },
+            "predicate": "blocks",
+            "relationId": "p14r3",
+            "sourceEntityId": "p14e5",
+            "targetEntityId": "p14e6",
+            "triggerEvidence": {
+              "endOffset": 41,
+              "startOffset": 38,
+              "text": "止める"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "dh2-015",
+      "expected": {
+        "abstentionMode": "none",
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "p15e1",
+            "evidence": {
+              "endOffset": 12,
+              "startOffset": 0,
+              "text": "Café docket"
+            },
+            "label": "Café docket",
+            "occurrenceKey": "cafe#1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p15e2",
+            "evidence": {
+              "endOffset": 35,
+              "startOffset": 22,
+              "text": "naivé review"
+            },
+            "label": "naivé review",
+            "occurrenceKey": "naive#1",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "p15e3",
+            "evidence": {
+              "endOffset": 54,
+              "startOffset": 41,
+              "text": "naivé review"
+            },
+            "label": "naivé review",
+            "occurrenceKey": "naive#2",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "p15e4",
+            "evidence": {
+              "endOffset": 75,
+              "startOffset": 62,
+              "text": "élan archive"
+            },
+            "label": "élan archive",
+            "occurrenceKey": "elan#1",
+            "type": "Resource"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 35,
+              "startOffset": 0,
+              "text": "Café docket supports naivé review"
+            },
+            "predicate": "supports",
+            "relationId": "p15r1",
+            "sourceEntityId": "p15e1",
+            "targetEntityId": "p15e2",
+            "triggerEvidence": {
+              "endOffset": 21,
+              "startOffset": 13,
+              "text": "supports"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 75,
+              "startOffset": 37,
+              "text": "The naivé review blocks élan archive"
+            },
+            "predicate": "blocks",
+            "relationId": "p15r2",
+            "sourceEntityId": "p15e3",
+            "targetEntityId": "p15e4",
+            "triggerEvidence": {
+              "endOffset": 61,
+              "startOffset": 55,
+              "text": "blocks"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "dh2-016",
+      "expected": {
+        "abstentionMode": "none",
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "p16e1",
+            "evidence": {
+              "endOffset": 13,
+              "startOffset": 0,
+              "text": "Signal 🛰️ map"
+            },
+            "label": "Signal 🛰️ map",
+            "occurrenceKey": "map#1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p16e2",
+            "evidence": {
+              "endOffset": 36,
+              "startOffset": 23,
+              "text": "launch 🧭 plan"
+            },
+            "label": "launch 🧭 plan",
+            "occurrenceKey": "plan#1",
+            "type": "Task"
+          },
+          {
+            "entityId": "p16e3",
+            "evidence": {
+              "endOffset": 55,
+              "startOffset": 42,
+              "text": "launch 🧭 plan"
+            },
+            "label": "launch 🧭 plan",
+            "occurrenceKey": "plan#2",
+            "type": "Task"
+          },
+          {
+            "entityId": "p16e4",
+            "evidence": {
+              "endOffset": 79,
+              "startOffset": 63,
+              "text": "unstable 🧪 cargo"
+            },
+            "label": "unstable 🧪 cargo",
+            "occurrenceKey": "cargo#1",
+            "type": "Risk"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 36,
+              "startOffset": 0,
+              "text": "Signal 🛰️ map supports launch 🧭 plan"
+            },
+            "predicate": "supports",
+            "relationId": "p16r1",
+            "sourceEntityId": "p16e1",
+            "targetEntityId": "p16e2",
+            "triggerEvidence": {
+              "endOffset": 22,
+              "startOffset": 14,
+              "text": "supports"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 79,
+              "startOffset": 38,
+              "text": "The launch 🧭 plan blocks unstable 🧪 cargo"
+            },
+            "predicate": "blocks",
+            "relationId": "p16r2",
+            "sourceEntityId": "p16e3",
+            "targetEntityId": "p16e4",
+            "triggerEvidence": {
+              "endOffset": 62,
+              "startOffset": 56,
+              "text": "blocks"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "dh2-017",
+      "expected": {
+        "abstentionMode": "none",
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "p17e1",
+            "evidence": {
+              "endOffset": 11,
+              "startOffset": 0,
+              "text": "Lumen brief"
+            },
+            "label": "Lumen brief",
+            "occurrenceKey": "brief#1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p17e2",
+            "evidence": {
+              "endOffset": 30,
+              "startOffset": 18,
+              "text": "harbor token"
+            },
+            "label": "harbor token",
+            "occurrenceKey": "token#1",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "p17e3",
+            "evidence": {
+              "endOffset": 48,
+              "startOffset": 36,
+              "text": "harbor token"
+            },
+            "label": "harbor token",
+            "occurrenceKey": "token#2",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "p17e4",
+            "evidence": {
+              "endOffset": 73,
+              "startOffset": 60,
+              "text": "sealed ledger"
+            },
+            "label": "sealed ledger",
+            "occurrenceKey": "ledger#1",
+            "type": "Dataset"
+          },
+          {
+            "entityId": "p17e5",
+            "evidence": {
+              "endOffset": 117,
+              "startOffset": 104,
+              "text": "sealed ledger"
+            },
+            "label": "sealed ledger",
+            "occurrenceKey": "ledger#2",
+            "type": "Dataset"
+          },
+          {
+            "entityId": "p17e6",
+            "evidence": {
+              "endOffset": 141,
+              "startOffset": 125,
+              "text": "inspection stamp"
+            },
+            "label": "inspection stamp",
+            "occurrenceKey": "stamp#1",
+            "type": "Control"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 30,
+              "startOffset": 0,
+              "text": "Lumen brief names harbor token"
+            },
+            "predicate": "contains",
+            "relationId": "p17r1",
+            "sourceEntityId": "p17e1",
+            "targetEntityId": "p17e2",
+            "triggerEvidence": {
+              "endOffset": 17,
+              "startOffset": 12,
+              "text": "names"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 98,
+              "startOffset": 32,
+              "text": "The harbor token supports a sealed ledger across the next sentence"
+            },
+            "predicate": "supports",
+            "relationId": "p17r2",
+            "sourceEntityId": "p17e3",
+            "targetEntityId": "p17e4",
+            "triggerEvidence": {
+              "endOffset": 57,
+              "startOffset": 49,
+              "text": "supports"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 141,
+              "startOffset": 100,
+              "text": "The sealed ledger tracks inspection stamp"
+            },
+            "predicate": "tracks",
+            "relationId": "p17r3",
+            "sourceEntityId": "p17e5",
+            "targetEntityId": "p17e6",
+            "triggerEvidence": {
+              "endOffset": 124,
+              "startOffset": 118,
+              "text": "tracks"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "dh2-018",
+      "expected": {
+        "abstentionMode": "none",
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "p18e1",
+            "evidence": {
+              "endOffset": 9,
+              "startOffset": 0,
+              "text": "Pine card"
+            },
+            "label": "Pine card",
+            "occurrenceKey": "pine1#1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p18e2",
+            "evidence": {
+              "endOffset": 29,
+              "startOffset": 19,
+              "text": "Stone card"
+            },
+            "label": "Stone card",
+            "occurrenceKey": "stone#1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p18e3",
+            "evidence": {
+              "endOffset": 45,
+              "startOffset": 35,
+              "text": "Stone card"
+            },
+            "label": "Stone card",
+            "occurrenceKey": "stone#2",
+            "type": "Document"
+          },
+          {
+            "entityId": "p18e4",
+            "evidence": {
+              "endOffset": 67,
+              "startOffset": 55,
+              "text": "archive lane"
+            },
+            "label": "archive lane",
+            "occurrenceKey": "lane#1",
+            "type": "Resource"
+          },
+          {
+            "entityId": "p18e5",
+            "evidence": {
+              "endOffset": 84,
+              "startOffset": 75,
+              "text": "pine card"
+            },
+            "label": "pine card",
+            "occurrenceKey": "pine2#1",
+            "type": "Document"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 29,
+              "startOffset": 0,
+              "text": "Pine card mentions Stone card"
+            },
+            "predicate": "contains",
+            "relationId": "p18r1",
+            "sourceEntityId": "p18e1",
+            "targetEntityId": "p18e2",
+            "triggerEvidence": {
+              "endOffset": 18,
+              "startOffset": 10,
+              "text": "mentions"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 105,
+              "startOffset": 31,
+              "text": "The Stone card supports archive lane, while pine card remains a distractor"
+            },
+            "predicate": "supports",
+            "relationId": "p18r2",
+            "sourceEntityId": "p18e3",
+            "targetEntityId": "p18e4",
+            "triggerEvidence": {
+              "endOffset": 54,
+              "startOffset": 46,
+              "text": "supports"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "dh2-019",
+      "expected": {
+        "abstentionMode": "full",
+        "abstentionReason": "CROSS_PROJECT_SCOPE",
+        "entities": [],
+        "relations": []
+      }
+    },
+    {
+      "caseId": "dh2-020",
+      "expected": {
+        "abstentionMode": "full",
+        "abstentionReason": "UNSUPPORTED_ASSERTION",
+        "entities": [],
+        "relations": []
+      }
+    },
+    {
+      "caseId": "dh2-021",
+      "expected": {
+        "abstentionMode": "full",
+        "abstentionReason": "ADVERSARIAL_INSTRUCTION",
+        "entities": [],
+        "relations": []
+      }
+    },
+    {
+      "caseId": "dh2-022",
+      "expected": {
+        "abstentionMode": "none",
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "p22e1",
+            "evidence": {
+              "endOffset": 16,
+              "startOffset": 0,
+              "text": "Northstar bundle"
+            },
+            "label": "Northstar bundle",
+            "occurrenceKey": "bundle#1",
+            "type": "Task"
+          },
+          {
+            "entityId": "p22e2",
+            "evidence": {
+              "endOffset": 37,
+              "startOffset": 26,
+              "text": "ivory route"
+            },
+            "label": "ivory route",
+            "occurrenceKey": "route#1",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "p22e3",
+            "evidence": {
+              "endOffset": 100,
+              "startOffset": 89,
+              "text": "ivory route"
+            },
+            "label": "ivory route",
+            "occurrenceKey": "route#2",
+            "type": "Requirement"
+          },
+          {
+            "entityId": "p22e4",
+            "evidence": {
+              "endOffset": 51,
+              "startOffset": 41,
+              "text": "quiet note"
+            },
+            "label": "quiet note",
+            "occurrenceKey": "note#1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p22e5",
+            "evidence": {
+              "endOffset": 83,
+              "startOffset": 72,
+              "text": "moss ledger"
+            },
+            "label": "moss ledger",
+            "occurrenceKey": "moss#1",
+            "type": "Dataset"
+          },
+          {
+            "entityId": "p22e6",
+            "evidence": {
+              "endOffset": 121,
+              "startOffset": 111,
+              "text": "gate token"
+            },
+            "label": "gate token",
+            "occurrenceKey": "token#1",
+            "type": "Control"
+          },
+          {
+            "entityId": "p22e7",
+            "evidence": {
+              "endOffset": 137,
+              "startOffset": 127,
+              "text": "gate token"
+            },
+            "label": "gate token",
+            "occurrenceKey": "token#2",
+            "type": "Control"
+          },
+          {
+            "entityId": "p22e8",
+            "evidence": {
+              "endOffset": 157,
+              "startOffset": 145,
+              "text": "export crate"
+            },
+            "label": "export crate",
+            "occurrenceKey": "crate#1",
+            "type": "Risk"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 37,
+              "startOffset": 0,
+              "text": "Northstar bundle requires ivory route"
+            },
+            "predicate": "requires",
+            "relationId": "p22r1",
+            "sourceEntityId": "p22e1",
+            "targetEntityId": "p22e2",
+            "triggerEvidence": {
+              "endOffset": 25,
+              "startOffset": 17,
+              "text": "requires"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 83,
+              "startOffset": 39,
+              "text": "A quiet note discusses unrelated moss ledger"
+            },
+            "predicate": "contains",
+            "relationId": "p22r2",
+            "sourceEntityId": "p22e4",
+            "targetEntityId": "p22e5",
+            "triggerEvidence": {
+              "endOffset": 61,
+              "startOffset": 52,
+              "text": "discusses"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 121,
+              "startOffset": 85,
+              "text": "The ivory route validates gate token"
+            },
+            "predicate": "validates",
+            "relationId": "p22r3",
+            "sourceEntityId": "p22e3",
+            "targetEntityId": "p22e6",
+            "triggerEvidence": {
+              "endOffset": 110,
+              "startOffset": 101,
+              "text": "validates"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 157,
+              "startOffset": 123,
+              "text": "The gate token blocks export crate"
+            },
+            "predicate": "blocks",
+            "relationId": "p22r4",
+            "sourceEntityId": "p22e7",
+            "targetEntityId": "p22e8",
+            "triggerEvidence": {
+              "endOffset": 144,
+              "startOffset": 138,
+              "text": "blocks"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "dh2-023",
+      "expected": {
+        "abstentionMode": "none",
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "p23e1",
+            "evidence": {
+              "endOffset": 13,
+              "startOffset": 0,
+              "text": "Bản ghi sương"
+            },
+            "label": "Bản ghi sương",
+            "occurrenceKey": "record#1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p23e2",
+            "evidence": {
+              "endOffset": 31,
+              "startOffset": 21,
+              "text": "tuyến cảng"
+            },
+            "label": "tuyến cảng",
+            "occurrenceKey": "route#1",
+            "type": "Resource"
+          },
+          {
+            "entityId": "p23e3",
+            "evidence": {
+              "endOffset": 43,
+              "startOffset": 33,
+              "text": "tuyến cảng"
+            },
+            "label": "tuyến cảng",
+            "occurrenceKey": "route#2",
+            "type": "Resource"
+          },
+          {
+            "entityId": "p23e4",
+            "evidence": {
+              "endOffset": 61,
+              "startOffset": 53,
+              "text": "dấu niêm"
+            },
+            "label": "dấu niêm",
+            "occurrenceKey": "seal#1",
+            "type": "Control"
+          },
+          {
+            "entityId": "p23e5",
+            "evidence": {
+              "endOffset": 71,
+              "startOffset": 63,
+              "text": "dấu niêm"
+            },
+            "label": "dấu niêm",
+            "occurrenceKey": "seal#2",
+            "type": "Control"
+          },
+          {
+            "entityId": "p23e6",
+            "evidence": {
+              "endOffset": 88,
+              "startOffset": 77,
+              "text": "lô hàng lỗi"
+            },
+            "label": "lô hàng lỗi",
+            "occurrenceKey": "lot#1",
+            "type": "Risk"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 31,
+              "startOffset": 0,
+              "text": "Bản ghi sương hỗ trợ tuyến cảng"
+            },
+            "predicate": "supports",
+            "relationId": "p23r1",
+            "sourceEntityId": "p23e1",
+            "targetEntityId": "p23e2",
+            "triggerEvidence": {
+              "endOffset": 20,
+              "startOffset": 14,
+              "text": "hỗ trợ"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 61,
+              "startOffset": 33,
+              "text": "tuyến cảng kiểm tra dấu niêm"
+            },
+            "predicate": "validates",
+            "relationId": "p23r2",
+            "sourceEntityId": "p23e3",
+            "targetEntityId": "p23e4",
+            "triggerEvidence": {
+              "endOffset": 52,
+              "startOffset": 44,
+              "text": "kiểm tra"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 88,
+              "startOffset": 63,
+              "text": "dấu niêm chặn lô hàng lỗi"
+            },
+            "predicate": "blocks",
+            "relationId": "p23r3",
+            "sourceEntityId": "p23e5",
+            "targetEntityId": "p23e6",
+            "triggerEvidence": {
+              "endOffset": 76,
+              "startOffset": 72,
+              "text": "chặn"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "dh2-024",
+      "expected": {
+        "abstentionMode": "none",
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "p24e1",
+            "evidence": {
+              "endOffset": 4,
+              "startOffset": 0,
+              "text": "白い計画"
+            },
+            "label": "白い計画",
+            "occurrenceKey": "plan#1",
+            "type": "Task"
+          },
+          {
+            "entityId": "p24e2",
+            "evidence": {
+              "endOffset": 9,
+              "startOffset": 5,
+              "text": "河川台帳"
+            },
+            "label": "河川台帳",
+            "occurrenceKey": "ledger#1",
+            "type": "Dataset"
+          },
+          {
+            "entityId": "p24e3",
+            "evidence": {
+              "endOffset": 19,
+              "startOffset": 15,
+              "text": "河川台帳"
+            },
+            "label": "河川台帳",
+            "occurrenceKey": "ledger#2",
+            "type": "Dataset"
+          },
+          {
+            "entityId": "p24e4",
+            "evidence": {
+              "endOffset": 23,
+              "startOffset": 20,
+              "text": "監査鍵"
+            },
+            "label": "監査鍵",
+            "occurrenceKey": "key#1",
+            "type": "Control"
+          },
+          {
+            "entityId": "p24e5",
+            "evidence": {
+              "endOffset": 32,
+              "startOffset": 29,
+              "text": "監査鍵"
+            },
+            "label": "監査鍵",
+            "occurrenceKey": "key#2",
+            "type": "Control"
+          },
+          {
+            "entityId": "p24e6",
+            "evidence": {
+              "endOffset": 38,
+              "startOffset": 33,
+              "text": "危険な搬送"
+            },
+            "label": "危険な搬送",
+            "occurrenceKey": "transport#1",
+            "type": "Risk"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 14,
+              "startOffset": 0,
+              "text": "白い計画は河川台帳に依存する"
+            },
+            "predicate": "dependsOn",
+            "relationId": "p24r1",
+            "sourceEntityId": "p24e1",
+            "targetEntityId": "p24e2",
+            "triggerEvidence": {
+              "endOffset": 14,
+              "startOffset": 10,
+              "text": "依存する"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 28,
+              "startOffset": 15,
+              "text": "河川台帳は監査鍵を検証する"
+            },
+            "predicate": "validates",
+            "relationId": "p24r2",
+            "sourceEntityId": "p24e3",
+            "targetEntityId": "p24e4",
+            "triggerEvidence": {
+              "endOffset": 28,
+              "startOffset": 24,
+              "text": "検証する"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 42,
+              "startOffset": 29,
+              "text": "監査鍵は危険な搬送を止める"
+            },
+            "predicate": "blocks",
+            "relationId": "p24r3",
+            "sourceEntityId": "p24e5",
+            "targetEntityId": "p24e6",
+            "triggerEvidence": {
+              "endOffset": 42,
+              "startOffset": 39,
+              "text": "止める"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "dh2-025",
+      "expected": {
+        "abstentionMode": "partial",
+        "abstentionReason": "NEGATED_RELATION",
+        "entities": [
+          {
+            "entityId": "p25e1",
+            "evidence": {
+              "endOffset": 11,
+              "startOffset": 0,
+              "text": "Silver note"
+            },
+            "label": "Silver note",
+            "occurrenceKey": "note#1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p25e2",
+            "evidence": {
+              "endOffset": 33,
+              "startOffset": 20,
+              "text": "safe corridor"
+            },
+            "label": "safe corridor",
+            "occurrenceKey": "corridor#1",
+            "type": "Resource"
+          },
+          {
+            "entityId": "p25e3",
+            "evidence": {
+              "endOffset": 77,
+              "startOffset": 64,
+              "text": "safe corridor"
+            },
+            "label": "safe corridor",
+            "occurrenceKey": "corridor#2",
+            "type": "Resource"
+          },
+          {
+            "entityId": "p25e4",
+            "evidence": {
+              "endOffset": 98,
+              "startOffset": 87,
+              "text": "closed gate"
+            },
+            "label": "closed gate",
+            "occurrenceKey": "gate#1",
+            "type": "Control"
+          }
+        ],
+        "relations": []
+      }
+    },
+    {
+      "caseId": "dh2-026",
+      "expected": {
+        "abstentionMode": "none",
+        "abstentionReason": null,
+        "entities": [
+          {
+            "entityId": "p26e1",
+            "evidence": {
+              "endOffset": 17,
+              "startOffset": 0,
+              "text": "Earlier reed plan"
+            },
+            "label": "Earlier reed plan",
+            "occurrenceKey": "earlier#1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p26e2",
+            "evidence": {
+              "endOffset": 39,
+              "startOffset": 28,
+              "text": "local queue"
+            },
+            "label": "local queue",
+            "occurrenceKey": "local#1",
+            "type": "Resource"
+          },
+          {
+            "entityId": "p26e3",
+            "evidence": {
+              "endOffset": 58,
+              "startOffset": 41,
+              "text": "Current reed plan"
+            },
+            "label": "Current reed plan",
+            "occurrenceKey": "current#1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p26e4",
+            "evidence": {
+              "endOffset": 80,
+              "startOffset": 68,
+              "text": "remote queue"
+            },
+            "label": "remote queue",
+            "occurrenceKey": "remote#1",
+            "type": "Resource"
+          },
+          {
+            "entityId": "p26e5",
+            "evidence": {
+              "endOffset": 98,
+              "startOffset": 86,
+              "text": "remote queue"
+            },
+            "label": "remote queue",
+            "occurrenceKey": "remote#2",
+            "type": "Resource"
+          },
+          {
+            "entityId": "p26e6",
+            "evidence": {
+              "endOffset": 119,
+              "startOffset": 106,
+              "text": "late dispatch"
+            },
+            "label": "late dispatch",
+            "occurrenceKey": "late#1",
+            "type": "Risk"
+          }
+        ],
+        "relations": [
+          {
+            "evidence": {
+              "endOffset": 39,
+              "startOffset": 0,
+              "text": "Earlier reed plan supported local queue"
+            },
+            "predicate": "supports",
+            "relationId": "p26r1",
+            "sourceEntityId": "p26e1",
+            "targetEntityId": "p26e2",
+            "triggerEvidence": {
+              "endOffset": 27,
+              "startOffset": 18,
+              "text": "supported"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 80,
+              "startOffset": 41,
+              "text": "Current reed plan supports remote queue"
+            },
+            "predicate": "supports",
+            "relationId": "p26r2",
+            "sourceEntityId": "p26e3",
+            "targetEntityId": "p26e4",
+            "triggerEvidence": {
+              "endOffset": 67,
+              "startOffset": 59,
+              "text": "supports"
+            }
+          },
+          {
+            "evidence": {
+              "endOffset": 119,
+              "startOffset": 82,
+              "text": "The remote queue blocks late dispatch"
+            },
+            "predicate": "blocks",
+            "relationId": "p26r3",
+            "sourceEntityId": "p26e5",
+            "targetEntityId": "p26e6",
+            "triggerEvidence": {
+              "endOffset": 105,
+              "startOffset": 99,
+              "text": "blocks"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "caseId": "dh2-027",
+      "expected": {
+        "abstentionMode": "partial",
+        "abstentionReason": "UNVERIFIABLE_OWNERSHIP",
+        "entities": [
+          {
+            "entityId": "p27e1",
+            "evidence": {
+              "endOffset": 6,
+              "startOffset": 0,
+              "text": "A note"
+            },
+            "label": "A note",
+            "occurrenceKey": "note#1",
+            "type": "Document"
+          },
+          {
+            "entityId": "p27e2",
+            "evidence": {
+              "endOffset": 25,
+              "startOffset": 12,
+              "text": "project delta"
+            },
+            "label": "project delta",
+            "occurrenceKey": "delta#1",
+            "type": "Project"
+          },
+          {
+            "entityId": "p27e3",
+            "evidence": {
+              "endOffset": 48,
+              "startOffset": 36,
+              "text": "project echo"
+            },
+            "label": "project echo",
+            "occurrenceKey": "echo#1",
+            "type": "Project"
+          }
+        ],
+        "relations": []
+      }
+    },
+    {
+      "caseId": "dh2-028",
+      "expected": {
+        "abstentionMode": "full",
+        "abstentionReason": "ADVERSARIAL_UNSUPPORTED_CONTENT",
+        "entities": [],
+        "relations": []
+      }
+    }
+  ],
+  "sourcePayloadDigest": "sha256:c5ca7a63ecb16a96e2801ecedc5b20bb02c34705305b301a119ee6f9c05a4232"
+}

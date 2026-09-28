@@ -1,0 +1,325 @@
+{
+  "$id": "https://projecta.example/schemas/s12-dense-hard-source-only-protocol.v3.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "abstentionMatrix": {
+      "additionalProperties": false,
+      "properties": {
+        "full": {
+          "type": "string"
+        },
+        "none": {
+          "type": "string"
+        },
+        "partial": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "typeUncertainty": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "none",
+        "partial",
+        "full",
+        "typeUncertainty",
+        "scope"
+      ],
+      "type": "object"
+    },
+    "anchorPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "emptySpansAllowed": {
+          "const": false
+        },
+        "evidenceMustEqualSourceSlice": {
+          "const": true
+        },
+        "indexUnit": {
+          "type": "string"
+        },
+        "interval": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "indexUnit",
+        "interval",
+        "evidenceMustEqualSourceSlice",
+        "emptySpansAllowed"
+      ],
+      "type": "object"
+    },
+    "artifactVersion": {
+      "const": "s12.dense-hard.source-only-protocol.v3"
+    },
+    "datasetKind": {
+      "const": "SYNTHETIC_NON_PRODUCTION"
+    },
+    "evidenceNormalization": {
+      "additionalProperties": false,
+      "properties": {
+        "formatting": {
+          "type": "string"
+        },
+        "substantiveChange": {
+          "type": "string"
+        },
+        "terminalPunctuation": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "terminalPunctuation",
+        "formatting",
+        "substantiveChange"
+      ],
+      "type": "object"
+    },
+    "finiteEntityTypes": {
+      "items": {
+        "enum": [
+          "Task",
+          "Requirement",
+          "Constraint",
+          "Risk",
+          "System",
+          "Project",
+          "Document",
+          "Question",
+          "Decision",
+          "Dataset",
+          "Person",
+          "Control",
+          "Resource"
+        ]
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "finiteRelationPredicates": {
+      "items": {
+        "enum": [
+          "dependsOn",
+          "implements",
+          "blocks",
+          "supports",
+          "validates",
+          "tracks",
+          "constrains",
+          "supersedes",
+          "requires",
+          "answers",
+          "contains"
+        ]
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "noReusePolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "authorIneligibleForCandidate": {
+          "const": true
+        },
+        "freshAuthority": {
+          "const": true
+        },
+        "freshCaseIds": {
+          "const": true
+        },
+        "freshRawText": {
+          "const": true
+        },
+        "freshSourceDigests": {
+          "const": true
+        },
+        "noV1V2ArtifactReuse": {
+          "const": true
+        }
+      },
+      "required": [
+        "freshAuthority",
+        "freshCaseIds",
+        "freshRawText",
+        "freshSourceDigests",
+        "noV1V2ArtifactReuse",
+        "authorIneligibleForCandidate"
+      ],
+      "type": "object"
+    },
+    "nonClaims": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "propositionRegistry": {
+      "additionalProperties": false,
+      "properties": {
+        "entityTypeIsDiagnosticOnly": {
+          "const": true
+        },
+        "identityIndependentOfType": {
+          "const": true
+        },
+        "occurrenceIdentity": {
+          "const": [
+            "startOffset",
+            "endOffset",
+            "text"
+          ]
+        },
+        "unsupportedFinalization": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "occurrenceIdentity",
+        "identityIndependentOfType",
+        "entityTypeIsDiagnosticOnly",
+        "unsupportedFinalization"
+      ],
+      "type": "object"
+    },
+    "protocolDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "quarantinePolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "reasons": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 7,
+          "type": "array"
+        },
+        "requiredKeys": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "status": {
+          "const": "quarantined"
+        }
+      },
+      "required": [
+        "requiredKeys",
+        "status",
+        "reasons"
+      ],
+      "type": "object"
+    },
+    "relationGrounding": {
+      "additionalProperties": false,
+      "properties": {
+        "endpointRule": {
+          "type": "string"
+        },
+        "identity": {
+          "type": "string"
+        },
+        "triggerRule": {
+          "type": "string"
+        },
+        "typeMismatchDoesNotCascade": {
+          "const": true
+        }
+      },
+      "required": [
+        "identity",
+        "triggerRule",
+        "endpointRule",
+        "typeMismatchDoesNotCascade"
+      ],
+      "type": "object"
+    },
+    "rm67": {
+      "additionalProperties": false,
+      "properties": {
+        "abstentionCorrectness": {
+          "type": "string"
+        },
+        "entityPRAverage": {
+          "type": "string"
+        },
+        "gate": {
+          "type": "string"
+        },
+        "relationPRAverage": {
+          "type": "string"
+        },
+        "semanticEditCounts": {
+          "type": "string"
+        },
+        "unsafeFinalization": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "entityPRAverage",
+        "relationPRAverage",
+        "semanticEditCounts",
+        "abstentionCorrectness",
+        "unsafeFinalization",
+        "gate"
+      ],
+      "type": "object"
+    },
+    "status": {
+      "const": "GENERIC_OFFLINE_GUARD"
+    },
+    "typeRubric": {
+      "additionalProperties": false,
+      "properties": {
+        "decisionRules": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 3,
+          "type": "array"
+        },
+        "rules": {
+          "minProperties": 13,
+          "type": "object"
+        },
+        "typeUncertaintyCode": {
+          "const": "UNSCORABLE_PROTOCOL_AMBIGUITY"
+        }
+      },
+      "required": [
+        "rules",
+        "decisionRules",
+        "typeUncertaintyCode"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "artifactVersion",
+    "status",
+    "datasetKind",
+    "finiteEntityTypes",
+    "finiteRelationPredicates",
+    "typeRubric",
+    "propositionRegistry",
+    "relationGrounding",
+    "evidenceNormalization",
+    "abstentionMatrix",
+    "quarantinePolicy",
+    "anchorPolicy",
+    "rm67",
+    "noReusePolicy",
+    "nonClaims",
+    "protocolDigest"
+  ],
+  "title": "Sprint 12 Dense-Hard v3 Protocol",
+  "type": "object"
+}

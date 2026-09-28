@@ -1,0 +1,4871 @@
+{
+  "artifactVersion": "s12.dense-hard.candidate.v2",
+  "schemaVersion": "dense-hard-output.v2",
+  "datasetKind": "SYNTHETIC_NON_PRODUCTION",
+  "status": "FROZEN_SOURCE_ONLY_CANDIDATE",
+  "sourceOnly": true,
+  "sourcePayloadPath": "evaluation/sprint-12/internal-poc/dense-hard-v2/dense-hard-source-payload.v2.json",
+  "sourcePayloadDigest": "sha256:c5ca7a63ecb16a96e2801ecedc5b20bb02c34705305b301a119ee6f9c05a4232",
+  "protocolPath": "evaluation/sprint-12/internal-poc/dense-hard-v2/dense-hard-source-only-protocol.v2.json",
+  "protocolDigest": "sha256:ab9dc5639b87487f4087cd9f36d8ab29aaec17e8eeb2269c4642a8c145f4aa55",
+  "candidateModel": "gpt-5.6-luna",
+  "reasoning": "high",
+  "agentCandidateCalls": 28,
+  "providerCalls": 0,
+  "goldIncluded": false,
+  "priorReviewsIncluded": false,
+  "scoring": false,
+  "review": false,
+  "codeDigest": "sha256:2b3ccad64e66691381e96a87e4a5aaaee111fe6e714b72c3ebc772061ddcc72c",
+  "candidateDigest": "sha256:568f2ff212307b7f88c02706e297fd6567582b8ef498eb7c88f475363a37784d",
+  "responses": [
+    {
+      "caseId": "dh2-001",
+      "scenarioId": "dh2-s-001",
+      "language": "en",
+      "sourceDigest": "sha256:276bef2ebfa0e4d250077345af39def0224e91484a0b9a86b431c1e0b86afa31",
+      "abstention": {
+        "mode": "none"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-001-01",
+          "occurrenceKey": "dh2-001:occ-01",
+          "type": "Requirement",
+          "label": "Harbor intake",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 13,
+            "text": "Harbor intake"
+          }
+        },
+        {
+          "entityId": "ent-dh2-001-02",
+          "occurrenceKey": "dh2-001:occ-02",
+          "type": "Control",
+          "label": "tide token",
+          "evidence": {
+            "startOffset": 25,
+            "endOffset": 35,
+            "text": "tide token"
+          }
+        },
+        {
+          "entityId": "ent-dh2-001-03",
+          "occurrenceKey": "dh2-001:occ-03",
+          "type": "Document",
+          "label": "cobalt ledger",
+          "evidence": {
+            "startOffset": 41,
+            "endOffset": 54,
+            "text": "cobalt ledger"
+          }
+        },
+        {
+          "entityId": "ent-dh2-001-04",
+          "occurrenceKey": "dh2-001:occ-04",
+          "type": "Control",
+          "label": "tide token",
+          "evidence": {
+            "startOffset": 65,
+            "endOffset": 75,
+            "text": "tide token"
+          }
+        },
+        {
+          "entityId": "ent-dh2-001-05",
+          "occurrenceKey": "dh2-001:occ-05",
+          "type": "Constraint",
+          "label": "unsafe export",
+          "evidence": {
+            "startOffset": 99,
+            "endOffset": 112,
+            "text": "unsafe export"
+          }
+        },
+        {
+          "entityId": "ent-dh2-001-06",
+          "occurrenceKey": "dh2-001:occ-06",
+          "type": "Control",
+          "label": "tide token",
+          "evidence": {
+            "startOffset": 81,
+            "endOffset": 91,
+            "text": "tide token"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "relationId": "rel-dh2-001-01",
+          "predicate": "dependsOn",
+          "sourceEntityId": "ent-dh2-001-01",
+          "targetEntityId": "ent-dh2-001-02",
+          "triggerEvidence": {
+            "startOffset": 14,
+            "endOffset": 24,
+            "text": "depends on"
+          },
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 36,
+            "text": "Harbor intake depends on tide token."
+          }
+        },
+        {
+          "relationId": "rel-dh2-001-02",
+          "predicate": "validates",
+          "sourceEntityId": "ent-dh2-001-03",
+          "targetEntityId": "ent-dh2-001-04",
+          "triggerEvidence": {
+            "startOffset": 55,
+            "endOffset": 64,
+            "text": "validates"
+          },
+          "evidence": {
+            "startOffset": 37,
+            "endOffset": 76,
+            "text": "The cobalt ledger validates tide token."
+          }
+        },
+        {
+          "relationId": "rel-dh2-001-03",
+          "predicate": "blocks",
+          "sourceEntityId": "ent-dh2-001-06",
+          "targetEntityId": "ent-dh2-001-05",
+          "triggerEvidence": {
+            "startOffset": 92,
+            "endOffset": 98,
+            "text": "blocks"
+          },
+          "evidence": {
+            "startOffset": 77,
+            "endOffset": 113,
+            "text": "The tide token blocks unsafe export."
+          }
+        }
+      ],
+      "quarantined": [],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-001:occ-01",
+          "entityId": "ent-dh2-001-01",
+          "label": "Harbor intake",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 13,
+            "text": "Harbor intake"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-001:occ-02",
+          "entityId": "ent-dh2-001-02",
+          "label": "tide token",
+          "evidence": {
+            "startOffset": 25,
+            "endOffset": 35,
+            "text": "tide token"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-001:occ-03",
+          "entityId": "ent-dh2-001-03",
+          "label": "cobalt ledger",
+          "evidence": {
+            "startOffset": 41,
+            "endOffset": 54,
+            "text": "cobalt ledger"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-001:occ-04",
+          "entityId": "ent-dh2-001-04",
+          "label": "tide token",
+          "evidence": {
+            "startOffset": 65,
+            "endOffset": 75,
+            "text": "tide token"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-001:occ-05",
+          "entityId": "ent-dh2-001-05",
+          "label": "unsafe export",
+          "evidence": {
+            "startOffset": 99,
+            "endOffset": 112,
+            "text": "unsafe export"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-001:occ-06",
+          "entityId": "ent-dh2-001-06",
+          "label": "tide token",
+          "evidence": {
+            "startOffset": 81,
+            "endOffset": 91,
+            "text": "tide token"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-001-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-001-01"
+        },
+        {
+          "assertionId": "ent-dh2-001-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-001-02"
+        },
+        {
+          "assertionId": "ent-dh2-001-03",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-001-03"
+        },
+        {
+          "assertionId": "ent-dh2-001-04",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-001-04"
+        },
+        {
+          "assertionId": "ent-dh2-001-05",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-001-05"
+        },
+        {
+          "assertionId": "ent-dh2-001-06",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-001-06"
+        },
+        {
+          "assertionId": "rel-dh2-001-01",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-001-01"
+        },
+        {
+          "assertionId": "rel-dh2-001-02",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-001-02"
+        },
+        {
+          "assertionId": "rel-dh2-001-03",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-001-03"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-002",
+      "scenarioId": "dh2-s-002",
+      "language": "en",
+      "sourceDigest": "sha256:ae30a046fed5f4e74d6696a9aeb3d5635b8cfaa02bc6ee77fff34f6f69d5b656",
+      "abstention": {
+        "mode": "none"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-002-01",
+          "occurrenceKey": "dh2-002:occ-01",
+          "type": "Requirement",
+          "label": "Juniper checklist",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 17,
+            "text": "Juniper checklist"
+          }
+        },
+        {
+          "entityId": "ent-dh2-002-02",
+          "occurrenceKey": "dh2-002:occ-02",
+          "type": "Document",
+          "label": "slate index",
+          "evidence": {
+            "startOffset": 29,
+            "endOffset": 40,
+            "text": "slate index"
+          }
+        },
+        {
+          "entityId": "ent-dh2-002-03",
+          "occurrenceKey": "dh2-002:occ-03",
+          "type": "Document",
+          "label": "slate index",
+          "evidence": {
+            "startOffset": 46,
+            "endOffset": 57,
+            "text": "slate index"
+          }
+        },
+        {
+          "entityId": "ent-dh2-002-04",
+          "occurrenceKey": "dh2-002:occ-04",
+          "type": "Requirement",
+          "label": "ferry permit",
+          "evidence": {
+            "startOffset": 67,
+            "endOffset": 79,
+            "text": "ferry permit"
+          }
+        },
+        {
+          "entityId": "ent-dh2-002-05",
+          "occurrenceKey": "dh2-002:occ-05",
+          "type": "Requirement",
+          "label": "ferry permit",
+          "evidence": {
+            "startOffset": 85,
+            "endOffset": 97,
+            "text": "ferry permit"
+          }
+        },
+        {
+          "entityId": "ent-dh2-002-06",
+          "occurrenceKey": "dh2-002:occ-06",
+          "type": "Constraint",
+          "label": "dock release",
+          "evidence": {
+            "startOffset": 109,
+            "endOffset": 121,
+            "text": "dock release"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "relationId": "rel-dh2-002-01",
+          "predicate": "dependsOn",
+          "sourceEntityId": "ent-dh2-002-01",
+          "targetEntityId": "ent-dh2-002-02",
+          "triggerEvidence": {
+            "startOffset": 18,
+            "endOffset": 28,
+            "text": "depends on"
+          },
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 41,
+            "text": "Juniper checklist depends on slate index."
+          }
+        },
+        {
+          "relationId": "rel-dh2-002-02",
+          "predicate": "supports",
+          "sourceEntityId": "ent-dh2-002-03",
+          "targetEntityId": "ent-dh2-002-04",
+          "triggerEvidence": {
+            "startOffset": 58,
+            "endOffset": 66,
+            "text": "supports"
+          },
+          "evidence": {
+            "startOffset": 42,
+            "endOffset": 80,
+            "text": "The slate index supports ferry permit."
+          }
+        },
+        {
+          "relationId": "rel-dh2-002-03",
+          "predicate": "constrains",
+          "sourceEntityId": "ent-dh2-002-05",
+          "targetEntityId": "ent-dh2-002-06",
+          "triggerEvidence": {
+            "startOffset": 98,
+            "endOffset": 108,
+            "text": "constrains"
+          },
+          "evidence": {
+            "startOffset": 81,
+            "endOffset": 122,
+            "text": "The ferry permit constrains dock release."
+          }
+        }
+      ],
+      "quarantined": [],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-002:occ-01",
+          "entityId": "ent-dh2-002-01",
+          "label": "Juniper checklist",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 17,
+            "text": "Juniper checklist"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-002:occ-02",
+          "entityId": "ent-dh2-002-02",
+          "label": "slate index",
+          "evidence": {
+            "startOffset": 29,
+            "endOffset": 40,
+            "text": "slate index"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-002:occ-03",
+          "entityId": "ent-dh2-002-03",
+          "label": "slate index",
+          "evidence": {
+            "startOffset": 46,
+            "endOffset": 57,
+            "text": "slate index"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-002:occ-04",
+          "entityId": "ent-dh2-002-04",
+          "label": "ferry permit",
+          "evidence": {
+            "startOffset": 67,
+            "endOffset": 79,
+            "text": "ferry permit"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-002:occ-05",
+          "entityId": "ent-dh2-002-05",
+          "label": "ferry permit",
+          "evidence": {
+            "startOffset": 85,
+            "endOffset": 97,
+            "text": "ferry permit"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-002:occ-06",
+          "entityId": "ent-dh2-002-06",
+          "label": "dock release",
+          "evidence": {
+            "startOffset": 109,
+            "endOffset": 121,
+            "text": "dock release"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-002-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-002-01"
+        },
+        {
+          "assertionId": "ent-dh2-002-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-002-02"
+        },
+        {
+          "assertionId": "ent-dh2-002-03",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-002-03"
+        },
+        {
+          "assertionId": "ent-dh2-002-04",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-002-04"
+        },
+        {
+          "assertionId": "ent-dh2-002-05",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-002-05"
+        },
+        {
+          "assertionId": "ent-dh2-002-06",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-002-06"
+        },
+        {
+          "assertionId": "rel-dh2-002-01",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-002-01"
+        },
+        {
+          "assertionId": "rel-dh2-002-02",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-002-02"
+        },
+        {
+          "assertionId": "rel-dh2-002-03",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-002-03"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-003",
+      "scenarioId": "dh2-s-003",
+      "language": "en",
+      "sourceDigest": "sha256:dafdae360ac07d1d9309d8edc17a3328aed959eb8e40e11fcb10d52da44afb40",
+      "abstention": {
+        "mode": "none"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-003-01",
+          "occurrenceKey": "dh2-003:occ-01",
+          "type": "System",
+          "label": "Copper relay",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 12,
+            "text": "Copper relay"
+          }
+        },
+        {
+          "entityId": "ent-dh2-003-02",
+          "occurrenceKey": "dh2-003:occ-02",
+          "type": "Requirement",
+          "label": "kiln schema",
+          "evidence": {
+            "startOffset": 24,
+            "endOffset": 35,
+            "text": "kiln schema"
+          }
+        },
+        {
+          "entityId": "ent-dh2-003-03",
+          "occurrenceKey": "dh2-003:occ-03",
+          "type": "Control",
+          "label": "ember window",
+          "evidence": {
+            "startOffset": 60,
+            "endOffset": 72,
+            "text": "ember window"
+          }
+        },
+        {
+          "entityId": "ent-dh2-003-04",
+          "occurrenceKey": "dh2-003:occ-04",
+          "type": "Requirement",
+          "label": "kiln schema",
+          "evidence": {
+            "startOffset": 41,
+            "endOffset": 52,
+            "text": "kiln schema"
+          }
+        },
+        {
+          "entityId": "ent-dh2-003-05",
+          "occurrenceKey": "dh2-003:occ-05",
+          "type": "Control",
+          "label": "ember window",
+          "evidence": {
+            "startOffset": 78,
+            "endOffset": 90,
+            "text": "ember window"
+          }
+        },
+        {
+          "entityId": "ent-dh2-003-06",
+          "occurrenceKey": "dh2-003:occ-06",
+          "type": "Risk",
+          "label": "rushed launch",
+          "evidence": {
+            "startOffset": 98,
+            "endOffset": 111,
+            "text": "rushed launch"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "relationId": "rel-dh2-003-01",
+          "predicate": "implements",
+          "sourceEntityId": "ent-dh2-003-01",
+          "targetEntityId": "ent-dh2-003-02",
+          "triggerEvidence": {
+            "startOffset": 13,
+            "endOffset": 23,
+            "text": "implements"
+          },
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 36,
+            "text": "Copper relay implements kiln schema."
+          }
+        },
+        {
+          "relationId": "rel-dh2-003-02",
+          "predicate": "tracks",
+          "sourceEntityId": "ent-dh2-003-04",
+          "targetEntityId": "ent-dh2-003-03",
+          "triggerEvidence": {
+            "startOffset": 53,
+            "endOffset": 59,
+            "text": "tracks"
+          },
+          "evidence": {
+            "startOffset": 37,
+            "endOffset": 73,
+            "text": "The kiln schema tracks ember window."
+          }
+        },
+        {
+          "relationId": "rel-dh2-003-03",
+          "predicate": "blocks",
+          "sourceEntityId": "ent-dh2-003-05",
+          "targetEntityId": "ent-dh2-003-06",
+          "triggerEvidence": {
+            "startOffset": 91,
+            "endOffset": 97,
+            "text": "blocks"
+          },
+          "evidence": {
+            "startOffset": 74,
+            "endOffset": 112,
+            "text": "The ember window blocks rushed launch."
+          }
+        }
+      ],
+      "quarantined": [],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-003:occ-01",
+          "entityId": "ent-dh2-003-01",
+          "label": "Copper relay",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 12,
+            "text": "Copper relay"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-003:occ-02",
+          "entityId": "ent-dh2-003-02",
+          "label": "kiln schema",
+          "evidence": {
+            "startOffset": 24,
+            "endOffset": 35,
+            "text": "kiln schema"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-003:occ-03",
+          "entityId": "ent-dh2-003-03",
+          "label": "ember window",
+          "evidence": {
+            "startOffset": 60,
+            "endOffset": 72,
+            "text": "ember window"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-003:occ-04",
+          "entityId": "ent-dh2-003-04",
+          "label": "kiln schema",
+          "evidence": {
+            "startOffset": 41,
+            "endOffset": 52,
+            "text": "kiln schema"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-003:occ-05",
+          "entityId": "ent-dh2-003-05",
+          "label": "ember window",
+          "evidence": {
+            "startOffset": 78,
+            "endOffset": 90,
+            "text": "ember window"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-003:occ-06",
+          "entityId": "ent-dh2-003-06",
+          "label": "rushed launch",
+          "evidence": {
+            "startOffset": 98,
+            "endOffset": 111,
+            "text": "rushed launch"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-003-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-003-01"
+        },
+        {
+          "assertionId": "ent-dh2-003-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-003-02"
+        },
+        {
+          "assertionId": "ent-dh2-003-03",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-003-03"
+        },
+        {
+          "assertionId": "ent-dh2-003-04",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-003-04"
+        },
+        {
+          "assertionId": "ent-dh2-003-05",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-003-05"
+        },
+        {
+          "assertionId": "ent-dh2-003-06",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-003-06"
+        },
+        {
+          "assertionId": "rel-dh2-003-01",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-003-01"
+        },
+        {
+          "assertionId": "rel-dh2-003-02",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-003-02"
+        },
+        {
+          "assertionId": "rel-dh2-003-03",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-003-03"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-004",
+      "scenarioId": "dh2-s-004",
+      "language": "en",
+      "sourceDigest": "sha256:1c9db60ade367e0cf5213c0b3dd8b41b138776c02e52823a3a606e5b777ea16d",
+      "abstention": {
+        "mode": "none"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-004-01",
+          "occurrenceKey": "dh2-004:occ-01",
+          "type": "Document",
+          "label": "Mica dossier",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 12,
+            "text": "Mica dossier"
+          }
+        },
+        {
+          "entityId": "ent-dh2-004-02",
+          "occurrenceKey": "dh2-004:occ-02",
+          "type": "Resource",
+          "label": "north archive",
+          "evidence": {
+            "startOffset": 22,
+            "endOffset": 35,
+            "text": "north archive"
+          }
+        },
+        {
+          "entityId": "ent-dh2-004-03",
+          "occurrenceKey": "dh2-004:occ-03",
+          "type": "Question",
+          "label": "audit query",
+          "evidence": {
+            "startOffset": 63,
+            "endOffset": 74,
+            "text": "audit query"
+          }
+        },
+        {
+          "entityId": "ent-dh2-004-04",
+          "occurrenceKey": "dh2-004:occ-04",
+          "type": "Resource",
+          "label": "north archive",
+          "evidence": {
+            "startOffset": 41,
+            "endOffset": 54,
+            "text": "north archive"
+          }
+        },
+        {
+          "entityId": "ent-dh2-004-05",
+          "occurrenceKey": "dh2-004:occ-05",
+          "type": "Question",
+          "label": "audit query",
+          "evidence": {
+            "startOffset": 80,
+            "endOffset": 91,
+            "text": "audit query"
+          }
+        },
+        {
+          "entityId": "ent-dh2-004-06",
+          "occurrenceKey": "dh2-004:occ-06",
+          "type": "Control",
+          "label": "seal register",
+          "evidence": {
+            "startOffset": 103,
+            "endOffset": 116,
+            "text": "seal register"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "relationId": "rel-dh2-004-01",
+          "predicate": "requires",
+          "sourceEntityId": "ent-dh2-004-01",
+          "targetEntityId": "ent-dh2-004-02",
+          "triggerEvidence": {
+            "startOffset": 13,
+            "endOffset": 21,
+            "text": "requires"
+          },
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 36,
+            "text": "Mica dossier requires north archive."
+          }
+        },
+        {
+          "relationId": "rel-dh2-004-02",
+          "predicate": "answers",
+          "sourceEntityId": "ent-dh2-004-04",
+          "targetEntityId": "ent-dh2-004-03",
+          "triggerEvidence": {
+            "startOffset": 55,
+            "endOffset": 62,
+            "text": "answers"
+          },
+          "evidence": {
+            "startOffset": 37,
+            "endOffset": 75,
+            "text": "The north archive answers audit query."
+          }
+        },
+        {
+          "relationId": "rel-dh2-004-03",
+          "predicate": "dependsOn",
+          "sourceEntityId": "ent-dh2-004-05",
+          "targetEntityId": "ent-dh2-004-06",
+          "triggerEvidence": {
+            "startOffset": 92,
+            "endOffset": 102,
+            "text": "depends on"
+          },
+          "evidence": {
+            "startOffset": 76,
+            "endOffset": 117,
+            "text": "The audit query depends on seal register."
+          }
+        }
+      ],
+      "quarantined": [],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-004:occ-01",
+          "entityId": "ent-dh2-004-01",
+          "label": "Mica dossier",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 12,
+            "text": "Mica dossier"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-004:occ-02",
+          "entityId": "ent-dh2-004-02",
+          "label": "north archive",
+          "evidence": {
+            "startOffset": 22,
+            "endOffset": 35,
+            "text": "north archive"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-004:occ-03",
+          "entityId": "ent-dh2-004-03",
+          "label": "audit query",
+          "evidence": {
+            "startOffset": 63,
+            "endOffset": 74,
+            "text": "audit query"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-004:occ-04",
+          "entityId": "ent-dh2-004-04",
+          "label": "north archive",
+          "evidence": {
+            "startOffset": 41,
+            "endOffset": 54,
+            "text": "north archive"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-004:occ-05",
+          "entityId": "ent-dh2-004-05",
+          "label": "audit query",
+          "evidence": {
+            "startOffset": 80,
+            "endOffset": 91,
+            "text": "audit query"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-004:occ-06",
+          "entityId": "ent-dh2-004-06",
+          "label": "seal register",
+          "evidence": {
+            "startOffset": 103,
+            "endOffset": 116,
+            "text": "seal register"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-004-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-004-01"
+        },
+        {
+          "assertionId": "ent-dh2-004-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-004-02"
+        },
+        {
+          "assertionId": "ent-dh2-004-03",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-004-03"
+        },
+        {
+          "assertionId": "ent-dh2-004-04",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-004-04"
+        },
+        {
+          "assertionId": "ent-dh2-004-05",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-004-05"
+        },
+        {
+          "assertionId": "ent-dh2-004-06",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-004-06"
+        },
+        {
+          "assertionId": "rel-dh2-004-01",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-004-01"
+        },
+        {
+          "assertionId": "rel-dh2-004-02",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-004-02"
+        },
+        {
+          "assertionId": "rel-dh2-004-03",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-004-03"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-005",
+      "scenarioId": "dh2-s-005",
+      "language": "en",
+      "sourceDigest": "sha256:5469e39c87d7ee89f4256bbfe2ccb3108cbce32df094fdbb0077b43fcd392c56",
+      "abstention": {
+        "mode": "partial",
+        "reason": "at least one assertion is grounded while another is withheld"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-005-01",
+          "occurrenceKey": "dh2-005:occ-01",
+          "type": "Document",
+          "label": "aster memo",
+          "evidence": {
+            "startOffset": 4,
+            "endOffset": 14,
+            "text": "aster memo"
+          }
+        },
+        {
+          "entityId": "ent-dh2-005-02",
+          "occurrenceKey": "dh2-005:occ-02",
+          "type": "Requirement",
+          "label": "river permit",
+          "evidence": {
+            "startOffset": 21,
+            "endOffset": 33,
+            "text": "river permit"
+          }
+        },
+        {
+          "entityId": "ent-dh2-005-03",
+          "occurrenceKey": "dh2-005:occ-03",
+          "type": "Document",
+          "label": "aster memo",
+          "evidence": {
+            "startOffset": 44,
+            "endOffset": 54,
+            "text": "aster memo"
+          }
+        },
+        {
+          "entityId": "ent-dh2-005-04",
+          "occurrenceKey": "dh2-005:occ-04",
+          "type": "Requirement",
+          "label": "river permit",
+          "evidence": {
+            "startOffset": 62,
+            "endOffset": 74,
+            "text": "river permit"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "relationId": "rel-dh2-005-01",
+          "predicate": "blocks",
+          "sourceEntityId": "ent-dh2-005-03",
+          "targetEntityId": "ent-dh2-005-04",
+          "triggerEvidence": {
+            "startOffset": 55,
+            "endOffset": 61,
+            "text": "blocks"
+          },
+          "evidence": {
+            "startOffset": 35,
+            "endOffset": 75,
+            "text": "A second aster memo blocks river permit."
+          }
+        }
+      ],
+      "quarantined": [
+        {
+          "assertionId": "q-dh2-005-01",
+          "kind": "relation",
+          "reasonCode": "UNSUPPORTED_PREDICATE",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 34,
+            "text": "The aster memo cites river permit."
+          },
+          "triggerEvidence": {
+            "startOffset": 15,
+            "endOffset": 20,
+            "text": "cites"
+          }
+        }
+      ],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-005:occ-01",
+          "entityId": "ent-dh2-005-01",
+          "label": "aster memo",
+          "evidence": {
+            "startOffset": 4,
+            "endOffset": 14,
+            "text": "aster memo"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-005:occ-02",
+          "entityId": "ent-dh2-005-02",
+          "label": "river permit",
+          "evidence": {
+            "startOffset": 21,
+            "endOffset": 33,
+            "text": "river permit"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-005:occ-03",
+          "entityId": "ent-dh2-005-03",
+          "label": "aster memo",
+          "evidence": {
+            "startOffset": 44,
+            "endOffset": 54,
+            "text": "aster memo"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-005:occ-04",
+          "entityId": "ent-dh2-005-04",
+          "label": "river permit",
+          "evidence": {
+            "startOffset": 62,
+            "endOffset": 74,
+            "text": "river permit"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-005-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-005-01"
+        },
+        {
+          "assertionId": "ent-dh2-005-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-005-02"
+        },
+        {
+          "assertionId": "ent-dh2-005-03",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-005-03"
+        },
+        {
+          "assertionId": "ent-dh2-005-04",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-005-04"
+        },
+        {
+          "assertionId": "rel-dh2-005-01",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-005-01"
+        },
+        {
+          "assertionId": "q-dh2-005-01",
+          "kind": "relation",
+          "status": "quarantined"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-006",
+      "scenarioId": "dh2-s-006",
+      "language": "en",
+      "sourceDigest": "sha256:736b5239693a835b6eebe615f683e577866448a702f61ac98eaf677bbd5b6cf0",
+      "abstention": {
+        "mode": "none"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-006-01",
+          "occurrenceKey": "dh2-006:occ-01",
+          "type": "Control",
+          "label": "Quartz label",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 12,
+            "text": "Quartz label"
+          }
+        },
+        {
+          "entityId": "ent-dh2-006-02",
+          "occurrenceKey": "dh2-006:occ-02",
+          "type": "Document",
+          "label": "intake ledger",
+          "evidence": {
+            "startOffset": 22,
+            "endOffset": 35,
+            "text": "intake ledger"
+          }
+        },
+        {
+          "entityId": "ent-dh2-006-03",
+          "occurrenceKey": "dh2-006:occ-03",
+          "type": "Control",
+          "label": "Quartz label",
+          "evidence": {
+            "startOffset": 37,
+            "endOffset": 49,
+            "text": "Quartz label"
+          }
+        },
+        {
+          "entityId": "ent-dh2-006-04",
+          "occurrenceKey": "dh2-006:occ-04",
+          "type": "Document",
+          "label": "transit ledger",
+          "evidence": {
+            "startOffset": 66,
+            "endOffset": 80,
+            "text": "transit ledger"
+          }
+        },
+        {
+          "entityId": "ent-dh2-006-05",
+          "occurrenceKey": "dh2-006:occ-05",
+          "type": "Document",
+          "label": "transit ledger",
+          "evidence": {
+            "startOffset": 86,
+            "endOffset": 100,
+            "text": "transit ledger"
+          }
+        },
+        {
+          "entityId": "ent-dh2-006-06",
+          "occurrenceKey": "dh2-006:occ-06",
+          "type": "Control",
+          "label": "quartz label",
+          "evidence": {
+            "startOffset": 110,
+            "endOffset": 122,
+            "text": "quartz label"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "relationId": "rel-dh2-006-01",
+          "predicate": "supports",
+          "sourceEntityId": "ent-dh2-006-01",
+          "targetEntityId": "ent-dh2-006-02",
+          "triggerEvidence": {
+            "startOffset": 13,
+            "endOffset": 21,
+            "text": "supports"
+          },
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 36,
+            "text": "Quartz label supports intake ledger."
+          }
+        },
+        {
+          "relationId": "rel-dh2-006-02",
+          "predicate": "constrains",
+          "sourceEntityId": "ent-dh2-006-03",
+          "targetEntityId": "ent-dh2-006-04",
+          "triggerEvidence": {
+            "startOffset": 55,
+            "endOffset": 65,
+            "text": "constrains"
+          },
+          "evidence": {
+            "startOffset": 37,
+            "endOffset": 81,
+            "text": "Quartz label also constrains transit ledger."
+          }
+        },
+        {
+          "relationId": "rel-dh2-006-03",
+          "predicate": "requires",
+          "sourceEntityId": "ent-dh2-006-05",
+          "targetEntityId": "ent-dh2-006-06",
+          "triggerEvidence": {
+            "startOffset": 101,
+            "endOffset": 109,
+            "text": "requires"
+          },
+          "evidence": {
+            "startOffset": 82,
+            "endOffset": 123,
+            "text": "The transit ledger requires quartz label."
+          }
+        }
+      ],
+      "quarantined": [],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-006:occ-01",
+          "entityId": "ent-dh2-006-01",
+          "label": "Quartz label",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 12,
+            "text": "Quartz label"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-006:occ-02",
+          "entityId": "ent-dh2-006-02",
+          "label": "intake ledger",
+          "evidence": {
+            "startOffset": 22,
+            "endOffset": 35,
+            "text": "intake ledger"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-006:occ-03",
+          "entityId": "ent-dh2-006-03",
+          "label": "Quartz label",
+          "evidence": {
+            "startOffset": 37,
+            "endOffset": 49,
+            "text": "Quartz label"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-006:occ-04",
+          "entityId": "ent-dh2-006-04",
+          "label": "transit ledger",
+          "evidence": {
+            "startOffset": 66,
+            "endOffset": 80,
+            "text": "transit ledger"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-006:occ-05",
+          "entityId": "ent-dh2-006-05",
+          "label": "transit ledger",
+          "evidence": {
+            "startOffset": 86,
+            "endOffset": 100,
+            "text": "transit ledger"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-006:occ-06",
+          "entityId": "ent-dh2-006-06",
+          "label": "quartz label",
+          "evidence": {
+            "startOffset": 110,
+            "endOffset": 122,
+            "text": "quartz label"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-006-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-006-01"
+        },
+        {
+          "assertionId": "ent-dh2-006-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-006-02"
+        },
+        {
+          "assertionId": "ent-dh2-006-03",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-006-03"
+        },
+        {
+          "assertionId": "ent-dh2-006-04",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-006-04"
+        },
+        {
+          "assertionId": "ent-dh2-006-05",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-006-05"
+        },
+        {
+          "assertionId": "ent-dh2-006-06",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-006-06"
+        },
+        {
+          "assertionId": "rel-dh2-006-01",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-006-01"
+        },
+        {
+          "assertionId": "rel-dh2-006-02",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-006-02"
+        },
+        {
+          "assertionId": "rel-dh2-006-03",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-006-03"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-007",
+      "scenarioId": "dh2-s-007",
+      "language": "en",
+      "sourceDigest": "sha256:f66a0ed2d7aef3d7a705f64265d58c67f01b581114fedd3bfaf973e4d5b314f6",
+      "abstention": {
+        "mode": "full",
+        "reason": "no assertion is finalized; proposed content is quarantined"
+      },
+      "entities": [],
+      "relations": [],
+      "quarantined": [
+        {
+          "assertionId": "q-dh2-007-01",
+          "kind": "relation",
+          "reasonCode": "NEGATED",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 46,
+            "endOffset": 80,
+            "text": "the blue warrant supports the gate"
+          },
+          "triggerEvidence": {
+            "startOffset": 63,
+            "endOffset": 71,
+            "text": "supports"
+          }
+        }
+      ],
+      "occurrenceRegistry": [],
+      "propositionRegistry": [
+        {
+          "assertionId": "q-dh2-007-01",
+          "kind": "relation",
+          "status": "quarantined"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-008",
+      "scenarioId": "dh2-s-008",
+      "language": "en",
+      "sourceDigest": "sha256:db0ae7be9a8c863f2f6e496b07f6922bfeeb6878541721f062fe65981a338279",
+      "abstention": {
+        "mode": "full",
+        "reason": "no assertion is finalized; proposed content is quarantined"
+      },
+      "entities": [],
+      "relations": [],
+      "quarantined": [
+        {
+          "assertionId": "q-dh2-008-01",
+          "kind": "relation",
+          "reasonCode": "NEGATED",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 25,
+            "endOffset": 65,
+            "text": "cedar switch implements the payment rule"
+          },
+          "triggerEvidence": {
+            "startOffset": 38,
+            "endOffset": 48,
+            "text": "implements"
+          }
+        }
+      ],
+      "occurrenceRegistry": [],
+      "propositionRegistry": [
+        {
+          "assertionId": "q-dh2-008-01",
+          "kind": "relation",
+          "status": "quarantined"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-009",
+      "scenarioId": "dh2-s-009",
+      "language": "en",
+      "sourceDigest": "sha256:cd146aa7b615f86b0d6909b1537f01189327122b847856755db86d727bb08551",
+      "abstention": {
+        "mode": "partial",
+        "reason": "at least one assertion is grounded while another is withheld"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-009-01",
+          "occurrenceKey": "dh2-009:occ-01",
+          "type": "Document",
+          "label": "Amber docket",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 12,
+            "text": "Amber docket"
+          }
+        },
+        {
+          "entityId": "ent-dh2-009-02",
+          "occurrenceKey": "dh2-009:occ-02",
+          "type": "Requirement",
+          "label": "secure audit",
+          "evidence": {
+            "startOffset": 21,
+            "endOffset": 33,
+            "text": "secure audit"
+          }
+        }
+      ],
+      "relations": [],
+      "quarantined": [
+        {
+          "assertionId": "q-dh2-009-01",
+          "kind": "relation",
+          "reasonCode": "UNSUPPORTED_PREDICATE",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 34,
+            "text": "Amber docket records secure audit."
+          },
+          "triggerEvidence": {
+            "startOffset": 13,
+            "endOffset": 20,
+            "text": "records"
+          }
+        },
+        {
+          "assertionId": "q-dh2-009-02",
+          "kind": "relation",
+          "reasonCode": "AMBIGUOUS",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 57,
+            "endOffset": 92,
+            "text": "amber docket governs remote archive"
+          },
+          "triggerEvidence": {
+            "startOffset": 70,
+            "endOffset": 77,
+            "text": "governs"
+          }
+        }
+      ],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-009:occ-01",
+          "entityId": "ent-dh2-009-01",
+          "label": "Amber docket",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 12,
+            "text": "Amber docket"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-009:occ-02",
+          "entityId": "ent-dh2-009-02",
+          "label": "secure audit",
+          "evidence": {
+            "startOffset": 21,
+            "endOffset": 33,
+            "text": "secure audit"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-009-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-009-01"
+        },
+        {
+          "assertionId": "ent-dh2-009-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-009-02"
+        },
+        {
+          "assertionId": "q-dh2-009-01",
+          "kind": "relation",
+          "status": "quarantined"
+        },
+        {
+          "assertionId": "q-dh2-009-02",
+          "kind": "relation",
+          "status": "quarantined"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-010",
+      "scenarioId": "dh2-s-010",
+      "language": "en",
+      "sourceDigest": "sha256:972bb9ee568b40fb5d2a4e261fd0f481701ca121620f509f3360d49e938bad48",
+      "abstention": {
+        "mode": "partial",
+        "reason": "at least one assertion is grounded while another is withheld"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-010-01",
+          "occurrenceKey": "dh2-010:occ-01",
+          "type": "Document",
+          "label": "Violet plan",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 11,
+            "text": "Violet plan"
+          }
+        },
+        {
+          "entityId": "ent-dh2-010-02",
+          "occurrenceKey": "dh2-010:occ-02",
+          "type": "Resource",
+          "label": "winter queue",
+          "evidence": {
+            "startOffset": 18,
+            "endOffset": 30,
+            "text": "winter queue"
+          }
+        }
+      ],
+      "relations": [],
+      "quarantined": [
+        {
+          "assertionId": "q-dh2-010-01",
+          "kind": "relation",
+          "reasonCode": "UNSUPPORTED_PREDICATE",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 31,
+            "text": "Violet plan names winter queue."
+          },
+          "triggerEvidence": {
+            "startOffset": 12,
+            "endOffset": 17,
+            "text": "names"
+          }
+        },
+        {
+          "assertionId": "q-dh2-010-02",
+          "kind": "relation",
+          "reasonCode": "AMBIGUOUS",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 40,
+            "endOffset": 72,
+            "text": "winter queue blocks review timer"
+          },
+          "triggerEvidence": {
+            "startOffset": 53,
+            "endOffset": 59,
+            "text": "blocks"
+          }
+        }
+      ],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-010:occ-01",
+          "entityId": "ent-dh2-010-01",
+          "label": "Violet plan",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 11,
+            "text": "Violet plan"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-010:occ-02",
+          "entityId": "ent-dh2-010-02",
+          "label": "winter queue",
+          "evidence": {
+            "startOffset": 18,
+            "endOffset": 30,
+            "text": "winter queue"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-010-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-010-01"
+        },
+        {
+          "assertionId": "ent-dh2-010-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-010-02"
+        },
+        {
+          "assertionId": "q-dh2-010-01",
+          "kind": "relation",
+          "status": "quarantined"
+        },
+        {
+          "assertionId": "q-dh2-010-02",
+          "kind": "relation",
+          "status": "quarantined"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-011",
+      "scenarioId": "dh2-s-011",
+      "language": "en",
+      "sourceDigest": "sha256:dd73e68a5890a8de8b4af31b24d7a22cdcf87bd9cc1ff9a36cf3975c2178357f",
+      "abstention": {
+        "mode": "none"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-011-01",
+          "occurrenceKey": "dh2-011:occ-01",
+          "type": "Document",
+          "label": "Old beacon policy",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 17,
+            "text": "Old beacon policy"
+          }
+        },
+        {
+          "entityId": "ent-dh2-011-02",
+          "occurrenceKey": "dh2-011:occ-02",
+          "type": "Document",
+          "label": "current beacon policy",
+          "evidence": {
+            "startOffset": 35,
+            "endOffset": 56,
+            "text": "current beacon policy"
+          }
+        },
+        {
+          "entityId": "ent-dh2-011-03",
+          "occurrenceKey": "dh2-011:occ-03",
+          "type": "Document",
+          "label": "current beacon policy",
+          "evidence": {
+            "startOffset": 62,
+            "endOffset": 83,
+            "text": "current beacon policy"
+          }
+        },
+        {
+          "entityId": "ent-dh2-011-04",
+          "occurrenceKey": "dh2-011:occ-04",
+          "type": "Requirement",
+          "label": "fresh dispatch",
+          "evidence": {
+            "startOffset": 93,
+            "endOffset": 107,
+            "text": "fresh dispatch"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "relationId": "rel-dh2-011-01",
+          "predicate": "supersedes",
+          "sourceEntityId": "ent-dh2-011-02",
+          "targetEntityId": "ent-dh2-011-01",
+          "triggerEvidence": {
+            "startOffset": 21,
+            "endOffset": 31,
+            "text": "superseded"
+          },
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 57,
+            "text": "Old beacon policy is superseded by current beacon policy."
+          }
+        },
+        {
+          "relationId": "rel-dh2-011-02",
+          "predicate": "supports",
+          "sourceEntityId": "ent-dh2-011-03",
+          "targetEntityId": "ent-dh2-011-04",
+          "triggerEvidence": {
+            "startOffset": 84,
+            "endOffset": 92,
+            "text": "supports"
+          },
+          "evidence": {
+            "startOffset": 58,
+            "endOffset": 108,
+            "text": "The current beacon policy supports fresh dispatch."
+          }
+        }
+      ],
+      "quarantined": [],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-011:occ-01",
+          "entityId": "ent-dh2-011-01",
+          "label": "Old beacon policy",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 17,
+            "text": "Old beacon policy"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-011:occ-02",
+          "entityId": "ent-dh2-011-02",
+          "label": "current beacon policy",
+          "evidence": {
+            "startOffset": 35,
+            "endOffset": 56,
+            "text": "current beacon policy"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-011:occ-03",
+          "entityId": "ent-dh2-011-03",
+          "label": "current beacon policy",
+          "evidence": {
+            "startOffset": 62,
+            "endOffset": 83,
+            "text": "current beacon policy"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-011:occ-04",
+          "entityId": "ent-dh2-011-04",
+          "label": "fresh dispatch",
+          "evidence": {
+            "startOffset": 93,
+            "endOffset": 107,
+            "text": "fresh dispatch"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-011-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-011-01"
+        },
+        {
+          "assertionId": "ent-dh2-011-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-011-02"
+        },
+        {
+          "assertionId": "ent-dh2-011-03",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-011-03"
+        },
+        {
+          "assertionId": "ent-dh2-011-04",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-011-04"
+        },
+        {
+          "assertionId": "rel-dh2-011-01",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-011-01"
+        },
+        {
+          "assertionId": "rel-dh2-011-02",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-011-02"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-012",
+      "scenarioId": "dh2-s-012",
+      "language": "en",
+      "sourceDigest": "sha256:7755066ccda5d45ddacf22871418594a8973956729dabc95bc4779f34e20eb92",
+      "abstention": {
+        "mode": "partial",
+        "reason": "at least one assertion is grounded while another is withheld"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-012-01",
+          "occurrenceKey": "dh2-012:occ-01",
+          "type": "Document",
+          "label": "Retired map",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 11,
+            "text": "Retired map"
+          }
+        },
+        {
+          "entityId": "ent-dh2-012-02",
+          "occurrenceKey": "dh2-012:occ-02",
+          "type": "Resource",
+          "label": "prior route",
+          "evidence": {
+            "startOffset": 21,
+            "endOffset": 32,
+            "text": "prior route"
+          }
+        },
+        {
+          "entityId": "ent-dh2-012-03",
+          "occurrenceKey": "dh2-012:occ-03",
+          "type": "Document",
+          "label": "replacement map",
+          "evidence": {
+            "startOffset": 38,
+            "endOffset": 53,
+            "text": "replacement map"
+          }
+        },
+        {
+          "entityId": "ent-dh2-012-04",
+          "occurrenceKey": "dh2-012:occ-04",
+          "type": "Resource",
+          "label": "active route",
+          "evidence": {
+            "startOffset": 62,
+            "endOffset": 74,
+            "text": "active route"
+          }
+        }
+      ],
+      "relations": [],
+      "quarantined": [
+        {
+          "assertionId": "q-dh2-012-01",
+          "kind": "relation",
+          "reasonCode": "STALE",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 33,
+            "text": "Retired map governed prior route."
+          },
+          "triggerEvidence": {
+            "startOffset": 12,
+            "endOffset": 20,
+            "text": "governed"
+          }
+        },
+        {
+          "assertionId": "q-dh2-012-02",
+          "kind": "relation",
+          "reasonCode": "UNSUPPORTED_PREDICATE",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 34,
+            "endOffset": 75,
+            "text": "The replacement map governs active route."
+          },
+          "triggerEvidence": {
+            "startOffset": 54,
+            "endOffset": 61,
+            "text": "governs"
+          }
+        }
+      ],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-012:occ-01",
+          "entityId": "ent-dh2-012-01",
+          "label": "Retired map",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 11,
+            "text": "Retired map"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-012:occ-02",
+          "entityId": "ent-dh2-012-02",
+          "label": "prior route",
+          "evidence": {
+            "startOffset": 21,
+            "endOffset": 32,
+            "text": "prior route"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-012:occ-03",
+          "entityId": "ent-dh2-012-03",
+          "label": "replacement map",
+          "evidence": {
+            "startOffset": 38,
+            "endOffset": 53,
+            "text": "replacement map"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-012:occ-04",
+          "entityId": "ent-dh2-012-04",
+          "label": "active route",
+          "evidence": {
+            "startOffset": 62,
+            "endOffset": 74,
+            "text": "active route"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-012-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-012-01"
+        },
+        {
+          "assertionId": "ent-dh2-012-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-012-02"
+        },
+        {
+          "assertionId": "ent-dh2-012-03",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-012-03"
+        },
+        {
+          "assertionId": "ent-dh2-012-04",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-012-04"
+        },
+        {
+          "assertionId": "q-dh2-012-01",
+          "kind": "relation",
+          "status": "quarantined"
+        },
+        {
+          "assertionId": "q-dh2-012-02",
+          "kind": "relation",
+          "status": "quarantined"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-013",
+      "scenarioId": "dh2-s-013",
+      "language": "vi",
+      "sourceDigest": "sha256:0d2a5066b9f4a0bc57f05a772776b6e45b43de03540b0c187969d02676e0438c",
+      "abstention": {
+        "mode": "none"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-013-01",
+          "occurrenceKey": "dh2-013:occ-01",
+          "type": "Document",
+          "label": "Sổ mây",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 6,
+            "text": "Sổ mây"
+          }
+        },
+        {
+          "entityId": "ent-dh2-013-02",
+          "occurrenceKey": "dh2-013:occ-02",
+          "type": "Control",
+          "label": "cầu lọc",
+          "evidence": {
+            "startOffset": 21,
+            "endOffset": 28,
+            "text": "cầu lọc"
+          }
+        },
+        {
+          "entityId": "ent-dh2-013-03",
+          "occurrenceKey": "dh2-013:occ-03",
+          "type": "Control",
+          "label": "mã neo",
+          "evidence": {
+            "startOffset": 47,
+            "endOffset": 53,
+            "text": "mã neo"
+          }
+        },
+        {
+          "entityId": "ent-dh2-013-04",
+          "occurrenceKey": "dh2-013:occ-04",
+          "type": "Control",
+          "label": "cầu lọc",
+          "evidence": {
+            "startOffset": 30,
+            "endOffset": 37,
+            "text": "cầu lọc"
+          }
+        },
+        {
+          "entityId": "ent-dh2-013-05",
+          "occurrenceKey": "dh2-013:occ-05",
+          "type": "Control",
+          "label": "mã neo",
+          "evidence": {
+            "startOffset": 55,
+            "endOffset": 61,
+            "text": "mã neo"
+          }
+        },
+        {
+          "entityId": "ent-dh2-013-06",
+          "occurrenceKey": "dh2-013:occ-06",
+          "type": "Risk",
+          "label": "chuyến gửi lỗi",
+          "evidence": {
+            "startOffset": 67,
+            "endOffset": 81,
+            "text": "chuyến gửi lỗi"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "relationId": "rel-dh2-013-01",
+          "predicate": "dependsOn",
+          "sourceEntityId": "ent-dh2-013-01",
+          "targetEntityId": "ent-dh2-013-02",
+          "triggerEvidence": {
+            "startOffset": 7,
+            "endOffset": 20,
+            "text": "phụ thuộc vào"
+          },
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 29,
+            "text": "Sổ mây phụ thuộc vào cầu lọc."
+          }
+        },
+        {
+          "relationId": "rel-dh2-013-02",
+          "predicate": "validates",
+          "sourceEntityId": "ent-dh2-013-04",
+          "targetEntityId": "ent-dh2-013-03",
+          "triggerEvidence": {
+            "startOffset": 38,
+            "endOffset": 46,
+            "text": "kiểm tra"
+          },
+          "evidence": {
+            "startOffset": 30,
+            "endOffset": 54,
+            "text": "cầu lọc kiểm tra mã neo."
+          }
+        },
+        {
+          "relationId": "rel-dh2-013-03",
+          "predicate": "blocks",
+          "sourceEntityId": "ent-dh2-013-05",
+          "targetEntityId": "ent-dh2-013-06",
+          "triggerEvidence": {
+            "startOffset": 62,
+            "endOffset": 66,
+            "text": "chặn"
+          },
+          "evidence": {
+            "startOffset": 55,
+            "endOffset": 82,
+            "text": "mã neo chặn chuyến gửi lỗi."
+          }
+        }
+      ],
+      "quarantined": [],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-013:occ-01",
+          "entityId": "ent-dh2-013-01",
+          "label": "Sổ mây",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 6,
+            "text": "Sổ mây"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-013:occ-02",
+          "entityId": "ent-dh2-013-02",
+          "label": "cầu lọc",
+          "evidence": {
+            "startOffset": 21,
+            "endOffset": 28,
+            "text": "cầu lọc"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-013:occ-03",
+          "entityId": "ent-dh2-013-03",
+          "label": "mã neo",
+          "evidence": {
+            "startOffset": 47,
+            "endOffset": 53,
+            "text": "mã neo"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-013:occ-04",
+          "entityId": "ent-dh2-013-04",
+          "label": "cầu lọc",
+          "evidence": {
+            "startOffset": 30,
+            "endOffset": 37,
+            "text": "cầu lọc"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-013:occ-05",
+          "entityId": "ent-dh2-013-05",
+          "label": "mã neo",
+          "evidence": {
+            "startOffset": 55,
+            "endOffset": 61,
+            "text": "mã neo"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-013:occ-06",
+          "entityId": "ent-dh2-013-06",
+          "label": "chuyến gửi lỗi",
+          "evidence": {
+            "startOffset": 67,
+            "endOffset": 81,
+            "text": "chuyến gửi lỗi"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-013-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-013-01"
+        },
+        {
+          "assertionId": "ent-dh2-013-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-013-02"
+        },
+        {
+          "assertionId": "ent-dh2-013-03",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-013-03"
+        },
+        {
+          "assertionId": "ent-dh2-013-04",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-013-04"
+        },
+        {
+          "assertionId": "ent-dh2-013-05",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-013-05"
+        },
+        {
+          "assertionId": "ent-dh2-013-06",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-013-06"
+        },
+        {
+          "assertionId": "rel-dh2-013-01",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-013-01"
+        },
+        {
+          "assertionId": "rel-dh2-013-02",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-013-02"
+        },
+        {
+          "assertionId": "rel-dh2-013-03",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-013-03"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-014",
+      "scenarioId": "dh2-s-014",
+      "language": "ja",
+      "sourceDigest": "sha256:49c81ea6dfc0095a06e0098fb251d4f787dcf5a3f1261795e10f0ac25ec082fa",
+      "abstention": {
+        "mode": "none"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-014-01",
+          "occurrenceKey": "dh2-014:occ-01",
+          "type": "Document",
+          "label": "青い台帳",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 4,
+            "text": "青い台帳"
+          }
+        },
+        {
+          "entityId": "ent-dh2-014-02",
+          "occurrenceKey": "dh2-014:occ-02",
+          "type": "Requirement",
+          "label": "港の規則",
+          "evidence": {
+            "startOffset": 5,
+            "endOffset": 9,
+            "text": "港の規則"
+          }
+        },
+        {
+          "entityId": "ent-dh2-014-03",
+          "occurrenceKey": "dh2-014:occ-03",
+          "type": "Control",
+          "label": "検査印",
+          "evidence": {
+            "startOffset": 19,
+            "endOffset": 22,
+            "text": "検査印"
+          }
+        },
+        {
+          "entityId": "ent-dh2-014-04",
+          "occurrenceKey": "dh2-014:occ-04",
+          "type": "Requirement",
+          "label": "港の規則",
+          "evidence": {
+            "startOffset": 14,
+            "endOffset": 18,
+            "text": "港の規則"
+          }
+        },
+        {
+          "entityId": "ent-dh2-014-05",
+          "occurrenceKey": "dh2-014:occ-05",
+          "type": "Control",
+          "label": "検査印",
+          "evidence": {
+            "startOffset": 29,
+            "endOffset": 32,
+            "text": "検査印"
+          }
+        },
+        {
+          "entityId": "ent-dh2-014-06",
+          "occurrenceKey": "dh2-014:occ-06",
+          "type": "Risk",
+          "label": "遅延出荷",
+          "evidence": {
+            "startOffset": 33,
+            "endOffset": 37,
+            "text": "遅延出荷"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "relationId": "rel-dh2-014-01",
+          "predicate": "supports",
+          "sourceEntityId": "ent-dh2-014-01",
+          "targetEntityId": "ent-dh2-014-02",
+          "triggerEvidence": {
+            "startOffset": 10,
+            "endOffset": 13,
+            "text": "支える"
+          },
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 14,
+            "text": "青い台帳は港の規則を支える。"
+          }
+        },
+        {
+          "relationId": "rel-dh2-014-02",
+          "predicate": "requires",
+          "sourceEntityId": "ent-dh2-014-04",
+          "targetEntityId": "ent-dh2-014-03",
+          "triggerEvidence": {
+            "startOffset": 23,
+            "endOffset": 28,
+            "text": "必要とする"
+          },
+          "evidence": {
+            "startOffset": 14,
+            "endOffset": 29,
+            "text": "港の規則は検査印を必要とする。"
+          }
+        },
+        {
+          "relationId": "rel-dh2-014-03",
+          "predicate": "blocks",
+          "sourceEntityId": "ent-dh2-014-05",
+          "targetEntityId": "ent-dh2-014-06",
+          "triggerEvidence": {
+            "startOffset": 38,
+            "endOffset": 41,
+            "text": "止める"
+          },
+          "evidence": {
+            "startOffset": 29,
+            "endOffset": 42,
+            "text": "検査印は遅延出荷を止める。"
+          }
+        }
+      ],
+      "quarantined": [],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-014:occ-01",
+          "entityId": "ent-dh2-014-01",
+          "label": "青い台帳",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 4,
+            "text": "青い台帳"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-014:occ-02",
+          "entityId": "ent-dh2-014-02",
+          "label": "港の規則",
+          "evidence": {
+            "startOffset": 5,
+            "endOffset": 9,
+            "text": "港の規則"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-014:occ-03",
+          "entityId": "ent-dh2-014-03",
+          "label": "検査印",
+          "evidence": {
+            "startOffset": 19,
+            "endOffset": 22,
+            "text": "検査印"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-014:occ-04",
+          "entityId": "ent-dh2-014-04",
+          "label": "港の規則",
+          "evidence": {
+            "startOffset": 14,
+            "endOffset": 18,
+            "text": "港の規則"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-014:occ-05",
+          "entityId": "ent-dh2-014-05",
+          "label": "検査印",
+          "evidence": {
+            "startOffset": 29,
+            "endOffset": 32,
+            "text": "検査印"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-014:occ-06",
+          "entityId": "ent-dh2-014-06",
+          "label": "遅延出荷",
+          "evidence": {
+            "startOffset": 33,
+            "endOffset": 37,
+            "text": "遅延出荷"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-014-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-014-01"
+        },
+        {
+          "assertionId": "ent-dh2-014-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-014-02"
+        },
+        {
+          "assertionId": "ent-dh2-014-03",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-014-03"
+        },
+        {
+          "assertionId": "ent-dh2-014-04",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-014-04"
+        },
+        {
+          "assertionId": "ent-dh2-014-05",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-014-05"
+        },
+        {
+          "assertionId": "ent-dh2-014-06",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-014-06"
+        },
+        {
+          "assertionId": "rel-dh2-014-01",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-014-01"
+        },
+        {
+          "assertionId": "rel-dh2-014-02",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-014-02"
+        },
+        {
+          "assertionId": "rel-dh2-014-03",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-014-03"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-015",
+      "scenarioId": "dh2-s-015",
+      "language": "mixed",
+      "sourceDigest": "sha256:25d0fc93300d3751013576148b719ed48d11cba53e4b922b17696a9947918e31",
+      "abstention": {
+        "mode": "none"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-015-01",
+          "occurrenceKey": "dh2-015:occ-01",
+          "type": "Document",
+          "label": "Café docket",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 12,
+            "text": "Café docket"
+          }
+        },
+        {
+          "entityId": "ent-dh2-015-02",
+          "occurrenceKey": "dh2-015:occ-02",
+          "type": "Requirement",
+          "label": "naivé review",
+          "evidence": {
+            "startOffset": 22,
+            "endOffset": 35,
+            "text": "naivé review"
+          }
+        },
+        {
+          "entityId": "ent-dh2-015-03",
+          "occurrenceKey": "dh2-015:occ-03",
+          "type": "Requirement",
+          "label": "naivé review",
+          "evidence": {
+            "startOffset": 41,
+            "endOffset": 54,
+            "text": "naivé review"
+          }
+        },
+        {
+          "entityId": "ent-dh2-015-04",
+          "occurrenceKey": "dh2-015:occ-04",
+          "type": "Resource",
+          "label": "élan archive",
+          "evidence": {
+            "startOffset": 62,
+            "endOffset": 75,
+            "text": "élan archive"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "relationId": "rel-dh2-015-01",
+          "predicate": "supports",
+          "sourceEntityId": "ent-dh2-015-01",
+          "targetEntityId": "ent-dh2-015-02",
+          "triggerEvidence": {
+            "startOffset": 13,
+            "endOffset": 21,
+            "text": "supports"
+          },
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 36,
+            "text": "Café docket supports naivé review."
+          }
+        },
+        {
+          "relationId": "rel-dh2-015-02",
+          "predicate": "blocks",
+          "sourceEntityId": "ent-dh2-015-03",
+          "targetEntityId": "ent-dh2-015-04",
+          "triggerEvidence": {
+            "startOffset": 55,
+            "endOffset": 61,
+            "text": "blocks"
+          },
+          "evidence": {
+            "startOffset": 37,
+            "endOffset": 76,
+            "text": "The naivé review blocks élan archive."
+          }
+        }
+      ],
+      "quarantined": [],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-015:occ-01",
+          "entityId": "ent-dh2-015-01",
+          "label": "Café docket",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 12,
+            "text": "Café docket"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-015:occ-02",
+          "entityId": "ent-dh2-015-02",
+          "label": "naivé review",
+          "evidence": {
+            "startOffset": 22,
+            "endOffset": 35,
+            "text": "naivé review"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-015:occ-03",
+          "entityId": "ent-dh2-015-03",
+          "label": "naivé review",
+          "evidence": {
+            "startOffset": 41,
+            "endOffset": 54,
+            "text": "naivé review"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-015:occ-04",
+          "entityId": "ent-dh2-015-04",
+          "label": "élan archive",
+          "evidence": {
+            "startOffset": 62,
+            "endOffset": 75,
+            "text": "élan archive"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-015-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-015-01"
+        },
+        {
+          "assertionId": "ent-dh2-015-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-015-02"
+        },
+        {
+          "assertionId": "ent-dh2-015-03",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-015-03"
+        },
+        {
+          "assertionId": "ent-dh2-015-04",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-015-04"
+        },
+        {
+          "assertionId": "rel-dh2-015-01",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-015-01"
+        },
+        {
+          "assertionId": "rel-dh2-015-02",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-015-02"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-016",
+      "scenarioId": "dh2-s-016",
+      "language": "mixed",
+      "sourceDigest": "sha256:67cf1dbacd6127b4300667d66650a04028f74b36a400ec864d71dc8f828ddc3b",
+      "abstention": {
+        "mode": "none"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-016-01",
+          "occurrenceKey": "dh2-016:occ-01",
+          "type": "Document",
+          "label": "Signal 🛰️ map",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 13,
+            "text": "Signal 🛰️ map"
+          }
+        },
+        {
+          "entityId": "ent-dh2-016-02",
+          "occurrenceKey": "dh2-016:occ-02",
+          "type": "Requirement",
+          "label": "launch 🧭 plan",
+          "evidence": {
+            "startOffset": 23,
+            "endOffset": 36,
+            "text": "launch 🧭 plan"
+          }
+        },
+        {
+          "entityId": "ent-dh2-016-03",
+          "occurrenceKey": "dh2-016:occ-03",
+          "type": "Requirement",
+          "label": "launch 🧭 plan",
+          "evidence": {
+            "startOffset": 42,
+            "endOffset": 55,
+            "text": "launch 🧭 plan"
+          }
+        },
+        {
+          "entityId": "ent-dh2-016-04",
+          "occurrenceKey": "dh2-016:occ-04",
+          "type": "Risk",
+          "label": "unstable 🧪 cargo",
+          "evidence": {
+            "startOffset": 63,
+            "endOffset": 79,
+            "text": "unstable 🧪 cargo"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "relationId": "rel-dh2-016-01",
+          "predicate": "supports",
+          "sourceEntityId": "ent-dh2-016-01",
+          "targetEntityId": "ent-dh2-016-02",
+          "triggerEvidence": {
+            "startOffset": 14,
+            "endOffset": 22,
+            "text": "supports"
+          },
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 37,
+            "text": "Signal 🛰️ map supports launch 🧭 plan."
+          }
+        },
+        {
+          "relationId": "rel-dh2-016-02",
+          "predicate": "blocks",
+          "sourceEntityId": "ent-dh2-016-03",
+          "targetEntityId": "ent-dh2-016-04",
+          "triggerEvidence": {
+            "startOffset": 56,
+            "endOffset": 62,
+            "text": "blocks"
+          },
+          "evidence": {
+            "startOffset": 38,
+            "endOffset": 80,
+            "text": "The launch 🧭 plan blocks unstable 🧪 cargo."
+          }
+        }
+      ],
+      "quarantined": [],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-016:occ-01",
+          "entityId": "ent-dh2-016-01",
+          "label": "Signal 🛰️ map",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 13,
+            "text": "Signal 🛰️ map"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-016:occ-02",
+          "entityId": "ent-dh2-016-02",
+          "label": "launch 🧭 plan",
+          "evidence": {
+            "startOffset": 23,
+            "endOffset": 36,
+            "text": "launch 🧭 plan"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-016:occ-03",
+          "entityId": "ent-dh2-016-03",
+          "label": "launch 🧭 plan",
+          "evidence": {
+            "startOffset": 42,
+            "endOffset": 55,
+            "text": "launch 🧭 plan"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-016:occ-04",
+          "entityId": "ent-dh2-016-04",
+          "label": "unstable 🧪 cargo",
+          "evidence": {
+            "startOffset": 63,
+            "endOffset": 79,
+            "text": "unstable 🧪 cargo"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-016-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-016-01"
+        },
+        {
+          "assertionId": "ent-dh2-016-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-016-02"
+        },
+        {
+          "assertionId": "ent-dh2-016-03",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-016-03"
+        },
+        {
+          "assertionId": "ent-dh2-016-04",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-016-04"
+        },
+        {
+          "assertionId": "rel-dh2-016-01",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-016-01"
+        },
+        {
+          "assertionId": "rel-dh2-016-02",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-016-02"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-017",
+      "scenarioId": "dh2-s-017",
+      "language": "en",
+      "sourceDigest": "sha256:69e2ad0c7f997d027b9a06190d0d357e83fee861daebd27a963472b5fa8c3613",
+      "abstention": {
+        "mode": "partial",
+        "reason": "at least one assertion is grounded while another is withheld"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-017-01",
+          "occurrenceKey": "dh2-017:occ-01",
+          "type": "Document",
+          "label": "Lumen brief",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 11,
+            "text": "Lumen brief"
+          }
+        },
+        {
+          "entityId": "ent-dh2-017-02",
+          "occurrenceKey": "dh2-017:occ-02",
+          "type": "Control",
+          "label": "harbor token",
+          "evidence": {
+            "startOffset": 18,
+            "endOffset": 30,
+            "text": "harbor token"
+          }
+        },
+        {
+          "entityId": "ent-dh2-017-03",
+          "occurrenceKey": "dh2-017:occ-03",
+          "type": "Document",
+          "label": "sealed ledger",
+          "evidence": {
+            "startOffset": 60,
+            "endOffset": 73,
+            "text": "sealed ledger"
+          }
+        },
+        {
+          "entityId": "ent-dh2-017-04",
+          "occurrenceKey": "dh2-017:occ-04",
+          "type": "Control",
+          "label": "harbor token",
+          "evidence": {
+            "startOffset": 36,
+            "endOffset": 48,
+            "text": "harbor token"
+          }
+        },
+        {
+          "entityId": "ent-dh2-017-05",
+          "occurrenceKey": "dh2-017:occ-05",
+          "type": "Document",
+          "label": "sealed ledger",
+          "evidence": {
+            "startOffset": 104,
+            "endOffset": 117,
+            "text": "sealed ledger"
+          }
+        },
+        {
+          "entityId": "ent-dh2-017-06",
+          "occurrenceKey": "dh2-017:occ-06",
+          "type": "Control",
+          "label": "inspection stamp",
+          "evidence": {
+            "startOffset": 125,
+            "endOffset": 141,
+            "text": "inspection stamp"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "relationId": "rel-dh2-017-01",
+          "predicate": "supports",
+          "sourceEntityId": "ent-dh2-017-04",
+          "targetEntityId": "ent-dh2-017-03",
+          "triggerEvidence": {
+            "startOffset": 49,
+            "endOffset": 57,
+            "text": "supports"
+          },
+          "evidence": {
+            "startOffset": 32,
+            "endOffset": 99,
+            "text": "The harbor token supports a sealed ledger across the next sentence."
+          }
+        },
+        {
+          "relationId": "rel-dh2-017-02",
+          "predicate": "tracks",
+          "sourceEntityId": "ent-dh2-017-05",
+          "targetEntityId": "ent-dh2-017-06",
+          "triggerEvidence": {
+            "startOffset": 118,
+            "endOffset": 124,
+            "text": "tracks"
+          },
+          "evidence": {
+            "startOffset": 100,
+            "endOffset": 142,
+            "text": "The sealed ledger tracks inspection stamp."
+          }
+        }
+      ],
+      "quarantined": [
+        {
+          "assertionId": "q-dh2-017-01",
+          "kind": "relation",
+          "reasonCode": "UNSUPPORTED_PREDICATE",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 31,
+            "text": "Lumen brief names harbor token."
+          },
+          "triggerEvidence": {
+            "startOffset": 12,
+            "endOffset": 17,
+            "text": "names"
+          }
+        }
+      ],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-017:occ-01",
+          "entityId": "ent-dh2-017-01",
+          "label": "Lumen brief",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 11,
+            "text": "Lumen brief"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-017:occ-02",
+          "entityId": "ent-dh2-017-02",
+          "label": "harbor token",
+          "evidence": {
+            "startOffset": 18,
+            "endOffset": 30,
+            "text": "harbor token"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-017:occ-03",
+          "entityId": "ent-dh2-017-03",
+          "label": "sealed ledger",
+          "evidence": {
+            "startOffset": 60,
+            "endOffset": 73,
+            "text": "sealed ledger"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-017:occ-04",
+          "entityId": "ent-dh2-017-04",
+          "label": "harbor token",
+          "evidence": {
+            "startOffset": 36,
+            "endOffset": 48,
+            "text": "harbor token"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-017:occ-05",
+          "entityId": "ent-dh2-017-05",
+          "label": "sealed ledger",
+          "evidence": {
+            "startOffset": 104,
+            "endOffset": 117,
+            "text": "sealed ledger"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-017:occ-06",
+          "entityId": "ent-dh2-017-06",
+          "label": "inspection stamp",
+          "evidence": {
+            "startOffset": 125,
+            "endOffset": 141,
+            "text": "inspection stamp"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-017-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-017-01"
+        },
+        {
+          "assertionId": "ent-dh2-017-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-017-02"
+        },
+        {
+          "assertionId": "ent-dh2-017-03",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-017-03"
+        },
+        {
+          "assertionId": "ent-dh2-017-04",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-017-04"
+        },
+        {
+          "assertionId": "ent-dh2-017-05",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-017-05"
+        },
+        {
+          "assertionId": "ent-dh2-017-06",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-017-06"
+        },
+        {
+          "assertionId": "rel-dh2-017-01",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-017-01"
+        },
+        {
+          "assertionId": "rel-dh2-017-02",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-017-02"
+        },
+        {
+          "assertionId": "q-dh2-017-01",
+          "kind": "relation",
+          "status": "quarantined"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-018",
+      "scenarioId": "dh2-s-018",
+      "language": "en",
+      "sourceDigest": "sha256:2e69746751f5c3a898a680a33ec43bc4b14e94814a958a1f5d66899dd0d8dee0",
+      "abstention": {
+        "mode": "partial",
+        "reason": "at least one assertion is grounded while another is withheld"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-018-01",
+          "occurrenceKey": "dh2-018:occ-01",
+          "type": "Document",
+          "label": "Pine card",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 9,
+            "text": "Pine card"
+          }
+        },
+        {
+          "entityId": "ent-dh2-018-02",
+          "occurrenceKey": "dh2-018:occ-02",
+          "type": "Document",
+          "label": "Stone card",
+          "evidence": {
+            "startOffset": 19,
+            "endOffset": 29,
+            "text": "Stone card"
+          }
+        },
+        {
+          "entityId": "ent-dh2-018-03",
+          "occurrenceKey": "dh2-018:occ-03",
+          "type": "Document",
+          "label": "pine card",
+          "evidence": {
+            "startOffset": 75,
+            "endOffset": 84,
+            "text": "pine card"
+          }
+        },
+        {
+          "entityId": "ent-dh2-018-04",
+          "occurrenceKey": "dh2-018:occ-04",
+          "type": "Document",
+          "label": "Stone card",
+          "evidence": {
+            "startOffset": 35,
+            "endOffset": 45,
+            "text": "Stone card"
+          }
+        },
+        {
+          "entityId": "ent-dh2-018-05",
+          "occurrenceKey": "dh2-018:occ-05",
+          "type": "Resource",
+          "label": "archive lane",
+          "evidence": {
+            "startOffset": 55,
+            "endOffset": 67,
+            "text": "archive lane"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "relationId": "rel-dh2-018-01",
+          "predicate": "supports",
+          "sourceEntityId": "ent-dh2-018-04",
+          "targetEntityId": "ent-dh2-018-05",
+          "triggerEvidence": {
+            "startOffset": 46,
+            "endOffset": 54,
+            "text": "supports"
+          },
+          "evidence": {
+            "startOffset": 31,
+            "endOffset": 67,
+            "text": "The Stone card supports archive lane"
+          }
+        }
+      ],
+      "quarantined": [
+        {
+          "assertionId": "q-dh2-018-01",
+          "kind": "relation",
+          "reasonCode": "UNSUPPORTED_PREDICATE",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 30,
+            "text": "Pine card mentions Stone card."
+          },
+          "triggerEvidence": {
+            "startOffset": 10,
+            "endOffset": 18,
+            "text": "mentions"
+          }
+        },
+        {
+          "assertionId": "q-dh2-018-02",
+          "kind": "entity",
+          "reasonCode": "DISTRACTOR",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 75,
+            "endOffset": 105,
+            "text": "pine card remains a distractor"
+          },
+          "triggerEvidence": {
+            "startOffset": 95,
+            "endOffset": 105,
+            "text": "distractor"
+          }
+        }
+      ],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-018:occ-01",
+          "entityId": "ent-dh2-018-01",
+          "label": "Pine card",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 9,
+            "text": "Pine card"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-018:occ-02",
+          "entityId": "ent-dh2-018-02",
+          "label": "Stone card",
+          "evidence": {
+            "startOffset": 19,
+            "endOffset": 29,
+            "text": "Stone card"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-018:occ-03",
+          "entityId": "ent-dh2-018-03",
+          "label": "pine card",
+          "evidence": {
+            "startOffset": 75,
+            "endOffset": 84,
+            "text": "pine card"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-018:occ-04",
+          "entityId": "ent-dh2-018-04",
+          "label": "Stone card",
+          "evidence": {
+            "startOffset": 35,
+            "endOffset": 45,
+            "text": "Stone card"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-018:occ-05",
+          "entityId": "ent-dh2-018-05",
+          "label": "archive lane",
+          "evidence": {
+            "startOffset": 55,
+            "endOffset": 67,
+            "text": "archive lane"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-018-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-018-01"
+        },
+        {
+          "assertionId": "ent-dh2-018-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-018-02"
+        },
+        {
+          "assertionId": "ent-dh2-018-03",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-018-03"
+        },
+        {
+          "assertionId": "ent-dh2-018-04",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-018-04"
+        },
+        {
+          "assertionId": "ent-dh2-018-05",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-018-05"
+        },
+        {
+          "assertionId": "rel-dh2-018-01",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-018-01"
+        },
+        {
+          "assertionId": "q-dh2-018-01",
+          "kind": "relation",
+          "status": "quarantined"
+        },
+        {
+          "assertionId": "q-dh2-018-02",
+          "kind": "entity",
+          "status": "quarantined"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-019",
+      "scenarioId": "dh2-s-019",
+      "language": "en",
+      "sourceDigest": "sha256:56a68d70425a7b799a22922d9a85eb704972367504cdcaab1c2aa539272e175c",
+      "abstention": {
+        "mode": "full",
+        "reason": "no assertion is finalized; proposed content is quarantined"
+      },
+      "entities": [],
+      "relations": [],
+      "quarantined": [
+        {
+          "assertionId": "q-dh2-019-01",
+          "kind": "relation",
+          "reasonCode": "CROSS_PROJECT",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 55,
+            "text": "Project amber states that project cobalt owns the vault"
+          },
+          "triggerEvidence": {
+            "startOffset": 41,
+            "endOffset": 45,
+            "text": "owns"
+          }
+        }
+      ],
+      "occurrenceRegistry": [],
+      "propositionRegistry": [
+        {
+          "assertionId": "q-dh2-019-01",
+          "kind": "relation",
+          "status": "quarantined"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-020",
+      "scenarioId": "dh2-s-020",
+      "language": "en",
+      "sourceDigest": "sha256:58f00ec0dbc84378c92e19a3a4fd953fb456dbbd3ba1bf295f6e326fa58180b7",
+      "abstention": {
+        "mode": "full",
+        "reason": "no assertion is finalized; proposed content is quarantined"
+      },
+      "entities": [],
+      "relations": [],
+      "quarantined": [
+        {
+          "assertionId": "q-dh2-020-01",
+          "kind": "relation",
+          "reasonCode": "UNVERIFIED",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 25,
+            "endOffset": 55,
+            "text": "mirror key controls gate latch"
+          },
+          "triggerEvidence": {
+            "startOffset": 36,
+            "endOffset": 44,
+            "text": "controls"
+          }
+        }
+      ],
+      "occurrenceRegistry": [],
+      "propositionRegistry": [
+        {
+          "assertionId": "q-dh2-020-01",
+          "kind": "relation",
+          "status": "quarantined"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-021",
+      "scenarioId": "dh2-s-021",
+      "language": "en",
+      "sourceDigest": "sha256:a504d71437b880a33c256f17a01cb61a86b40e3508369186f598f4bfa6ad3222",
+      "abstention": {
+        "mode": "full",
+        "reason": "no assertion is finalized; proposed content is quarantined"
+      },
+      "entities": [],
+      "relations": [],
+      "quarantined": [
+        {
+          "assertionId": "q-dh2-021-01",
+          "kind": "relation",
+          "reasonCode": "ADVERSARIAL",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 45,
+            "endOffset": 75,
+            "text": "hollow token blocks every task"
+          },
+          "triggerEvidence": {
+            "startOffset": 58,
+            "endOffset": 64,
+            "text": "blocks"
+          }
+        }
+      ],
+      "occurrenceRegistry": [],
+      "propositionRegistry": [
+        {
+          "assertionId": "q-dh2-021-01",
+          "kind": "relation",
+          "status": "quarantined"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-022",
+      "scenarioId": "dh2-s-022",
+      "language": "en",
+      "sourceDigest": "sha256:3cb90c1c84588f92c8a61d5593f82b4406119473d4756fc8f4e7e87bb9b12732",
+      "abstention": {
+        "mode": "partial",
+        "reason": "at least one assertion is grounded while another is withheld"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-022-01",
+          "occurrenceKey": "dh2-022:occ-01",
+          "type": "Document",
+          "label": "Northstar bundle",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 16,
+            "text": "Northstar bundle"
+          }
+        },
+        {
+          "entityId": "ent-dh2-022-02",
+          "occurrenceKey": "dh2-022:occ-02",
+          "type": "Resource",
+          "label": "ivory route",
+          "evidence": {
+            "startOffset": 26,
+            "endOffset": 37,
+            "text": "ivory route"
+          }
+        },
+        {
+          "entityId": "ent-dh2-022-03",
+          "occurrenceKey": "dh2-022:occ-03",
+          "type": "Document",
+          "label": "moss ledger",
+          "evidence": {
+            "startOffset": 72,
+            "endOffset": 83,
+            "text": "moss ledger"
+          }
+        },
+        {
+          "entityId": "ent-dh2-022-04",
+          "occurrenceKey": "dh2-022:occ-04",
+          "type": "Resource",
+          "label": "ivory route",
+          "evidence": {
+            "startOffset": 89,
+            "endOffset": 100,
+            "text": "ivory route"
+          }
+        },
+        {
+          "entityId": "ent-dh2-022-05",
+          "occurrenceKey": "dh2-022:occ-05",
+          "type": "Control",
+          "label": "gate token",
+          "evidence": {
+            "startOffset": 111,
+            "endOffset": 121,
+            "text": "gate token"
+          }
+        },
+        {
+          "entityId": "ent-dh2-022-06",
+          "occurrenceKey": "dh2-022:occ-06",
+          "type": "Control",
+          "label": "gate token",
+          "evidence": {
+            "startOffset": 127,
+            "endOffset": 137,
+            "text": "gate token"
+          }
+        },
+        {
+          "entityId": "ent-dh2-022-07",
+          "occurrenceKey": "dh2-022:occ-07",
+          "type": "Constraint",
+          "label": "export crate",
+          "evidence": {
+            "startOffset": 145,
+            "endOffset": 157,
+            "text": "export crate"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "relationId": "rel-dh2-022-01",
+          "predicate": "requires",
+          "sourceEntityId": "ent-dh2-022-01",
+          "targetEntityId": "ent-dh2-022-02",
+          "triggerEvidence": {
+            "startOffset": 17,
+            "endOffset": 25,
+            "text": "requires"
+          },
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 38,
+            "text": "Northstar bundle requires ivory route."
+          }
+        },
+        {
+          "relationId": "rel-dh2-022-02",
+          "predicate": "validates",
+          "sourceEntityId": "ent-dh2-022-04",
+          "targetEntityId": "ent-dh2-022-05",
+          "triggerEvidence": {
+            "startOffset": 101,
+            "endOffset": 110,
+            "text": "validates"
+          },
+          "evidence": {
+            "startOffset": 85,
+            "endOffset": 122,
+            "text": "The ivory route validates gate token."
+          }
+        },
+        {
+          "relationId": "rel-dh2-022-03",
+          "predicate": "blocks",
+          "sourceEntityId": "ent-dh2-022-06",
+          "targetEntityId": "ent-dh2-022-07",
+          "triggerEvidence": {
+            "startOffset": 138,
+            "endOffset": 144,
+            "text": "blocks"
+          },
+          "evidence": {
+            "startOffset": 123,
+            "endOffset": 158,
+            "text": "The gate token blocks export crate."
+          }
+        }
+      ],
+      "quarantined": [
+        {
+          "assertionId": "q-dh2-022-01",
+          "kind": "relation",
+          "reasonCode": "UNSUPPORTED_PREDICATE",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 39,
+            "endOffset": 84,
+            "text": "A quiet note discusses unrelated moss ledger."
+          },
+          "triggerEvidence": {
+            "startOffset": 52,
+            "endOffset": 61,
+            "text": "discusses"
+          }
+        }
+      ],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-022:occ-01",
+          "entityId": "ent-dh2-022-01",
+          "label": "Northstar bundle",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 16,
+            "text": "Northstar bundle"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-022:occ-02",
+          "entityId": "ent-dh2-022-02",
+          "label": "ivory route",
+          "evidence": {
+            "startOffset": 26,
+            "endOffset": 37,
+            "text": "ivory route"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-022:occ-03",
+          "entityId": "ent-dh2-022-03",
+          "label": "moss ledger",
+          "evidence": {
+            "startOffset": 72,
+            "endOffset": 83,
+            "text": "moss ledger"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-022:occ-04",
+          "entityId": "ent-dh2-022-04",
+          "label": "ivory route",
+          "evidence": {
+            "startOffset": 89,
+            "endOffset": 100,
+            "text": "ivory route"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-022:occ-05",
+          "entityId": "ent-dh2-022-05",
+          "label": "gate token",
+          "evidence": {
+            "startOffset": 111,
+            "endOffset": 121,
+            "text": "gate token"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-022:occ-06",
+          "entityId": "ent-dh2-022-06",
+          "label": "gate token",
+          "evidence": {
+            "startOffset": 127,
+            "endOffset": 137,
+            "text": "gate token"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-022:occ-07",
+          "entityId": "ent-dh2-022-07",
+          "label": "export crate",
+          "evidence": {
+            "startOffset": 145,
+            "endOffset": 157,
+            "text": "export crate"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-022-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-022-01"
+        },
+        {
+          "assertionId": "ent-dh2-022-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-022-02"
+        },
+        {
+          "assertionId": "ent-dh2-022-03",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-022-03"
+        },
+        {
+          "assertionId": "ent-dh2-022-04",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-022-04"
+        },
+        {
+          "assertionId": "ent-dh2-022-05",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-022-05"
+        },
+        {
+          "assertionId": "ent-dh2-022-06",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-022-06"
+        },
+        {
+          "assertionId": "ent-dh2-022-07",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-022-07"
+        },
+        {
+          "assertionId": "rel-dh2-022-01",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-022-01"
+        },
+        {
+          "assertionId": "rel-dh2-022-02",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-022-02"
+        },
+        {
+          "assertionId": "rel-dh2-022-03",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-022-03"
+        },
+        {
+          "assertionId": "q-dh2-022-01",
+          "kind": "relation",
+          "status": "quarantined"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-023",
+      "scenarioId": "dh2-s-023",
+      "language": "vi",
+      "sourceDigest": "sha256:9bf3a2d72d4bc14b98a5cc2ffbad20f964f7539bad957cc3086ab2ae85770003",
+      "abstention": {
+        "mode": "none"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-023-01",
+          "occurrenceKey": "dh2-023:occ-01",
+          "type": "Document",
+          "label": "Bản ghi sương",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 13,
+            "text": "Bản ghi sương"
+          }
+        },
+        {
+          "entityId": "ent-dh2-023-02",
+          "occurrenceKey": "dh2-023:occ-02",
+          "type": "Resource",
+          "label": "tuyến cảng",
+          "evidence": {
+            "startOffset": 21,
+            "endOffset": 31,
+            "text": "tuyến cảng"
+          }
+        },
+        {
+          "entityId": "ent-dh2-023-03",
+          "occurrenceKey": "dh2-023:occ-03",
+          "type": "Control",
+          "label": "dấu niêm",
+          "evidence": {
+            "startOffset": 53,
+            "endOffset": 61,
+            "text": "dấu niêm"
+          }
+        },
+        {
+          "entityId": "ent-dh2-023-04",
+          "occurrenceKey": "dh2-023:occ-04",
+          "type": "Resource",
+          "label": "tuyến cảng",
+          "evidence": {
+            "startOffset": 33,
+            "endOffset": 43,
+            "text": "tuyến cảng"
+          }
+        },
+        {
+          "entityId": "ent-dh2-023-05",
+          "occurrenceKey": "dh2-023:occ-05",
+          "type": "Control",
+          "label": "dấu niêm",
+          "evidence": {
+            "startOffset": 63,
+            "endOffset": 71,
+            "text": "dấu niêm"
+          }
+        },
+        {
+          "entityId": "ent-dh2-023-06",
+          "occurrenceKey": "dh2-023:occ-06",
+          "type": "Risk",
+          "label": "lô hàng lỗi",
+          "evidence": {
+            "startOffset": 77,
+            "endOffset": 88,
+            "text": "lô hàng lỗi"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "relationId": "rel-dh2-023-01",
+          "predicate": "supports",
+          "sourceEntityId": "ent-dh2-023-01",
+          "targetEntityId": "ent-dh2-023-02",
+          "triggerEvidence": {
+            "startOffset": 14,
+            "endOffset": 20,
+            "text": "hỗ trợ"
+          },
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 32,
+            "text": "Bản ghi sương hỗ trợ tuyến cảng."
+          }
+        },
+        {
+          "relationId": "rel-dh2-023-02",
+          "predicate": "validates",
+          "sourceEntityId": "ent-dh2-023-04",
+          "targetEntityId": "ent-dh2-023-03",
+          "triggerEvidence": {
+            "startOffset": 44,
+            "endOffset": 52,
+            "text": "kiểm tra"
+          },
+          "evidence": {
+            "startOffset": 33,
+            "endOffset": 62,
+            "text": "tuyến cảng kiểm tra dấu niêm."
+          }
+        },
+        {
+          "relationId": "rel-dh2-023-03",
+          "predicate": "blocks",
+          "sourceEntityId": "ent-dh2-023-05",
+          "targetEntityId": "ent-dh2-023-06",
+          "triggerEvidence": {
+            "startOffset": 72,
+            "endOffset": 76,
+            "text": "chặn"
+          },
+          "evidence": {
+            "startOffset": 63,
+            "endOffset": 89,
+            "text": "dấu niêm chặn lô hàng lỗi."
+          }
+        }
+      ],
+      "quarantined": [],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-023:occ-01",
+          "entityId": "ent-dh2-023-01",
+          "label": "Bản ghi sương",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 13,
+            "text": "Bản ghi sương"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-023:occ-02",
+          "entityId": "ent-dh2-023-02",
+          "label": "tuyến cảng",
+          "evidence": {
+            "startOffset": 21,
+            "endOffset": 31,
+            "text": "tuyến cảng"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-023:occ-03",
+          "entityId": "ent-dh2-023-03",
+          "label": "dấu niêm",
+          "evidence": {
+            "startOffset": 53,
+            "endOffset": 61,
+            "text": "dấu niêm"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-023:occ-04",
+          "entityId": "ent-dh2-023-04",
+          "label": "tuyến cảng",
+          "evidence": {
+            "startOffset": 33,
+            "endOffset": 43,
+            "text": "tuyến cảng"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-023:occ-05",
+          "entityId": "ent-dh2-023-05",
+          "label": "dấu niêm",
+          "evidence": {
+            "startOffset": 63,
+            "endOffset": 71,
+            "text": "dấu niêm"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-023:occ-06",
+          "entityId": "ent-dh2-023-06",
+          "label": "lô hàng lỗi",
+          "evidence": {
+            "startOffset": 77,
+            "endOffset": 88,
+            "text": "lô hàng lỗi"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-023-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-023-01"
+        },
+        {
+          "assertionId": "ent-dh2-023-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-023-02"
+        },
+        {
+          "assertionId": "ent-dh2-023-03",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-023-03"
+        },
+        {
+          "assertionId": "ent-dh2-023-04",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-023-04"
+        },
+        {
+          "assertionId": "ent-dh2-023-05",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-023-05"
+        },
+        {
+          "assertionId": "ent-dh2-023-06",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-023-06"
+        },
+        {
+          "assertionId": "rel-dh2-023-01",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-023-01"
+        },
+        {
+          "assertionId": "rel-dh2-023-02",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-023-02"
+        },
+        {
+          "assertionId": "rel-dh2-023-03",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-023-03"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-024",
+      "scenarioId": "dh2-s-024",
+      "language": "ja",
+      "sourceDigest": "sha256:3de177f32549a3a38b8a035a962fd76a760fc62f08236ae406f878c77fe812d0",
+      "abstention": {
+        "mode": "none"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-024-01",
+          "occurrenceKey": "dh2-024:occ-01",
+          "type": "Document",
+          "label": "白い計画",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 4,
+            "text": "白い計画"
+          }
+        },
+        {
+          "entityId": "ent-dh2-024-02",
+          "occurrenceKey": "dh2-024:occ-02",
+          "type": "Resource",
+          "label": "河川台帳",
+          "evidence": {
+            "startOffset": 5,
+            "endOffset": 9,
+            "text": "河川台帳"
+          }
+        },
+        {
+          "entityId": "ent-dh2-024-03",
+          "occurrenceKey": "dh2-024:occ-03",
+          "type": "Control",
+          "label": "監査鍵",
+          "evidence": {
+            "startOffset": 20,
+            "endOffset": 23,
+            "text": "監査鍵"
+          }
+        },
+        {
+          "entityId": "ent-dh2-024-04",
+          "occurrenceKey": "dh2-024:occ-04",
+          "type": "Resource",
+          "label": "河川台帳",
+          "evidence": {
+            "startOffset": 15,
+            "endOffset": 19,
+            "text": "河川台帳"
+          }
+        },
+        {
+          "entityId": "ent-dh2-024-05",
+          "occurrenceKey": "dh2-024:occ-05",
+          "type": "Control",
+          "label": "監査鍵",
+          "evidence": {
+            "startOffset": 29,
+            "endOffset": 32,
+            "text": "監査鍵"
+          }
+        },
+        {
+          "entityId": "ent-dh2-024-06",
+          "occurrenceKey": "dh2-024:occ-06",
+          "type": "Risk",
+          "label": "危険な搬送",
+          "evidence": {
+            "startOffset": 33,
+            "endOffset": 38,
+            "text": "危険な搬送"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "relationId": "rel-dh2-024-01",
+          "predicate": "dependsOn",
+          "sourceEntityId": "ent-dh2-024-01",
+          "targetEntityId": "ent-dh2-024-02",
+          "triggerEvidence": {
+            "startOffset": 10,
+            "endOffset": 14,
+            "text": "依存する"
+          },
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 15,
+            "text": "白い計画は河川台帳に依存する。"
+          }
+        },
+        {
+          "relationId": "rel-dh2-024-02",
+          "predicate": "validates",
+          "sourceEntityId": "ent-dh2-024-04",
+          "targetEntityId": "ent-dh2-024-03",
+          "triggerEvidence": {
+            "startOffset": 24,
+            "endOffset": 28,
+            "text": "検証する"
+          },
+          "evidence": {
+            "startOffset": 15,
+            "endOffset": 29,
+            "text": "河川台帳は監査鍵を検証する。"
+          }
+        },
+        {
+          "relationId": "rel-dh2-024-03",
+          "predicate": "blocks",
+          "sourceEntityId": "ent-dh2-024-05",
+          "targetEntityId": "ent-dh2-024-06",
+          "triggerEvidence": {
+            "startOffset": 39,
+            "endOffset": 42,
+            "text": "止める"
+          },
+          "evidence": {
+            "startOffset": 29,
+            "endOffset": 43,
+            "text": "監査鍵は危険な搬送を止める。"
+          }
+        }
+      ],
+      "quarantined": [],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-024:occ-01",
+          "entityId": "ent-dh2-024-01",
+          "label": "白い計画",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 4,
+            "text": "白い計画"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-024:occ-02",
+          "entityId": "ent-dh2-024-02",
+          "label": "河川台帳",
+          "evidence": {
+            "startOffset": 5,
+            "endOffset": 9,
+            "text": "河川台帳"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-024:occ-03",
+          "entityId": "ent-dh2-024-03",
+          "label": "監査鍵",
+          "evidence": {
+            "startOffset": 20,
+            "endOffset": 23,
+            "text": "監査鍵"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-024:occ-04",
+          "entityId": "ent-dh2-024-04",
+          "label": "河川台帳",
+          "evidence": {
+            "startOffset": 15,
+            "endOffset": 19,
+            "text": "河川台帳"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-024:occ-05",
+          "entityId": "ent-dh2-024-05",
+          "label": "監査鍵",
+          "evidence": {
+            "startOffset": 29,
+            "endOffset": 32,
+            "text": "監査鍵"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-024:occ-06",
+          "entityId": "ent-dh2-024-06",
+          "label": "危険な搬送",
+          "evidence": {
+            "startOffset": 33,
+            "endOffset": 38,
+            "text": "危険な搬送"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-024-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-024-01"
+        },
+        {
+          "assertionId": "ent-dh2-024-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-024-02"
+        },
+        {
+          "assertionId": "ent-dh2-024-03",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-024-03"
+        },
+        {
+          "assertionId": "ent-dh2-024-04",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-024-04"
+        },
+        {
+          "assertionId": "ent-dh2-024-05",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-024-05"
+        },
+        {
+          "assertionId": "ent-dh2-024-06",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-024-06"
+        },
+        {
+          "assertionId": "rel-dh2-024-01",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-024-01"
+        },
+        {
+          "assertionId": "rel-dh2-024-02",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-024-02"
+        },
+        {
+          "assertionId": "rel-dh2-024-03",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-024-03"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-025",
+      "scenarioId": "dh2-s-025",
+      "language": "en",
+      "sourceDigest": "sha256:44bb86cab4af8ae60b55d5641fda5a01fc17463b5ab79b893f1f69282026cb0e",
+      "abstention": {
+        "mode": "partial",
+        "reason": "at least one assertion is grounded while another is withheld"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-025-01",
+          "occurrenceKey": "dh2-025:occ-01",
+          "type": "Document",
+          "label": "Silver note",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 11,
+            "text": "Silver note"
+          }
+        },
+        {
+          "entityId": "ent-dh2-025-02",
+          "occurrenceKey": "dh2-025:occ-02",
+          "type": "Resource",
+          "label": "safe corridor",
+          "evidence": {
+            "startOffset": 20,
+            "endOffset": 33,
+            "text": "safe corridor"
+          }
+        },
+        {
+          "entityId": "ent-dh2-025-03",
+          "occurrenceKey": "dh2-025:occ-03",
+          "type": "Resource",
+          "label": "safe corridor",
+          "evidence": {
+            "startOffset": 64,
+            "endOffset": 77,
+            "text": "safe corridor"
+          }
+        },
+        {
+          "entityId": "ent-dh2-025-04",
+          "occurrenceKey": "dh2-025:occ-04",
+          "type": "Constraint",
+          "label": "closed gate",
+          "evidence": {
+            "startOffset": 87,
+            "endOffset": 98,
+            "text": "closed gate"
+          }
+        }
+      ],
+      "relations": [],
+      "quarantined": [
+        {
+          "assertionId": "q-dh2-025-01",
+          "kind": "relation",
+          "reasonCode": "UNSUPPORTED_PREDICATE",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 34,
+            "text": "Silver note records safe corridor."
+          },
+          "triggerEvidence": {
+            "startOffset": 12,
+            "endOffset": 19,
+            "text": "records"
+          }
+        },
+        {
+          "assertionId": "q-dh2-025-02",
+          "kind": "relation",
+          "reasonCode": "NEGATED",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 64,
+            "endOffset": 98,
+            "text": "safe corridor supports closed gate"
+          },
+          "triggerEvidence": {
+            "startOffset": 78,
+            "endOffset": 86,
+            "text": "supports"
+          }
+        }
+      ],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-025:occ-01",
+          "entityId": "ent-dh2-025-01",
+          "label": "Silver note",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 11,
+            "text": "Silver note"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-025:occ-02",
+          "entityId": "ent-dh2-025-02",
+          "label": "safe corridor",
+          "evidence": {
+            "startOffset": 20,
+            "endOffset": 33,
+            "text": "safe corridor"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-025:occ-03",
+          "entityId": "ent-dh2-025-03",
+          "label": "safe corridor",
+          "evidence": {
+            "startOffset": 64,
+            "endOffset": 77,
+            "text": "safe corridor"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-025:occ-04",
+          "entityId": "ent-dh2-025-04",
+          "label": "closed gate",
+          "evidence": {
+            "startOffset": 87,
+            "endOffset": 98,
+            "text": "closed gate"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-025-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-025-01"
+        },
+        {
+          "assertionId": "ent-dh2-025-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-025-02"
+        },
+        {
+          "assertionId": "ent-dh2-025-03",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-025-03"
+        },
+        {
+          "assertionId": "ent-dh2-025-04",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-025-04"
+        },
+        {
+          "assertionId": "q-dh2-025-01",
+          "kind": "relation",
+          "status": "quarantined"
+        },
+        {
+          "assertionId": "q-dh2-025-02",
+          "kind": "relation",
+          "status": "quarantined"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-026",
+      "scenarioId": "dh2-s-026",
+      "language": "en",
+      "sourceDigest": "sha256:c35ff547cb12415e9746a4ad803666247b15e4c33cd59773cd44ccee1dc6e251",
+      "abstention": {
+        "mode": "partial",
+        "reason": "at least one assertion is grounded while another is withheld"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-026-01",
+          "occurrenceKey": "dh2-026:occ-01",
+          "type": "Document",
+          "label": "Earlier reed plan",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 17,
+            "text": "Earlier reed plan"
+          }
+        },
+        {
+          "entityId": "ent-dh2-026-02",
+          "occurrenceKey": "dh2-026:occ-02",
+          "type": "Resource",
+          "label": "local queue",
+          "evidence": {
+            "startOffset": 28,
+            "endOffset": 39,
+            "text": "local queue"
+          }
+        },
+        {
+          "entityId": "ent-dh2-026-03",
+          "occurrenceKey": "dh2-026:occ-03",
+          "type": "Document",
+          "label": "Current reed plan",
+          "evidence": {
+            "startOffset": 41,
+            "endOffset": 58,
+            "text": "Current reed plan"
+          }
+        },
+        {
+          "entityId": "ent-dh2-026-04",
+          "occurrenceKey": "dh2-026:occ-04",
+          "type": "Resource",
+          "label": "remote queue",
+          "evidence": {
+            "startOffset": 68,
+            "endOffset": 80,
+            "text": "remote queue"
+          }
+        },
+        {
+          "entityId": "ent-dh2-026-05",
+          "occurrenceKey": "dh2-026:occ-05",
+          "type": "Resource",
+          "label": "remote queue",
+          "evidence": {
+            "startOffset": 86,
+            "endOffset": 98,
+            "text": "remote queue"
+          }
+        },
+        {
+          "entityId": "ent-dh2-026-06",
+          "occurrenceKey": "dh2-026:occ-06",
+          "type": "Risk",
+          "label": "late dispatch",
+          "evidence": {
+            "startOffset": 106,
+            "endOffset": 119,
+            "text": "late dispatch"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "relationId": "rel-dh2-026-01",
+          "predicate": "supports",
+          "sourceEntityId": "ent-dh2-026-03",
+          "targetEntityId": "ent-dh2-026-04",
+          "triggerEvidence": {
+            "startOffset": 59,
+            "endOffset": 67,
+            "text": "supports"
+          },
+          "evidence": {
+            "startOffset": 41,
+            "endOffset": 81,
+            "text": "Current reed plan supports remote queue."
+          }
+        },
+        {
+          "relationId": "rel-dh2-026-02",
+          "predicate": "blocks",
+          "sourceEntityId": "ent-dh2-026-05",
+          "targetEntityId": "ent-dh2-026-06",
+          "triggerEvidence": {
+            "startOffset": 99,
+            "endOffset": 105,
+            "text": "blocks"
+          },
+          "evidence": {
+            "startOffset": 82,
+            "endOffset": 120,
+            "text": "The remote queue blocks late dispatch."
+          }
+        }
+      ],
+      "quarantined": [
+        {
+          "assertionId": "q-dh2-026-01",
+          "kind": "relation",
+          "reasonCode": "STALE",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 40,
+            "text": "Earlier reed plan supported local queue."
+          },
+          "triggerEvidence": {
+            "startOffset": 18,
+            "endOffset": 27,
+            "text": "supported"
+          }
+        }
+      ],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-026:occ-01",
+          "entityId": "ent-dh2-026-01",
+          "label": "Earlier reed plan",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 17,
+            "text": "Earlier reed plan"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-026:occ-02",
+          "entityId": "ent-dh2-026-02",
+          "label": "local queue",
+          "evidence": {
+            "startOffset": 28,
+            "endOffset": 39,
+            "text": "local queue"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-026:occ-03",
+          "entityId": "ent-dh2-026-03",
+          "label": "Current reed plan",
+          "evidence": {
+            "startOffset": 41,
+            "endOffset": 58,
+            "text": "Current reed plan"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-026:occ-04",
+          "entityId": "ent-dh2-026-04",
+          "label": "remote queue",
+          "evidence": {
+            "startOffset": 68,
+            "endOffset": 80,
+            "text": "remote queue"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-026:occ-05",
+          "entityId": "ent-dh2-026-05",
+          "label": "remote queue",
+          "evidence": {
+            "startOffset": 86,
+            "endOffset": 98,
+            "text": "remote queue"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-026:occ-06",
+          "entityId": "ent-dh2-026-06",
+          "label": "late dispatch",
+          "evidence": {
+            "startOffset": 106,
+            "endOffset": 119,
+            "text": "late dispatch"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-026-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-026-01"
+        },
+        {
+          "assertionId": "ent-dh2-026-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-026-02"
+        },
+        {
+          "assertionId": "ent-dh2-026-03",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-026-03"
+        },
+        {
+          "assertionId": "ent-dh2-026-04",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-026-04"
+        },
+        {
+          "assertionId": "ent-dh2-026-05",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-026-05"
+        },
+        {
+          "assertionId": "ent-dh2-026-06",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-026-06"
+        },
+        {
+          "assertionId": "rel-dh2-026-01",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-026-01"
+        },
+        {
+          "assertionId": "rel-dh2-026-02",
+          "kind": "relation",
+          "status": "finalized",
+          "relationId": "rel-dh2-026-02"
+        },
+        {
+          "assertionId": "q-dh2-026-01",
+          "kind": "relation",
+          "status": "quarantined"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-027",
+      "scenarioId": "dh2-s-027",
+      "language": "en",
+      "sourceDigest": "sha256:9d2d94c03ee8e7628c45e10bae3370da58f8c7cefd29b3cb2fc3ce77db243a61",
+      "abstention": {
+        "mode": "partial",
+        "reason": "at least one assertion is grounded while another is withheld"
+      },
+      "entities": [
+        {
+          "entityId": "ent-dh2-027-01",
+          "occurrenceKey": "dh2-027:occ-01",
+          "type": "Document",
+          "label": "A note from project delta",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 25,
+            "text": "A note from project delta"
+          }
+        },
+        {
+          "entityId": "ent-dh2-027-02",
+          "occurrenceKey": "dh2-027:occ-02",
+          "type": "Project",
+          "label": "project delta",
+          "evidence": {
+            "startOffset": 12,
+            "endOffset": 25,
+            "text": "project delta"
+          }
+        },
+        {
+          "entityId": "ent-dh2-027-03",
+          "occurrenceKey": "dh2-027:occ-03",
+          "type": "Project",
+          "label": "project echo",
+          "evidence": {
+            "startOffset": 36,
+            "endOffset": 48,
+            "text": "project echo"
+          }
+        },
+        {
+          "entityId": "ent-dh2-027-04",
+          "occurrenceKey": "dh2-027:occ-04",
+          "type": "Resource",
+          "label": "sealed room",
+          "evidence": {
+            "startOffset": 51,
+            "endOffset": 62,
+            "text": "sealed room"
+          }
+        }
+      ],
+      "relations": [],
+      "quarantined": [
+        {
+          "assertionId": "q-dh2-027-01",
+          "kind": "relation",
+          "reasonCode": "CROSS_PROJECT",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 12,
+            "endOffset": 62,
+            "text": "project delta refers to project echo's sealed room"
+          },
+          "triggerEvidence": {
+            "startOffset": 26,
+            "endOffset": 35,
+            "text": "refers to"
+          }
+        }
+      ],
+      "occurrenceRegistry": [
+        {
+          "occurrenceKey": "dh2-027:occ-01",
+          "entityId": "ent-dh2-027-01",
+          "label": "A note from project delta",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 25,
+            "text": "A note from project delta"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-027:occ-02",
+          "entityId": "ent-dh2-027-02",
+          "label": "project delta",
+          "evidence": {
+            "startOffset": 12,
+            "endOffset": 25,
+            "text": "project delta"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-027:occ-03",
+          "entityId": "ent-dh2-027-03",
+          "label": "project echo",
+          "evidence": {
+            "startOffset": 36,
+            "endOffset": 48,
+            "text": "project echo"
+          }
+        },
+        {
+          "occurrenceKey": "dh2-027:occ-04",
+          "entityId": "ent-dh2-027-04",
+          "label": "sealed room",
+          "evidence": {
+            "startOffset": 51,
+            "endOffset": 62,
+            "text": "sealed room"
+          }
+        }
+      ],
+      "propositionRegistry": [
+        {
+          "assertionId": "ent-dh2-027-01",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-027-01"
+        },
+        {
+          "assertionId": "ent-dh2-027-02",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-027-02"
+        },
+        {
+          "assertionId": "ent-dh2-027-03",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-027-03"
+        },
+        {
+          "assertionId": "ent-dh2-027-04",
+          "kind": "entity",
+          "status": "finalized",
+          "entityId": "ent-dh2-027-04"
+        },
+        {
+          "assertionId": "q-dh2-027-01",
+          "kind": "relation",
+          "status": "quarantined"
+        }
+      ]
+    },
+    {
+      "caseId": "dh2-028",
+      "scenarioId": "dh2-s-028",
+      "language": "en",
+      "sourceDigest": "sha256:4bd9103fb86895fce1e2ed2cb1deef56171e10cffe91bb7b2f47616bd1cd9850",
+      "abstention": {
+        "mode": "full",
+        "reason": "no assertion is finalized; proposed content is quarantined"
+      },
+      "entities": [],
+      "relations": [],
+      "quarantined": [
+        {
+          "assertionId": "q-dh2-028-01",
+          "kind": "relation",
+          "reasonCode": "ADVERSARIAL",
+          "status": "quarantined",
+          "evidence": {
+            "startOffset": 55,
+            "endOffset": 88,
+            "text": "phantom rail controls all records"
+          },
+          "triggerEvidence": {
+            "startOffset": 68,
+            "endOffset": 76,
+            "text": "controls"
+          }
+        }
+      ],
+      "occurrenceRegistry": [],
+      "propositionRegistry": [
+        {
+          "assertionId": "q-dh2-028-01",
+          "kind": "relation",
+          "status": "quarantined"
+        }
+      ]
+    }
+  ]
+}

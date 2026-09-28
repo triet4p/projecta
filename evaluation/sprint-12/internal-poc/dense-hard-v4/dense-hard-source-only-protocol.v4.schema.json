@@ -1,0 +1,229 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "anchorPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "evidenceMustEqualSourceSlice": {
+          "const": true
+        },
+        "indexUnit": {
+          "const": "Unicode code point"
+        },
+        "interval": {
+          "const": "half-open [startOffset,endOffset)"
+        }
+      },
+      "required": [
+        "indexUnit",
+        "interval",
+        "evidenceMustEqualSourceSlice"
+      ],
+      "type": "object"
+    },
+    "artifactVersion": {
+      "const": "s12.dense-hard.source-only-protocol.v4"
+    },
+    "authorIneligibleForCandidate": {
+      "const": true
+    },
+    "datasetKind": {
+      "const": "SYNTHETIC_NON_PRODUCTION"
+    },
+    "evidenceNormalization": {
+      "additionalProperties": false,
+      "properties": {
+        "formatting": {
+          "const": "unchanged"
+        },
+        "substantivePredicateEndpoint": {
+          "type": "string"
+        },
+        "terminalPunctuation": {
+          "const": "unchanged"
+        }
+      },
+      "required": [
+        "terminalPunctuation",
+        "formatting",
+        "substantivePredicateEndpoint"
+      ],
+      "type": "object"
+    },
+    "finiteEntityTypes": {
+      "items": {
+        "enum": [
+          "Task",
+          "Requirement",
+          "Constraint",
+          "Risk",
+          "System",
+          "Project",
+          "Document",
+          "Question",
+          "Decision",
+          "Dataset",
+          "Person",
+          "Control",
+          "Resource"
+        ]
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "finiteRelationPredicates": {
+      "items": {
+        "enum": [
+          "dependsOn",
+          "implements",
+          "blocks",
+          "supports",
+          "validates",
+          "tracks",
+          "constrains",
+          "supersedes",
+          "requires",
+          "answers",
+          "contains"
+        ]
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "nonClaims": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "occurrenceScoring": {
+      "additionalProperties": false,
+      "properties": {
+        "identity": {
+          "const": [
+            "startOffset",
+            "endOffset",
+            "text"
+          ]
+        },
+        "typeIndependent": {
+          "const": true
+        },
+        "typeMismatch": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "identity",
+        "typeIndependent",
+        "typeMismatch"
+      ],
+      "type": "object"
+    },
+    "propositionAbstention": {
+      "additionalProperties": false,
+      "properties": {
+        "distractors": {
+          "type": "string"
+        },
+        "full": {
+          "type": "string"
+        },
+        "none": {
+          "type": "string"
+        },
+        "partial": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "distractors",
+        "partial",
+        "full",
+        "none",
+        "scope"
+      ],
+      "type": "object"
+    },
+    "protocolDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "relationGrounding": {
+      "additionalProperties": false,
+      "properties": {
+        "endpointsMustBeContained": {
+          "const": true
+        },
+        "identity": {
+          "type": "string"
+        },
+        "triggerMustBeContained": {
+          "const": true
+        },
+        "typeMismatchDoesNotCascade": {
+          "const": true
+        }
+      },
+      "required": [
+        "identity",
+        "triggerMustBeContained",
+        "endpointsMustBeContained",
+        "typeMismatchDoesNotCascade"
+      ],
+      "type": "object"
+    },
+    "status": {
+      "const": "GENERIC_OFFLINE_GUARD"
+    },
+    "typeRubric": {
+      "additionalProperties": false,
+      "properties": {
+        "decisionRules": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 3,
+          "type": "array"
+        },
+        "rules": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "minProperties": 13,
+          "type": "object"
+        },
+        "typeUncertaintyCode": {
+          "const": "UNSCORABLE_PROTOCOL_AMBIGUITY"
+        }
+      },
+      "required": [
+        "rules",
+        "decisionRules",
+        "typeUncertaintyCode"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "artifactVersion",
+    "status",
+    "datasetKind",
+    "finiteEntityTypes",
+    "finiteRelationPredicates",
+    "typeRubric",
+    "occurrenceScoring",
+    "evidenceNormalization",
+    "propositionAbstention",
+    "relationGrounding",
+    "anchorPolicy",
+    "nonClaims",
+    "authorIneligibleForCandidate",
+    "protocolDigest"
+  ],
+  "title": "Dense-Hard v4 Source-Only Protocol",
+  "type": "object"
+}

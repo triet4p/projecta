@@ -2,7 +2,7 @@
 
 **Base contract version:** `s12.v1`; current visible corpus: `v3-frozen`
 
-**Current Sprint status:** `G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY`
+**Current Sprint status:** `F_RF_POC_COMPLETE_AGENT_PROXY_ACCEPTED` (internal PoC scope only)
 
 RM-36 consumed the single RM-35-authorized v8 invocation and failed after
 three provider captures before persisting a report or aggregate accounting.
@@ -178,7 +178,9 @@ B. RM-48 has prepared a sanitized v6/v9 error comparison and remediation
 options in `optimization/s12-f-12-rm48-error-comparison.v1.json`; RM-49 approved
 the sequential offline path and RM-50 completed diagnostics/parity fixtures.
 RM-51 rejected RM-50 under Option C. RM-52 prepared the offline closure packet
-and prioritized error backlog; RM-53 owner closure review is pending. No
+and prioritized error backlog; RM-53 accepted offline custody only. RM-54
+accepted the revised human-first design for RM-55 contract definition only.
+RM-55 accepted the SourceVersion/source-receipt contract. No
 runtime remediation, lineage or provider work is authorized.
 
 ## Dataset contract rules
@@ -206,6 +208,25 @@ exact v9 Stage A execution, RM-46 consumed it once, and RM-47 closed it
 rejected with no Stage B. The v9 report is schema-valid but rejected by
 schema-invalid, invalid-evidence, threshold and slice gates; its comparison to
 v6 establishes no quality improvement. Only offline error-analysis preparation
-is closed to provider work; RM-52 offline closure is pending RM-53 owner review.
+is closed to provider work; RM-52 offline closure is accepted for custody only,
+RM-54 design direction is accepted for RM-55 contract definition, RM-55 is
+accepted, RM-56 text-anchor contract definition is accepted, and RM-57 per-item
+validation/quarantine and RM-58 confirmed-entity relation gating are accepted;
+RM-59 deterministic evidence selection and RM-60 constrained relation contract
+are accepted; RM-61 durable review decision receipts and RM-62's source-first
+review workbench contract are accepted; RM-63 accepted the disabled-by-default
+approved-only assertion materialization boundary; RM-64 accepted versioned
+inference invalidation/rebuild; RM-65 accepted correction-burden telemetry;
+RM-66 accepted the offline adversarial/default-path gate and RM-67 accepted the
+closed-world human correction-burden contract. The frozen v5 internal
+source-only candidate and primary-agent proxy review are accepted for the
+bounded development PoC as `F_RF_POC_COMPLETE_AGENT_PROXY_ACCEPTED`: 60
+supported finalized-for-review assertions, zero unsupported assertions, 12/12
+unchanged, and zero provider calls. Timing and independent agreement are not
+claimed. RM-68 is accepted only for this internal scope; the historical
+`DRAFT_BLOCKED_EXTERNAL_CUSTODY` packet remains a non-preregistration boundary
+for any later external study, which would require new owner authority. No
+human/business-quality, provider, held-out, production, selection, promotion,
+or release claim is made.
 G6 is blocked by missing external test custody and a
 frozen passing candidate; held-out inputs/gold remain outside the repository.

@@ -1,0 +1,38 @@
+{
+  "artifactVersion": "s12.dense-hard.v4-lineage.v1",
+  "authorIneligibleForCandidate": true,
+  "candidateOrEvaluationPresent": false,
+  "caseCount": 32,
+  "contractDigest": "sha256:9c9f99879dfa14fde50a7bb56fbd9bf50454406f634eefaf4aad5f6385562d47",
+  "datasetKind": "SYNTHETIC_NON_PRODUCTION",
+  "goldDigest": "sha256:5c4fceeb73b50a89a327dd7414d064c07a1315e9f28a518b41f119365fb9c939",
+  "lineageDigest": "sha256:7924a0a97bc56baafa6dab4f458907dd7c58b1eca3df553907c2abf4e6790819",
+  "manifestDigest": "sha256:1339ae6134d9645c142b1c0d8f57a3e46ad6547283611479ffd82280c2061015",
+  "noReuseChecks": {
+    "caseIdsDisjointV1": true,
+    "caseIdsDisjointV2": true,
+    "caseIdsDisjointV3": true,
+    "normalizedSentencesDisjointV1": true,
+    "normalizedSentencesDisjointV2": true,
+    "normalizedSentencesDisjointV3": true,
+    "rawTextDisjointV1": true,
+    "rawTextDisjointV2": true,
+    "rawTextDisjointV3": true,
+    "sourceDigestsDisjointV1": true,
+    "sourceDigestsDisjointV2": true,
+    "sourceDigestsDisjointV3": true,
+    "sourcePayloadDigestFreshV1": true,
+    "sourcePayloadDigestFreshV2": true,
+    "sourcePayloadDigestFreshV3": true
+  },
+  "nonClaims": [
+    "Synthetic offline source-only authoring packet; no candidate, evaluation, provider, human, external, held-out, production, selection, promotion, or release claim."
+  ],
+  "protocolDigest": "sha256:1c44e28898ef3c27265a0f9340e4205ed8c54dde7238b5040bad941afea501f1",
+  "providerCalls": 0,
+  "safetyCaseCount": 8,
+  "sliceCount": 26,
+  "sourcePayloadDigest": "sha256:e2d2b40a58d6b7e9a8ec50fed6fbd7ff0304c0b5da976df666cfdfc7416f5711",
+  "status": "VALIDATED_FRESH_NO_V1_V2_V3_REUSE",
+  "utilityCaseCount": 24
+}

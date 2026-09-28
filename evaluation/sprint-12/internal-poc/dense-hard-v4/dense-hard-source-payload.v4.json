@@ -1,0 +1,416 @@
+{
+  "artifactVersion": "s12.dense-hard.source-payload.v4",
+  "datasetKind": "SYNTHETIC_NON_PRODUCTION",
+  "evaluatorManifestIncluded": false,
+  "goldIncluded": false,
+  "heldOutInspection": false,
+  "payloadDigest": "sha256:e2d2b40a58d6b7e9a8ec50fed6fbd7ff0304c0b5da976df666cfdfc7416f5711",
+  "providerCalls": 0,
+  "records": [
+    {
+      "caseId": "dh4-001",
+      "language": "en",
+      "rawText": "Alder matrix requires copper gate. copper gate validates dune ledger.",
+      "scenarioId": "dh4-s-001",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "occurrence-scoring"
+      ],
+      "sourceDigest": "sha256:168204dedaee2fff910548990e55cb7448eb97a7fa19e5492d8c01834c27dea9"
+    },
+    {
+      "caseId": "dh4-002",
+      "language": "en",
+      "rawText": "Bracken service implements violet rule. violet rule constrains summit route.",
+      "scenarioId": "dh4-s-002",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "proposition-boundary"
+      ],
+      "sourceDigest": "sha256:12eaceaebd152536c232bd13df4cf0274078c2b00914617f6a5d35cf03e973c4"
+    },
+    {
+      "caseId": "dh4-003",
+      "language": "en",
+      "rawText": "Cobalt register tracks linen request. linen request blocks brittle export.",
+      "scenarioId": "dh4-s-003",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "cross-sentence-dependency"
+      ],
+      "sourceDigest": "sha256:62da824005a76fea8778ad4228aa2c87f676c19ed483d69af3f5901430c6a664"
+    },
+    {
+      "caseId": "dh4-004",
+      "language": "en",
+      "rawText": "Drift memo contains amber decision. amber decision supports ferry permit.",
+      "scenarioId": "dh4-s-004",
+      "slices": [
+        "multi-relation",
+        "different-occurrences",
+        "evidence-normalization"
+      ],
+      "sourceDigest": "sha256:e31985ec316b59641e6897c52ad3c1900267010f5ca7acdd1a3defa25dc59606"
+    },
+    {
+      "caseId": "dh4-005",
+      "language": "en",
+      "rawText": "Ember project depends on olive dataset. olive dataset answers harbor question.",
+      "scenarioId": "dh4-s-005",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "proposition-boundary"
+      ],
+      "sourceDigest": "sha256:770caa528fb567de0b56867826505d16a9777a084f0d2fe8f50d13984dd437b0"
+    },
+    {
+      "caseId": "dh4-006",
+      "language": "en",
+      "rawText": "Fallow task requires silver control. silver control blocks cracked parcel.",
+      "scenarioId": "dh4-s-006",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "distractors"
+      ],
+      "sourceDigest": "sha256:49ff4c3da1f850ff63455cbd38ead9f35169689bca4d7a601448d2cede37bda4"
+    },
+    {
+      "caseId": "dh4-007",
+      "language": "en",
+      "rawText": "Garnet brief contains cedar token. cedar token validates sealed crate. sealed crate tracks a scan.",
+      "scenarioId": "dh4-s-007",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "long-context"
+      ],
+      "sourceDigest": "sha256:ac0ba0ebf911bde3842842428c7c3f3aec288f920f9d6acfe03c710a30734e53"
+    },
+    {
+      "caseId": "dh4-008",
+      "language": "en",
+      "rawText": "Hearth plan supports indigo lane. indigo lane requires north badge.",
+      "scenarioId": "dh4-s-008",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "safe-unsafe-mix"
+      ],
+      "sourceDigest": "sha256:d11ff7140d1fa4b8032e109cfc0e1b16a4cc252744d29ab1a7c67f6e3e7308f9"
+    },
+    {
+      "caseId": "dh4-009",
+      "language": "en",
+      "rawText": "Ivory archive supersedes the retired map. Ivory archive supports current review.",
+      "scenarioId": "dh4-s-009",
+      "slices": [
+        "temporal-supersession",
+        "stale-statement",
+        "repeated-labels",
+        "different-occurrences"
+      ],
+      "sourceDigest": "sha256:27efe103765e1fa24fb79ac85f937a861ccb37dd19bff365c22822b5497c67fc"
+    },
+    {
+      "caseId": "dh4-010",
+      "language": "en",
+      "rawText": "Jasper plan governs the former dock. Jasper replacement governs the active dock.",
+      "scenarioId": "dh4-s-010",
+      "slices": [
+        "temporal-supersession",
+        "stale-statement",
+        "repeated-labels",
+        "different-occurrences"
+      ],
+      "sourceDigest": "sha256:987181739bbdbd04d6341672425b179b97c398f4f77ceb777cb5c994fa70b9b1"
+    },
+    {
+      "caseId": "dh4-011",
+      "language": "mixed",
+      "rawText": "Kelp map supports routé audit. routé audit validates élan seal.",
+      "scenarioId": "dh4-s-011",
+      "slices": [
+        "mixed-unicode",
+        "combining-mark",
+        "multi-relation"
+      ],
+      "sourceDigest": "sha256:f13b59b9f9301ff74e9367c4bcb8838b9b3c781fb38ad7cab2f86decd2ac053c"
+    },
+    {
+      "caseId": "dh4-012",
+      "language": "mixed",
+      "rawText": "Lumen 🛰️ chart supports launch 🧭 task. launch 🧭 task blocks unstable 🧪 freight.",
+      "scenarioId": "dh4-s-012",
+      "slices": [
+        "mixed-unicode",
+        "emoji",
+        "multi-relation"
+      ],
+      "sourceDigest": "sha256:7754d9b13624543162745ee579bc2c85142fd014bd07dd5e559851843f08b4ad"
+    },
+    {
+      "caseId": "dh4-013",
+      "language": "en",
+      "rawText": "Mallow card mentions Nacre card. Nacre card supports archive shelf, while Mallow card is a decoy.",
+      "scenarioId": "dh4-s-013",
+      "slices": [
+        "distractors",
+        "repeated-labels",
+        "different-occurrences",
+        "multi-relation"
+      ],
+      "sourceDigest": "sha256:df94aa14b289800d2d090d31794a8085d70ef8c5beddf343ba616a3d841819cf"
+    },
+    {
+      "caseId": "dh4-014",
+      "language": "en",
+      "rawText": "Nopal bundle requires ivory route. A quiet aside mentions moss notebook. ivory route validates gate emblem.",
+      "scenarioId": "dh4-s-014",
+      "slices": [
+        "long-context",
+        "distractors",
+        "multi-hop",
+        "multi-relation"
+      ],
+      "sourceDigest": "sha256:9ff5defd9a7762eac409726da46ee49bde92afcb4e0c973473be579edd23480b"
+    },
+    {
+      "caseId": "dh4-015",
+      "language": "en",
+      "rawText": "Ocher plan depends on river book. river book validates audit key. audit key blocks hazard box.",
+      "scenarioId": "dh4-s-015",
+      "slices": [
+        "long-context",
+        "multi-hop",
+        "multi-relation",
+        "proposition-boundary"
+      ],
+      "sourceDigest": "sha256:736113bea5f22d20563247a1aa0e3eaa85e9a0d5bd5a5c25e4299428b899886c"
+    },
+    {
+      "caseId": "dh4-016",
+      "language": "en",
+      "rawText": "Parchment register contains teal answer. teal answer supports intake gate.",
+      "scenarioId": "dh4-s-016",
+      "slices": [
+        "multi-relation",
+        "occurrence-scoring",
+        "evidence-normalization"
+      ],
+      "sourceDigest": "sha256:14ebc7d628f12f1cb408bd274b367666d3bf8d2937e247ee029743a7e3726335"
+    },
+    {
+      "caseId": "dh4-017",
+      "language": "en",
+      "rawText": "Quartz service implements red protocol. red protocol constrains ferry clock.",
+      "scenarioId": "dh4-s-017",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "type-ambiguity"
+      ],
+      "sourceDigest": "sha256:ac30defad63c1d806436df8c522d892ecdb591d2e4731922cd05f9bbe04f2c4a"
+    },
+    {
+      "caseId": "dh4-018",
+      "language": "en",
+      "rawText": "Rattan note tracks blue case. blue case answers a review question.",
+      "scenarioId": "dh4-s-018",
+      "slices": [
+        "cross-sentence-dependency",
+        "multi-hop",
+        "multi-relation"
+      ],
+      "sourceDigest": "sha256:594f3a2e0ae1eb60a49bde78d97d75e1687371f0cb9f1bbb41c47b87e8a87c28"
+    },
+    {
+      "caseId": "dh4-019",
+      "language": "en",
+      "rawText": "Sable project requires amber control. amber control validates the final seal.",
+      "scenarioId": "dh4-s-019",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "safe-unsafe-mix"
+      ],
+      "sourceDigest": "sha256:8ea845881c7dd4ff98e4f9ab68f9ad558e384667693e56ed0dc52c5698fad5ef"
+    },
+    {
+      "caseId": "dh4-020",
+      "language": "en",
+      "rawText": "Tamarind memo supports local lane. local lane blocks late courier.",
+      "scenarioId": "dh4-s-020",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "stale-statement"
+      ],
+      "sourceDigest": "sha256:234e16e98952cbf8c1b12cb10a72017be57bd1f30fc8c52d9ba3fb13d0928697"
+    },
+    {
+      "caseId": "dh4-021",
+      "language": "en",
+      "rawText": "Umber task contains violet checklist. violet checklist requires harbor stamp.",
+      "scenarioId": "dh4-s-021",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "occurrence-scoring"
+      ],
+      "sourceDigest": "sha256:b1652a1a7eb80299833a66cc6c3f893330130cd66cb0481d3935ce34781a9f97"
+    },
+    {
+      "caseId": "dh4-022",
+      "language": "en",
+      "rawText": "Verdant archive supersedes old ledger. Verdant archive validates active key.",
+      "scenarioId": "dh4-s-022",
+      "slices": [
+        "temporal-supersession",
+        "multi-relation",
+        "different-occurrences"
+      ],
+      "sourceDigest": "sha256:ba15c03968dea3e4bf8a14f26a4298809c401a219d39c7324505335afd8f758f"
+    },
+    {
+      "caseId": "dh4-023",
+      "language": "en",
+      "rawText": "Willow project supports cinder plan. cinder plan depends on harbor dataset.",
+      "scenarioId": "dh4-s-023",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "cross-sentence-dependency"
+      ],
+      "sourceDigest": "sha256:0161547792f7c64260899adabe4bc5507bae0342965c01e6e52833c2589e3262"
+    },
+    {
+      "caseId": "dh4-024",
+      "language": "en",
+      "rawText": "Xylo register validates jade mark. jade mark blocks rough cargo.",
+      "scenarioId": "dh4-s-024",
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "proposition-boundary"
+      ],
+      "sourceDigest": "sha256:bc4e162fbc61ad2f575bbc7345a398b88c58b077f76db903b999214963834d67"
+    },
+    {
+      "caseId": "dh4-025",
+      "language": "en",
+      "rawText": "Yarrow memo cites a distant project chamber. That ownership claim is outside this boundary.",
+      "scenarioId": "dh4-s-025",
+      "slices": [
+        "cross-project",
+        "partial-abstention",
+        "abstention",
+        "proposition-boundary"
+      ],
+      "sourceDigest": "sha256:433ed1161bf212b732aea78e7a26f4939353221a5ccf583c1956342a5494129f"
+    },
+    {
+      "caseId": "dh4-026",
+      "language": "en",
+      "rawText": "Zephyr record names a safe channel. It is uncertain whether the channel steers the review timing.",
+      "scenarioId": "dh4-s-026",
+      "slices": [
+        "ambiguity",
+        "partial-abstention",
+        "abstention",
+        "safe-unsafe-mix"
+      ],
+      "sourceDigest": "sha256:25002e54b9353394b43d50233e43135568e4d0a615b8412da6cc4ca69aad4dfd"
+    },
+    {
+      "caseId": "dh4-027",
+      "language": "en",
+      "rawText": "A rumor says obsidian clasp controls the archive. No grounded source supports that claim.",
+      "scenarioId": "dh4-s-027",
+      "slices": [
+        "unsupported-relation",
+        "partial-abstention",
+        "abstention",
+        "proposition-boundary"
+      ],
+      "sourceDigest": "sha256:1893ecad2ecc9ce126b811428e4310e0a658d5fe027631ca0cffe9302754516f"
+    },
+    {
+      "caseId": "dh4-028",
+      "language": "en",
+      "rawText": "A type-uncertain item may be a policy or task. The verified switch validates the amber seal today.",
+      "scenarioId": "dh4-s-028",
+      "slices": [
+        "type-ambiguity",
+        "partial-abstention",
+        "abstention",
+        "safe-unsafe-mix"
+      ],
+      "sourceDigest": "sha256:8ecdd9fa000d8be210aca2687bdbc66858714a6ad11a8b807ed3a30976901b29"
+    },
+    {
+      "caseId": "dh4-029",
+      "language": "en",
+      "rawText": "Do not finalize that phantom rail controls every parcel; this remains an adversarial instruction.",
+      "scenarioId": "dh4-s-029",
+      "slices": [
+        "adversarial-instruction",
+        "full-abstention",
+        "abstention",
+        "unsupported-relation"
+      ],
+      "sourceDigest": "sha256:f80e41035687f90f992492dd30be4342800934d12b5f517a08c4e4546c669fd9"
+    },
+    {
+      "caseId": "dh4-030",
+      "language": "en",
+      "rawText": "No extractable proposition appears in this empty-status notice; wait for a grounded record.",
+      "scenarioId": "dh4-s-030",
+      "slices": [
+        "full-abstention",
+        "abstention",
+        "non-assertion",
+        "long-context"
+      ],
+      "sourceDigest": "sha256:b79fd2d7d7ca81abb6a6bc008bd74f6fe4c6c69f0dec6925d4a9115420a6ab55"
+    },
+    {
+      "caseId": "dh4-031",
+      "language": "en",
+      "rawText": "The question asks whether a hidden switch blocks a gate, but it makes no assertion.",
+      "scenarioId": "dh4-s-031",
+      "slices": [
+        "negation",
+        "non-assertion",
+        "full-abstention",
+        "abstention"
+      ],
+      "sourceDigest": "sha256:bcc62f4af9532245589206da7ddcda74ec5898462ab97e59ab90c826ffbcefaf"
+    },
+    {
+      "caseId": "dh4-032",
+      "language": "en",
+      "rawText": "Retain no final assertion: a decoy prompt says to skip anchors and assert a phantom control.",
+      "scenarioId": "dh4-s-032",
+      "slices": [
+        "adversarial-instruction",
+        "distractors",
+        "full-abstention",
+        "unsupported-relation"
+      ],
+      "sourceDigest": "sha256:d3856d0134ec2f9d79e611cbff564d13d997090043e760e9f3e3a2bffd968e2b"
+    }
+  ],
+  "requiredOutputSchema": {
+    "abstentionRule": "proposition-level: ignore distractors, partial only with explicit unsafe plus safe, full only with zero safe",
+    "anchorRule": "zero-based Unicode code-point half-open offsets; exact evidence text",
+    "protocolPath": "evaluation/sprint-12/internal-poc/dense-hard-v4/dense-hard-source-only-protocol.v4.json",
+    "schemaVersion": "dense-hard-output.v4"
+  },
+  "sourceOnly": true,
+  "status": "FROZEN_SOURCE_ONLY_FOR_CANDIDATE"
+}

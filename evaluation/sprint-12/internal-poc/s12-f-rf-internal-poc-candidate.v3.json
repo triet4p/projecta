@@ -1,0 +1,588 @@
+{
+  "agentCandidateCalls": 12,
+  "artifactVersion": "s12.f-rf.internal-poc-candidate.v3",
+  "candidateDigest": "sha256:fbe412d85bc06d6aa6edf1a68ab26146123dd2fa35308e31abf9542e39f2afaa",
+  "candidateModel": "gpt-5.6-luna",
+  "goldIncluded": false,
+  "heldOutInspection": false,
+  "nonClaims": [
+    "candidate outputs are frozen for primary-agent proxy review only",
+    "no scoring, review, acceptance, external validation, or human-quality claim",
+    "no provider calls, held-out inspection, production enablement, selection, promotion, or release"
+  ],
+  "payloadDigest": "sha256:14fe2fed10c3bd33b4c7c9d4d2f8cec61727cfd2ddeed1dde6832ceb33480f2e",
+  "payloadPath": "evaluation/sprint-12/internal-poc/s12-f-rf-blinded-source-payload.v3.json",
+  "priorReviewsIncluded": false,
+  "priorScoresIncluded": false,
+  "providerCalls": 0,
+  "rawSensitiveDataIncluded": false,
+  "reasoning": "high",
+  "records": [
+    {
+      "caseId": "s12-a-4001",
+      "language": "vi",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v3-01",
+            "confidence": "0.74",
+            "evidence": {
+              "endOffset": 22,
+              "startOffset": 9,
+              "text": "cargo-routing"
+            },
+            "label": "cargo-routing",
+            "type": "Requirement"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v3",
+        "relations": [],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:631fcf1bb0477b36f19cb188bea2c61491ebe16ca6c9581b91bd71a5b8a78ea7",
+      "scenarioId": "s12-s-201",
+      "sourceDigest": "sha256:f819e04d5af8f0a582b396edea3f5616abe895fb07b07c13106e374fd1141de0",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:f819e04d5af8f0a582b396edea3f5616abe895fb07b07c13106e374fd1141de0",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:f819e04d5af8f0a582b396edea3f5616abe895fb07b07c13106e374fd1141de0",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_96d5cbf51add10d34acea0492318ce5440a4b8c9b822b3e0461133473f0af720",
+        "receiptDigest": "sha256:f00e712ace394a0697d0bc1b092eb9c84f0e6fa05c328f2e7c4a9af469b7c034",
+        "replayKey": "replay_ae5f379d71c31fb08e277fa708d6873d1571304c1a266df0a023420dc8075426",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_1fa6dfdc586c77f88367e00758c3c8a764cda3328c15e7177770507c09b67757",
+        "sourceVersionId": "sv_ae5f379d71c31fb08e277fa708d6873d1571304c1a266df0a023420dc8075426"
+      }
+    },
+    {
+      "caseId": "s12-a-4011",
+      "language": "mixed",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v3-02",
+            "confidence": "0.74",
+            "evidence": {
+              "endOffset": 39,
+              "startOffset": 28,
+              "text": "tax receipt"
+            },
+            "label": "tax receipt",
+            "type": "Constraint"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v3",
+        "relations": [],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:26f15b3e636bb2c4e605febb7c5e9d4eb89c71a2aeffcd9bf89194c3ae01e0a3",
+      "scenarioId": "s12-s-202",
+      "sourceDigest": "sha256:5d8f5f7c7797ada99cb69cd7be15fb0ad19bfc95b4c9f91ca6dabeb4360ac35a",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:5d8f5f7c7797ada99cb69cd7be15fb0ad19bfc95b4c9f91ca6dabeb4360ac35a",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:5d8f5f7c7797ada99cb69cd7be15fb0ad19bfc95b4c9f91ca6dabeb4360ac35a",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_96d5cbf51add10d34acea0492318ce5440a4b8c9b822b3e0461133473f0af720",
+        "receiptDigest": "sha256:e736eb76a0aa300c4281cd9a05a761287068b674a262d545d3dec61a955d9100",
+        "replayKey": "replay_c17bc8dd6acea7ca7aab672d08e1d5beb950db741c55d9b82fc720fe2c0c43cb",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_c005469e749b722f03810378e0d16791c2f208a9de0bbec710700afe3d8afe8b",
+        "sourceVersionId": "sv_c17bc8dd6acea7ca7aab672d08e1d5beb950db741c55d9b82fc720fe2c0c43cb"
+      }
+    },
+    {
+      "caseId": "s12-a-4021",
+      "language": "ja",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v3-03",
+            "confidence": "0.74",
+            "evidence": {
+              "endOffset": 18,
+              "startOffset": 3,
+              "text": "roster-planning"
+            },
+            "label": "roster-planning",
+            "type": "Decision"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v3",
+        "relations": [],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:bc4cf824003961b4327febbc0c04430739c1f209cb2f5519d69800ffb7795aed",
+      "scenarioId": "s12-s-203",
+      "sourceDigest": "sha256:3c79f39f07cc6a5e03ba969247fe7062d31dafccda40e962b331d8fa1c671ff9",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:3c79f39f07cc6a5e03ba969247fe7062d31dafccda40e962b331d8fa1c671ff9",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:3c79f39f07cc6a5e03ba969247fe7062d31dafccda40e962b331d8fa1c671ff9",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_96d5cbf51add10d34acea0492318ce5440a4b8c9b822b3e0461133473f0af720",
+        "receiptDigest": "sha256:728c58d6ded1a1f7bdb7c51a93168e846ce921e532d184cf84aee97545d572fe",
+        "replayKey": "replay_843301468b30f504de461d3eb9f5d45f0782a68be9b651148e623dc07f3eacde",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_72ad0ee39cce41cf977ebc1771b2430f4dde0f5bc450b487b9224bd682bf29e4",
+        "sourceVersionId": "sv_843301468b30f504de461d3eb9f5d45f0782a68be9b651148e623dc07f3eacde"
+      }
+    },
+    {
+      "caseId": "s12-a-4031",
+      "language": "vi",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v3-04",
+            "confidence": "0.74",
+            "evidence": {
+              "endOffset": 22,
+              "startOffset": 9,
+              "text": "mobile-wallet"
+            },
+            "label": "mobile-wallet",
+            "type": "Constraint"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v3",
+        "relations": [],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:c2e8408ad06f8c4669430310f05f996a6745771dd9c7d2a132354b255ad851d3",
+      "scenarioId": "s12-s-204",
+      "sourceDigest": "sha256:f38b457203e618b709ccac1db43f9e115be1e646b55713b89c6c4c535dd54326",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:f38b457203e618b709ccac1db43f9e115be1e646b55713b89c6c4c535dd54326",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:f38b457203e618b709ccac1db43f9e115be1e646b55713b89c6c4c535dd54326",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_96d5cbf51add10d34acea0492318ce5440a4b8c9b822b3e0461133473f0af720",
+        "receiptDigest": "sha256:593d4d9a6c553366e0fa754f1800a9b7b494d073e49b44cb76da740960aadbec",
+        "replayKey": "replay_35342924414271ab8e030a62fe6c052939ace55b78a83f96e928064598fd4a5c",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_061eb49e0c84d85d143b8205d7dc49bea406e78b384f16b2ab112999e732d4ef",
+        "sourceVersionId": "sv_35342924414271ab8e030a62fe6c052939ace55b78a83f96e928064598fd4a5c"
+      }
+    },
+    {
+      "caseId": "s12-a-4033",
+      "language": "vi",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v3-05",
+            "confidence": "0.74",
+            "evidence": {
+              "endOffset": 19,
+              "startOffset": 9,
+              "text": "lab-sample"
+            },
+            "label": "lab-sample",
+            "type": "Requirement"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v3",
+        "relations": [],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:8ccbbe59939a03b186b0127dc609ebd6f61fe863d03aa5007f1f2a73dc8f3daa",
+      "scenarioId": "s12-s-205",
+      "sourceDigest": "sha256:5c1b2fa1a2f18395170c950535b3ee64f73e9bc7f16176cf5d14d20724cc2343",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:5c1b2fa1a2f18395170c950535b3ee64f73e9bc7f16176cf5d14d20724cc2343",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:5c1b2fa1a2f18395170c950535b3ee64f73e9bc7f16176cf5d14d20724cc2343",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_96d5cbf51add10d34acea0492318ce5440a4b8c9b822b3e0461133473f0af720",
+        "receiptDigest": "sha256:9c9d40c37ce69aeee81c462918f22e365dc618db903c6cabd05df843243aabfa",
+        "replayKey": "replay_a82ccf07eafc5e57eb31cab4e3d6af79c8d68ffa8817a03f1594fdbdaa6f6a4c",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_a045f5f69bf7b80b7c8612f3b365bfb7cc43ab5f266007f6bcecbc88c559d794",
+        "sourceVersionId": "sv_a82ccf07eafc5e57eb31cab4e3d6af79c8d68ffa8817a03f1594fdbdaa6f6a4c"
+      }
+    },
+    {
+      "caseId": "s12-a-4043",
+      "language": "mixed",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v3-06",
+            "confidence": "0.74",
+            "evidence": {
+              "endOffset": 42,
+              "startOffset": 30,
+              "text": "service hold"
+            },
+            "label": "service hold",
+            "type": "Constraint"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v3",
+        "relations": [],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:12c3aa9cc31aae818eec5087e2790fadbdef2579a027bbeb2a5607119954d8ce",
+      "scenarioId": "s12-s-206",
+      "sourceDigest": "sha256:88ac05c716de8635dfe786ad637d8b2f55792554a2e2a0a0767fc446a181e1e0",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:88ac05c716de8635dfe786ad637d8b2f55792554a2e2a0a0767fc446a181e1e0",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:88ac05c716de8635dfe786ad637d8b2f55792554a2e2a0a0767fc446a181e1e0",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_96d5cbf51add10d34acea0492318ce5440a4b8c9b822b3e0461133473f0af720",
+        "receiptDigest": "sha256:4d71da68bb9cf2298010f4cb41109b064ddfdaa50769917781a30b5e56313ab7",
+        "replayKey": "replay_6880d47920c1a1094de512e0fde65defcb1c51937e5b2428da278948abf1b6ed",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_910bed65d8f5564dfdd4adfb8b29f2cd2aa32b9161795403ab95fc80f07bfc86",
+        "sourceVersionId": "sv_6880d47920c1a1094de512e0fde65defcb1c51937e5b2428da278948abf1b6ed"
+      }
+    },
+    {
+      "caseId": "s12-a-4053",
+      "language": "ja",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v3-07",
+            "confidence": "0.74",
+            "evidence": {
+              "endOffset": 17,
+              "startOffset": 3,
+              "text": "member-renewal"
+            },
+            "label": "member-renewal",
+            "type": "Decision"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v3",
+        "relations": [],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:aa64470c5fd3936e7b2a28b6c7e415882af5ce266c052534d2a5df744aea6cdd",
+      "scenarioId": "s12-s-207",
+      "sourceDigest": "sha256:2ebbce8d2a2e3b491aefe56ebf9fee81948111346a056c93dcf701179ac024e7",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:2ebbce8d2a2e3b491aefe56ebf9fee81948111346a056c93dcf701179ac024e7",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:2ebbce8d2a2e3b491aefe56ebf9fee81948111346a056c93dcf701179ac024e7",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_96d5cbf51add10d34acea0492318ce5440a4b8c9b822b3e0461133473f0af720",
+        "receiptDigest": "sha256:818912be7c244892223652d1cb774294b1da48bb77f8f7ae087aceeb86ac7ee7",
+        "replayKey": "replay_4a04a36aca970b42ecb52c6c4882c9faa50b8aae6e2c2de4deae86bec86fe017",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_d14f00a24468601f39878e4c0236534af8da9d6d57adce88f3d7873a3a97ac47",
+        "sourceVersionId": "sv_4a04a36aca970b42ecb52c6c4882c9faa50b8aae6e2c2de4deae86bec86fe017"
+      }
+    },
+    {
+      "caseId": "s12-a-4063",
+      "language": "vi",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v3-08",
+            "confidence": "0.74",
+            "evidence": {
+              "endOffset": 25,
+              "startOffset": 9,
+              "text": "course-enrolment"
+            },
+            "label": "course-enrolment",
+            "type": "Constraint"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v3",
+        "relations": [],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:fb2f0d0adfbe4504b0f0d87eb3e40f9ec2b69b34e7a18128d9dc551f4a172256",
+      "scenarioId": "s12-s-208",
+      "sourceDigest": "sha256:1c75fbbda9e55406457cfaa5bf8e920613662481aa9cb6fc138afb0fc0ee8533",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:1c75fbbda9e55406457cfaa5bf8e920613662481aa9cb6fc138afb0fc0ee8533",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:1c75fbbda9e55406457cfaa5bf8e920613662481aa9cb6fc138afb0fc0ee8533",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_96d5cbf51add10d34acea0492318ce5440a4b8c9b822b3e0461133473f0af720",
+        "receiptDigest": "sha256:03cdc0abfca67b419849bc38bcac5af5968d8fc02e2ed4dc37aecf96258d9c20",
+        "replayKey": "replay_2260a6958a7efcd578783785ee5c01f3a0277a72041e2613f9ad34ff0332fdb9",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_69cecc717b435344b7cfc011f3bb1452e601a350dfb495f9a0a07df1fb7b4cb8",
+        "sourceVersionId": "sv_2260a6958a7efcd578783785ee5c01f3a0277a72041e2613f9ad34ff0332fdb9"
+      }
+    },
+    {
+      "caseId": "s12-a-4065",
+      "language": "vi",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v3-09",
+            "confidence": "0.74",
+            "evidence": {
+              "endOffset": 27,
+              "startOffset": 9,
+              "text": "sensor-calibration"
+            },
+            "label": "sensor-calibration",
+            "type": "Requirement"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v3",
+        "relations": [],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:44d74014df3d40568cf7fec124449294a9655151ad0b5ecc85bfff36236df4e6",
+      "scenarioId": "s12-s-209",
+      "sourceDigest": "sha256:621c59713e2d3fbfe7cd5fadcc9225123114c79df3590d49b712932afb45f77f",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:621c59713e2d3fbfe7cd5fadcc9225123114c79df3590d49b712932afb45f77f",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:621c59713e2d3fbfe7cd5fadcc9225123114c79df3590d49b712932afb45f77f",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_96d5cbf51add10d34acea0492318ce5440a4b8c9b822b3e0461133473f0af720",
+        "receiptDigest": "sha256:019379af5b0d93a661c67d4cc91204f550185384e04199f76affbcd905002ede",
+        "replayKey": "replay_9e9bcbf5ca015eaaa862b969fb2303ba712d001193d168c7cb9d0e742fe5e4c5",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_c61ef329a004134d243a71ea9441d61a12bcbac60710b9044830532899f85758",
+        "sourceVersionId": "sv_9e9bcbf5ca015eaaa862b969fb2303ba712d001193d168c7cb9d0e742fe5e4c5"
+      }
+    },
+    {
+      "caseId": "s12-a-4075",
+      "language": "mixed",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v3-10",
+            "confidence": "0.74",
+            "evidence": {
+              "endOffset": 43,
+              "startOffset": 27,
+              "text": "missing appendix"
+            },
+            "label": "missing appendix",
+            "type": "Risk"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v3",
+        "relations": [],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:6b9687983c9aa619b2881f6038f83701bbc32030d6d821e961debf3d1d1ba279",
+      "scenarioId": "s12-s-210",
+      "sourceDigest": "sha256:aa5bbf385580fc7b21febb4340c252c66cbe7d3bdce11930c54a370b5057c02e",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:aa5bbf385580fc7b21febb4340c252c66cbe7d3bdce11930c54a370b5057c02e",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:aa5bbf385580fc7b21febb4340c252c66cbe7d3bdce11930c54a370b5057c02e",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_96d5cbf51add10d34acea0492318ce5440a4b8c9b822b3e0461133473f0af720",
+        "receiptDigest": "sha256:8b2bd26dbb72f81e2c949b999f933463821354c599f9cd6de18a5ef6d0fac0c7",
+        "replayKey": "replay_7986383cac8326a97c66ba9ad2437b4c5d0a38dac4b90e9400c716890e97d1db",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_427f3be89c75a4e107fcb15f07c48e04688eb12bff260d1b1112fcf53a1c1b9c",
+        "sourceVersionId": "sv_7986383cac8326a97c66ba9ad2437b4c5d0a38dac4b90e9400c716890e97d1db"
+      }
+    },
+    {
+      "caseId": "s12-a-4085",
+      "language": "ja",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v3-11",
+            "confidence": "0.74",
+            "evidence": {
+              "endOffset": 17,
+              "startOffset": 3,
+              "text": "order-forecast"
+            },
+            "label": "order-forecast",
+            "type": "Decision"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v3",
+        "relations": [],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:560432c3c3f1c286e04ebde913d632d8140e6c36e023f64c48a2b91820b0d6e4",
+      "scenarioId": "s12-s-211",
+      "sourceDigest": "sha256:ba407c680bd1013c47d57b0b21f2bac2510ccb6a3a49e1e30ce26f1e75324bba",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:ba407c680bd1013c47d57b0b21f2bac2510ccb6a3a49e1e30ce26f1e75324bba",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:ba407c680bd1013c47d57b0b21f2bac2510ccb6a3a49e1e30ce26f1e75324bba",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_96d5cbf51add10d34acea0492318ce5440a4b8c9b822b3e0461133473f0af720",
+        "receiptDigest": "sha256:06331151728671a30aeeeb2976c00bb3f3197c8143cc1a0e673cacc91e2c210f",
+        "replayKey": "replay_f42cc7ca98983e2b96f1acbca845667a4dab459e69c3f9876e70e867673fd04b",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_28cd32a3bc5cefa68d7c1ea3e9a7349631f8657901bef329a9df37e843fd60c0",
+        "sourceVersionId": "sv_f42cc7ca98983e2b96f1acbca845667a4dab459e69c3f9876e70e867673fd04b"
+      }
+    },
+    {
+      "caseId": "s12-a-4095",
+      "language": "vi",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v3-12",
+            "confidence": "0.74",
+            "evidence": {
+              "endOffset": 21,
+              "startOffset": 9,
+              "text": "access-badge"
+            },
+            "label": "access-badge",
+            "type": "Constraint"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v3",
+        "relations": [],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:179df34eec2b1e2226f5a44af62eb2fcde0052e723be29f9312f8faa1d4a2df2",
+      "scenarioId": "s12-s-212",
+      "sourceDigest": "sha256:8c5ed96cb01bb40629cbeffbf3707222163dc6fba273aac52b5ccd8071269868",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:8c5ed96cb01bb40629cbeffbf3707222163dc6fba273aac52b5ccd8071269868",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:8c5ed96cb01bb40629cbeffbf3707222163dc6fba273aac52b5ccd8071269868",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_96d5cbf51add10d34acea0492318ce5440a4b8c9b822b3e0461133473f0af720",
+        "receiptDigest": "sha256:704d8da2d9fdaa711bfd0c7279956ff117713e6a3da5ec83c0ffa3a3b28df109",
+        "replayKey": "replay_af579d00db36502ca497e3e6a23f53510bfc3f930d6c68b41cbe9616b5846b33",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_502b35541fbfe6d5a4f3591273a80d5302d1d1264caba8b03bf8cc8a016900f3",
+        "sourceVersionId": "sv_af579d00db36502ca497e3e6a23f53510bfc3f930d6c68b41cbe9616b5846b33"
+      }
+    }
+  ],
+  "reviewOrScoringPerformed": false,
+  "status": "CANDIDATE_FROZEN_FOR_PROXY_REVIEW_ONLY"
+}

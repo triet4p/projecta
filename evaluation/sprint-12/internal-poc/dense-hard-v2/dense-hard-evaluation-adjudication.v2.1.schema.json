@@ -1,0 +1,97 @@
+{
+  "$id": "https://projecta.example/schemas/s12-dense-hard-evaluation-adjudication.v2.1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "adjudicationDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "adjudicatorVersion": {
+      "const": "s12.dense-hard.adjudicator.v2.1"
+    },
+    "artifactVersion": {
+      "const": "s12.dense-hard.evaluation-adjudication.v2.1"
+    },
+    "auditExamples": {
+      "additionalProperties": {
+        "type": "object"
+      },
+      "minProperties": 5,
+      "type": "object"
+    },
+    "candidateDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "datasetKind": {
+      "const": "SYNTHETIC_NON_PRODUCTION"
+    },
+    "goldDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "legacyStrict": {
+      "type": "object"
+    },
+    "manifestDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "nonClaims": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "originalEvaluationDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "originalEvaluationPath": {
+      "type": "string"
+    },
+    "protocolDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "protocolFair": {
+      "type": "object"
+    },
+    "protocolFairRule": {
+      "type": "string"
+    },
+    "sourcePayloadDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "status": {
+      "const": "ADJUDICATED_IMMUTABLE_V2"
+    },
+    "v1Comparison": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "artifactVersion",
+    "status",
+    "datasetKind",
+    "adjudicatorVersion",
+    "sourcePayloadDigest",
+    "protocolDigest",
+    "goldDigest",
+    "manifestDigest",
+    "candidateDigest",
+    "originalEvaluationPath",
+    "originalEvaluationDigest",
+    "protocolFairRule",
+    "legacyStrict",
+    "protocolFair",
+    "v1Comparison",
+    "auditExamples",
+    "nonClaims",
+    "adjudicationDigest"
+  ],
+  "title": "Sprint 12 Dense-Hard v2.1 Protocol-Fair Adjudication",
+  "type": "object"
+}

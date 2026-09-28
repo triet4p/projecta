@@ -817,3 +817,73 @@ reconciliations through an immutable owner erratum.
 **Watch out for:** Windows checkouts, `.gitattributes` conversions, or any
 freeze/authorization packet that claims exact-commit custody while its digest
 was computed with `Get-FileHash` against the working tree.
+
+## [2026-08-22] Historical execution tests deleted immutable reports
+
+**Symptom:** Running the complete Sprint 12 historical test suite deleted the
+tracked v6 Stage A report during cleanup, causing dozens of later custody tests
+to fail and making archived v6/v9 tests depend on execution-time state that no
+longer exists.
+**Root cause:** Mock execution tests reused production `OUTPUT` constants that
+now point to preserved immutable reports and called `unlink()` in `finally`.
+They also retained pre-execution assumptions after the one-shot reports had
+been committed.
+**Fix / workaround:** Treat archived default paths as fail-closed, zero-call
+tests; use only test-owned temporary paths for mock outputs; distinguish frozen
+package digests from current runtime digests; and enforce a session guard that
+checks the exact v6/v9 SHA-256 values and continued absence of v8 before and
+after the complete suite.
+**Watch out for:** Any governed one-shot runner test that imports a module-level
+`OUTPUT` constant or cleans up with `unlink()` after the output has become
+historical evidence. Never let a mock test own a tracked custody path.
+
+## [2026-08-23] Entity type mismatch cascaded into relation and safety metrics
+
+**Symptom:** The first dense-hard v2 evaluator treated an entity endpoint as
+`(start,end,text,type)`, so a wrong entity type also changed relation endpoint
+identity and inflated relation false negatives/false positives,
+unsupported-finalization, and hallucination counts.
+**Root cause:** Anchored occurrence identity was incorrectly coupled to the
+semantic type dimension, while the v2 source-only protocol exposed no finite
+type rubric that would make type adjudication scorable for the candidate.
+**Fix / workaround:** Preserve the original v2 evaluation as legacy-strict;
+add a separate v2.1 adjudication whose occurrence identity is `(start,end,text)`
+and whose protocol-fair view reports type as
+`UNSCORABLE_PROTOCOL_AMBIGUITY`, excluding it from pass/fail while retaining a
+separate type-correction diagnostic.
+**Watch out for:** Never use type in anchored occurrence or relation identity;
+when a protocol does not publish a type rubric, do not silently score type as
+correct or incorrect and do not let it cascade into relation or unsafe-assertion
+metrics.
+
+## [2026-08-23] Pooled safety cases can make a correction gate impossible
+
+**Symptom:** The dense-hard v3 candidate was safe on all expected-abstention
+cases, but pooled RM-67 unchanged and unchanged-or-minor rates were diluted by
+the safety cases and could not satisfy the 70%/85% correction thresholds even
+under perfect safety behavior.
+**Root cause:** A single pooled denominator combined utility cases, where
+correction burden is measured, with mandatory full/partial abstention cases,
+where abstention and quarantine safety are the intended measurements.
+**Fix / workaround:** Preserve the pooled v3 result as a non-authoritative
+diagnostic, then publish a stratified adjudication: apply the unchanged/minor,
+mean-edit, and zero-unsafe RM-67 gates only to expected-none utility cases;
+apply preregistered abstention, quarantine, and zero-unsafe gates to the safety
+subset; require both subsets to pass.
+**Watch out for:** Before freezing a benchmark, calculate each registered gate's
+denominator by stratum. Never change thresholds to compensate for an impossible
+pooled composition; redesign the benchmark and evaluator contract instead.
+
+## [2026-08-24] Keep correction and safety denominators stratified
+
+**Symptom:** Pooling expected-abstention safety cases into the correction-burden denominator can make the unchanged and unchanged-or-minor gates mathematically impossible, even when every safety case is handled correctly.
+**Root cause:** Utility cases measure edits to safe finalized content, while full/partial safety cases intentionally require abstention and quarantine; their classifications are not interchangeable evidence for one correction rate.
+**Fix / workaround:** Preserve the pooled result as a legacy diagnostic, apply RM-67 correction thresholds only to the expected-abstention=`none` utility subset, apply exact abstention/quarantine/zero-unsafe gates to the safety subset, and require both strata to pass.
+**Watch out for:** Freeze the stratum definitions and denominators in the adjudication schema before any future candidate is scored; do not relax thresholds or relabel safety abstentions as correction success.
+
+## [2026-08-24] Separate pre-freeze absence checks from post-evaluation custody
+
+**Symptom:** A v4 packet validator that rejected any directory containing a candidate or evaluation file passed during authoring but failed the valid post-evaluation full suite after immutable artifacts were deliberately added.
+**Root cause:** A generation-time absence invariant was encoded as a permanent packet invariant, even though source-only and gold-excluded guarantees belong to artifact bindings and the evaluator's phase contract.
+**Fix / workaround:** Keep default validation focused on immutable schema, digest, lineage, source-only, and cross-artifact bindings; expose the directory-absence assertion only through an explicit pre-candidate/pre-freeze mode.
+**Watch out for:** Never make a post-run custody validator reject the frozen evidence it is required to validate; phase-sensitive checks must name their lifecycle mode and be tested in both phases.

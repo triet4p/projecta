@@ -1,0 +1,77 @@
+{
+  "artifactVersion": "s12.dense-hard.remediation-backlog.v1",
+  "status": "REMEDIATION_PENDING_NEW_AUTHORITY",
+  "datasetKind": "SYNTHETIC_NON_PRODUCTION",
+  "basisEvaluationPath": "evaluation/sprint-12/internal-poc/dense-hard-v1/dense-hard-evaluation.v1.json",
+  "basisEvaluationDigest": "sha256:d15fba491c259e09c2d8625b3ac33305c9f3b39d662d8be9b7b6840fd9c8eb15",
+  "finite": true,
+  "items": [
+    {
+      "backlogId": "DH-RB-01",
+      "failureClass": "UNSUPPORTED_FINALIZED_ASSERTION",
+      "observedCaseCount": 20,
+      "observedAssertionCount": 74,
+      "priority": "P0",
+      "slices": ["multi-relation", "mixed-unicode", "multi-hop", "cross-sentence-dependency"],
+      "remediationObjective": "Quarantine every unsupported or hallucinated finalized assertion before acceptance."
+    },
+    {
+      "backlogId": "DH-RB-02",
+      "failureClass": "ENTITY_TYPE_MISMATCH",
+      "observedCaseCount": 15,
+      "observedAssertionCount": 15,
+      "priority": "P0",
+      "slices": ["mixed-unicode", "multi-hop", "stale-statement", "multi-relation"],
+      "remediationObjective": "Preserve released entity type under dense multilingual, temporal, and repeated-occurrence context."
+    },
+    {
+      "backlogId": "DH-RB-03",
+      "failureClass": "RELATION_ENDPOINT_MISMATCH",
+      "observedCaseCount": 11,
+      "observedAssertionCount": 11,
+      "priority": "P0",
+      "slices": ["multi-relation", "mixed-unicode", "cross-sentence-dependency", "partial-abstention"],
+      "remediationObjective": "Bind relation endpoints to the correct occurrence and released type; reject shifted or cross-scope endpoints."
+    },
+    {
+      "backlogId": "DH-RB-04",
+      "failureClass": "ABSTENTION_DISPOSITION_ERROR",
+      "observedCaseCount": 10,
+      "observedAssertionCount": 10,
+      "priority": "P1",
+      "slices": ["stale-statement", "temporal-supersession", "ambiguity", "adversarial-instruction", "repeated-labels"],
+      "remediationObjective": "Distinguish required partial abstention from over-abstention and missing/rejected abstention without accepting unsupported claims."
+    },
+    {
+      "backlogId": "DH-RB-05",
+      "failureClass": "ENTITY_OCCURRENCE_AND_SPAN_DRIFT",
+      "observedCaseCount": 12,
+      "observedAssertionCount": 19,
+      "priority": "P1",
+      "slices": ["repeated-labels", "different-occurrences", "mixed-unicode", "combining-mark", "emoji"],
+      "remediationObjective": "Maintain exact Unicode half-open anchors and occurrence identity through candidate relation binding."
+    }
+  ],
+  "v2NonReusePolicy": {
+    "requiresNewOwnerAuthority": true,
+    "requiresFreshCases": true,
+    "reuseProhibited": [
+      "dense-hard-v1 source payload and raw texts",
+      "dense-hard-v1 private gold and manifest",
+      "dense-hard-v1 frozen candidate and candidate outputs",
+      "dense-hard-v1 evaluation and per-case labels",
+      "v1 prompt/model/provider output or human/proxy judgments"
+    ],
+    "providerCalls": 0,
+    "humanOrExternalClaims": false,
+    "heldOutInspection": false,
+    "productionEnablement": false,
+    "selectionPromotionRelease": false,
+    "requiredFreshBindings": ["new source digest", "new gold digest", "new manifest digest", "new candidate digest", "new evaluator digest"]
+  },
+  "nonClaims": [
+    "This backlog is a finite offline remediation plan, not authorization to rerun or tune v1.",
+    "It does not claim provider, human, external, held-out, production, selection, promotion, or release readiness.",
+    "A future v2 result must be independently evaluated and must not be pooled with v1 evidence."
+  ]
+}

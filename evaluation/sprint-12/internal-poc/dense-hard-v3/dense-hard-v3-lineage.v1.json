@@ -1,0 +1,37 @@
+{
+  "abstentionCaseCount": 12,
+  "artifactVersion": "s12.dense-hard.v3-lineage.v1",
+  "authorIneligibleForCandidate": true,
+  "caseCount": 30,
+  "contractDigest": "sha256:7e77febb8fc685134d0374340ed0e43c0cdbb892d51a53c75efe1a94f00dd532",
+  "datasetKind": "SYNTHETIC_NON_PRODUCTION",
+  "entityAssertions": 104,
+  "fullAbstentionCaseCount": 5,
+  "goldDigest": "sha256:5191d1b7ee0d4407d58cecac19b2d4127155c41cc608151aabfd65380cb9c0dc",
+  "lineageDigest": "sha256:38b4e82c2f3b1ebc421be5dd76f85deccee7606a4c3a66a48dd29e1a1544b90b",
+  "manifestDigest": "sha256:1298f112c09a2ad2ad33c7ef34f25c8d0084e1a57e4e38ea11970ff33b8bc5bb",
+  "noReuseChecks": {
+    "caseIdsDisjointV1": true,
+    "caseIdsDisjointV2": true,
+    "normalizedSentencesDisjointV1": true,
+    "normalizedSentencesDisjointV2": true,
+    "rawTextChangedV1": true,
+    "rawTextChangedV2": true,
+    "sourceDigestsDisjointV1": true,
+    "sourceDigestsDisjointV2": true,
+    "sourcePayloadDigestFreshV1": true,
+    "sourcePayloadDigestFreshV2": true
+  },
+  "nonClaims": [
+    "No v3 candidate, evaluation, review, provider, human, external, held-out, production, selection, promotion, or release result is present."
+  ],
+  "partialAbstentionCaseCount": 7,
+  "protocolDigest": "sha256:939ed208c7d581f4dc35be5560196c6cb9e5bd4d746e8a67450c2cc1a71d3131",
+  "providerCalls": 0,
+  "relationAssertions": 44,
+  "sliceCount": 22,
+  "sourcePayloadDigest": "sha256:b907a5a50d6c9db63a9806b8bb4e1d2b992391828290bc97b6cc2a023e0277c7",
+  "status": "VALIDATED_FRESH_NO_V1_V2_REUSE",
+  "v1SourcePayloadDigest": "sha256:65e6a044767f97298dee4511d19e3373878483224b9b7cf2606b94acdefc1409",
+  "v2SourcePayloadDigest": "sha256:c5ca7a63ecb16a96e2801ecedc5b20bb02c34705305b301a119ee6f9c05a4232"
+}

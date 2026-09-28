@@ -1,0 +1,60 @@
+{
+  "artifactVersion": "s12.f-rf.internal-poc.v1",
+  "status": "INTERNAL_DEV_POC_ONLY",
+  "disposition": "EXTERNAL_VALIDATION_DEFERRED",
+  "reviewerMode": "AGENT_PROXY_NOT_HUMAN",
+  "sourceBindings": [
+    {"path": "evaluation/sprint-12/corpus/v3-frozen/atomic-v3.frozen.v1.json", "digest": "sha256:dd535a4ae4ad9888a1dcb041dfd781426fa2d584ef6720a366a58becd0f25841", "role": "internal synthetic atomic source"},
+    {"path": "evaluation/sprint-12/corpus/v3-frozen/scenario-v3.frozen.v1.json", "digest": "sha256:d8ca8b911f74e3f8d7bde71e180a076a98b83f3180126b39a8b3fcbbf4158a65", "role": "internal synthetic scenario source"},
+    {"path": "evaluation/sprint-12/corpus/v3-frozen/atomic-manifest.v1.json", "digest": "sha256:81cd91fcef327c87348ef0563a6407bdb9aa07f1f54c2711daf77312f91e3bb1", "role": "frozen synthetic manifest"},
+    {"path": "evaluation/sprint-12/harness/s12-rm67-human-correction-burden-contract.v1.json", "digest": "sha256:5013b831a5d4745eab8fe405c18dbad8541abde39566243b5fdd80bb1449e10e", "role": "RM-67 taxonomy and threshold source"},
+    {"path": "evaluation/sprint-12/metrics.v1.md", "digest": "sha256:1e59a7f6310ed524b2da06608605010834ef7ae9ab1f24d841312718fea118ee", "role": "metrics and CI source"},
+    {"path": "scripts/sprint12_evaluator.py", "digest": "sha256:2d97704e3109588a608db5e544e1e7b742002ea32a7d8380972ddf0e45fd0810", "role": "offline/default evaluator"},
+    {"path": "apps/api/src/projecta_api/extraction/service.py", "digest": "sha256:ee950f8cbab830e1e283fb3aee4a7c1701ac81ec4fc4bcf4423c6b843f9e291a", "role": "candidate service boundary"}
+  ],
+  "datasetBinding": {
+    "datasetVersion": "s12.v3-frozen.internal-poc-selection.v1",
+    "sourceDatasetVersion": "s12.v3.frozen.v1",
+    "split": "development",
+    "scenarioCount": 12,
+    "representativeCaseCount": 12,
+    "scenarioIds": ["s12-s-201", "s12-s-202", "s12-s-203", "s12-s-204", "s12-s-205", "s12-s-206", "s12-s-207", "s12-s-208", "s12-s-209", "s12-s-210", "s12-s-211", "s12-s-212"],
+    "representativeCaseIds": ["s12-a-4001", "s12-a-4011", "s12-a-4021", "s12-a-4031", "s12-a-4033", "s12-a-4043", "s12-a-4053", "s12-a-4063", "s12-a-4065", "s12-a-4075", "s12-a-4085", "s12-a-4095"],
+    "languages": ["vi", "en", "ja", "mixed"],
+    "journeys": ["J1", "J2", "J3", "J4", "J5", "J6"],
+    "coverageTargets": ["target-role-matrix", "negative-disposition", "ambiguity", "prompt-injection", "fabricated-link", "cross-project-isolation", "unicode-and-noisy-text"],
+    "rawPayloadCopied": false,
+    "productionData": false,
+    "secretsPresent": false
+  },
+  "candidateExecution": {
+    "candidateVersion": "m3.v2",
+    "path": "scripts/sprint12_evaluator.py::build_baseline_report",
+    "mode": "offline_default_path",
+    "runtimeConfigurationPresent": false,
+    "status": "NOT_EXECUTED_MISSING_RUNTIME_CONFIGURATION",
+    "providerCalls": 0,
+    "heldOutInspection": false,
+    "assertedGraphMutation": false,
+    "inferencePublication": false
+  },
+  "proxyReviewProtocol": {
+    "unit": "one representative atomic case per selected scenario",
+    "records": 12,
+    "reviewer": "primary-agent-proxy",
+    "humanEvidence": false,
+    "independentReviewerCount": 0,
+    "manualBaseline": "not run; no human reviewer and no matched independent baseline",
+    "timing": "deterministic effort proxy only; not human latency",
+    "taxonomy": ["unchanged", "minor", "major", "missing-output", "rejected", "not-applicable"],
+    "missingOutputPolicy": "retain in denominator and fail acceptance gate",
+    "thresholdsDiagnosticOnly": true
+  },
+  "nonClaims": [
+    "not external, independent, human, blinded, or business-quality evidence",
+    "no RM-68 preregistration or issuance",
+    "no provider calls, held-out inspection, human execution, selection, promotion, or release",
+    "no production enablement, ontology change, asserted-graph mutation, or inference publication",
+    "agent-proxy timing and dispositions cannot satisfy RM-67 human-reviewer agreement or manual-baseline requirements"
+  ]
+}

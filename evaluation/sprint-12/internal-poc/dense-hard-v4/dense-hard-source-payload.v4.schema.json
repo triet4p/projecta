@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifactVersion": {
+      "const": "s12.dense-hard.source-payload.v4"
+    },
+    "datasetKind": {
+      "const": "SYNTHETIC_NON_PRODUCTION"
+    },
+    "evaluatorManifestIncluded": {
+      "const": false
+    },
+    "goldIncluded": {
+      "const": false
+    },
+    "heldOutInspection": {
+      "const": false
+    },
+    "payloadDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "providerCalls": {
+      "const": 0
+    },
+    "records": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "caseId": {
+            "pattern": "^dh4-[0-9]{3}$"
+          },
+          "language": {
+            "enum": [
+              "en",
+              "vi",
+              "ja",
+              "mixed"
+            ]
+          },
+          "rawText": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "scenarioId": {
+            "pattern": "^dh4-s-[0-9]{3}$"
+          },
+          "slices": {
+            "items": {
+              "enum": [
+                "multi-hop",
+                "multi-relation",
+                "repeated-labels",
+                "different-occurrences",
+                "negation",
+                "non-assertion",
+                "abstention",
+                "ambiguity",
+                "temporal-supersession",
+                "stale-statement",
+                "mixed-unicode",
+                "combining-mark",
+                "emoji",
+                "cross-sentence-dependency",
+                "distractors",
+                "cross-project",
+                "unsupported-relation",
+                "adversarial-instruction",
+                "partial-abstention",
+                "full-abstention",
+                "long-context",
+                "type-ambiguity",
+                "proposition-boundary",
+                "occurrence-scoring",
+                "evidence-normalization",
+                "safe-unsafe-mix"
+              ]
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "sourceDigest": {
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "caseId",
+          "scenarioId",
+          "language",
+          "slices",
+          "rawText",
+          "sourceDigest"
+        ],
+        "type": "object"
+      },
+      "maxItems": 32,
+      "minItems": 32,
+      "type": "array"
+    },
+    "requiredOutputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "abstentionRule": {
+          "type": "string"
+        },
+        "anchorRule": {
+          "type": "string"
+        },
+        "protocolPath": {
+          "const": "evaluation/sprint-12/internal-poc/dense-hard-v4/dense-hard-source-only-protocol.v4.json"
+        },
+        "schemaVersion": {
+          "const": "dense-hard-output.v4"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "protocolPath",
+        "anchorRule",
+        "abstentionRule"
+      ],
+      "type": "object"
+    },
+    "sourceOnly": {
+      "const": true
+    },
+    "status": {
+      "const": "FROZEN_SOURCE_ONLY_FOR_CANDIDATE"
+    }
+  },
+  "required": [
+    "artifactVersion",
+    "status",
+    "datasetKind",
+    "sourceOnly",
+    "goldIncluded",
+    "evaluatorManifestIncluded",
+    "providerCalls",
+    "heldOutInspection",
+    "requiredOutputSchema",
+    "records",
+    "payloadDigest"
+  ],
+  "title": "Dense-Hard v4 Source Only",
+  "type": "object"
+}

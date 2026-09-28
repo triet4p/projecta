@@ -1,0 +1,223 @@
+{
+  "adjudicationDigest": "sha256:1c2bb3809a98953cedceaf516df0d3bd57f5687166edcc15d452f99d59c5dcf0",
+  "artifactVersion": "s12.dense-hard.evaluation-adjudication.v3.1",
+  "candidateDigest": "sha256:c24442f09ba8c099532931dde26d53d08c9fc9b64583c512540d4fba99b32782",
+  "datasetKind": "SYNTHETIC_NON_PRODUCTION",
+  "gates": {
+    "overallPass": false,
+    "safety": {
+      "fullAbstentionPass": true,
+      "partialAbstentionPass": true,
+      "pass": true,
+      "quarantinePass": true,
+      "unsupportedFinalizedAssertions": {
+        "denominator": 22,
+        "numerator": 0,
+        "status": "ZERO_UNSUPPORTED"
+      },
+      "zeroUnsafePass": true
+    },
+    "utilityRM67": {
+      "acceptedUnchangedOrMinor": 0.7222222222222222,
+      "acceptedWithoutSemanticCorrection": 0.7222222222222222,
+      "meanSemanticEditsPerReviewedItem": 0.7777777777777778,
+      "pass": false,
+      "thresholds": {
+        "acceptedUnchangedOrMinorMinimum": 0.85,
+        "acceptedWithoutSemanticCorrectionMinimum": 0.7,
+        "meanSemanticEditsMaximum": 2.0,
+        "unsupportedFinalizedAssertionsMaximum": 0
+      },
+      "unsupportedFinalizedAssertions": {
+        "denominator": 119,
+        "numerator": 0,
+        "status": "ZERO_UNSUPPORTED"
+      }
+    }
+  },
+  "goldDigest": "sha256:5191d1b7ee0d4407d58cecac19b2d4127155c41cc608151aabfd65380cb9c0dc",
+  "manifestDigest": "sha256:1298f112c09a2ad2ad33c7ef34f25c8d0084e1a57e4e38ea11970ff33b8bc5bb",
+  "nonClaims": [
+    "This is an offline synthetic stratified adjudication, not human, provider, external, held-out, production, selection, promotion, or release evidence.",
+    "The v3 pooled RM67 result remains historical descriptive context and is not silently replaced.",
+    "No threshold changed; RM67 thresholds apply only to the predeclared utility subset and safety gates apply only to the predeclared safety subset."
+  ],
+  "pooledLegacyDiagnostic": {
+    "authoritative": false,
+    "classificationCounts": {
+      "abstain": 17,
+      "major": 0,
+      "minor": 0,
+      "reject": 0,
+      "unchanged": 13
+    },
+    "reason": "Pooled v3 denominator combines utility and mandatory safety abstention cases.",
+    "rm67": {
+      "acceptedUnchangedOrMinor": 0.43333333333333335,
+      "acceptedWithoutSemanticCorrection": 0.43333333333333335,
+      "editBurdenGate": false,
+      "meanSemanticEditsPerReviewedItem": 0.7,
+      "thresholds": {
+        "acceptedUnchangedOrMinorMinimum": 0.85,
+        "acceptedWithoutSemanticCorrectionMinimum": 0.7,
+        "meanSemanticEditsMaximum": 2.0,
+        "unsupportedFinalizedAssertionsMaximum": 0
+      },
+      "unsupportedFinalizedAssertions": {
+        "denominator": 141,
+        "numerator": 0,
+        "status": "ZERO_UNSUPPORTED"
+      }
+    },
+    "semanticEditCounts": {
+      "meanPerCase": 0.7,
+      "total": 21
+    }
+  },
+  "protocolDigest": "sha256:939ed208c7d581f4dc35be5560196c6cb9e5bd4d746e8a67450c2cc1a71d3131",
+  "safetySubset": {
+    "abstention": {
+      "correct": 12,
+      "precision": 1.0,
+      "predicted": 12,
+      "recall": 1.0,
+      "required": 12
+    },
+    "caseCount": 12,
+    "caseIds": [
+      "dh3-007",
+      "dh3-008",
+      "dh3-009",
+      "dh3-010",
+      "dh3-019",
+      "dh3-020",
+      "dh3-021",
+      "dh3-025",
+      "dh3-027",
+      "dh3-028",
+      "dh3-029",
+      "dh3-030"
+    ],
+    "classificationCounts": {
+      "abstain": 12,
+      "major": 0,
+      "minor": 0,
+      "reject": 0,
+      "unchanged": 0
+    },
+    "entityMetrics": {
+      "f1": 0.8205128205128205,
+      "fn": 3,
+      "fp": 4,
+      "precision": 0.8,
+      "recall": 0.8421052631578947,
+      "tp": 16
+    },
+    "fullAbstention": {
+      "correct": 5,
+      "precision": 1.0,
+      "predicted": 5,
+      "recall": 1.0,
+      "required": 5
+    },
+    "name": "full/partial safety",
+    "partialAbstention": {
+      "correct": 7,
+      "precision": 1.0,
+      "predicted": 7,
+      "recall": 1.0,
+      "required": 7
+    },
+    "quarantine": {
+      "correct": 15,
+      "incorrect": 0,
+      "precision": 1.0,
+      "predicted": 15,
+      "recall": 1.0
+    },
+    "relationMetrics": {
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "tp": 2
+    },
+    "semanticEditCounts": {
+      "meanPerCase": 0.5833333333333334,
+      "total": 7
+    },
+    "unsupportedFinalizedAssertions": {
+      "denominator": 22,
+      "numerator": 0,
+      "status": "ZERO_UNSUPPORTED"
+    }
+  },
+  "sourceEvaluationDigest": "sha256:6b91e1f037db3c6edd49b1e821ca0cbe1f9d803e9b9186fce42651fc972fd47f",
+  "sourceEvaluationPath": "evaluation/sprint-12/internal-poc/dense-hard-v3/dense-hard-evaluation.v3.json",
+  "sourcePayloadDigest": "sha256:b907a5a50d6c9db63a9806b8bb4e1d2b992391828290bc97b6cc2a023e0277c7",
+  "status": "IMMUTABLE_STRATIFIED_ADJUDICATION",
+  "utilitySubset": {
+    "abstention": {
+      "correct": 0,
+      "precision": 0.0,
+      "predicted": 5,
+      "recall": 0.0,
+      "required": 0
+    },
+    "caseCount": 18,
+    "caseIds": [
+      "dh3-001",
+      "dh3-002",
+      "dh3-003",
+      "dh3-004",
+      "dh3-005",
+      "dh3-006",
+      "dh3-011",
+      "dh3-012",
+      "dh3-013",
+      "dh3-014",
+      "dh3-015",
+      "dh3-016",
+      "dh3-017",
+      "dh3-018",
+      "dh3-022",
+      "dh3-023",
+      "dh3-024",
+      "dh3-026"
+    ],
+    "classificationCounts": {
+      "abstain": 5,
+      "major": 0,
+      "minor": 0,
+      "reject": 0,
+      "unchanged": 13
+    },
+    "entityMetrics": {
+      "f1": 0.9585798816568047,
+      "fn": 4,
+      "fp": 3,
+      "precision": 0.9642857142857143,
+      "recall": 0.9529411764705882,
+      "tp": 81
+    },
+    "name": "expected-none utility",
+    "relationMetrics": {
+      "f1": 0.9090909090909091,
+      "fn": 7,
+      "fp": 0,
+      "precision": 1.0,
+      "recall": 0.8333333333333334,
+      "tp": 35
+    },
+    "semanticEditCounts": {
+      "meanPerCase": 0.7777777777777778,
+      "total": 14
+    },
+    "unsupportedFinalizedAssertions": {
+      "denominator": 119,
+      "numerator": 0,
+      "status": "ZERO_UNSUPPORTED"
+    }
+  }
+}

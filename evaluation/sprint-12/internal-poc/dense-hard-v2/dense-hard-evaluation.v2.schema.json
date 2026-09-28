@@ -1,0 +1,369 @@
+{
+  "$id": "https://projecta.example/schemas/s12-dense-hard-evaluation.v2.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "abstentionMetrics": {
+      "type": "object"
+    },
+    "antiLeakChecks": {
+      "additionalProperties": false,
+      "properties": {
+        "candidateDigestBound": {
+          "const": true
+        },
+        "candidateSourceOnlyFlagsClean": {
+          "const": true
+        },
+        "fRfStateChanged": {
+          "const": false
+        },
+        "goldDigestBound": {
+          "const": true
+        },
+        "goldExcludedFromCandidate": {
+          "const": true
+        },
+        "heldOutInspectionFalse": {
+          "const": true
+        },
+        "manifestDigestBound": {
+          "const": true
+        },
+        "protocolDigestBound": {
+          "const": true
+        },
+        "providerCallsZero": {
+          "const": true
+        },
+        "sourceDigestBound": {
+          "const": true
+        }
+      },
+      "required": [
+        "candidateDigestBound",
+        "sourceDigestBound",
+        "protocolDigestBound",
+        "goldDigestBound",
+        "manifestDigestBound",
+        "candidateSourceOnlyFlagsClean",
+        "goldExcludedFromCandidate",
+        "providerCallsZero",
+        "heldOutInspectionFalse",
+        "fRfStateChanged"
+      ],
+      "type": "object"
+    },
+    "artifactVersion": {
+      "const": "s12.dense-hard.evaluation.v2"
+    },
+    "candidateDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "candidateModel": {
+      "type": "string"
+    },
+    "candidatePath": {
+      "type": "string"
+    },
+    "counts": {
+      "additionalProperties": false,
+      "properties": {
+        "caseCount": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "entityCandidate": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "entityGold": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "quarantinePredicted": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "relationCandidate": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "relationGold": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "caseCount",
+        "entityGold",
+        "entityCandidate",
+        "relationGold",
+        "relationCandidate",
+        "quarantinePredicted"
+      ],
+      "type": "object"
+    },
+    "datasetKind": {
+      "const": "SYNTHETIC_NON_PRODUCTION"
+    },
+    "difficultyTiers": {
+      "additionalProperties": {
+        "type": "object"
+      },
+      "minProperties": 3,
+      "type": "object"
+    },
+    "entityMetrics": {
+      "additionalProperties": false,
+      "properties": {
+        "f1": {
+          "type": "number"
+        },
+        "fn": {
+          "type": "integer"
+        },
+        "fp": {
+          "type": "integer"
+        },
+        "precision": {
+          "type": "number"
+        },
+        "recall": {
+          "type": "number"
+        },
+        "tp": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "tp",
+        "fp",
+        "fn",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "type": "object"
+    },
+    "errorTaxonomy": {
+      "type": "object"
+    },
+    "evaluationDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "evaluatorCodeDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "evaluatorVersion": {
+      "const": "s12.dense-hard.evaluator.v2"
+    },
+    "goldDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "goldPath": {
+      "type": "string"
+    },
+    "hallucinatedFinalizedAssertions": {
+      "type": "object"
+    },
+    "manifestDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "manifestPath": {
+      "type": "string"
+    },
+    "nonClaims": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "perItem": {
+      "items": {
+        "type": "object"
+      },
+      "maxItems": 28,
+      "minItems": 28,
+      "type": "array"
+    },
+    "perItemClassificationCounts": {
+      "additionalProperties": false,
+      "properties": {
+        "abstain": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "major": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "minor": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "reject": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "unchanged": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "unchanged",
+        "minor",
+        "major",
+        "reject",
+        "abstain"
+      ],
+      "type": "object"
+    },
+    "perSlice": {
+      "additionalProperties": {
+        "type": "object"
+      },
+      "minProperties": 21,
+      "type": "object"
+    },
+    "protocolDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "protocolPath": {
+      "type": "string"
+    },
+    "providerCalls": {
+      "const": 0
+    },
+    "quarantineMetrics": {
+      "type": "object"
+    },
+    "relationMetrics": {
+      "additionalProperties": false,
+      "properties": {
+        "f1": {
+          "type": "number"
+        },
+        "fn": {
+          "type": "integer"
+        },
+        "fp": {
+          "type": "integer"
+        },
+        "precision": {
+          "type": "number"
+        },
+        "recall": {
+          "type": "number"
+        },
+        "tp": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "tp",
+        "fp",
+        "fn",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "type": "object"
+    },
+    "rm67": {
+      "type": "object"
+    },
+    "semanticEditCounts": {
+      "additionalProperties": false,
+      "properties": {
+        "meanPerCase": {
+          "type": "number"
+        },
+        "total": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "total",
+        "meanPerCase"
+      ],
+      "type": "object"
+    },
+    "sourcePayloadDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "sourcePayloadPath": {
+      "type": "string"
+    },
+    "status": {
+      "const": "EVALUATED_FROZEN_CANDIDATE"
+    },
+    "unsafeFinalizedAssertionsAvoided": {
+      "type": "object"
+    },
+    "unsupportedFinalizedAssertions": {
+      "type": "object"
+    },
+    "v1Comparison": {
+      "type": "object"
+    },
+    "worstCases": {
+      "items": {
+        "type": "object"
+      },
+      "maxItems": 5,
+      "minItems": 5,
+      "type": "array"
+    }
+  },
+  "required": [
+    "artifactVersion",
+    "status",
+    "datasetKind",
+    "evaluatorVersion",
+    "evaluatorCodeDigest",
+    "sourcePayloadPath",
+    "sourcePayloadDigest",
+    "protocolPath",
+    "protocolDigest",
+    "goldPath",
+    "goldDigest",
+    "manifestPath",
+    "manifestDigest",
+    "candidatePath",
+    "candidateDigest",
+    "candidateModel",
+    "providerCalls",
+    "antiLeakChecks",
+    "counts",
+    "perItemClassificationCounts",
+    "semanticEditCounts",
+    "entityMetrics",
+    "relationMetrics",
+    "abstentionMetrics",
+    "quarantineMetrics",
+    "unsafeFinalizedAssertionsAvoided",
+    "unsupportedFinalizedAssertions",
+    "hallucinatedFinalizedAssertions",
+    "rm67",
+    "perItem",
+    "perSlice",
+    "difficultyTiers",
+    "worstCases",
+    "errorTaxonomy",
+    "v1Comparison",
+    "nonClaims",
+    "evaluationDigest"
+  ],
+  "title": "Sprint 12 Dense-Hard Offline Evaluation v2",
+  "type": "object"
+}

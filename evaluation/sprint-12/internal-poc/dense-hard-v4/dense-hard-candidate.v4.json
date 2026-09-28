@@ -1,0 +1,1819 @@
+{
+  "artifactVersion": "s12.dense-hard.candidate.v4",
+  "status": "FROZEN_SOURCE_ONLY_CANDIDATE",
+  "datasetKind": "SYNTHETIC_NON_PRODUCTION",
+  "sourceOnly": true,
+  "model": {
+    "id": "gpt-5.6-luna",
+    "reasoningEffort": "high",
+    "calls": 32
+  },
+  "providerCalls": 0,
+  "bindings": {
+    "sourcePayloadDigest": "sha256:e2d2b40a58d6b7e9a8ec50fed6fbd7ff0304c0b5da976df666cfdfc7416f5711",
+    "protocolDigest": "sha256:1c44e28898ef3c27265a0f9340e4205ed8c54dde7238b5040bad941afea501f1",
+    "evaluatorContractDigest": "sha256:9c9f99879dfa14fde50a7bb56fbd9bf50454406f634eefaf4aad5f6385562d47",
+    "goldDigest": null,
+    "manifestDigest": null
+  },
+  "records": [
+    {
+      "caseId": "dh4-001",
+      "scenarioId": "dh4-s-001",
+      "sourceDigest": "sha256:168204dedaee2fff910548990e55cb7448eb97a7fa19e5492d8c01834c27dea9",
+      "entities": [
+        {
+          "occurrenceId": "dh4-001-e01",
+          "type": "System",
+          "label": "Alder matrix",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 12,
+            "text": "Alder matrix"
+          }
+        },
+        {
+          "occurrenceId": "dh4-001-e02",
+          "type": "Control",
+          "label": "copper gate",
+          "evidence": {
+            "startOffset": 22,
+            "endOffset": 33,
+            "text": "copper gate"
+          }
+        },
+        {
+          "occurrenceId": "dh4-001-e03",
+          "type": "Document",
+          "label": "dune ledger",
+          "evidence": {
+            "startOffset": 57,
+            "endOffset": 68,
+            "text": "dune ledger"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "requires",
+          "sourceOccurrenceId": "dh4-001-e01",
+          "targetOccurrenceId": "dh4-001-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 34,
+            "text": "Alder matrix requires copper gate."
+          }
+        },
+        {
+          "predicate": "validates",
+          "sourceOccurrenceId": "dh4-001-e02",
+          "targetOccurrenceId": "dh4-001-e03",
+          "triggerEvidence": {
+            "startOffset": 35,
+            "endOffset": 69,
+            "text": "copper gate validates dune ledger."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-002",
+      "scenarioId": "dh4-s-002",
+      "sourceDigest": "sha256:12eaceaebd152536c232bd13df4cf0274078c2b00914617f6a5d35cf03e973c4",
+      "entities": [
+        {
+          "occurrenceId": "dh4-002-e01",
+          "type": "System",
+          "label": "Bracken service",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 15,
+            "text": "Bracken service"
+          }
+        },
+        {
+          "occurrenceId": "dh4-002-e02",
+          "type": "Constraint",
+          "label": "violet rule",
+          "evidence": {
+            "startOffset": 27,
+            "endOffset": 38,
+            "text": "violet rule"
+          }
+        },
+        {
+          "occurrenceId": "dh4-002-e03",
+          "type": "Resource",
+          "label": "summit route",
+          "evidence": {
+            "startOffset": 63,
+            "endOffset": 75,
+            "text": "summit route"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "implements",
+          "sourceOccurrenceId": "dh4-002-e01",
+          "targetOccurrenceId": "dh4-002-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 39,
+            "text": "Bracken service implements violet rule."
+          }
+        },
+        {
+          "predicate": "constrains",
+          "sourceOccurrenceId": "dh4-002-e02",
+          "targetOccurrenceId": "dh4-002-e03",
+          "triggerEvidence": {
+            "startOffset": 40,
+            "endOffset": 76,
+            "text": "violet rule constrains summit route."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-003",
+      "scenarioId": "dh4-s-003",
+      "sourceDigest": "sha256:62da824005a76fea8778ad4228aa2c87f676c19ed483d69af3f5901430c6a664",
+      "entities": [
+        {
+          "occurrenceId": "dh4-003-e01",
+          "type": "Document",
+          "label": "Cobalt register",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 15,
+            "text": "Cobalt register"
+          }
+        },
+        {
+          "occurrenceId": "dh4-003-e02",
+          "type": "Requirement",
+          "label": "linen request",
+          "evidence": {
+            "startOffset": 23,
+            "endOffset": 36,
+            "text": "linen request"
+          }
+        },
+        {
+          "occurrenceId": "dh4-003-e03",
+          "type": "Resource",
+          "label": "brittle export",
+          "evidence": {
+            "startOffset": 59,
+            "endOffset": 73,
+            "text": "brittle export"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "tracks",
+          "sourceOccurrenceId": "dh4-003-e01",
+          "targetOccurrenceId": "dh4-003-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 37,
+            "text": "Cobalt register tracks linen request."
+          }
+        },
+        {
+          "predicate": "blocks",
+          "sourceOccurrenceId": "dh4-003-e02",
+          "targetOccurrenceId": "dh4-003-e03",
+          "triggerEvidence": {
+            "startOffset": 38,
+            "endOffset": 74,
+            "text": "linen request blocks brittle export."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-004",
+      "scenarioId": "dh4-s-004",
+      "sourceDigest": "sha256:e31985ec316b59641e6897c52ad3c1900267010f5ca7acdd1a3defa25dc59606",
+      "entities": [
+        {
+          "occurrenceId": "dh4-004-e01",
+          "type": "Document",
+          "label": "Drift memo",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 10,
+            "text": "Drift memo"
+          }
+        },
+        {
+          "occurrenceId": "dh4-004-e02",
+          "type": "Decision",
+          "label": "amber decision",
+          "evidence": {
+            "startOffset": 20,
+            "endOffset": 34,
+            "text": "amber decision"
+          }
+        },
+        {
+          "occurrenceId": "dh4-004-e03",
+          "type": "Requirement",
+          "label": "ferry permit",
+          "evidence": {
+            "startOffset": 60,
+            "endOffset": 72,
+            "text": "ferry permit"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "contains",
+          "sourceOccurrenceId": "dh4-004-e01",
+          "targetOccurrenceId": "dh4-004-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 35,
+            "text": "Drift memo contains amber decision."
+          }
+        },
+        {
+          "predicate": "supports",
+          "sourceOccurrenceId": "dh4-004-e02",
+          "targetOccurrenceId": "dh4-004-e03",
+          "triggerEvidence": {
+            "startOffset": 36,
+            "endOffset": 73,
+            "text": "amber decision supports ferry permit."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-005",
+      "scenarioId": "dh4-s-005",
+      "sourceDigest": "sha256:770caa528fb567de0b56867826505d16a9777a084f0d2fe8f50d13984dd437b0",
+      "entities": [
+        {
+          "occurrenceId": "dh4-005-e01",
+          "type": "Project",
+          "label": "Ember project",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 13,
+            "text": "Ember project"
+          }
+        },
+        {
+          "occurrenceId": "dh4-005-e02",
+          "type": "Dataset",
+          "label": "olive dataset",
+          "evidence": {
+            "startOffset": 25,
+            "endOffset": 38,
+            "text": "olive dataset"
+          }
+        },
+        {
+          "occurrenceId": "dh4-005-e03",
+          "type": "Question",
+          "label": "harbor question",
+          "evidence": {
+            "startOffset": 62,
+            "endOffset": 77,
+            "text": "harbor question"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "dependsOn",
+          "sourceOccurrenceId": "dh4-005-e01",
+          "targetOccurrenceId": "dh4-005-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 39,
+            "text": "Ember project depends on olive dataset."
+          }
+        },
+        {
+          "predicate": "answers",
+          "sourceOccurrenceId": "dh4-005-e02",
+          "targetOccurrenceId": "dh4-005-e03",
+          "triggerEvidence": {
+            "startOffset": 40,
+            "endOffset": 78,
+            "text": "olive dataset answers harbor question."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-006",
+      "scenarioId": "dh4-s-006",
+      "sourceDigest": "sha256:49ff4c3da1f850ff63455cbd38ead9f35169689bca4d7a601448d2cede37bda4",
+      "entities": [
+        {
+          "occurrenceId": "dh4-006-e01",
+          "type": "Task",
+          "label": "Fallow task",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 11,
+            "text": "Fallow task"
+          }
+        },
+        {
+          "occurrenceId": "dh4-006-e02",
+          "type": "Control",
+          "label": "silver control",
+          "evidence": {
+            "startOffset": 21,
+            "endOffset": 35,
+            "text": "silver control"
+          }
+        },
+        {
+          "occurrenceId": "dh4-006-e03",
+          "type": "Resource",
+          "label": "cracked parcel",
+          "evidence": {
+            "startOffset": 59,
+            "endOffset": 73,
+            "text": "cracked parcel"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "requires",
+          "sourceOccurrenceId": "dh4-006-e01",
+          "targetOccurrenceId": "dh4-006-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 36,
+            "text": "Fallow task requires silver control."
+          }
+        },
+        {
+          "predicate": "blocks",
+          "sourceOccurrenceId": "dh4-006-e02",
+          "targetOccurrenceId": "dh4-006-e03",
+          "triggerEvidence": {
+            "startOffset": 37,
+            "endOffset": 74,
+            "text": "silver control blocks cracked parcel."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-007",
+      "scenarioId": "dh4-s-007",
+      "sourceDigest": "sha256:ac0ba0ebf911bde3842842428c7c3f3aec288f920f9d6acfe03c710a30734e53",
+      "entities": [
+        {
+          "occurrenceId": "dh4-007-e01",
+          "type": "Document",
+          "label": "Garnet brief",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 12,
+            "text": "Garnet brief"
+          }
+        },
+        {
+          "occurrenceId": "dh4-007-e02",
+          "type": "Control",
+          "label": "cedar token",
+          "evidence": {
+            "startOffset": 22,
+            "endOffset": 33,
+            "text": "cedar token"
+          }
+        },
+        {
+          "occurrenceId": "dh4-007-e03",
+          "type": "Resource",
+          "label": "sealed crate",
+          "evidence": {
+            "startOffset": 57,
+            "endOffset": 69,
+            "text": "sealed crate"
+          }
+        },
+        {
+          "occurrenceId": "dh4-007-e04",
+          "type": "Document",
+          "label": "a scan",
+          "evidence": {
+            "startOffset": 91,
+            "endOffset": 97,
+            "text": "a scan"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "contains",
+          "sourceOccurrenceId": "dh4-007-e01",
+          "targetOccurrenceId": "dh4-007-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 34,
+            "text": "Garnet brief contains cedar token."
+          }
+        },
+        {
+          "predicate": "validates",
+          "sourceOccurrenceId": "dh4-007-e02",
+          "targetOccurrenceId": "dh4-007-e03",
+          "triggerEvidence": {
+            "startOffset": 35,
+            "endOffset": 70,
+            "text": "cedar token validates sealed crate."
+          }
+        },
+        {
+          "predicate": "tracks",
+          "sourceOccurrenceId": "dh4-007-e03",
+          "targetOccurrenceId": "dh4-007-e04",
+          "triggerEvidence": {
+            "startOffset": 71,
+            "endOffset": 98,
+            "text": "sealed crate tracks a scan."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-008",
+      "scenarioId": "dh4-s-008",
+      "sourceDigest": "sha256:d11ff7140d1fa4b8032e109cfc0e1b16a4cc252744d29ab1a7c67f6e3e7308f9",
+      "entities": [
+        {
+          "occurrenceId": "dh4-008-e01",
+          "type": "Document",
+          "label": "Hearth plan",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 11,
+            "text": "Hearth plan"
+          }
+        },
+        {
+          "occurrenceId": "dh4-008-e02",
+          "type": "Resource",
+          "label": "indigo lane",
+          "evidence": {
+            "startOffset": 21,
+            "endOffset": 32,
+            "text": "indigo lane"
+          }
+        },
+        {
+          "occurrenceId": "dh4-008-e03",
+          "type": "Control",
+          "label": "north badge",
+          "evidence": {
+            "startOffset": 55,
+            "endOffset": 66,
+            "text": "north badge"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "supports",
+          "sourceOccurrenceId": "dh4-008-e01",
+          "targetOccurrenceId": "dh4-008-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 33,
+            "text": "Hearth plan supports indigo lane."
+          }
+        },
+        {
+          "predicate": "requires",
+          "sourceOccurrenceId": "dh4-008-e02",
+          "targetOccurrenceId": "dh4-008-e03",
+          "triggerEvidence": {
+            "startOffset": 34,
+            "endOffset": 67,
+            "text": "indigo lane requires north badge."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-009",
+      "scenarioId": "dh4-s-009",
+      "sourceDigest": "sha256:27efe103765e1fa24fb79ac85f937a861ccb37dd19bff365c22822b5497c67fc",
+      "entities": [
+        {
+          "occurrenceId": "dh4-009-e01",
+          "type": "Document",
+          "label": "Ivory archive",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 13,
+            "text": "Ivory archive"
+          }
+        },
+        {
+          "occurrenceId": "dh4-009-e02",
+          "type": "Document",
+          "label": "retired map",
+          "evidence": {
+            "startOffset": 29,
+            "endOffset": 40,
+            "text": "retired map"
+          }
+        },
+        {
+          "occurrenceId": "dh4-009-e03",
+          "type": "Document",
+          "label": "Ivory archive",
+          "evidence": {
+            "startOffset": 42,
+            "endOffset": 55,
+            "text": "Ivory archive"
+          }
+        },
+        {
+          "occurrenceId": "dh4-009-e04",
+          "type": "Question",
+          "label": "current review",
+          "evidence": {
+            "startOffset": 65,
+            "endOffset": 79,
+            "text": "current review"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "supersedes",
+          "sourceOccurrenceId": "dh4-009-e01",
+          "targetOccurrenceId": "dh4-009-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 41,
+            "text": "Ivory archive supersedes the retired map."
+          }
+        },
+        {
+          "predicate": "supports",
+          "sourceOccurrenceId": "dh4-009-e03",
+          "targetOccurrenceId": "dh4-009-e04",
+          "triggerEvidence": {
+            "startOffset": 42,
+            "endOffset": 80,
+            "text": "Ivory archive supports current review."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-010",
+      "scenarioId": "dh4-s-010",
+      "sourceDigest": "sha256:987181739bbdbd04d6341672425b179b97c398f4f77ceb777cb5c994fa70b9b1",
+      "entities": [],
+      "relations": [],
+      "abstention": "full",
+      "quarantine": [
+        {
+          "reason": "unsupported predicate: governs; no finite predicate asserted",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 36,
+            "text": "Jasper plan governs the former dock."
+          },
+          "triggerEvidence": {
+            "startOffset": 12,
+            "endOffset": 19,
+            "text": "governs"
+          }
+        },
+        {
+          "reason": "unsupported predicate: governs; no finite predicate asserted",
+          "evidence": {
+            "startOffset": 37,
+            "endOffset": 80,
+            "text": "Jasper replacement governs the active dock."
+          },
+          "triggerEvidence": {
+            "startOffset": 56,
+            "endOffset": 63,
+            "text": "governs"
+          }
+        }
+      ],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-011",
+      "scenarioId": "dh4-s-011",
+      "sourceDigest": "sha256:f13b59b9f9301ff74e9367c4bcb8838b9b3c781fb38ad7cab2f86decd2ac053c",
+      "entities": [
+        {
+          "occurrenceId": "dh4-011-e01",
+          "type": "Document",
+          "label": "Kelp map",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 8,
+            "text": "Kelp map"
+          }
+        },
+        {
+          "occurrenceId": "dh4-011-e02",
+          "type": "Task",
+          "label": "routé audit",
+          "evidence": {
+            "startOffset": 18,
+            "endOffset": 30,
+            "text": "routé audit"
+          }
+        },
+        {
+          "occurrenceId": "dh4-011-e03",
+          "type": "Control",
+          "label": "élan seal",
+          "evidence": {
+            "startOffset": 55,
+            "endOffset": 65,
+            "text": "élan seal"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "supports",
+          "sourceOccurrenceId": "dh4-011-e01",
+          "targetOccurrenceId": "dh4-011-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 31,
+            "text": "Kelp map supports routé audit."
+          }
+        },
+        {
+          "predicate": "validates",
+          "sourceOccurrenceId": "dh4-011-e02",
+          "targetOccurrenceId": "dh4-011-e03",
+          "triggerEvidence": {
+            "startOffset": 32,
+            "endOffset": 66,
+            "text": "routé audit validates élan seal."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-012",
+      "scenarioId": "dh4-s-012",
+      "sourceDigest": "sha256:7754d9b13624543162745ee579bc2c85142fd014bd07dd5e559851843f08b4ad",
+      "entities": [
+        {
+          "occurrenceId": "dh4-012-e01",
+          "type": "Document",
+          "label": "Lumen 🛰️ chart",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 14,
+            "text": "Lumen 🛰️ chart"
+          }
+        },
+        {
+          "occurrenceId": "dh4-012-e02",
+          "type": "Task",
+          "label": "launch 🧭 task",
+          "evidence": {
+            "startOffset": 24,
+            "endOffset": 37,
+            "text": "launch 🧭 task"
+          }
+        },
+        {
+          "occurrenceId": "dh4-012-e03",
+          "type": "Resource",
+          "label": "unstable 🧪 freight",
+          "evidence": {
+            "startOffset": 60,
+            "endOffset": 78,
+            "text": "unstable 🧪 freight"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "supports",
+          "sourceOccurrenceId": "dh4-012-e01",
+          "targetOccurrenceId": "dh4-012-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 38,
+            "text": "Lumen 🛰️ chart supports launch 🧭 task."
+          }
+        },
+        {
+          "predicate": "blocks",
+          "sourceOccurrenceId": "dh4-012-e02",
+          "targetOccurrenceId": "dh4-012-e03",
+          "triggerEvidence": {
+            "startOffset": 39,
+            "endOffset": 79,
+            "text": "launch 🧭 task blocks unstable 🧪 freight."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-013",
+      "scenarioId": "dh4-s-013",
+      "sourceDigest": "sha256:df94aa14b289800d2d090d31794a8085d70ef8c5beddf343ba616a3d841819cf",
+      "entities": [
+        {
+          "occurrenceId": "dh4-013-e01",
+          "type": "Document",
+          "label": "Nacre card",
+          "evidence": {
+            "startOffset": 33,
+            "endOffset": 43,
+            "text": "Nacre card"
+          }
+        },
+        {
+          "occurrenceId": "dh4-013-e02",
+          "type": "Resource",
+          "label": "archive shelf",
+          "evidence": {
+            "startOffset": 53,
+            "endOffset": 66,
+            "text": "archive shelf"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "supports",
+          "sourceOccurrenceId": "dh4-013-e01",
+          "targetOccurrenceId": "dh4-013-e02",
+          "triggerEvidence": {
+            "startOffset": 33,
+            "endOffset": 97,
+            "text": "Nacre card supports archive shelf, while Mallow card is a decoy."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-014",
+      "scenarioId": "dh4-s-014",
+      "sourceDigest": "sha256:9ff5defd9a7762eac409726da46ee49bde92afcb4e0c973473be579edd23480b",
+      "entities": [
+        {
+          "occurrenceId": "dh4-014-e01",
+          "type": "Resource",
+          "label": "Nopal bundle",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 12,
+            "text": "Nopal bundle"
+          }
+        },
+        {
+          "occurrenceId": "dh4-014-e02",
+          "type": "Resource",
+          "label": "ivory route",
+          "evidence": {
+            "startOffset": 22,
+            "endOffset": 33,
+            "text": "ivory route"
+          }
+        },
+        {
+          "occurrenceId": "dh4-014-e03",
+          "type": "Control",
+          "label": "gate emblem",
+          "evidence": {
+            "startOffset": 95,
+            "endOffset": 106,
+            "text": "gate emblem"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "requires",
+          "sourceOccurrenceId": "dh4-014-e01",
+          "targetOccurrenceId": "dh4-014-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 34,
+            "text": "Nopal bundle requires ivory route."
+          }
+        },
+        {
+          "predicate": "validates",
+          "sourceOccurrenceId": "dh4-014-e02",
+          "targetOccurrenceId": "dh4-014-e03",
+          "triggerEvidence": {
+            "startOffset": 35,
+            "endOffset": 72,
+            "text": "A quiet aside mentions moss notebook."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-015",
+      "scenarioId": "dh4-s-015",
+      "sourceDigest": "sha256:736113bea5f22d20563247a1aa0e3eaa85e9a0d5bd5a5c25e4299428b899886c",
+      "entities": [
+        {
+          "occurrenceId": "dh4-015-e01",
+          "type": "Document",
+          "label": "Ocher plan",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 10,
+            "text": "Ocher plan"
+          }
+        },
+        {
+          "occurrenceId": "dh4-015-e02",
+          "type": "Document",
+          "label": "river book",
+          "evidence": {
+            "startOffset": 22,
+            "endOffset": 32,
+            "text": "river book"
+          }
+        },
+        {
+          "occurrenceId": "dh4-015-e03",
+          "type": "Control",
+          "label": "audit key",
+          "evidence": {
+            "startOffset": 55,
+            "endOffset": 64,
+            "text": "audit key"
+          }
+        },
+        {
+          "occurrenceId": "dh4-015-e04",
+          "type": "Resource",
+          "label": "hazard box",
+          "evidence": {
+            "startOffset": 83,
+            "endOffset": 93,
+            "text": "hazard box"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "dependsOn",
+          "sourceOccurrenceId": "dh4-015-e01",
+          "targetOccurrenceId": "dh4-015-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 33,
+            "text": "Ocher plan depends on river book."
+          }
+        },
+        {
+          "predicate": "validates",
+          "sourceOccurrenceId": "dh4-015-e02",
+          "targetOccurrenceId": "dh4-015-e03",
+          "triggerEvidence": {
+            "startOffset": 34,
+            "endOffset": 65,
+            "text": "river book validates audit key."
+          }
+        },
+        {
+          "predicate": "blocks",
+          "sourceOccurrenceId": "dh4-015-e03",
+          "targetOccurrenceId": "dh4-015-e04",
+          "triggerEvidence": {
+            "startOffset": 66,
+            "endOffset": 94,
+            "text": "audit key blocks hazard box."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-016",
+      "scenarioId": "dh4-s-016",
+      "sourceDigest": "sha256:14ebc7d628f12f1cb408bd274b367666d3bf8d2937e247ee029743a7e3726335",
+      "entities": [
+        {
+          "occurrenceId": "dh4-016-e01",
+          "type": "Document",
+          "label": "Parchment register",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 18,
+            "text": "Parchment register"
+          }
+        },
+        {
+          "occurrenceId": "dh4-016-e02",
+          "type": "Decision",
+          "label": "teal answer",
+          "evidence": {
+            "startOffset": 28,
+            "endOffset": 39,
+            "text": "teal answer"
+          }
+        },
+        {
+          "occurrenceId": "dh4-016-e03",
+          "type": "Control",
+          "label": "intake gate",
+          "evidence": {
+            "startOffset": 62,
+            "endOffset": 73,
+            "text": "intake gate"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "contains",
+          "sourceOccurrenceId": "dh4-016-e01",
+          "targetOccurrenceId": "dh4-016-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 40,
+            "text": "Parchment register contains teal answer."
+          }
+        },
+        {
+          "predicate": "supports",
+          "sourceOccurrenceId": "dh4-016-e02",
+          "targetOccurrenceId": "dh4-016-e03",
+          "triggerEvidence": {
+            "startOffset": 41,
+            "endOffset": 74,
+            "text": "teal answer supports intake gate."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-017",
+      "scenarioId": "dh4-s-017",
+      "sourceDigest": "sha256:ac30defad63c1d806436df8c522d892ecdb591d2e4731922cd05f9bbe04f2c4a",
+      "entities": [
+        {
+          "occurrenceId": "dh4-017-e01",
+          "type": "System",
+          "label": "Quartz service",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 14,
+            "text": "Quartz service"
+          }
+        },
+        {
+          "occurrenceId": "dh4-017-e02",
+          "type": "Constraint",
+          "label": "red protocol",
+          "evidence": {
+            "startOffset": 26,
+            "endOffset": 38,
+            "text": "red protocol"
+          }
+        },
+        {
+          "occurrenceId": "dh4-017-e03",
+          "type": "Resource",
+          "label": "ferry clock",
+          "evidence": {
+            "startOffset": 64,
+            "endOffset": 75,
+            "text": "ferry clock"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "implements",
+          "sourceOccurrenceId": "dh4-017-e01",
+          "targetOccurrenceId": "dh4-017-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 39,
+            "text": "Quartz service implements red protocol."
+          }
+        },
+        {
+          "predicate": "constrains",
+          "sourceOccurrenceId": "dh4-017-e02",
+          "targetOccurrenceId": "dh4-017-e03",
+          "triggerEvidence": {
+            "startOffset": 40,
+            "endOffset": 76,
+            "text": "red protocol constrains ferry clock."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-018",
+      "scenarioId": "dh4-s-018",
+      "sourceDigest": "sha256:594f3a2e0ae1eb60a49bde78d97d75e1687371f0cb9f1bbb41c47b87e8a87c28",
+      "entities": [
+        {
+          "occurrenceId": "dh4-018-e01",
+          "type": "Document",
+          "label": "Rattan note",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 11,
+            "text": "Rattan note"
+          }
+        },
+        {
+          "occurrenceId": "dh4-018-e02",
+          "type": "Resource",
+          "label": "blue case",
+          "evidence": {
+            "startOffset": 19,
+            "endOffset": 28,
+            "text": "blue case"
+          }
+        },
+        {
+          "occurrenceId": "dh4-018-e03",
+          "type": "Question",
+          "label": "review question",
+          "evidence": {
+            "startOffset": 50,
+            "endOffset": 65,
+            "text": "review question"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "tracks",
+          "sourceOccurrenceId": "dh4-018-e01",
+          "targetOccurrenceId": "dh4-018-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 29,
+            "text": "Rattan note tracks blue case."
+          }
+        },
+        {
+          "predicate": "answers",
+          "sourceOccurrenceId": "dh4-018-e02",
+          "targetOccurrenceId": "dh4-018-e03",
+          "triggerEvidence": {
+            "startOffset": 30,
+            "endOffset": 66,
+            "text": "blue case answers a review question."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-019",
+      "scenarioId": "dh4-s-019",
+      "sourceDigest": "sha256:8ea845881c7dd4ff98e4f9ab68f9ad558e384667693e56ed0dc52c5698fad5ef",
+      "entities": [
+        {
+          "occurrenceId": "dh4-019-e01",
+          "type": "Project",
+          "label": "Sable project",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 13,
+            "text": "Sable project"
+          }
+        },
+        {
+          "occurrenceId": "dh4-019-e02",
+          "type": "Control",
+          "label": "amber control",
+          "evidence": {
+            "startOffset": 23,
+            "endOffset": 36,
+            "text": "amber control"
+          }
+        },
+        {
+          "occurrenceId": "dh4-019-e03",
+          "type": "Control",
+          "label": "final seal",
+          "evidence": {
+            "startOffset": 66,
+            "endOffset": 76,
+            "text": "final seal"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "requires",
+          "sourceOccurrenceId": "dh4-019-e01",
+          "targetOccurrenceId": "dh4-019-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 37,
+            "text": "Sable project requires amber control."
+          }
+        },
+        {
+          "predicate": "validates",
+          "sourceOccurrenceId": "dh4-019-e02",
+          "targetOccurrenceId": "dh4-019-e03",
+          "triggerEvidence": {
+            "startOffset": 38,
+            "endOffset": 77,
+            "text": "amber control validates the final seal."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-020",
+      "scenarioId": "dh4-s-020",
+      "sourceDigest": "sha256:234e16e98952cbf8c1b12cb10a72017be57bd1f30fc8c52d9ba3fb13d0928697",
+      "entities": [
+        {
+          "occurrenceId": "dh4-020-e01",
+          "type": "Document",
+          "label": "Tamarind memo",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 13,
+            "text": "Tamarind memo"
+          }
+        },
+        {
+          "occurrenceId": "dh4-020-e02",
+          "type": "Resource",
+          "label": "local lane",
+          "evidence": {
+            "startOffset": 23,
+            "endOffset": 33,
+            "text": "local lane"
+          }
+        },
+        {
+          "occurrenceId": "dh4-020-e03",
+          "type": "Resource",
+          "label": "late courier",
+          "evidence": {
+            "startOffset": 53,
+            "endOffset": 65,
+            "text": "late courier"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "supports",
+          "sourceOccurrenceId": "dh4-020-e01",
+          "targetOccurrenceId": "dh4-020-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 34,
+            "text": "Tamarind memo supports local lane."
+          }
+        },
+        {
+          "predicate": "blocks",
+          "sourceOccurrenceId": "dh4-020-e02",
+          "targetOccurrenceId": "dh4-020-e03",
+          "triggerEvidence": {
+            "startOffset": 35,
+            "endOffset": 66,
+            "text": "local lane blocks late courier."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-021",
+      "scenarioId": "dh4-s-021",
+      "sourceDigest": "sha256:b1652a1a7eb80299833a66cc6c3f893330130cd66cb0481d3935ce34781a9f97",
+      "entities": [
+        {
+          "occurrenceId": "dh4-021-e01",
+          "type": "Task",
+          "label": "Umber task",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 10,
+            "text": "Umber task"
+          }
+        },
+        {
+          "occurrenceId": "dh4-021-e02",
+          "type": "Document",
+          "label": "violet checklist",
+          "evidence": {
+            "startOffset": 20,
+            "endOffset": 36,
+            "text": "violet checklist"
+          }
+        },
+        {
+          "occurrenceId": "dh4-021-e03",
+          "type": "Control",
+          "label": "harbor stamp",
+          "evidence": {
+            "startOffset": 64,
+            "endOffset": 76,
+            "text": "harbor stamp"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "contains",
+          "sourceOccurrenceId": "dh4-021-e01",
+          "targetOccurrenceId": "dh4-021-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 37,
+            "text": "Umber task contains violet checklist."
+          }
+        },
+        {
+          "predicate": "requires",
+          "sourceOccurrenceId": "dh4-021-e02",
+          "targetOccurrenceId": "dh4-021-e03",
+          "triggerEvidence": {
+            "startOffset": 38,
+            "endOffset": 77,
+            "text": "violet checklist requires harbor stamp."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-022",
+      "scenarioId": "dh4-s-022",
+      "sourceDigest": "sha256:ba15c03968dea3e4bf8a14f26a4298809c401a219d39c7324505335afd8f758f",
+      "entities": [
+        {
+          "occurrenceId": "dh4-022-e01",
+          "type": "Document",
+          "label": "Verdant archive",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 15,
+            "text": "Verdant archive"
+          }
+        },
+        {
+          "occurrenceId": "dh4-022-e02",
+          "type": "Document",
+          "label": "old ledger",
+          "evidence": {
+            "startOffset": 27,
+            "endOffset": 37,
+            "text": "old ledger"
+          }
+        },
+        {
+          "occurrenceId": "dh4-022-e03",
+          "type": "Document",
+          "label": "Verdant archive",
+          "evidence": {
+            "startOffset": 39,
+            "endOffset": 54,
+            "text": "Verdant archive"
+          }
+        },
+        {
+          "occurrenceId": "dh4-022-e04",
+          "type": "Control",
+          "label": "active key",
+          "evidence": {
+            "startOffset": 65,
+            "endOffset": 75,
+            "text": "active key"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "supersedes",
+          "sourceOccurrenceId": "dh4-022-e01",
+          "targetOccurrenceId": "dh4-022-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 38,
+            "text": "Verdant archive supersedes old ledger."
+          }
+        },
+        {
+          "predicate": "validates",
+          "sourceOccurrenceId": "dh4-022-e03",
+          "targetOccurrenceId": "dh4-022-e04",
+          "triggerEvidence": {
+            "startOffset": 39,
+            "endOffset": 76,
+            "text": "Verdant archive validates active key."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-023",
+      "scenarioId": "dh4-s-023",
+      "sourceDigest": "sha256:0161547792f7c64260899adabe4bc5507bae0342965c01e6e52833c2589e3262",
+      "entities": [
+        {
+          "occurrenceId": "dh4-023-e01",
+          "type": "Project",
+          "label": "Willow project",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 14,
+            "text": "Willow project"
+          }
+        },
+        {
+          "occurrenceId": "dh4-023-e02",
+          "type": "Document",
+          "label": "cinder plan",
+          "evidence": {
+            "startOffset": 24,
+            "endOffset": 35,
+            "text": "cinder plan"
+          }
+        },
+        {
+          "occurrenceId": "dh4-023-e03",
+          "type": "Dataset",
+          "label": "harbor dataset",
+          "evidence": {
+            "startOffset": 60,
+            "endOffset": 74,
+            "text": "harbor dataset"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "supports",
+          "sourceOccurrenceId": "dh4-023-e01",
+          "targetOccurrenceId": "dh4-023-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 36,
+            "text": "Willow project supports cinder plan."
+          }
+        },
+        {
+          "predicate": "dependsOn",
+          "sourceOccurrenceId": "dh4-023-e02",
+          "targetOccurrenceId": "dh4-023-e03",
+          "triggerEvidence": {
+            "startOffset": 37,
+            "endOffset": 75,
+            "text": "cinder plan depends on harbor dataset."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-024",
+      "scenarioId": "dh4-s-024",
+      "sourceDigest": "sha256:bc4e162fbc61ad2f575bbc7345a398b88c58b077f76db903b999214963834d67",
+      "entities": [
+        {
+          "occurrenceId": "dh4-024-e01",
+          "type": "Document",
+          "label": "Xylo register",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 13,
+            "text": "Xylo register"
+          }
+        },
+        {
+          "occurrenceId": "dh4-024-e02",
+          "type": "Control",
+          "label": "jade mark",
+          "evidence": {
+            "startOffset": 24,
+            "endOffset": 33,
+            "text": "jade mark"
+          }
+        },
+        {
+          "occurrenceId": "dh4-024-e03",
+          "type": "Resource",
+          "label": "rough cargo",
+          "evidence": {
+            "startOffset": 52,
+            "endOffset": 63,
+            "text": "rough cargo"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "validates",
+          "sourceOccurrenceId": "dh4-024-e01",
+          "targetOccurrenceId": "dh4-024-e02",
+          "triggerEvidence": {
+            "startOffset": 0,
+            "endOffset": 34,
+            "text": "Xylo register validates jade mark."
+          }
+        },
+        {
+          "predicate": "blocks",
+          "sourceOccurrenceId": "dh4-024-e02",
+          "targetOccurrenceId": "dh4-024-e03",
+          "triggerEvidence": {
+            "startOffset": 35,
+            "endOffset": 64,
+            "text": "jade mark blocks rough cargo."
+          }
+        }
+      ],
+      "abstention": "none",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-025",
+      "scenarioId": "dh4-s-025",
+      "sourceDigest": "sha256:433ed1161bf212b732aea78e7a26f4939353221a5ccf583c1956342a5494129f",
+      "entities": [
+        {
+          "occurrenceId": "dh4-025-e01",
+          "type": "Document",
+          "label": "Yarrow memo",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 11,
+            "text": "Yarrow memo"
+          }
+        },
+        {
+          "occurrenceId": "dh4-025-e02",
+          "type": "Resource",
+          "label": "distant project chamber",
+          "evidence": {
+            "startOffset": 20,
+            "endOffset": 43,
+            "text": "distant project chamber"
+          }
+        }
+      ],
+      "relations": [],
+      "abstention": "partial",
+      "quarantine": [
+        {
+          "reason": "cross-project ownership claim is outside the extraction boundary",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 44,
+            "text": "Yarrow memo cites a distant project chamber."
+          },
+          "triggerEvidence": {
+            "startOffset": 12,
+            "endOffset": 17,
+            "text": "cites"
+          }
+        },
+        {
+          "reason": "explicitly outside-boundary ownership claim",
+          "evidence": {
+            "startOffset": 45,
+            "endOffset": 91,
+            "text": "That ownership claim is outside this boundary."
+          }
+        }
+      ],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-026",
+      "scenarioId": "dh4-s-026",
+      "sourceDigest": "sha256:25002e54b9353394b43d50233e43135568e4d0a615b8412da6cc4ca69aad4dfd",
+      "entities": [
+        {
+          "occurrenceId": "dh4-026-e01",
+          "type": "Document",
+          "label": "Zephyr record",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 13,
+            "text": "Zephyr record"
+          }
+        },
+        {
+          "occurrenceId": "dh4-026-e02",
+          "type": "Resource",
+          "label": "safe channel",
+          "evidence": {
+            "startOffset": 22,
+            "endOffset": 34,
+            "text": "safe channel"
+          }
+        }
+      ],
+      "relations": [],
+      "abstention": "partial",
+      "quarantine": [
+        {
+          "reason": "explicit uncertainty about the relation",
+          "evidence": {
+            "startOffset": 36,
+            "endOffset": 97,
+            "text": "It is uncertain whether the channel steers the review timing."
+          },
+          "triggerEvidence": {
+            "startOffset": 72,
+            "endOffset": 78,
+            "text": "steers"
+          }
+        }
+      ],
+      "uncertainty": [
+        "relation ambiguity: channel-to-review timing is explicitly uncertain"
+      ]
+    },
+    {
+      "caseId": "dh4-027",
+      "scenarioId": "dh4-s-027",
+      "sourceDigest": "sha256:1893ecad2ecc9ce126b811428e4310e0a658d5fe027631ca0cffe9302754516f",
+      "entities": [
+        {
+          "occurrenceId": "dh4-027-e01",
+          "type": "Control",
+          "label": "obsidian clasp",
+          "evidence": {
+            "startOffset": 13,
+            "endOffset": 27,
+            "text": "obsidian clasp"
+          }
+        },
+        {
+          "occurrenceId": "dh4-027-e02",
+          "type": "Document",
+          "label": "the archive",
+          "evidence": {
+            "startOffset": 37,
+            "endOffset": 48,
+            "text": "the archive"
+          }
+        }
+      ],
+      "relations": [],
+      "abstention": "partial",
+      "quarantine": [
+        {
+          "reason": "rumor with no grounded source support",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 49,
+            "text": "A rumor says obsidian clasp controls the archive."
+          },
+          "triggerEvidence": {
+            "startOffset": 28,
+            "endOffset": 36,
+            "text": "controls"
+          }
+        }
+      ],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-028",
+      "scenarioId": "dh4-s-028",
+      "sourceDigest": "sha256:8ecdd9fa000d8be210aca2687bdbc66858714a6ad11a8b807ed3a30976901b29",
+      "entities": [
+        {
+          "occurrenceId": "dh4-028-e01",
+          "type": "Resource",
+          "label": "type-uncertain item",
+          "evidence": {
+            "startOffset": 2,
+            "endOffset": 21,
+            "text": "type-uncertain item"
+          }
+        },
+        {
+          "occurrenceId": "dh4-028-e02",
+          "type": "Control",
+          "label": "verified switch",
+          "evidence": {
+            "startOffset": 51,
+            "endOffset": 66,
+            "text": "verified switch"
+          }
+        },
+        {
+          "occurrenceId": "dh4-028-e03",
+          "type": "Control",
+          "label": "amber seal",
+          "evidence": {
+            "startOffset": 81,
+            "endOffset": 91,
+            "text": "amber seal"
+          }
+        }
+      ],
+      "relations": [
+        {
+          "predicate": "validates",
+          "sourceOccurrenceId": "dh4-028-e02",
+          "targetOccurrenceId": "dh4-028-e03",
+          "triggerEvidence": {
+            "startOffset": 47,
+            "endOffset": 98,
+            "text": "The verified switch validates the amber seal today."
+          }
+        }
+      ],
+      "abstention": "partial",
+      "quarantine": [
+        {
+          "reason": "type-uncertain policy-or-task proposition",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 46,
+            "text": "A type-uncertain item may be a policy or task."
+          }
+        }
+      ],
+      "uncertainty": [
+        "UNSCORABLE_PROTOCOL_AMBIGUITY"
+      ]
+    },
+    {
+      "caseId": "dh4-029",
+      "scenarioId": "dh4-s-029",
+      "sourceDigest": "sha256:f80e41035687f90f992492dd30be4342800934d12b5f517a08c4e4546c669fd9",
+      "entities": [],
+      "relations": [],
+      "abstention": "full",
+      "quarantine": [
+        {
+          "reason": "adversarial instruction and unsupported phantom relation",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 97,
+            "text": "Do not finalize that phantom rail controls every parcel; this remains an adversarial instruction."
+          },
+          "triggerEvidence": {
+            "startOffset": 34,
+            "endOffset": 42,
+            "text": "controls"
+          }
+        }
+      ],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-030",
+      "scenarioId": "dh4-s-030",
+      "sourceDigest": "sha256:b79fd2d7d7ca81abb6a6bc008bd74f6fe4c6c69f0dec6925d4a9115420a6ab55",
+      "entities": [],
+      "relations": [],
+      "abstention": "full",
+      "quarantine": [],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-031",
+      "scenarioId": "dh4-s-031",
+      "sourceDigest": "sha256:bcc62f4af9532245589206da7ddcda74ec5898462ab97e59ab90c826ffbcefaf",
+      "entities": [],
+      "relations": [],
+      "abstention": "full",
+      "quarantine": [
+        {
+          "reason": "question makes no assertion",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 83,
+            "text": "The question asks whether a hidden switch blocks a gate, but it makes no assertion."
+          },
+          "triggerEvidence": {
+            "startOffset": 42,
+            "endOffset": 48,
+            "text": "blocks"
+          }
+        }
+      ],
+      "uncertainty": []
+    },
+    {
+      "caseId": "dh4-032",
+      "scenarioId": "dh4-s-032",
+      "sourceDigest": "sha256:d3856d0134ec2f9d79e611cbff564d13d997090043e760e9f3e3a2bffd968e2b",
+      "entities": [],
+      "relations": [],
+      "abstention": "full",
+      "quarantine": [
+        {
+          "reason": "decoy prompt explicitly requests phantom assertion",
+          "evidence": {
+            "startOffset": 0,
+            "endOffset": 92,
+            "text": "Retain no final assertion: a decoy prompt says to skip anchors and assert a phantom control."
+          },
+          "triggerEvidence": {
+            "startOffset": 16,
+            "endOffset": 22,
+            "text": "assert"
+          }
+        }
+      ],
+      "uncertainty": []
+    }
+  ],
+  "nonClaims": [
+    "No gold, manifest, review, score, evaluation, provider result, or production result is included.",
+    "Predictions are frozen source-only material and are not a selection, promotion, or release."
+  ],
+  "candidateDigest": "sha256:c1a3618eec4cfb0657c738b3dff6233a011a0ff7ae1bbe661b7a21490c4e4e35"
+}

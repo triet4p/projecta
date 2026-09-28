@@ -1,0 +1,411 @@
+{
+  "abstentionCaseCount": 10,
+  "artifactVersion": "s12.dense-hard.evaluator-manifest.v2",
+  "caseCount": 28,
+  "datasetKind": "SYNTHETIC_NON_PRODUCTION",
+  "goldDigest": "sha256:da295ae2f50832972a115d003f7fdbde3bbf517390751b9d51947d1b369068a7",
+  "manifestDigest": "sha256:255c4bdd0e20c3fa4c245703ef1c1105e7f80ea51349edcc431f3ab32efb5313",
+  "records": [
+    {
+      "abstentionMode": "none",
+      "abstentionRequired": false,
+      "caseId": "dh2-001",
+      "entityCount": 6,
+      "language": "en",
+      "relationCount": 3,
+      "scenarioId": "dh2-s-001",
+      "slices": [
+        "multi-hop",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "abstentionRequired": false,
+      "caseId": "dh2-002",
+      "entityCount": 6,
+      "language": "en",
+      "relationCount": 3,
+      "scenarioId": "dh2-s-002",
+      "slices": [
+        "multi-hop",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "abstentionRequired": false,
+      "caseId": "dh2-003",
+      "entityCount": 6,
+      "language": "en",
+      "relationCount": 3,
+      "scenarioId": "dh2-s-003",
+      "slices": [
+        "multi-hop",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "abstentionRequired": false,
+      "caseId": "dh2-004",
+      "entityCount": 6,
+      "language": "en",
+      "relationCount": 3,
+      "scenarioId": "dh2-s-004",
+      "slices": [
+        "multi-hop",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "abstentionRequired": false,
+      "caseId": "dh2-005",
+      "entityCount": 4,
+      "language": "en",
+      "relationCount": 2,
+      "scenarioId": "dh2-s-005",
+      "slices": [
+        "repeated-labels",
+        "different-occurrences",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "abstentionRequired": false,
+      "caseId": "dh2-006",
+      "entityCount": 6,
+      "language": "en",
+      "relationCount": 3,
+      "scenarioId": "dh2-s-006",
+      "slices": [
+        "repeated-labels",
+        "different-occurrences",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "full",
+      "abstentionRequired": true,
+      "caseId": "dh2-007",
+      "entityCount": 0,
+      "language": "en",
+      "relationCount": 0,
+      "scenarioId": "dh2-s-007",
+      "slices": [
+        "negation",
+        "non-assertion",
+        "abstention",
+        "full-abstention"
+      ]
+    },
+    {
+      "abstentionMode": "full",
+      "abstentionRequired": true,
+      "caseId": "dh2-008",
+      "entityCount": 0,
+      "language": "en",
+      "relationCount": 0,
+      "scenarioId": "dh2-s-008",
+      "slices": [
+        "negation",
+        "non-assertion",
+        "abstention",
+        "full-abstention"
+      ]
+    },
+    {
+      "abstentionMode": "partial",
+      "abstentionRequired": true,
+      "caseId": "dh2-009",
+      "entityCount": 3,
+      "language": "en",
+      "relationCount": 0,
+      "scenarioId": "dh2-s-009",
+      "slices": [
+        "ambiguity",
+        "partial-abstention",
+        "abstention"
+      ]
+    },
+    {
+      "abstentionMode": "partial",
+      "abstentionRequired": true,
+      "caseId": "dh2-010",
+      "entityCount": 4,
+      "language": "en",
+      "relationCount": 0,
+      "scenarioId": "dh2-s-010",
+      "slices": [
+        "ambiguity",
+        "partial-abstention",
+        "abstention"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "abstentionRequired": false,
+      "caseId": "dh2-011",
+      "entityCount": 4,
+      "language": "en",
+      "relationCount": 2,
+      "scenarioId": "dh2-s-011",
+      "slices": [
+        "temporal-supersession",
+        "stale-statement",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "abstentionRequired": false,
+      "caseId": "dh2-012",
+      "entityCount": 4,
+      "language": "en",
+      "relationCount": 2,
+      "scenarioId": "dh2-s-012",
+      "slices": [
+        "temporal-supersession",
+        "stale-statement",
+        "distractors"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "abstentionRequired": false,
+      "caseId": "dh2-013",
+      "entityCount": 6,
+      "language": "vi",
+      "relationCount": 3,
+      "scenarioId": "dh2-s-013",
+      "slices": [
+        "mixed-unicode",
+        "multi-hop",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "abstentionRequired": false,
+      "caseId": "dh2-014",
+      "entityCount": 6,
+      "language": "ja",
+      "relationCount": 3,
+      "scenarioId": "dh2-s-014",
+      "slices": [
+        "mixed-unicode",
+        "multi-hop",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "abstentionRequired": false,
+      "caseId": "dh2-015",
+      "entityCount": 4,
+      "language": "mixed",
+      "relationCount": 2,
+      "scenarioId": "dh2-s-015",
+      "slices": [
+        "mixed-unicode",
+        "combining-mark",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "abstentionRequired": false,
+      "caseId": "dh2-016",
+      "entityCount": 4,
+      "language": "mixed",
+      "relationCount": 2,
+      "scenarioId": "dh2-s-016",
+      "slices": [
+        "mixed-unicode",
+        "emoji",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "abstentionRequired": false,
+      "caseId": "dh2-017",
+      "entityCount": 6,
+      "language": "en",
+      "relationCount": 3,
+      "scenarioId": "dh2-s-017",
+      "slices": [
+        "cross-sentence-dependency",
+        "multi-hop",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "abstentionRequired": false,
+      "caseId": "dh2-018",
+      "entityCount": 5,
+      "language": "en",
+      "relationCount": 2,
+      "scenarioId": "dh2-s-018",
+      "slices": [
+        "distractors",
+        "repeated-labels",
+        "different-occurrences",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "full",
+      "abstentionRequired": true,
+      "caseId": "dh2-019",
+      "entityCount": 0,
+      "language": "en",
+      "relationCount": 0,
+      "scenarioId": "dh2-s-019",
+      "slices": [
+        "cross-project",
+        "partial-abstention",
+        "full-abstention",
+        "abstention"
+      ]
+    },
+    {
+      "abstentionMode": "full",
+      "abstentionRequired": true,
+      "caseId": "dh2-020",
+      "entityCount": 0,
+      "language": "en",
+      "relationCount": 0,
+      "scenarioId": "dh2-s-020",
+      "slices": [
+        "unsupported-relation",
+        "abstention",
+        "full-abstention"
+      ]
+    },
+    {
+      "abstentionMode": "full",
+      "abstentionRequired": true,
+      "caseId": "dh2-021",
+      "entityCount": 0,
+      "language": "en",
+      "relationCount": 0,
+      "scenarioId": "dh2-s-021",
+      "slices": [
+        "adversarial-instruction",
+        "unsupported-relation",
+        "full-abstention",
+        "abstention"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "abstentionRequired": false,
+      "caseId": "dh2-022",
+      "entityCount": 8,
+      "language": "en",
+      "relationCount": 4,
+      "scenarioId": "dh2-s-022",
+      "slices": [
+        "long-context",
+        "distractors",
+        "multi-hop",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "abstentionRequired": false,
+      "caseId": "dh2-023",
+      "entityCount": 6,
+      "language": "vi",
+      "relationCount": 3,
+      "scenarioId": "dh2-s-023",
+      "slices": [
+        "mixed-unicode",
+        "cross-sentence-dependency",
+        "multi-hop"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "abstentionRequired": false,
+      "caseId": "dh2-024",
+      "entityCount": 6,
+      "language": "ja",
+      "relationCount": 3,
+      "scenarioId": "dh2-s-024",
+      "slices": [
+        "mixed-unicode",
+        "long-context",
+        "multi-hop",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "partial",
+      "abstentionRequired": true,
+      "caseId": "dh2-025",
+      "entityCount": 4,
+      "language": "en",
+      "relationCount": 0,
+      "scenarioId": "dh2-s-025",
+      "slices": [
+        "negation",
+        "non-assertion",
+        "partial-abstention",
+        "abstention"
+      ]
+    },
+    {
+      "abstentionMode": "none",
+      "abstentionRequired": false,
+      "caseId": "dh2-026",
+      "entityCount": 6,
+      "language": "en",
+      "relationCount": 3,
+      "scenarioId": "dh2-s-026",
+      "slices": [
+        "temporal-supersession",
+        "stale-statement",
+        "repeated-labels",
+        "multi-relation"
+      ]
+    },
+    {
+      "abstentionMode": "partial",
+      "abstentionRequired": true,
+      "caseId": "dh2-027",
+      "entityCount": 3,
+      "language": "en",
+      "relationCount": 0,
+      "scenarioId": "dh2-s-027",
+      "slices": [
+        "cross-project",
+        "unsupported-relation",
+        "partial-abstention",
+        "abstention"
+      ]
+    },
+    {
+      "abstentionMode": "full",
+      "abstentionRequired": true,
+      "caseId": "dh2-028",
+      "entityCount": 0,
+      "language": "en",
+      "relationCount": 0,
+      "scenarioId": "dh2-s-028",
+      "slices": [
+        "adversarial-instruction",
+        "distractors",
+        "unsupported-relation",
+        "full-abstention",
+        "abstention"
+      ]
+    }
+  ],
+  "sourcePayloadDigest": "sha256:c5ca7a63ecb16a96e2801ecedc5b20bb02c34705305b301a119ee6f9c05a4232"
+}

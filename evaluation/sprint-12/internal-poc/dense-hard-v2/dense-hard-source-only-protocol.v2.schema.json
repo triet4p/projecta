@@ -1,0 +1,240 @@
+{
+  "$id": "https://projecta.example/schemas/s12-dense-hard-source-only-protocol.v2.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "abstentionPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "full": {
+          "type": "string"
+        },
+        "modes": {
+          "items": {
+            "enum": [
+              "none",
+              "partial",
+              "full"
+            ]
+          },
+          "type": "array"
+        },
+        "none": {
+          "type": "string"
+        },
+        "partial": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "modes",
+        "none",
+        "partial",
+        "full"
+      ],
+      "type": "object"
+    },
+    "anchorPolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "emptySpansAllowed": {
+          "const": false
+        },
+        "evidenceMustEqualSourceSlice": {
+          "const": true
+        },
+        "indexUnit": {
+          "type": "string"
+        },
+        "interval": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "indexUnit",
+        "interval",
+        "evidenceMustEqualSourceSlice",
+        "emptySpansAllowed"
+      ],
+      "type": "object"
+    },
+    "artifactVersion": {
+      "const": "s12.dense-hard.source-only-protocol.v2"
+    },
+    "datasetKind": {
+      "const": "SYNTHETIC_NON_PRODUCTION"
+    },
+    "finiteEntityTypes": {
+      "items": {
+        "enum": [
+          "Task",
+          "Requirement",
+          "Constraint",
+          "Risk",
+          "System",
+          "Project",
+          "Document",
+          "Question",
+          "Decision",
+          "Dataset",
+          "Person",
+          "Control",
+          "Resource"
+        ]
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "finiteRelationPredicates": {
+      "items": {
+        "enum": [
+          "dependsOn",
+          "implements",
+          "blocks",
+          "supports",
+          "validates",
+          "tracks",
+          "constrains",
+          "supersedes",
+          "requires",
+          "answers",
+          "contains"
+        ]
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "noReusePolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "authorIneligibleForCandidate": {
+          "const": true
+        },
+        "freshAuthority": {
+          "const": true
+        },
+        "freshCaseIds": {
+          "const": true
+        },
+        "freshRawText": {
+          "const": true
+        },
+        "freshSourceDigests": {
+          "const": true
+        },
+        "noV1GoldManifestCandidateEvaluationReuse": {
+          "const": true
+        }
+      },
+      "required": [
+        "freshAuthority",
+        "freshCaseIds",
+        "freshRawText",
+        "freshSourceDigests",
+        "noV1GoldManifestCandidateEvaluationReuse",
+        "authorIneligibleForCandidate"
+      ],
+      "type": "object"
+    },
+    "nonClaims": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "propositionRegistry": {
+      "additionalProperties": false,
+      "properties": {
+        "occurrenceIdentity": {
+          "type": "string"
+        },
+        "requiredEntityKeys": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "supportedFinalization": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "requiredEntityKeys",
+        "occurrenceIdentity",
+        "supportedFinalization"
+      ],
+      "type": "object"
+    },
+    "protocolDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "quarantinePolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "requiredKeys": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "rule": {
+          "type": "string"
+        },
+        "status": {
+          "const": "quarantined"
+        }
+      },
+      "required": [
+        "requiredKeys",
+        "status",
+        "rule"
+      ],
+      "type": "object"
+    },
+    "relationGrounding": {
+      "additionalProperties": false,
+      "properties": {
+        "endpointRule": {
+          "type": "string"
+        },
+        "requiredKeys": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "triggerRule": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "requiredKeys",
+        "triggerRule",
+        "endpointRule"
+      ],
+      "type": "object"
+    },
+    "status": {
+      "const": "GENERIC_OFFLINE_GUARD"
+    }
+  },
+  "required": [
+    "artifactVersion",
+    "status",
+    "datasetKind",
+    "finiteEntityTypes",
+    "finiteRelationPredicates",
+    "propositionRegistry",
+    "relationGrounding",
+    "abstentionPolicy",
+    "quarantinePolicy",
+    "anchorPolicy",
+    "noReusePolicy",
+    "nonClaims",
+    "protocolDigest"
+  ],
+  "title": "Sprint 12 Dense-Hard Generic Source-Only Protocol v2",
+  "type": "object"
+}

@@ -1,0 +1,52 @@
+{
+  "abstentionMatrix": "protocol.abstentionMatrix",
+  "artifactVersion": "s12.dense-hard.evaluator-contract.v3",
+  "contractDigest": "sha256:7e77febb8fc685134d0374340ed0e43c0cdbb892d51a53c75efe1a94f00dd532",
+  "evidenceNormalization": {
+    "formattingOnly": "unchanged",
+    "substantivePredicateEndpointChange": "semantic edit",
+    "terminalPunctuationOnly": "unchanged"
+  },
+  "metrics": {
+    "edits": "unchanged/minor/major/reject/abstain with evidence normalization",
+    "entity": "occurrence precision/recall/F1 plus type diagnostics",
+    "quarantine": "quarantine precision/recall and unsafe-finalization avoided",
+    "relation": "predicate plus anchored occurrence endpoint precision/recall/F1",
+    "rm67": "protocol.rm67",
+    "unsafeFinalization": "unsupported source/gold proposition only"
+  },
+  "noCandidateOrEvaluation": true,
+  "nonClaims": [
+    "This is an evaluator contract, not a candidate result or evaluation."
+  ],
+  "occurrenceIdentity": {
+    "fields": [
+      "startOffset",
+      "endOffset",
+      "text"
+    ],
+    "independentOfType": true
+  },
+  "quarantine": "protocol.quarantinePolicy",
+  "relationIdentity": {
+    "endpointTypeExcluded": true,
+    "fields": [
+      "predicate",
+      "sourceOccurrence",
+      "targetOccurrence"
+    ]
+  },
+  "requiredBindings": [
+    "sourcePayloadDigest",
+    "goldDigest",
+    "manifestDigest",
+    "protocolDigest"
+  ],
+  "status": "CONTRACT_BEFORE_CANDIDATE",
+  "typeScoring": {
+    "ambiguous": "UNSCORABLE_PROTOCOL_AMBIGUITY excluded from pass/fail",
+    "cascadeToRelation": false,
+    "mismatch": "one type correction diagnostic",
+    "rubric": "protocol.typeRubric"
+  }
+}

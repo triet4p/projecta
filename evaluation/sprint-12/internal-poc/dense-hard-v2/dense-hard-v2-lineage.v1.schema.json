@@ -1,0 +1,121 @@
+{
+  "$id": "https://projecta.example/schemas/s12-dense-hard-v2-lineage.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "abstentionCaseCount": {
+      "minimum": 1
+    },
+    "artifactVersion": {
+      "const": "s12.dense-hard.v2-lineage.v1"
+    },
+    "authorIneligibleForCandidate": {
+      "const": true
+    },
+    "caseCount": {
+      "const": 28
+    },
+    "datasetKind": {
+      "const": "SYNTHETIC_NON_PRODUCTION"
+    },
+    "entityAssertions": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "fullAbstentionCaseCount": {
+      "minimum": 1
+    },
+    "goldDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "lineageDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "manifestDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "noReuseChecks": {
+      "additionalProperties": false,
+      "properties": {
+        "caseIdsDisjoint": {
+          "const": true
+        },
+        "normalizedSentencesDisjoint": {
+          "const": true
+        },
+        "rawTextChanged": {
+          "const": true
+        },
+        "sourceDigestsDisjoint": {
+          "const": true
+        },
+        "sourcePayloadDigestFresh": {
+          "const": true
+        }
+      },
+      "required": [
+        "caseIdsDisjoint",
+        "sourceDigestsDisjoint",
+        "normalizedSentencesDisjoint",
+        "sourcePayloadDigestFresh",
+        "rawTextChanged"
+      ],
+      "type": "object"
+    },
+    "nonClaims": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "partialAbstentionCaseCount": {
+      "minimum": 1
+    },
+    "protocolDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "providerCalls": {
+      "const": 0
+    },
+    "relationAssertions": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "sliceCount": {
+      "minimum": 19
+    },
+    "sourcePayloadDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "status": {
+      "const": "VALIDATED_FRESH_NO_V1_REUSE"
+    },
+    "v1SourcePayloadDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "artifactVersion",
+    "status",
+    "datasetKind",
+    "sourcePayloadDigest",
+    "goldDigest",
+    "manifestDigest",
+    "protocolDigest",
+    "v1SourcePayloadDigest",
+    "caseCount",
+    "entityAssertions",
+    "relationAssertions",
+    "sliceCount",
+    "abstentionCaseCount",
+    "fullAbstentionCaseCount",
+    "partialAbstentionCaseCount",
+    "noReuseChecks",
+    "authorIneligibleForCandidate",
+    "providerCalls",
+    "nonClaims",
+    "lineageDigest"
+  ],
+  "title": "Sprint 12 Dense-Hard v2 Freshness Lineage",
+  "type": "object"
+}

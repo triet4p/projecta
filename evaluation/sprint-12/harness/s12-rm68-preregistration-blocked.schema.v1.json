@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.example/schemas/s12-rm68-preregistration-blocked.v1.json",
+  "title": "S12 RM-68 Blocked Preregistration Preparation v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifactVersion", "status", "disposition", "developmentWaiver", "sourceBindings", "acceptedPrerequisites", "externalCustody", "datasetBinding", "candidateBinding", "futureProtocol", "issuanceCriteria", "noExecutionLocks", "requiredExternalEvidence", "nextPermittedAction", "nonClaims"],
+  "properties": {
+    "artifactVersion": {"const": "s12.rm68.preregistration-blocked.v1"},
+    "status": {"const": "DRAFT_BLOCKED_EXTERNAL_CUSTODY"},
+    "disposition": {"const": "NOT_A_PREREGISTRATION"},
+    "developmentWaiver": {"type": "object", "additionalProperties": false, "required": ["status", "phaseStatus", "rm68IssuanceDeferred", "externalValidationDeferred", "reopenRequires"], "properties": {"status": {"const": "DEFERRED_DEV_ONLY"}, "phaseStatus": {"const": "DEVELOPMENT_COMPLETE_EXTERNAL_VALIDATION_DEFERRED"}, "rm68IssuanceDeferred": {"const": true}, "externalValidationDeferred": {"const": true}, "reopenRequires": {"const": "OWNER_REVIEW_WITH_EXTERNAL_CUSTODY_AND_FROZEN_CANDIDATE"}}},
+    "sourceBindings": {"type": "array", "minItems": 7, "items": {"$ref": "#/$defs/sourceBinding"}},
+    "acceptedPrerequisites": {"$ref": "#/$defs/acceptedPrerequisites"},
+    "externalCustody": {"$ref": "#/$defs/externalCustody"},
+    "datasetBinding": {"$ref": "#/$defs/datasetBinding"},
+    "candidateBinding": {"$ref": "#/$defs/candidateBinding"},
+    "futureProtocol": {"$ref": "#/$defs/futureProtocol"},
+    "issuanceCriteria": {"$ref": "#/$defs/issuanceCriteria"},
+    "noExecutionLocks": {"$ref": "#/$defs/noExecutionLocks"},
+    "requiredExternalEvidence": {"type": "array", "minItems": 6, "items": {"type": "string", "minLength": 1}},
+    "nextPermittedAction": {"const": "NO_RM68_ACTION_UNTIL_OWNER_REOPENS_WITH_EXTERNAL_CUSTODY"},
+    "nonClaims": {"type": "array", "minItems": 5, "items": {"type": "string", "minLength": 1}}
+  },
+  "$defs": {
+    "sourceBinding": {"type": "object", "additionalProperties": false, "required": ["path", "digest", "role"], "properties": {"path": {"type": "string", "minLength": 1}, "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}, "role": {"type": "string", "minLength": 1}}},
+    "acceptedPrerequisites": {"type": "object", "additionalProperties": false, "required": ["rm65CorrectionBurdenTelemetry", "rm66OfflineAdversarialGate", "rm67HumanCorrectionBurdenContract", "rm67ObservedHumanResults", "rm67ProviderCalls"], "properties": {"rm65CorrectionBurdenTelemetry": {"const": true}, "rm66OfflineAdversarialGate": {"const": true}, "rm67HumanCorrectionBurdenContract": {"const": true}, "rm67ObservedHumanResults": {"const": false}, "rm67ProviderCalls": {"const": 0}}},
+    "externalCustody": {"type": "object", "additionalProperties": false, "required": ["status", "custodianAuthority", "custodyReceiptDigest", "payloadPresent", "payloadNonReconstructible", "heldOutInspection", "blockers"], "properties": {"status": {"const": "CUSTODY_NOT_ESTABLISHED"}, "custodianAuthority": {"type": ["string", "null"]}, "custodyReceiptDigest": {"type": ["string", "null"]}, "payloadPresent": {"const": false}, "payloadNonReconstructible": {"const": false}, "heldOutInspection": {"const": false}, "blockers": {"type": "array", "minItems": 4, "items": {"type": "string", "minLength": 1}}}},
+    "datasetBinding": {"type": "object", "additionalProperties": false, "required": ["status", "datasetId", "manifestDigest", "payloadDigest", "atomicCaseCount", "scenarioCount", "nonReconstructible", "availableToRepository"], "properties": {"status": {"const": "REQUIRED_NOT_PROVIDED"}, "datasetId": {"type": ["string", "null"]}, "manifestDigest": {"type": ["string", "null"]}, "payloadDigest": {"type": ["string", "null"]}, "atomicCaseCount": {"type": ["integer", "null"]}, "scenarioCount": {"type": ["integer", "null"]}, "nonReconstructible": {"const": false}, "availableToRepository": {"const": false}}},
+    "candidateBinding": {"type": "object", "additionalProperties": false, "required": ["status", "candidateId", "candidateDigest", "configurationDigest", "evaluatorDigest", "frozen", "evaluable", "selectionAuthorized"], "properties": {"status": {"const": "REQUIRED_NOT_FROZEN"}, "candidateId": {"type": ["string", "null"]}, "candidateDigest": {"type": ["string", "null"]}, "configurationDigest": {"type": ["string", "null"]}, "evaluatorDigest": {"type": ["string", "null"]}, "frozen": {"const": false}, "evaluable": {"const": false}, "selectionAuthorized": {"const": false}}},
+    "futureProtocol": {"type": "object", "additionalProperties": false, "required": ["targetRoles", "minimumQualifiedReviewers", "minimumScenarios", "minimumReviewerRecords", "blindedReview", "independentAnnotation", "counterbalancedSameReviewerManualBaseline", "manualBaseline", "correctionBurdenContractPath", "abortRules"], "properties": {"targetRoles": {"const": ["BrSE", "project-manager", "semantic-reviewer"]}, "minimumQualifiedReviewers": {"const": 3}, "minimumScenarios": {"const": 12}, "minimumReviewerRecords": {"const": 36}, "blindedReview": {"const": true}, "independentAnnotation": {"const": true}, "counterbalancedSameReviewerManualBaseline": {"const": true}, "manualBaseline": {"type": "string", "minLength": 1}, "correctionBurdenContractPath": {"const": "evaluation/sprint-12/harness/s12-rm67-human-correction-burden-contract.v1.json"}, "abortRules": {"type": "array", "minItems": 6, "items": {"type": "string", "minLength": 1}}}},
+    "issuanceCriteria": {"type": "object", "additionalProperties": false, "required": ["externalCustodyEstablished", "nonReconstructiblePayloadVerified", "datasetBindingComplete", "candidateFrozen", "configurationFrozen", "evaluatorBound", "ownerProtocolApprovalRecorded", "allCriteriaSatisfied"], "properties": {"externalCustodyEstablished": {"const": false}, "nonReconstructiblePayloadVerified": {"const": false}, "datasetBindingComplete": {"const": false}, "candidateFrozen": {"const": false}, "configurationFrozen": {"const": false}, "evaluatorBound": {"const": false}, "ownerProtocolApprovalRecorded": {"const": false}, "allCriteriaSatisfied": {"const": false}}},
+    "noExecutionLocks": {"type": "object", "additionalProperties": false, "required": ["preregistrationIssued", "providerCallsAuthorized", "heldOutAccessAuthorized", "humanExecutionAuthorized", "validationAccessAuthorized", "candidateSelectionAuthorized", "promotionAuthorized", "productionEnablementAuthorized"], "properties": {"preregistrationIssued": {"const": false}, "providerCallsAuthorized": {"const": false}, "heldOutAccessAuthorized": {"const": false}, "humanExecutionAuthorized": {"const": false}, "validationAccessAuthorized": {"const": false}, "candidateSelectionAuthorized": {"const": false}, "promotionAuthorized": {"const": false}, "productionEnablementAuthorized": {"const": false}}}
+  }
+}

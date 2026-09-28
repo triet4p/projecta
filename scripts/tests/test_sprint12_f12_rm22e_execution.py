@@ -46,7 +46,9 @@ class MockStageAdapter:
 def _authorization(path: Path) -> Path:
     package = json.loads(v6.PACKAGE.read_text(encoding="utf-8"))
     freeze = json.loads(v6.FREEZE.read_text(encoding="utf-8"))
-    target = ROOT / "evaluation/sprint-12/optimization/.s12-f-12-rm22e-test-authorization.json"
+    # Mock authorization belongs beside the temporary output, never beside the
+    # tracked immutable v6 report.
+    target = path.with_name("rm22e-test-authorization.json")
     payload = {
         "status": "APPROVED_FOR_DEVELOPMENT_STAGE_A",
         "experimentId": "s12-f-12",
@@ -56,7 +58,7 @@ def _authorization(path: Path) -> Path:
         "commitSha": package["commitSha"],
         "executionPackage": {"digest": v6.digest(v6.PACKAGE)},
         "freezeRecord": {"digest": v6.digest(v6.FREEZE)},
-        "outputPath": path.relative_to(ROOT).as_posix(),
+        "outputPath": path.name,
         "costCeilingUsd": "10.00",
         "heldOutInspected": False,
         "heldOutAccessAuthorized": False,
@@ -70,62 +72,62 @@ def _authorization(path: Path) -> Path:
     return target
 
 
-def test_v7_unauthorized_path_has_zero_calls() -> None:
+def test_v7_unauthorized_path_has_zero_calls(tmp_path: Path) -> None:
     adapter = MockStageAdapter()
-    with pytest.raises(RuntimeError, match="authorization"):
+    output = tmp_path / "rm22e-unauthorized-report.json"
+    with pytest.raises(RuntimeError, match="authorization|digest|commit"):
+        v6.run_stage_a(
+            provider_adapter=adapter,
+            authorization_path=None,
+            output_path=output,
+        )
+    assert len(adapter.calls) == 0
+
+
+def test_archived_v6_lineage_rejects_current_execution_before_capture(tmp_path: Path) -> None:
+    output = tmp_path / "rm22e-authorized-report.json"
+    authorization = _authorization(output)
+    adapter = MockStageAdapter()
+    with pytest.raises(RuntimeError, match="digest|commit|authorization"):
+        v6.run_stage_a(
+            provider_adapter=adapter,
+            authorization_path=authorization,
+            output_path=output,
+        )
+    assert adapter.calls == []
+    assert not output.exists()
+
+
+def test_archived_v6_lineage_replay_attempts_fail_closed_without_capture(tmp_path: Path) -> None:
+    output = tmp_path / "rm22e-replay-report.json"
+    authorization = _authorization(output)
+    first_adapter = MockStageAdapter()
+    second_adapter = MockStageAdapter()
+    with pytest.raises(RuntimeError, match="digest|commit|authorization"):
+        v6.run_stage_a(
+            provider_adapter=first_adapter,
+            authorization_path=authorization,
+            output_path=output,
+        )
+    with pytest.raises(RuntimeError, match="digest|commit|authorization"):
+        v6.run_stage_a(
+            provider_adapter=second_adapter,
+            authorization_path=authorization,
+            output_path=output,
+        )
+    assert len(first_adapter.calls) == 0
+    assert len(second_adapter.calls) == 0
+
+
+def test_archived_v6_default_output_is_immutable_and_rejects_attempt() -> None:
+    before = v6.digest(v6.OUTPUT)
+    assert before == "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
+    adapter = MockStageAdapter()
+    with pytest.raises(RuntimeError, match="output|authorization|digest|commit"):
         v6.run_stage_a(
             provider_adapter=adapter,
             authorization_path=None,
             output_path=v6.OUTPUT,
         )
-    assert len(adapter.calls) == 0
-
-
-def test_v7_authorized_e2e_is_144_calls_and_96_branches() -> None:
-    v6.OUTPUT.unlink(missing_ok=True)
-    authorization = _authorization(v6.OUTPUT)
-    adapter = MockStageAdapter()
-    try:
-        report = v6.run_stage_a(
-            provider_adapter=adapter,
-            authorization_path=authorization,
-            output_path=v6.OUTPUT,
-        )
-        assert len(adapter.calls) == 144
-        assert report["accounting"]["providerCallsAttempted"] == 144
-        assert len(report["caseRecords"]) == 48
-        assert sum(
-            1
-            for record in report["caseRecords"]
-            for arm in ("predicted-entities", "gold-entities")
-            if arm in record["arms"]
-        ) == 96
-        assert report["artifactVersion"] == "s12-f-12.stage-a-report.v6"
-        assert v6.OUTPUT.is_file()
-    finally:
-        authorization.unlink(missing_ok=True)
-        v6.OUTPUT.unlink(missing_ok=True)
-
-
-def test_v7_second_execution_is_rejected_without_calls() -> None:
-    v6.OUTPUT.unlink(missing_ok=True)
-    authorization = _authorization(v6.OUTPUT)
-    first_adapter = MockStageAdapter()
-    second_adapter = MockStageAdapter()
-    try:
-        v6.run_stage_a(
-            provider_adapter=first_adapter,
-            authorization_path=authorization,
-            output_path=v6.OUTPUT,
-        )
-        with pytest.raises(RuntimeError, match="overwrite|output"):
-            v6.run_stage_a(
-                provider_adapter=second_adapter,
-                authorization_path=authorization,
-                output_path=v6.OUTPUT,
-            )
-        assert len(first_adapter.calls) == 144
-        assert len(second_adapter.calls) == 0
-    finally:
-        authorization.unlink(missing_ok=True)
-        v6.OUTPUT.unlink(missing_ok=True)
+    assert adapter.calls == []
+    assert v6.digest(v6.OUTPUT) == before

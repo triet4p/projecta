@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.example/schemas/s12-rm67-human-correction-burden-contract.v1.json",
+  "title": "S12 RM-67 Human Correction Burden Contract v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifactVersion",
+    "contractVersion",
+    "status",
+    "decision",
+    "sourceBindings",
+    "thresholds",
+    "correctionTaxonomy",
+    "denominators",
+    "timingPolicy",
+    "missingAndDisagreementPolicy",
+    "studyDesign",
+    "statisticalReporting",
+    "nonGoals"
+  ],
+  "properties": {
+    "artifactVersion": {"const": "s12.rm67.human-correction-burden-contract.v1"},
+    "contractVersion": {"const": "human-correction-burden.v1"},
+    "status": {"const": "OWNER_DELEGATED_ACCEPTED_FOR_RM68_PREREGISTRATION_ONLY"},
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decisionId", "disposition", "authority", "ownerDelegationRecorded", "observedHumanResults", "humanExecutionAuthorized", "providerCallsAuthorized", "heldOutInspection", "custodyStatus", "nextPermittedAction"],
+      "properties": {
+        "decisionId": {"const": "s12-rm67-threshold-decision-v1"},
+        "disposition": {"const": "ACCEPTED_FOR_RM68_PREREGISTRATION_ONLY"},
+        "authority": {"const": "owner-delegated-contract-review"},
+        "ownerDelegationRecorded": {"const": true},
+        "observedHumanResults": {"const": false},
+        "humanExecutionAuthorized": {"const": false},
+        "providerCallsAuthorized": {"const": false},
+        "heldOutInspection": {"const": false},
+        "custodyStatus": {"const": "CUSTODY_NOT_ESTABLISHED"},
+        "nextPermittedAction": {"const": "S12-RM-68_PREREGISTER_HUMAN_FIRST_EVALUATION"}
+      }
+    },
+    "sourceBindings": {
+      "type": "array",
+      "minItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "digest", "role"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+          "role": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "thresholds": {"$ref": "#/$defs/thresholds"},
+    "correctionTaxonomy": {"$ref": "#/$defs/correctionTaxonomy"},
+    "denominators": {"$ref": "#/$defs/denominators"},
+    "timingPolicy": {"$ref": "#/$defs/timingPolicy"},
+    "missingAndDisagreementPolicy": {"$ref": "#/$defs/missingAndDisagreementPolicy"},
+    "studyDesign": {"$ref": "#/$defs/studyDesign"},
+    "statisticalReporting": {"$ref": "#/$defs/statisticalReporting"},
+    "nonGoals": {"type": "array", "minItems": 6, "items": {"type": "string", "minLength": 1}}
+  },
+  "$defs": {
+    "threshold": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "minimum": {"type": "number", "minimum": 0, "maximum": 1},
+        "maximum": {"type": "number", "minimum": 0},
+        "denominator": {"type": "string", "minLength": 1},
+        "numerator": {"type": "string", "minLength": 1},
+        "formula": {"type": "string", "minLength": 1},
+        "unit": {"type": "string", "minLength": 1},
+        "unitPolicy": {"type": "string", "minLength": 1},
+        "notApplicableRule": {"type": "string", "minLength": 1}
+      },
+      "minProperties": 2
+    },
+    "thresholds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["acceptedWithoutSemanticCorrection", "acceptedUnchangedOrMinor", "medianReviewTimeReductionVsCounterbalancedManualBaseline", "medianReviewTimeSeconds", "p90ReviewTimeSeconds", "meanSemanticEditsPerReviewedItem", "unsupportedFinalizedAssertions", "reviewerAgreementWhenApplicable"],
+      "properties": {
+        "acceptedWithoutSemanticCorrection": {"allOf": [{"$ref": "#/$defs/threshold"}, {"properties": {"minimum": {"const": 0.7}}}]},
+        "acceptedUnchangedOrMinor": {"allOf": [{"$ref": "#/$defs/threshold"}, {"properties": {"minimum": {"const": 0.85}}}]},
+        "medianReviewTimeReductionVsCounterbalancedManualBaseline": {"allOf": [{"$ref": "#/$defs/threshold"}, {"properties": {"minimum": {"const": 0.3}}}]},
+        "medianReviewTimeSeconds": {"allOf": [{"$ref": "#/$defs/threshold"}, {"properties": {"maximum": {"const": 45}}}]},
+        "p90ReviewTimeSeconds": {"allOf": [{"$ref": "#/$defs/threshold"}, {"properties": {"maximum": {"const": 90}}}]},
+        "meanSemanticEditsPerReviewedItem": {"allOf": [{"$ref": "#/$defs/threshold"}, {"properties": {"maximum": {"const": 2}}}]},
+        "unsupportedFinalizedAssertions": {"allOf": [{"$ref": "#/$defs/threshold"}, {"properties": {"maximum": {"const": 0}}}]},
+        "reviewerAgreementWhenApplicable": {"allOf": [{"$ref": "#/$defs/threshold"}, {"properties": {"minimum": {"const": 0.8}}}]}
+      }
+    },
+    "correctionTaxonomy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classes", "dimensions", "precedence", "legacyMapping", "unknownDimensionPolicy"],
+      "properties": {
+        "classes": {"const": ["unchanged", "minor", "major"]},
+        "dimensions": {"const": ["span", "type", "label", "predicate", "endpoint", "evidence"]},
+        "precedence": {"type": "array", "minItems": 3, "items": {"type": "object", "additionalProperties": false, "required": ["class"], "properties": {"class": {"enum": ["unchanged", "minor", "major"]}, "whenAnyDimension": {"type": "array", "items": {"enum": ["span", "type", "label", "predicate", "endpoint", "evidence"]}}, "when": {"type": "string"}}}},
+        "legacyMapping": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["formatting-only", "minor-semantic", "major-semantic", "rejected", "missing-output", "not-applicable"],
+          "properties": {
+            "formatting-only": {"const": "unchanged"},
+            "minor-semantic": {"const": "minor"},
+            "major-semantic": {"const": "major"},
+            "rejected": {"const": "disposition_only"},
+            "missing-output": {"const": "disposition_only"},
+            "not-applicable": {"const": "disposition_only"}
+          }
+        },
+        "unknownDimensionPolicy": {"const": "invalid_record_blocks_gate"}
+      }
+    },
+    "denominators": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["eligibleReviewedItems", "acceptanceRates", "reviewTime", "editBurden", "agreement", "unsupportedFinalizedAssertions", "invalidRecords"],
+      "properties": {
+        "eligibleReviewedItems": {"type": "string", "minLength": 1},
+        "acceptanceRates": {"type": "string", "minLength": 1},
+        "reviewTime": {"type": "string", "minLength": 1},
+        "editBurden": {"type": "string", "minLength": 1},
+        "agreement": {"type": "string", "minLength": 1},
+        "unsupportedFinalizedAssertions": {"type": "string", "minLength": 1},
+        "invalidRecords": {"type": "string", "minLength": 1}
+      }
+    },
+    "timingPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "stop", "pause", "manualBaseline", "invalidTiming"],
+      "properties": {
+        "start": {"type": "string", "minLength": 1},
+        "stop": {"type": "string", "minLength": 1},
+        "pause": {"type": "string", "minLength": 1},
+        "manualBaseline": {"type": "string", "minLength": 1},
+        "invalidTiming": {"type": "string", "minLength": 1}
+      }
+    },
+    "missingAndDisagreementPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["missingOutput", "rejection", "abstention", "disagreement", "invalidOrTampered"],
+      "properties": {
+        "missingOutput": {"type": "string", "minLength": 1},
+        "rejection": {"type": "string", "minLength": 1},
+        "abstention": {"type": "string", "minLength": 1},
+        "disagreement": {"type": "string", "minLength": 1},
+        "invalidOrTampered": {"type": "string", "minLength": 1}
+      }
+    },
+    "studyDesign": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minimumQualifiedReviewers", "targetRoles", "minimumScenarios", "minimumReviewerRecords", "counterbalancedSameReviewerManualBaseline", "languageMinimumScenarios", "requiredJourneys", "minimumAmbiguityCases", "minimumThreatOrIsolationCases", "threatSlices", "manualBaseline", "heldOutRequirement"],
+      "properties": {
+        "minimumQualifiedReviewers": {"const": 3},
+        "targetRoles": {"const": ["BrSE", "project-manager", "semantic-reviewer"]},
+        "minimumScenarios": {"const": 12},
+        "minimumReviewerRecords": {"const": 36},
+        "counterbalancedSameReviewerManualBaseline": {"const": true},
+        "languageMinimumScenarios": {"type": "object", "additionalProperties": false, "required": ["vi", "en", "ja", "mixed"], "properties": {"vi": {"const": 2}, "en": {"const": 2}, "ja": {"const": 2}, "mixed": {"const": 2}}},
+        "requiredJourneys": {"type": "array", "minItems": 8, "items": {"type": "string", "minLength": 1}},
+        "minimumAmbiguityCases": {"const": 2},
+        "minimumThreatOrIsolationCases": {"const": 2},
+        "threatSlices": {"type": "array", "minItems": 3, "items": {"type": "string"}},
+        "manualBaseline": {"type": "string", "minLength": 1},
+        "heldOutRequirement": {"type": "string", "minLength": 1}
+      }
+    },
+    "statisticalReporting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "confidenceInterval", "resamplingUnits", "slicePolicy"],
+      "properties": {
+        "source": {"const": "evaluation/sprint-12/metrics.v1.md"},
+        "confidenceInterval": {"type": "string", "minLength": 1},
+        "resamplingUnits": {"type": "object", "additionalProperties": false, "required": ["atomicMetrics", "scenarioMetrics", "reviewerMetrics"], "properties": {"atomicMetrics": {"const": "case"}, "scenarioMetrics": {"const": "episode"}, "reviewerMetrics": {"type": "string", "minLength": 1}}},
+        "slicePolicy": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

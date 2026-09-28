@@ -1,0 +1,101 @@
+{
+  "$id": "https://projecta.example/schemas/s12-dense-hard-manifest.v2.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "abstentionCaseCount": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "artifactVersion": {
+      "const": "s12.dense-hard.evaluator-manifest.v2"
+    },
+    "caseCount": {
+      "const": 28
+    },
+    "datasetKind": {
+      "const": "SYNTHETIC_NON_PRODUCTION"
+    },
+    "goldDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "manifestDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "records": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "abstentionMode": {
+            "enum": [
+              "none",
+              "partial",
+              "full"
+            ]
+          },
+          "abstentionRequired": {
+            "type": "boolean"
+          },
+          "caseId": {
+            "pattern": "^dh2-[0-9]{3}$"
+          },
+          "entityCount": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "language": {
+            "enum": [
+              "en",
+              "vi",
+              "ja",
+              "mixed"
+            ]
+          },
+          "relationCount": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "scenarioId": {
+            "pattern": "^dh2-s-[0-9]{3}$"
+          },
+          "slices": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "caseId",
+          "scenarioId",
+          "language",
+          "slices",
+          "entityCount",
+          "relationCount",
+          "abstentionRequired",
+          "abstentionMode"
+        ],
+        "type": "object"
+      },
+      "maxItems": 28,
+      "minItems": 28,
+      "type": "array"
+    },
+    "sourcePayloadDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "artifactVersion",
+    "datasetKind",
+    "sourcePayloadDigest",
+    "goldDigest",
+    "caseCount",
+    "abstentionCaseCount",
+    "records",
+    "manifestDigest"
+  ],
+  "title": "Sprint 12 Dense-Hard Private Evaluator Manifest v2",
+  "type": "object"
+}

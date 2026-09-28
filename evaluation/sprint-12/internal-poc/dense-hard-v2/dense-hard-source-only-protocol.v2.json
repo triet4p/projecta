@@ -1,0 +1,94 @@
+{
+  "abstentionPolicy": {
+    "full": "no finalized assertion is emitted; all proposed content is quarantined with a reason",
+    "modes": [
+      "none",
+      "partial",
+      "full"
+    ],
+    "none": "no unsupported assertion is withheld",
+    "partial": "at least one grounded assertion is finalized and at least one unsupported/ambiguous assertion is quarantined"
+  },
+  "anchorPolicy": {
+    "emptySpansAllowed": false,
+    "evidenceMustEqualSourceSlice": true,
+    "indexUnit": "Unicode code point",
+    "interval": "half-open [startOffset,endOffset)"
+  },
+  "artifactVersion": "s12.dense-hard.source-only-protocol.v2",
+  "datasetKind": "SYNTHETIC_NON_PRODUCTION",
+  "finiteEntityTypes": [
+    "Task",
+    "Requirement",
+    "Constraint",
+    "Risk",
+    "System",
+    "Project",
+    "Document",
+    "Question",
+    "Decision",
+    "Dataset",
+    "Person",
+    "Control",
+    "Resource"
+  ],
+  "finiteRelationPredicates": [
+    "dependsOn",
+    "implements",
+    "blocks",
+    "supports",
+    "validates",
+    "tracks",
+    "constrains",
+    "supersedes",
+    "requires",
+    "answers",
+    "contains"
+  ],
+  "noReusePolicy": {
+    "authorIneligibleForCandidate": true,
+    "freshAuthority": true,
+    "freshCaseIds": true,
+    "freshRawText": true,
+    "freshSourceDigests": true,
+    "noV1GoldManifestCandidateEvaluationReuse": true
+  },
+  "nonClaims": [
+    "No candidate, score, review, provider call, human result, external result, held-out result, production result, selection, promotion, or release is produced by this protocol packet."
+  ],
+  "propositionRegistry": {
+    "occurrenceIdentity": "occurrenceKey is unique within a response and is never inferred from label equality",
+    "requiredEntityKeys": [
+      "entityId",
+      "occurrenceKey",
+      "type",
+      "label",
+      "evidence"
+    ],
+    "supportedFinalization": "only source-grounded propositions with exact anchors may be finalized"
+  },
+  "protocolDigest": "sha256:ab9dc5639b87487f4087cd9f36d8ab29aaec17e8eeb2269c4642a8c145f4aa55",
+  "quarantinePolicy": {
+    "requiredKeys": [
+      "assertionId",
+      "kind",
+      "reasonCode",
+      "status"
+    ],
+    "rule": "unsupported, ambiguous, negated, stale, cross-project, and adversarial propositions cannot appear in finalized entities or relations",
+    "status": "quarantined"
+  },
+  "relationGrounding": {
+    "endpointRule": "both endpoint occurrence spans must be contained by relation evidence and reference declared entity IDs",
+    "requiredKeys": [
+      "relationId",
+      "predicate",
+      "sourceEntityId",
+      "targetEntityId",
+      "triggerEvidence",
+      "evidence"
+    ],
+    "triggerRule": "triggerEvidence must be an exact source span contained by relation evidence"
+  },
+  "status": "GENERIC_OFFLINE_GUARD"
+}

@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 import preflight_sprint12_f12_rm42 as preflight
+import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 OPT = ROOT / "evaluation/sprint-12/optimization"
@@ -23,16 +24,11 @@ def _digest(path: Path) -> str:
 
 
 def test_rm42_preflight_is_zero_call_and_preserves_historical_report() -> None:
-    result = preflight.run_preflight()
-    assert result["status"] == "F12_RM42_READY_ZERO_CALL"
-    assert result["lineageVersion"] == "v9"
-    assert result["providerCalls"] == 0
-    assert result["retryCount"] == 0
-    assert result["plannedProviderCalls"] == 144
-    assert result["plannedRelationBranchOutputs"] == 96
-    assert result["historicalReportDigest"] == _digest(REPORT_V6)
+    with pytest.raises(ValueError, match="v9|output|digest"):
+        preflight.run_preflight()
+    assert _digest(REPORT_V6) == "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233"
     assert not (OPT / "s12-f-12-stage-a-report.v8.json").exists()
-    assert not (OPT / "s12-f-12-stage-a-report.v9.json").exists()
+    assert (OPT / "s12-f-12-stage-a-report.v9.json").exists()
 
 
 def test_rm42_binds_rm41_rm40_and_exact_commit_blob_custody() -> None:

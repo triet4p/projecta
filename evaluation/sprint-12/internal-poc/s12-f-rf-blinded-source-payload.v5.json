@@ -1,0 +1,107 @@
+{
+  "artifactVersion": "s12.f-rf.blinded-source-payload.v5",
+  "candidateModel": "gpt-5.6-luna",
+  "goldIncluded": false,
+  "heldOutInspection": false,
+  "payloadDigest": "sha256:461c22c4adb8b493389c18278925408b4f9b41b3f02035d48f7d8d30e1182ef4",
+  "priorReviewsIncluded": false,
+  "priorScoresIncluded": false,
+  "providerCalls": 0,
+  "reasoning": "high",
+  "records": [
+    {
+      "caseId": "s12-a-4099",
+      "language": "mixed",
+      "rawText": "meal plan worker hỗ trợ allergy flag nhưng vẫn answers trong nutrition-plan.",
+      "scenarioId": "s12-s-213",
+      "sourceDigest": "sha256:c5c0d47f1fc27bad9931f8a33e95836bf39e02ab3d68abf0b81a7ebd699814de"
+    },
+    {
+      "caseId": "s12-a-4107",
+      "language": "mixed",
+      "rawText": "archive export worker hỗ trợ retention hold nhưng vẫn constrainedBy trong archive-export.",
+      "scenarioId": "s12-s-214",
+      "sourceDigest": "sha256:b4fbc3cfb231bab11ac48159862549a807ee9cc244cfe8edeb6fa3578f33e757"
+    },
+    {
+      "caseId": "s12-a-4115",
+      "language": "mixed",
+      "rawText": "dispute queue worker hỗ trợ duplicate charge nhưng vẫn implements trong invoice-dispute.",
+      "scenarioId": "s12-s-215",
+      "sourceDigest": "sha256:5bace08c5bc7f43e54b2797f1f197c9d8ecf647abebd6eace12090570f3e4593"
+    },
+    {
+      "caseId": "s12-a-4123",
+      "language": "mixed",
+      "rawText": "test report worker hỗ trợ sample variance nhưng vẫn blocks trong water-quality.",
+      "scenarioId": "s12-s-216",
+      "sourceDigest": "sha256:58c62daade82e64f52e4e6a7d85db3d87c8801e6faa1d9583b3fb52efe381c9e"
+    },
+    {
+      "caseId": "s12-a-4131",
+      "language": "mixed",
+      "rawText": "locker map worker hỗ trợ door fault nhưng vẫn dependsOn trong parcel-locker.",
+      "scenarioId": "s12-s-217",
+      "sourceDigest": "sha256:c4b3058aeede76d0aca4c6043b27fcfbdf61a0e6fde3e2eb04cd1e50416993a1"
+    },
+    {
+      "caseId": "s12-a-4139",
+      "language": "mixed",
+      "rawText": "approval form worker hỗ trợ budget ceiling nhưng vẫn supports trong travel-approval.",
+      "scenarioId": "s12-s-218",
+      "sourceDigest": "sha256:99c726dfe29d3570b6cd0611799b0a070a560ded762d04896428eccfbe1cde35"
+    },
+    {
+      "caseId": "s12-a-4147",
+      "language": "mixed",
+      "rawText": "release checklist worker hỗ trợ rights exception nhưng vẫn answers trong content-release.",
+      "scenarioId": "s12-s-219",
+      "sourceDigest": "sha256:ca86afb2ab3e19d9a9db63d79a7a52ce0bd8979e7fef06e9d3ed2217866ea360"
+    },
+    {
+      "caseId": "s12-a-4155",
+      "language": "mixed",
+      "rawText": "meter feed worker hỗ trợ reading gap nhưng vẫn constrainedBy trong power-meter.",
+      "scenarioId": "s12-s-220",
+      "sourceDigest": "sha256:cafa5068dc0cfb6e65e01c2ffc11cfb4b6c368a97c3c34a0a2cdff64214fbae2"
+    },
+    {
+      "caseId": "s12-a-4163",
+      "language": "mixed",
+      "rawText": "renewal packet worker hỗ trợ policy lapse nhưng vẫn implements trong insurance-renewal.",
+      "scenarioId": "s12-s-221",
+      "sourceDigest": "sha256:101023eae7af986b1dc6998ebf95fa971af6c85dfc796d4ba8e5c175c729a39d"
+    },
+    {
+      "caseId": "s12-a-4171",
+      "language": "mixed",
+      "rawText": "loan ledger worker hỗ trợ overdue item nhưng vẫn blocks trong library-loan.",
+      "scenarioId": "s12-s-222",
+      "sourceDigest": "sha256:9085b554a51c0b48b1c0b00538467ff06e00e46696103075018cf60bcab15c15"
+    },
+    {
+      "caseId": "s12-a-4179",
+      "language": "mixed",
+      "rawText": "supply order worker hỗ trợ delivery variance nhưng vẫn dependsOn trong farm-supply.",
+      "scenarioId": "s12-s-223",
+      "sourceDigest": "sha256:8ece3a67e67bbc7350cdad064f4d1263b6553202c139f3a5378da868307492fb"
+    },
+    {
+      "caseId": "s12-a-4187",
+      "language": "mixed",
+      "rawText": "hold register worker hỗ trợ custody gap nhưng vẫn supports trong legal-hold.",
+      "scenarioId": "s12-s-224",
+      "sourceDigest": "sha256:047516bed3db2083b4e77d967feda05139b99c517f4a7526c8ad21e16f62ed98"
+    }
+  ],
+  "requiredOutputSchema": {
+    "abstention": "abstentionReason when no safe candidate is supportable",
+    "anchorRule": "zero-based Unicode code-point half-open offsets; exact evidence text",
+    "entities": "candidateId,type,label,evidence{startOffset,endOffset,text},confidence",
+    "links": "mention,targetEntityId,evidence,confidence",
+    "relations": "predicate,sourceEntityId,targetEntityId,evidence,confidence",
+    "schemaVersion": "m3.v2"
+  },
+  "sourceOnly": true,
+  "status": "FROZEN_SOURCE_ONLY_FOR_CANDIDATE"
+}

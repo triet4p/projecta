@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.example/schemas/s12-f-rf-internal-poc-review.v2.json",
+  "title": "Sprint 12 F-RF Deterministic Agent-Proxy Review v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifactVersion", "status", "candidatePath", "candidateDigest", "reviewerMode", "humanEvidence", "providerCalls", "heldOutInspection", "manualBaseline", "records", "metrics", "nonClaims"],
+  "properties": {
+    "artifactVersion": {"const": "s12.f-rf.internal-poc-review.v2"},
+    "status": {"const": "POC_DIAGNOSTIC_NO_HUMAN_ACCEPTANCE"},
+    "candidatePath": {"const": "evaluation/sprint-12/internal-poc/s12-f-rf-internal-poc-candidate.v2.json"},
+    "candidateDigest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+    "reviewerMode": {"const": "AGENT_PROXY_NOT_HUMAN"},
+    "humanEvidence": {"const": false},
+    "providerCalls": {"const": 0},
+    "heldOutInspection": {"const": false},
+    "manualBaseline": {"type": "object", "additionalProperties": false, "required": ["status", "pairedRecords"], "properties": {"status": {"const": "NOT_RUN_NO_HUMAN_REVIEWER"}, "pairedRecords": {"const": 0}}},
+    "records": {"type": "array", "minItems": 12, "maxItems": 12, "items": {"$ref": "#/$defs/record"}},
+    "metrics": {"$ref": "#/$defs/metrics"},
+    "nonClaims": {"type": "array", "minItems": 3, "items": {"type": "string", "minLength": 1}}
+  },
+  "$defs": {
+    "record": {"type": "object", "additionalProperties": false, "required": ["recordId", "caseId", "scenarioId", "sourceDigest", "candidateDigest", "candidateOutputStatus", "finalDisposition", "correctionClass", "semanticEditCount", "effortProxySeconds", "manualBaselineSeconds", "timingStatus", "reviewer", "eligibleForAcceptance", "unsupportedFinalizedAssertions", "integrityStatus"], "properties": {"recordId": {"pattern": "^poc-review-v2-[0-9]{3}$"}, "caseId": {"pattern": "^s12-a-[0-9]{4}$"}, "scenarioId": {"pattern": "^s12-s-[0-9]{3}$"}, "sourceDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}, "candidateDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}, "candidateOutputStatus": {"const": "abstained"}, "finalDisposition": {"const": "abstained"}, "correctionClass": {"const": "not-applicable"}, "semanticEditCount": {"const": 0}, "effortProxySeconds": {"type": "integer", "minimum": 1}, "manualBaselineSeconds": {"type": ["integer", "null"], "minimum": 0}, "timingStatus": {"const": "agent-proxy-effort-only"}, "reviewer": {"const": "primary-agent-proxy"}, "eligibleForAcceptance": {"const": false}, "unsupportedFinalizedAssertions": {"const": 0}, "integrityStatus": {"const": "source-version-bound"}}},
+    "rate": {"type": "object", "additionalProperties": false, "required": ["numerator", "rate", "threshold"], "properties": {"numerator": {"const": 0}, "rate": {"const": 0.0}, "threshold": {"type": "number", "minimum": 0, "maximum": 1}}},
+    "metrics": {"type": "object", "additionalProperties": false, "required": ["eligibleReviewedItems", "acceptedWithoutSemanticCorrection", "acceptedUnchangedOrMinor", "medianEffortProxySeconds", "manualBaselineReduction", "meanSemanticEditsPerReviewedItem", "unsupportedFinalizedAssertions", "reviewerAgreement", "gateStatus"], "properties": {"eligibleReviewedItems": {"const": 12}, "acceptedWithoutSemanticCorrection": {"$ref": "#/$defs/rate"}, "acceptedUnchangedOrMinor": {"$ref": "#/$defs/rate"}, "medianEffortProxySeconds": {"type": "integer", "minimum": 1}, "manualBaselineReduction": {"type": "null"}, "meanSemanticEditsPerReviewedItem": {"const": 0.0}, "unsupportedFinalizedAssertions": {"type": "object", "additionalProperties": false, "required": ["numerator", "denominator", "status"], "properties": {"numerator": {"const": 0}, "denominator": {"const": 0}, "status": {"const": "NOT_APPLICABLE_BLOCKS_GATE"}}}, "reviewerAgreement": {"type": "object", "additionalProperties": false, "required": ["status", "independentRecords"], "properties": {"status": {"const": "NOT_APPLICABLE_BLOCKS_GATE"}, "independentRecords": {"const": 0}}}, "gateStatus": {"const": "FAIL_NO_HUMAN_BASELINE_OR_AGREEMENT"}}}
+  }
+}

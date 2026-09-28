@@ -1,0 +1,146 @@
+{
+  "$id": "https://projecta.example/schemas/s12-dense-hard-evaluator-contract.v3.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "abstentionMatrix": {
+      "const": "protocol.abstentionMatrix"
+    },
+    "artifactVersion": {
+      "const": "s12.dense-hard.evaluator-contract.v3"
+    },
+    "contractDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "evidenceNormalization": {
+      "additionalProperties": false,
+      "properties": {
+        "formattingOnly": {
+          "const": "unchanged"
+        },
+        "substantivePredicateEndpointChange": {
+          "type": "string"
+        },
+        "terminalPunctuationOnly": {
+          "const": "unchanged"
+        }
+      },
+      "required": [
+        "terminalPunctuationOnly",
+        "formattingOnly",
+        "substantivePredicateEndpointChange"
+      ],
+      "type": "object"
+    },
+    "metrics": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "minProperties": 6,
+      "type": "object"
+    },
+    "noCandidateOrEvaluation": {
+      "const": true
+    },
+    "nonClaims": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "occurrenceIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "fields": {
+          "const": [
+            "startOffset",
+            "endOffset",
+            "text"
+          ]
+        },
+        "independentOfType": {
+          "const": true
+        }
+      },
+      "required": [
+        "fields",
+        "independentOfType"
+      ],
+      "type": "object"
+    },
+    "quarantine": {
+      "const": "protocol.quarantinePolicy"
+    },
+    "relationIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "endpointTypeExcluded": {
+          "const": true
+        },
+        "fields": {
+          "const": [
+            "predicate",
+            "sourceOccurrence",
+            "targetOccurrence"
+          ]
+        }
+      },
+      "required": [
+        "fields",
+        "endpointTypeExcluded"
+      ],
+      "type": "object"
+    },
+    "requiredBindings": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 4,
+      "type": "array"
+    },
+    "status": {
+      "const": "CONTRACT_BEFORE_CANDIDATE"
+    },
+    "typeScoring": {
+      "additionalProperties": false,
+      "properties": {
+        "ambiguous": {
+          "type": "string"
+        },
+        "cascadeToRelation": {
+          "const": false
+        },
+        "mismatch": {
+          "type": "string"
+        },
+        "rubric": {
+          "const": "protocol.typeRubric"
+        }
+      },
+      "required": [
+        "rubric",
+        "mismatch",
+        "cascadeToRelation",
+        "ambiguous"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "artifactVersion",
+    "status",
+    "occurrenceIdentity",
+    "relationIdentity",
+    "evidenceNormalization",
+    "typeScoring",
+    "abstentionMatrix",
+    "quarantine",
+    "metrics",
+    "requiredBindings",
+    "noCandidateOrEvaluation",
+    "nonClaims",
+    "contractDigest"
+  ],
+  "title": "Sprint 12 Dense-Hard v3 Evaluator Contract",
+  "type": "object"
+}

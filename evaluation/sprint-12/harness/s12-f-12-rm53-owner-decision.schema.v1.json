@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.local/s12-f-12-rm53-owner-decision.schema.v1.json",
+  "title": "Sprint 12 RM-53 owner closure decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifactVersion",
+    "status",
+    "experimentId",
+    "taskId",
+    "decisionAuthority",
+    "reviewedArtifacts",
+    "verification",
+    "decision",
+    "claimBoundary"
+  ],
+  "properties": {
+    "artifactVersion": {"const": "s12.s12-f-12.rm53-owner-decision.v1"},
+    "status": {"const": "RM53_ACCEPTED_OFFLINE_CLOSURE_ONLY"},
+    "experimentId": {"const": "s12-f-12"},
+    "taskId": {"const": "S12-RM-53"},
+    "decisionType": {"const": "OWNER_CLOSURE_REVIEW_RM52_OFFLINE_PACKET_AND_BACKLOG"},
+    "decisionDate": {"type": "string", "format": "date"},
+    "decisionAuthority": {"const": "project-owner-delegated-codex-reviewer"},
+    "reviewedArtifacts": {"$ref": "#/$defs/artifactSet"},
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemasValid",
+        "boundDigestsVerified",
+        "rm52TestsPassed",
+        "v6Immutable",
+        "v9Immutable",
+        "v8ReportAbsent",
+        "providerCallsInRm52",
+        "providerExperimentationStopped",
+        "humanBusinessEvidencePresent"
+      ],
+      "properties": {
+        "schemasValid": {"const": true},
+        "boundDigestsVerified": {"const": true},
+        "rm52TestsPassed": {"const": true},
+        "v6Immutable": {"const": true},
+        "v9Immutable": {"const": true},
+        "v8ReportAbsent": {"const": true},
+        "providerCallsInRm52": {"const": 0},
+        "providerExperimentationStopped": {"const": true},
+        "humanBusinessEvidencePresent": {"const": false}
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "offlineClosureAccepted",
+        "providerExperimentationStopped",
+        "runtimeImplementationAuthorized",
+        "providerExecutionAuthorized",
+        "validationAccessAuthorized",
+        "heldOutAccessAuthorized",
+        "stageBAuthorized",
+        "candidateSelectionAuthorized",
+        "promotionAuthorized",
+        "humanBusinessQualityClaim",
+        "nextPermittedAction"
+      ],
+      "properties": {
+        "offlineClosureAccepted": {"const": true},
+        "providerExperimentationStopped": {"const": true},
+        "runtimeImplementationAuthorized": {"const": false},
+        "providerExecutionAuthorized": {"const": false},
+        "validationAccessAuthorized": {"const": false},
+        "heldOutAccessAuthorized": {"const": false},
+        "stageBAuthorized": {"const": false},
+        "candidateSelectionAuthorized": {"const": false},
+        "promotionAuthorized": {"const": false},
+        "humanBusinessQualityClaim": {"const": false},
+        "nextPermittedAction": {"const": "S12-RM-54_REVIEW_HUMAN_FIRST_EXTRACTION_FRAMEWORK_DESIGN"}
+      }
+    },
+    "claimBoundary": {"type": "string", "minLength": 1}
+  },
+  "$defs": {
+    "artifactRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "digest"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "digest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+        "schemaPath": {"type": "string"},
+        "schemaDigest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+        "testPath": {"type": "string"},
+        "status": {"type": "string"}
+      }
+    },
+    "artifactSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rm52Closure",
+        "rm52Backlog",
+        "rm51OwnerDecision",
+        "rm51Transition",
+        "v6Report",
+        "v9Report",
+        "v8Execution",
+        "v8Report",
+        "rm51CurrentPacket",
+        "currentStateBeforeTransition"
+      ],
+      "properties": {
+        "rm52Closure": {"$ref": "#/$defs/artifactRef"},
+        "rm52Backlog": {"$ref": "#/$defs/artifactRef"},
+        "rm51OwnerDecision": {"$ref": "#/$defs/artifactRef"},
+        "rm51Transition": {"$ref": "#/$defs/artifactRef"},
+        "v6Report": {"$ref": "#/$defs/artifactRef"},
+        "v9Report": {"$ref": "#/$defs/artifactRef"},
+        "v8Execution": {"$ref": "#/$defs/artifactRef"},
+        "v8Report": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "exists", "digest"],
+          "properties": {
+            "path": {"type": "string"},
+            "exists": {"const": false},
+            "digest": {"type": "null"}
+          }
+        },
+        "rm51CurrentPacket": {"$ref": "#/$defs/artifactRef"},
+        "currentStateBeforeTransition": {"$ref": "#/$defs/artifactRef"}
+      }
+    }
+  }
+}

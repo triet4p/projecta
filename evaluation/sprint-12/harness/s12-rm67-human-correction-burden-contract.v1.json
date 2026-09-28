@@ -1,0 +1,195 @@
+{
+  "artifactVersion": "s12.rm67.human-correction-burden-contract.v1",
+  "contractVersion": "human-correction-burden.v1",
+  "status": "OWNER_DELEGATED_ACCEPTED_FOR_RM68_PREREGISTRATION_ONLY",
+  "decision": {
+    "decisionId": "s12-rm67-threshold-decision-v1",
+    "disposition": "ACCEPTED_FOR_RM68_PREREGISTRATION_ONLY",
+    "authority": "owner-delegated-contract-review",
+    "ownerDelegationRecorded": true,
+    "observedHumanResults": false,
+    "humanExecutionAuthorized": false,
+    "providerCallsAuthorized": false,
+    "heldOutInspection": false,
+    "custodyStatus": "CUSTODY_NOT_ESTABLISHED",
+    "nextPermittedAction": "S12-RM-68_PREREGISTER_HUMAN_FIRST_EVALUATION"
+  },
+  "sourceBindings": [
+    {
+      "path": "docs/sprint-plans/sprint-12/human-first-extraction-framework.v1.md",
+      "digest": "sha256:724e24098b88904c27fde8959eefb12bdd0a8ae1318c14408b3530c183939699",
+      "role": "immutable proposal/source record superseded by accepted v2 design"
+    },
+    {
+      "path": "docs/sprint-plans/sprint-12/human-first-extraction-framework.v2.md",
+      "digest": "sha256:89a8f5d90e6df9e5ec76dc016eaae2e85df2ce680dab826f690dd1448951a5cd",
+      "role": "accepted human-first design bound for RM-55 through RM-67 contracts"
+    },
+    {
+      "path": "docs/sprint-plans/sprint-12/g1-owner-delegated-ai-amendment.md",
+      "digest": "sha256:b0174855a300db6b153f4f25bb84fe1c0a39df5a7a91ce5dbac7a8e32039ae71",
+      "role": "synthetic-track claim boundary"
+    },
+    {
+      "path": "docs/sprint-plans/sprint-12/g1-dataset-contract.md",
+      "digest": "sha256:085e308c9f0234059e6d06963f4b0b23d3368651a3e5ed6132b2ae239409f665",
+      "role": "approved thresholds and denominator source"
+    },
+    {
+      "path": "docs/sprint-plans/sprint-12/g6-business-evaluation.md",
+      "digest": "sha256:aa9fb82c3885213dc7fbcb6a096adb5608bd1fde5f2d08ac829ca7e9bcf9746c",
+      "role": "external-custody and reviewer-study boundary"
+    },
+    {
+      "path": "evaluation/sprint-12/heldout/g6-packet.v1.json",
+      "digest": "sha256:03ddaa1385b258b3ded123008733cef019803ae2b92b95ec6075541704d0f2dc",
+      "role": "required roles/scenarios/records and blocked custody state"
+    },
+    {
+      "path": "evaluation/sprint-12/metrics.v1.md",
+      "digest": "sha256:1e59a7f6310ed524b2da06608605010834ef7ae9ab1f24d841312718fea118ee",
+      "role": "slice, missing-output, and confidence-interval reporting"
+    },
+    {
+      "path": "evaluation/sprint-12/coverage-matrix.v1.json",
+      "digest": "sha256:9577160b2675d097aa5065ce10828fb255df0d3b40eb823423da9587f879fcc4",
+      "role": "language and journey coverage"
+    }
+  ],
+  "thresholds": {
+    "acceptedWithoutSemanticCorrection": {
+      "minimum": 0.7,
+      "denominator": "eligible_reviewed_items",
+      "numerator": "confirmed_items_with_unchanged_class_including_formatting_only_nonsemantic_records"
+    },
+    "acceptedUnchangedOrMinor": {
+      "minimum": 0.85,
+      "denominator": "eligible_reviewed_items",
+      "numerator": "confirmed_items_with_unchanged_or_minor_class"
+    },
+    "medianReviewTimeReductionVsCounterbalancedManualBaseline": {
+      "minimum": 0.3,
+      "denominator": "matched_completed_review_pairs",
+      "formula": "1 - median(projecta_seconds) / median(manual_seconds)"
+    },
+    "medianReviewTimeSeconds": {
+      "maximum": 45,
+      "denominator": "completed_projecta_reviews"
+    },
+    "p90ReviewTimeSeconds": {
+      "maximum": 90,
+      "denominator": "completed_projecta_reviews"
+    },
+    "meanSemanticEditsPerReviewedItem": {
+      "maximum": 2,
+      "denominator": "eligible_reviewed_items",
+      "unitPolicy": "reviewed_item_is_the_primary_and_stricter_named_denominator; report_reviewed_note_as_secondary"
+    },
+    "unsupportedFinalizedAssertions": {
+      "maximum": 0,
+      "denominator": "all_finalized_assertions"
+    },
+    "reviewerAgreementWhenApplicable": {
+      "minimum": 0.8,
+      "denominator": "independently_double_reviewed_records",
+      "unit": "record",
+      "notApplicableRule": "not-applicable is a blocked evidence state, never a passing zero"
+    }
+  },
+  "correctionTaxonomy": {
+    "classes": ["unchanged", "minor", "major"],
+    "dimensions": ["span", "type", "label", "predicate", "endpoint", "evidence"],
+    "precedence": [
+      {
+        "class": "major",
+        "whenAnyDimension": ["type", "predicate", "endpoint", "evidence"]
+      },
+      {
+        "class": "minor",
+        "whenAnyDimension": ["span", "label"]
+      },
+      {
+        "class": "unchanged",
+        "when": "no_semantic_or_evidence_dimensions"
+      }
+    ],
+    "legacyMapping": {
+      "formatting-only": "unchanged",
+      "minor-semantic": "minor",
+      "major-semantic": "major",
+      "rejected": "disposition_only",
+      "missing-output": "disposition_only",
+      "not-applicable": "disposition_only"
+    },
+    "unknownDimensionPolicy": "invalid_record_blocks_gate"
+  },
+  "denominators": {
+    "eligibleReviewedItems": "Every case/item with a valid SourceVersion, review receipt, final disposition, and no integrity failure; confirmed, edited, rejected, abstained, and missing-output records remain included.",
+    "acceptanceRates": "Use eligibleReviewedItems; rejection, abstention, and missing output are denominator records and never successes.",
+    "reviewTime": "Use completed records with valid start, stop, and non-overlapping pause segments; missing or invalid timing is a scored integrity failure, not a dropped record.",
+    "editBurden": "Count semantic edits per reviewed item; report reviewed-note aggregation separately and never replace the primary item denominator.",
+    "agreement": "Use independently double-reviewed records before adjudication; adjudication is a separate recorded outcome and cannot overwrite either raw decision.",
+    "unsupportedFinalizedAssertions": "Denominator is every finalized assertion, including rejected/abstained candidates that must not finalize; missing denominator records block the gate.",
+    "invalidRecords": "Malformed, duplicate, tampered, stale, or digest-unbound records fail closed and block acceptance; they are not silently excluded."
+  },
+  "timingPolicy": {
+    "start": "Server receipt when the selected item has loaded verified source/evidence and the reviewer can take an explicit action.",
+    "stop": "Server receipt when the explicit final review decision is durably acknowledged.",
+    "pause": "Only explicit pause, navigation away, hidden/disabled review state, or an idle interval of at least 60 seconds; every pause has a non-negative bounded interval and pauses are excluded from active time.",
+    "manualBaseline": "Use the same start/stop/pause policy, same reviewers, matched cases, blank manual-entry workflow, and counterbalanced order.",
+    "invalidTiming": "Negative, overlapping, missing, or non-monotonic intervals block the gate."
+  },
+  "missingAndDisagreementPolicy": {
+    "missingOutput": "Scored failure and denominator record; never silently dropped.",
+    "rejection": "Valid final disposition but not an acceptance success; retain reason and provenance.",
+    "abstention": "Valid only when evidence is insufficient/ambiguous/unsupported under the allowlist; scored separately and not an acceptance success.",
+    "disagreement": "Compute pre-adjudication agreement on independent decisions; a qualified adjudicator records the rule and outcome without mutating either decision.",
+    "invalidOrTampered": "Block the gate and preserve the receipt/event as an integrity failure; do not impute a class or timing."
+  },
+  "studyDesign": {
+    "minimumQualifiedReviewers": 3,
+    "targetRoles": ["BrSE", "project-manager", "semantic-reviewer"],
+    "minimumScenarios": 12,
+    "minimumReviewerRecords": 36,
+    "counterbalancedSameReviewerManualBaseline": true,
+    "languageMinimumScenarios": {
+      "vi": 2,
+      "en": 2,
+      "ja": 2,
+      "mixed": 2
+    },
+    "requiredJourneys": [
+      "Capture a structured Quick Note",
+      "Extract an untyped Quick Note",
+      "Review and correct candidates",
+      "Manage requirement and decision change",
+      "Distinguish requests, commitments, risks and blockers",
+      "Answer grounded project questions",
+      "Handle ambiguity, hostile text and isolation boundaries",
+      "Maintain a longitudinal project episode"
+    ],
+    "minimumAmbiguityCases": 2,
+    "minimumThreatOrIsolationCases": 2,
+    "threatSlices": ["prompt-injection", "fabricated-link", "cross-project-isolation"],
+    "manualBaseline": "Same reviewers review the same matched material without Projecta proposals, in counterbalanced order, with source/evidence access and equivalent final-disposition controls.",
+    "heldOutRequirement": "External custody, frozen candidate, and blinded protocol must be established before RM-68 execution; this contract does not inspect or authorize held-out data."
+  },
+  "statisticalReporting": {
+    "source": "evaluation/sprint-12/metrics.v1.md",
+    "confidenceInterval": "Report a preregistered 95% bootstrap or exact interval appropriate to each metric.",
+    "resamplingUnits": {
+      "atomicMetrics": "case",
+      "scenarioMetrics": "episode",
+      "reviewerMetrics": "reviewer_record_or_matched_case_pair"
+    },
+    "slicePolicy": "Report every declared journey, language, semantic, ambiguity, threat, origin, and split slice; empty slices are not-applicable and block any claim requiring them."
+  },
+  "nonGoals": [
+    "No observed human results or human-quality claim",
+    "No held-out inspection or custody claim",
+    "No provider calls, reruns, validation access, Stage B, selection, promotion, or release",
+    "No ontology, runtime, materialization, inference, or production enablement",
+    "F1 and other model metrics are diagnostic only and cannot substitute for correction-burden evidence",
+    "No RM-68 preregistration or study execution in this artifact"
+  ]
+}

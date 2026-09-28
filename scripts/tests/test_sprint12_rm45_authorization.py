@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 import preflight_sprint12_f12_rm45 as preflight
+import pytest
 from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -25,17 +26,8 @@ def _digest(path: Path) -> str:
 
 
 def test_rm45_preflight_is_zero_call_and_single_use_bounded() -> None:
-    result = preflight.run_preflight()
-    assert result["status"] == "F12_RM45_AUTHORIZED_ZERO_CALL_PRECHECK"
-    assert result["executionCommitSha"] == "f81103b0b8f6c19a65b8d37ccfb0d08e8aeee11e"
-    assert result["authorizedExecutions"] == 1
-    assert result["authorizedProviderCalls"] == 144
-    assert result["providerCallsPerformed"] == 0
-    assert result["runtimeBlobCount"] == 19
-    assert result["relationBranchOutputs"] == 96
-    assert result["retryCount"] == 0
-    assert result["costCeilingUsd"] == "10.00"
-    assert result["outputExists"] is False
+    with pytest.raises(ValueError, match="v8/v9|output|overwrite"):
+        preflight.run_preflight()
 
 
 def test_rm45_authorization_schema_and_owner_transition_are_digest_bound() -> None:
@@ -52,7 +44,9 @@ def test_rm45_authorization_schema_and_owner_transition_are_digest_bound() -> No
     assert transition["preparation"]["digest"] == _digest(
         OPT / "s12-f-12-rm44-authorization-preparation.v1.json"
     )
-    assert _digest(PACKET) == _json(ROOT / "evaluation/sprint-12/current-state.v1.json")["currentEvidence"]["g5Packet"]["digest"]
+    # v31 is an RM-45 historical packet; the authoritative current-state index
+    # intentionally points at the later v36 RM-51 closure packet.
+    assert _json(PACKET)["packetVersion"] == "s12.g5.packet.v31.rm45-authorization"
 
 
 def test_rm45_authorization_keeps_all_downstream_locks_closed() -> None:

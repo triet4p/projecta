@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.example/schemas/s12-f-rf-internal-poc.v1.json",
+  "title": "Sprint 12 F-RF Internal Development PoC v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifactVersion", "status", "disposition", "reviewerMode", "sourceBindings", "datasetBinding", "candidateExecution", "proxyReviewProtocol", "nonClaims"],
+  "properties": {
+    "artifactVersion": {"const": "s12.f-rf.internal-poc.v1"},
+    "status": {"const": "INTERNAL_DEV_POC_ONLY"},
+    "disposition": {"const": "EXTERNAL_VALIDATION_DEFERRED"},
+    "reviewerMode": {"const": "AGENT_PROXY_NOT_HUMAN"},
+    "sourceBindings": {"type": "array", "minItems": 7, "items": {"$ref": "#/$defs/binding"}},
+    "datasetBinding": {"$ref": "#/$defs/datasetBinding"},
+    "candidateExecution": {"$ref": "#/$defs/candidateExecution"},
+    "proxyReviewProtocol": {"$ref": "#/$defs/proxyReviewProtocol"},
+    "nonClaims": {"type": "array", "minItems": 5, "items": {"type": "string", "minLength": 1}}
+  },
+  "$defs": {
+    "binding": {"type": "object", "additionalProperties": false, "required": ["path", "digest", "role"], "properties": {"path": {"type": "string", "minLength": 1}, "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}, "role": {"type": "string", "minLength": 1}}},
+    "datasetBinding": {"type": "object", "additionalProperties": false, "required": ["datasetVersion", "sourceDatasetVersion", "split", "scenarioCount", "representativeCaseCount", "scenarioIds", "representativeCaseIds", "languages", "journeys", "coverageTargets", "rawPayloadCopied", "productionData", "secretsPresent"], "properties": {"datasetVersion": {"const": "s12.v3-frozen.internal-poc-selection.v1"}, "sourceDatasetVersion": {"const": "s12.v3.frozen.v1"}, "split": {"const": "development"}, "scenarioCount": {"const": 12}, "representativeCaseCount": {"const": 12}, "scenarioIds": {"type": "array", "minItems": 12, "maxItems": 12, "uniqueItems": true, "items": {"pattern": "^s12-s-[0-9]{3}$"}}, "representativeCaseIds": {"type": "array", "minItems": 12, "maxItems": 12, "uniqueItems": true, "items": {"pattern": "^s12-a-[0-9]{4}$"}}, "languages": {"const": ["vi", "en", "ja", "mixed"]}, "journeys": {"type": "array", "minItems": 6, "items": {"enum": ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8"]}}, "coverageTargets": {"type": "array", "minItems": 7, "items": {"type": "string"}}, "rawPayloadCopied": {"const": false}, "productionData": {"const": false}, "secretsPresent": {"const": false}}},
+    "candidateExecution": {"type": "object", "additionalProperties": false, "required": ["candidateVersion", "path", "mode", "runtimeConfigurationPresent", "status", "providerCalls", "heldOutInspection", "assertedGraphMutation", "inferencePublication"], "properties": {"candidateVersion": {"const": "m3.v2"}, "path": {"type": "string", "minLength": 1}, "mode": {"const": "offline_default_path"}, "runtimeConfigurationPresent": {"const": false}, "status": {"const": "NOT_EXECUTED_MISSING_RUNTIME_CONFIGURATION"}, "providerCalls": {"const": 0}, "heldOutInspection": {"const": false}, "assertedGraphMutation": {"const": false}, "inferencePublication": {"const": false}}},
+    "proxyReviewProtocol": {"type": "object", "additionalProperties": false, "required": ["unit", "records", "reviewer", "humanEvidence", "independentReviewerCount", "manualBaseline", "timing", "taxonomy", "missingOutputPolicy", "thresholdsDiagnosticOnly"], "properties": {"unit": {"type": "string", "minLength": 1}, "records": {"const": 12}, "reviewer": {"const": "primary-agent-proxy"}, "humanEvidence": {"const": false}, "independentReviewerCount": {"const": 0}, "manualBaseline": {"const": "not run; no human reviewer and no matched independent baseline"}, "timing": {"const": "deterministic effort proxy only; not human latency"}, "taxonomy": {"const": ["unchanged", "minor", "major", "missing-output", "rejected", "not-applicable"]}, "missingOutputPolicy": {"const": "retain in denominator and fail acceptance gate"}, "thresholdsDiagnosticOnly": {"const": true}}}
+  }
+}

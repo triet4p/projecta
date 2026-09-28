@@ -1,0 +1,128 @@
+{
+  "abstentionMatrix": {
+    "full": "Use only when zero safe propositions can be finalized",
+    "none": "All safe propositions may be finalized and no unsafe proposition is hidden",
+    "partial": "Finalize safe propositions and quarantine unsafe propositions when both exist",
+    "scope": "Stale, cross-project, unsupported-predicate, negated, and adversarial content is unsafe only for that proposition.",
+    "typeUncertainty": "Type uncertainty alone cannot cause full abstention; quarantine only the ambiguous type/proposition"
+  },
+  "anchorPolicy": {
+    "emptySpansAllowed": false,
+    "evidenceMustEqualSourceSlice": true,
+    "indexUnit": "Unicode code point",
+    "interval": "half-open [startOffset,endOffset)"
+  },
+  "artifactVersion": "s12.dense-hard.source-only-protocol.v3",
+  "datasetKind": "SYNTHETIC_NON_PRODUCTION",
+  "evidenceNormalization": {
+    "formatting": "Ignore whitespace/formatting-only changes",
+    "substantiveChange": "A changed predicate, endpoint, or proposition is semantic; evidence-only normalization changes are unchanged.",
+    "terminalPunctuation": "Ignore terminal punctuation-only changes"
+  },
+  "finiteEntityTypes": [
+    "Task",
+    "Requirement",
+    "Constraint",
+    "Risk",
+    "System",
+    "Project",
+    "Document",
+    "Question",
+    "Decision",
+    "Dataset",
+    "Person",
+    "Control",
+    "Resource"
+  ],
+  "finiteRelationPredicates": [
+    "dependsOn",
+    "implements",
+    "blocks",
+    "supports",
+    "validates",
+    "tracks",
+    "constrains",
+    "supersedes",
+    "requires",
+    "answers",
+    "contains"
+  ],
+  "noReusePolicy": {
+    "authorIneligibleForCandidate": true,
+    "freshAuthority": true,
+    "freshCaseIds": true,
+    "freshRawText": true,
+    "freshSourceDigests": true,
+    "noV1V2ArtifactReuse": true
+  },
+  "nonClaims": [
+    "No candidate, evaluation, review, provider call, human result, external result, held-out result, production result, selection, promotion, or release is produced by this protocol packet."
+  ],
+  "propositionRegistry": {
+    "entityTypeIsDiagnosticOnly": true,
+    "identityIndependentOfType": true,
+    "occurrenceIdentity": [
+      "startOffset",
+      "endOffset",
+      "text"
+    ],
+    "unsupportedFinalization": "Only source-grounded, semantically supported assertions may be finalized; unsupported propositions are quarantined."
+  },
+  "protocolDigest": "sha256:939ed208c7d581f4dc35be5560196c6cb9e5bd4d746e8a67450c2cc1a71d3131",
+  "quarantinePolicy": {
+    "reasons": [
+      "UNSCORABLE_PROTOCOL_AMBIGUITY",
+      "STALE_PROPOSITION",
+      "CROSS_PROJECT_SCOPE",
+      "UNSUPPORTED_PREDICATE",
+      "NEGATED_CONTENT",
+      "ADVERSARIAL_CONTENT",
+      "UNSUPPORTED_ASSERTION"
+    ],
+    "requiredKeys": [
+      "assertionId",
+      "kind",
+      "reasonCode",
+      "status"
+    ],
+    "status": "quarantined"
+  },
+  "relationGrounding": {
+    "endpointRule": "both endpoint occurrence spans are contained in relation evidence",
+    "identity": "predicate plus anchored source and target occurrence identities",
+    "triggerRule": "trigger evidence is an exact source span contained in relation evidence",
+    "typeMismatchDoesNotCascade": true
+  },
+  "rm67": {
+    "abstentionCorrectness": "full correct iff no safe assertion finalized and all unsafe content quarantined; partial correct iff safe assertions finalized and unsafe content quarantined",
+    "entityPRAverage": "micro-average exact anchored occurrence identity; type mismatch is one diagnostic type correction",
+    "gate": "Report thresholds without silently changing the registered RM67 gate.",
+    "relationPRAverage": "micro-average predicate plus anchored endpoint occurrence identity",
+    "semanticEditCounts": "Count endpoint/predicate/label/evidence proposition changes; terminal punctuation/formatting-only changes are unchanged",
+    "unsafeFinalization": "Any source/gold-unsupported finalized assertion; wrong type alone is not unsafe/hallucinated"
+  },
+  "status": "GENERIC_OFFLINE_GUARD",
+  "typeRubric": {
+    "decisionRules": [
+      "Use the most specific rule supported by the local noun phrase and predicate context.",
+      "Do not infer type from label shape alone; require semantic cues in the source.",
+      "If two rules remain tied, finalize the grounded occurrence only with a declared ambiguity quarantine for its type; never guess."
+    ],
+    "rules": {
+      "Constraint": "a limiting boundary on an action or state",
+      "Control": "a safeguard, check, or gate",
+      "Dataset": "a structured collection of records",
+      "Decision": "a selected resolution or choice",
+      "Document": "an authored record or information artifact",
+      "Person": "a human actor or role",
+      "Project": "a bounded initiative with a named scope",
+      "Question": "an interrogative information need",
+      "Requirement": "a mandatory condition or expected capability",
+      "Resource": "a referenced asset, place, or object",
+      "Risk": "a possible harm, failure, or undesirable outcome",
+      "System": "an operational mechanism or service",
+      "Task": "an action or work item to perform"
+    },
+    "typeUncertaintyCode": "UNSCORABLE_PROTOCOL_AMBIGUITY"
+  }
+}

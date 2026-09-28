@@ -1,0 +1,145 @@
+{
+  "artifactVersion": "s12.rm68.preregistration-blocked.v1",
+  "status": "DRAFT_BLOCKED_EXTERNAL_CUSTODY",
+  "disposition": "NOT_A_PREREGISTRATION",
+  "developmentWaiver": {
+    "status": "DEFERRED_DEV_ONLY",
+    "phaseStatus": "DEVELOPMENT_COMPLETE_EXTERNAL_VALIDATION_DEFERRED",
+    "rm68IssuanceDeferred": true,
+    "externalValidationDeferred": true,
+    "reopenRequires": "OWNER_REVIEW_WITH_EXTERNAL_CUSTODY_AND_FROZEN_CANDIDATE"
+  },
+  "sourceBindings": [
+    {
+      "path": "evaluation/sprint-12/harness/s12-rm67-human-correction-burden-contract.v1.json",
+      "digest": "sha256:5013b831a5d4745eab8fe405c18dbad8541abde39566243b5fdd80bb1449e10e",
+      "role": "accepted RM-67 correction-burden contract"
+    },
+    {
+      "path": "evaluation/sprint-12/harness/s12-rm67-human-correction-burden-contract.schema.v1.json",
+      "digest": "sha256:a9ecbbfdba6be09729da9e9b4b1cb3454d0a00e519e0e9d861e22a7690176c5d",
+      "role": "accepted RM-67 strict schema"
+    },
+    {
+      "path": "docs/sprint-plans/sprint-12/human-correction-burden-contract.v1.md",
+      "digest": "sha256:93681eec1f5897e3fa5797e3aea5d5c9c7159f10ca2fbf0e8224fd45dabe59e8",
+      "role": "accepted RM-67 human-readable contract"
+    },
+    {
+      "path": "evaluation/sprint-12/metrics.v1.md",
+      "digest": "sha256:1e59a7f6310ed524b2da06608605010834ef7ae9ab1f24d841312718fea118ee",
+      "role": "metrics and confidence-interval protocol"
+    },
+    {
+      "path": "docs/sprint-plans/sprint-12/g6-business-evaluation.md",
+      "digest": "sha256:aa9fb82c3885213dc7fbcb6a096adb5608bd1fde5f2d08ac829ca7e9bcf9746c",
+      "role": "external-custody and reviewer-study boundary"
+    },
+    {
+      "path": "evaluation/sprint-12/heldout/g6-packet.v1.json",
+      "digest": "sha256:03ddaa1385b258b3ded123008733cef019803ae2b92b95ec6075541704d0f2dc",
+      "role": "blocked G6 prerequisite state; not held-out payload"
+    },
+    {
+      "path": "docs/sprint-plans/sprint-12/human-first-extraction-framework.v2.md",
+      "digest": "sha256:89a8f5d90e6df9e5ec76dc016eaae2e85df2ce680dab826f690dd1448951a5cd",
+      "role": "accepted human-first design boundary"
+    }
+  ],
+  "acceptedPrerequisites": {
+    "rm65CorrectionBurdenTelemetry": true,
+    "rm66OfflineAdversarialGate": true,
+    "rm67HumanCorrectionBurdenContract": true,
+    "rm67ObservedHumanResults": false,
+    "rm67ProviderCalls": 0
+  },
+  "externalCustody": {
+    "status": "CUSTODY_NOT_ESTABLISHED",
+    "custodianAuthority": null,
+    "custodyReceiptDigest": null,
+    "payloadPresent": false,
+    "payloadNonReconstructible": false,
+    "heldOutInspection": false,
+    "blockers": [
+      "external custodian is not established",
+      "payload is absent from the authorized custody boundary",
+      "repository-visible material is reconstructible and is not eligible held-out payload",
+      "no custody receipt or non-reconstructibility attestation is available"
+    ]
+  },
+  "datasetBinding": {
+    "status": "REQUIRED_NOT_PROVIDED",
+    "datasetId": null,
+    "manifestDigest": null,
+    "payloadDigest": null,
+    "atomicCaseCount": null,
+    "scenarioCount": null,
+    "nonReconstructible": false,
+    "availableToRepository": false
+  },
+  "candidateBinding": {
+    "status": "REQUIRED_NOT_FROZEN",
+    "candidateId": null,
+    "candidateDigest": null,
+    "configurationDigest": null,
+    "evaluatorDigest": null,
+    "frozen": false,
+    "evaluable": false,
+    "selectionAuthorized": false
+  },
+  "futureProtocol": {
+    "targetRoles": ["BrSE", "project-manager", "semantic-reviewer"],
+    "minimumQualifiedReviewers": 3,
+    "minimumScenarios": 12,
+    "minimumReviewerRecords": 36,
+    "blindedReview": true,
+    "independentAnnotation": true,
+    "counterbalancedSameReviewerManualBaseline": true,
+    "manualBaseline": "Same reviewers review matched material without Projecta proposals using the same start/stop/pause policy and equivalent final-disposition controls.",
+    "correctionBurdenContractPath": "evaluation/sprint-12/harness/s12-rm67-human-correction-burden-contract.v1.json",
+    "abortRules": [
+      "custody mismatch or missing custody receipt",
+      "dataset, payload, candidate, configuration, evaluator, or protocol digest mismatch",
+      "hard-invariant regression",
+      "reviewer independence or counterbalancing violation",
+      "unsupported finalized assertion or integrity failure",
+      "provider, held-out, or unauthorized execution path observed"
+    ]
+  },
+  "issuanceCriteria": {
+    "externalCustodyEstablished": false,
+    "nonReconstructiblePayloadVerified": false,
+    "datasetBindingComplete": false,
+    "candidateFrozen": false,
+    "configurationFrozen": false,
+    "evaluatorBound": false,
+    "ownerProtocolApprovalRecorded": false,
+    "allCriteriaSatisfied": false
+  },
+  "noExecutionLocks": {
+    "preregistrationIssued": false,
+    "providerCallsAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "humanExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "productionEnablementAuthorized": false
+  },
+  "requiredExternalEvidence": [
+    "named external custodian authority and custody receipt",
+    "non-reconstructibility attestation for the payload and manifest",
+    "opaque dataset, manifest, and payload digests",
+    "frozen candidate, configuration, and evaluator identities with digests",
+    "owner-approved blinded/counterbalanced protocol receipt",
+    "explicit authority to issue RM-68 preregistration; not execution authority"
+  ],
+  "nextPermittedAction": "NO_RM68_ACTION_UNTIL_OWNER_REOPENS_WITH_EXTERNAL_CUSTODY",
+  "nonClaims": [
+    "not a preregistration and not an issuance transition",
+    "no dataset or payload is present, inspected, generated, or reconstructed",
+    "no candidate, configuration, evaluator, custodian, human approval, or readiness is claimed",
+    "no human execution, provider call, held-out access, validation, Stage B, selection, promotion, or release",
+    "no threshold result, human-quality claim, business-quality claim, or F-RF completion claim"
+  ]
+}

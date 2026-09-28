@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.local/s12-f-12-rm53-decision-transition.schema.v1.json",
+  "title": "Sprint 12 RM-53 governance transition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifactVersion",
+    "status",
+    "experimentId",
+    "taskId",
+    "transitionAuthority",
+    "fromState",
+    "ownerDecision",
+    "currentDecisionState",
+    "nextPermittedAction",
+    "claimBoundary"
+  ],
+  "properties": {
+    "artifactVersion": {"const": "s12.s12-f-12.rm53-decision-transition.v1"},
+    "status": {"const": "F12_OFFLINE_CLOSURE_ACCEPTED_HUMAN_FIRST_DESIGN_REVIEW_PENDING"},
+    "experimentId": {"const": "s12-f-12"},
+    "taskId": {"const": "S12-RM-53"},
+    "transitionDate": {"type": "string", "format": "date"},
+    "transitionAuthority": {"const": "project-owner-delegated-codex-reviewer"},
+    "fromState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "path", "digest"],
+      "properties": {
+        "status": {"const": "G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY"},
+        "path": {"const": "evaluation/sprint-12/current-state.v1.json"},
+        "digest": {"pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    },
+    "ownerDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "digest", "status"],
+      "properties": {
+        "path": {"const": "evaluation/sprint-12/optimization/s12-f-12-rm53-owner-decision.v1.json"},
+        "digest": {"pattern": "^sha256:[0-9a-f]{64}$"},
+        "status": {"const": "RM53_ACCEPTED_OFFLINE_CLOSURE_ONLY"}
+      }
+    },
+    "currentDecisionState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "offlineClosureAccepted",
+        "providerExperimentationStopped",
+        "providerExecutionAuthorized",
+        "runtimeImplementationAuthorized",
+        "validationAccessAuthorized",
+        "heldOutAccessAuthorized",
+        "stageBAuthorized",
+        "candidateSelectionAuthorized",
+        "promotionAuthorized",
+        "nextPermittedAction"
+      ],
+      "properties": {
+        "offlineClosureAccepted": {"const": true},
+        "providerExperimentationStopped": {"const": true},
+        "providerExecutionAuthorized": {"const": false},
+        "runtimeImplementationAuthorized": {"const": false},
+        "validationAccessAuthorized": {"const": false},
+        "heldOutAccessAuthorized": {"const": false},
+        "stageBAuthorized": {"const": false},
+        "candidateSelectionAuthorized": {"const": false},
+        "promotionAuthorized": {"const": false},
+        "nextPermittedAction": {"const": "S12-RM-54_REVIEW_HUMAN_FIRST_EXTRACTION_FRAMEWORK_DESIGN"}
+      }
+    },
+    "nextPermittedAction": {"const": "S12-RM-54_REVIEW_HUMAN_FIRST_EXTRACTION_FRAMEWORK_DESIGN"},
+    "claimBoundary": {"type": "string", "minLength": 1}
+  }
+}

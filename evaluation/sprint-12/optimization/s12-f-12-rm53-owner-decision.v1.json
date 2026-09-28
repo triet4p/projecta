@@ -1,0 +1,92 @@
+{
+  "artifactVersion": "s12.s12-f-12.rm53-owner-decision.v1",
+  "status": "RM53_ACCEPTED_OFFLINE_CLOSURE_ONLY",
+  "experimentId": "s12-f-12",
+  "taskId": "S12-RM-53",
+  "decisionType": "OWNER_CLOSURE_REVIEW_RM52_OFFLINE_PACKET_AND_BACKLOG",
+  "decisionDate": "2026-08-22",
+  "decisionAuthority": "project-owner-delegated-codex-reviewer",
+  "reviewedArtifacts": {
+    "rm52Closure": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm52-offline-closure.v1.json",
+      "digest": "sha256:50694c2ec824993006b01043d05233185812b6f54c51a1bd31e457e72ee2cfd5",
+      "schemaPath": "evaluation/sprint-12/harness/s12-f-12-rm52-offline-closure.schema.v1.json",
+      "schemaDigest": "sha256:8d1a34e757091035716497659cb9a0848909162aca9cb8d03c938724452991b9",
+      "testPath": "scripts/tests/test_sprint12_rm52_closure.py",
+      "status": "OFFLINE_F12_CLOSURE_PACKET_PREPARED_PENDING_RM53_OWNER_REVIEW"
+    },
+    "rm52Backlog": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm52-error-backlog.v1.json",
+      "digest": "sha256:b37374385e33eed00aede461c09ed2e3f0f5b3c8992600fb11c4020804d4c531",
+      "schemaPath": "evaluation/sprint-12/harness/s12-f-12-rm52-error-backlog.schema.v1.json",
+      "schemaDigest": "sha256:1d299e3de3231ebdc203be02d3632fc5bbb49658d4226dac8438c5f5d258dac6",
+      "testPath": "scripts/tests/test_sprint12_rm52_closure.py",
+      "status": "PRIORITIZED_OFFLINE_ERROR_BACKLOG_PREPARED_PENDING_RM53_OWNER_REVIEW"
+    },
+    "rm51OwnerDecision": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm51-owner-decision.v1.json",
+      "digest": "sha256:f2177fa9c9d5d3b82c491578ef4a3f322832e175926b15ff2f59256b5fbdfb76",
+      "status": "RM50_REJECTED_OPTION_C_STOP_PROVIDER_EXPERIMENTATION"
+    },
+    "rm51Transition": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm51-decision-transition.v1.json",
+      "digest": "sha256:7dd4f1aadecdca2051fcee302f17fe17c7d1d968297165b6d4ef4716a848de9e",
+      "status": "F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY"
+    },
+    "v6Report": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json",
+      "digest": "sha256:419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
+      "status": "COMPLETED_REJECTED_HARD_GATE"
+    },
+    "v9Report": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json",
+      "digest": "sha256:84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e",
+      "status": "COMPLETED_REJECTED_HARD_GATE"
+    },
+    "v8Execution": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-rm36-execution-transition.v1.json",
+      "digest": "sha256:738d3bdada83af5f152a2a5974af1a73e856247d88c226cafd3d5d60d6899d45",
+      "status": "ONE_BOUNDED_V8_DEVELOPMENT_STAGE_A_EXECUTION_FAILED_BEFORE_REPORT_PERSISTENCE_PENDING_RM37_OWNER_DECISION"
+    },
+    "v8Report": {
+      "path": "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json",
+      "exists": false,
+      "digest": null
+    },
+    "rm51CurrentPacket": {
+      "path": "evaluation/sprint-12/optimization/g5-packet.v36.rm51-closure-only.json",
+      "digest": "sha256:f71d756c2810992abc563db845c42aefe0bf1bb5ecd7a2136f29ce725a432524",
+      "status": "G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY"
+    },
+    "currentStateBeforeTransition": {
+      "path": "evaluation/sprint-12/current-state.v1.json",
+      "digest": "sha256:3945f09086658173977d0e405129368598c22cc44c06f187592fa49ac6a63e6a",
+      "status": "G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY"
+    }
+  },
+  "verification": {
+    "schemasValid": true,
+    "boundDigestsVerified": true,
+    "rm52TestsPassed": true,
+    "v6Immutable": true,
+    "v9Immutable": true,
+    "v8ReportAbsent": true,
+    "providerCallsInRm52": 0,
+    "providerExperimentationStopped": true,
+    "humanBusinessEvidencePresent": false
+  },
+  "decision": {
+    "offlineClosureAccepted": true,
+    "providerExperimentationStopped": true,
+    "runtimeImplementationAuthorized": false,
+    "providerExecutionAuthorized": false,
+    "validationAccessAuthorized": false,
+    "heldOutAccessAuthorized": false,
+    "stageBAuthorized": false,
+    "candidateSelectionAuthorized": false,
+    "promotionAuthorized": false,
+    "humanBusinessQualityClaim": false,
+    "nextPermittedAction": "S12-RM-54_REVIEW_HUMAN_FIRST_EXTRACTION_FRAMEWORK_DESIGN"
+  },
+  "claimBoundary": "RM-53 accepts only the immutable offline closure and prioritized backlog custody. It establishes no human business evidence, quality improvement, candidate readiness, tenant readiness, Sprint 12/G5/G6 completion, runtime implementation, provider execution, validation, held-out access, Stage B, selection or promotion. v6/v9 remain immutable and v8 remains absent."
+}

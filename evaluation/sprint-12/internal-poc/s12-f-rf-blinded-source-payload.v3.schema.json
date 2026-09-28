@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecta.example/schemas/s12-f-rf-blinded-source-payload.v3.json",
+  "title": "Sprint 12 F-RF Blinded Source-Only Candidate Payload v3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifactVersion", "status", "candidateModel", "reasoning", "sourceOnly", "goldIncluded", "priorScoresIncluded", "priorReviewsIncluded", "providerCalls", "heldOutInspection", "requiredOutputSchema", "records", "payloadDigest"],
+  "properties": {
+    "artifactVersion": {"const": "s12.f-rf.blinded-source-payload.v3"},
+    "status": {"const": "FROZEN_SOURCE_ONLY_FOR_CANDIDATE"},
+    "candidateModel": {"const": "gpt-5.6-luna"},
+    "reasoning": {"const": "high"},
+    "sourceOnly": {"const": true},
+    "goldIncluded": {"const": false},
+    "priorScoresIncluded": {"const": false},
+    "priorReviewsIncluded": {"const": false},
+    "providerCalls": {"const": 0},
+    "heldOutInspection": {"const": false},
+    "requiredOutputSchema": {"type": "object", "additionalProperties": false, "required": ["schemaVersion", "entities", "relations", "links", "abstention", "anchorRule"], "properties": {"schemaVersion": {"const": "m3.v2"}, "entities": {"type": "string"}, "relations": {"type": "string"}, "links": {"type": "string"}, "abstention": {"type": "string"}, "anchorRule": {"const": "zero-based Unicode code-point half-open offsets; exact evidence text"}}},
+    "records": {"type": "array", "minItems": 12, "maxItems": 12, "items": {"$ref": "#/$defs/record"}},
+    "payloadDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "record": {"type": "object", "additionalProperties": false, "required": ["caseId", "scenarioId", "language", "sourceDigest", "rawText"], "properties": {"caseId": {"pattern": "^s12-a-[0-9]{4}$"}, "scenarioId": {"pattern": "^s12-s-[0-9]{3}$"}, "language": {"enum": ["vi", "en", "ja", "mixed"]}, "sourceDigest": {"pattern": "^sha256:[0-9a-f]{64}$"}, "rawText": {"type": "string", "minLength": 1}}}
+  }
+}

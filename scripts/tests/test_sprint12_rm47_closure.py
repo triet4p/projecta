@@ -30,7 +30,7 @@ def test_rm47_authoritative_packet_and_state_bind_immutable_facts() -> None:
     assert packet["authoritative"] is True
     assert packet["ownerDecision"]["digest"] == _digest(OPT / "s12-f-12-rm47-owner-decision.v1.json")
     assert packet["decisionTransition"]["digest"] == _digest(OPT / "s12-f-12-rm47-decision-transition.v1.json")
-    assert state["status"] == "G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY"
+    assert state["status"] == "F_RF_POC_BASELINE_ACCEPTED_DENSE_HARD_V4_FAILED_STRATEGY_REDESIGN_REQUIRED"
     assert state["currentEvidence"]["g5Packet"]["path"] == "evaluation/sprint-12/optimization/g5-packet.v36.rm51-closure-only.json"
     assert state["currentEvidence"]["g5Packet"]["digest"] == _digest(OPT / "g5-packet.v36.rm51-closure-only.json")
     assert owner["reviewedReport"]["digest"] == _digest(OPT / "s12-f-12-stage-a-report.v9.json")

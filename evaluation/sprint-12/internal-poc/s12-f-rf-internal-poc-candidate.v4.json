@@ -1,0 +1,951 @@
+{
+  "agentCandidateCalls": 12,
+  "artifactVersion": "s12.f-rf.internal-poc-candidate.v4",
+  "candidateDigest": "sha256:1f33496ac57a1acf3fb21e7e2e6d3da039b582026858a3e238e7af849c9d1ca6",
+  "candidateModel": "gpt-5.6-luna",
+  "goldIncluded": false,
+  "heldOutInspection": false,
+  "nonClaims": [
+    "candidate outputs are frozen for primary-agent proxy review only",
+    "no scoring, review, acceptance, external validation, or human-quality claim",
+    "no provider calls, held-out inspection, production enablement, selection, promotion, or release"
+  ],
+  "payloadDigest": "sha256:a2b66010f80ce7a885361415d8bc53e49014fcf347c32f4e385c3d5b238a7a33",
+  "payloadPath": "evaluation/sprint-12/internal-poc/s12-f-rf-blinded-source-payload.v4.json",
+  "priorReviewsIncluded": false,
+  "priorScoresIncluded": false,
+  "providerCalls": 0,
+  "rawSensitiveDataIncluded": false,
+  "reasoning": "high",
+  "records": [
+    {
+      "caseId": "s12-a-4003",
+      "language": "mixed",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v4-01-01",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 14,
+              "startOffset": 0,
+              "text": "dispatch board"
+            },
+            "label": "dispatch board",
+            "type": "Task"
+          },
+          {
+            "candidateId": "poc-v4-01-02",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 43,
+              "startOffset": 29,
+              "text": "routing window"
+            },
+            "label": "routing window",
+            "type": "Risk"
+          },
+          {
+            "candidateId": "poc-v4-01-03",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 81,
+              "startOffset": 68,
+              "text": "cargo-routing"
+            },
+            "label": "cargo-routing",
+            "type": "Task"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v4",
+        "relations": [
+          {
+            "confidence": "0.62",
+            "evidence": {
+              "endOffset": 82,
+              "startOffset": 0,
+              "text": "dispatch board worker hỗ trợ routing window nhưng vẫn answers trong cargo-routing."
+            },
+            "predicate": "supports",
+            "sourceEntityId": "poc-v4-01-01",
+            "targetEntityId": "poc-v4-01-03"
+          }
+        ],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:027503a9b45b6ddaf944115a4d07192c1fb9e11a6c2cd7a4d082a2ee17149bcf",
+      "scenarioId": "s12-s-201",
+      "sourceDigest": "sha256:ceac4d3218a8dc949b699d137557b6ffb417bd5bbcd17abfba5dedae77a15bf3",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:ceac4d3218a8dc949b699d137557b6ffb417bd5bbcd17abfba5dedae77a15bf3",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:ceac4d3218a8dc949b699d137557b6ffb417bd5bbcd17abfba5dedae77a15bf3",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_bc43fd61c7053ea65a807265af2550b5da91063aaef9231afc7b173132c3509e",
+        "receiptDigest": "sha256:c2bc078c53b7bdbc9629579c04a6856a4a590a491735d8e4538bd22e174c6eff",
+        "replayKey": "replay_945b7865d13346115dfe52be879526e57251c5f7478e687d8ffdebfe2e0240a3",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_670b67e517263d0c08b7180913f58349187d3c35c89e143e980d6fb9e8087941",
+        "sourceVersionId": "sv_945b7865d13346115dfe52be879526e57251c5f7478e687d8ffdebfe2e0240a3"
+      }
+    },
+    {
+      "caseId": "s12-a-4019",
+      "language": "mixed",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v4-02-01",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 12,
+              "startOffset": 0,
+              "text": "roster board"
+            },
+            "label": "roster board",
+            "type": "Task"
+          },
+          {
+            "candidateId": "poc-v4-02-02",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 39,
+              "startOffset": 27,
+              "text": "coverage gap"
+            },
+            "label": "coverage gap",
+            "type": "Risk"
+          },
+          {
+            "candidateId": "poc-v4-02-03",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 82,
+              "startOffset": 67,
+              "text": "roster-planning"
+            },
+            "label": "roster-planning",
+            "type": "Task"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v4",
+        "relations": [
+          {
+            "confidence": "0.62",
+            "evidence": {
+              "endOffset": 83,
+              "startOffset": 0,
+              "text": "roster board worker hỗ trợ coverage gap nhưng vẫn implements trong roster-planning."
+            },
+            "predicate": "implements",
+            "sourceEntityId": "poc-v4-02-01",
+            "targetEntityId": "poc-v4-02-03"
+          }
+        ],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:30f07668cdb3d68ef966e72417e304408b729829619c0f0a669d7fbe3a2d7d0a",
+      "scenarioId": "s12-s-203",
+      "sourceDigest": "sha256:74350d831e679ae2ed71e72dc58cee1ac222ab27428deab90e1cb771706b5e51",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:74350d831e679ae2ed71e72dc58cee1ac222ab27428deab90e1cb771706b5e51",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:74350d831e679ae2ed71e72dc58cee1ac222ab27428deab90e1cb771706b5e51",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_bc43fd61c7053ea65a807265af2550b5da91063aaef9231afc7b173132c3509e",
+        "receiptDigest": "sha256:7f14f15299f66db7c5a519f60129d28c83c5a150bb42152633ce519123b3221e",
+        "replayKey": "replay_0b0fb88dce03d45890cf417836d9fcb183d91a992a93aac9a0ebb08c4513973e",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_a8901d6a31f79f5e6d488c6f78d5dfe6edc4e5cf10a617aca7a866495376c1e4",
+        "sourceVersionId": "sv_0b0fb88dce03d45890cf417836d9fcb183d91a992a93aac9a0ebb08c4513973e"
+      }
+    },
+    {
+      "caseId": "s12-a-4027",
+      "language": "mixed",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v4-03-01",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 14,
+              "startOffset": 0,
+              "text": "settlement job"
+            },
+            "label": "settlement job",
+            "type": "Task"
+          },
+          {
+            "candidateId": "poc-v4-03-02",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 42,
+              "startOffset": 29,
+              "text": "refund window"
+            },
+            "label": "refund window",
+            "type": "Risk"
+          },
+          {
+            "candidateId": "poc-v4-03-03",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 79,
+              "startOffset": 66,
+              "text": "mobile-wallet"
+            },
+            "label": "mobile-wallet",
+            "type": "Task"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v4",
+        "relations": [
+          {
+            "confidence": "0.62",
+            "evidence": {
+              "endOffset": 80,
+              "startOffset": 0,
+              "text": "settlement job worker hỗ trợ refund window nhưng vẫn blocks trong mobile-wallet."
+            },
+            "predicate": "blocks",
+            "sourceEntityId": "poc-v4-03-01",
+            "targetEntityId": "poc-v4-03-03"
+          }
+        ],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:45a429cbed0b20161ae6f489562b9f5c222c0a312317df7fa500e5cc9789c18f",
+      "scenarioId": "s12-s-204",
+      "sourceDigest": "sha256:c0ff029ea67d168de0bec5c47e9c9b5173c636c7b60aecef84eb23d73202ce5e",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:c0ff029ea67d168de0bec5c47e9c9b5173c636c7b60aecef84eb23d73202ce5e",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:c0ff029ea67d168de0bec5c47e9c9b5173c636c7b60aecef84eb23d73202ce5e",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_bc43fd61c7053ea65a807265af2550b5da91063aaef9231afc7b173132c3509e",
+        "receiptDigest": "sha256:1a25c8f6bd1b2dccc1477582626dff3a5562c2cb5d3093ea8db4d9a63e77395a",
+        "replayKey": "replay_7b2d2be04a5a6ca2b66bdaf45aaa97347266eea96c5f1ae4cf477c293a378ee3",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_f1885cc1bcf1e9e5c85443e9f7a166ee6fbc8e520364a871f83a9558c858bfaf",
+        "sourceVersionId": "sv_7b2d2be04a5a6ca2b66bdaf45aaa97347266eea96c5f1ae4cf477c293a378ee3"
+      }
+    },
+    {
+      "caseId": "s12-a-4035",
+      "language": "mixed",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v4-04-01",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 12,
+              "startOffset": 0,
+              "text": "sample queue"
+            },
+            "label": "sample queue",
+            "type": "Task"
+          },
+          {
+            "candidateId": "poc-v4-04-02",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 43,
+              "startOffset": 27,
+              "text": "barcode mismatch"
+            },
+            "label": "barcode mismatch",
+            "type": "Risk"
+          },
+          {
+            "candidateId": "poc-v4-04-03",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 80,
+              "startOffset": 70,
+              "text": "lab-sample"
+            },
+            "label": "lab-sample",
+            "type": "Task"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v4",
+        "relations": [
+          {
+            "confidence": "0.62",
+            "evidence": {
+              "endOffset": 81,
+              "startOffset": 0,
+              "text": "sample queue worker hỗ trợ barcode mismatch nhưng vẫn dependsOn trong lab-sample."
+            },
+            "predicate": "dependsOn",
+            "sourceEntityId": "poc-v4-04-01",
+            "targetEntityId": "poc-v4-04-03"
+          }
+        ],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:066c5cb7b20c3445a2e161e8e22a57f1af1dac59a3f7646142d78a446537f619",
+      "scenarioId": "s12-s-205",
+      "sourceDigest": "sha256:aeaafe97ed82df01660293605340b675f180b01f5409ed43d67779a440961cde",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:aeaafe97ed82df01660293605340b675f180b01f5409ed43d67779a440961cde",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:aeaafe97ed82df01660293605340b675f180b01f5409ed43d67779a440961cde",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_bc43fd61c7053ea65a807265af2550b5da91063aaef9231afc7b173132c3509e",
+        "receiptDigest": "sha256:84950e83def2e1b35aaa1e5f32b332624fcde71d203a40ca6ff1ca452378b56f",
+        "replayKey": "replay_eb998a7e87f3f0b90ac8ade4b86061fb67824ddca513c7c0b9c9e3546ccc569d",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_931417b9ab6c2989982ca35690ea85bc3bce295e3327927b2f875c9fc1d22a10",
+        "sourceVersionId": "sv_eb998a7e87f3f0b90ac8ade4b86061fb67824ddca513c7c0b9c9e3546ccc569d"
+      }
+    },
+    {
+      "caseId": "s12-a-4044",
+      "language": "vi",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v4-05-01",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 44,
+              "startOffset": 28,
+              "text": "fleet-inspection"
+            },
+            "label": "fleet-inspection",
+            "type": "Question"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v4",
+        "relations": [],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:f9ba4d638c18af26e127a3669d06665a906b52f0c1796975fdd7284587d3a5a0",
+      "scenarioId": "s12-s-206",
+      "sourceDigest": "sha256:c11f21e61156532dc92a61182f43c72b2c8edcca2b307c2b527b9af9450dc2cc",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:c11f21e61156532dc92a61182f43c72b2c8edcca2b307c2b527b9af9450dc2cc",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:c11f21e61156532dc92a61182f43c72b2c8edcca2b307c2b527b9af9450dc2cc",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_bc43fd61c7053ea65a807265af2550b5da91063aaef9231afc7b173132c3509e",
+        "receiptDigest": "sha256:35def7a0ddbbd65a5750b489fed321eb0a920fd373f3084f3c90cd13fc56b6cd",
+        "replayKey": "replay_fd6145c7e6d743395f1825808302c886bf9a3d4061285b524703b543868d19fd",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_7a2a9072f4110a7b4142062e153c775d02d752fd34274f3c7ce30e30a733cdd9",
+        "sourceVersionId": "sv_fd6145c7e6d743395f1825808302c886bf9a3d4061285b524703b543868d19fd"
+      }
+    },
+    {
+      "caseId": "s12-a-4051",
+      "language": "mixed",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v4-06-01",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 12,
+              "startOffset": 0,
+              "text": "renewal flow"
+            },
+            "label": "renewal flow",
+            "type": "Task"
+          },
+          {
+            "candidateId": "poc-v4-06-02",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 42,
+              "startOffset": 27,
+              "text": "expired consent"
+            },
+            "label": "expired consent",
+            "type": "Constraint"
+          },
+          {
+            "candidateId": "poc-v4-06-03",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 81,
+              "startOffset": 67,
+              "text": "member-renewal"
+            },
+            "label": "member-renewal",
+            "type": "Task"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v4",
+        "relations": [
+          {
+            "confidence": "0.62",
+            "evidence": {
+              "endOffset": 82,
+              "startOffset": 0,
+              "text": "renewal flow worker hỗ trợ expired consent nhưng vẫn answers trong member-renewal."
+            },
+            "predicate": "answers",
+            "sourceEntityId": "poc-v4-06-01",
+            "targetEntityId": "poc-v4-06-03"
+          }
+        ],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:b14edbae98e365e5b0ab711910e896493813d159fc8bfb0059460ccbfc7d3858",
+      "scenarioId": "s12-s-207",
+      "sourceDigest": "sha256:77206877001a33eb82dcbb4a73431031df0e3ce880da3ebb9c9c667520f8e810",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:77206877001a33eb82dcbb4a73431031df0e3ce880da3ebb9c9c667520f8e810",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:77206877001a33eb82dcbb4a73431031df0e3ce880da3ebb9c9c667520f8e810",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_bc43fd61c7053ea65a807265af2550b5da91063aaef9231afc7b173132c3509e",
+        "receiptDigest": "sha256:cdc4308ececfc35d38b4bbfb570cfca1ea6cf94e58d975758ab9b6b9d48503e3",
+        "replayKey": "replay_e82eb0131ad284963a5eb4bdb3ab99b57f1ea5b2a0dbead16db4df6e20c9256d",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_2d9a5971f75e4cb4923a835df1c72cf5c030f612b8a2b97e081d0ef9ae2f25ef",
+        "sourceVersionId": "sv_e82eb0131ad284963a5eb4bdb3ab99b57f1ea5b2a0dbead16db4df6e20c9256d"
+      }
+    },
+    {
+      "caseId": "s12-a-4059",
+      "language": "mixed",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v4-07-01",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 15,
+              "startOffset": 0,
+              "text": "enrolment queue"
+            },
+            "label": "enrolment queue",
+            "type": "Task"
+          },
+          {
+            "candidateId": "poc-v4-07-02",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 43,
+              "startOffset": 30,
+              "text": "seat conflict"
+            },
+            "label": "seat conflict",
+            "type": "Risk"
+          },
+          {
+            "candidateId": "poc-v4-07-03",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 90,
+              "startOffset": 74,
+              "text": "course-enrolment"
+            },
+            "label": "course-enrolment",
+            "type": "Task"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v4",
+        "relations": [
+          {
+            "confidence": "0.62",
+            "evidence": {
+              "endOffset": 91,
+              "startOffset": 0,
+              "text": "enrolment queue worker hỗ trợ seat conflict nhưng vẫn constrainedBy trong course-enrolment."
+            },
+            "predicate": "constrainedBy",
+            "sourceEntityId": "poc-v4-07-01",
+            "targetEntityId": "poc-v4-07-03"
+          }
+        ],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:35c2f27fafb86dde34b1f7168d2f4713546d296b2bbc350173c1687664c3b364",
+      "scenarioId": "s12-s-208",
+      "sourceDigest": "sha256:9fbb12309f9a23434c3bf9a91888d2761affee75699506af67e09410fce30d44",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:9fbb12309f9a23434c3bf9a91888d2761affee75699506af67e09410fce30d44",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:9fbb12309f9a23434c3bf9a91888d2761affee75699506af67e09410fce30d44",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_bc43fd61c7053ea65a807265af2550b5da91063aaef9231afc7b173132c3509e",
+        "receiptDigest": "sha256:38cbd1a37c2c24e897df1bb5556fb25aa20a622700dcb5a4b787632d67937697",
+        "replayKey": "replay_cb127e6dc213ca583ee19a75bf2566b8f98501c6679281fd20c8e5be3e8db753",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_9c202111acd4c5d092250f54fb7c771ac8b5b7a7f20e747cd33794601c129bb3",
+        "sourceVersionId": "sv_cb127e6dc213ca583ee19a75bf2566b8f98501c6679281fd20c8e5be3e8db753"
+      }
+    },
+    {
+      "caseId": "s12-a-4067",
+      "language": "mixed",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v4-08-01",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 15,
+              "startOffset": 0,
+              "text": "calibration run"
+            },
+            "label": "calibration run",
+            "type": "Task"
+          },
+          {
+            "candidateId": "poc-v4-08-02",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 41,
+              "startOffset": 30,
+              "text": "drift alert"
+            },
+            "label": "drift alert",
+            "type": "Risk"
+          },
+          {
+            "candidateId": "poc-v4-08-03",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 87,
+              "startOffset": 69,
+              "text": "sensor-calibration"
+            },
+            "label": "sensor-calibration",
+            "type": "Task"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v4",
+        "relations": [
+          {
+            "confidence": "0.62",
+            "evidence": {
+              "endOffset": 88,
+              "startOffset": 0,
+              "text": "calibration run worker hỗ trợ drift alert nhưng vẫn implements trong sensor-calibration."
+            },
+            "predicate": "implements",
+            "sourceEntityId": "poc-v4-08-01",
+            "targetEntityId": "poc-v4-08-03"
+          }
+        ],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:acc04c773a29372ea29637a913b4aa5367886626d2d5ee874a373b702ed1fb9b",
+      "scenarioId": "s12-s-209",
+      "sourceDigest": "sha256:4dc88529fafff6e93f3c03dd481fa80ac10aa80192017eee912289bea069917d",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:4dc88529fafff6e93f3c03dd481fa80ac10aa80192017eee912289bea069917d",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:4dc88529fafff6e93f3c03dd481fa80ac10aa80192017eee912289bea069917d",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_bc43fd61c7053ea65a807265af2550b5da91063aaef9231afc7b173132c3509e",
+        "receiptDigest": "sha256:0892eaeff5bd2fc2774854f9ebd25ef95ed6a976cead0ec7e2d08dfe2b585d35",
+        "replayKey": "replay_56617d2affff3b9cdeea53d8451af02e752e4fd9a1f335c49479a8cf867fc258",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_0f78653d99ca94561399d7ed2b5151953df929084da8f9b93447f82a1e68170e",
+        "sourceVersionId": "sv_56617d2affff3b9cdeea53d8451af02e752e4fd9a1f335c49479a8cf867fc258"
+      }
+    },
+    {
+      "caseId": "s12-a-4079",
+      "language": "mixed",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v4-09-01",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 12,
+              "startOffset": 0,
+              "text": "review chair"
+            },
+            "label": "review chair",
+            "type": "Task"
+          },
+          {
+            "candidateId": "poc-v4-09-02",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 48,
+              "startOffset": 36,
+              "text": "grant-review"
+            },
+            "label": "grant-review",
+            "type": "Task"
+          },
+          {
+            "candidateId": "poc-v4-09-03",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 56,
+              "startOffset": 36,
+              "text": "grant-review control"
+            },
+            "label": "grant-review control",
+            "type": "Constraint"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v4",
+        "relations": [
+          {
+            "confidence": "0.62",
+            "evidence": {
+              "endOffset": 71,
+              "startOffset": 0,
+              "text": "review chair review bị giới hạn bởi grant-review control trong đợt này."
+            },
+            "predicate": "constrainedBy",
+            "sourceEntityId": "poc-v4-09-01",
+            "targetEntityId": "poc-v4-09-03"
+          }
+        ],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:09b7ec64835ff74d9f78225e866b098adce0cdedc95133a2cfc63fb7d50463ff",
+      "scenarioId": "s12-s-210",
+      "sourceDigest": "sha256:9abc9c1393be0eb262bc4416bec73a8956cd82965cb14dc3a07612a9e8bcd84d",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:9abc9c1393be0eb262bc4416bec73a8956cd82965cb14dc3a07612a9e8bcd84d",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:9abc9c1393be0eb262bc4416bec73a8956cd82965cb14dc3a07612a9e8bcd84d",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_bc43fd61c7053ea65a807265af2550b5da91063aaef9231afc7b173132c3509e",
+        "receiptDigest": "sha256:adc3b51f1a9cc447d892d62c2b01fca3fac7f233b337cff05083015416d98aba",
+        "replayKey": "replay_91f335b4d39a470a55baf32b0e4a04cd3113049af38d0afb0af3781e04ac3688",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_bdba0b470ed2e265d7b1291eea3755c0d7aafb2feef63c7aa49ae3cf9030f0eb",
+        "sourceVersionId": "sv_91f335b4d39a470a55baf32b0e4a04cd3113049af38d0afb0af3781e04ac3688"
+      }
+    },
+    {
+      "caseId": "s12-a-4083",
+      "language": "mixed",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v4-10-01",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 14,
+              "startOffset": 0,
+              "text": "forecast batch"
+            },
+            "label": "forecast batch",
+            "type": "Task"
+          },
+          {
+            "candidateId": "poc-v4-10-02",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 40,
+              "startOffset": 29,
+              "text": "late signal"
+            },
+            "label": "late signal",
+            "type": "Risk"
+          },
+          {
+            "candidateId": "poc-v4-10-03",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 81,
+              "startOffset": 67,
+              "text": "order-forecast"
+            },
+            "label": "order-forecast",
+            "type": "Task"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v4",
+        "relations": [
+          {
+            "confidence": "0.62",
+            "evidence": {
+              "endOffset": 82,
+              "startOffset": 0,
+              "text": "forecast batch worker hỗ trợ late signal nhưng vẫn dependsOn trong order-forecast."
+            },
+            "predicate": "dependsOn",
+            "sourceEntityId": "poc-v4-10-01",
+            "targetEntityId": "poc-v4-10-03"
+          }
+        ],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:162b1de592ebc4b296737608d36da68b6e579e4a533b182573674b67de7a9239",
+      "scenarioId": "s12-s-211",
+      "sourceDigest": "sha256:b3b12d3cda41bd565ef2a0c0c201de9b09cc1b2cb293b97dcc984c475baa7d8d",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:b3b12d3cda41bd565ef2a0c0c201de9b09cc1b2cb293b97dcc984c475baa7d8d",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:b3b12d3cda41bd565ef2a0c0c201de9b09cc1b2cb293b97dcc984c475baa7d8d",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_bc43fd61c7053ea65a807265af2550b5da91063aaef9231afc7b173132c3509e",
+        "receiptDigest": "sha256:9027cc73acd7b9a6c72192128ac5b83a8a11f0249cf987202f6f4a0ac6a05b07",
+        "replayKey": "replay_34444b3a4669bab1b4299e4a216c0c73ca9a5c81028af3416c9a1817e203ec3d",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_a2847135fb51ed2455d978a542b8ca32edda7e7fef230ee42c28ddcc026775aa",
+        "sourceVersionId": "sv_34444b3a4669bab1b4299e4a216c0c73ca9a5c81028af3416c9a1817e203ec3d"
+      }
+    },
+    {
+      "caseId": "s12-a-4091",
+      "language": "mixed",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v4-11-01",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 12,
+              "startOffset": 0,
+              "text": "badge roster"
+            },
+            "label": "badge roster",
+            "type": "Task"
+          },
+          {
+            "candidateId": "poc-v4-11-02",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 40,
+              "startOffset": 27,
+              "text": "revoked badge"
+            },
+            "label": "revoked badge",
+            "type": "Risk"
+          },
+          {
+            "candidateId": "poc-v4-11-03",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 78,
+              "startOffset": 66,
+              "text": "access-badge"
+            },
+            "label": "access-badge",
+            "type": "Task"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v4",
+        "relations": [
+          {
+            "confidence": "0.62",
+            "evidence": {
+              "endOffset": 79,
+              "startOffset": 0,
+              "text": "badge roster worker hỗ trợ revoked badge nhưng vẫn supports trong access-badge."
+            },
+            "predicate": "supports",
+            "sourceEntityId": "poc-v4-11-01",
+            "targetEntityId": "poc-v4-11-03"
+          }
+        ],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:09b835afbfa1748b78dbe23fc4710f09a3826c48ba9412f26f9b013209eeed6a",
+      "scenarioId": "s12-s-212",
+      "sourceDigest": "sha256:33b9d5b3f2c9e5e6191f0ee1e540b02dee5840bd6e1b95ae67e2e1f3b3e310c0",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:33b9d5b3f2c9e5e6191f0ee1e540b02dee5840bd6e1b95ae67e2e1f3b3e310c0",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:33b9d5b3f2c9e5e6191f0ee1e540b02dee5840bd6e1b95ae67e2e1f3b3e310c0",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_bc43fd61c7053ea65a807265af2550b5da91063aaef9231afc7b173132c3509e",
+        "receiptDigest": "sha256:b468da21f8f27ece3305c70230b288d27c6d7370f9c028adf8dc1ce5db865fec",
+        "replayKey": "replay_8f220ee22618193f247b24c396c26af6a01437a1013a8a3b5102978279752b7d",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_877401ac04b375c701eddf929ad7545833cf6b7f97d4a1037a21f6595d197207",
+        "sourceVersionId": "sv_8f220ee22618193f247b24c396c26af6a01437a1013a8a3b5102978279752b7d"
+      }
+    },
+    {
+      "caseId": "s12-a-4103",
+      "language": "vi",
+      "response": {
+        "abstentionReason": null,
+        "entities": [
+          {
+            "candidateId": "poc-v4-12-01",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 23,
+              "startOffset": 9,
+              "text": "nutrition-plan"
+            },
+            "label": "nutrition-plan",
+            "type": "Task"
+          },
+          {
+            "candidateId": "poc-v4-12-02",
+            "confidence": "0.70",
+            "evidence": {
+              "endOffset": 64,
+              "startOffset": 50,
+              "text": "nutrition-plan"
+            },
+            "label": "nutrition-plan",
+            "type": "Constraint"
+          }
+        ],
+        "links": [],
+        "modelId": "gpt-5.6-luna",
+        "modelVersion": "internal-poc-v4",
+        "relations": [
+          {
+            "confidence": "0.62",
+            "evidence": {
+              "endOffset": 79,
+              "startOffset": 0,
+              "text": "kiểm tra nutrition-plan bị giới hạn bởi kiểm soát nutrition-plan trong đợt này."
+            },
+            "predicate": "constrainedBy",
+            "sourceEntityId": "poc-v4-12-01",
+            "targetEntityId": "poc-v4-12-02"
+          }
+        ],
+        "schemaVersion": "m3.v2",
+        "usage": null
+      },
+      "responseDigest": "sha256:9e9b2eae4eca0443624b54c998373a7afeda6c4aaa508bf77d181c8c140fd747",
+      "scenarioId": "s12-s-213",
+      "sourceDigest": "sha256:487a9800c75beb96034b8de6d75d74217c68778a8b079552e93a615c755d64c7",
+      "sourceVersion": {
+        "canonicalContentDigest": "sha256:487a9800c75beb96034b8de6d75d74217c68778a8b079552e93a615c755d64c7",
+        "canonicalizationVersion": "crlf-lf.v1",
+        "contractVersion": "source-version.v1",
+        "coordinateSystemVersion": "unicode-codepoint.v1",
+        "originalContentDigest": "sha256:487a9800c75beb96034b8de6d75d74217c68778a8b079552e93a615c755d64c7",
+        "parentCanonicalContentDigest": null,
+        "parentSourceVersionId": null,
+        "projectScopeId": "project_bc43fd61c7053ea65a807265af2550b5da91063aaef9231afc7b173132c3509e",
+        "receiptDigest": "sha256:40713610bad53ecb5c0ffdec62146f470edecc17b998b2980083a170669a4e6e",
+        "replayKey": "replay_a3b5e4785a35bb4e25d72f27092becc4e256f3f045363e9105a2c6da03fbc2f1",
+        "retention": {
+          "expiresOn": null,
+          "policy": "until-unreferenced"
+        },
+        "sourceArtifactScopeId": "artifact_4003ba97c697ec674c3d969501bbc6b99c0c6755a824b7ce16d4e0fb54989c49",
+        "sourceVersionId": "sv_a3b5e4785a35bb4e25d72f27092becc4e256f3f045363e9105a2c6da03fbc2f1"
+      }
+    }
+  ],
+  "reviewOrScoringPerformed": false,
+  "status": "CANDIDATE_FROZEN_FOR_PROXY_REVIEW_ONLY"
+}

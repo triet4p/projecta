@@ -1,0 +1,149 @@
+{
+  "$id": "https://projecta.example/schemas/s12-dense-hard-v3-lineage.v1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "abstentionCaseCount": {
+      "minimum": 1
+    },
+    "artifactVersion": {
+      "const": "s12.dense-hard.v3-lineage.v1"
+    },
+    "authorIneligibleForCandidate": {
+      "const": true
+    },
+    "caseCount": {
+      "const": 30
+    },
+    "contractDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "datasetKind": {
+      "const": "SYNTHETIC_NON_PRODUCTION"
+    },
+    "entityAssertions": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "fullAbstentionCaseCount": {
+      "minimum": 1
+    },
+    "goldDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "lineageDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "manifestDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "noReuseChecks": {
+      "additionalProperties": false,
+      "properties": {
+        "caseIdsDisjointV1": {
+          "const": true
+        },
+        "caseIdsDisjointV2": {
+          "const": true
+        },
+        "normalizedSentencesDisjointV1": {
+          "const": true
+        },
+        "normalizedSentencesDisjointV2": {
+          "const": true
+        },
+        "rawTextChangedV1": {
+          "const": true
+        },
+        "rawTextChangedV2": {
+          "const": true
+        },
+        "sourceDigestsDisjointV1": {
+          "const": true
+        },
+        "sourceDigestsDisjointV2": {
+          "const": true
+        },
+        "sourcePayloadDigestFreshV1": {
+          "const": true
+        },
+        "sourcePayloadDigestFreshV2": {
+          "const": true
+        }
+      },
+      "required": [
+        "caseIdsDisjointV1",
+        "caseIdsDisjointV2",
+        "sourceDigestsDisjointV1",
+        "sourceDigestsDisjointV2",
+        "normalizedSentencesDisjointV1",
+        "normalizedSentencesDisjointV2",
+        "sourcePayloadDigestFreshV1",
+        "sourcePayloadDigestFreshV2",
+        "rawTextChangedV1",
+        "rawTextChangedV2"
+      ],
+      "type": "object"
+    },
+    "nonClaims": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "partialAbstentionCaseCount": {
+      "minimum": 1
+    },
+    "protocolDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "providerCalls": {
+      "const": 0
+    },
+    "relationAssertions": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "sliceCount": {
+      "minimum": 21
+    },
+    "sourcePayloadDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "status": {
+      "const": "VALIDATED_FRESH_NO_V1_V2_REUSE"
+    },
+    "v1SourcePayloadDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "v2SourcePayloadDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "artifactVersion",
+    "status",
+    "datasetKind",
+    "sourcePayloadDigest",
+    "goldDigest",
+    "manifestDigest",
+    "protocolDigest",
+    "contractDigest",
+    "v1SourcePayloadDigest",
+    "v2SourcePayloadDigest",
+    "caseCount",
+    "entityAssertions",
+    "relationAssertions",
+    "sliceCount",
+    "abstentionCaseCount",
+    "fullAbstentionCaseCount",
+    "partialAbstentionCaseCount",
+    "noReuseChecks",
+    "authorIneligibleForCandidate",
+    "providerCalls",
+    "nonClaims",
+    "lineageDigest"
+  ],
+  "title": "Sprint 12 Dense-Hard v3 Lineage",
+  "type": "object"
+}

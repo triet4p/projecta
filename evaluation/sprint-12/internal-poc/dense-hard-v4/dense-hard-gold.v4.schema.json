@@ -1,0 +1,225 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifactVersion": {
+      "const": "s12.dense-hard.gold.v4"
+    },
+    "goldDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "records": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "caseId": {
+            "pattern": "^dh4-[0-9]{3}$"
+          },
+          "expected": {
+            "additionalProperties": false,
+            "properties": {
+              "abstentionMode": {
+                "enum": [
+                  "none",
+                  "partial",
+                  "full"
+                ]
+              },
+              "abstentionReason": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "entities": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "entityId": {
+                      "pattern": "^v4-[0-9]{3}-e[0-9]+$"
+                    },
+                    "evidence": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "endOffset": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "startOffset": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "text": {
+                          "minLength": 1,
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "startOffset",
+                        "endOffset",
+                        "text"
+                      ],
+                      "type": "object"
+                    },
+                    "label": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "occurrenceKey": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "type": {
+                      "enum": [
+                        "Task",
+                        "Requirement",
+                        "Constraint",
+                        "Risk",
+                        "System",
+                        "Project",
+                        "Document",
+                        "Question",
+                        "Decision",
+                        "Dataset",
+                        "Person",
+                        "Control",
+                        "Resource"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "entityId",
+                    "occurrenceKey",
+                    "type",
+                    "label",
+                    "evidence"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "quarantineCount": {
+                "minimum": 0,
+                "type": "integer"
+              },
+              "relations": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "evidence": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "endOffset": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "startOffset": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "text": {
+                          "minLength": 1,
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "startOffset",
+                        "endOffset",
+                        "text"
+                      ],
+                      "type": "object"
+                    },
+                    "predicate": {
+                      "enum": [
+                        "dependsOn",
+                        "implements",
+                        "blocks",
+                        "supports",
+                        "validates",
+                        "tracks",
+                        "constrains",
+                        "supersedes",
+                        "requires",
+                        "answers",
+                        "contains"
+                      ]
+                    },
+                    "relationId": {
+                      "pattern": "^v4-[0-9]{3}-r[0-9]+$"
+                    },
+                    "sourceEntityId": {
+                      "type": "string"
+                    },
+                    "targetEntityId": {
+                      "type": "string"
+                    },
+                    "triggerEvidence": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "endOffset": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "startOffset": {
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "text": {
+                          "minLength": 1,
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "startOffset",
+                        "endOffset",
+                        "text"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "relationId",
+                    "predicate",
+                    "sourceEntityId",
+                    "targetEntityId",
+                    "triggerEvidence",
+                    "evidence"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "abstentionReason",
+              "abstentionMode",
+              "entities",
+              "relations",
+              "quarantineCount"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "caseId",
+          "expected"
+        ],
+        "type": "object"
+      },
+      "maxItems": 32,
+      "minItems": 32,
+      "type": "array"
+    },
+    "sourcePayloadDigest": {
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "artifactVersion",
+    "sourcePayloadDigest",
+    "records",
+    "goldDigest"
+  ],
+  "title": "Dense-Hard v4 Private Gold",
+  "type": "object"
+}

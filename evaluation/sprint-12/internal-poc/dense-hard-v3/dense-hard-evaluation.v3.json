@@ -1,0 +1,3056 @@
+{
+  "abstentionMetrics": {
+    "full": {
+      "correct": 5,
+      "precision": 1.0,
+      "predicted": 5,
+      "recall": 1.0,
+      "required": 5
+    },
+    "partial": {
+      "correct": 7,
+      "precision": 0.5833333333333334,
+      "predicted": 12,
+      "recall": 1.0,
+      "required": 7
+    },
+    "precision": 0.7058823529411765,
+    "predicted": 17,
+    "recall": 1.0,
+    "required": 12,
+    "truePositive": 12
+  },
+  "antiLeakChecks": {
+    "candidateDigestBound": true,
+    "candidateSourceOnlyFlagsClean": true,
+    "contractDigestBound": true,
+    "fRfStateChanged": false,
+    "goldDigestBound": true,
+    "goldExcludedFromCandidate": true,
+    "heldOutInspectionFalse": true,
+    "manifestDigestBound": true,
+    "protocolDigestBound": true,
+    "providerCallsZero": true,
+    "sourceDigestBound": true
+  },
+  "artifactVersion": "s12.dense-hard.evaluation.v3",
+  "candidateDigest": "sha256:c24442f09ba8c099532931dde26d53d08c9fc9b64583c512540d4fba99b32782",
+  "candidateModel": "gpt-5.6-luna",
+  "candidatePath": "evaluation/sprint-12/internal-poc/dense-hard-v3/dense-hard-candidate.v3.json",
+  "contractDigest": "sha256:7e77febb8fc685134d0374340ed0e43c0cdbb892d51a53c75efe1a94f00dd532",
+  "contractPath": "evaluation/sprint-12/internal-poc/dense-hard-v3/dense-hard-evaluator-contract.v3.json",
+  "counts": {
+    "caseCount": 30,
+    "entityCandidate": 104,
+    "entityGold": 104,
+    "quarantinePredicted": 23,
+    "relationCandidate": 37,
+    "relationGold": 44
+  },
+  "datasetKind": "SYNTHETIC_NON_PRODUCTION",
+  "difficultyTiers": {
+    "dense-v3-adversarial-abstention": {
+      "abstentionCorrect": 8,
+      "abstentionPrecision": 0.8,
+      "abstentionPredicted": 10,
+      "abstentionRecall": 1.0,
+      "abstentionRequired": 8,
+      "caseCount": 12,
+      "classificationCounts": {
+        "abstain": 10,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 2
+      },
+      "entityMetrics": {
+        "f1": 0.8311688311688312,
+        "fn": 7,
+        "fp": 6,
+        "precision": 0.8421052631578947,
+        "recall": 0.8205128205128205,
+        "tp": 32
+      },
+      "hallucinatedFinalizedAssertions": 6,
+      "quarantineCorrect": 14,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 14,
+      "relationMetrics": {
+        "f1": 0.88,
+        "fn": 3,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.7857142857142857,
+        "tp": 11
+      },
+      "semanticEditCount": 16,
+      "typeCorrections": 9,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "dense-v3-baseline": {
+      "abstentionCorrect": 0,
+      "abstentionPrecision": 0.0,
+      "abstentionPredicted": 0,
+      "abstentionRecall": 0.0,
+      "abstentionRequired": 0,
+      "caseCount": 6,
+      "classificationCounts": {
+        "abstain": 0,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 6
+      },
+      "entityMetrics": {
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 24
+      },
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 0,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 0,
+      "relationMetrics": {
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 12
+      },
+      "semanticEditCount": 0,
+      "typeCorrections": 7,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "dense-v3-disambiguation": {
+      "abstentionCorrect": 4,
+      "abstentionPrecision": 0.5714285714285714,
+      "abstentionPredicted": 7,
+      "abstentionRecall": 1.0,
+      "abstentionRequired": 4,
+      "caseCount": 12,
+      "classificationCounts": {
+        "abstain": 7,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 5
+      },
+      "entityMetrics": {
+        "f1": 0.9879518072289156,
+        "fn": 0,
+        "fp": 1,
+        "precision": 0.9761904761904762,
+        "recall": 1.0,
+        "tp": 41
+      },
+      "hallucinatedFinalizedAssertions": 1,
+      "quarantineCorrect": 9,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 9,
+      "relationMetrics": {
+        "f1": 0.8750000000000001,
+        "fn": 4,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.7777777777777778,
+        "tp": 14
+      },
+      "semanticEditCount": 5,
+      "typeCorrections": 19,
+      "unsupportedFinalizedAssertions": 0
+    }
+  },
+  "entityMetrics": {
+    "f1": 0.9326923076923077,
+    "fn": 7,
+    "fp": 7,
+    "precision": 0.9326923076923077,
+    "recall": 0.9326923076923077,
+    "tp": 97
+  },
+  "errorTaxonomy": {
+    "codes": [
+      "ENTITY_TYPE_MISMATCH",
+      "ENTITY_SPAN_MISMATCH",
+      "ENTITY_LABEL_MISMATCH",
+      "ENTITY_MISSING",
+      "ENTITY_EXTRA",
+      "RELATION_PREDICATE_MISMATCH",
+      "RELATION_ENDPOINT_MISMATCH",
+      "RELATION_EVIDENCE_MISMATCH",
+      "RELATION_MISSING",
+      "RELATION_EXTRA",
+      "ABSTENTION_MISSING",
+      "ABSTENTION_OVER",
+      "ABSTENTION_MODE_MISMATCH",
+      "QUARANTINE_CORRECT",
+      "INCORRECT_QUARANTINE",
+      "QUARANTINE_MISSING",
+      "UNSUPPORTED_FINALIZED_ASSERTION",
+      "HALLUCINATED_FINALIZED_ASSERTION"
+    ],
+    "counts": {
+      "ABSTENTION_MISSING": 0,
+      "ABSTENTION_MODE_MISMATCH": 0,
+      "ABSTENTION_OVER": 5,
+      "ENTITY_EXTRA": 5,
+      "ENTITY_LABEL_MISMATCH": 0,
+      "ENTITY_MISSING": 4,
+      "ENTITY_SPAN_MISMATCH": 0,
+      "ENTITY_TYPE_MISMATCH": 16,
+      "HALLUCINATED_FINALIZED_ASSERTION": 5,
+      "INCORRECT_QUARANTINE": 0,
+      "QUARANTINE_CORRECT": 17,
+      "QUARANTINE_MISSING": 0,
+      "RELATION_ENDPOINT_MISMATCH": 0,
+      "RELATION_EVIDENCE_MISMATCH": 0,
+      "RELATION_EXTRA": 0,
+      "RELATION_MISSING": 5,
+      "RELATION_PREDICATE_MISMATCH": 0,
+      "UNSUPPORTED_FINALIZED_ASSERTION": 0
+    }
+  },
+  "evaluationDigest": "sha256:6b91e1f037db3c6edd49b1e821ca0cbe1f9d803e9b9186fce42651fc972fd47f",
+  "evaluatorCodeDigest": "sha256:28a6b480cf17ee8993f32dc3c7e599bd5b526d6792f6880063f9d5eac8b5860d",
+  "evaluatorVersion": "s12.dense-hard.evaluator.v3",
+  "goldDigest": "sha256:5191d1b7ee0d4407d58cecac19b2d4127155c41cc608151aabfd65380cb9c0dc",
+  "goldPath": "evaluation/sprint-12/internal-poc/dense-hard-v3/dense-hard-gold.v3.json",
+  "hallucinatedFinalizedAssertions": {
+    "denominator": 141,
+    "numerator": 7,
+    "status": "HALLUCINATED_PRESENT"
+  },
+  "manifestDigest": "sha256:1298f112c09a2ad2ad33c7ef34f25c8d0084e1a57e4e38ea11970ff33b8bc5bb",
+  "manifestPath": "evaluation/sprint-12/internal-poc/dense-hard-v3/dense-hard-evaluator-manifest.v3.json",
+  "nonClaims": [
+    "This is an offline synthetic diagnostic, not human evidence or a production quality claim.",
+    "No provider call, external tool, held-out inspection, state transition, selection, promotion, or release was performed.",
+    "v1/v2.1 values are descriptive and non-pooled; v3 metrics are not pooled with prior packets."
+  ],
+  "perItem": [
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "none",
+      "caseId": "dh3-001",
+      "classification": "unchanged",
+      "difficultyTier": "dense-v3-baseline",
+      "entity": {
+        "candidate": 4,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 3
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 4,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "errorCodes": [
+        "ENTITY_TYPE_MISMATCH"
+      ],
+      "expectedAbstentionMode": "none",
+      "goldAbstentionRequired": false,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 0,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 0,
+      "relation": {
+        "candidate": 2,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 2
+      },
+      "scenarioId": "dh3-s-001",
+      "semanticEditCount": 0,
+      "slices": [
+        "multi-hop",
+        "multi-relation"
+      ],
+      "typeCorrections": 3,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "none",
+      "caseId": "dh3-002",
+      "classification": "unchanged",
+      "difficultyTier": "dense-v3-baseline",
+      "entity": {
+        "candidate": 4,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 2
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 4,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "errorCodes": [
+        "ENTITY_TYPE_MISMATCH"
+      ],
+      "expectedAbstentionMode": "none",
+      "goldAbstentionRequired": false,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 0,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 0,
+      "relation": {
+        "candidate": 2,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 2
+      },
+      "scenarioId": "dh3-s-002",
+      "semanticEditCount": 0,
+      "slices": [
+        "multi-hop",
+        "multi-relation"
+      ],
+      "typeCorrections": 2,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "none",
+      "caseId": "dh3-003",
+      "classification": "unchanged",
+      "difficultyTier": "dense-v3-baseline",
+      "entity": {
+        "candidate": 4,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 1
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 4,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "errorCodes": [
+        "ENTITY_TYPE_MISMATCH"
+      ],
+      "expectedAbstentionMode": "none",
+      "goldAbstentionRequired": false,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 0,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 0,
+      "relation": {
+        "candidate": 2,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 2
+      },
+      "scenarioId": "dh3-s-003",
+      "semanticEditCount": 0,
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "cross-sentence-dependency"
+      ],
+      "typeCorrections": 1,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "none",
+      "caseId": "dh3-004",
+      "classification": "unchanged",
+      "difficultyTier": "dense-v3-baseline",
+      "entity": {
+        "candidate": 4,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 0
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 4,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "errorCodes": [],
+      "expectedAbstentionMode": "none",
+      "goldAbstentionRequired": false,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 0,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 0,
+      "relation": {
+        "candidate": 2,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 2
+      },
+      "scenarioId": "dh3-s-004",
+      "semanticEditCount": 0,
+      "slices": [
+        "multi-relation",
+        "different-occurrences"
+      ],
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "none",
+      "caseId": "dh3-005",
+      "classification": "unchanged",
+      "difficultyTier": "dense-v3-baseline",
+      "entity": {
+        "candidate": 4,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 0
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 4,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "errorCodes": [],
+      "expectedAbstentionMode": "none",
+      "goldAbstentionRequired": false,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 0,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 0,
+      "relation": {
+        "candidate": 2,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 2
+      },
+      "scenarioId": "dh3-s-005",
+      "semanticEditCount": 0,
+      "slices": [
+        "multi-hop",
+        "multi-relation"
+      ],
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "none",
+      "caseId": "dh3-006",
+      "classification": "unchanged",
+      "difficultyTier": "dense-v3-baseline",
+      "entity": {
+        "candidate": 4,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 1
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 4,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "errorCodes": [
+        "ENTITY_TYPE_MISMATCH"
+      ],
+      "expectedAbstentionMode": "none",
+      "goldAbstentionRequired": false,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 0,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 0,
+      "relation": {
+        "candidate": 2,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 2
+      },
+      "scenarioId": "dh3-s-006",
+      "semanticEditCount": 0,
+      "slices": [
+        "multi-hop",
+        "multi-relation",
+        "distractors"
+      ],
+      "typeCorrections": 1,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "full",
+      "caseId": "dh3-007",
+      "classification": "abstain",
+      "difficultyTier": "dense-v3-disambiguation",
+      "entity": {
+        "candidate": 0,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 0
+        },
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "errorCodes": [
+        "QUARANTINE_CORRECT"
+      ],
+      "expectedAbstentionMode": "full",
+      "goldAbstentionRequired": true,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 1,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 1,
+      "relation": {
+        "candidate": 0,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "scenarioId": "dh3-s-007",
+      "semanticEditCount": 0,
+      "slices": [
+        "non-assertion",
+        "negation",
+        "full-abstention",
+        "abstention"
+      ],
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "full",
+      "caseId": "dh3-008",
+      "classification": "abstain",
+      "difficultyTier": "dense-v3-disambiguation",
+      "entity": {
+        "candidate": 0,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 0
+        },
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "errorCodes": [
+        "QUARANTINE_CORRECT"
+      ],
+      "expectedAbstentionMode": "full",
+      "goldAbstentionRequired": true,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 1,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 1,
+      "relation": {
+        "candidate": 0,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "scenarioId": "dh3-s-008",
+      "semanticEditCount": 0,
+      "slices": [
+        "negation",
+        "non-assertion",
+        "full-abstention",
+        "abstention"
+      ],
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "partial",
+      "caseId": "dh3-009",
+      "classification": "abstain",
+      "difficultyTier": "dense-v3-disambiguation",
+      "entity": {
+        "candidate": 3,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 1
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 3,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 3
+      },
+      "errorCodes": [
+        "ENTITY_TYPE_MISMATCH",
+        "QUARANTINE_CORRECT"
+      ],
+      "expectedAbstentionMode": "partial",
+      "goldAbstentionRequired": true,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 1,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 1,
+      "relation": {
+        "candidate": 0,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "scenarioId": "dh3-s-009",
+      "semanticEditCount": 0,
+      "slices": [
+        "ambiguity",
+        "partial-abstention",
+        "abstention"
+      ],
+      "typeCorrections": 1,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "partial",
+      "caseId": "dh3-010",
+      "classification": "abstain",
+      "difficultyTier": "dense-v3-disambiguation",
+      "entity": {
+        "candidate": 3,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 2
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 3,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 3
+      },
+      "errorCodes": [
+        "ENTITY_TYPE_MISMATCH",
+        "QUARANTINE_CORRECT"
+      ],
+      "expectedAbstentionMode": "partial",
+      "goldAbstentionRequired": true,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 1,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 1,
+      "relation": {
+        "candidate": 1,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 1
+      },
+      "scenarioId": "dh3-s-010",
+      "semanticEditCount": 0,
+      "slices": [
+        "ambiguity",
+        "partial-abstention",
+        "multi-relation"
+      ],
+      "typeCorrections": 2,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "none",
+      "caseId": "dh3-011",
+      "classification": "unchanged",
+      "difficultyTier": "dense-v3-disambiguation",
+      "entity": {
+        "candidate": 4,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 1
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 4,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "errorCodes": [
+        "ENTITY_TYPE_MISMATCH"
+      ],
+      "expectedAbstentionMode": "none",
+      "goldAbstentionRequired": false,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 0,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 0,
+      "relation": {
+        "candidate": 2,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 2
+      },
+      "scenarioId": "dh3-s-011",
+      "semanticEditCount": 0,
+      "slices": [
+        "temporal-supersession",
+        "stale-statement",
+        "multi-relation"
+      ],
+      "typeCorrections": 1,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": false,
+      "candidateAbstentionStatus": "partial",
+      "caseId": "dh3-012",
+      "classification": "abstain",
+      "difficultyTier": "dense-v3-disambiguation",
+      "entity": {
+        "candidate": 4,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 0
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 4,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "errorCodes": [
+        "RELATION_MISSING",
+        "ABSTENTION_OVER",
+        "QUARANTINE_CORRECT"
+      ],
+      "expectedAbstentionMode": "none",
+      "goldAbstentionRequired": false,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 2,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 2,
+      "relation": {
+        "candidate": 0,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 2,
+          "relation_predicate": 0
+        },
+        "f1": 0.0,
+        "fn": 2,
+        "fp": 0,
+        "gold": 2,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "scenarioId": "dh3-s-012",
+      "semanticEditCount": 2,
+      "slices": [
+        "temporal-supersession",
+        "stale-statement",
+        "repeated-labels",
+        "different-occurrences"
+      ],
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "none",
+      "caseId": "dh3-013",
+      "classification": "unchanged",
+      "difficultyTier": "dense-v3-disambiguation",
+      "entity": {
+        "candidate": 4,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 3
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 4,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "errorCodes": [
+        "ENTITY_TYPE_MISMATCH"
+      ],
+      "expectedAbstentionMode": "none",
+      "goldAbstentionRequired": false,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 0,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 0,
+      "relation": {
+        "candidate": 2,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 2
+      },
+      "scenarioId": "dh3-s-013",
+      "semanticEditCount": 0,
+      "slices": [
+        "mixed-unicode",
+        "multi-hop",
+        "multi-relation"
+      ],
+      "typeCorrections": 3,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "none",
+      "caseId": "dh3-014",
+      "classification": "unchanged",
+      "difficultyTier": "dense-v3-disambiguation",
+      "entity": {
+        "candidate": 4,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 2
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 4,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "errorCodes": [
+        "ENTITY_TYPE_MISMATCH"
+      ],
+      "expectedAbstentionMode": "none",
+      "goldAbstentionRequired": false,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 0,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 0,
+      "relation": {
+        "candidate": 2,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 2
+      },
+      "scenarioId": "dh3-s-014",
+      "semanticEditCount": 0,
+      "slices": [
+        "mixed-unicode",
+        "multi-hop",
+        "multi-relation"
+      ],
+      "typeCorrections": 2,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "none",
+      "caseId": "dh3-015",
+      "classification": "unchanged",
+      "difficultyTier": "dense-v3-disambiguation",
+      "entity": {
+        "candidate": 4,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 2
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 4,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "errorCodes": [
+        "ENTITY_TYPE_MISMATCH"
+      ],
+      "expectedAbstentionMode": "none",
+      "goldAbstentionRequired": false,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 0,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 0,
+      "relation": {
+        "candidate": 2,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 2
+      },
+      "scenarioId": "dh3-s-015",
+      "semanticEditCount": 0,
+      "slices": [
+        "mixed-unicode",
+        "combining-mark",
+        "multi-relation"
+      ],
+      "typeCorrections": 2,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "none",
+      "caseId": "dh3-016",
+      "classification": "unchanged",
+      "difficultyTier": "dense-v3-disambiguation",
+      "entity": {
+        "candidate": 4,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 3
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 4,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "errorCodes": [
+        "ENTITY_TYPE_MISMATCH"
+      ],
+      "expectedAbstentionMode": "none",
+      "goldAbstentionRequired": false,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 0,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 0,
+      "relation": {
+        "candidate": 2,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 2
+      },
+      "scenarioId": "dh3-s-016",
+      "semanticEditCount": 0,
+      "slices": [
+        "mixed-unicode",
+        "emoji",
+        "multi-relation"
+      ],
+      "typeCorrections": 3,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": false,
+      "candidateAbstentionStatus": "partial",
+      "caseId": "dh3-017",
+      "classification": "abstain",
+      "difficultyTier": "dense-v3-disambiguation",
+      "entity": {
+        "candidate": 6,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 5
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 6,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 6
+      },
+      "errorCodes": [
+        "ENTITY_TYPE_MISMATCH",
+        "RELATION_MISSING",
+        "ABSTENTION_OVER",
+        "QUARANTINE_CORRECT"
+      ],
+      "expectedAbstentionMode": "none",
+      "goldAbstentionRequired": false,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 1,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 1,
+      "relation": {
+        "candidate": 2,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 1,
+          "relation_predicate": 0
+        },
+        "f1": 0.8,
+        "fn": 1,
+        "fp": 0,
+        "gold": 3,
+        "precision": 1.0,
+        "recall": 0.6666666666666666,
+        "tp": 2
+      },
+      "scenarioId": "dh3-s-017",
+      "semanticEditCount": 1,
+      "slices": [
+        "cross-sentence-dependency",
+        "multi-hop",
+        "multi-relation"
+      ],
+      "typeCorrections": 5,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": false,
+      "candidateAbstentionStatus": "partial",
+      "caseId": "dh3-018",
+      "classification": "abstain",
+      "difficultyTier": "dense-v3-disambiguation",
+      "entity": {
+        "candidate": 6,
+        "dimensionDiffs": {
+          "entity_extra": 1,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 0
+        },
+        "f1": 0.9090909090909091,
+        "fn": 0,
+        "fp": 1,
+        "gold": 5,
+        "precision": 0.8333333333333334,
+        "recall": 1.0,
+        "tp": 5
+      },
+      "errorCodes": [
+        "ENTITY_EXTRA",
+        "RELATION_MISSING",
+        "ABSTENTION_OVER",
+        "QUARANTINE_CORRECT",
+        "HALLUCINATED_FINALIZED_ASSERTION"
+      ],
+      "expectedAbstentionMode": "none",
+      "goldAbstentionRequired": false,
+      "hallucinatedFinalizedAssertions": 1,
+      "quarantineCorrect": 2,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 2,
+      "relation": {
+        "candidate": 1,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 1,
+          "relation_predicate": 0
+        },
+        "f1": 0.6666666666666666,
+        "fn": 1,
+        "fp": 0,
+        "gold": 2,
+        "precision": 1.0,
+        "recall": 0.5,
+        "tp": 1
+      },
+      "scenarioId": "dh3-s-018",
+      "semanticEditCount": 2,
+      "slices": [
+        "distractors",
+        "repeated-labels",
+        "different-occurrences",
+        "multi-relation"
+      ],
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "partial",
+      "caseId": "dh3-019",
+      "classification": "abstain",
+      "difficultyTier": "dense-v3-adversarial-abstention",
+      "entity": {
+        "candidate": 3,
+        "dimensionDiffs": {
+          "entity_extra": 1,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 0
+        },
+        "f1": 0.8,
+        "fn": 0,
+        "fp": 1,
+        "gold": 2,
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "tp": 2
+      },
+      "errorCodes": [
+        "ENTITY_EXTRA",
+        "QUARANTINE_CORRECT",
+        "HALLUCINATED_FINALIZED_ASSERTION"
+      ],
+      "expectedAbstentionMode": "partial",
+      "goldAbstentionRequired": true,
+      "hallucinatedFinalizedAssertions": 1,
+      "quarantineCorrect": 2,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 2,
+      "relation": {
+        "candidate": 0,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "scenarioId": "dh3-s-019",
+      "semanticEditCount": 1,
+      "slices": [
+        "cross-project",
+        "partial-abstention",
+        "abstention"
+      ],
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "partial",
+      "caseId": "dh3-020",
+      "classification": "abstain",
+      "difficultyTier": "dense-v3-adversarial-abstention",
+      "entity": {
+        "candidate": 2,
+        "dimensionDiffs": {
+          "entity_extra": 1,
+          "entity_label": 0,
+          "entity_missing": 2,
+          "entity_span": 0,
+          "entity_type": 0
+        },
+        "f1": 0.4,
+        "fn": 2,
+        "fp": 1,
+        "gold": 3,
+        "precision": 0.5,
+        "recall": 0.3333333333333333,
+        "tp": 1
+      },
+      "errorCodes": [
+        "ENTITY_MISSING",
+        "ENTITY_EXTRA",
+        "QUARANTINE_CORRECT",
+        "HALLUCINATED_FINALIZED_ASSERTION"
+      ],
+      "expectedAbstentionMode": "partial",
+      "goldAbstentionRequired": true,
+      "hallucinatedFinalizedAssertions": 1,
+      "quarantineCorrect": 1,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 1,
+      "relation": {
+        "candidate": 0,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "scenarioId": "dh3-s-020",
+      "semanticEditCount": 3,
+      "slices": [
+        "unsupported-relation",
+        "partial-abstention",
+        "abstention"
+      ],
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "full",
+      "caseId": "dh3-021",
+      "classification": "abstain",
+      "difficultyTier": "dense-v3-adversarial-abstention",
+      "entity": {
+        "candidate": 0,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 0
+        },
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "errorCodes": [
+        "QUARANTINE_CORRECT"
+      ],
+      "expectedAbstentionMode": "full",
+      "goldAbstentionRequired": true,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 1,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 1,
+      "relation": {
+        "candidate": 0,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "scenarioId": "dh3-s-021",
+      "semanticEditCount": 0,
+      "slices": [
+        "adversarial-instruction",
+        "unsupported-relation",
+        "full-abstention",
+        "abstention"
+      ],
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": false,
+      "candidateAbstentionStatus": "partial",
+      "caseId": "dh3-022",
+      "classification": "abstain",
+      "difficultyTier": "dense-v3-adversarial-abstention",
+      "entity": {
+        "candidate": 6,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 2,
+          "entity_span": 0,
+          "entity_type": 4
+        },
+        "f1": 0.8571428571428571,
+        "fn": 2,
+        "fp": 0,
+        "gold": 8,
+        "precision": 1.0,
+        "recall": 0.75,
+        "tp": 6
+      },
+      "errorCodes": [
+        "ENTITY_TYPE_MISMATCH",
+        "ENTITY_MISSING",
+        "RELATION_MISSING",
+        "ABSTENTION_OVER",
+        "QUARANTINE_CORRECT"
+      ],
+      "expectedAbstentionMode": "none",
+      "goldAbstentionRequired": false,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 1,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 1,
+      "relation": {
+        "candidate": 3,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 1,
+          "relation_predicate": 0
+        },
+        "f1": 0.8571428571428571,
+        "fn": 1,
+        "fp": 0,
+        "gold": 4,
+        "precision": 1.0,
+        "recall": 0.75,
+        "tp": 3
+      },
+      "scenarioId": "dh3-s-022",
+      "semanticEditCount": 3,
+      "slices": [
+        "long-context",
+        "distractors",
+        "multi-hop",
+        "multi-relation"
+      ],
+      "typeCorrections": 4,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "none",
+      "caseId": "dh3-023",
+      "classification": "unchanged",
+      "difficultyTier": "dense-v3-adversarial-abstention",
+      "entity": {
+        "candidate": 6,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 1
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 6,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 6
+      },
+      "errorCodes": [
+        "ENTITY_TYPE_MISMATCH"
+      ],
+      "expectedAbstentionMode": "none",
+      "goldAbstentionRequired": false,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 0,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 0,
+      "relation": {
+        "candidate": 3,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 3,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 3
+      },
+      "scenarioId": "dh3-s-023",
+      "semanticEditCount": 0,
+      "slices": [
+        "mixed-unicode",
+        "cross-sentence-dependency",
+        "multi-hop"
+      ],
+      "typeCorrections": 1,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "none",
+      "caseId": "dh3-024",
+      "classification": "unchanged",
+      "difficultyTier": "dense-v3-adversarial-abstention",
+      "entity": {
+        "candidate": 6,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 3
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 6,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 6
+      },
+      "errorCodes": [
+        "ENTITY_TYPE_MISMATCH"
+      ],
+      "expectedAbstentionMode": "none",
+      "goldAbstentionRequired": false,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 0,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 0,
+      "relation": {
+        "candidate": 3,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 3,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 3
+      },
+      "scenarioId": "dh3-s-024",
+      "semanticEditCount": 0,
+      "slices": [
+        "mixed-unicode",
+        "long-context",
+        "multi-hop",
+        "multi-relation"
+      ],
+      "typeCorrections": 3,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "partial",
+      "caseId": "dh3-025",
+      "classification": "abstain",
+      "difficultyTier": "dense-v3-adversarial-abstention",
+      "entity": {
+        "candidate": 3,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 0
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 3,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 3
+      },
+      "errorCodes": [
+        "QUARANTINE_CORRECT"
+      ],
+      "expectedAbstentionMode": "partial",
+      "goldAbstentionRequired": true,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 2,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 2,
+      "relation": {
+        "candidate": 0,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "scenarioId": "dh3-s-025",
+      "semanticEditCount": 0,
+      "slices": [
+        "negation",
+        "non-assertion",
+        "partial-abstention",
+        "abstention"
+      ],
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": false,
+      "candidateAbstentionStatus": "partial",
+      "caseId": "dh3-026",
+      "classification": "abstain",
+      "difficultyTier": "dense-v3-adversarial-abstention",
+      "entity": {
+        "candidate": 6,
+        "dimensionDiffs": {
+          "entity_extra": 2,
+          "entity_label": 0,
+          "entity_missing": 2,
+          "entity_span": 0,
+          "entity_type": 1
+        },
+        "f1": 0.6666666666666666,
+        "fn": 2,
+        "fp": 2,
+        "gold": 6,
+        "precision": 0.6666666666666666,
+        "recall": 0.6666666666666666,
+        "tp": 4
+      },
+      "errorCodes": [
+        "ENTITY_TYPE_MISMATCH",
+        "ENTITY_MISSING",
+        "ENTITY_EXTRA",
+        "RELATION_MISSING",
+        "ABSTENTION_OVER",
+        "QUARANTINE_CORRECT",
+        "HALLUCINATED_FINALIZED_ASSERTION"
+      ],
+      "expectedAbstentionMode": "none",
+      "goldAbstentionRequired": false,
+      "hallucinatedFinalizedAssertions": 2,
+      "quarantineCorrect": 2,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 2,
+      "relation": {
+        "candidate": 1,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 2,
+          "relation_predicate": 0
+        },
+        "f1": 0.5,
+        "fn": 2,
+        "fp": 0,
+        "gold": 3,
+        "precision": 1.0,
+        "recall": 0.3333333333333333,
+        "tp": 1
+      },
+      "scenarioId": "dh3-s-026",
+      "semanticEditCount": 6,
+      "slices": [
+        "temporal-supersession",
+        "stale-statement",
+        "repeated-labels",
+        "multi-relation"
+      ],
+      "typeCorrections": 1,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "partial",
+      "caseId": "dh3-027",
+      "classification": "abstain",
+      "difficultyTier": "dense-v3-adversarial-abstention",
+      "entity": {
+        "candidate": 4,
+        "dimensionDiffs": {
+          "entity_extra": 2,
+          "entity_label": 0,
+          "entity_missing": 1,
+          "entity_span": 0,
+          "entity_type": 0
+        },
+        "f1": 0.5714285714285715,
+        "fn": 1,
+        "fp": 2,
+        "gold": 3,
+        "precision": 0.5,
+        "recall": 0.6666666666666666,
+        "tp": 2
+      },
+      "errorCodes": [
+        "ENTITY_MISSING",
+        "ENTITY_EXTRA",
+        "QUARANTINE_CORRECT",
+        "HALLUCINATED_FINALIZED_ASSERTION"
+      ],
+      "expectedAbstentionMode": "partial",
+      "goldAbstentionRequired": true,
+      "hallucinatedFinalizedAssertions": 2,
+      "quarantineCorrect": 2,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 2,
+      "relation": {
+        "candidate": 0,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "scenarioId": "dh3-s-027",
+      "semanticEditCount": 3,
+      "slices": [
+        "cross-project",
+        "unsupported-relation",
+        "partial-abstention",
+        "abstention"
+      ],
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "full",
+      "caseId": "dh3-028",
+      "classification": "abstain",
+      "difficultyTier": "dense-v3-adversarial-abstention",
+      "entity": {
+        "candidate": 0,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 0
+        },
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "errorCodes": [
+        "QUARANTINE_CORRECT"
+      ],
+      "expectedAbstentionMode": "full",
+      "goldAbstentionRequired": true,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 1,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 1,
+      "relation": {
+        "candidate": 0,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "scenarioId": "dh3-s-028",
+      "semanticEditCount": 0,
+      "slices": [
+        "adversarial-instruction",
+        "distractors",
+        "unsupported-relation",
+        "full-abstention",
+        "abstention"
+      ],
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "partial",
+      "caseId": "dh3-029",
+      "classification": "abstain",
+      "difficultyTier": "dense-v3-adversarial-abstention",
+      "entity": {
+        "candidate": 2,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 0
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 2
+      },
+      "errorCodes": [
+        "QUARANTINE_CORRECT"
+      ],
+      "expectedAbstentionMode": "partial",
+      "goldAbstentionRequired": true,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 1,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 1,
+      "relation": {
+        "candidate": 1,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 1
+      },
+      "scenarioId": "dh3-s-029",
+      "semanticEditCount": 0,
+      "slices": [
+        "type-ambiguity",
+        "partial-abstention",
+        "abstention",
+        "multi-relation"
+      ],
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "abstentionCorrect": true,
+      "candidateAbstentionStatus": "full",
+      "caseId": "dh3-030",
+      "classification": "abstain",
+      "difficultyTier": "dense-v3-adversarial-abstention",
+      "entity": {
+        "candidate": 0,
+        "dimensionDiffs": {
+          "entity_extra": 0,
+          "entity_label": 0,
+          "entity_missing": 0,
+          "entity_span": 0,
+          "entity_type": 0
+        },
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "errorCodes": [
+        "QUARANTINE_CORRECT"
+      ],
+      "expectedAbstentionMode": "full",
+      "goldAbstentionRequired": true,
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 1,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 1,
+      "relation": {
+        "candidate": 0,
+        "dimensionDiffs": {
+          "relation_endpoint": 0,
+          "relation_evidence": 0,
+          "relation_extra": 0,
+          "relation_missing": 0,
+          "relation_predicate": 0
+        },
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "gold": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "scenarioId": "dh3-s-030",
+      "semanticEditCount": 0,
+      "slices": [
+        "full-abstention",
+        "abstention",
+        "non-assertion",
+        "long-context"
+      ],
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    }
+  ],
+  "perItemClassificationCounts": {
+    "abstain": 17,
+    "major": 0,
+    "minor": 0,
+    "reject": 0,
+    "unchanged": 13
+  },
+  "perSlice": {
+    "abstention": {
+      "abstentionCorrect": 11,
+      "abstentionPrecision": 1.0,
+      "abstentionPredicted": 11,
+      "abstentionRecall": 1.0,
+      "abstentionRequired": 11,
+      "caseCount": 11,
+      "classificationCounts": {
+        "abstain": 11,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 0
+      },
+      "entityMetrics": {
+        "f1": 0.787878787878788,
+        "fn": 3,
+        "fp": 4,
+        "precision": 0.7647058823529411,
+        "recall": 0.8125,
+        "tp": 13
+      },
+      "hallucinatedFinalizedAssertions": 4,
+      "quarantineCorrect": 14,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 14,
+      "relationMetrics": {
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 1
+      },
+      "semanticEditCount": 7,
+      "typeCorrections": 1,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "adversarial-instruction": {
+      "abstentionCorrect": 2,
+      "abstentionPrecision": 1.0,
+      "abstentionPredicted": 2,
+      "abstentionRecall": 1.0,
+      "abstentionRequired": 2,
+      "caseCount": 2,
+      "classificationCounts": {
+        "abstain": 2,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 0
+      },
+      "entityMetrics": {
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 2,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 2,
+      "relationMetrics": {
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "semanticEditCount": 0,
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "ambiguity": {
+      "abstentionCorrect": 2,
+      "abstentionPrecision": 1.0,
+      "abstentionPredicted": 2,
+      "abstentionRecall": 1.0,
+      "abstentionRequired": 2,
+      "caseCount": 2,
+      "classificationCounts": {
+        "abstain": 2,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 0
+      },
+      "entityMetrics": {
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 6
+      },
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 2,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 2,
+      "relationMetrics": {
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 1
+      },
+      "semanticEditCount": 0,
+      "typeCorrections": 3,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "combining-mark": {
+      "abstentionCorrect": 0,
+      "abstentionPrecision": 0.0,
+      "abstentionPredicted": 0,
+      "abstentionRecall": 0.0,
+      "abstentionRequired": 0,
+      "caseCount": 1,
+      "classificationCounts": {
+        "abstain": 0,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 1
+      },
+      "entityMetrics": {
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 0,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 0,
+      "relationMetrics": {
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 2
+      },
+      "semanticEditCount": 0,
+      "typeCorrections": 2,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "cross-project": {
+      "abstentionCorrect": 2,
+      "abstentionPrecision": 1.0,
+      "abstentionPredicted": 2,
+      "abstentionRecall": 1.0,
+      "abstentionRequired": 2,
+      "caseCount": 2,
+      "classificationCounts": {
+        "abstain": 2,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 0
+      },
+      "entityMetrics": {
+        "f1": 0.6666666666666666,
+        "fn": 1,
+        "fp": 3,
+        "precision": 0.5714285714285714,
+        "recall": 0.8,
+        "tp": 4
+      },
+      "hallucinatedFinalizedAssertions": 3,
+      "quarantineCorrect": 4,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 4,
+      "relationMetrics": {
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "semanticEditCount": 4,
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "cross-sentence-dependency": {
+      "abstentionCorrect": 0,
+      "abstentionPrecision": 0.0,
+      "abstentionPredicted": 1,
+      "abstentionRecall": 0.0,
+      "abstentionRequired": 0,
+      "caseCount": 3,
+      "classificationCounts": {
+        "abstain": 1,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 2
+      },
+      "entityMetrics": {
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 16
+      },
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 1,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 1,
+      "relationMetrics": {
+        "f1": 0.9333333333333333,
+        "fn": 1,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.875,
+        "tp": 7
+      },
+      "semanticEditCount": 1,
+      "typeCorrections": 7,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "different-occurrences": {
+      "abstentionCorrect": 0,
+      "abstentionPrecision": 0.0,
+      "abstentionPredicted": 2,
+      "abstentionRecall": 0.0,
+      "abstentionRequired": 0,
+      "caseCount": 3,
+      "classificationCounts": {
+        "abstain": 2,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 1
+      },
+      "entityMetrics": {
+        "f1": 0.962962962962963,
+        "fn": 0,
+        "fp": 1,
+        "precision": 0.9285714285714286,
+        "recall": 1.0,
+        "tp": 13
+      },
+      "hallucinatedFinalizedAssertions": 1,
+      "quarantineCorrect": 4,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 4,
+      "relationMetrics": {
+        "f1": 0.6666666666666666,
+        "fn": 3,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.5,
+        "tp": 3
+      },
+      "semanticEditCount": 4,
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "distractors": {
+      "abstentionCorrect": 1,
+      "abstentionPrecision": 0.3333333333333333,
+      "abstentionPredicted": 3,
+      "abstentionRecall": 1.0,
+      "abstentionRequired": 1,
+      "caseCount": 4,
+      "classificationCounts": {
+        "abstain": 3,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 1
+      },
+      "entityMetrics": {
+        "f1": 0.9090909090909091,
+        "fn": 2,
+        "fp": 1,
+        "precision": 0.9375,
+        "recall": 0.8823529411764706,
+        "tp": 15
+      },
+      "hallucinatedFinalizedAssertions": 1,
+      "quarantineCorrect": 4,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 4,
+      "relationMetrics": {
+        "f1": 0.8571428571428571,
+        "fn": 2,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.75,
+        "tp": 6
+      },
+      "semanticEditCount": 5,
+      "typeCorrections": 5,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "emoji": {
+      "abstentionCorrect": 0,
+      "abstentionPrecision": 0.0,
+      "abstentionPredicted": 0,
+      "abstentionRecall": 0.0,
+      "abstentionRequired": 0,
+      "caseCount": 1,
+      "classificationCounts": {
+        "abstain": 0,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 1
+      },
+      "entityMetrics": {
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 4
+      },
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 0,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 0,
+      "relationMetrics": {
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 2
+      },
+      "semanticEditCount": 0,
+      "typeCorrections": 3,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "full-abstention": {
+      "abstentionCorrect": 5,
+      "abstentionPrecision": 1.0,
+      "abstentionPredicted": 5,
+      "abstentionRecall": 1.0,
+      "abstentionRequired": 5,
+      "caseCount": 5,
+      "classificationCounts": {
+        "abstain": 5,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 0
+      },
+      "entityMetrics": {
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 5,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 5,
+      "relationMetrics": {
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "semanticEditCount": 0,
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "long-context": {
+      "abstentionCorrect": 1,
+      "abstentionPrecision": 0.5,
+      "abstentionPredicted": 2,
+      "abstentionRecall": 1.0,
+      "abstentionRequired": 1,
+      "caseCount": 3,
+      "classificationCounts": {
+        "abstain": 2,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 1
+      },
+      "entityMetrics": {
+        "f1": 0.923076923076923,
+        "fn": 2,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.8571428571428571,
+        "tp": 12
+      },
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 2,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 2,
+      "relationMetrics": {
+        "f1": 0.923076923076923,
+        "fn": 1,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.8571428571428571,
+        "tp": 6
+      },
+      "semanticEditCount": 3,
+      "typeCorrections": 7,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "mixed-unicode": {
+      "abstentionCorrect": 0,
+      "abstentionPrecision": 0.0,
+      "abstentionPredicted": 0,
+      "abstentionRecall": 0.0,
+      "abstentionRequired": 0,
+      "caseCount": 6,
+      "classificationCounts": {
+        "abstain": 0,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 6
+      },
+      "entityMetrics": {
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 28
+      },
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 0,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 0,
+      "relationMetrics": {
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 14
+      },
+      "semanticEditCount": 0,
+      "typeCorrections": 14,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "multi-hop": {
+      "abstentionCorrect": 0,
+      "abstentionPrecision": 0.0,
+      "abstentionPredicted": 2,
+      "abstentionRecall": 0.0,
+      "abstentionRequired": 0,
+      "caseCount": 11,
+      "classificationCounts": {
+        "abstain": 2,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 9
+      },
+      "entityMetrics": {
+        "f1": 0.9811320754716981,
+        "fn": 2,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.9629629629629629,
+        "tp": 52
+      },
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 2,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 2,
+      "relationMetrics": {
+        "f1": 0.9615384615384615,
+        "fn": 2,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.9259259259259259,
+        "tp": 25
+      },
+      "semanticEditCount": 4,
+      "typeCorrections": 25,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "multi-relation": {
+      "abstentionCorrect": 2,
+      "abstentionPrecision": 0.3333333333333333,
+      "abstentionPredicted": 6,
+      "abstentionRecall": 1.0,
+      "abstentionRequired": 2,
+      "caseCount": 18,
+      "classificationCounts": {
+        "abstain": 6,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 12
+      },
+      "entityMetrics": {
+        "f1": 0.9559748427672956,
+        "fn": 4,
+        "fp": 3,
+        "precision": 0.9620253164556962,
+        "recall": 0.95,
+        "tp": 76
+      },
+      "hallucinatedFinalizedAssertions": 3,
+      "quarantineCorrect": 8,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 8,
+      "relationMetrics": {
+        "f1": 0.9315068493150686,
+        "fn": 5,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.8717948717948718,
+        "tp": 34
+      },
+      "semanticEditCount": 12,
+      "typeCorrections": 33,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "negation": {
+      "abstentionCorrect": 3,
+      "abstentionPrecision": 1.0,
+      "abstentionPredicted": 3,
+      "abstentionRecall": 1.0,
+      "abstentionRequired": 3,
+      "caseCount": 3,
+      "classificationCounts": {
+        "abstain": 3,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 0
+      },
+      "entityMetrics": {
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 3
+      },
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 4,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 4,
+      "relationMetrics": {
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "semanticEditCount": 0,
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "non-assertion": {
+      "abstentionCorrect": 4,
+      "abstentionPrecision": 1.0,
+      "abstentionPredicted": 4,
+      "abstentionRecall": 1.0,
+      "abstentionRequired": 4,
+      "caseCount": 4,
+      "classificationCounts": {
+        "abstain": 4,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 0
+      },
+      "entityMetrics": {
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 3
+      },
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 5,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 5,
+      "relationMetrics": {
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "semanticEditCount": 0,
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "partial-abstention": {
+      "abstentionCorrect": 7,
+      "abstentionPrecision": 1.0,
+      "abstentionPredicted": 7,
+      "abstentionRecall": 1.0,
+      "abstentionRequired": 7,
+      "caseCount": 7,
+      "classificationCounts": {
+        "abstain": 7,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 0
+      },
+      "entityMetrics": {
+        "f1": 0.8205128205128205,
+        "fn": 3,
+        "fp": 4,
+        "precision": 0.8,
+        "recall": 0.8421052631578947,
+        "tp": 16
+      },
+      "hallucinatedFinalizedAssertions": 4,
+      "quarantineCorrect": 10,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 10,
+      "relationMetrics": {
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 2
+      },
+      "semanticEditCount": 7,
+      "typeCorrections": 3,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "repeated-labels": {
+      "abstentionCorrect": 0,
+      "abstentionPrecision": 0.0,
+      "abstentionPredicted": 3,
+      "abstentionRecall": 0.0,
+      "abstentionRequired": 0,
+      "caseCount": 3,
+      "classificationCounts": {
+        "abstain": 3,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 0
+      },
+      "entityMetrics": {
+        "f1": 0.8387096774193549,
+        "fn": 2,
+        "fp": 3,
+        "precision": 0.8125,
+        "recall": 0.8666666666666667,
+        "tp": 13
+      },
+      "hallucinatedFinalizedAssertions": 3,
+      "quarantineCorrect": 6,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 6,
+      "relationMetrics": {
+        "f1": 0.4444444444444445,
+        "fn": 5,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.2857142857142857,
+        "tp": 2
+      },
+      "semanticEditCount": 10,
+      "typeCorrections": 1,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "stale-statement": {
+      "abstentionCorrect": 0,
+      "abstentionPrecision": 0.0,
+      "abstentionPredicted": 2,
+      "abstentionRecall": 0.0,
+      "abstentionRequired": 0,
+      "caseCount": 3,
+      "classificationCounts": {
+        "abstain": 2,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 1
+      },
+      "entityMetrics": {
+        "f1": 0.8571428571428571,
+        "fn": 2,
+        "fp": 2,
+        "precision": 0.8571428571428571,
+        "recall": 0.8571428571428571,
+        "tp": 12
+      },
+      "hallucinatedFinalizedAssertions": 2,
+      "quarantineCorrect": 4,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 4,
+      "relationMetrics": {
+        "f1": 0.6,
+        "fn": 4,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.42857142857142855,
+        "tp": 3
+      },
+      "semanticEditCount": 8,
+      "typeCorrections": 2,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "temporal-supersession": {
+      "abstentionCorrect": 0,
+      "abstentionPrecision": 0.0,
+      "abstentionPredicted": 2,
+      "abstentionRecall": 0.0,
+      "abstentionRequired": 0,
+      "caseCount": 3,
+      "classificationCounts": {
+        "abstain": 2,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 1
+      },
+      "entityMetrics": {
+        "f1": 0.8571428571428571,
+        "fn": 2,
+        "fp": 2,
+        "precision": 0.8571428571428571,
+        "recall": 0.8571428571428571,
+        "tp": 12
+      },
+      "hallucinatedFinalizedAssertions": 2,
+      "quarantineCorrect": 4,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 4,
+      "relationMetrics": {
+        "f1": 0.6,
+        "fn": 4,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 0.42857142857142855,
+        "tp": 3
+      },
+      "semanticEditCount": 8,
+      "typeCorrections": 2,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "type-ambiguity": {
+      "abstentionCorrect": 1,
+      "abstentionPrecision": 1.0,
+      "abstentionPredicted": 1,
+      "abstentionRecall": 1.0,
+      "abstentionRequired": 1,
+      "caseCount": 1,
+      "classificationCounts": {
+        "abstain": 1,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 0
+      },
+      "entityMetrics": {
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 2
+      },
+      "hallucinatedFinalizedAssertions": 0,
+      "quarantineCorrect": 1,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 1,
+      "relationMetrics": {
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "tp": 1
+      },
+      "semanticEditCount": 0,
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    },
+    "unsupported-relation": {
+      "abstentionCorrect": 4,
+      "abstentionPrecision": 1.0,
+      "abstentionPredicted": 4,
+      "abstentionRecall": 1.0,
+      "abstentionRequired": 4,
+      "caseCount": 4,
+      "classificationCounts": {
+        "abstain": 4,
+        "major": 0,
+        "minor": 0,
+        "reject": 0,
+        "unchanged": 0
+      },
+      "entityMetrics": {
+        "f1": 0.5,
+        "fn": 3,
+        "fp": 3,
+        "precision": 0.5,
+        "recall": 0.5,
+        "tp": 3
+      },
+      "hallucinatedFinalizedAssertions": 3,
+      "quarantineCorrect": 5,
+      "quarantineIncorrect": 0,
+      "quarantinePredicted": 5,
+      "relationMetrics": {
+        "f1": 0.0,
+        "fn": 0,
+        "fp": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "semanticEditCount": 6,
+      "typeCorrections": 0,
+      "unsupportedFinalizedAssertions": 0
+    }
+  },
+  "protocolDigest": "sha256:939ed208c7d581f4dc35be5560196c6cb9e5bd4d746e8a67450c2cc1a71d3131",
+  "protocolPath": "evaluation/sprint-12/internal-poc/dense-hard-v3/dense-hard-source-only-protocol.v3.json",
+  "providerCalls": 0,
+  "quarantineMetrics": {
+    "assertionLevel": {
+      "correctAssertions": 23,
+      "incorrectAssertions": 0,
+      "precision": 1.0,
+      "predictedAssertions": 23,
+      "recall": 1.0
+    },
+    "caseLevel": {
+      "correctCases": 12,
+      "precision": 0.7058823529411765,
+      "predictedCases": 17,
+      "recall": 1.0,
+      "requiredCases": 12
+    },
+    "definition": "A quarantine is safe/correct when its exact anchored evidence is not a gold-finalized entity/relation evidence span; assertion recall routes candidate unsupported proposals to quarantine rather than finalization."
+  },
+  "relationMetrics": {
+    "f1": 0.9135802469135803,
+    "fn": 7,
+    "fp": 0,
+    "precision": 1.0,
+    "recall": 0.8409090909090909,
+    "tp": 37
+  },
+  "rm67": {
+    "acceptedUnchangedOrMinor": 0.43333333333333335,
+    "acceptedWithoutSemanticCorrection": 0.43333333333333335,
+    "editBurdenGate": false,
+    "meanSemanticEditsPerReviewedItem": 0.7,
+    "thresholds": {
+      "acceptedUnchangedOrMinorMinimum": 0.85,
+      "acceptedWithoutSemanticCorrectionMinimum": 0.7,
+      "meanSemanticEditsMaximum": 2.0,
+      "unsupportedFinalizedAssertionsMaximum": 0
+    },
+    "unsupportedFinalizedAssertions": {
+      "denominator": 141,
+      "numerator": 0,
+      "status": "ZERO_UNSUPPORTED"
+    }
+  },
+  "semanticEditCounts": {
+    "meanPerCase": 0.7,
+    "total": 21
+  },
+  "sourcePayloadDigest": "sha256:b907a5a50d6c9db63a9806b8bb4e1d2b992391828290bc97b6cc2a023e0277c7",
+  "sourcePayloadPath": "evaluation/sprint-12/internal-poc/dense-hard-v3/dense-hard-source-payload.v3.json",
+  "status": "EVALUATED_FROZEN_CANDIDATE",
+  "typeDiagnostics": {
+    "ambiguousExcludedFromPassFail": true,
+    "cascadeToRelation": false,
+    "identityIndependentOfType": true,
+    "typeCorrections": 35
+  },
+  "unsafeFinalizedAssertionsAvoided": {
+    "avoidanceRate": 1.0,
+    "avoidedByQuarantine": 23,
+    "totalUnsupportedProposals": 23,
+    "unsafeFinalized": 0
+  },
+  "unsupportedFinalizedAssertions": {
+    "denominator": 141,
+    "numerator": 0,
+    "status": "ZERO_UNSUPPORTED"
+  },
+  "v1Comparison": {
+    "interpretation": "Descriptive cross-packet diagnostics only; no source, gold, candidate, or metric pooling.",
+    "note": "v2.1 is retained as descriptive prior evidence; v3 is scored under its own public rubric.",
+    "pooled": false,
+    "v1": {
+      "candidateDigest": "sha256:24300cccf1f774329a4bbb2772b2fb952e32e398eec61cf09c060e2eaac7ceba",
+      "evaluationDigest": "sha256:d15fba491c259e09c2d8625b3ac33305c9f3b39d662d8be9b7b6840fd9c8eb15",
+      "evaluationPath": "evaluation/sprint-12/internal-poc/dense-hard-v1/dense-hard-evaluation.v1.json",
+      "metrics": {
+        "cases": 24,
+        "entityF1": 0.5685279187817258,
+        "relationF1": 0.1758241758241758,
+        "semanticEdits": 74,
+        "unsupportedFinalizedAssertions": 74
+      }
+    },
+    "v2_1": {
+      "adjudicationDigest": "sha256:7ca2b873c0c84bc9422afbd6052ee549e084a07e035f50319b0a7f51bba9a414",
+      "adjudicationPath": "evaluation/sprint-12/internal-poc/dense-hard-v2/dense-hard-evaluation-adjudication.v2.1.json",
+      "candidateDigest": "sha256:568f2ff212307b7f88c02706e297fd6567582b8ef498eb7c88f475363a37784d",
+      "metrics": {
+        "legacyStrict": {
+          "entityF1": 0.6457399103139014,
+          "relationF1": 0.39560439560439564,
+          "semanticEdits": 134,
+          "unsupportedFinalizedAssertions": 62
+        },
+        "protocolFair": {
+          "entityF1": 0.968609865470852,
+          "relationF1": 0.923076923076923,
+          "semanticEdits": 14,
+          "unsupportedFinalizedAssertions": 2
+        }
+      }
+    }
+  },
+  "worstCases": [
+    {
+      "caseId": "dh3-026",
+      "classification": "abstain",
+      "errorCodes": [
+        "ENTITY_TYPE_MISMATCH",
+        "ENTITY_MISSING",
+        "ENTITY_EXTRA",
+        "RELATION_MISSING",
+        "ABSTENTION_OVER",
+        "QUARANTINE_CORRECT",
+        "HALLUCINATED_FINALIZED_ASSERTION"
+      ],
+      "semanticEditCount": 6,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "caseId": "dh3-020",
+      "classification": "abstain",
+      "errorCodes": [
+        "ENTITY_MISSING",
+        "ENTITY_EXTRA",
+        "QUARANTINE_CORRECT",
+        "HALLUCINATED_FINALIZED_ASSERTION"
+      ],
+      "semanticEditCount": 3,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "caseId": "dh3-022",
+      "classification": "abstain",
+      "errorCodes": [
+        "ENTITY_TYPE_MISMATCH",
+        "ENTITY_MISSING",
+        "RELATION_MISSING",
+        "ABSTENTION_OVER",
+        "QUARANTINE_CORRECT"
+      ],
+      "semanticEditCount": 3,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "caseId": "dh3-027",
+      "classification": "abstain",
+      "errorCodes": [
+        "ENTITY_MISSING",
+        "ENTITY_EXTRA",
+        "QUARANTINE_CORRECT",
+        "HALLUCINATED_FINALIZED_ASSERTION"
+      ],
+      "semanticEditCount": 3,
+      "unsupportedFinalizedAssertions": 0
+    },
+    {
+      "caseId": "dh3-012",
+      "classification": "abstain",
+      "errorCodes": [
+        "RELATION_MISSING",
+        "ABSTENTION_OVER",
+        "QUARANTINE_CORRECT"
+      ],
+      "semanticEditCount": 2,
+      "unsupportedFinalizedAssertions": 0
+    }
+  ]
+}

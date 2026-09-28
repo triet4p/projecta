@@ -103,7 +103,7 @@ def test_rm52_governance_is_offline_only_and_current_state_is_bound() -> None:
     backlog = _json(BACKLOG)
     current = _json(EVAL / "current-state.v1.json")
     packet_path = OPT / "g5-packet.v36.rm51-closure-only.json"
-    assert current["status"] == "G5_F12_PROVIDER_EXPERIMENTATION_STOPPED_OFFLINE_CLOSURE_ONLY"
+    assert current["status"] == "F_RF_POC_BASELINE_ACCEPTED_DENSE_HARD_V4_FAILED_STRATEGY_REDESIGN_REQUIRED"
     assert current["currentEvidence"]["g5Packet"]["digest"] == _digest(packet_path)
     assert closure["governance"]["providerCalls"] == 0
     assert backlog["governance"]["providerCalls"] == 0
@@ -122,4 +122,3 @@ def test_rm52_governance_is_offline_only_and_current_state_is_bound() -> None:
         ):
             assert artifact[key] is False, key
     assert closure["governance"]["providerExperimentationStopped"] is True
-
