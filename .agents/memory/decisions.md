@@ -942,3 +942,21 @@ RM-67 study results.
 missing-start latency exclusion, date-only category omission, and composite
 RM-67 precedence remain the accepted behavior. No provider, human study, or
 RM-68 evaluation is authorized.
+
+## [2026-09-29] Bootstrap local Compose secrets outside the template
+
+**Decision:** Keep `.env.example` free of reusable secrets, make its non-secret
+defaults runnable in the local experience profile, and generate unique connector,
+context, and Fernet credentials into the Git-ignored `.env` with one idempotent
+PowerShell bootstrap command before Compose startup.
+**Alternatives considered:** Commit fixed demo credentials so copying the
+template alone starts Docker, or require operators to maintain the previous
+multi-step inline setup recipe.
+**Reason:** The owner chose a short local bootstrap rather than public reusable
+secrets. The application-encrypted store requires a deployment-owned Fernet key,
+and embedding it or a trusted-context secret in a tracked template would break
+the existing secret-custody decision while making an exposed local server unsafe.
+**Consequences:** Local startup is copy, bootstrap, then Compose; bootstrap
+preserves existing non-placeholder credentials, refuses production-mode files,
+and never prints secrets. Production remains separately configured and cannot
+inherit this experience template as a deployment credential source.

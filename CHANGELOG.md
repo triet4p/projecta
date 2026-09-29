@@ -33,6 +33,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   API with an empty default; suggestions remain operator-enabled and disabled in
   production.
 
+- Simplified local Docker setup to a copy of `.env.example` followed by one
+  idempotent PowerShell bootstrap command that generates unique credentials,
+  seeds the experience projects, and leaves external providers disabled.
+
 ### Fixed
 
 - Preserved the API's finite local-suggestion error codes and safe reason details

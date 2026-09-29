@@ -14,58 +14,25 @@ and ask questions grounded in recorded evidence.
 
 ## Quick start
 
-You need Docker Desktop and [`uv`](https://docs.astral.sh/uv/) on Windows.
-From PowerShell in the repository root, initialize the ignored local `.env` if
-you do not already have one:
+You need Docker Desktop and PowerShell 7 (`pwsh`) on Windows. From the
+repository root, copy the local template, generate unique credentials in the
+ignored `.env`, and start the web profile:
 
 ```powershell
 if (-not (Test-Path -LiteralPath ".env")) {
   Copy-Item -LiteralPath ".env.example" -Destination ".env"
 }
-
-function Set-LocalEnvValue {
-  param([string] $Name, [string] $Value, [switch] $Force)
-  $path = (Resolve-Path -LiteralPath ".env").Path
-  $escapedName = [regex]::Escape($Name)
-  $lines = @(Get-Content -LiteralPath $path)
-  $existing = $lines | Where-Object { $_ -match "^\s*$escapedName=" } | Select-Object -First 1
-  if (-not $Force -and $existing -and $existing -match "^\s*$escapedName=\S" -and $existing -notmatch "^\s*$escapedName=replace-with-") {
-    return
-  }
-  $lines = @($lines | Where-Object { $_ -notmatch "^\s*$escapedName=" })
-  $lines += "$Name=$Value"
-  [System.IO.File]::WriteAllLines($path, $lines, [System.Text.UTF8Encoding]::new($false))
-}
-
-function New-LocalSecret {
-  $bytes = New-Object -TypeName byte[] -ArgumentList 32
-  $rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
-  try {
-    $rng.GetBytes($bytes)
-    [Convert]::ToBase64String($bytes)
-  } finally {
-    $rng.Dispose()
-  }
-}
-
-Set-LocalEnvValue "PROJECTA_API_TRUSTED_CONTEXT_SECRET" (New-LocalSecret)
-Set-LocalEnvValue "PROJECTA_API_SECRET_STORE_MASTER_KEY" (uv run --project apps/api python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())")
-Set-LocalEnvValue "PROJECTA_CONNECTOR_POSTGRES_USER" "projecta"
-Set-LocalEnvValue "PROJECTA_CONNECTOR_POSTGRES_PASSWORD" (New-LocalSecret)
-Set-LocalEnvValue "PROJECTA_CONNECTOR_POSTGRES_DB" "projecta"
-Set-LocalEnvValue "PROJECTA_API_RUNTIME_MODE" "experience" -Force
-Set-LocalEnvValue "PROJECTA_API_EXPERIENCE_ACTOR_ID" "local-operator" -Force
-Set-LocalEnvValue "PROJECTA_API_EXPERIENCE_PROJECT_CATALOG" "project-alpha,project-beta" -Force
-Set-LocalEnvValue "PROJECTA_BOOTSTRAP_ACCEPTANCE_PROJECTS" "project-alpha|Project Alpha;project-beta|Project Beta" -Force
-
+pwsh -NoProfile -File ./scripts/setup-local-env.ps1
 docker compose --env-file .env -f compose.yaml -f compose.dev.yaml --profile web config --quiet
 if ($LASTEXITCODE -ne 0) { throw "Docker Compose configuration is invalid." }
 docker compose --env-file .env -f compose.yaml -f compose.dev.yaml --profile web up --build
 ```
 
-The setup keeps generated credentials in the Git-ignored `.env` and preserves
-existing non-placeholder database and key values on later runs. Do not share
-`.env` or reuse these local secrets in production. When all services are
+The bootstrap command preserves existing non-placeholder credentials, fills
+missing values, and refuses a production-mode `.env`; it is safe to rerun.
+It does not print credentials. Keep `.env` out of Git, do not share it, and do
+not reuse local credentials in production. Docker Compose must run with this
+generated `.env`, not the uninitialized `.env.example`. When services are
 healthy, open <http://localhost:3000>.
 
 ### Optional local suggestions
