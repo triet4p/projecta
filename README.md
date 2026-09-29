@@ -108,6 +108,24 @@ docker compose -f compose.yaml -f compose.dev.yaml --profile web ps
 docker compose -f compose.yaml -f compose.dev.yaml --profile web logs --tail=200 web api semantic-core fuseki
 ```
 
+If `connector-migrate` exits with PostgreSQL `password authentication failed`
+and the database log says `Skipping initialization` or `role ... does not
+exist`, the existing Compose volume was initialized with different credentials.
+Changing `.env` does not recreate PostgreSQL roles or rotate that volume's
+password. Preserve the old data: stop the partial stack **without** `--volumes`
+and start a separate project with fresh, empty volumes:
+
+```powershell
+docker compose --env-file .env -f compose.yaml -f compose.dev.yaml --profile web down
+docker compose -p projecta-fresh --env-file .env -f compose.yaml -f compose.dev.yaml --profile web up -d --build --wait
+```
+
+Use the same `-p projecta-fresh` for later `ps`, `logs`, and `down` commands.
+The original volumes remain available under the original Compose project, but
+their contents do not appear in the fresh project. To reuse that data instead,
+recover its original PostgreSQL credentials; do not erase the volume to silence
+an authentication error.
+
 For detailed health and recovery guidance, see the
 [operations guide](docs/runbooks/sprint-8-operations.md).
 

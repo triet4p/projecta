@@ -924,3 +924,21 @@ and arbitrary details sanitized, and exercise that handler through `create_app`.
 **Watch out for:** A router test with a hand-built FastAPI app cannot verify
 application-level error sanitization; use the real composition root whenever
 the public reason code or status depends on its exception handler.
+
+## [2026-09-29] PostgreSQL volume keeps its original role after `.env` changes
+
+**Symptom:** `connector-migrate` exited 1 with password authentication failed
+for `projecta`; PostgreSQL reported `role "projecta" does not exist` and
+`Database directory appears to contain a database; Skipping initialization`.
+**Root cause:** The default Compose PostgreSQL volume predated the new local
+`.env` credentials. `POSTGRES_USER`, `POSTGRES_PASSWORD`, and `POSTGRES_DB`
+initialize only an empty data directory, so rebuilding containers or copying
+a new template cannot rewrite the existing database's roles.
+**Fix / workaround:** Stop the failed default stack with `docker compose down`
+without `--volumes`, then start a separate `-p projecta-safe-try` project with
+the generated `.env`; its fresh volumes initialize with matching credentials.
+The original volumes and their data remain untouched.
+**Watch out for:** After bootstrapping a new `.env`, a previously initialized
+Compose project may require its original database credentials. Use a fresh
+project for a clean trial or recover the old credentials to preserve access;
+never delete an unknown PostgreSQL volume as the first troubleshooting step.
