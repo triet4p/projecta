@@ -554,14 +554,19 @@ class ManualApprovedCrossServiceTest {
                             body.path("sourceContentHash").isMissingNode()
                                     ? null
                                     : body.path("sourceContentHash").asText(null));
-                    var result = capture.capture(
-                            new ProjectId(trusted.project()), trusted.actor(), key, request);
+                    var project = new ProjectId(trusted.project());
+                    var result = capture.capture(project, trusted.actor(), key, request);
                     var candidates = new ArrayList<Map<String, String>>();
                     for (var candidate : result.candidates()) {
                         candidates.add(Map.of(
-                                "id", candidate.id(),
-                                "sourceItemId", candidate.sourceItemId(),
-                                "status", candidate.status()));
+                                "id",
+                                candidate.id(),
+                                "sourceItemId",
+                                candidate.sourceItemId(),
+                                "status",
+                                candidate.status(),
+                                "handle",
+                                queries.candidateHandle(project, candidate.id())));
                     }
                     respond(
                             exchange,

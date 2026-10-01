@@ -1,8 +1,10 @@
 """FastAPI composition root."""
 
+from pathlib import Path
+
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, Response
 from sqlalchemy import create_engine
 
 from projecta_api.config import Settings
@@ -547,6 +549,30 @@ def create_app(
             local_suggestions=local_suggestion_service,
         )
     )
+    if actual_settings.web_assets_directory is not None:
+        web_root = actual_settings.web_assets_directory.resolve()
+        index_path = web_root / "index.html"
+        if web_root.is_dir() and index_path.is_file():
+
+            @app.get("/", include_in_schema=False)
+            async def serve_web_index() -> FileResponse:
+                return FileResponse(index_path)
+
+            @app.get("/{web_path:path}", include_in_schema=False)
+            async def serve_web_path(web_path: str) -> Response:
+                if web_path in {"v1", "health", "docs", "redoc", "openapi.json"} or web_path.startswith(
+                    ("v1/", "health/", "docs/", "redoc/")
+                ):
+                    return Response(status_code=404)
+                requested_path = (web_root / web_path).resolve()
+                if not requested_path.is_relative_to(web_root):
+                    return Response(status_code=404)
+                if requested_path.is_file():
+                    return FileResponse(requested_path)
+                if Path(web_path).suffix:
+                    return Response(status_code=404)
+                return FileResponse(index_path)
+
     return app
 
 

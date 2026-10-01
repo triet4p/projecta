@@ -25,7 +25,7 @@ class ProjectWorkspaceQueryServiceTest {
     }
 
     @Test
-    void overviewUsesBoundedLabeledCollectionsForTheSelectedProject() {
+    void overviewUsesRouteCompatibleOpaqueHandlesForSelectedProject() {
         var service = new ProjectWorkspaceQueryService(ProjectWorkspaceQueryServiceTest::select, new GraphIriRouter());
 
         var result = service.overview(new ProjectId("alpha"), 10);
@@ -33,6 +33,15 @@ class ProjectWorkspaceQueryServiceTest {
         assertEquals("Alpha", result.project().name());
         assertEquals("Requirement", result.currentRequirements().getFirst().get("label"));
         assertEquals(1, result.evidenceCoverage().get("covered"));
+        assertEquals(
+                "node-h-" + OpaqueIds.opaqueHandle("https://w3id.org/projecta/data/alpha/item-1"),
+                result.currentRequirements().getFirst().get("handle"));
+        assertEquals(
+                "note-h-" + OpaqueIds.opaqueHandle("https://w3id.org/projecta/data/alpha/note-1"),
+                result.recentNotes().getFirst().get("handle"));
+        assertEquals(
+                "candidate-h-" + OpaqueIds.opaqueHandle("https://w3id.org/projecta/data/alpha/candidate-1"),
+                result.pendingCandidates().getFirst().get("handle"));
     }
 
     private static String select(String query) {

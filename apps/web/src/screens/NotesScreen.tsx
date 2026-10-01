@@ -1,6 +1,6 @@
 import { type ReactElement, useCallback, useEffect, useState } from "react";
 
-import { ProjectaApiClient } from "../api/client";
+import { ApiError, type ProjectaApiClient } from "../api/client";
 import type {
   EntityType,
   StructuredNoteDetail,
@@ -9,7 +9,7 @@ import type {
   StructuredNoteListResponse,
 } from "../api/generated";
 import { Card, ErrorMessage, operationKey, StateMessage, StatusBadge } from "../ui";
-import { CaptureScreen } from "./CaptureScreen";
+import { CaptureScreen, type CaptureDraft } from "./CaptureScreen";
 import { moveNoteItem } from "./note-composer";
 
 const types: EntityType[] = [
@@ -28,9 +28,23 @@ interface Props {
   api: ProjectaApiClient;
   projectHandle: string;
   onCandidate: (candidateHandle: string) => void;
+  captureDraft: CaptureDraft | null;
+  onCaptureDraftChange: (draft: CaptureDraft | null) => void;
+  selectedNote: { handle: string; label: string } | null;
+  onClearSelectedNote: () => void;
+  onReturnToOverview: () => void;
 }
 
-export function NotesScreen({ api, projectHandle, onCandidate }: Props): ReactElement {
+export function NotesScreen({
+  api,
+  projectHandle,
+  onCandidate,
+  captureDraft,
+  onCaptureDraftChange,
+  selectedNote,
+  onClearSelectedNote,
+  onReturnToOverview,
+}: Props): ReactElement {
   const [title, setTitle] = useState("Untitled Note");
   const [items, setItems] = useState<StructuredNoteDraftInput["items"]>([]);
   const [draft, setDraft] = useState<StructuredNoteDraftResponse | null>(null);
@@ -41,6 +55,13 @@ export function NotesScreen({ api, projectHandle, onCandidate }: Props): ReactEl
   const [error, setError] = useState<unknown>(null);
   const [busy, setBusy] = useState(false);
   const [manualCaptureOpen, setManualCaptureOpen] = useState(false);
+  const [selectedNoteStatus, setSelectedNoteStatus] = useState<
+    "idle" | "loading" | "loaded" | "missing" | "unavailable"
+  >("idle");
+  const [selectedNoteError, setSelectedNoteError] = useState<unknown>(null);
+  const [selectedNoteRetry, setSelectedNoteRetry] = useState(0);
+  const selectedNoteHandle = selectedNote?.handle ?? null;
+  const selectedNoteLabel = selectedNote?.label ?? "";
 
   const loadNotes = useCallback(async () => {
     try {
@@ -54,6 +75,41 @@ export function NotesScreen({ api, projectHandle, onCandidate }: Props): ReactEl
   useEffect(() => {
     void loadNotes();
   }, [loadNotes]);
+  useEffect(() => {
+    if (!selectedNoteHandle) {
+      setSelectedNoteStatus("idle");
+      setSelectedNoteError(null);
+      return;
+    }
+    let active = true;
+    setSelectedNoteStatus("loading");
+    setSelectedNoteError(null);
+    setDetail(null);
+    void api
+      .readStructuredNote(projectHandle, selectedNoteHandle)
+      .then((record) => {
+        if (!active) return;
+        if (record.noteHandle !== selectedNoteHandle) {
+          setSelectedNoteStatus("unavailable");
+          setSelectedNoteError(new Error("The API returned a different Note than the selected one."));
+          return;
+        }
+        setDetail(record);
+        setSelectedNoteStatus("loaded");
+      })
+      .catch((nextError: unknown) => {
+        if (!active) return;
+        setSelectedNoteStatus(
+          nextError instanceof ApiError && nextError.problem.status === 404
+            ? "missing"
+            : "unavailable",
+        );
+        setSelectedNoteError(nextError);
+      });
+    return () => {
+      active = false;
+    };
+  }, [api, projectHandle, selectedNoteHandle, selectedNoteRetry]);
 
   const payload = (): StructuredNoteDraftInput => ({
     title,
@@ -132,7 +188,15 @@ export function NotesScreen({ api, projectHandle, onCandidate }: Props): ReactEl
     return (
       <div className="workspace-page">
         <div className="workspace-header">
-          <p className="eyebrow">Manual Quick Note capture</p>
+          <div>
+            <p className="eyebrow">Notes · exact-span capture</p>
+            <h2>Capture exact spans</h2>
+            <p className="muted">
+              Use this path when a particular passage must stay anchored to its source. A successful
+              capture returns a candidate for the Review Queue. Review is a separate decision;
+              capture does not approve or materialize the candidate.
+            </p>
+          </div>
           <button
             className="secondary"
             onClick={() => setManualCaptureOpen(false)}
@@ -141,7 +205,12 @@ export function NotesScreen({ api, projectHandle, onCandidate }: Props): ReactEl
             Back to Notes
           </button>
         </div>
-        <CaptureScreen api={api} onCandidate={onCandidate} />
+        <CaptureScreen
+          api={api}
+          draft={captureDraft}
+          onCandidate={onCandidate}
+          onDraftChange={onCaptureDraftChange}
+        />
       </div>
     );
   }
@@ -149,25 +218,145 @@ export function NotesScreen({ api, projectHandle, onCandidate }: Props): ReactEl
 
   return (
     <div className="workspace-page">
+
+      {captureDraft !== null && (
+        <Card>
+          <StateMessage kind="empty">
+            An unfinished source capture is preserved in this session only. It has not been
+            submitted and is not a saved Note.
+          </StateMessage>
+          <div className="button-row">
+            <button onClick={() => setManualCaptureOpen(true)} type="button">
+              Continue capture
+            </button>
+            <button
+              className="danger"
+              onClick={() => onCaptureDraftChange(null)}
+              type="button"
+            >
+              Discard unsubmitted capture
+            </button>
+          </div>
+        </Card>
+      )}
       <div className="workspace-header">
         <div>
-          <p className="eyebrow">Structured source capture</p>
+          <p className="eyebrow">Source notes</p>
           <h2>Notes</h2>
           <p className="muted">
-            Compose typed source items; the server derives canonical text and evidence offsets.
+            Choose typed items, editable proposals from pasted text, or an exact source passage.
+            Each path has a different save and review outcome.
           </p>
         </div>
-        <button
-          className="secondary"
-          onClick={() => setManualCaptureOpen(true)}
-          type="button"
-        >
-          Capture exact spans
-        </button>
       </div>
+      {selectedNoteHandle && (
+        <Card className="note-selection-context">
+          <p className="eyebrow">Project Overview selection</p>
+          <h3>{selectedNoteLabel}</h3>
+          {selectedNoteStatus === "loading" && (
+            <StateMessage kind="loading">Opening this Note in the active project…</StateMessage>
+          )}
+          {selectedNoteStatus === "loaded" && detail?.noteHandle === selectedNoteHandle && (
+            <>
+              <StateMessage kind="success">
+                The selected Note’s source detail is open below. No candidate decision or Graph
+                materialization was made.
+              </StateMessage>
+              <div className="note-detail">
+                <h3>{detail.title}</h3>
+                <p className="metadata">
+                  {detail.author} · {detail.recordedAt} · {Math.round(detail.evidenceCoverage * 100)}%
+                  evidence coverage
+                </p>
+                {detail.items.map((item) => (
+                  <div className="evidence-row" key={`${item.startOffset}-${item.endOffset}`}>
+                    <StatusBadge status={item.itemType} />
+                    <strong>{item.content}</strong>
+                    <small>
+                      {item.startOffset}–{item.endOffset}
+                    </small>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+          {selectedNoteStatus === "missing" && (
+            <>
+              <StateMessage kind="empty">
+                The selected Note could not be found in this project. No other Note was opened.
+              </StateMessage>
+              {selectedNoteError !== null && <ErrorMessage error={selectedNoteError} />}
+            </>
+          )}
+          {selectedNoteStatus === "unavailable" && (
+            <>
+              <p className="metadata">
+                The selected Note could not be loaded. No other record was substituted.
+              </p>
+              {selectedNoteError !== null && <ErrorMessage error={selectedNoteError} />}
+            </>
+          )}
+          <div className="button-row">
+            {(selectedNoteStatus === "missing" || selectedNoteStatus === "unavailable") && (
+              <button
+                className="secondary"
+                onClick={() => setSelectedNoteRetry((revision) => revision + 1)}
+                type="button"
+              >
+                Retry selected Note
+              </button>
+            )}
+            <button className="secondary" onClick={onReturnToOverview} type="button">
+              Back to Project Overview
+            </button>
+          </div>
+        </Card>
+      )}
+      <section className="note-path-guide" aria-labelledby="note-path-guide-heading">
+        <div>
+          <p className="eyebrow">Choose a Notes path</p>
+          <h3 id="note-path-guide-heading">How do you want to work with this source?</h3>
+        </div>
+        <div className="note-path-grid">
+          <article className="note-path-option">
+            <h3>Note Composer</h3>
+            <p>
+              Use for writing a structured Note from typed items. Save a draft to persist it;
+              commit is a separate, deliberate step.
+            </p>
+            <a className="note-path-action" href="#note-composer">
+              Open Note Composer
+            </a>
+          </article>
+          <article className="note-path-option">
+            <h3>Assisted import</h3>
+            <p>
+              Use when you have source text and want editable item proposals. Proposals load into
+              the Composer; nothing is saved or committed automatically.
+            </p>
+            <a className="note-path-action" href="#assisted-import">
+              Open Assisted import
+            </a>
+          </article>
+          <article className="note-path-option">
+            <h3>Exact-span capture</h3>
+            <p>
+              Use when a specific passage must remain anchored to its source. Capture creates a
+              review candidate, not an approval or graph materialization.
+            </p>
+            <button
+              className="secondary"
+              onClick={() => setManualCaptureOpen(true)}
+              type="button"
+            >
+              Capture exact spans
+            </button>
+          </article>
+        </div>
+      </section>
       <div className="screen-grid two-column">
         <Card>
-          <div className="section-heading">
+          <div className="section-heading" id="note-composer">
             <div>
               <p className="eyebrow">Note Composer</p>
               <h3>Editable typed items</h3>
@@ -256,7 +445,7 @@ export function NotesScreen({ api, projectHandle, onCandidate }: Props): ReactEl
         <div className="screen-grid">
           <Card>
             <p className="eyebrow">Assisted import</p>
-            <h3>Paste text for editable proposals</h3>
+            <h3 id="assisted-import">Paste text for editable proposals</h3>
             <label className="stacked-label">
               Source text
               <textarea
@@ -310,6 +499,8 @@ export function NotesScreen({ api, projectHandle, onCandidate }: Props): ReactEl
               className="note-list-item"
               key={item.draftHandle}
               onClick={() => {
+                onClearSelectedNote();
+                setDetail(null);
                 setDraft(item);
                 setTitle(item.title);
                 setItems(item.items.map(({ itemType, content }) => ({ itemType, content })));
@@ -326,12 +517,15 @@ export function NotesScreen({ api, projectHandle, onCandidate }: Props): ReactEl
             <button
               className="note-list-item"
               key={item.handle}
-              onClick={() =>
+              onClick={() => {
+                if (item.handle !== selectedNoteHandle) onClearSelectedNote();
+                setDetail(null);
+                setError(null);
                 void api
                   .readStructuredNote(projectHandle, item.handle)
                   .then(setDetail)
-                  .catch(setError)
-              }
+                  .catch(setError);
+              }}
               type="button"
             >
               <strong>{item.title}</strong>
@@ -342,11 +536,18 @@ export function NotesScreen({ api, projectHandle, onCandidate }: Props): ReactEl
             </button>
           ))}
         </div>
-        {detail && (
+        {detail && detail.noteHandle !== selectedNoteHandle && (
           <div className="note-detail">
             <div className="section-heading">
               <h3>{detail.title}</h3>
-              <button className="secondary" onClick={() => setDetail(null)} type="button">
+              <button
+                className="secondary"
+                onClick={() => {
+                  setDetail(null);
+                  onClearSelectedNote();
+                }}
+                type="button"
+              >
                 Close detail
               </button>
             </div>

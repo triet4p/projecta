@@ -787,6 +787,17 @@ function normalizeProblem(body: unknown, status: number, requestId: string): Pro
   );
 }
 
+function hasProjectCandidateHandles(candidates: unknown): boolean {
+  if (!Array.isArray(candidates)) return false;
+  return candidates.every((candidate) => {
+    if (typeof candidate !== "object" || candidate === null || Array.isArray(candidate)) {
+      return false;
+    }
+    const handle = (candidate as Record<string, unknown>).handle;
+    return typeof handle === "string" && /^candidate-h-[0-9a-f]{24}$/.test(handle);
+  });
+}
+
 function validateSuccess(path: string, body: unknown, requestId: string): void {
   if (typeof body !== "object" || body === null || Array.isArray(body)) {
     throw contractError(requestId, "The API success body is malformed.");
@@ -862,6 +873,9 @@ function validateSuccess(path: string, body: unknown, requestId: string): void {
     if (typeof value.note !== "object" || !Array.isArray(value.candidates)) {
       throw contractError(requestId, "The API note response is malformed.");
     }
+  }
+  if (path === "/v1/quick-notes" && !hasProjectCandidateHandles(value.candidates)) {
+    throw contractError(requestId, "The captured candidates do not have project review handles.");
   }
 }
 

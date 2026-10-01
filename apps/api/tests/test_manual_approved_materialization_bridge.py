@@ -129,7 +129,12 @@ class _ConnectedCore:
                 "requestId": context.request_id,
                 "note": {"id": "note-1", "recordedAt": datetime.now(UTC).isoformat()},
                 "candidates": [
-                    {"id": candidate_id, "sourceItemId": "note-1-1", "status": "extracted"}
+                    {
+                        "id": candidate_id,
+                        "handle": self.candidate_handle,
+                        "sourceItemId": "note-1-1",
+                        "status": "extracted",
+                    }
                 ],
             }
         )

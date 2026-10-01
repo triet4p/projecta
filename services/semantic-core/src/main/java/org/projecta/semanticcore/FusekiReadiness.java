@@ -17,7 +17,7 @@ public final class FusekiReadiness {
 
     public boolean isReady() {
         try {
-            var request = HttpRequest.newBuilder(configuration.fusekiPingUrl())
+            var request = HttpRequest.newBuilder(configuration.fusekiReadinessUrl())
                     .GET()
                     .timeout(Duration.ofSeconds(3))
                     .build();

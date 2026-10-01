@@ -27,7 +27,69 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   captures directly to the Review Queue, making the zero-model workflow
   reachable through normal workspace navigation.
 
+- Added optional directory-backed serving of the compiled React SPA from the
+  Application API for a same-origin local package path. Missing or invalid
+  configured assets fail readiness instead of masquerading as a usable install.
+
+- Added a Windows 11 x64 per-user launcher path with loopback-bound managed
+  services, CurrentUser DPAPI secrets, readiness/status/stop controls, and
+  hash-verified whole-state backup/restore with rollback. A pinned
+  host-validation-only package was assembled and exercised on the development
+  host; it remains unsigned and non-distributable, with clean-machine, signing,
+  and sustained-readiness proof still open.
+
+### Fixed
+
+- Corrected the native launcher path: approved first-run workspace provisioning
+  replaces the previous setup blocker; Semantic Core reads the packaged shapes
+  directory instead of a hardcoded Unix path; child services are owned by a
+  Windows Job Object so a manager crash cannot orphan them; restore uses a
+  two-phase directory swap that preserves full state across partial failures;
+  Fuseki readiness probes the dataset endpoint; the embeddable Python entry
+  points resolve the staged API; and the native package builder rebuilds the
+  compiled SPA from source before staging.
+
+- Prevented transient native-runtime readiness failures by aligning the API probe deadline with its nested Semantic Core check; failed probes now record bounded, allow-listed health details in the local launcher log.
+- Bounded both native Semantic Core and API outer readiness probes at four seconds to cover their nested three-second checks; regression cases exercise delayed success and the single-request deadline failure.
+- Expanded native package assembly to inventory the exact Maven runtime and
+  license inputs, verify app-local Microsoft VC DLL signatures, and report
+  recursive x64 PE imports and unverified loader-string candidates. The
+  corrected unsigned host-validation bundle now starts all four local services
+  and serves the no-provider workspace, but remains non-distributable pending
+  owner signing, clean-machine proof, and legal approval.
+
 ### Changed
+
+- Separated project selection from workspace navigation; the active project
+  remains visible while switching is available only through **Change project**.
+
+- Placed **Signed in** and **Sign out** in the app top bar, keeping session
+  controls available in both the Projects chooser and project workspaces.
+
+- Clarified when to use Note Composer, Assisted import, and exact-span capture,
+  including their distinct save and review outcomes. Successful capture now
+  names the Review Queue as its next step without implying approval.
+
+- Made directed Graph relations legible with labeled, visible arrowheads at
+  target-node boundaries; the legend explains non-color patterns for
+  verification/lifecycle states, selection, hover, and keyboard focus.
+
+- Canonicalized experience catalog revisions to Semantic Core's sorted project allowlist, preventing a valid selection from becoming stale when the configured allowlist order differs.
+
+- Preserved cross-screen journey context: exact-span captures focus the matching
+  source-bound Review Queue candidate; Project Overview items open their
+  project-scoped Graph detail, and Recent Notes opens the exact source record in
+  Notes. Missing or unavailable routed context remains visible without
+  substitution and offers recovery and return paths. Overview now emits
+  destination-compatible, project-scoped `node-h-`, `note-h-`, and
+  `candidate-h-` handles from the same opaque resource identity used by Core.
+- Kept unfinished exact-span source and selection in memory when returning to
+  Notes, with explicit continue/discard actions; switching projects clears the
+  unsubmitted capture draft.
+
+- Returned the server-issued project-scoped candidate handle with exact-span
+  captures, so Review Queue opens the exact source-bound candidate instead of
+  losing its selection.
 
 - Forwarded the optional `PROJECTA_LOCAL_SUGGESTION_MODEL` setting to the Compose
   API with an empty default; suggestions remain operator-enabled and disabled in
@@ -37,7 +99,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   idempotent PowerShell bootstrap command that generates unique credentials,
   seeds the experience projects, and leaves external providers disabled.
 
+- Changed Fuseki bootstrap to append ontology/project triples and persist a
+  version marker in the Fuseki data volume, avoiding graph replacement on
+  later starts while preserving existing graph content.
+
 ### Fixed
+
+- Appended the system-test M4 fixture to its named graphs instead of replacing
+  existing project metadata during local acceptance setup.
 
 - Preserved the API's finite local-suggestion error codes and safe reason details
   for disabled, unconfigured, and unreachable local models.

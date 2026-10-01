@@ -71,6 +71,7 @@ services:
     volumes:
       - ./ontology:/data:ro
       - ./scripts:/scripts:ro
+      - fuseki-data:/var/lib/fuseki
     entrypoint:
       - uv
       - run
@@ -80,6 +81,7 @@ services:
     environment:
       FUSEKI_DATASET_URL: http://fuseki:3030/projecta
       PROJECTA_BOOTSTRAP_ACCEPTANCE_PROJECTS: ${PROJECTA_BOOTSTRAP_ACCEPTANCE_PROJECTS:-}
+      PROJECTA_FUSEKI_BOOTSTRAP_MARKER_FILE: /var/lib/fuseki/projecta-bootstrap.json
     restart: "no"
 
   semantic-core:

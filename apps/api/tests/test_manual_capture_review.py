@@ -81,7 +81,12 @@ class _ManualCore:
                 "requestId": context.request_id,
                 "note": {"id": "note-1", "recordedAt": datetime.now(UTC).isoformat()},
                 "candidates": [
-                    {"id": candidate_id, "sourceItemId": "note-1-1", "status": "extracted"}
+                    {
+                        "id": candidate_id,
+                        "handle": self.candidate_handle,
+                        "sourceItemId": "note-1-1",
+                        "status": "extracted",
+                    }
                 ],
             }
         )
@@ -209,10 +214,21 @@ async def _create_capture_and_get_detail(client: AsyncClient, harness: _Harness)
         json=_capture_payload(),
     )
     assert capture_response.status_code == 201, capture_response.text
-    assert capture_response.json()["note"]["id"] == "note-1"
+    capture_payload = capture_response.json()
+    assert capture_payload["note"]["id"] == "note-1"
+    captured_candidate = capture_payload["candidates"][0]
+    assert captured_candidate["id"] != captured_candidate["handle"]
+
+    queue_response = await client.get(
+        f"/v1/projects/{_PROJECT_HANDLE}/candidates",
+        headers=harness.headers,
+    )
+    assert queue_response.status_code == 200, queue_response.text
+    queued_handles = {item["handle"] for item in queue_response.json()["candidates"]}
+    assert captured_candidate["handle"] in queued_handles
 
     detail_path = (
-        f"/v1/projects/{_PROJECT_HANDLE}/candidates/{harness.core.candidate_handle}/review-detail"
+        f"/v1/projects/{_PROJECT_HANDLE}/candidates/{captured_candidate['handle']}/review-detail"
     )
     detail_response = await client.get(detail_path, headers=harness.headers)
     assert detail_response.status_code == 200, detail_response.text

@@ -70,6 +70,8 @@ class StructuredNoteCore:
         body: object | None = None,
         key: str | None = None,
     ) -> object:
+        if path.endswith("/source-context"):
+            raise SemanticCoreProblem(404, "RESOURCE_NOT_FOUND", "not a manual candidate")
         if path.endswith("/validations"):
             return {
                 "requestId": context.request_id,

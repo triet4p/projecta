@@ -68,6 +68,9 @@ class FusekiQueryServiceProjectionTest {
         assertEquals("research new VAE Architecture", candidates.getFirst().get("label"));
         assertEquals("Requirement", candidates.getFirst().get("proposedType"));
         assertEquals("extracted", candidates.getFirst().get("validationState"));
+        assertEquals(
+                service.candidateHandle(new ProjectId("project-alpha"), "note-1-1"),
+                candidates.getFirst().get("handle"));
         assertTrue(gateway.queries.getFirst().contains("contentText"));
         assertTrue(gateway.queries.getFirst().contains("hasItemType"));
         assertTrue(gateway.queries.getFirst().contains("connector-json-mock-v1"));

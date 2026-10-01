@@ -5,7 +5,7 @@ import type { GraphNode, GraphNodeDetail, GraphProjectionResponse } from "../api
 import { Card, ErrorMessage, StateMessage, StatusBadge } from "../ui";
 
 const types = ["All", "Requirement", "Question", "Task", "Risk", "Decision", "Note"] as const;
-const states = ["All", "candidate", "asserted", "inferred"] as const;
+const states = ["All", "candidate", "asserted", "inferred", "unverified"] as const;
 const relations = ["All", "supports", "blocks", "dependsOn", "implements", "derivedFrom"] as const;
 const lifecycles = ["All", "current", "pending-review", "confirmed", "rejected", "stale"] as const;
 const provenances = [
@@ -15,13 +15,94 @@ const provenances = [
   "rule-derived",
   "candidate-proposed",
 ] as const;
+interface GraphPoint {
+  x: number;
+  y: number;
+}
+
+interface GraphEdgeGeometry {
+  path: string;
+  arrowheadPoints: string;
+  selfLoop: boolean;
+}
+
+const GRAPH_NODE_HALF_WIDTH = 85;
+const GRAPH_NODE_HALF_HEIGHT = 36;
+const GRAPH_ARROW_LENGTH = 12;
+const GRAPH_ARROW_HALF_WIDTH = 5;
+const SELF_EDGE_DIRECTION_LENGTH = Math.hypot(44, 48);
+
+function graphNodeCenter(index: number): GraphPoint {
+  return { x: 120 + (index % 4) * 210, y: 70 + Math.floor(index / 4) * 130 };
+}
+
+function graphEdgeGeometry(sourceIndex: number, targetIndex: number): GraphEdgeGeometry {
+  const source = graphNodeCenter(sourceIndex);
+  const target = graphNodeCenter(targetIndex);
+  const dx = target.x - source.x;
+  const dy = target.y - source.y;
+  const distance = Math.hypot(dx, dy);
+  const selfLoop = sourceIndex === targetIndex || distance === 0;
+
+  const boundaryScale = selfLoop
+    ? 0
+    : 1 / Math.max(Math.abs(dx) / GRAPH_NODE_HALF_WIDTH, Math.abs(dy) / GRAPH_NODE_HALF_HEIGHT);
+  const direction = selfLoop
+    ? { x: -44 / SELF_EDGE_DIRECTION_LENGTH, y: 48 / SELF_EDGE_DIRECTION_LENGTH }
+    : { x: dx / distance, y: dy / distance };
+  const tip = selfLoop
+    ? { x: target.x + 24, y: target.y - GRAPH_NODE_HALF_HEIGHT }
+    : { x: target.x - dx * boundaryScale, y: target.y - dy * boundaryScale };
+  const base = {
+    x: tip.x - direction.x * GRAPH_ARROW_LENGTH,
+    y: tip.y - direction.y * GRAPH_ARROW_LENGTH,
+  };
+  const perpendicular = { x: -direction.y, y: direction.x };
+  const baseA = {
+    x: base.x + perpendicular.x * GRAPH_ARROW_HALF_WIDTH,
+    y: base.y + perpendicular.y * GRAPH_ARROW_HALF_WIDTH,
+  };
+  const baseB = {
+    x: base.x - perpendicular.x * GRAPH_ARROW_HALF_WIDTH,
+    y: base.y - perpendicular.y * GRAPH_ARROW_HALF_WIDTH,
+  };
+  const arrowheadPoints = `${tip.x},${tip.y} ${baseA.x},${baseA.y} ${baseB.x},${baseB.y}`;
+
+  if (selfLoop) {
+    const start = { x: source.x - 24, y: source.y - GRAPH_NODE_HALF_HEIGHT };
+    const control1 = { x: source.x - 48, y: source.y - 66 };
+    const control2 = {
+      x: base.x - direction.x * 20,
+      y: base.y - direction.y * 20,
+    };
+    return {
+      path: `M ${start.x} ${start.y} C ${control1.x} ${control1.y}, ${control2.x} ${control2.y}, ${base.x} ${base.y}`,
+      arrowheadPoints,
+      selfLoop,
+    };
+  }
+
+  const start = { x: source.x + dx * boundaryScale, y: source.y + dy * boundaryScale };
+  return {
+    path: `M ${start.x} ${start.y} L ${base.x} ${base.y}`,
+    arrowheadPoints,
+    selfLoop,
+  };
+}
+
 
 export function GraphScreen({
   api,
   projectHandle,
+  selectedItem,
+  onClearSelectedItem,
+  onReturnToOverview,
 }: {
   api: ProjectaApiClient;
   projectHandle: string;
+  selectedItem: { handle: string; label: string } | null;
+  onClearSelectedItem: () => void;
+  onReturnToOverview: () => void;
 }) {
   const [graph, setGraph] = useState<GraphProjectionResponse | null>(null);
   const [detail, setDetail] = useState<GraphNodeDetail | null>(null);
@@ -34,6 +115,11 @@ export function GraphScreen({
   const [scale, setScale] = useState(1);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<unknown>(null);
+  const [selectionStatus, setSelectionStatus] = useState<
+    "idle" | "loading" | "loaded" | "unavailable"
+  >("idle");
+  const [selectionError, setSelectionError] = useState<unknown>(null);
+  const selectedItemHandle = selectedItem?.handle;
 
   const load = async (signal?: AbortSignal) => {
     setBusy(true);
@@ -67,6 +153,34 @@ export function GraphScreen({
     return () => controller.abort();
   }, [projectHandle, nodeType, verification, relation, lifecycle, provenance, evidence]);
 
+  useEffect(() => {
+    if (!selectedItemHandle) {
+      setSelectionStatus("idle");
+      setSelectionError(null);
+      setDetail(null);
+      return;
+    }
+    let active = true;
+    setSelectionStatus("loading");
+    setSelectionError(null);
+    setDetail(null);
+    void api
+      .getGraphNodeDetail(projectHandle, selectedItemHandle)
+      .then((nextDetail) => {
+        if (!active) return;
+        setDetail(nextDetail);
+        setSelectionStatus("loaded");
+      })
+      .catch((nextError: unknown) => {
+        if (!active) return;
+        setSelectionError(nextError);
+        setSelectionStatus("unavailable");
+      });
+    return () => {
+      active = false;
+    };
+  }, [api, projectHandle, selectedItemHandle]);
+
   const visibleNodes = useMemo(() => {
     if (!graph) return [];
     return graph.nodes.filter((node) => {
@@ -87,6 +201,7 @@ export function GraphScreen({
   );
 
   const openDetail = async (node: GraphNode) => {
+    onClearSelectedItem();
     setError(null);
     try {
       setDetail(await api.getGraphNodeDetail(projectHandle, node.handle));
@@ -109,6 +224,40 @@ export function GraphScreen({
 
   return (
     <div className="screen-grid graph-screen">
+      {selectedItem && (
+        <Card className="graph-selection-context">
+          <p className="eyebrow">Project Overview selection</p>
+          <h3>{selectedItem.label}</h3>
+          {selectionStatus === "loading" && (
+            <StateMessage kind="loading">
+              Opening this item in the selected project's Graph…
+            </StateMessage>
+          )}
+          {selectionStatus === "loaded" && (
+            <StateMessage kind="success">
+              The matching project-scoped detail is open below. Graph inspection is read-only;
+              no review decision or graph write was made.
+            </StateMessage>
+          )}
+          {selectionStatus === "unavailable" && (
+            <>
+              <StateMessage kind="empty">
+                This overview item could not be opened in the selected project's Graph. The project
+                context is unchanged; clear this selection to browse the available projection.
+              </StateMessage>
+              {selectionError !== null && <ErrorMessage error={selectionError} />}
+            </>
+          )}
+          <div className="toolbar-actions">
+            <button className="secondary" onClick={onClearSelectedItem} type="button">
+              Browse Graph
+            </button>
+            <button className="secondary" onClick={onReturnToOverview} type="button">
+              Back to Project Overview
+            </button>
+          </div>
+        </Card>
+      )}
       <Card>
         <div className="section-heading">
           <div>
@@ -116,6 +265,9 @@ export function GraphScreen({
             <h2>Finite knowledge projection</h2>
           </div>
           <div className="toolbar-actions">
+            <button className="secondary" onClick={onReturnToOverview} type="button">
+              Back to Project Overview
+            </button>
             <button
               className="secondary"
               onClick={() => setScale((value) => Math.max(0.75, value - 0.1))}
@@ -219,65 +371,113 @@ export function GraphScreen({
           <StateMessage kind="empty">No graph nodes match these finite filters.</StateMessage>
         )}
         {graph && visibleNodes.length > 0 && (
-          <div className="graph-canvas-wrap" role="img" aria-label="Directed project graph">
+          <div className="graph-canvas-wrap">
             <svg
+              aria-label="Directed project graph. Node verification and lifecycle states are shown in each node."
               className="graph-canvas"
               height="360"
+              role="group"
               viewBox="0 0 900 360"
+              width="900"
               style={{ transform: `scale(${scale})` }}
             >
               {visibleEdges.map((edge) => {
                 const source = visibleNodes.findIndex((node) => node.handle === edge.sourceHandle);
                 const target = visibleNodes.findIndex((node) => node.handle === edge.targetHandle);
                 if (source < 0 || target < 0) return null;
-                const x1 = 120 + (source % 4) * 210;
-                const y1 = 70 + Math.floor(source / 4) * 130;
-                const x2 = 120 + (target % 4) * 210;
-                const y2 = 70 + Math.floor(target / 4) * 130;
+                const { x: x1, y: y1 } = graphNodeCenter(source);
+                const { x: x2, y: y2 } = graphNodeCenter(target);
+                const geometry = graphEdgeGeometry(source, target);
                 return (
-                  <line
-                    className={`graph-edge ${edge.verificationState}`}
-                    key={edge.handle}
-                    markerEnd="url(#arrow)"
-                    x1={x1}
-                    x2={x2}
-                    y1={y1}
-                    y2={y2}
-                  />
+                  <g className={`graph-edge-group ${edge.verificationState}`} key={edge.handle}>
+                    <path
+                      aria-hidden="true"
+                      className={`graph-edge ${edge.verificationState}`}
+                      d={geometry.path}
+                    />
+                    <polygon
+                      aria-hidden="true"
+                      className={`graph-edge-arrowhead ${edge.verificationState}`}
+                      points={geometry.arrowheadPoints}
+                    />
+                    <text
+                      className="graph-edge-label"
+                      textAnchor="middle"
+                      x={geometry.selfLoop ? x1 : (x1 + x2) / 2}
+                      y={
+                        geometry.selfLoop
+                          ? y1 + 54
+                          : y1 === y2
+                            ? y1 - 42
+                            : (y1 + y2) / 2 - 8
+                      }
+                    >
+                      {edge.relationType}
+                    </text>
+                  </g>
                 );
               })}
-              <defs>
-                <marker
-                  id="arrow"
-                  markerHeight="7"
-                  markerWidth="7"
-                  orient="auto"
-                  refX="6"
-                  refY="3.5"
-                >
-                  <path d="M0,0 L7,3.5 L0,7 z" />
-                </marker>
-              </defs>
               {visibleNodes.map((node, index) => {
-                const x = 120 + (index % 4) * 210;
-                const y = 70 + Math.floor(index / 4) * 130;
+                const { x, y } = graphNodeCenter(index);
+                const selected = detail?.handle === node.handle;
+                const visibleLabel =
+                  node.label.length > 23 ? `${node.label.slice(0, 22)}…` : node.label;
                 return (
                   <g
-                    className={`graph-node ${node.verificationState}`}
+                    aria-label={`${node.label}. ${node.semanticType}; ${node.verificationState}; ${node.lifecycleState}.`}
+                    aria-pressed={selected}
+                    className={`graph-node ${node.verificationState}${selected ? " selected" : ""}`}
                     key={node.handle}
                     onClick={() => void openDetail(node)}
                     onKeyDown={(event) => {
-                      if (event.key === "Enter" || event.key === " ") void openDetail(node);
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        void openDetail(node);
+                      }
                     }}
                     role="button"
                     tabIndex={0}
                   >
-                    <rect height="56" rx="8" width="170" x={x - 85} y={y - 28} />
-                    <text className="graph-node-label" textAnchor="middle" x={x} y={y - 4}>
-                      {node.label.slice(0, 25)}
+                    <title>{node.label}</title>
+                    <rect
+                      className="graph-node-frame"
+                      height="72"
+                      rx="8"
+                      width="170"
+                      x={x - 85}
+                      y={y - 36}
+                    />
+                    {selected && (
+                      <rect
+                        className="graph-node-selected-ring"
+                        height="82"
+                        rx="11"
+                        width="180"
+                        x={x - 90}
+                        y={y - 41}
+                      />
+                    )}
+                    <rect
+                      className="graph-node-focus-ring"
+                      height="88"
+                      rx="13"
+                      width="186"
+                      x={x - 93}
+                      y={y - 44}
+                    />
+                    <text className="graph-node-label" textAnchor="middle" x={x} y={y - 13}>
+                      {visibleLabel}
                     </text>
-                    <text className="graph-node-type" textAnchor="middle" x={x} y={y + 15}>
-                      {node.semanticType} · {node.lifecycleState}
+                    <text className="graph-node-type" textAnchor="middle" x={x} y={y + 5}>
+                      {node.semanticType}
+                    </text>
+                    <text
+                      className={`graph-node-state ${node.verificationState}`}
+                      textAnchor="middle"
+                      x={x}
+                      y={y + 23}
+                    >
+                      {node.verificationState} · {node.lifecycleState}
                     </text>
                   </g>
                 );
@@ -285,20 +485,56 @@ export function GraphScreen({
             </svg>
           </div>
         )}
-        <div className="graph-legend" aria-label="Graph legend">
+        <div className="graph-legend" aria-label="Graph legend" role="group">
           <span>
-            <i className="legend-dot asserted" />
-            Asserted
+            <span aria-hidden="true" className="legend-marker asserted">
+              A
+            </span>
+            Asserted (solid outline)
           </span>
           <span>
-            <i className="legend-dot inferred" />
-            Inferred
+            <span aria-hidden="true" className="legend-marker inferred">
+              I
+            </span>
+            Inferred (dashed outline)
           </span>
           <span>
-            <i className="legend-dot candidate" />
-            Candidate
+            <span aria-hidden="true" className="legend-marker candidate">
+              C
+            </span>
+            Candidate (long-dashed outline)
           </span>
-          <span>Edges are directed; click a node for detail.</span>
+          <span>
+            <span aria-hidden="true" className="legend-marker unverified">
+              U
+            </span>
+            Unverified (dotted outline)
+          </span>
+          <span>
+            <span aria-hidden="true" className="legend-marker selected">
+              S
+            </span>
+            Selected (dashed outer ring)
+          </span>
+          <span>
+            <span aria-hidden="true" className="legend-marker hovered">
+              H
+            </span>
+            Hovered (heavier outline)
+          </span>
+          <span>
+            <span aria-hidden="true" className="legend-marker focused">
+              F
+            </span>
+            Keyboard focus (dotted outer ring)
+          </span>
+          <span>
+            <span aria-hidden="true" className="legend-arrow">
+              →
+            </span>
+            Directed relation; edge labels name the relation.
+          </span>
+          <span>Click or press Enter/Space on a node for detail.</span>
         </div>
       </Card>
       {detail && (
@@ -334,7 +570,14 @@ export function GraphScreen({
             <button className="secondary" onClick={() => void expand(detail)} type="button">
               Expand one hop
             </button>
-            <button className="secondary" onClick={() => setDetail(null)} type="button">
+            <button
+              className="secondary"
+              onClick={() => {
+                setDetail(null);
+                if (selectedItem) onClearSelectedItem();
+              }}
+              type="button"
+            >
               Close
             </button>
           </div>

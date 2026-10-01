@@ -12,7 +12,7 @@ class WorkspaceCore:
     ) -> object:
         assert context.actor_id == "actor-1"
         return {
-            "catalogRevision": catalog_revision(tuple(project_ids)),
+            "catalogRevision": catalog_revision(tuple(sorted(project_ids))),
             "projects": [
                 {
                     "projectId": project_id,
@@ -64,7 +64,7 @@ class WorkspaceCore:
                 "freshnessState": "current",
                 "freshnessRevision": "projection-1",
             },
-            "currentRequirements": [{"handle": "item-h-1", "label": "Requirement"}],
+            "currentRequirements": [{"handle": "node-h-000000000000000000000001", "label": "Requirement"}],
             "openQuestions": [],
             "tasks": [],
             "blockers": [],
@@ -84,7 +84,7 @@ async def test_catalog_and_selection_never_accept_browser_project_ids() -> None:
         trusted_context_secret="secret",
         runtime_mode="experience",
         experience_actor_id="actor-1",
-        experience_project_catalog="alpha,beta",
+        experience_project_catalog="beta,alpha",
         PROJECTA_LLM_TYPE="openai-response",
         PROJECTA_LLM_BASE_URL="https://provider.example",
         PROJECTA_LLM_API_KEY="test-key",

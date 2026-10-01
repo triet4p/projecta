@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import type { ProjectaApiClient } from "../api/client";
 import type { CaptureResponse, EntityType, TypedSegment } from "../api/generated";
@@ -18,21 +18,39 @@ const types: EntityType[] = [
   "research-need",
 ];
 
+export interface CaptureDraft {
+  rawText: string;
+  type: EntityType;
+  segments: TypedSegment[];
+}
+
 export function CaptureScreen({
   api,
   onCandidate,
+  draft,
+  onDraftChange,
 }: {
   api: ProjectaApiClient;
-  onCandidate: (id: string) => void;
+  onCandidate: (handle: string) => void;
+  draft: CaptureDraft | null;
+  onDraftChange: (draft: CaptureDraft | null) => void;
 }) {
-  const [rawText, setRawText] = useState("");
-  const [type, setType] = useState<EntityType>("requirement");
-  const [segments, setSegments] = useState<TypedSegment[]>([]);
+  const [rawText, setRawText] = useState(draft?.rawText ?? "");
+  const [type, setType] = useState<EntityType>(draft?.type ?? "requirement");
+  const [segments, setSegments] = useState<TypedSegment[]>(draft?.segments ?? []);
   const [selection, setSelection] = useState({ start: 0, end: 0 });
   const [result, setResult] = useState<CaptureResponse | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<unknown>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (result !== null || (rawText.length === 0 && segments.length === 0)) {
+      onDraftChange(null);
+      return;
+    }
+    onDraftChange({ rawText, type, segments });
+  }, [onDraftChange, rawText, result, segments, type]);
 
   const syncSelection = () => {
     const textarea = textareaRef.current;
@@ -73,13 +91,14 @@ export function CaptureScreen({
   return (
     <div className="screen-grid two-column">
       <Card>
-        <p className="eyebrow">M2 typed capture</p>
-        <h2>Capture exact evidence</h2>
+        <p className="eyebrow">Human-selected evidence</p>
+        <h2>Select an exact source span</h2>
         <p className="muted">
-          Select text in the note, choose its released type, then add the exact span.
+          Use this path when a particular passage must stay anchored to its source. Select the
+          passage itself; its displayed range comes from your selection.
         </p>
         <label className="stacked-label">
-          Raw note
+          Source note
           <textarea
             ref={textareaRef}
             aria-label="Capture note"
@@ -93,7 +112,7 @@ export function CaptureScreen({
             }}
             rows={10}
             value={rawText}
-            placeholder="Type a note, then select a span…"
+            placeholder="Type or paste a source note, then select an exact span…"
           />
         </label>
         <div className="inline-form">
@@ -145,26 +164,45 @@ export function CaptureScreen({
       </Card>
       <Card>
         <p className="eyebrow">Result</p>
-        <h2>Reviewable candidates</h2>
+        <h2>Capture result</h2>
         {!result && (
           <StateMessage kind="empty">
-            Your captured note and candidates will appear here.
+            Add an exact span, then capture. Returned candidates stay unreviewed until you inspect
+            their source and evidence in the Review Queue.
           </StateMessage>
         )}
         {result && (
-          <div className="result-stack">
-            <p className="metadata">Request {result.requestId} · captured note ready for review</p>
-            {result.candidates.map((candidate) => (
-              <button
-                className="candidate-chip"
-                key={candidate.id}
-                onClick={() => onCandidate(candidate.id)}
-                type="button"
-              >
-                Open review queue · {candidate.status}
-              </button>
-            ))}
-          </div>
+          <>
+            <StateMessage kind="success">
+              Capture succeeded.{" "}
+              {result.candidates.length === 0
+                ? "No review candidate was returned."
+                : `${result.candidates.length} candidate${result.candidates.length === 1 ? "" : "s"} returned for review.`}
+            </StateMessage>
+            <p className="metadata">Request {result.requestId}</p>
+            {result.candidates.length > 0 && (
+              <>
+                <p>
+                  <strong>Next step:</strong> open the Review Queue. The candidate you just captured
+                  is selected there automatically, so you can inspect its source and evidence before
+                  making an explicit decision. Capture does not approve a candidate or materialize
+                  graph data.
+                </p>
+                <div className="result-stack">
+                  {result.candidates.map((candidate) => (
+                    <button
+                      className="candidate-chip"
+                      key={candidate.id}
+                      onClick={() => onCandidate(candidate.handle)}
+                      type="button"
+                    >
+                      Open Review Queue · {candidate.status}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </>
         )}
       </Card>
     </div>

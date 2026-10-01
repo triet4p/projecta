@@ -85,7 +85,7 @@ test("real Compose JSON/Mock import stays bounded and public-ID free", async ({ 
     await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1),
   ).toBeTruthy();
 
-  await page.getByRole("button", { name: "Projects" }).click();
+  await page.getByRole("button", { name: "Change project" }).click();
   const projectB = page.getByRole("article").filter({ hasText: "Project B" });
   await projectB.getByRole("button", { name: "Open project" }).click();
   await expect(page.getByRole("heading", { name: "Project B", level: 2 })).toBeVisible();

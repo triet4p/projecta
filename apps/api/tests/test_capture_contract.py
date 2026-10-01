@@ -23,7 +23,12 @@ class FakeSemanticCoreClient:
                 "requestId": context.request_id,
                 "note": {"id": "note-01", "recordedAt": datetime(2026, 7, 31, tzinfo=UTC)},
                 "candidates": [
-                    {"id": "cand-01", "sourceItemId": "item-01", "status": "extracted"}
+                    {
+                        "id": "cand-01",
+                        "handle": "candidate-h-0123456789abcdef01234567",
+                        "sourceItemId": "item-01",
+                        "status": "extracted",
+                    }
                 ],
             }
         )
@@ -56,6 +61,8 @@ def app_headers() -> dict[str, str]:
 
 def _make_settings(secret: str) -> Settings:
     return Settings(
+        _env_file=None,
+        runtime_mode="headless",
         trusted_context_secret=secret,
         PROJECTA_LLM_TYPE="openai-response",
         PROJECTA_LLM_BASE_URL="https://api.deepseek.com",
@@ -123,8 +130,8 @@ async def test_capture_rejects_context_when_deployment_secret_is_missing() -> No
     assert response.status_code == 401
 
 
-async def test_capture_validates_exact_offsets_and_returns_opaque_ids() -> None:
-    """A valid typed note is forwarded only after canonical local validation."""
+async def test_capture_returns_project_review_handle_alongside_candidate_id() -> None:
+    """Capture exposes the scoped queue handle separately from the Core ID."""
     app = create_app(_make_settings("test-secret"), FakeSemanticCoreClient())
     headers = app_headers() | {"Idempotency-Key": "capture-01"}
     body = {
@@ -141,7 +148,10 @@ async def test_capture_validates_exact_offsets_and_returns_opaque_ids() -> None:
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         response = await client.post("/v1/quick-notes", headers=headers, json=body)
     assert response.status_code == 201
-    assert response.json()["candidates"][0]["id"] == "cand-01"
+    assert (
+        response.json()["candidates"][0]["handle"]
+        == "candidate-h-0123456789abcdef01234567"
+    )
 
 
 async def test_legacy_confirmation_forwards_only_the_semantic_assertion_contract() -> None:

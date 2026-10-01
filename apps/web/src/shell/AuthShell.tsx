@@ -1,10 +1,16 @@
-import { type ReactNode, useEffect, useState } from "react";
+import { type ReactElement, useEffect, useState } from "react";
 
 import type { AuthSession, ProjectaApiClient } from "../api/client";
 import { ApiError } from "../api/client";
 import { Card, StateMessage } from "../ui";
 
-export function AuthShell({ api, children }: { api: ProjectaApiClient; children: ReactNode }) {
+export function AuthShell({
+  api,
+  children,
+}: {
+  api: ProjectaApiClient;
+  children: (sessionControls: ReactElement) => ReactElement;
+}): ReactElement {
   const [session, setSession] = useState<AuthSession | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -45,21 +51,20 @@ export function AuthShell({ api, children }: { api: ProjectaApiClient; children:
     );
   }
 
-  return (
-    <>
-      <div className="auth-session-bar" role="status">
-        <span>Signed in</span>
-        <button
-          className="secondary"
-          onClick={() => {
-            void api.logout().finally(() => window.location.assign("/"));
-          }}
-          type="button"
-        >
-          Sign out
-        </button>
-      </div>
-      {children}
-    </>
+  return children(
+    <div aria-label="Session controls" className="session-controls" role="group">
+      <span className="session-status" role="status">
+        Signed in
+      </span>
+      <button
+        className="secondary"
+        onClick={() => {
+          void api.logout().finally(() => window.location.assign("/"));
+        }}
+        type="button"
+      >
+        Sign out
+      </button>
+    </div>,
   );
 }

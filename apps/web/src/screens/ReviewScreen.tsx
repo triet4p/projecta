@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { ProjectaApiClient } from "../api/client";
 import type {
@@ -28,9 +28,11 @@ import { Card, ErrorMessage, operationKey, StateMessage, StatusBadge } from "../
 export function ReviewScreen({
   api,
   projectHandle,
+  candidateHandle,
 }: {
   api: ProjectaApiClient;
   projectHandle: string;
+  candidateHandle: string | null;
 }) {
   const [queue, setQueue] = useState<CandidateQueueResponse | null>(null);
   const [editOptions, setEditOptions] = useState<CandidateEditOptionsResponse | null>(null);
@@ -73,6 +75,9 @@ export function ReviewScreen({
   const [reason, setReason] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<unknown>(null);
+  const [candidateNotFound, setCandidateNotFound] = useState(false);
+  const detailRequest = useRef(0);
+  const initialCandidateResolved = useRef<string | null>(null);
 
   const loadQueue = async () => {
     setBusy(true);
@@ -241,45 +246,74 @@ export function ReviewScreen({
     );
   }, [localSuggestion?.suggestion, localSuggestion?.linkOptions, selected?.proposedType]);
 
-  const select = (candidate: CandidateQueueItem) => {
-    setSelected(candidate);
-    setValidation(null);
-    setDecision(null);
-    setLabel(candidate.label);
-    setEditType(candidate.proposedType);
-    setEditRelation("");
-    setEditEntityLink("");
-    setEditDate("");
-    setEditAssignment("");
-    setEditRevision(1);
-    setEditNotice(null);
-    setReason("");
-    setDetail(null);
-    setAbstainNotice(null);
-    setAbstainReceipt(null);
-    setManualApproval(null);
-    setManualRejection(null);
-    setRelationTargets(null);
-    setRelationTargetsBusy(false);
-    setRelationTargetCandidate("");
-    setRelationDirection("source-to-target");
-    setRelationMode("manual");
-    setRelationPredicate("");
-    setRelationSuggestion(null);
-    setRelationSuggestionBusy(false);
-    setRelationRejectionReason("");
-    setDetailBusy(true);
-    void api
-      .getReviewCandidateDetail(projectHandle, candidate.handle)
-      .then(setDetail)
-      .catch(setError)
-      .finally(() => setDetailBusy(false));
-  };
+  const select = useCallback(
+    (candidate: CandidateQueueItem) => {
+      const request = ++detailRequest.current;
+      setSelected(candidate);
+      setCandidateNotFound(false);
+      setValidation(null);
+      setDecision(null);
+      setLabel(candidate.label);
+      setEditType(candidate.proposedType);
+      setEditRelation("");
+      setEditEntityLink("");
+      setEditDate("");
+      setEditAssignment("");
+      setEditRevision(1);
+      setEditNotice(null);
+      setReason("");
+      setDetail(null);
+      setAbstainNotice(null);
+      setAbstainReceipt(null);
+      setManualApproval(null);
+      setManualRejection(null);
+      setRelationTargets(null);
+      setRelationTargetsBusy(false);
+      setRelationTargetCandidate("");
+      setRelationDirection("source-to-target");
+      setRelationMode("manual");
+      setRelationPredicate("");
+      setRelationSuggestion(null);
+      setRelationSuggestionBusy(false);
+      setRelationRejectionReason("");
+      setDetailBusy(true);
+      void api
+        .getReviewCandidateDetail(projectHandle, candidate.handle)
+        .then((nextDetail) => {
+          if (detailRequest.current === request) setDetail(nextDetail);
+        })
+        .catch((nextError: unknown) => {
+          if (detailRequest.current === request) setError(nextError);
+        })
+        .finally(() => {
+          if (detailRequest.current === request) setDetailBusy(false);
+        });
+    },
+    [api, projectHandle],
+  );
+
+  useEffect(() => {
+    if (!candidateHandle) {
+      setCandidateNotFound(false);
+      return;
+    }
+    if (!queue || initialCandidateResolved.current === candidateHandle) return;
+    initialCandidateResolved.current = candidateHandle;
+    const candidate = queue.candidates.find((item) => item.handle === candidateHandle);
+    if (candidate) {
+      setCandidateNotFound(false);
+      select(candidate);
+    } else {
+      setCandidateNotFound(true);
+    }
+  }, [candidateHandle, queue, select]);
 
   const validate = async () => {
     if (
       !selected ||
-      (detail?.manualCapture && detail.reviewReceipt.state !== "not-recorded")
+      !detail ||
+      detail.itemHandle !== selected.handle ||
+      (detail.manualCapture && detail.reviewReceipt.state !== "not-recorded")
     ) {
       return;
     }
@@ -642,7 +676,13 @@ export function ReviewScreen({
   };
 
   const edit = async () => {
-    if (!selected) return;
+    if (
+      !selected ||
+      detailBusy ||
+      !detail ||
+      detail.itemHandle !== selected.handle
+    )
+      return;
     const payload = {
       ...(editType ? { entityType: editType } : {}),
       ...(editLabelValue() ? { label: editLabelValue() } : {}),
@@ -696,7 +736,20 @@ export function ReviewScreen({
             The review queue is stale. Refresh before deciding.
           </StateMessage>
         )}
-        {queue && queue.candidates.length === 0 && (
+        {candidateHandle && selected?.handle === candidateHandle && (
+          <StateMessage kind="success">
+            Opened from Notes capture: {selected.label} is selected. Inspect its source and
+            evidence before validating or recording an outcome.
+          </StateMessage>
+        )}
+        {candidateHandle && candidateNotFound && (
+          <StateMessage kind="empty">
+            The candidate opened from Notes is not present in this project's pending queue. The
+            queue may have changed; refresh it or select one of the listed candidates. No decision
+            has been recorded.
+          </StateMessage>
+        )}
+        {queue && queue.candidates.length === 0 && !candidateHandle && (
           <StateMessage kind="empty">No pending candidates need review.</StateMessage>
         )}
         <div className="candidate-queue">
@@ -1427,7 +1480,14 @@ export function ReviewScreen({
               </div>
               <button
                 className="secondary"
-                disabled={busy || !label.trim()}
+                disabled={
+                  busy ||
+                  detailBusy ||
+                  !selected ||
+                  !detail ||
+                  detail.itemHandle !== selected.handle ||
+                  !label.trim()
+                }
                 onClick={() => void edit()}
                 type="button"
               >
@@ -1438,8 +1498,11 @@ export function ReviewScreen({
             <button
               disabled={
                 busy ||
-                (detail?.manualCapture != null &&
-                  detail.reviewReceipt.state !== "not-recorded")
+                detailBusy ||
+                !selected ||
+                !detail ||
+                detail.itemHandle !== selected.handle ||
+                (detail.manualCapture != null && detail.reviewReceipt.state !== "not-recorded")
               }
               onClick={() => void validate()}
               type="button"

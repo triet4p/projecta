@@ -105,8 +105,9 @@ def opaque_project_handle(project_id: str) -> str:
 
 
 def catalog_revision(project_ids: tuple[str, ...]) -> str:
-    """Return a stable revision for the server-owned visible-project set."""
-    return "catalog-r-" + hashlib.sha256("\n".join(project_ids).encode("utf-8")).hexdigest()[:40]
+    """Return the Core-compatible revision for the server-owned visible-project set."""
+    canonical_ids = sorted(project_ids)
+    return "catalog-r-" + hashlib.sha256("\n".join(canonical_ids).encode("utf-8")).hexdigest()[:40]
 
 
 def selection_revision(handle: str, catalog_rev: str) -> str:

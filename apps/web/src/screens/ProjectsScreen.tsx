@@ -54,9 +54,12 @@ export function ProjectsScreen({
     <div className="workspace-page">
       <header className="workspace-header">
         <div>
-          <p className="eyebrow">Workspace explorer</p>
+          <p className="eyebrow">Project selection</p>
           <h2>Projects</h2>
-          <p className="muted">Choose an authorized project to open its scoped workspace.</p>
+          <p className="muted">
+            Choose an authorized project to enter its workspace. Use Change project from the active
+            project bar to switch later.
+          </p>
         </div>
       </header>
       <Toolbar>

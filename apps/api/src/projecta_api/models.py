@@ -87,8 +87,9 @@ class NoteResponse(BaseModel):
 
 
 class CandidateResponse(BaseModel):
-    """Opaque candidate identity and its source item."""
+    """Project-scoped candidate handle and its source item."""
 
+    handle: str = Field(pattern=r"^candidate-h-[0-9a-f]{24}$")
     id: str
     source_item_id: str = Field(alias="sourceItemId")
     status: Literal["extracted", "validated", "pending-review", "confirmed", "rejected", "asserted"]

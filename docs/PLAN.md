@@ -38,8 +38,8 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 - [~] **M7 — Connector and Production Evolution (Sprint 10+):** Mock/manual
   connector framework, connector thật đầu tiên, authentication/authorization,
   security và production hardening. Sprint 11 and `v0.6.0` are complete. M7
-  remains open; sequencing of additional connector/outbound breadth follows the
-  active Sprint 13 evidence-first authoring slice and measured bottlenecks.
+  remains open; Sprint 14 prioritizes the owner-recorded end-to-end experience,
+  user-facing packaging, and portable data over additional connector breadth.
 - [x] **M8 — Business Semantic Quality and Evaluation (Sprint 12):** Governed
   atomic and longitudinal datasets, leakage-resistant splits,
   ontology/graph/retrieval metrics, controlled optimization, sealed held-out
@@ -73,8 +73,13 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   follows. RM-68 remains internal-only and blocked for external validation;
   remediation requires new authority and a fresh strategy/packet.
   No external human, business-quality, provider, held-out, production,
-  selection, promotion, or release claim follows. Sprint 12 is now historical
-  and closed for the active product direction; Sprint 13 is its successor.
+  selection, promotion, or release claim follows. Sprint 12 is historical and
+  closed; Sprint 13 implementation review is closed, and Sprint 14 is planned.
+- [ ] **M9 — End-to-end Experience and Portable Delivery (Sprint 14):** Link
+  existing functionality into usable journeys, improve UI/UX, provide a
+  Docker-free user-facing run path and a safe cross-installation data handoff.
+  Direct user experience must pass before a separately approved `1.0.0`
+  release; Sprint 14 planning is not release authorization.
 
 ## Completed Sprints
 
@@ -126,8 +131,17 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 
 ## Active Sprint
 
-No active sprint. Sprint 13 implementation review is closed; the separately
-deferred offline evaluation and production enablement require new authority.
+- [Sprint 14 — End-to-end Experience and Portable Delivery](sprint-plans/sprint-14.md)
+  — *In progress; S14-01–07 passed evidence review. The owner approved the
+  Windows 11 x64 per-user native launcher boundary; S14-08 Docker-free delivery
+  is blocked at its evidence gate on clean Windows verification, owner-held
+  signing configuration and redistribution clearance. Native host package and
+  journey/recovery proof passed; no clean installation or release is verified.
+  [Owner requirements](sprint-plans/sprint-14-requirements.md) cover function
+  sufficiency, UI/UX, end-to-end workflows, Docker-free user packaging and data
+  transfer. A direct owner/target-user experience gate must pass before separate
+  `1.0.0` release approval. S13-08 offline evaluation and production
+  materialization remain closed pending separate authority.*
 
 ## Historical / Closed Sprint
 
@@ -187,10 +201,12 @@ deferred offline evaluation and production enablement require new authority.
 
 ## Planned Sprints
 
-- **Sprint 14+:** Select from Sprint 13 measured authoring friction and approved
-  business value. Resume governed outbound actions, continuous synchronization,
-  additional connectors, broader tenant administration, managed adapters, or HA
-  only when the measured bottleneck justifies that work.
+- **Sprint 15+ / post-Sprint-14:** Decide `1.0.0` release readiness only after
+  Sprint 14's direct user experience gate, remaining corrections, security,
+  data migration/recovery and supported-platform evidence, with explicit
+  owner release approval. Governed outbound actions, continuous synchronization,
+  additional connectors, broader tenant administration, managed adapters or HA
+  remain future choices based on measured bottlenecks and approved value.
 
 ## Backlog / Future Work
 

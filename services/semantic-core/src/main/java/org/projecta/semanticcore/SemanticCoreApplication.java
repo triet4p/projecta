@@ -1,8 +1,11 @@
 package org.projecta.semanticcore;
 
 import io.javalin.Javalin;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.http.HttpClient;
-import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -28,7 +31,7 @@ public final class SemanticCoreApplication {
         var readiness = new FusekiReadiness(HttpClient.newHttpClient(), configuration);
         var gateway = new FusekiGateway(HttpClient.newHttpClient(), configuration.fusekiDatasetUrl());
         var router = new GraphIriRouter();
-        var validation = new RemoteCandidateValidationService(gateway, router, Path.of("/ontology/shapes"));
+        var validation = new RemoteCandidateValidationService(gateway, router, configuration.shapesDirectory());
         var lifecycle = new FusekiLifecycleService(gateway, router, validation);
         var capture = new QuickNoteCaptureService(gateway, router, validation::validateCapture);
         var extraction = new LlmCandidateIngestionService(gateway, router, validation);
@@ -245,8 +248,21 @@ public final class SemanticCoreApplication {
                                 context.bodyAsClass(QuickNoteCaptureService.CaptureRequest.class));
                         context.status(result.replayed() ? 200 : 201)
                                 .json(Map.of(
-                                        "note", Map.of("id", result.noteId(), "recordedAt", result.recordedAt()),
-                                        "candidates", result.candidates()));
+                                        "note",
+                                        Map.of("id", result.noteId(), "recordedAt", result.recordedAt()),
+                                        "candidates",
+                                        result.candidates().stream()
+                                                .map(candidate -> Map.of(
+                                                        "id",
+                                                        candidate.id(),
+                                                        "sourceItemId",
+                                                        candidate.sourceItemId(),
+                                                        "status",
+                                                        candidate.status(),
+                                                        "handle",
+                                                        queries.candidateHandle(
+                                                                trusted.projectId(), candidate.id())))
+                                                .toList()));
                     })
                     .post("/v1/quick-notes/extractions", context -> {
                         var trusted = trustedContext(context);
@@ -383,8 +399,30 @@ public final class SemanticCoreApplication {
                                 queries.evidence(trusted.projectId(), context.pathParam("itemId"))));
                     });
         });
-        Runtime.getRuntime().addShutdownHook(new Thread(application::stop));
-        application.start(configuration.port());
+        var stopped = new java.util.concurrent.atomic.AtomicBoolean();
+        Runnable stop = () -> {
+            if (stopped.compareAndSet(false, true)) {
+                application.stop();
+            }
+        };
+        Runtime.getRuntime().addShutdownHook(new Thread(stop, "projecta-semantic-core-shutdown"));
+        application.start(configuration.host(), configuration.port());
+        if ("1".equals(System.getenv("PROJECTA_LOCAL_CONTROL_PIPE"))) {
+            awaitLocalStop(stop);
+        }
+    }
+
+    private static void awaitLocalStop(Runnable stop) {
+        try (var input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
+            String command;
+            while ((command = input.readLine()) != null && !command.equals("stop")) {
+                // Ignore anything except the launcher's private shutdown command.
+            }
+        } catch (IOException ignored) {
+            // Loss of the launcher's pipe must stop this local service.
+        } finally {
+            stop.run();
+        }
     }
 
     public static String serviceName() {

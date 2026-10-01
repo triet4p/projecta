@@ -95,7 +95,9 @@ public final class ProjectWorkspaceQueryService {
         var result = rows(gateway.select("SELECT ?item ?label WHERE { GRAPH <" + graph(project, role) + "> { ?item a <"
                 + PROJECTA + type + "> ; <" + RDFS + "label> ?label . } } ORDER BY ?item LIMIT " + limit));
         return result.stream()
-                .map(row -> Map.of("handle", opaque(required(row, "item")), "label", required(row, "label")))
+                .map(row -> Map.of(
+                        "handle", "node-h-" + OpaqueIds.opaqueHandle(required(row, "item")),
+                        "label", required(row, "label")))
                 .toList();
     }
 
@@ -107,7 +109,7 @@ public final class ProjectWorkspaceQueryService {
         return result.stream()
                 .map(row -> {
                     Map<String, String> value = new LinkedHashMap<>();
-                    value.put("handle", opaque(row.get("note")));
+                    value.put("handle", "note-h-" + OpaqueIds.opaqueHandle(row.get("note")));
                     value.put("label", required(row, "label"));
                     if (row.containsKey("recordedAt")) value.put("recordedAt", row.get("recordedAt"));
                     return value;
@@ -122,7 +124,9 @@ public final class ProjectWorkspaceQueryService {
                 + "pending-review> . OPTIONAL { ?candidate <" + RDFS
                 + "label> ?label . } } } ORDER BY ?candidate LIMIT " + limit));
         return result.stream()
-                .map(row -> Map.of("handle", opaque(required(row, "candidate")), "label", required(row, "label")))
+                .map(row -> Map.of(
+                        "handle", "candidate-h-" + OpaqueIds.opaqueHandle(required(row, "candidate")),
+                        "label", required(row, "label")))
                 .toList();
     }
 
@@ -216,17 +220,6 @@ public final class ProjectWorkspaceQueryService {
             var result = new StringBuilder("catalog-r-");
             for (byte item : digest) result.append(String.format("%02x", item));
             return result.substring(0, 50);
-        } catch (Exception exception) {
-            throw new IllegalStateException("SHA-256 is unavailable", exception);
-        }
-    }
-
-    private String opaque(String iri) {
-        try {
-            var digest = MessageDigest.getInstance("SHA-256").digest(iri.getBytes(StandardCharsets.UTF_8));
-            var result = new StringBuilder("item-h-");
-            for (byte item : digest) result.append(String.format("%02x", item));
-            return result.substring(0, 48);
         } catch (Exception exception) {
             throw new IllegalStateException("SHA-256 is unavailable", exception);
         }

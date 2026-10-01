@@ -20,6 +20,10 @@ def validate_startup(settings: Settings) -> tuple[StartupProblem, ...]:
     """Return finite configuration problems without performing network I/O."""
 
     problems: list[StartupProblem] = []
+    if settings.web_assets_directory is not None:
+        web_index = settings.web_assets_directory / "index.html"
+        if not settings.web_assets_directory.is_dir() or not web_index.is_file():
+            problems.append(StartupProblem("WEB_ASSETS_CONFIGURATION_INVALID"))
     if not str(settings.semantic_core_url).strip():
         problems.append(StartupProblem("SEMANTIC_CORE_CONFIGURATION_INVALID"))
     parsed = urlparse(str(settings.semantic_core_url))

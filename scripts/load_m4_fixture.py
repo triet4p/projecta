@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Load only the deterministic M4 fixture into its named project graphs."""
+"""Append deterministic M4 fixture data without replacing project metadata."""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ def main() -> int:
             continue
         payload = graph.serialize(format="turtle").encode("utf-8")
         url = base + "?" + urllib.parse.urlencode({"graph": identifier})
-        request = urllib.request.Request(url, data=payload, method="PUT", headers={"Content-Type": "text/turtle"})
+        request = urllib.request.Request(url, data=payload, method="POST", headers={"Content-Type": "text/turtle"})
         with urllib.request.urlopen(request, timeout=30) as response:
             if not 200 <= response.status < 300:
                 raise RuntimeError(f"Fuseki fixture load failed: HTTP {response.status}")

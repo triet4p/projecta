@@ -25,6 +25,8 @@ const collectionDestinations: Record<(typeof collections)[number][0], Screen> = 
   pendingCandidates: "Review Queue",
 };
 
+type OverviewNavigationItem = { handle: string; label: string };
+
 export function ProjectOverviewScreen({
   api,
   project,
@@ -34,7 +36,7 @@ export function ProjectOverviewScreen({
   api: ProjectaApiClient;
   project: ProjectCatalogItem;
   onChangeProject: () => void;
-  onNavigate: (screen: Screen) => void;
+  onNavigate: (screen: Screen, item?: OverviewNavigationItem) => void;
 }): ReactElement {
   const [overview, setOverview] = useState<ProjectOverviewResponse | null>(null);
   const [error, setError] = useState<unknown>(null);
@@ -105,7 +107,12 @@ export function ProjectOverviewScreen({
                     <li key={item.handle}>
                       <button
                         className="link-button"
-                        onClick={() => onNavigate(collectionDestinations[key])}
+                        onClick={() =>
+                          onNavigate(collectionDestinations[key], {
+                            handle: item.handle,
+                            label: item.label,
+                          })
+                        }
                         type="button"
                       >
                         {item.label}

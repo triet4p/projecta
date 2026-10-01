@@ -60,6 +60,9 @@ class Settings(BaseSettings):
     evidence_root: Path = Field(
         default=Path("/var/lib/projecta/evidence"), validation_alias="PROJECTA_EVIDENCE_ROOT"
     )
+    web_assets_directory: Path | None = Field(
+        default=None, validation_alias="PROJECTA_API_WEB_ASSETS_DIRECTORY"
+    )
     secret_store_master_key: SecretStr | None = None
     experience_actor_id: str | None = None
     # Comma-separated server-owned allowlist. Empty means catalog operations fail closed.

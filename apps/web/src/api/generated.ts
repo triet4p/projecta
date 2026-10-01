@@ -276,10 +276,15 @@ export interface Candidate {
   status: CandidateStatus;
 }
 
+export interface CapturedCandidate extends Candidate {
+  handle: string;
+  sourceItemId: string;
+}
+
 export interface CaptureResponse {
   requestId: string;
   note: Note;
-  candidates: Candidate[];
+  candidates: CapturedCandidate[];
 }
 
 export interface EvidenceSpan {
@@ -310,7 +315,8 @@ export interface ExtractedLink {
   confidence: number;
 }
 
-export interface ExtractionResult extends CaptureResponse {
+export interface ExtractionResult extends Omit<CaptureResponse, "candidates"> {
+  candidates: Candidate[];
   abstentionReason?: string | null;
   entities?: ExtractedEntity[];
   relations?: ExtractedRelation[];

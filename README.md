@@ -9,6 +9,8 @@ and ask questions grounded in recorded evidence.
 - Work in separate project workspaces without entering or remembering IDs.
 - Create structured notes from ordered, typed note items.
 - Import note suggestions with AI assistance, then edit them before saving.
+- Capture exact source spans into candidates for explicit Review Queue decisions;
+  capture itself does not approve or materialize them.
 - Review and correct candidates before explicitly confirming or rejecting them.
 - Explore a bounded project graph and ask evidence-backed questions.
 
@@ -74,15 +76,38 @@ authorized. This sidecar is operator-managed and is not part of Compose startup.
 
 ## First steps
 
-1. Select **Project Alpha** or **Project Beta** on the **Projects** page.
-2. Open **Notes**, create a note with one or more typed items, then save or
-   commit it.
-3. Open **Graph** to explore the project and **Review Queue** to validate
-   extracted candidates.
-4. Open **Settings** to configure an OpenAI-compatible provider if you want to
-   use assisted import or extraction. Manual structured notes work without it.
-5. Use **Diagnostics** when a service reports an error; request IDs are shown
+1. On the standalone **Projects** chooser, select **Project Alpha** or
+   **Project Beta** to enter its workspace.
+2. Use **Change project** in the active-project bar to switch; the chooser
+   replaces the workspace until another project is selected. Project Overview,
+   Notes, Graph, and Review Queue stay within the active project.
+3. Open **Notes** and choose **Note Composer** for typed items, **Assisted import**
+   for editable proposals from pasted text, or **Capture exact spans** to anchor a
+   selected passage to a review candidate. Import proposals require an explicit save;
+   draft save and commit remain separate. The server returns the project-scoped
+   opaque review handle used by the queue, which selects that exact candidate
+   rather than guessing from a label or queue order. A successful capture offers
+   **Open Review Queue** and reports a missing candidate instead of selecting a
+   different item. Capture does not
+   approve or materialize candidates. Returning from an unfinished capture to Notes
+   preserves its source and selected spans in memory for **Continue capture** or
+   **Discard unsubmitted capture**; changing projects clears that unsaved draft.
+4. Open **Graph** directly to explore the project projection, or choose a knowledge
+   item in **Project Overview** to open its scoped detail; use **Back to Project
+   Overview** to return. Graph nodes spell out verification and lifecycle state,
+   outline patterns distinguish node states, and directed edges name their
+   relation type. Open **Review Queue** to validate source-bound candidates.
+   Project Overview’s **Recent notes** links open the exact Note’s source detail
+   in Notes; a missing or unavailable record remains explicit with retry and
+   return to Overview.
+5. Open **Settings** to configure an OpenAI-compatible provider if you want to
+   use assisted import or extraction. Manual composition and exact-span capture
+   work without it.
+6. Use **Diagnostics** when a service reports an error; request IDs are shown
    so failures can be matched with container logs.
+
+The top bar keeps the session status and **Sign out** available in both the
+Projects chooser and workspace screens.
 
 Projecta does not silently choose another project, retry a failed action, or
 turn an unavailable result into an empty success. Review the visible error and

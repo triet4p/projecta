@@ -460,6 +460,11 @@ public final class FusekiQueryService {
                         "Note handle is not visible in this project"));
     }
 
+    /** Derives the same opaque handle emitted by the project candidate projection. */
+    public String candidateHandle(ProjectId project, String candidateId) {
+        return "candidate-h-" + opaqueHandle(candidate(project, candidateId));
+    }
+
     /** Resolves only a handle previously emitted by the bounded candidate projection. */
     public String resolveCandidateHandle(ProjectId project, String handle) {
         if (handle == null || !handle.startsWith("candidate-h-")) {
@@ -775,15 +780,7 @@ public final class FusekiQueryService {
     }
 
     private static String opaqueHandle(String value) {
-        try {
-            var digest = MessageDigest.getInstance("SHA-256")
-                    .digest(value.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-            var builder = new StringBuilder();
-            for (int i = 0; i < 12; i++) builder.append(String.format("%02x", digest[i]));
-            return builder.toString();
-        } catch (java.security.NoSuchAlgorithmException exception) {
-            throw new IllegalStateException("opaque handle hashing is unavailable", exception);
-        }
+        return OpaqueIds.opaqueHandle(value);
     }
 
     private static List<Object> castList(Object value) {

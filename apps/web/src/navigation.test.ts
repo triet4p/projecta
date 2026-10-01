@@ -2,19 +2,12 @@ import { describe, expect, it } from "vitest";
 
 import { navigationGroups } from "./shell/navigation";
 
-describe("Sprint 8 information architecture", () => {
-  it("exposes only the approved workspace navigation", () => {
-    expect(navigationGroups.flatMap((group) => group.items)).toEqual([
-      "Projects",
-      "Project Overview",
-      "Notes",
-      "Graph",
-      "Review Queue",
-      "Knowledge",
-      "Q&A",
-      "Connections",
-      "Settings",
-      "Diagnostics",
+describe("project and workspace information architecture", () => {
+  it("keeps project selection outside in-workspace navigation", () => {
+    expect(navigationGroups).toEqual([
+      { label: "Workspace", items: ["Project Overview"] },
+      { label: "Work", items: ["Notes", "Graph", "Review Queue", "Knowledge", "Q&A"] },
+      { label: "System", items: ["Connections", "Settings", "Diagnostics"] },
     ]);
   });
 

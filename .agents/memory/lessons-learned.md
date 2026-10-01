@@ -942,3 +942,99 @@ The original volumes and their data remain untouched.
 Compose project may require its original database credentials. Use a fresh
 project for a clean trial or recover the old credentials to preserve access;
 never delete an unknown PostgreSQL volume as the first troubleshooting step.
+
+## [2026-09-29] Missing review-route warnings need explicit recovery
+
+**Symptom:** A Review Queue opened with a missing routed candidate kept its missing alert after the user selected a valid listed candidate.
+**Root cause:** Candidate selection changed the focused record but did not clear the route-resolution state.
+**Fix / workaround:** Clear `candidateNotFound` in the explicit candidate-selection action; leave it set during queue refresh so the original missing handle stays visible until recovery.
+**Watch out for:** Test both refresh-without-recovery and explicit selection after a route handle is absent.
+
+## [2026-09-29] Overview Notes links must preserve record identity
+
+**Symptom:** Opening a recent Note from Project Overview showed the Notes workspace without resolving the clicked source record.
+**Root cause:** The shell retained special route context for Graph and Review Queue but discarded the Notes item argument.
+**Fix / workaround:** Preserve the selected Note handle through App into Notes, resolve that exact handle to source detail, and expose missing/unavailable recovery and return paths.
+**Watch out for:** A destination screen transition is not enough when the user selected a specific collection item; verify the selected record identity and scoped detail.
+
+## [2026-09-30] Quick Note IDs do not identify queue handles
+
+**Symptom:** A real exact-span capture succeeded, but opening Review Queue
+reported the newly captured candidate missing even though the queue contained
+it.
+**Root cause:** Capture returned a Core-local candidate ID while the project
+queue and review routes use a project-scoped opaque `candidate-h-…` handle.
+**Fix / workaround:** Return the canonical queue handle with the capture result
+from Semantic Core, validate it at the Application API boundary, and route the
+browser with that handle; retain the Core ID as a separate field.
+**Watch out for:** Any new capture-to-review transition must compare the
+returned handle with the project queue and load that candidate's source detail;
+never substitute a label or queue position.
+
+## [2026-09-30] Overview handles must match Core destination routes
+
+**Symptom:** A recent Note opened from Project Overview failed with HTTP 400
+because the navigation handle was invalid.
+**Root cause:** ProjectWorkspaceQueryService emitted generic `item-h-…` handles,
+while Core destination routes accept typed `note-h-`, `node-h-`, and
+`candidate-h-` handles derived from the full project-scoped resource identity.
+**Fix / workaround:** Reuse Core's opaque-handle derivation for the exact scoped
+resource and emit the route-specific handle family in the Overview projection.
+**Watch out for:** Keep handles project-scoped and opaque; never recover a
+destination by label, queue position, or a permissive alias.
+
+## [2026-09-30] M4 fixture loading removed project catalog metadata
+
+**Symptom:** The official M4 system-test fixture caused the project catalog to
+return HTTP 409 after the project-name metadata disappeared.
+**Root cause:** `load_m4_fixture.py` used HTTP `PUT` for the whole asserted
+named graph, replacing the project label seeded by `fuseki-bootstrap`.
+**Fix / workaround:** Use Fuseki Graph Store Protocol `POST` to append the
+fixture triples; the isolated Compose/browser run then retained the configured
+project label and exposed the fixture row in Project Overview.
+**Watch out for:** Do not use graph-replacement `PUT` for fixture data when the
+named graph also contains bootstrap metadata; run acceptance fixtures against
+their isolated non-production Compose volumes.
+
+## [2026-09-30] Graph arrowheads were hidden by opaque target nodes
+
+**Symptom:** Directed Graph relation labels rendered, but arrowheads at target-node centers were covered by the opaque node rectangles, making relationship direction invisible.
+**Root cause:** SVG edges used center-to-center lines with `marker-end`, and the nodes were painted after the edges.
+**Fix / workaround:** Intersect the directed edge ray with the source and target node frames, reserve the arrowhead length outside the target, and render a direction-oriented triangle before nodes. Route self-relations as a loop with the arrow tip on the frame; assert triangle vertices against target bounds for horizontal, reverse, vertical, diagonal, and self edges.
+**Watch out for:** SVG paint order and marker geometry can hide arrowheads even when an edge has a `marker-end`; test the rendered triangle against the opaque target frame at desktop and narrow widths.
+
+## [2026-09-30] Embedded Fuseki readiness must use the dataset query route
+
+**Symptom:** Fuseki answered a dataset ASK query, but Semantic Core stayed
+unready and the native manager timed out during startup.
+**Root cause:** Core readiness checked Fuseki's `/$/ping` admin endpoint, which
+the embedded local server does not expose.
+**Fix / workaround:** Probe the configured dataset's `/query?query=ASK%7B%7D`
+endpoint, and cover the actual request path plus unavailable-server response.
+**Watch out for:** A service's embedded mode can expose a narrower route set
+than its standalone admin interface; probe the same contract the application
+uses and exercise it in the packaged runtime.
+
+## [2026-09-30] Native package builds must refresh the staged SPA
+
+**Symptom:** The frozen host package displayed an obsolete Notes surface even
+though current source included the capture-path guidance.
+**Root cause:** Packaging copied an existing `apps/web/dist` without building
+it, so a stale bundle could silently ship.
+**Fix / workaround:** Run the normal `npm run build` before staging web assets,
+and fail the package build if TypeScript/Vite compilation fails.
+**Watch out for:** An existing `dist/index.html` is not evidence that it matches
+the current source; the native packaging path must produce its own fresh bundle.
+
+## [2026-09-30] Outer readiness deadlines must exceed nested health checks
+
+**Symptom:** The native manager reported `SERVICE_BECAME_UNREADY` for the API,
+while the real `/health/ready` response succeeded but took 3.345 seconds.
+**Root cause:** The manager's 2-second outer API probe expired before the API's
+nested Semantic Core health check, which has a 3-second timeout.
+**Fix / workaround:** Give the API probe a 4-second deadline while keeping the
+other service probes at 2 seconds. Record bounded, allow-listed health details
+and probe timing in the local launcher log on failures.
+**Watch out for:** Keep nested deadlines explicit and ordered; do not mask
+readiness instability with speculative retries or expose source/secret values
+in diagnostics.

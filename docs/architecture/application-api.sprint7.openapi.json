@@ -6029,6 +6029,39 @@
         },
         "additionalProperties": false
       },
+      "CapturedCandidate": {
+        "type": "object",
+        "required": [
+          "id",
+          "handle",
+          "sourceItemId",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "handle": {
+            "type": "string",
+            "pattern": "^candidate-h-[0-9a-f]{24}$"
+          },
+          "sourceItemId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "extracted",
+              "validated",
+              "pending-review",
+              "confirmed",
+              "rejected",
+              "asserted"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
       "CaptureResponse": {
         "type": "object",
         "required": [
@@ -6046,7 +6079,7 @@
           "candidates": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Candidate"
+              "$ref": "#/components/schemas/CapturedCandidate"
             }
           }
         },
@@ -7006,6 +7039,11 @@
             "type": "string",
             "title": "Id"
           },
+          "handle": {
+            "type": "string",
+            "pattern": "^candidate-h-[0-9a-f]{24}$",
+            "title": "Handle"
+          },
           "sourceItemId": {
             "type": "string",
             "title": "Sourceitemid"
@@ -7025,12 +7063,13 @@
         },
         "type": "object",
         "required": [
+          "handle",
           "id",
           "sourceItemId",
           "status"
         ],
         "title": "CandidateResponse",
-        "description": "Opaque candidate identity and its source item."
+        "description": "Project-scoped opaque candidate handle and its source item."
       },
       "GraphEdge": {
         "properties": {

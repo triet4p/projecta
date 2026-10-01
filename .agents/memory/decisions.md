@@ -960,3 +960,73 @@ the existing secret-custody decision while making an exposed local server unsafe
 preserves existing non-placeholder credentials, refuses production-mode files,
 and never prints secrets. Production remains separately configured and cannot
 inherit this experience template as a deployment credential source.
+
+## [2026-09-30] Carry Core-issued candidate handles in capture results
+
+**Decision:** Include the canonical project-scoped opaque review handle beside
+the capture candidate ID in each exact-span capture response.
+**Alternatives considered:** Have the browser derive a handle from the Core ID,
+match by label or queue order, or add a second lookup call after capture.
+**Reason:** The candidate queue owns the opaque handle used by every review
+route. Semantic Core can issue that exact handle from the trusted project and
+captured candidate identity using the same projection algorithm, preserving
+project scope without heuristic matching or an extra round trip.
+**Consequences:** Capture consumers navigate with the returned handle while
+retaining the Core ID only as capture identity; the API schema and fixtures must
+keep both identities distinct.
+
+## [2026-09-30] Use Core route-compatible handles in Project Overview
+
+**Decision:** Derive Overview `node-h-`, `note-h-`, and `candidate-h-` handles
+with the shared opaque-ID helper over each exact project-scoped resource.
+**Alternatives considered:** Keep generic `item-h-` identifiers and teach Core
+to accept aliases, derive handles in the browser from labels/order, or duplicate
+the hashing implementation in ProjectWorkspaceQueryService.
+**Reason:** A live Recent Note click reached Core with `item-h-…` and failed
+route validation (HTTP 400). Core already owns the destination route families;
+sharing its derivation preserves project isolation and prevents drift without
+heuristic matching or relaxed route validation.
+**Consequences:** Overview producers must preserve typed route prefixes and the
+exact project-scoped resource identity; consumers continue to treat handles as
+opaque and cannot infer them from display labels.
+
+## [2026-09-30] Select the Windows 11 x64 per-user launcher for local installation
+
+**Decision:** Select the Windows 11 x64 per-user Projecta launcher with bundled native API, Semantic Core, Fuseki/TDB2, and PostgreSQL services, serving the existing SPA from a loopback origin for one local OS user, with no Docker, WSL2, administrator installation, or user-installed runtimes; preserve the Compose developer/CI baseline.
+**Alternatives considered:** The proposal's managed Podman/WSL2 route using OCI services and a hosted browser service.
+**Reason:** The owner explicitly selected “Windows 11 x64 launcher” and requested continuation after the proposal compared the routes; this provides the requested no-Docker user path while retaining the existing Compose developer/CI workflow and service/API contracts.
+**Consequences:** This approves installation architecture only, not exact binaries/signatures/redistribution terms, platform or resource minimums, production, any release, or `1.0.0`. Exact runtime selection/licensing, DPAPI-backed secret handling, non-destructive Fuseki bootstrap, lifecycle/backup/recovery, platform/resource measurements, and clean no-Docker verification remain S14-08 implementation/evidence requirements. Do not automatically migrate Compose data; keep the developer/CI Compose configuration unchanged.
+
+## [2026-09-30] Provision the approved first-run native workspace instead of blocking startup
+
+**Decision:** The native launcher provisions the proposal-§4 first-run workspace (selected display name, generated valid project ID, fixed local actor) on fresh data directories only, passing it through the existing bootstrap/catalog contracts; the FIRST_RUN_PROJECT_SETUP_NOT_AUTHORIZED blocker is removed.
+**Alternatives considered:** Keep blocking start pending a new owner authorization, or add a separate project-management/create-project operation.
+**Reason:** Proposal §4 already authorizes first-run-only provisioning ("A first-run wizard writes an app-owned configuration file ... It seeds only a fresh data directory"); blocking on it re-litigates a settled approval. A new create-project operation would exceed the launcher's scope.
+**Consequences:** Start succeeds on fresh installs with a real catalog project; provisioning never overwrites existing config; S14-09–11 portable-data contract remains the only path for cross-machine state.
+
+## [2026-09-30] Resolve staged API imports with an explicit sys.path bootstrap for embeddable Python
+
+**Decision:** Launcher child commands for the CPython embeddable distribution insert the staged api/src via sys.path plus runpy.run_module instead of relying on PYTHONPATH, cwd, or mutating the install tree.
+**Alternatives considered:** Rewrite python312._pth at startup, write a .pth file into the install tree, or copy the API into site-packages.
+**Reason:** The embeddable interpreter ignores PYTHONPATH and cwd (verified: sys.path contains only the ._pth entries); install-tree mutation breaks read-only/signature goals and the site-packages copy breaks migrate.py parents[3] alembic resolution.
+**Consequences:** Bundled python -c bootstrap commands are the contract for API children; file-executed scripts (bootstrap_fuseki.py) are unaffected as they use stdlib only.
+
+## [2026-09-30] Verify native updates with detached Ed25519 signatures
+
+**Decision:** Sign the exact bytes of the root `runtime-manifest.json` with a detached base64 Ed25519 signature, embed the owner-approved raw public key in the frozen launcher, and verify the complete SHA-256/size inventory before installing an update.
+**Alternatives considered:** Trust a hash-only manifest, rely on an online update service, or make Authenticode certificate signing the only package-integrity mechanism.
+**Reason:** The per-user runtime must verify updates offline and fail closed without an owner trust anchor; `cryptography` is already a locked API dependency, and Ed25519 gives the launcher an explicit offline trust root without depending on a certificate-store lookup or network service.
+**Consequences:** The private release key stays outside the repository and user data; release builds require the owner's verified public key and a signature over the final manifest. Host-validation packages remain `releaseEligible: false`, unsigned, and non-distributable, and update application is disabled when the trust anchor is missing.
+
+## [2026-09-30] Keep native validation unsigned and gate release signing on owner identities
+
+**Decision:** The default native package build remains unsigned and non-distributable. An explicit release build requires an externally stored owner Ed25519 private key, its matching public trust anchor, a current code-signing certificate from `CurrentUser\My`, and an HTTPS RFC 3161 timestamp endpoint; it Authenticode-signs and verifies all packaged PE images and signs the final runtime manifest with detached Ed25519.
+**Alternatives considered:** Embed signing material in the repository or package, publish a hash-only manifest, use Authenticode as the only offline update trust mechanism, or allow unsigned validation output to look release-eligible.
+**Reason:** A per-user offline update needs a pinned public trust root and whole-package inventory, while Windows executable provenance needs Authenticode. Keeping private keys external and release eligibility opt-in makes host-validation evidence distinct from owner-authorized distribution.
+**Consequences:** Release signing fails before package output when any identity is absent or invalid; the normal package never inherits an owner trust key merely because an environment variable is present. Signing and legal redistribution approval do not establish clean-host, owner-trial, or release-readiness approval.
+## [2026-10-01] Use the second Windows workstation for native iteration
+
+**Decision:** Use the owner's second Windows workstation directly for local native-app iteration and testing instead of provisioning or running a virtual machine.
+**Alternatives considered:** Continue the current-worker VM route or use the current development workstation for dependency debugging.
+**Reason:** The owner wants practical dependency issues repaired quickly and wants to avoid VM setup complexity; the second machine already has VS Code, npm, and Python. Those tools also mean a run there is developer-host validation, not clean-install or clean-dependency proof.
+**Consequences:** The second machine is for manual local use only; this decision does not authorize VM provisioning or treat it as a remote server. Manual installation/start guidance must be provided and followed locally, and remains unverified. Retain the signed/clean acceptance gate. The requested 0.7.0 handoff is not approval to publish this unsigned, non-distributable variant; explicit signing-policy approval for the exact artifact remains pending. No code/package version change, tag, or release is authorized by this decision.
