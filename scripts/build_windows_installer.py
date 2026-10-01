@@ -13,6 +13,7 @@ import sys
 import uuid
 from pathlib import Path
 from typing import Any
+import re
 
 import projecta_local as launcher
 
@@ -39,6 +40,19 @@ def _sha256(path: Path) -> str:
 def _rooted(path: Path) -> Path:
     expanded = path.expanduser()
     return Path(os.path.abspath(expanded if expanded.is_absolute() else ROOT / expanded))
+
+def _source_revision() -> str:
+    result = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        capture_output=True,
+        text=True,
+        cwd=ROOT,
+        check=False,
+    )
+    revision = result.stdout.strip()
+    if result.returncode != 0 or not re.fullmatch(r"[0-9a-f]{40}", revision):
+        raise SystemExit("the installer source commit could not be recorded.")
+    return revision
 
 
 def _authenticode_status(path: Path) -> str:
@@ -176,6 +190,8 @@ def main(argv: list[str] | None = None) -> int:
         "releaseEligible": False,
         "distributionChannel": CHANNEL,
         "unsignedPreReleaseException": EXCEPTION,
+        "installerSourceRevision": _source_revision(),
+        "installerScriptSha256": _sha256(script),
         "sourceRevision": manifest["sourceRevision"],
         "runtimeManifestSha256": _sha256(package / "runtime-manifest.json"),
         "installer": installer,
@@ -192,6 +208,7 @@ def main(argv: list[str] | None = None) -> int:
         "signing": {
             "authenticode": "NotSigned",
             "ed25519ReleaseManifest": False,
+            "authenticodeVerification": "no PE IMAGE_DIRECTORY_ENTRY_SECURITY certificate table",
             "cleanWindowsProof": False,
         },
     }

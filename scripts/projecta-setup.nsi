@@ -41,14 +41,14 @@ Section "Install Projecta 0.7.0"
   SetShellVarContext current
   SetOutPath "$INSTDIR"
   File /r "${PACKAGE_DIR}\*"
-  WriteUninstaller "$INSTDIR\uninstall.exe"
+  WriteUninstaller "$INSTDIR\..\uninstall-0.7.0.exe"
   CreateDirectory "$SMPROGRAMS\Projecta"
   CreateShortCut "$SMPROGRAMS\Projecta\Projecta.lnk" "$INSTDIR\Projecta.exe" "" "$INSTDIR\Projecta.exe" 0 SW_SHOWNORMAL "" "Projecta 0.7.0 unsigned test pre-release"
   WriteRegStr HKCU "${UNINSTALL_KEY}" "DisplayName" "Projecta 0.7.0 unsigned test pre-release"
   WriteRegStr HKCU "${UNINSTALL_KEY}" "DisplayVersion" "0.7.0"
   WriteRegStr HKCU "${UNINSTALL_KEY}" "InstallLocation" "$INSTDIR"
   WriteRegStr HKCU "${UNINSTALL_KEY}" "DisplayIcon" "$INSTDIR\Projecta.exe"
-  WriteRegStr HKCU "${UNINSTALL_KEY}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
+  WriteRegStr HKCU "${UNINSTALL_KEY}" "UninstallString" "$\"$INSTDIR\..\uninstall-0.7.0.exe$\""
   WriteRegDWORD HKCU "${UNINSTALL_KEY}" "NoModify" 1
   WriteRegDWORD HKCU "${UNINSTALL_KEY}" "NoRepair" 1
 SectionEnd
@@ -58,7 +58,8 @@ Section "Uninstall"
   Delete "$SMPROGRAMS\Projecta\Projecta.lnk"
   RMDir "$SMPROGRAMS\Projecta"
   DeleteRegKey HKCU "${UNINSTALL_KEY}"
-  Delete "$INSTDIR\uninstall.exe"
+  Delete "$INSTDIR\..\uninstall-0.7.0.exe"
   RMDir /r "$INSTDIR"
+  RMDir "$INSTDIR\.."
   MessageBox MB_ICONINFORMATION|MB_OK "Projecta application files and shortcuts were removed. Your mutable workspace, databases, secrets, and evidence under %LOCALAPPDATA%\Projecta were intentionally retained. Back up and review that data before deleting it yourself."
 SectionEnd
