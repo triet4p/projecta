@@ -15,30 +15,43 @@ Projecta opens the current Windows account's default browser.
 
 ## Get and verify the installer
 
-The owner-authorized GitHub 0.7.0 release page has not been published. This
-handoff has no public download URL. When the owner-approved asset is available,
-verify its exact filename and size before opening it:
+The owner-authorized 0.7.0 Windows 11 x64 test pre-release is intended to
+have one installer asset; it is unsigned and is not a signed release,
+production installation, or clean-Windows certification. The GitHub release
+page has not yet been published, so this handoff has no public download URL.
+Do not substitute a repository checkout, `build` folder, package archive, or
+other installer candidate for the exact asset when the owner publishes it.
+
+Expected installer filename:
 
 `Projecta-Setup-0.7.0-win-x64-unsigned-prerelease.exe`
 
-Handoff candidate size: **123,908,108 bytes**.
+Size: **119,495,860 bytes**.
 
-Handoff candidate SHA-256:
+SHA-256:
 
-`1c3845f88f93f25f3669706ec2a950dd3ad716c41e5a1efc1a9df3fbb4f63222`
+`f7555a90807bff34540a89758e5f8fe5853b8cbd09d3772d40ac4c9d77a64a77`
 
-Compare the downloaded file before opening it. In Command Prompt:
+Build provenance from the receipts: package source and installer source
+revision `674d0cb3e76096a60725556b20be3767e2508e28`; the installer is
+**NotSigned**. The build-only package archive
+`ProjectaLocal-0.7.0-win-x64-unsigned-pre-release-test-fixed.zip` is
+191,750,058 bytes, SHA-256
+`373a4c4aec1ba89f24f68934d4465a7a4be441887c6a21ca327572ac6304bd65`.
+That archive is provenance only, not a second user download.
+
+After the exact asset is available from the owner-approved release, compare
+its filename, size, and checksum before opening it. In Command Prompt:
 
 ```cmd
 certutil -hashfile "%USERPROFILE%\Downloads\Projecta-Setup-0.7.0-win-x64-unsigned-prerelease.exe" SHA256
 ```
 
-Proceed only when the downloaded file came from the owner-approved release
-asset and matches the exact filename, size, and SHA-256 above. The public page
-is not available yet; if the asset or matching checksum is unavailable, stop
-and wait. Do not use a repository clone, a `build` folder, or a copied package
-directory. Do not turn off security controls or use a “run anyway” bypass if
-SmartScreen or antivirus software blocks the file.
+Proceed only if the downloaded file matches all three values above and came
+from the owner-approved asset. If the asset or checksum is unavailable, stop
+and wait. Windows cannot verify the publisher; SmartScreen or antivirus may
+warn or block the file. Never disable security controls or use a “run anyway”
+bypass.
 
 ## Install and start
 
@@ -49,15 +62,16 @@ SmartScreen or antivirus software blocks the file.
    continue only after verifying the asset; otherwise cancel.
 3. Keep the default `%LOCALAPPDATA%\Programs\Projecta\0.7.0` location and
    finish the wizard. Choose **Open Projecta** on the finish page.
-4. On first launch, enter a display name for this local workspace. Wait for
-   the panel summary **Ready — all four local services are running** and check
-   that PostgreSQL, Fuseki, Semantic Core, and API each show **Running**. The
-   default browser opens `http://127.0.0.1:18732/`; use **Open Projecta in
-   browser** in the panel if needed.
+4. In the **Create your workspace** dialog, enter a display name of 1–128
+   characters and choose **OK**. Wait for **Ready — all four local services
+   are running** and confirm PostgreSQL, Fuseki, Semantic Core, and API each
+   show **Running**. The default browser opens `http://127.0.0.1:18732/`;
+   use **Open Projecta in browser** in the panel if needed.
 
-This handoff smoke covers installer completion, first-run workspace naming,
-four-service readiness, and the loopback browser only. It does not claim a
-selected product journey, manual review receipt, or capture compatibility.
+The fixed package rendered this first-run dialog, but automated interaction
+could not submit the workspace form. The actual desktop first-run completion
+and its ready state remain unverified; this exact interactive check is still
+required. It is not a clean-Windows proof or a selected product-journey pass.
 
 Later, open **Projecta** from the current user's Start menu to launch the
 desktop control panel. Use **Start Projecta** to start the local runtime and
@@ -88,21 +102,37 @@ uninstall registration, but intentionally retains all of
 `%LOCALAPPDATA%\Projecta`. Review and remove that data yourself only after
 making any needed backup.
 
-Report the Windows version/architecture, whether installation, readiness,
-stop/restart, and uninstall succeeded, and any warning or error code. Do not
-send secrets, DPAPI material, workspace content, or raw logs.
+For help, report the Windows version and architecture, whether install,
+workspace creation, readiness, stop/restart, and uninstall succeeded, plus
+any warning or error code. Do not send secrets, DPAPI material, workspace
+content, or raw logs.
 
 ## Limits
 
-This unsigned exception is limited to the owner-authorized 0.7.0 test
-pre-release. The installed package includes `THIRD-PARTY-NOTICES.md` and the
-individual runtime license files. Its inventory records five app-local
-Microsoft Visual C++ DLLs sourced from the Temurin and CPython archives.
+The owner-authorized unsigned exception is limited to the 0.7.0 test
+pre-release; ordinary release signing and signed-update verification remain
+fail-closed. The package includes `THIRD-PARTY-NOTICES.md` and individual
+runtime license files. Its inventory identifies five app-local Microsoft
+Visual C++ DLLs:
+
+- `runtime/java/bin/msvcp140.dll`
+- `runtime/java/bin/vcruntime140.dll`
+- `runtime/java/bin/vcruntime140_1.dll`
+- `runtime/python/vcruntime140.dll`
+- `runtime/python/vcruntime140_1.dll`
+
+The three Java-directory files are from the Temurin JRE 21.0.12.1+1 archive
+and have Microsoft file version 14.40.33810.0; the two Python-directory
+files are from the CPython 3.12.10 embeddable archive and have file version
+14.42.34438.0. The inventory records valid Microsoft Authenticode signatures;
+signature verification was run with revocation checks disabled.
+
 Microsoft's [Visual C++ redistribution terms](https://learn.microsoft.com/en-us/cpp/windows/redistributing-visual-cpp-files?view=msvc-170)
 limit redistribution to licensed Visual Studio users and eligible REDIST-list
-files; the owner must confirm that these exact DLLs meet the applicable terms
-before distribution. This is a specific licensing prerequisite, not a
-blanket paid-counsel gate. The developer-host smoke does not prove a clean
-machine, absence of development tools, redistribution eligibility, a selected
-journey, production readiness, or `1.0.0` approval. The second-machine manual
-test remains unverified.
+files. Before distributing this bundle, the owner must confirm these exact
+files meet those terms. File-signing evidence does not establish redistribution
+rights. The genuine outstanding distribution condition is this specific
+REDIST-list eligibility check; this handoff does not require blanket paid-counsel
+approval. The developer-host smoke does not prove a clean machine, absence of
+development tools, redistribution eligibility, a selected journey, production
+readiness, or `1.0.0` approval. The second-machine manual test remains unverified.

@@ -18,21 +18,30 @@ and ask questions grounded in recorded evidence.
 
 ### Windows 11 x64 unsigned 0.7.0 test pre-release
 
-The owner-authorized installer is an unsigned 0.7.0 test pre-release. Windows
-cannot verify its publisher, and SmartScreen or antivirus software may warn
-or block it. Never disable security controls or bypass a block. Verify the
-exact file and SHA-256 in the machine install guide before opening it.
+The owner-authorized 0.7.0 Windows 11 x64 pre-release is one unsigned
+installer: `Projecta-Setup-0.7.0-win-x64-unsigned-prerelease.exe`
+(119,495,860 bytes; SHA-256
+`f7555a90807bff34540a89758e5f8fe5853b8cbd09d3772d40ac4c9d77a64a77`).
+Windows cannot verify its publisher, and SmartScreen or antivirus software
+may warn or block it. Never disable security controls or bypass a block.
 
-The GitHub 0.7.0 page has not yet been published; no public download URL is
-available in this handoff.
+The expected GitHub 0.7.0 asset has not yet been published; no public download
+URL is available. Use only the exact owner-approved asset when published,
+not a repository or `build`-directory copy. See the
+[machine install, start, stop, and uninstall guide](docs/sprint-plans/sprint-14/unsigned-0.7.0-machine-install.md).
 
-The installer bundles the local services and does not require Docker, Python,
-Node.js, or a JDK. It uses the current Windows account's default browser. See
-the [machine install, start, stop, and uninstall guide](docs/sprint-plans/sprint-14/unsigned-0.7.0-machine-install.md).
+Build provenance: package and installer source revision
+`674d0cb3e76096a60725556b20be3767e2508e28`; package archive
+`ProjectaLocal-0.7.0-win-x64-unsigned-pre-release-test-fixed.zip`
+(191,750,058 bytes; SHA-256
+`373a4c4aec1ba89f24f68934d4465a7a4be441887c6a21ca327572ac6304bd65`).
+The archive is build provenance, not a second installer or download asset.
 
-This version-specific exception does not establish clean-Windows proof, a
-signed release, or production readiness; signed update verification remains
-fail-closed.
+The installer bundles local services and does not require Docker, Python,
+Node.js, or a JDK. It uses the current Windows account's default browser.
+This version-specific unsigned exception does not establish clean-Windows
+proof, a signed release, or production readiness; signed update verification
+remains fail-closed.
 
 ### Development quick start (Docker Compose)
 

@@ -38,10 +38,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - Added a Windows 11 x64 per-user launcher path with loopback-bound managed
   services, CurrentUser DPAPI secrets, readiness/status/stop controls, and
-  hash-verified whole-state backup/restore with rollback. A pinned
-  host-validation-only package was assembled and exercised on the development
-  host; it remains unsigned and non-distributable, with clean-machine, signing,
-  and sustained-readiness proof still open.
+  hash-verified whole-state backup/restore with rollback. The owner-authorized
+  unsigned 0.7.0 test-pre-release exception applies only to that exact version
+  and channel; it does not establish clean-Windows readiness or signed-release
+  eligibility.
 
 ### Fixed
 
@@ -59,9 +59,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Expanded native package assembly to inventory the exact Maven runtime and
   license inputs, verify app-local Microsoft VC DLL signatures, and report
   recursive x64 PE imports and unverified loader-string candidates. The
-  corrected unsigned host-validation bundle now starts all four local services
-  and serves the no-provider workspace, but remains non-distributable pending
-  owner signing, clean-machine proof, and legal approval.
+  corrected unsigned 0.7.0 test package starts all four local services and
+  serves the no-provider workspace; clean-machine proof remains absent, and
+  five app-local Microsoft Visual C++ DLLs still require confirmation against
+  the applicable Visual Studio license and REDIST list before redistribution.
+
+- Fixed the desktop first-run flow so submitting a workspace name starts
+  background provisioning instead of leaving the panel indefinitely at the
+  setup modal.
 
 ### Changed
 
