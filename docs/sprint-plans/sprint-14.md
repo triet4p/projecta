@@ -93,10 +93,14 @@ Status legend: [ ] pending / [~] in progress / [x] done.
   provisioning is authorized. Manual local install/start guidance remains
   required and unverified. The accepted read-only VM survey remains historical
   planning evidence only; no guest was created or run.
-- The owner requested a 0.7.0 handoff, but publishing the exact variant awaits
-  explicit signing-policy approval because the current package is unsigned and
-  non-distributable and the signed-install gate remains retained. No package
-  version change, tag, or publication is authorized in this checkpoint.
+- The owner explicitly authorized publication of 0.7.0 as downloadable single
+  easy-start installers. This authorizes that publication target, not the
+  current unsigned, non-distributable host-validation package, and does not
+  waive the signed-install gate. Publication remains blocked until owner-held
+  Authenticode/Ed25519/timestamp configuration produces the exact signed 0.7.0
+  installers, or the owner explicitly approves an unsigned 0.7.0 exception.
+  Do not request renewed authorization for this already-approved publication.
+  No version change, tag, publication, or release occurred in this checkpoint.
 - The corrected frozen native package, real host Journey 1, restart/crash
   persistence, backup/restore rollback, PostgreSQL patch parity, dependency
   inventory and affected regression checks have verified evidence in
@@ -109,7 +113,9 @@ Status legend: [ ] pending / [~] in progress / [x] done.
   environment. No private signing keys belong in the repository or chat.
 - S14-09–13 and the end-of-sprint deep review cannot start until the S14-08
   evidence gate passes. The current package is unsigned, host-validation-only
-  and non-distributable; no release approval is implied.
+  and non-distributable; it is not the owner-authorized 0.7.0 publication
+  artifact. No `1.0.0` release approval, signed artifact, or clean-install proof
+  is implied.
 
 ## Release Boundary and Notes
 
@@ -118,7 +124,10 @@ Status legend: [ ] pending / [~] in progress / [x] done.
   S14-13 is necessary but **not sufficient** for release: afterward, require a
   separate release-readiness decision on exact artifact/version, platforms,
   data scope, security, migration/recovery, regression/installation evidence,
-  unresolved risks and explicit owner approval before publishing.
+  unresolved risks and the applicable explicit owner authorization before
+  publishing. The existing authorization covers downloadable 0.7.0 easy-start
+  installers only; the signed-artifact gate remains independent, and `1.0.0`
+  is a separate post-Sprint-14 release decision.
 - Sprint 13's S13-08 offline evaluation/R6/R7, provider/human/held-out studies,
   successful local-model inference claims and production materialization stay
   outside this sprint without separate authority. The S14-13 owner product

@@ -1030,3 +1030,10 @@ opaque and cannot infer them from display labels.
 **Alternatives considered:** Continue the current-worker VM route or use the current development workstation for dependency debugging.
 **Reason:** The owner wants practical dependency issues repaired quickly and wants to avoid VM setup complexity; the second machine already has VS Code, npm, and Python. Those tools also mean a run there is developer-host validation, not clean-install or clean-dependency proof.
 **Consequences:** The second machine is for manual local use only; this decision does not authorize VM provisioning or treat it as a remote server. Manual installation/start guidance must be provided and followed locally, and remains unverified. Retain the signed/clean acceptance gate. The requested 0.7.0 handoff is not approval to publish this unsigned, non-distributable variant; explicit signing-policy approval for the exact artifact remains pending. No code/package version change, tag, or release is authorized by this decision.
+
+## [2026-10-01] Record authorized 0.7.0 publication without waiving the signing gate
+
+**Decision:** Publication of Projecta 0.7.0 as downloadable single easy-start installers is explicitly owner-authorized, while publication of the current unsigned host-validation package remains blocked.
+**Alternatives considered:** Treat the 0.7.0 request as only a handoff with no publication authorization, or interpret it as permission to publish the unsigned variant and waive the retained signed-install gate.
+**Reason:** The owner explicitly authorized publication of the 0.7.0 downloadables but did not authorize an unsigned variant or waive the signed-install gate; the prior wording that described the request as no publication approval was overbroad.
+**Consequences:** Do not ask the owner to re-authorize this same 0.7.0 publication. Publish only after owner-held Authenticode/Ed25519/timestamp configuration produces the exact signed installers, or after an explicit unsigned 0.7.0 exception; this does not establish clean-install proof, complete S14-08, or authorize `1.0.0`.
