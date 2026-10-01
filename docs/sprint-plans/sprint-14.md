@@ -81,9 +81,9 @@ Status legend: [ ] pending / [~] in progress / [x] done.
 
 - S14-01–07 passed task evidence review. S14-08 remains `[~]`; the latest
   review (`CorrectedPackageEvidence`) is **FAIL / do not advance**.
-- After reviewing the single-workstation alternatives, the owner explicitly
-  retained the signed-install gate. No unsigned internal-trial exception or
-  reduced acceptance scope was approved.
+- The owner retained the full S14-08 signed-install gate, then explicitly
+  approved an unsigned exception only for the downloadable 0.7.0 pre-release.
+  That exception does not pass S14-08 or authorize `1.0.0`.
 - The owner now prefers direct native iteration/testing on a second Windows
   workstation rather than provisioning or running a VM, to repair practical
   dependency issues quickly without VM setup complexity. The owner reports this
@@ -93,14 +93,14 @@ Status legend: [ ] pending / [~] in progress / [x] done.
   provisioning is authorized. Manual local install/start guidance remains
   required and unverified. The accepted read-only VM survey remains historical
   planning evidence only; no guest was created or run.
-- The owner explicitly authorized publication of 0.7.0 as downloadable single
-  easy-start installers. This authorizes that publication target, not the
-  current unsigned, non-distributable host-validation package, and does not
-  waive the signed-install gate. Publication remains blocked until owner-held
-  Authenticode/Ed25519/timestamp configuration produces the exact signed 0.7.0
-  installers, or the owner explicitly approves an unsigned 0.7.0 exception.
-  Do not request renewed authorization for this already-approved publication.
-  No version change, tag, publication, or release occurred in this checkpoint.
+- The owner authorized publication of 0.7.0 as downloadable single easy-start
+  installers and selected an unsigned pre-release for testing on the second
+  Windows machine. Build a real installer and normal launch path; the existing
+  host-validation development override is not an acceptable user install route.
+  Disclose unsigned publisher warnings, checksums, bundled dependency notices,
+  and the absence of clean-install proof. Keep signed release/update verification
+  fail-closed outside this explicit 0.7.0 exception. No renewed publication
+  authorization is needed. Installer implementation and publication are pending.
 - The corrected frozen native package, real host Journey 1, restart/crash
   persistence, backup/restore rollback, PostgreSQL patch parity, dependency
   inventory and affected regression checks have verified evidence in
@@ -125,9 +125,9 @@ Status legend: [ ] pending / [~] in progress / [x] done.
   separate release-readiness decision on exact artifact/version, platforms,
   data scope, security, migration/recovery, regression/installation evidence,
   unresolved risks and the applicable explicit owner authorization before
-  publishing. The existing authorization covers downloadable 0.7.0 easy-start
-  installers only; the signed-artifact gate remains independent, and `1.0.0`
-  is a separate post-Sprint-14 release decision.
+  publishing. The existing authorization covers downloadable unsigned 0.7.0
+  pre-release easy-start installers only; the full S14-08 gate remains
+  independent, and `1.0.0` is a separate post-Sprint-14 release decision.
 - Sprint 13's S13-08 offline evaluation/R6/R7, provider/human/held-out studies,
   successful local-model inference claims and production materialization stay
   outside this sprint without separate authority. The S14-13 owner product
@@ -137,3 +137,19 @@ Status legend: [ ] pending / [~] in progress / [x] done.
   binding until an explicit approved change. Any ontology/SHACL change requires
   the project ontology skill and human semantic approval. No automatic Google
   Drive sync or extra connector breadth is implied.
+
+## Owner-Authorized 0.7.0 Handoff
+
+This bounded pre-release does not complete Sprint 14 or start S14-09.
+
+- [x] Record direct native execution on the second Windows machine, without
+  reusing remote-server configuration or provisioning a VM.
+- [x] Commit scoped temporary Sprint 14 changes; checkpoint commits
+  `54a64a03` and `e40da174` passed bounded evidence review.
+- [~] Produce one Windows 11 x64 per-user unsigned 0.7.0 pre-release installer
+  with an easy normal launch/stop path, bundled dependencies and verified smoke.
+- [ ] Provide manual download/install/start/stop instructions for the second
+  machine; no repo clone or user-installed development runtime.
+- [ ] After bounded package evidence review, push the reviewed commits, tag
+  the exact source revision and publish the pre-release with installer,
+  checksums, notices, installation instructions and truthful limitations.

@@ -1037,3 +1037,13 @@ opaque and cannot infer them from display labels.
 **Alternatives considered:** Treat the 0.7.0 request as only a handoff with no publication authorization, or interpret it as permission to publish the unsigned variant and waive the retained signed-install gate.
 **Reason:** The owner explicitly authorized publication of the 0.7.0 downloadables but did not authorize an unsigned variant or waive the signed-install gate; the prior wording that described the request as no publication approval was overbroad.
 **Consequences:** Do not ask the owner to re-authorize this same 0.7.0 publication. Publish only after owner-held Authenticode/Ed25519/timestamp configuration produces the exact signed installers, or after an explicit unsigned 0.7.0 exception; this does not establish clean-install proof, complete S14-08, or authorize `1.0.0`.
+
+## [2026-10-01] Permit the owner-authorized unsigned 0.7.0 test pre-release
+
+**Decision:** Apply an explicit unsigned pre-release exception only to the Projecta 0.7.0 Windows 11 x64 easy-start installer; keep ordinary release signing and signed-update verification fail-closed.
+
+**Alternatives considered:** Retain the signed-installer-only requirement for this exact test asset, or broaden an unsigned exception to other versions or artifacts.
+
+**Reason:** The owner explicitly authorized an unsigned 0.7.0 pre-release for second-machine testing and a downloadable 0.7.0 handoff, so renewed approval is unnecessary. This narrow exception does not require a fake signature or weakening the signed update trust boundary.
+
+**Consequences:** Only the 0.7.0 test pre-release may use this exception. Do not set `releaseEligible`, bypass signature checks, or infer clean S14/1.0.0 acceptance. The exception does not grant third-party redistribution rights: before distribution, the owner must confirm the five app-local Microsoft Visual C++ DLLs meet the applicable Visual Studio license and REDIST-list terms.

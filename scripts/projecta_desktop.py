@@ -139,7 +139,12 @@ class ProjectaDesktop:
             except (OSError, subprocess.TimeoutExpired) as error:
                 success = False
                 detail = str(error)
-            self.root.after(0, lambda: self._finish_first_run(success, detail))
+            try:
+                self.root.after(0, lambda: self._finish_first_run(success, detail))
+            except tk.TclError:
+                pass
+
+        threading.Thread(target=provision, name="projecta-first-run-provision", daemon=True).start()
 
 
     def _finish_first_run(self, success: bool, detail: str) -> None:

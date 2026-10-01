@@ -16,9 +16,27 @@ and ask questions grounded in recorded evidence.
 
 ## Quick start
 
-You need Docker Desktop and PowerShell 7 (`pwsh`) on Windows. From the
-repository root, copy the local template, generate unique credentials in the
-ignored `.env`, and start the web profile:
+### Windows 11 x64 unsigned 0.7.0 test pre-release
+
+The owner-authorized installer is an unsigned 0.7.0 test pre-release. Windows
+cannot verify its publisher, and SmartScreen or antivirus software may warn
+or block it. Never disable security controls or bypass a block. Verify the
+exact file and SHA-256 in the machine install guide before opening it.
+
+The GitHub 0.7.0 page has not yet been published; no public download URL is
+available in this handoff.
+
+The installer bundles the local services and does not require Docker, Python,
+Node.js, or a JDK. It uses the current Windows account's default browser. See
+the [machine install, start, stop, and uninstall guide](docs/sprint-plans/sprint-14/unsigned-0.7.0-machine-install.md).
+
+This version-specific exception does not establish clean-Windows proof, a
+signed release, or production readiness; signed update verification remains
+fail-closed.
+
+### Development quick start (Docker Compose)
+
+For the repository's Docker Compose development workflow, you need Docker Desktop and PowerShell 7 (`pwsh`). From the repository root, copy the local template, generate unique credentials in the ignored `.env`, and start the web profile:
 
 ```powershell
 if (-not (Test-Path -LiteralPath ".env")) {

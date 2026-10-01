@@ -8,6 +8,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Added
 
+- Prepared the owner-authorized, unpublished unsigned 0.7.0 Windows 11 x64
+  easy-start test installer with its bundled local runtime and per-user
+  installation path. This pre-release exception does not change signed update
+  verification or establish clean-Windows readiness.
+
 - Added explicitly requested, locally routed item/type/link suggestions for
   confirmed manual captures, with revision-bound caching, daily budgets, and
   append-only human decisions. No model call runs during capture or reads;
