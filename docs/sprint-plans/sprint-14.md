@@ -79,8 +79,12 @@ Status legend: [ ] pending / [~] in progress / [x] done.
 
 ## Current Evidence Gate
 
-- S14-01–07 passed task evidence review. S14-08 remains `[~]`; the latest
-  review (`CorrectedPackageEvidence`) is **FAIL / do not advance**.
+- S14-01–07 passed task evidence review. S14-08 remains `[~]`; package and
+  binary evidence remains **FAIL / do not advance**. The separate bounded guide
+  usability/provenance review (`UnsignedGuideEvidence`) **passed**; it verifies
+  documentation only and clears none of the binary-publication gates.
+  Manual installation and first-run execution on the second machine remain
+  unverified.
 - The owner retained the full S14-08 signed-install gate, then explicitly
   approved an unsigned exception only for the downloadable 0.7.0 pre-release.
   That exception does not pass S14-08 or authorize `1.0.0`.
@@ -90,9 +94,10 @@ Status legend: [ ] pending / [~] in progress / [x] done.
   machine has VS Code, npm, and Python; that makes any run there developer-host
   validation, not clean-install or clean-dependency proof. The second machine
   is not connected as a remote server, and no remote-server execution or VM
-  provisioning is authorized. Manual local install/start guidance remains
-  required and unverified. The accepted read-only VM survey remains historical
-  planning evidence only; no guest was created or run.
+  provisioning is authorized. The manual installation guide is documented;
+  actual second-machine install/start execution remains unverified. The
+  accepted read-only VM survey remains historical planning evidence only; no
+  guest was created or run.
 - The owner authorized publication of 0.7.0 as downloadable single easy-start
   installers and selected an unsigned pre-release for testing on the second
   Windows machine. Build a real installer and normal launch path; the existing
@@ -144,12 +149,23 @@ This bounded pre-release does not complete Sprint 14 or start S14-09.
 
 - [x] Record direct native execution on the second Windows machine, without
   reusing remote-server configuration or provisioning a VM.
-- [x] Commit scoped temporary Sprint 14 changes; checkpoint commits
-  `54a64a03` and `e40da174` passed bounded evidence review.
+- [x] Commit scoped temporary Sprint 14 changes and push six reviewed source
+  checkpoints to GitHub `main`, ending at `aefb457c44d17bfa61a3b045c63b62ad16eb6ad5`.
 - [~] Produce one Windows 11 x64 per-user unsigned 0.7.0 pre-release installer
   with an easy normal launch/stop path, bundled dependencies and verified smoke.
-- [ ] Provide manual download/install/start/stop instructions for the second
-  machine; no repo clone or user-installed development runtime.
-- [ ] After bounded package evidence review, push the reviewed commits, tag
-  the exact source revision and publish the pre-release with installer,
-  checksums, notices, installation instructions and truthful limitations.
+- [x] Provide manual download/install/start/stop instructions for the second
+  machine in `unsigned-0.7.0-machine-install.md`; no repo clone or user-installed
+  development runtime. Actual second-machine execution remains unverified.
+- [ ] After the GUI first-run and VC++ REDIST prerequisites are resolved and
+  the bounded binary-publication review passes, tag the exact source revision
+  and publish the pre-release with installer, checksums, notices, installation
+  instructions and truthful limitations.
+- Binary publication is blocked by `V070InstallerEvidence`: the owner must
+  complete the corrected GUI first-run workspace form, observe all four services
+  ready and a usable browser, and stop them; automated desktop focus was
+  unavailable. Also resolve the specific Microsoft VC++ REDIST licensing
+  condition for the five packaged DLLs before public binary distribution.
+  The source push passed `V070SourcePushEvidence`; no tag/release/asset was
+  published. The local candidate installer is
+  `build/releases/Projecta-Setup-0.7.0-win-x64-unsigned-prerelease.exe`, SHA-256
+  `f7555a90807bff34540a89758e5f8fe5853b8cbd09d3772d40ac4c9d77a64a77`.

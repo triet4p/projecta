@@ -22,8 +22,15 @@ The owner-authorized 0.7.0 Windows 11 x64 pre-release is one unsigned
 installer: `Projecta-Setup-0.7.0-win-x64-unsigned-prerelease.exe`
 (119,495,860 bytes; SHA-256
 `f7555a90807bff34540a89758e5f8fe5853b8cbd09d3772d40ac4c9d77a64a77`).
-Windows cannot verify its publisher, and SmartScreen or antivirus software
-may warn or block it. Never disable security controls or bypass a block.
+Windows cannot verify its publisher, so a standard SmartScreen reputation
+warning may appear. After verifying the exact owner-approved filename, size,
+and SHA-256 above, you may choose **More info → Run anyway** only if Windows
+offers it for the ordinary unrecognized-app warning and you accept this
+unsigned test's risk. If Defender reports malware, Windows hard-blocks the
+file, or organization policy blocks it, stop and report the alert. Never
+disable SmartScreen, Defender, or other security controls, override a malware
+detection, or change organization policy. See the installation guide below
+for the full procedure.
 
 The expected GitHub 0.7.0 asset has not yet been published; no public download
 URL is available. Use only the exact owner-approved asset when published,

@@ -1038,3 +1038,10 @@ and probe timing in the local launcher log on failures.
 **Watch out for:** Keep nested deadlines explicit and ordered; do not mask
 readiness instability with speculative retries or expose source/secret values
 in diagnostics.
+
+## [2026-10-01] A missing elevation field does not prove Git is blocked
+
+**Symptom:** A handoff claimed that a scoped Git commit could not be made because the Bash tool schema had no `sandbox_permissions` field, even though no Git operation had been attempted.
+**Root cause:** The escalation guidance was mistaken for evidence that the existing host Git route was unavailable; the tool schema intentionally exposed no such parameter.
+**Fix / workaround:** Use the available standard host Git route with the parameters its schema supports, and report the actual command result. Never invent an unsupported elevation parameter or claim administrator privileges.
+**Watch out for:** When Git-related guidance asks for an elevation mechanism absent from the tool schema, the missing field alone is not a Git failure or proof that administrator rights are required.

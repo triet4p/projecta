@@ -2,10 +2,12 @@
 
 This is the owner-authorized unsigned 0.7.0 test pre-release, not a signed
 release, production installation, or clean-Windows certification. Windows
-cannot verify the publisher; SmartScreen or antivirus software may warn or
-block the file. Never disable security controls or bypass a Windows block.
-This exception applies only to 0.7.0. Signed release and update verification
-remain fail-closed.
+cannot verify the publisher; a standard SmartScreen reputation warning may
+appear for this unsigned file. A Defender malware alert, Windows hard block,
+or organization-policy block is different: stop and report it. Never disable
+SmartScreen, Defender, or other security controls, override a malware
+detection, or change organization policy. This exception applies only to
+0.7.0; signed release and update verification remain fail-closed.
 
 The installer bundles the local Python 3.12 and Java 21 runtimes, PostgreSQL,
 Fuseki/TDB2, Semantic Core, API, and web assets. You do not need Docker,
@@ -49,17 +51,23 @@ certutil -hashfile "%USERPROFILE%\Downloads\Projecta-Setup-0.7.0-win-x64-unsigne
 
 Proceed only if the downloaded file matches all three values above and came
 from the owner-approved asset. If the asset or checksum is unavailable, stop
-and wait. Windows cannot verify the publisher; SmartScreen or antivirus may
-warn or block the file. Never disable security controls or use a “run anyway”
-bypass.
+and wait. After those checks, you may choose **More info → Run anyway** only
+for an ordinary SmartScreen unrecognized-app/reputation warning, only if
+Windows offers that option, and only if you accept the unsigned 0.7.0 test
+risk. This is an optional per-file choice for this verified asset, not a
+safety check or permission to run other unsigned files. If Defender reports
+malware, Windows hard-blocks the file, or organization policy blocks it, stop
+and report the alert; do not override it or change security settings.
 
 ## Install and start
 
 1. Sign in to the Windows 11 x64 account that will use Projecta. This is a
    per-user install and does not need administrator privileges. Do not choose
    **Run as administrator**.
-2. Double-click the verified `.exe`. Read the unsigned-test warning and
-   continue only after verifying the asset; otherwise cancel.
+2. Double-click the verified `.exe`. For only the ordinary SmartScreen warning
+   described above, use **More info → Run anyway** if offered and if you accept
+   the risk; otherwise cancel. For a malware alert, hard block, or policy
+   block, stop and report it.
 3. Keep the default `%LOCALAPPDATA%\Programs\Projecta\0.7.0` location and
    finish the wizard. Choose **Open Projecta** on the finish page.
 4. In the **Create your workspace** dialog, enter a display name of 1–128
@@ -123,16 +131,27 @@ Visual C++ DLLs:
 
 The three Java-directory files are from the Temurin JRE 21.0.12.1+1 archive
 and have Microsoft file version 14.40.33810.0; the two Python-directory
-files are from the CPython 3.12.10 embeddable archive and have file version
-14.42.34438.0. The inventory records valid Microsoft Authenticode signatures;
-signature verification was run with revocation checks disabled.
+files are from the [CPython 3.12.10 Windows embeddable archive](https://www.python.org/downloads/release/python-31210/)
+and have file version 14.42.34438.0. The package receipt and runtime manifest
+identify the bundled Python runtime as 3.12.10; Python 3.12.12 was used to
+freeze the separate desktop GUI, not as the source of these bundled DLLs.
+The inventory records valid Microsoft Authenticode signatures; signature
+verification was run with revocation checks disabled.
 
-Microsoft's [Visual C++ redistribution terms](https://learn.microsoft.com/en-us/cpp/windows/redistributing-visual-cpp-files?view=msvc-170)
-limit redistribution to licensed Visual Studio users and eligible REDIST-list
-files. Before distributing this bundle, the owner must confirm these exact
-files meet those terms. File-signing evidence does not establish redistribution
-rights. The genuine outstanding distribution condition is this specific
-REDIST-list eligibility check; this handoff does not require blanket paid-counsel
-approval. The developer-host smoke does not prove a clean machine, absence of
-development tools, redistribution eligibility, a selected journey, production
-readiness, or `1.0.0` approval. The second-machine manual test remains unverified.
+Microsoft's [Visual C++ redistribution guidance](https://learn.microsoft.com/en-us/cpp/windows/redistributing-visual-cpp-files?view=msvc-170)
+says distribution of Visual C++ Runtime Redistributable packages and
+individual binaries is limited to licensed Visual Studio users and subject
+to Microsoft's Software License Terms. The [Visual Studio 2022 REDIST
+list](https://learn.microsoft.com/en-us/visualstudio/releases/2022/redistribution)
+allows only its listed, unmodified distributable code under that edition's
+terms; other Visual Studio editions/versions have their own applicable lists.
+Before public binary distribution, the owner must verify that each of the five
+files above is eligible under the applicable Visual Studio edition/version's
+REDIST list and license terms. Their Temurin/CPython origins and Microsoft
+signatures do not establish redistribution rights; using Visual Studio Code
+alone does not establish a licensed Visual Studio entitlement. No blanket
+paid-counsel approval is asserted here. The specific outstanding condition is
+owner confirmation of eligibility for these five app-local DLLs. The
+developer-host smoke does not prove a clean machine, absence of development
+tools, redistribution eligibility, a selected journey, production readiness,
+or `1.0.0` approval. The second-machine manual test remains unverified.
