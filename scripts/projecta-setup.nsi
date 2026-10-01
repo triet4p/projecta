@@ -1,0 +1,64 @@
+!ifndef PACKAGE_DIR
+  !error "PACKAGE_DIR is required"
+!endif
+!ifndef OUTPUT_FILE
+  !error "OUTPUT_FILE is required"
+!endif
+
+Unicode true
+Name "Projecta 0.7.0 unsigned test pre-release"
+OutFile "${OUTPUT_FILE}"
+InstallDir "$LOCALAPPDATA\Programs\Projecta\0.7.0"
+RequestExecutionLevel user
+ShowInstDetails show
+ShowUninstDetails show
+SetCompressor /SOLID lzma
+SetCompressorDictSize 32
+CRCCheck on
+BrandingText "Projecta 0.7.0 unsigned test pre-release"
+
+!include "MUI2.nsh"
+!define MUI_ABORTWARNING
+!define MUI_FINISHPAGE_RUN "$INSTDIR\Projecta.exe"
+!define MUI_FINISHPAGE_RUN_TEXT "Open Projecta"
+!insertmacro MUI_PAGE_WELCOME
+!insertmacro MUI_PAGE_INSTFILES
+!insertmacro MUI_PAGE_FINISH
+!insertmacro MUI_UNPAGE_CONFIRM
+!insertmacro MUI_UNPAGE_INSTFILES
+!insertmacro MUI_LANGUAGE "English"
+
+!define UNINSTALL_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\Projecta-0.7.0-Unsigned-Pre-Release-Test"
+
+Function .onInit
+  SetShellVarContext current
+  MessageBox MB_ICONEXCLAMATION|MB_OKCANCEL|MB_DEFBUTTON2 "Projecta 0.7.0 is an owner-authorized unsigned test pre-release. Windows cannot verify the publisher, and SmartScreen or antivirus software may warn. Continue only if you obtained this installer from the owner-approved source and verified its published SHA-256. This installer is per-user and does not require administrator access. Clean Windows installation, publisher identity, and production readiness are not certified." IDOK proceed
+  Abort
+proceed:
+FunctionEnd
+
+Section "Install Projecta 0.7.0"
+  SetShellVarContext current
+  SetOutPath "$INSTDIR"
+  File /r "${PACKAGE_DIR}\*"
+  WriteUninstaller "$INSTDIR\uninstall.exe"
+  CreateDirectory "$SMPROGRAMS\Projecta"
+  CreateShortCut "$SMPROGRAMS\Projecta\Projecta.lnk" "$INSTDIR\Projecta.exe" "" "$INSTDIR\Projecta.exe" 0 SW_SHOWNORMAL "" "Projecta 0.7.0 unsigned test pre-release"
+  WriteRegStr HKCU "${UNINSTALL_KEY}" "DisplayName" "Projecta 0.7.0 unsigned test pre-release"
+  WriteRegStr HKCU "${UNINSTALL_KEY}" "DisplayVersion" "0.7.0"
+  WriteRegStr HKCU "${UNINSTALL_KEY}" "InstallLocation" "$INSTDIR"
+  WriteRegStr HKCU "${UNINSTALL_KEY}" "DisplayIcon" "$INSTDIR\Projecta.exe"
+  WriteRegStr HKCU "${UNINSTALL_KEY}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
+  WriteRegDWORD HKCU "${UNINSTALL_KEY}" "NoModify" 1
+  WriteRegDWORD HKCU "${UNINSTALL_KEY}" "NoRepair" 1
+SectionEnd
+
+Section "Uninstall"
+  SetShellVarContext current
+  Delete "$SMPROGRAMS\Projecta\Projecta.lnk"
+  RMDir "$SMPROGRAMS\Projecta"
+  DeleteRegKey HKCU "${UNINSTALL_KEY}"
+  Delete "$INSTDIR\uninstall.exe"
+  RMDir /r "$INSTDIR"
+  MessageBox MB_ICONINFORMATION|MB_OK "Projecta application files and shortcuts were removed. Your mutable workspace, databases, secrets, and evidence under %LOCALAPPDATA%\Projecta were intentionally retained. Back up and review that data before deleting it yourself."
+SectionEnd

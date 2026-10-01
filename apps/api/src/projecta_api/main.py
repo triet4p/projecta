@@ -240,7 +240,7 @@ def create_app(
             authoring_telemetry_service=local_suggestion_service.authoring_telemetry,
         )
     retrieval = RetrievalService(client)
-    app = FastAPI(title="Projecta Application API", version="0.6.0")
+    app = FastAPI(title="Projecta Application API", version="0.7.0")
     app.state.settings = actual_settings
     app.state.startup_problems = startup_problems
     app.state.runtime_configuration = configuration

@@ -6,7 +6,7 @@
 
     <groupId>org.projecta</groupId>
     <artifactId>semantic-core</artifactId>
-    <version>0.6.0</version>
+    <version>0.7.0</version>
     <name>Projecta Semantic Core</name>
     <description>Domain-safe semantic lifecycle runtime for Projecta.</description>
 

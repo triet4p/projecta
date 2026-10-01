@@ -31,6 +31,7 @@ def _signed_update_package(
 
     required = (
         "ProjectaLocal.exe",
+        "Projecta.exe",
         "runtime/python/python.exe",
         "runtime/python/python312._pth",
         "runtime/python/uv.lock",
@@ -78,6 +79,7 @@ def _signed_update_package(
                 "projectaVersion": "0.7.0",
                 "dataContractVersion": 1,
                 "releaseEligible": True,
+                "distributionChannel": "signed-release",
                 "signatureAlgorithm": "Ed25519",
                 "runtimeVersions": dict(launcher.RUNTIME_VERSIONS),
                 "noticeFiles": ["THIRD-PARTY-NOTICES.md"],
@@ -430,6 +432,7 @@ def test_unsigned_update_package_is_refused(local_paths: launcher.ProjectaPaths)
                 "projectaVersion": "0.7.0",
                 "dataContractVersion": 1,
                 "releaseEligible": True,
+                "distributionChannel": "signed-release",
                 "signatureAlgorithm": "Ed25519",
                 "runtimeVersions": dict(launcher.RUNTIME_VERSIONS),
                 "noticeFiles": ["THIRD-PARTY-NOTICES.md"],
@@ -444,21 +447,47 @@ def test_unsigned_update_package_is_refused(local_paths: launcher.ProjectaPaths)
 
     assert failure.value.code == "UPDATE_SIGNATURE_REQUIRED"
 
-def test_staged_runtime_override_is_host_validation_only(
+def test_staged_runtime_override_never_authorizes_host_validation(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.setenv("PROJECTA_LAUNCHER_PACKAGE_ROOT", "staged-package")
     monkeypatch.setenv("PROJECTA_LAUNCHER_DATA_ROOT", "staged-data")
-    manifest = {"releaseEligible": False}
-    monkeypatch.setattr(launcher, "RELEASE_UPDATE_PUBLIC_KEY_B64", None)
+    manifest = {
+        "projectaVersion": "0.7.0",
+        "releaseEligible": False,
+        "distributionChannel": "host-validation",
+    }
 
-    launcher._require_package_distribution(manifest)
+    for public_key in (None, "owner-key"):
+        monkeypatch.setattr(launcher, "RELEASE_UPDATE_PUBLIC_KEY_B64", public_key)
+        with pytest.raises(launcher.RuntimeFailure) as failure:
+            launcher._require_package_distribution(manifest)
+        assert failure.value.code == "PACKAGE_SIGNATURE_REQUIRED"
 
-    monkeypatch.setattr(launcher, "RELEASE_UPDATE_PUBLIC_KEY_B64", "owner-key")
-    with pytest.raises(launcher.RuntimeFailure) as failure:
-        launcher._require_package_distribution(manifest)
 
-    assert failure.value.code == "PACKAGE_SIGNATURE_REQUIRED"
+def test_only_exact_0_7_0_unsigned_prerelease_exception_is_enabled() -> None:
+    authorized = {
+        "projectaVersion": "0.7.0",
+        "releaseEligible": False,
+        "distributionChannel": launcher.UNSIGNED_PRE_RELEASE_CHANNEL,
+        "unsignedPreReleaseException": launcher.UNSIGNED_PRE_RELEASE_EXCEPTION,
+    }
+
+    launcher._require_package_distribution(authorized)
+
+    unauthorized = (
+        {
+            **authorized,
+            "projectaVersion": "0.7.1",
+            "unsignedPreReleaseException": "projecta-0.7.1-unsigned-pre-release-test",
+        },
+        {**authorized, "unsignedPreReleaseException": "another-exception"},
+        {**authorized, "distributionChannel": "host-validation"},
+    )
+    for manifest in unauthorized:
+        with pytest.raises(launcher.RuntimeFailure) as failure:
+            launcher._require_package_distribution(manifest)
+        assert failure.value.code == "PACKAGE_SIGNATURE_REQUIRED"
 
 
 def test_signed_update_manifest_verifies_with_explicit_owner_key(tmp_path: Path) -> None:

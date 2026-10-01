@@ -27,8 +27,7 @@ class ReleaseContractTest(TestCase):
         self.assertIn("Current", notes)
         self.assertNotIn("Previous", notes)
 
-    def test_repository_manifests_match_release(self) -> None:
-        self.assertEqual(set(declared_versions(ROOT).values()), {"0.6.0"})
-        version, notes = validate_release(ROOT, "v0.6.0")
-        self.assertEqual(version, "0.6.0")
-        self.assertIn("### Added", notes)
+    def test_unsigned_prerelease_keeps_release_contract_closed(self) -> None:
+        self.assertEqual(set(declared_versions(ROOT).values()), {"0.7.0"})
+        with self.assertRaisesRegex(ReleaseContractError, r"no dated \[0\.7\.0\] release"):
+            validate_release(ROOT, "v0.7.0")

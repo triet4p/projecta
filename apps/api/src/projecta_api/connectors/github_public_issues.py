@@ -781,7 +781,7 @@ def _map_github_streams(
 class GitHubPublicIssuesHttpTransport:
     """Fixed-origin, one-attempt GitHub REST transport."""
 
-    _USER_AGENT = "Projecta/0.6"
+    _USER_AGENT = "Projecta/0.7"
     _API_VERSION = "2026-03-10"
     def __init__(self, *, http_transport: httpx.AsyncBaseTransport | None = None) -> None:
         self._client = httpx.AsyncClient(

@@ -26,8 +26,11 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path, PurePosixPath
 
-APP_VERSION = "0.6.0"
+APP_VERSION = "0.7.0"
 DATA_CONTRACT_VERSION = 1
+UNSIGNED_PRE_RELEASE_VERSION = "0.7.0"
+UNSIGNED_PRE_RELEASE_CHANNEL = "unsigned-pre-release-test"
+UNSIGNED_PRE_RELEASE_EXCEPTION = "projecta-0.7.0-unsigned-pre-release-test"
 
 RUNTIME_VERSIONS = {
     "python": "3.12.10",
@@ -149,7 +152,7 @@ class ProjectaPaths:
     def discover(cls) -> ProjectaPaths:
         override_package = os.environ.get("PROJECTA_LAUNCHER_PACKAGE_ROOT")
         override_data = os.environ.get("PROJECTA_LAUNCHER_DATA_ROOT")
-        if override_package or override_data:
+        if not getattr(sys, "frozen", False) and (override_package or override_data):
             if not override_package or not override_data:
                 raise RuntimeFailure(
                     "LOCAL_DATA_ROOT_MISSING",
@@ -617,9 +620,26 @@ def load_runtime_manifest(
         raise RuntimeFailure("PACKAGE_MANIFEST_INVALID", "The bundled data contract version is not supported.")
     if type(manifest.get("releaseEligible")) is not bool:
         raise RuntimeFailure("PACKAGE_MANIFEST_INVALID", "The bundled release status is invalid.")
-    if manifest.get("releaseEligible"):
+    channel = manifest.get("distributionChannel")
+    signature_path = paths.package_root / "runtime-manifest.sig"
+    if manifest["releaseEligible"]:
+        if channel != "signed-release" or "unsignedPreReleaseException" in manifest:
+            raise RuntimeFailure("PACKAGE_MANIFEST_INVALID", "The signed release channel is invalid.")
         manifest_bytes = paths.runtime_manifest.read_bytes()
         _verify_manifest_signature(paths.package_root, manifest_bytes)
+    elif channel == "host-validation":
+        if "unsignedPreReleaseException" in manifest or signature_path.exists():
+            raise RuntimeFailure("PACKAGE_MANIFEST_INVALID", "The host-validation package metadata is invalid.")
+    elif channel == UNSIGNED_PRE_RELEASE_CHANNEL:
+        if (
+            APP_VERSION != UNSIGNED_PRE_RELEASE_VERSION
+            or manifest.get("projectaVersion") != UNSIGNED_PRE_RELEASE_VERSION
+            or manifest.get("unsignedPreReleaseException") != UNSIGNED_PRE_RELEASE_EXCEPTION
+            or signature_path.exists()
+        ):
+            raise RuntimeFailure("PACKAGE_MANIFEST_INVALID", "The unsigned pre-release exception is invalid.")
+    else:
+        raise RuntimeFailure("PACKAGE_MANIFEST_INVALID", "The bundled distribution channel is invalid.")
     _verify_package_inventory(paths.package_root, manifest, error_code="PACKAGE_CONTENT_INVALID")
     notices = manifest.get("noticeFiles")
     if not isinstance(notices, list) or not notices:
@@ -629,6 +649,8 @@ def load_runtime_manifest(
             raise RuntimeFailure("PACKAGE_NOTICES_INVALID", "The package notice index is invalid.")
         if not (paths.package_root / notice).is_file():
             raise RuntimeFailure("PACKAGE_NOTICES_MISSING", "A required third-party notice is absent from the package.")
+    if channel == UNSIGNED_PRE_RELEASE_CHANNEL and "runtime/installer-tool/NSIS-COPYING.txt" not in notices:
+        raise RuntimeFailure("PACKAGE_NOTICES_MISSING", "The installer license notice is absent from the pre-release package.")
     required_files = (
         paths.runtime / "python" / "python.exe",
         paths.runtime / "python" / "python312._pth",
@@ -652,6 +674,7 @@ def load_runtime_manifest(
         paths.package_root / "runtime" / "python" / "uv.lock",
         paths.package_root / "runtime" / "python" / "wheel-requirements.txt",
         paths.package_root / "ProjectaLocal.exe",
+        paths.package_root / "Projecta.exe",
     )
     template_ok = (paths.project / "fuseki-config.template.ttl").is_file() or (
         paths.project / "fuseki-config.ttl"
@@ -665,7 +688,7 @@ def load_runtime_manifest(
     return manifest
 
 def _is_staged_runtime() -> bool:
-    return bool(
+    return not getattr(sys, "frozen", False) and bool(
         os.environ.get("PROJECTA_LAUNCHER_PACKAGE_ROOT")
         and os.environ.get("PROJECTA_LAUNCHER_DATA_ROOT")
     )
@@ -674,11 +697,17 @@ def _is_staged_runtime() -> bool:
 def _require_package_distribution(manifest: Mapping[str, object]) -> None:
     if manifest.get("releaseEligible") is True:
         return
-    if RELEASE_UPDATE_PUBLIC_KEY_B64 is None and _is_staged_runtime():
+    if (
+        APP_VERSION == UNSIGNED_PRE_RELEASE_VERSION
+        and manifest.get("projectaVersion") == UNSIGNED_PRE_RELEASE_VERSION
+        and manifest.get("releaseEligible") is False
+        and manifest.get("distributionChannel") == UNSIGNED_PRE_RELEASE_CHANNEL
+        and manifest.get("unsignedPreReleaseException") == UNSIGNED_PRE_RELEASE_EXCEPTION
+    ):
         return
     raise RuntimeFailure(
         "PACKAGE_SIGNATURE_REQUIRED",
-        "This unsigned host-validation package is not a distributable Projecta release.",
+        "This unsigned host-validation package is not enabled for the 0.7.0 test pre-release.",
     )
 
 
@@ -1833,23 +1862,24 @@ class BackupManager:
 
 def _create_shortcuts(paths: ProjectaPaths, *, target_executable: Path | None = None) -> None:
     if os.name != "nt":
-        raise RuntimeFailure("PACKAGED_LAUNCHER_REQUIRED", "Install requires a packaged Projecta Local executable.")
+        raise RuntimeFailure("PACKAGED_LAUNCHER_REQUIRED", "Install requires a packaged Projecta application.")
     if not getattr(sys, "frozen", False) or _is_staged_runtime():
         return
-    program = str(target_executable or Path(sys.executable))
+    program = str(target_executable or paths.package_root / "Projecta.exe")
     working_directory = str(paths.package_root)
     shortcut_script = r"""
 $ErrorActionPreference = 'Stop'
 $shell = New-Object -ComObject WScript.Shell
-$programs = [Environment]::GetFolderPath('Programs')
-foreach ($entry in @(@('Projecta Local Start.lnk', 'start'), @('Projecta Local Stop.lnk', 'stop'), @('Projecta Local Status.lnk', 'status'))) {
-    $shortcut = $shell.CreateShortcut((Join-Path $programs $entry[0]))
-    $shortcut.TargetPath = $env:PROJECTA_SHORTCUT_TARGET
-    $shortcut.Arguments = $entry[1]
-    $shortcut.WorkingDirectory = $env:PROJECTA_SHORTCUT_WORKING_DIRECTORY
-    $shortcut.Description = 'Projecta Local per-user runtime'
-    $shortcut.Save()
+$programs = Join-Path ([Environment]::GetFolderPath('Programs')) 'Projecta'
+New-Item -ItemType Directory -Path $programs -Force | Out-Null
+foreach ($oldName in @('Projecta Local Start.lnk', 'Projecta Local Stop.lnk', 'Projecta Local Status.lnk')) {
+    Remove-Item -LiteralPath (Join-Path ([Environment]::GetFolderPath('Programs')) $oldName) -Force -ErrorAction SilentlyContinue
 }
+$shortcut = $shell.CreateShortcut((Join-Path $programs 'Projecta.lnk'))
+$shortcut.TargetPath = $env:PROJECTA_SHORTCUT_TARGET
+$shortcut.WorkingDirectory = $env:PROJECTA_SHORTCUT_WORKING_DIRECTORY
+$shortcut.Description = 'Projecta 0.7.0 unsigned pre-release test application'
+$shortcut.Save()
 """
     encoded = base64.b64encode(shortcut_script.encode("utf-16le")).decode("ascii")
     environment = os.environ.copy()
@@ -1907,7 +1937,7 @@ def _local_programs_root() -> Path:
     return Path(local_app_data) / "Programs" / "Projecta"
 
 
-def install(paths: ProjectaPaths) -> bool:
+def install(paths: ProjectaPaths, *, workspace_name: str | None = None) -> bool:
     _require_windows_11_x64()
     manifest = load_runtime_manifest(paths)
     _require_package_distribution(manifest)
@@ -1936,7 +1966,7 @@ def install(paths: ProjectaPaths) -> bool:
     else:
         protect_runtime_secrets(paths.protected_secrets, generate_runtime_secrets())
     if not paths.local_config.is_file():
-        provision_first_run_workspace(paths.local_config)
+        provision_first_run_workspace(paths.local_config, display_name=workspace_name or FIRST_RUN_DISPLAY_NAME)
     current = load_json(paths.installation_config, "LOCAL_INSTALLATION_INVALID") if has_installation else {}
     atomic_json(
         paths.installation_config,
@@ -1948,7 +1978,7 @@ def install(paths: ProjectaPaths) -> bool:
             "installedAt": current.get("installedAt") or _utc_now(),
         },
     )
-    _create_shortcuts(paths, target_executable=paths.package_root / "ProjectaLocal.exe")
+    _create_shortcuts(paths, target_executable=paths.package_root / "Projecta.exe")
     return manifest.get("releaseEligible") is True
 
 
@@ -1971,6 +2001,8 @@ def _verify_update_package(
         not isinstance(manifest, dict)
         or manifest.get("formatVersion") != 1
         or manifest.get("releaseEligible") is not True
+        or manifest.get("distributionChannel") != "signed-release"
+        or "unsignedPreReleaseException" in manifest
         or manifest.get("signatureAlgorithm") != "Ed25519"
         or type(manifest.get("dataContractVersion")) is not int
         or manifest["dataContractVersion"] < 1
@@ -1988,6 +2020,7 @@ def _verify_update_package(
     _verify_package_inventory(package, manifest, error_code="UPDATE_PACKAGE_CONTENT_INVALID")
     required = {
         "ProjectaLocal.exe",
+        "Projecta.exe",
         "runtime/python/python.exe",
         "runtime/python/python312._pth",
         "runtime/python/uv.lock",
@@ -2075,7 +2108,7 @@ def apply_update(paths: ProjectaPaths, package: Path) -> None:
             "installedAt": installation.get("installedAt") or _utc_now(),
         },
     )
-    _create_shortcuts(paths, target_executable=destination / "ProjectaLocal.exe")
+    _create_shortcuts(paths, target_executable=destination / "Projecta.exe")
     print(f"Signed update {manifest['projectaVersion']} verified and installed; local data was retained.")
 
 
@@ -2128,7 +2161,8 @@ def _restore_snapshot(paths: ProjectaPaths, backup_id: str) -> Path:
 def _parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Projecta Local per-user service launcher")
     commands = parser.add_subparsers(dest="command", required=True)
-    commands.add_parser("install", help="Install this package for the current Windows user")
+    install_parser = commands.add_parser("install", help="Install this package for the current Windows user")
+    install_parser.add_argument("--workspace-name", help=argparse.SUPPRESS)
     start = commands.add_parser("start", help="Start and supervise the local Projecta services")
     start.add_argument("--no-browser", action="store_true", help=argparse.SUPPRESS)
     commands.add_parser("stop", help="Request reverse-order graceful shutdown")
@@ -2150,13 +2184,13 @@ def main(argv: Sequence[str] | None = None) -> int:
         paths = ProjectaPaths.discover()
         if args.command == "install":
             fresh_install = not paths.local_config.is_file()
-            release_eligible = install(paths)
+            release_eligible = install(paths, workspace_name=args.workspace_name)
             if not release_eligible:
-                print("Unsigned host-validation package installed for staging only; it is not a distributable release.")
+                print("Projecta 0.7.0 unsigned pre-release test installed. Publisher identity is unverified; signed updates remain required.")
             elif fresh_install:
-                print("Projecta Local is installed; the approved first-run workspace was provisioned.")
+                print("Projecta is installed; the selected first-run workspace was provisioned.")
             else:
-                print("Projecta Local is installed for this Windows user.")
+                print("Projecta is installed for this Windows user.")
             return 0
         if args.command == "start":
             return RuntimeManager(paths, open_browser=not args.no_browser).start()
