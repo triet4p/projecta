@@ -54,6 +54,59 @@ def _source_revision() -> str:
         raise SystemExit("the installer source commit could not be recorded.")
     return revision
 
+def _records_sha256(records: list[dict[str, object]]) -> str:
+    digest = hashlib.sha256()
+    for record in sorted(records, key=lambda item: str(item["path"]).casefold()):
+        digest.update(
+            f"{record['path']}\t{record['sha256']}\n".encode("utf-8")
+        )
+    return digest.hexdigest()
+
+
+def _source_file_record(path: Path) -> dict[str, object]:
+    if path.is_symlink():
+        raise SystemExit(f"installer build source input is unsafe: {path}")
+    resolved = path.resolve()
+    try:
+        relative = resolved.relative_to(ROOT.resolve()).as_posix()
+    except ValueError as error:
+        raise SystemExit("installer build source inputs must be inside the project repository.") from error
+    if not resolved.is_file():
+        raise SystemExit(f"installer build source input is missing: {relative}")
+    return {
+        "path": relative,
+        "size": resolved.stat().st_size,
+        "sha256": _sha256(resolved),
+    }
+
+
+def _package_source_provenance(package: Path, manifest: dict[str, Any]) -> dict[str, Any]:
+    reference = manifest.get("sourceProvenance")
+    if (
+        not isinstance(reference, dict)
+        or reference.get("file") != "runtime/source-provenance.json"
+        or reference.get("sourceRevision") != manifest.get("sourceRevision")
+    ):
+        raise SystemExit("the package does not contain a supported build-source provenance reference.")
+    provenance_path = package / str(reference["file"])
+    if not provenance_path.is_file() or provenance_path.is_symlink():
+        raise SystemExit("the package build-source provenance file is missing or unsafe.")
+    if _sha256(provenance_path) != reference.get("sha256"):
+        raise SystemExit("the package build-source provenance file does not match its manifest digest.")
+    try:
+        provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        raise SystemExit("the package build-source provenance file is invalid.") from error
+    records = provenance.get("sourceFiles")
+    if (
+        not isinstance(records, list)
+        or provenance.get("sourceRevision") != manifest.get("sourceRevision")
+        or provenance.get("sourceFilesSha256") != reference.get("sourceFilesSha256")
+        or _records_sha256(records) != reference.get("sourceFilesSha256")
+    ):
+        raise SystemExit("the package build-source provenance digest is inconsistent.")
+    return provenance
+
 
 def _authenticode_status(path: Path) -> str:
     with path.open("rb") as stream:
@@ -113,6 +166,7 @@ def _validate_package(package: Path) -> dict[str, Any]:
         or (package / "runtime-manifest.sig").exists()
     ):
         raise SystemExit("the package does not match the exact owner-authorized unsigned 0.7.0 exception.")
+    _package_source_provenance(package, manifest)
     return manifest
 
 
@@ -156,6 +210,44 @@ def main(argv: list[str] | None = None) -> int:
     manifest = _validate_package(package)
     if not script.is_file() or script.is_symlink():
         raise SystemExit("the per-user NSIS installer script is missing or unsafe.")
+    source_revision = _source_revision()
+    if manifest.get("sourceRevision") != source_revision:
+        raise SystemExit("installer and package source base revisions differ.")
+    package_provenance = _package_source_provenance(package, manifest)
+    installer_source_files = sorted(
+        [
+            _source_file_record(ROOT / "scripts" / "build_windows_installer.py"),
+            _source_file_record(script),
+            _source_file_record(Path(launcher.__file__)),
+        ],
+        key=lambda entry: str(entry["path"]).casefold(),
+    )
+    package_source_files = {
+        record["path"]: record
+        for record in package_provenance["sourceFiles"]
+        if isinstance(record, dict) and isinstance(record.get("path"), str)
+    }
+    if any(package_source_files.get(entry["path"]) != entry for entry in installer_source_files):
+        raise SystemExit("installer source files differ from the package's recorded build inputs.")
+    installer_source_provenance = {
+        "sourceRevision": source_revision,
+        "sourceRevisionMeaning": (
+            "Git HEAD at installer build time; sourceFiles records the actual installer inputs."
+        ),
+        "sourceFiles": installer_source_files,
+        "sourceFilesSha256": _records_sha256(installer_source_files),
+        "packageSourceProvenanceSha256": manifest["sourceProvenance"]["sha256"],
+        "externalInputs": {
+            "nsisDistribution": {
+                "version": NSIS_VERSION,
+                "downloadUrl": NSIS_ARCHIVE_URL,
+                "sourceArchiveSha256": archive_hash,
+                "sourceArchiveSize": nsis_archive.stat().st_size,
+            },
+            "compilerExecutableSha256": _sha256(compiler),
+            "licenseNoticeSha256": _sha256(license_notice),
+        },
+    }
 
     output.parent.mkdir(parents=True, exist_ok=True)
     temporary_output = output.with_name(f".{output.stem}.building-{uuid.uuid4().hex}.exe")
@@ -170,6 +262,17 @@ def main(argv: list[str] | None = None) -> int:
         temporary_output.unlink(missing_ok=True)
         details = result.stderr[-4000:] or result.stdout[-4000:]
         raise SystemExit(f"NSIS setup compilation failed: {details}")
+    current_source_files = sorted(
+        [
+            _source_file_record(ROOT / "scripts" / "build_windows_installer.py"),
+            _source_file_record(script),
+            _source_file_record(Path(launcher.__file__)),
+        ],
+        key=lambda entry: str(entry["path"]).casefold(),
+    )
+    if current_source_files != installer_source_files:
+        temporary_output.unlink(missing_ok=True)
+        raise SystemExit("installer source files changed while NSIS was compiling the candidate.")
     signature_status = _authenticode_status(temporary_output)
     if signature_status != "NotSigned":
         temporary_output.unlink(missing_ok=True)
@@ -180,7 +283,7 @@ def main(argv: list[str] | None = None) -> int:
         "size": output.stat().st_size,
         "sha256": _sha256(output),
         "authenticodeStatus": signature_status,
-        "installScope": "current Windows user; no elevation",
+        "installScope": "Projecta is per-user and not elevated; installing Microsoft's Visual C++ prerequisite may request UAC after user consent.",
         "installDirectory": "%LOCALAPPDATA%\\Programs\\Projecta\\0.7.0",
         "mutableDataDirectory": "%LOCALAPPDATA%\\Projecta",
         "uninstallRetainsMutableData": True,
@@ -190,9 +293,12 @@ def main(argv: list[str] | None = None) -> int:
         "releaseEligible": False,
         "distributionChannel": CHANNEL,
         "unsignedPreReleaseException": EXCEPTION,
-        "installerSourceRevision": _source_revision(),
+        "installerSourceRevision": source_revision,
         "installerScriptSha256": _sha256(script),
         "sourceRevision": manifest["sourceRevision"],
+        "sourceRevisionMeaning": manifest.get("sourceRevisionMeaning"),
+        "sourceProvenance": manifest["sourceProvenance"],
+        "installerSourceProvenance": installer_source_provenance,
         "runtimeManifestSha256": _sha256(package / "runtime-manifest.json"),
         "installer": installer,
         "toolchain": {

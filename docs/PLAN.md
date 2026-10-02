@@ -133,14 +133,24 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 
 - [Sprint 14 — End-to-end Experience and Portable Delivery](sprint-plans/sprint-14.md)
   — *In progress; S14-01–07 passed evidence review. The owner approved the
-  Windows 11 x64 per-user native launcher boundary; S14-08 Docker-free delivery
-  is blocked at its evidence gate on clean Windows verification, owner-held
-  signing configuration and redistribution clearance. Native host package and
-  journey/recovery proof passed; no clean installation or release is verified.
-  [Owner requirements](sprint-plans/sprint-14-requirements.md) cover function
-  sufficiency, UI/UX, end-to-end workflows, Docker-free user packaging and data
-  transfer. A direct owner/target-user experience gate must pass before separate
-  `1.0.0` release approval. S13-08 offline evaluation and production
+  Windows 11 x64 per-user native launcher boundary and a hybrid online installer
+  with official prerequisite downloads and prerequisite UAC. S14-08 remains
+  `[~]` pending fresh unsigned-scope evidence review and its project checkpoint.
+  The latest R1 local
+  unsigned package/archive and NSIS candidate include build-source provenance
+  and have scoped integrity/runtime audits. A frozen developer-host smoke under
+  isolated data reached all four services, captured an exact source span,
+  recorded a manual review receipt, and verified stop/restart persistence and a
+  safe port-collision failure. The owner now confirms successful installation
+  and all four machine-2 QA checks, and explicitly selected unsigned S14-08
+  task closure. Clean-Windows/resource-floor, real missing-runtime vendor
+  execution, and signing remain separate open release gates, not passed proof.
+  S14-12/S14-13 criteria are unchanged. No public binary is available.
+  Exact candidate identities are recorded in the task
+  handoff. [Owner requirements](sprint-plans/sprint-14-requirements.md) cover
+  function sufficiency, UI/UX, end-to-end workflows, Docker-free user packaging
+  and data transfer. A direct owner/target-user experience gate must pass before
+  separate `1.0.0` release approval. S13-08 offline evaluation and production
   materialization remain closed pending separate authority.*
 
 ## Historical / Closed Sprint

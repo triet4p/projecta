@@ -1047,3 +1047,33 @@ opaque and cannot infer them from display labels.
 **Reason:** The owner explicitly authorized an unsigned 0.7.0 pre-release for second-machine testing and a downloadable 0.7.0 handoff, so renewed approval is unnecessary. This narrow exception does not require a fake signature or weakening the signed update trust boundary.
 
 **Consequences:** Only the 0.7.0 test pre-release may use this exception. Do not set `releaseEligible`, bypass signature checks, or infer clean S14/1.0.0 acceptance. The exception does not grant third-party redistribution rights: before distribution, the owner must confirm the five app-local Microsoft Visual C++ DLLs meet the applicable Visual Studio license and REDIST-list terms.
+## [2026-10-01] Use Microsoft's installer as the Visual C++ runtime prerequisite
+
+**Decision:** For the owner-authorized unsigned 0.7.0 Windows x64 handoff, exclude Microsoft Visual C++ runtime DLLs from staged dependencies and both frozen application archives. Before application launch, check the 64-bit Visual C++ v14 registry record and compare its parsed version with the pinned build minimum; when missing or older, offer a direct HTTPS download from Microsoft's `https://aka.ms/vc14/vc_redist.x64.exe`, verify Microsoft Authenticode/product/architecture/version metadata, and run only the vendor installer after the user's explicit consent and UAC approval.
+**Alternatives considered:** Keep the runtime DLLs copied from CPython/Temurin, bundle or mirror `vc_redist.x64.exe`, or omit a missing-runtime path.
+**Reason:** The owner explicitly accepted an online Microsoft prerequisite with possible prerequisite-only UAC while preserving Projecta's per-user, non-elevated installation and services. Microsoft publishes the supported x64 v14 package and directs applications to use its Redistributable rather than silently shipping unapproved individual runtime copies.
+**Consequences:** Network access is required only when the pinned runtime is absent/outdated. Microsoft license/consent UI is not bypassed; the vendor's exit code and installed registry version determine whether Projecta may continue. Cancellation, failed verification, failure, and restart-required results do not start Projecta. This records the chosen technical deployment path, not a universal legal opinion or clean-machine proof; preserve vendor notices/terms and the unsigned 0.7.0-only release gate.
+
+**Integrity detail:** Bind the verified vendor file to a computed SHA-256 before/after Authenticode and metadata inspection, then recompute and compare it immediately before execution. The SHA-256 is an integrity/recheck contract, not a Microsoft-published checksum; the vendor Authenticode trust check remains authoritative.
+
+**Supersession:** The earlier 0.7.0 exception entry's five-DLL redistribution condition applies to its historical bundled-file candidate, not this approved hybrid package. The new package excludes all MSVC runtime DLLs from files and frozen archives and does not include or mirror the Microsoft installer; the user downloads and runs Microsoft's signed package under its own terms. This removes that specific five-file condition only; it does not waive unrelated license terms, clean-install evidence, signed-release requirements, or any 1.0.0 gate.
+
+## [2026-10-02] Embed actual build-source provenance in native artifacts
+
+**Decision:** Record the Git base revision separately from a sorted, content-hashed inventory of selected native-build source inputs, toolchain/external inputs, and mapped package outputs; bind that provenance file from the runtime manifest and both build receipts.
+
+**Alternatives considered:** Keep recording only the base revision, or leave the working-tree snapshot only in an ignored task artifact.
+
+**Reason:** The hybrid package was assembled from dirty and untracked source inputs, so a revision label alone or an out-of-package snapshot could not identify the source bytes used to build the candidate.
+
+**Consequences:** The package and installer builders must reject a missing or inconsistent provenance reference; changes to this receipt format require coordinated builder and validation updates. The hashes provide traceability, not a signature, source attestation, clean-tree claim, or release approval.
+
+## [2026-10-02] Close S14-08 on owner-accepted unsigned delivery
+
+**Decision:** Close S14-08 on the owner-accepted unsigned Windows 11 x64 native delivery scope after fresh evidence review and its project checkpoint, while retaining clean-Windows/resource-floor proof, signing, and the unreported real missing-VC vendor path as separate release gates.
+
+**Alternatives considered:** Keep the previous full S14-08 clean/signed gate and leave the task blocked despite acceptance of the four machine-2 QA checks.
+
+**Reason:** The owner confirmed all four checks, requested task closure, and explicitly selected “Đóng theo nghiệm thu unsigned” after being told that those checks did not establish clean-Windows or signing proof.
+
+**Consequences:** This supersedes only the earlier clean/signed prerequisite for closing S14-08. No deferred gate is considered passed; the unsigned 0.7.0 exception, `releaseEligible=false`, and fail-closed signed-update verification remain unchanged. Actual clean-Windows dependency/resource proof, owner Authenticode/Ed25519/timestamp configuration, and real missing-runtime consent/UAC/vendor-install evidence remain required before the corresponding release claim. S14-12/S14-13 criteria are unchanged, and no publication, signed release, production enablement, or `1.0.0` approval is implied.

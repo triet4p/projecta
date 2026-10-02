@@ -38,6 +38,57 @@ RUNTIME_VERSIONS = {
     "fuseki": "6.2.0",
     "postgresql": "16.15",
 }
+VC_RUNTIME_PREREQUISITE = {
+    "formatVersion": 1,
+    "architecture": "x64",
+    "minimumVersion": "14.42.34438.0",
+    "sourceUrl": "https://aka.ms/vc14/vc_redist.x64.exe",
+    "publisher": "Microsoft Corporation",
+    "installerFileName": "VC_redist.x64.exe",
+    "integrityContract": "sha256-of-authenticode-verified-download-rechecked-before-launch",
+}
+VC_RUNTIME_DLL_PATTERN = re.compile(
+    r"^(?:msvcp140|msvcr140|vcruntime140|vccorlib140|concrt140|vcomp140|vcamp140|mfc140u?|mfcm140u?)[A-Za-z0-9_]*\.dll$",
+    re.IGNORECASE,
+)
+MSVC_RUNTIME_DLL_PATTERN = re.compile(
+    r"^(?:msvcp|msvcr|vcruntime|vccorlib|concrt|vcomp|vcamp|mfc|mfcm|msvcm|atl)[0-9]+[A-Za-z0-9_]*\.dll$",
+    re.IGNORECASE,
+)
+
+VC_RUNTIME_INSTALLER_PATTERN = re.compile(
+    r"^(?:vc_redist|vcredist)(?:[._-][A-Za-z0-9-]+)?\.exe$",
+    re.IGNORECASE,
+)
+
+
+def _is_app_local_vc_runtime(path: Path) -> bool:
+    return VC_RUNTIME_DLL_PATTERN.fullmatch(path.name) is not None
+
+
+def _is_msvc_runtime_dll(path: Path) -> bool:
+    return MSVC_RUNTIME_DLL_PATTERN.fullmatch(path.name) is not None
+
+
+def _is_vc_runtime_installer(path: Path) -> bool:
+    return VC_RUNTIME_INSTALLER_PATTERN.fullmatch(path.name) is not None
+
+
+
+def _validate_vc_runtime_prerequisite(
+    package_root: Path,
+    manifest: Mapping[str, object],
+    *,
+    error_code: str,
+) -> None:
+    if manifest.get("vcRuntimePrerequisite") != VC_RUNTIME_PREREQUISITE:
+        raise RuntimeFailure(error_code, "The package Visual C++ prerequisite contract is unsupported.")
+    policy_path = package_root / "runtime" / "vc-runtime-policy.json"
+    policy = load_json(policy_path, error_code)
+    if policy != VC_RUNTIME_PREREQUISITE:
+        raise RuntimeFailure(error_code, "The package Visual C++ prerequisite policy is invalid.")
+
+
 try:
     from _projecta_update_trust import PUBLIC_KEY_B64 as RELEASE_UPDATE_PUBLIC_KEY_B64
 except ModuleNotFoundError:
@@ -537,6 +588,10 @@ def _verify_package_inventory(
                 raise RuntimeFailure(error_code, "The package contains an unsafe linked path.")
             if not path.is_file():
                 continue
+            if _is_msvc_runtime_dll(path):
+                raise RuntimeFailure(error_code, "The package contains a prohibited Microsoft Visual C++ runtime DLL.")
+            if _is_vc_runtime_installer(path):
+                raise RuntimeFailure(error_code, "The Microsoft Visual C++ Redistributable installer must not be bundled in the package.")
             relative = path.relative_to(package_root).as_posix()
             if relative not in {"runtime-manifest.json", "runtime-manifest.sig"}:
                 resolved = path.resolve(strict=True)
@@ -641,6 +696,13 @@ def load_runtime_manifest(
     else:
         raise RuntimeFailure("PACKAGE_MANIFEST_INVALID", "The bundled distribution channel is invalid.")
     _verify_package_inventory(paths.package_root, manifest, error_code="PACKAGE_CONTENT_INVALID")
+    _validate_vc_runtime_prerequisite(
+        paths.package_root,
+        manifest,
+        error_code="PACKAGE_MANIFEST_INVALID",
+    )
+    if not (paths.package_root / "ProjectaStart.ps1").is_file():
+        raise RuntimeFailure("PACKAGE_RUNTIME_INCOMPLETE", "The prerequisite-safe Projecta launcher is absent.")
     notices = manifest.get("noticeFiles")
     if not isinstance(notices, list) or not notices:
         raise RuntimeFailure("PACKAGE_NOTICES_MISSING", "Third-party runtime notices are missing from the package.")
@@ -673,6 +735,8 @@ def load_runtime_manifest(
         paths.package_root / "THIRD-PARTY-NOTICES.md",
         paths.package_root / "runtime" / "python" / "uv.lock",
         paths.package_root / "runtime" / "python" / "wheel-requirements.txt",
+        paths.runtime / "vc-runtime-policy.json",
+        paths.runtime / "vc_runtime_prerequisite.ps1",
         paths.package_root / "ProjectaLocal.exe",
         paths.package_root / "Projecta.exe",
     )
@@ -1860,13 +1924,24 @@ class BackupManager:
             raise RuntimeFailure("BACKUP_CONTENT_INVALID", "The selected backup is missing a required state component.")
 
 
-def _create_shortcuts(paths: ProjectaPaths, *, target_executable: Path | None = None) -> None:
+def _create_shortcuts(paths: ProjectaPaths, *, package_root: Path | None = None) -> None:
     if os.name != "nt":
         raise RuntimeFailure("PACKAGED_LAUNCHER_REQUIRED", "Install requires a packaged Projecta application.")
     if not getattr(sys, "frozen", False) or _is_staged_runtime():
         return
-    program = str(target_executable or paths.package_root / "Projecta.exe")
-    working_directory = str(paths.package_root)
+    launch_root = package_root or paths.package_root
+    program = str(
+        Path(os.environ.get("SystemRoot", r"C:\Windows"))
+        / "System32"
+        / "WindowsPowerShell"
+        / "v1.0"
+        / "powershell.exe"
+    )
+    working_directory = str(launch_root)
+    arguments = (
+        '-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "'
+        f'{launch_root / "ProjectaStart.ps1"}"'
+    )
     shortcut_script = r"""
 $ErrorActionPreference = 'Stop'
 $shell = New-Object -ComObject WScript.Shell
@@ -1876,6 +1951,8 @@ foreach ($oldName in @('Projecta Local Start.lnk', 'Projecta Local Stop.lnk', 'P
     Remove-Item -LiteralPath (Join-Path ([Environment]::GetFolderPath('Programs')) $oldName) -Force -ErrorAction SilentlyContinue
 }
 $shortcut = $shell.CreateShortcut((Join-Path $programs 'Projecta.lnk'))
+$shortcut.Arguments = $env:PROJECTA_SHORTCUT_ARGUMENTS
+$shortcut.IconLocation = $env:PROJECTA_SHORTCUT_ICON
 $shortcut.TargetPath = $env:PROJECTA_SHORTCUT_TARGET
 $shortcut.WorkingDirectory = $env:PROJECTA_SHORTCUT_WORKING_DIRECTORY
 $shortcut.Description = 'Projecta 0.7.0 unsigned pre-release test application'
@@ -1884,6 +1961,8 @@ $shortcut.Save()
     encoded = base64.b64encode(shortcut_script.encode("utf-16le")).decode("ascii")
     environment = os.environ.copy()
     environment["PROJECTA_SHORTCUT_TARGET"] = program
+    environment["PROJECTA_SHORTCUT_ARGUMENTS"] = arguments
+    environment["PROJECTA_SHORTCUT_ICON"] = str(launch_root / "Projecta.exe")
     environment["PROJECTA_SHORTCUT_WORKING_DIRECTORY"] = working_directory
     try:
         result = subprocess.run(
@@ -1897,7 +1976,7 @@ $shortcut.Save()
         )
     except (OSError, subprocess.TimeoutExpired) as error:
         raise RuntimeFailure("SHORTCUT_CREATION_FAILED", "The per-user Start Menu shortcuts could not be created.") from error
-    if result.returncode != 0:
+    if result.returncode:
         raise RuntimeFailure("SHORTCUT_CREATION_FAILED", "The per-user Start Menu shortcuts could not be created.")
 
 
@@ -1978,7 +2057,7 @@ def install(paths: ProjectaPaths, *, workspace_name: str | None = None) -> bool:
             "installedAt": current.get("installedAt") or _utc_now(),
         },
     )
-    _create_shortcuts(paths, target_executable=paths.package_root / "Projecta.exe")
+    _create_shortcuts(paths)
     return manifest.get("releaseEligible") is True
 
 
@@ -2018,6 +2097,11 @@ def _verify_update_package(
     public_key = trusted_public_key if trusted_public_key is not None else _release_public_key()
     _verify_ed25519_signature(manifest_bytes, signature, public_key)
     _verify_package_inventory(package, manifest, error_code="UPDATE_PACKAGE_CONTENT_INVALID")
+    _validate_vc_runtime_prerequisite(
+        package,
+        manifest,
+        error_code="UPDATE_PACKAGE_INVALID",
+    )
     required = {
         "ProjectaLocal.exe",
         "Projecta.exe",
@@ -2048,6 +2132,9 @@ def _verify_update_package(
         "projecta/semantic-core/java-third-party-notices.json",
         "runtime/postgresql/server_license.txt",
         "runtime/postgresql/commandlinetools_3rd_party_licenses.txt",
+        "ProjectaStart.ps1",
+        "runtime/vc-runtime-policy.json",
+        "runtime/vc_runtime_prerequisite.ps1",
     }
     listed = {entry["path"] for entry in manifest["files"]}  # type: ignore[index]
     notice_files = manifest.get("noticeFiles")
@@ -2108,7 +2195,7 @@ def apply_update(paths: ProjectaPaths, package: Path) -> None:
             "installedAt": installation.get("installedAt") or _utc_now(),
         },
     )
-    _create_shortcuts(paths, target_executable=destination / "Projecta.exe")
+    _create_shortcuts(paths, package_root=destination)
     print(f"Signed update {manifest['projectaVersion']} verified and installed; local data was retained.")
 
 

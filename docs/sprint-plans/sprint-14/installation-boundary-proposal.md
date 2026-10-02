@@ -89,7 +89,9 @@ Get-Command docker, python, node, java, psql -ErrorAction SilentlyContinue
 Get-Service -Name '*docker*' -ErrorAction SilentlyContinue
 ```
 
-These checks are part of the planned S14-08 test, not commands run for S14-07.
+These checks were planned for the former full S14-08 gate, not run for
+S14-07. The owner's later unsigned task-closure decision keeps them open for
+the separate clean-Windows release gate and S14-12; they are not passed proof.
 
 1. Verify `docker.exe`, Docker Desktop, and Docker services are absent before install and remain absent after launch. Also verify that the launcher did not install WSL2, Hyper-V, or another container runtime.
 2. Install and start from the user's shortcut. Observe the launcher service states and readiness chain, then open only the displayed `http://127.0.0.1:<port>` origin. Verify that backend listeners are loopback-only and that a port collision, invalid state, or unhealthy dependency is shown as a failure without deleting data or claiming readiness.
@@ -103,7 +105,9 @@ This clean-machine, Docker-absent proof remains open. The corrected unsigned hos
 
 Source-based feasibility is credible but incomplete: Apache Jena documents the standalone Windows `fuseki-server.bat` route and Java 21+, EDB lists a Windows x86-64 PostgreSQL 16 binary archive, and CPython documents an embeddable package specifically for application redistribution. Windows DPAPI provides a current-user protection boundary. These sources prove those individual runtime mechanisms exist; they do **not** prove that Projecta's packaged services start together, that the proposed binaries may be redistributed under the intended channel, or that the clean-install journey passes.
 
-Before S14-08 can claim a complete package, the owner/release implementer must close these concrete findings:
+The following findings originated under the former full S14-08 gate; after
+the owner's unsigned task-closure decision, their unresolved clean/resource,
+signing, and real missing-runtime portions remain release prerequisites:
 
 - The owner selected the Windows 11 x64, one-local-OS-user, loopback, per-user boundary. The measured development host was Microsoft Windows 11 Home Single Language, x64, version `10.0.26200` / build `26200`, 8 logical processors and 15.74 GiB visible RAM. F: had 45.82 GiB free before and 45.59 GiB after the corrected-package smoke. This was not a resettable standard-user/Docker-absent image, so resource suitability and clean-host behavior remain unestablished.
 - Official source checks identified candidates, not a redistributable release: [CPython 3.12.10](https://www.python.org/downloads/release/python-31210/)
@@ -122,6 +126,66 @@ Before S14-08 can claim a complete package, the owner/release implementer must c
 - Runtime inspection covered 345 x64 PE images with zero unresolved static/delay imports and 95 dynamic-string candidate occurrences across 30 names. During launcher, database, Java, Python/API, readiness, and browser operations, only `shcore.dll` matched a candidate in loaded modules; it resolved to `C:\WINDOWS\System32\SHCORE.dll`. The other 29 distinct names were not observed in this run and remain unverified code paths, not proven missing imports. Java loaded VC runtime DLLs from `runtime/java/bin`; PostgreSQL loaded `VCRUNTIME140.dll` and `VCRUNTIME140_1.dll` from the frozen launcher's PyInstaller temp extraction; the API loaded extensions from packaged `runtime/python`. This host observation does not prove clean-OS dependency closure.
 - At readiness, 11 package processes used 664.98 MiB aggregate working set and 620.89 MiB aggregate private bytes over four one-second samples. Archive, unpacked package, and isolated data sizes were 183,341,207, 403,862,141, and 251,603,235 bytes respectively. Resource suitability against a published minimum remains open.
 - Open gates remain: resettable Windows 11 standard-user proof with Docker/container runtimes absent; clean-host dependency proof; the four owner Ed25519/Authenticode signing settings and valid owner certificate/timestamp path; and owner/counsel redistribution approval. No release or distribution approval is claimed.
+
+### Later hybrid-installer clarification (2026-10-01)
+
+The five-file Visual C++ DLL inventory and redistribution finding above describe
+the earlier bundled-file candidate, not the owner-approved hybrid 0.7.0
+candidate. The hybrid package removes versioned MSVC runtime DLLs from staged
+files and both PyInstaller archives, bundles no Microsoft Redistributable
+installer, and downloads the prerequisite directly from Microsoft only when
+the user's x64 runtime is missing or below the build-derived minimum. The
+Microsoft installer retains its own terms/consent UI and may request UAC;
+Projecta and its services remain per-user. This supersedes only that specific
+five-DLL condition. It does not waive other bundled-component terms or the
+clean-Windows, signing, and remaining S14 evidence gates. See the latest
+candidate identity and scoped verification in
+`artifacts/sprint-14/task-08.md`; no artifact is published here.
+
+### Current local hybrid candidate evidence (2026-10-02)
+
+The fresh attempt-specific S14-08-W20261002-A2-R1 package directory and ZIP
+were built locally. The ZIP is 197,401,370 bytes with SHA-256
+`b5dcb57447c61b6b482e0c3634c92c799bb22a1d79a362b13a4f80ce19637fa5`. Its
+embedded `runtime/source-provenance.json` is SHA-256
+`e1dfadbebde7c4eae55b2156576da13a7bb9df804fcbd8546f4f471cc6c99bd3`, records
+base revision `c724ac5f3c66d7d1cb46267fadb31c35955bb825` separately from 282
+selected build-input files, and binds 17 derived-output groups. The source-file
+digest is
+`05d902983fe6e284f078802b3972bdce85105ea4c800fba5941bd33391679843`. The
+independently checked package tree contained 6,133 manifest payloads; its ZIP
+contains those files plus the root manifest, passed CRC verification, and
+includes all 332 indexed notices. The NSIS installer is 122,399,569 bytes,
+SHA-256
+`fbcc802be3063fb3aa1fe81376fa916599f87de9a0da50658b1691f0cfbefb85`, and
+Authenticode `NotSigned`. The installer receipt binds the package provenance,
+installer source scripts, NSIS 3.13 archive/compiler, and license notice. Both
+candidate receipts say `releaseEligible=false`; no artifact is published.
+
+On the existing developer host only, the extracted R1 package was run with
+isolated local profile/data paths. Its bundled services reached ready; the
+browser captured a selected exact source span and recorded accepted manual
+receipt `df2dabd37704ccd4fe0c24e188c24d57fc557673b396fb6000eb1c7a11676eac`
+without a model/provider or assertion materialization. The receipt and source
+anchor persisted across stop/restart. A fixed-port collision failed with
+`PORT_IN_USE` without starting services or changing the isolated workspace.
+The native inventory has zero unresolved imports across 340 PE images; only
+`SHCORE.dll` among 30 dynamic-candidate names was observed in this runtime,
+loaded from the Windows System32 directory. Other dynamic-string names remain
+unobserved, not proven missing.
+
+The worker-host compiled NSIS installer was not executed. Its fixed `%LOCALAPPDATA%`
+installation path, Start Menu shell KnownFolder shortcut operations, and HKCU
+uninstall registration cannot be safely isolated on this host: `.NET`
+`Environment.GetFolderPath("Programs")` continued to resolve to the owner
+Start Menu after process `APPDATA`/`LOCALAPPDATA` overrides, and the existing
+owner installation/workspace are present. Clean Windows installation,
+missing-runtime vendor consent/UAC, and owner-held signing remain unverified.
+The owner subsequently confirmed all four machine-2 QA checks and explicitly
+approved unsigned S14-08 task closure after fresh review and the checkpoint.
+This candidate remains unpublished; clean-Windows/resource-floor, signing,
+and real missing-runtime vendor proof remain separate open release gates.
+
 
 ### Selected route and alternatives
 

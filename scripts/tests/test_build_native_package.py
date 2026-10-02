@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import base64
 import importlib.util
 import sys
@@ -33,3 +34,23 @@ def test_release_signing_rejects_private_key_inside_repository(
     assert str(failure.value) == (
         "the owner Ed25519 private key must remain outside the repository, package, and archive."
     )
+
+
+def test_source_provenance_hashes_untracked_build_inputs(tmp_path: Path) -> None:
+    script = tmp_path / "scripts" / "projecta_start.ps1"
+    script.parent.mkdir()
+    script.write_bytes(b"first build input\n")
+
+    first_records = builder._source_input_records(tmp_path, ("scripts",))
+    first_digest = builder._records_sha256(first_records)
+    assert first_records == [
+        {
+            "path": "scripts/projecta_start.ps1",
+            "size": len(b"first build input\n"),
+            "sha256": hashlib.sha256(b"first build input\n").hexdigest(),
+        }
+    ]
+
+    script.write_bytes(b"changed build input\n")
+    second_records = builder._source_input_records(tmp_path, ("scripts",))
+    assert builder._records_sha256(second_records) != first_digest

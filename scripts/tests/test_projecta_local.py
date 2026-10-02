@@ -32,6 +32,9 @@ def _signed_update_package(
     required = (
         "ProjectaLocal.exe",
         "Projecta.exe",
+        "ProjectaStart.ps1",
+        "runtime/vc-runtime-policy.json",
+        "runtime/vc_runtime_prerequisite.ps1",
         "runtime/python/python.exe",
         "runtime/python/python312._pth",
         "runtime/python/uv.lock",
@@ -64,6 +67,8 @@ def _signed_update_package(
         path = package / relative
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(f"test payload {index}\n".encode())
+    policy_path = package / "runtime" / "vc-runtime-policy.json"
+    policy_path.write_text(json.dumps(launcher.VC_RUNTIME_PREREQUISITE), encoding="utf-8")
     files = [
         {
             "path": relative,
@@ -82,6 +87,7 @@ def _signed_update_package(
                 "distributionChannel": "signed-release",
                 "signatureAlgorithm": "Ed25519",
                 "runtimeVersions": dict(launcher.RUNTIME_VERSIONS),
+                "vcRuntimePrerequisite": dict(launcher.VC_RUNTIME_PREREQUISITE),
                 "noticeFiles": ["THIRD-PARTY-NOTICES.md"],
                 "files": files,
             },
@@ -528,3 +534,34 @@ def test_signed_update_rejects_wrong_key_and_tampered_payload(
     with pytest.raises(launcher.RuntimeFailure) as bad_contents:
         launcher._verify_update_package(package, trusted_public_key=public_key)
     assert bad_contents.value.code == "UPDATE_PACKAGE_CONTENT_INVALID"
+
+
+@pytest.mark.parametrize(
+    "filename",
+    [
+        "vcruntime140.dll",
+        "msvcr120.dll",
+        "VC_redist.x64.exe",
+        "vcredist_x64.exe",
+    ],
+)
+def test_package_inventory_rejects_visual_cpp_runtime_payload(filename: str, tmp_path: Path) -> None:
+    package = tmp_path / "package"
+    runtime = package / "runtime"
+    runtime.mkdir(parents=True)
+    payload = runtime / filename
+    payload.write_bytes(b"prohibited Microsoft Visual C++ payload")
+    manifest = {
+        "files": [
+            {
+                "path": f"runtime/{filename}",
+                "size": payload.stat().st_size,
+                "sha256": hashlib.sha256(payload.read_bytes()).hexdigest(),
+            }
+        ]
+    }
+
+    with pytest.raises(launcher.RuntimeFailure) as failure:
+        launcher._verify_package_inventory(package, manifest, error_code="PACKAGE_CONTENT_INVALID")
+
+    assert failure.value.code == "PACKAGE_CONTENT_INVALID"

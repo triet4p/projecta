@@ -9,77 +9,97 @@ SmartScreen, Defender, or other security controls, override a malware
 detection, or change organization policy. This exception applies only to
 0.7.0; signed release and update verification remain fail-closed.
 
-The installer bundles the local Python 3.12 and Java 21 runtimes, PostgreSQL,
-Fuseki/TDB2, Semantic Core, API, and web assets. You do not need Docker,
-Python, Node.js, a JDK, PostgreSQL, or Fuseki installed separately; startup
-does not pull runtime images or dependencies. The browser is not bundled;
-Projecta opens the current Windows account's default browser.
+The bundle includes the local Python 3.12 and Java 21 runtimes, PostgreSQL,
+Fuseki/TDB2, Semantic Core, API, and web assets. It does not bundle the
+Microsoft Visual C++ runtime DLLs or its Redistributable installer. Before
+Projecta can open, it checks for the pinned x64 Visual C++ v14 runtime. If
+that version or a newer compatible version is already registered, setup skips
+the prerequisite. Otherwise Internet access is required to download the
+official installer directly from Microsoft after your consent; Microsoft's
+own license/consent UI and a Windows UAC prompt may appear. Only that vendor
+prerequisite can be elevated; Projecta and its services remain per-user. You
+do not need Docker, Python, Node.js, a JDK, PostgreSQL, or Fuseki installed
+separately. The browser is not bundled; Projecta opens the current Windows
+account's default browser.
 
 ## Get and verify the installer
 
-The owner-authorized 0.7.0 Windows 11 x64 test pre-release is intended to
-have one installer asset; it is unsigned and is not a signed release,
-production installation, or clean-Windows certification. The GitHub release
-page has not yet been published, so this handoff has no public download URL.
+The owner-authorized unsigned 0.7.0 hybrid candidate has not been published;
+this handoff has no public download URL or published installer checksum. A
+local package/archive and unsigned NSIS installer candidate now exist for
+review, but they are not a published, publication-approved user download.
+The owner's machine-2 QA acceptance is not permission to substitute arbitrary
+build files for the eventual exact asset. The previously recorded pre-hybrid
+installer and checksum are superseded and must not be run. The eventual asset name is
+`Projecta-Setup-0.7.0-win-x64-unsigned-prerelease.exe`, but its final size and
+SHA-256 must come from the owner-approved publication, not an older receipt.
 Do not substitute a repository checkout, `build` folder, package archive, or
-other installer candidate for the exact asset when the owner publishes it.
+other installer candidate for that exact published asset.
 
-Expected installer filename:
+The local S14-08-W20261002-A2-R1 candidate has owner-reported acceptance of
+candidate identity, first-run/lifecycle, prerequisite handling, and
+uninstall/data retention on machine 2. Separately, the developer-host smoke
+exercised its extracted package; it did not execute NSIS on the owner's
+existing profile because shell KnownFolder/registry integration was not
+safely isolatable there. Do not repeat the accepted owner checks to reconfirm
+them. The owner approved unsigned task closure; clean-Windows/resource,
+signing, and real missing-runtime vendor execution remain open release gates.
+This is not a published download. Use only the exact publication-approved
+asset when its filename, size, and SHA-256 are listed here.
 
-`Projecta-Setup-0.7.0-win-x64-unsigned-prerelease.exe`
-
-Size: **119,495,860 bytes**.
-
-SHA-256:
-
-`f7555a90807bff34540a89758e5f8fe5853b8cbd09d3772d40ac4c9d77a64a77`
-
-Build provenance from the receipts: package source and installer source
-revision `674d0cb3e76096a60725556b20be3767e2508e28`; the installer is
-**NotSigned**. The build-only package archive
-`ProjectaLocal-0.7.0-win-x64-unsigned-pre-release-test-fixed.zip` is
-191,750,058 bytes, SHA-256
-`373a4c4aec1ba89f24f68934d4465a7a4be441887c6a21ca327572ac6304bd65`.
-That archive is provenance only, not a second user download.
-
-After the exact asset is available from the owner-approved release, compare
-its filename, size, and checksum before opening it. In Command Prompt:
+When the owner-approved release is available, compare its exact filename,
+size, and SHA-256 before opening it. In Command Prompt:
 
 ```cmd
 certutil -hashfile "%USERPROFILE%\Downloads\Projecta-Setup-0.7.0-win-x64-unsigned-prerelease.exe" SHA256
 ```
 
-Proceed only if the downloaded file matches all three values above and came
-from the owner-approved asset. If the asset or checksum is unavailable, stop
-and wait. After those checks, you may choose **More info → Run anyway** only
-for an ordinary SmartScreen unrecognized-app/reputation warning, only if
-Windows offers that option, and only if you accept the unsigned 0.7.0 test
-risk. This is an optional per-file choice for this verified asset, not a
-safety check or permission to run other unsigned files. If Defender reports
-malware, Windows hard-blocks the file, or organization policy blocks it, stop
-and report the alert; do not override it or change security settings.
+Proceed only if the filename, size, and checksum exactly match the published
+asset. If the asset or checksum is unavailable, stop and wait. After those
+checks, you may choose **More info → Run anyway** only for an ordinary
+SmartScreen unrecognized-app/reputation warning, only if Windows offers that
+option, and only if you accept the unsigned 0.7.0 test risk. This is an
+optional per-file choice for this verified asset, not a safety check or
+permission to run other unsigned files. If Defender reports malware, Windows
+hard-blocks the file, or organization policy blocks it, stop and report the
+alert; do not override it or change security settings.
 
 ## Install and start
 
-1. Sign in to the Windows 11 x64 account that will use Projecta. This is a
-   per-user install and does not need administrator privileges. Do not choose
-   **Run as administrator**.
+1. Sign in to the Windows 11 x64 account that will use Projecta. Projecta
+   installs and runs per-user. Do not choose **Run as administrator**.
 2. Double-click the verified `.exe`. For only the ordinary SmartScreen warning
    described above, use **More info → Run anyway** if offered and if you accept
    the risk; otherwise cancel. For a malware alert, hard block, or policy
    block, stop and report it.
-3. Keep the default `%LOCALAPPDATA%\Programs\Projecta\0.7.0` location and
-   finish the wizard. Choose **Open Projecta** on the finish page.
-4. In the **Create your workspace** dialog, enter a display name of 1–128
-   characters and choose **OK**. Wait for **Ready — all four local services
-   are running** and confirm PostgreSQL, Fuseki, Semantic Core, and API each
-   show **Running**. The default browser opens `http://127.0.0.1:18732/`;
-   use **Open Projecta in browser** in the panel if needed.
+3. Keep the default `%LOCALAPPDATA%\Programs\Projecta\0.7.0` location. Setup
+   checks the system's registered x64 Visual C++ v14 runtime before replacing
+   application files. If the pinned version or a newer compatible version is
+   installed, no download or UAC request is needed. Otherwise setup asks
+   whether to download `VC_redist.x64.exe` directly from the official Microsoft
+   URL. Choose **Yes** only if you accept this prerequisite; Internet access
+   is required. Microsoft displays its own license/consent UI. If installation
+   needs elevation, approve the Microsoft installer through Windows UAC; only
+   that vendor prerequisite is elevated, never Projecta or its services.
+4. If you decline, cancel the Microsoft installer, lack Internet access, or
+   verification/installation fails, Projecta will not start and setup will
+   leave an existing installation and workspace data unchanged. If Microsoft
+   returns a restart-required result, restart Windows yourself and run setup
+   again; setup does not reboot Windows automatically.
+5. After the prerequisite check succeeds, finish setup and choose
+   **Open Projecta**. In the **Create your workspace** dialog, enter a display
+   name of 1–128 characters and choose **OK**. Wait for **Ready — all four
+   local services are running** and confirm PostgreSQL, Fuseki, Semantic Core,
+   and API each show **Running**. The default browser opens
+   `http://127.0.0.1:18732/`; use **Open Projecta in browser** in the panel if
+   needed.
 
-The fixed package rendered this first-run dialog, but automated interaction
-could not submit the workspace form. The actual desktop first-run completion
-and its ready state remain unverified; this exact interactive check is still
-required. It is not a clean-Windows proof or a selected product-journey pass.
+The owner reported: “Đã mở được, luồng start, mở browser, stop, running đều
+đúng. Confimed and continue.” This is user-reported baseline evidence that the
+earlier Start/Running/browser/Stop lifecycle worked. It supersedes the earlier
+invisible-window symptom only as that reported baseline; it does not establish
+the new installer's first-run or missing-runtime flow, identify its cause, or
+prove a clean Windows host. No source fix or root cause is inferred.
 
 Later, open **Projecta** from the current user's Start menu to launch the
 desktop control panel. Use **Start Projecta** to start the local runtime and
@@ -117,41 +137,47 @@ content, or raw logs.
 
 ## Limits
 
-The owner-authorized unsigned exception is limited to the 0.7.0 test
-pre-release; ordinary release signing and signed-update verification remain
-fail-closed. The package includes `THIRD-PARTY-NOTICES.md` and individual
-runtime license files. Its inventory identifies five app-local Microsoft
-Visual C++ DLLs:
+The package includes `THIRD-PARTY-NOTICES.md` and individual runtime license
+files, but contains no versioned Microsoft Visual C++ runtime DLLs in its staged
+tree or either frozen PyInstaller archive, and no Microsoft Redistributable
+installer is bundled or mirrored. Its build-derived x64 v14 minimum is
+**14.42.34438.0**. Setup checks the 64-bit installed runtime registry record;
+an equal or newer compatible version skips the prerequisite.
 
-- `runtime/java/bin/msvcp140.dll`
-- `runtime/java/bin/vcruntime140.dll`
-- `runtime/java/bin/vcruntime140_1.dll`
-- `runtime/python/vcruntime140.dll`
-- `runtime/python/vcruntime140_1.dll`
+If the runtime is absent or older, the bootstrap first explains that Internet
+access is required and asks the user before downloading Microsoft's installer
+from <https://aka.ms/vc14/vc_redist.x64.exe>. It requires an HTTPS redirect that
+stays on a Microsoft host, a valid Microsoft Authenticode signature, Microsoft
+publisher identity, x64 Redistributable product metadata, and a file version at
+least the package minimum. It hashes the downloaded file around signature and
+metadata inspection and recomputes SHA-256 immediately before execution. That
+computed hash is an integrity/recheck value, not a Microsoft-published checksum;
+Authenticode verification remains the publisher-trust check.
 
-The three Java-directory files are from the Temurin JRE 21.0.12.1+1 archive
-and have Microsoft file version 14.40.33810.0; the two Python-directory
-files are from the [CPython 3.12.10 Windows embeddable archive](https://www.python.org/downloads/release/python-31210/)
-and have file version 14.42.34438.0. The package receipt and runtime manifest
-identify the bundled Python runtime as 3.12.10; Python 3.12.12 was used to
-freeze the separate desktop GUI, not as the source of these bundled DLLs.
-The inventory records valid Microsoft Authenticode signatures; signature
-verification was run with revocation checks disabled.
+Only Microsoft's own installer is launched with its vendor UI/terms and
+`/install /norestart`; UAC may appear for that prerequisite. Projecta and its
+services remain per-user and are never elevated. The application will not start
+after download/verification failure, user cancellation, installation failure,
+or a restart-required result; Windows is never restarted automatically.
+The NSIS installer and its supported Start-menu/Finish launch paths use this
+PowerShell guard before starting the frozen GUI or Python runtime. Directly
+launching `Projecta.exe` bypasses that guard and is unsupported when the
+prerequisite is missing.
 
-Microsoft's [Visual C++ redistribution guidance](https://learn.microsoft.com/en-us/cpp/windows/redistributing-visual-cpp-files?view=msvc-170)
-says distribution of Visual C++ Runtime Redistributable packages and
-individual binaries is limited to licensed Visual Studio users and subject
-to Microsoft's Software License Terms. The [Visual Studio 2022 REDIST
-list](https://learn.microsoft.com/en-us/visualstudio/releases/2022/redistribution)
-allows only its listed, unmodified distributable code under that edition's
-terms; other Visual Studio editions/versions have their own applicable lists.
-Before public binary distribution, the owner must verify that each of the five
-files above is eligible under the applicable Visual Studio edition/version's
-REDIST list and license terms. Their Temurin/CPython origins and Microsoft
-signatures do not establish redistribution rights; using Visual Studio Code
-alone does not establish a licensed Visual Studio entitlement. No blanket
-paid-counsel approval is asserted here. The specific outstanding condition is
-owner confirmation of eligibility for these five app-local DLLs. The
-developer-host smoke does not prove a clean machine, absence of development
-tools, redistribution eligibility, a selected journey, production readiness,
-or `1.0.0` approval. The second-machine manual test remains unverified.
+Microsoft's [latest supported Visual C++ Redistributable guidance](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170)
+publishes the current x64 download and version guidance. Its
+[redistribution guidance](https://learn.microsoft.com/en-us/cpp/windows/redistributing-visual-cpp-files?view=msvc-170)
+limits redistribution of its packages and individual files to eligible
+licensed Visual Studio users and applicable terms. This candidate includes
+neither disputed runtime DLLs nor the vendor installer; the user downloads and
+accepts Microsoft's package under Microsoft's UI. This is not a blanket waiver
+or legal opinion for other third-party contents.
+
+The worker host already had x64 v14 runtime **14.50.35719.0**, above the
+minimum, so the real installed-runtime check could exercise only the skip path.
+It is not a clean Windows image and does not prove the missing-runtime vendor
+installer/UAC branch. The owner-reported GUI baseline above is not a new
+first-run test of this installer. This unsigned exception applies only to 0.7.0;
+signed update verification remains fail-closed. Clean-Windows dependency
+closure, minimum-resource measurements, owner signing configuration, and the
+remaining S14 evidence gates are still open.

@@ -18,37 +18,54 @@ and ask questions grounded in recorded evidence.
 
 ### Windows 11 x64 unsigned 0.7.0 test pre-release
 
-The owner-authorized 0.7.0 Windows 11 x64 pre-release is one unsigned
-installer: `Projecta-Setup-0.7.0-win-x64-unsigned-prerelease.exe`
-(119,495,860 bytes; SHA-256
-`f7555a90807bff34540a89758e5f8fe5853b8cbd09d3772d40ac4c9d77a64a77`).
-Windows cannot verify its publisher, so a standard SmartScreen reputation
-warning may appear. After verifying the exact owner-approved filename, size,
-and SHA-256 above, you may choose **More info → Run anyway** only if Windows
-offers it for the ordinary unrecognized-app warning and you accept this
-unsigned test's risk. If Defender reports malware, Windows hard-blocks the
-file, or organization policy blocks it, stop and report the alert. Never
-disable SmartScreen, Defender, or other security controls, override a malware
-detection, or change organization policy. See the installation guide below
-for the full procedure.
+The owner-authorized unsigned 0.7.0 Windows 11 x64 pre-release is intended to
+be one hybrid-online installer. A local package/archive and unsigned NSIS
+candidate have now been built and audited for S14-08, but they remain
+unpublished files, not a publication-approved download. The earlier pre-hybrid
+installer checksum is obsolete and must not be used. No public asset or download
+URL is available. Do not run a file from a repository checkout or `build`
+directory. Wait until the owner-approved release lists the exact filename,
+size, and SHA-256 and this
+README and the
+[installation guide](docs/sprint-plans/sprint-14/unsigned-0.7.0-machine-install.md)
+record the same verified values.
 
-The expected GitHub 0.7.0 asset has not yet been published; no public download
-URL is available. Use only the exact owner-approved asset when published,
-not a repository or `build`-directory copy. See the
-[machine install, start, stop, and uninstall guide](docs/sprint-plans/sprint-14/unsigned-0.7.0-machine-install.md).
+The attempt-specific R1 package and ZIP audit confirmed that no versioned MSVC
+runtime DLLs or Microsoft Redistributable installer are bundled. Its embedded
+source provenance records 282 selected build inputs and hashes 17 derived
+package-output groups; the installer receipt also binds its source scripts and
+pinned NSIS inputs. An isolated developer-host smoke of the extracted R1
+package reached readiness for PostgreSQL, Fuseki, Semantic Core, and API. The
+browser captured an exact source span and recorded a source-bound manual
+approval receipt; stop/restart retained it, and a fixed-port collision failed
+safely. This is not clean-host proof: the exercised host already supplied the
+Visual C++ runtime, and 29 of 30 dynamic-string candidate names were not
+observed (not thereby proven missing).
 
-Build provenance: package and installer source revision
-`674d0cb3e76096a60725556b20be3767e2508e28`; package archive
-`ProjectaLocal-0.7.0-win-x64-unsigned-pre-release-test-fixed.zip`
-(191,750,058 bytes; SHA-256
-`373a4c4aec1ba89f24f68934d4465a7a4be441887c6a21ca327572ac6304bd65`).
-The archive is build provenance, not a second installer or download asset.
+The owner has accepted all four machine-2 QA checks and explicitly selected
+unsigned S14-08 task closure, subject to fresh evidence review and the project
+checkpoint. Clean-Windows/resource-floor, real missing-runtime vendor UAC,
+and signing remain separate open release gates; no signed, clean-certified,
+production, or `1.0.0` claim follows. See the
+[current Sprint 14 plan](docs/sprint-plans/sprint-14.md).
 
-The installer bundles local services and does not require Docker, Python,
-Node.js, or a JDK. It uses the current Windows account's default browser.
-This version-specific unsigned exception does not establish clean-Windows
-proof, a signed release, or production readiness; signed update verification
-remains fail-closed.
+The candidate remains unsigned, unpublished, not publication-approved, and
+`releaseEligible=false`. The worker did not run NSIS on this host: its fixed
+per-user install target, shell Start Menu KnownFolder, and HKCU registration
+cannot be redirected safely from the existing owner installation. This does
+not negate the owner's machine-2 QA acceptance. Actual missing-runtime
+Microsoft consent/UAC execution is not inferred from that acceptance.
+Projecta and its services remain per-user and are not elevated.
+
+The bundle includes local services and native runtimes without requiring Docker,
+Python, Node.js, a JDK, PostgreSQL, or Fuseki installed separately; it uses the
+current Windows account's default browser. Windows may show a standard
+unsigned-file SmartScreen reputation warning for a future asset. Never disable
+security controls or override a Defender alert, hard block, or organization
+policy. This version-specific exception is not clean-Windows proof, a signed
+release, or production readiness; signed update verification remains
+fail-closed.
+
 
 ### Development quick start (Docker Compose)
 

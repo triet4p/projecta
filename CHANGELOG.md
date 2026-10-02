@@ -8,10 +8,17 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Added
 
-- Prepared the owner-authorized, unpublished unsigned 0.7.0 Windows 11 x64
-  easy-start test installer with its bundled local runtime and per-user
-  installation path. This pre-release exception does not change signed update
-  verification or establish clean-Windows readiness.
+- Added a hybrid-online Microsoft Visual C++ v14 prerequisite to the unsigned
+  0.7.0 Windows 11 x64 build path. Package provenance now records selected
+  source inputs, their base-revision meaning, runtime archive identities, and
+  hashes for derived payload files; the installer receipt binds its source
+  scripts and pinned NSIS distribution/compiler/license inputs. The R1 package
+  and unsigned NSIS candidate were built locally and independently audited.
+  An isolated developer-host frozen-runtime smoke reached all four service
+  readiness checks, recorded a source-bound manual approval receipt without a
+  model/provider, persisted it across stop/restart, and safely rejected a
+  fixed-port collision. The NSIS installer itself remains unrun; no clean-host
+  proof, public download, or signed-release eligibility is established.
 
 - Added explicitly requested, locally routed item/type/link suggestions for
   confirmed manual captures, with revision-bound caching, daily budgets, and
@@ -56,13 +63,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - Prevented transient native-runtime readiness failures by aligning the API probe deadline with its nested Semantic Core check; failed probes now record bounded, allow-listed health details in the local launcher log.
 - Bounded both native Semantic Core and API outer readiness probes at four seconds to cover their nested three-second checks; regression cases exercise delayed success and the single-request deadline failure.
-- Expanded native package assembly to inventory the exact Maven runtime and
-  license inputs, verify app-local Microsoft VC DLL signatures, and report
-  recursive x64 PE imports and unverified loader-string candidates. The
-  corrected unsigned 0.7.0 test package starts all four local services and
-  serves the no-provider workspace; clean-machine proof remains absent, and
-  five app-local Microsoft Visual C++ DLLs still require confirmation against
-  the applicable Visual Studio license and REDIST list before redistribution.
+- Expanded native package assembly to inventory exact Maven runtime and license
+  inputs, distinguish the Microsoft Visual C++ v14 external prerequisite from
+  Windows baseline imports, and report recursive x64 PE imports and unverified
+  loader-string candidates. The builder removes runtime DLLs from upstream
+  package inputs and frozen archives, records signed source provenance and the
+  pinned prerequisite policy, and rejects any residual runtime DLL in the
+  assembled payload.
 
 - Fixed the desktop first-run flow so submitting a workspace name starts
   background provisioning instead of leaving the panel indefinitely at the

@@ -20,6 +20,7 @@ import argparse
 import base64
 import csv
 import hashlib
+import importlib.metadata
 import json
 import os
 import re
@@ -35,6 +36,8 @@ import zipfile
 from email.parser import BytesParser
 from html.parser import HTMLParser
 from pathlib import Path
+import platform
+import projecta_local as launcher
 
 ROOT = Path(__file__).resolve().parents[1]
 DL = ROOT / "build" / "native-dl"
@@ -66,6 +69,47 @@ PYTHON_SOURCE = "https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-
 JRE_SOURCE = "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12.1%2B1/OpenJDK21U-jre_x64_windows_hotspot_21.0.12.1_1.zip"
 PG_SOURCE = "https://get.enterprisedb.com/postgresql/postgresql-16.15-4-windows-x64-binaries.zip"
 
+SOURCE_INPUT_PATHS = (
+    "apps/api/src",
+    "apps/api/alembic",
+    "apps/api/alembic.ini",
+    "apps/api/pyproject.toml",
+    "apps/api/uv.lock",
+    "apps/web/src",
+    "apps/web/index.html",
+    "apps/web/package.json",
+    "apps/web/package-lock.json",
+    "apps/web/vite.config.ts",
+    "apps/web/tsconfig.json",
+    "services/semantic-core/src/main",
+    "services/semantic-core/pom.xml",
+    "ontology",
+    "infra/docker/fuseki/config/fuseki-config.ttl",
+    "scripts/build_native_package.py",
+    "scripts/build_windows_installer.py",
+    "scripts/projecta_local.py",
+    "scripts/projecta_desktop.py",
+    "scripts/bootstrap_fuseki.py",
+    "scripts/projecta_start.ps1",
+    "scripts/vc_runtime_prerequisite.ps1",
+    "scripts/projecta-setup.nsi",
+)
+SOURCE_IGNORED_DIRS = {"__pycache__", ".pytest_cache", ".ruff_cache"}
+RUNTIME_ARCHIVE_SOURCES = {
+    "python-embed.zip": {
+        "version": RUNTIME_VERSIONS["python"],
+        "url": PYTHON_SOURCE,
+    },
+    "jre.zip": {
+        "version": RUNTIME_VERSIONS["java"],
+        "url": JRE_SOURCE,
+    },
+    "pg-binaries.zip": {
+        "version": RUNTIME_VERSIONS["postgresql"],
+        "url": PG_SOURCE,
+    },
+}
+
 
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
@@ -86,6 +130,195 @@ def _source_revision() -> str:
     if result.returncode != 0 or not re.fullmatch(r"[0-9a-f]{40}", revision):
         raise SystemExit("the source commit could not be recorded for this build.")
     return revision
+
+def _records_sha256(records: list[dict[str, object]]) -> str:
+    digest = hashlib.sha256()
+    for record in sorted(records, key=lambda item: str(item["path"]).casefold()):
+        digest.update(
+            f"{record['path']}\t{record['sha256']}\n".encode("utf-8")
+        )
+    return digest.hexdigest()
+
+
+def _source_input_records(
+    root: Path = ROOT,
+    input_paths: tuple[str, ...] = SOURCE_INPUT_PATHS,
+) -> list[dict[str, object]]:
+    records: dict[str, dict[str, object]] = {}
+    for relative in input_paths:
+        source = root / relative
+        if source.is_symlink():
+            raise SystemExit(f"build source input is a symbolic link: {source}")
+        if source.is_dir():
+            candidates = sorted(source.rglob("*"), key=lambda item: item.as_posix().casefold())
+        elif source.is_file():
+            candidates = [source]
+        else:
+            raise SystemExit(f"required build source input is missing: {source}")
+        for candidate in candidates:
+            if any(part in SOURCE_IGNORED_DIRS for part in candidate.relative_to(root).parts):
+                continue
+            if candidate.is_symlink():
+                raise SystemExit(f"build source input is a symbolic link: {candidate}")
+            if candidate.is_file():
+                path = candidate.relative_to(root).as_posix()
+                records[path] = {
+                    "path": path,
+                    "size": candidate.stat().st_size,
+                    "sha256": sha256(candidate),
+                }
+    return [records[path] for path in sorted(records, key=str.casefold)]
+
+
+def _tool_identity(name: str, arguments: list[str]) -> str:
+    executable = shutil.which(name)
+    if executable is None:
+        raise SystemExit(f"required build tool is missing from PATH: {name}")
+    command = [executable, *arguments]
+    if os.name == "nt" and Path(executable).suffix.casefold() in {".bat", ".cmd"}:
+        command = [os.environ.get("COMSPEC", "cmd.exe"), "/d", "/c", *command]
+    result = subprocess.run(
+        command,
+        capture_output=True,
+        text=True,
+        cwd=ROOT,
+        check=False,
+    )
+    identity = (result.stdout or result.stderr).strip()
+    if result.returncode != 0 or not identity:
+        raise SystemExit(f"the {name} build-tool identity could not be recorded.")
+    return "\n".join(identity.splitlines()[:3])
+
+
+def _capture_source_provenance(
+    runtime_inputs: dict[str, dict[str, object]],
+) -> dict[str, object]:
+    try:
+        import PyInstaller
+    except (ImportError, RuntimeError) as error:
+        raise SystemExit("PyInstaller 6.22.3 is required in the isolated build environment") from error
+    if PyInstaller.__version__ != PYINSTALLER_VERSION:
+        raise SystemExit(
+            f"PyInstaller {PYINSTALLER_VERSION} is required; found {PyInstaller.__version__}"
+        )
+    source_files = _source_input_records()
+    external_inputs = []
+    for name, identity in RUNTIME_ARCHIVE_SOURCES.items():
+        external_inputs.append(
+            {
+                "name": name,
+                **identity,
+                **runtime_inputs[name],
+            }
+        )
+    return {
+        "formatVersion": 1,
+        "projectaVersion": APP_VERSION,
+        "dataContractVersion": DATA_CONTRACT_VERSION,
+        "runtimeVersions": dict(RUNTIME_VERSIONS),
+        "vcRuntimePrerequisite": dict(launcher.VC_RUNTIME_PREREQUISITE),
+        "sourceRevision": _source_revision(),
+        "sourceRevisionMeaning": (
+            "Git HEAD at build time; sourceFiles records the actual selected build inputs, "
+            "including uncommitted and untracked files."
+        ),
+        "sourceFiles": source_files,
+        "sourceFilesSha256": _records_sha256(source_files),
+        "buildTools": {
+            "python": sys.version.splitlines()[0],
+            "platform": f"{platform.system()} {platform.release()} {platform.machine()}",
+            "pyInstaller": PyInstaller.__version__,
+            "cryptography": importlib.metadata.version("cryptography"),
+            "uv": _tool_identity("uv", ["--version"]),
+            "node": _tool_identity("node", ["--version"]),
+            "npm": _tool_identity("npm", ["--version"]),
+            "maven": _tool_identity("mvn", ["--version"]),
+        },
+        "runtimeArchiveInputs": external_inputs,
+    }
+
+
+def _package_output_records(package: Path, package_path: str) -> list[dict[str, object]]:
+    output = package / package_path
+    if output.is_symlink() or not output.exists():
+        raise SystemExit(f"derived package build output is missing or unsafe: {output}")
+    if output.is_file():
+        candidates = [output]
+    else:
+        candidates = sorted(output.rglob("*"), key=lambda item: item.as_posix().casefold())
+    prefix = package_path
+    records: list[dict[str, object]] = []
+    for candidate in candidates:
+        if candidate.is_symlink():
+            raise SystemExit(f"derived package build output is a symbolic link: {candidate}")
+        if candidate.is_file():
+            relative = (
+                prefix
+                if candidate == output
+                else f"{prefix}/{candidate.relative_to(output).as_posix()}"
+            )
+            records.append(
+                {
+                    "path": relative,
+                    "size": candidate.stat().st_size,
+                    "sha256": sha256(candidate),
+                }
+            )
+    if not records:
+        raise SystemExit(f"derived package build output is empty: {output}")
+    return records
+
+
+def _write_source_provenance(
+    package: Path,
+    captured: dict[str, object],
+) -> dict[str, object]:
+    source_files = captured["sourceFiles"]
+    if (
+        not isinstance(source_files, list)
+        or source_files != _source_input_records()
+        or _source_revision() != captured["sourceRevision"]
+    ):
+        raise SystemExit("build source inputs changed while the package was being assembled.")
+    derived_outputs = [
+        {
+            "sourcePath": source_path,
+            "packagePath": package_path,
+            "files": _package_output_records(package, package_path),
+        }
+        for source_path, package_path in (
+            ("apps/api sources and migrations", "projecta/api"),
+            ("apps/web/dist", "projecta/web"),
+            ("services/semantic-core/target/classes", "projecta/semantic-core/classes"),
+            ("services/semantic-core/target/lib", "projecta/semantic-core/lib"),
+            ("ontology", "projecta/ontology"),
+            ("infra/docker/fuseki/config/fuseki-config.ttl", "projecta/fuseki-config.template.ttl"),
+            ("infra/docker/fuseki/config/fuseki-config.ttl", "projecta/fuseki-config.ttl"),
+            ("scripts/bootstrap_fuseki.py", "projecta/scripts/bootstrap_fuseki.py"),
+            ("scripts/projecta_local.py", "projecta/scripts/projecta_local.py"),
+            ("apps/api/uv.lock", "runtime/python/uv.lock"),
+            ("uv export from apps/api/pyproject.toml and apps/api/uv.lock", "runtime/python/wheel-requirements.txt"),
+            ("uv-installed API dependencies", "runtime/python/Lib/site-packages"),
+            ("wheel inventory of API dependencies", "runtime/python/wheel-manifest.json"),
+            ("scripts/projecta_start.ps1", "ProjectaStart.ps1"),
+            ("scripts/vc_runtime_prerequisite.ps1", "runtime/vc_runtime_prerequisite.ps1"),
+            ("PyInstaller ProjectaLocal entry point", "ProjectaLocal.exe"),
+            ("PyInstaller Projecta desktop entry point", "Projecta.exe"),
+        )
+    ]
+    document = {
+        **captured,
+        "derivedOutputs": derived_outputs,
+    }
+    path = package / "runtime" / "source-provenance.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(document, indent=2) + "\n", encoding="utf-8")
+    return {
+        "file": path.relative_to(package).as_posix(),
+        "sha256": sha256(path),
+        "sourceRevision": captured["sourceRevision"],
+        "sourceFilesSha256": captured["sourceFilesSha256"],
+    }
 
 
 def md5(path: Path) -> str:
@@ -111,6 +344,7 @@ def verify_inputs() -> dict[str, dict[str, object]]:
             if actual != spec["md5"]:
                 raise SystemExit(f"{name}: md5 {actual} != expected {spec['md5']}")
             entry["md5"] = actual
+            entry["sha256"] = sha256(path)
         else:
             actual = sha256(path)
             entry["sha256"] = actual
@@ -424,7 +658,7 @@ def _write_ed25519_manifest_signature(package: Path, private_key: object) -> str
     )
     return hashlib.sha256(public_bytes).hexdigest()
 
-def _freeze_launcher(package: Path, trust_dir: Path) -> None:
+def _freeze_launcher(package: Path, trust_dir: Path) -> list[dict[str, str]]:
     try:
         import PyInstaller
     except (ImportError, RuntimeError) as error:
@@ -432,40 +666,124 @@ def _freeze_launcher(package: Path, trust_dir: Path) -> None:
     if PyInstaller.__version__ != PYINSTALLER_VERSION:
         raise SystemExit(f"PyInstaller {PYINSTALLER_VERSION} is required; found {PyInstaller.__version__}")
     work_root = ROOT / "build" / "native-pyinstaller"
-    common = [
-        sys.executable,
-        "-m",
-        "PyInstaller",
-        "--clean",
-        "--noconfirm",
-        "--onefile",
-        "--distpath",
-        str(package),
-        "--paths",
-        str(trust_dir),
-        "--paths",
-        str(ROOT / "scripts"),
-        "--collect-all",
-        "cryptography",
-    ]
-    for name, interface, entrypoint in (
-        ("ProjectaLocal", "--console", ROOT / "scripts" / "projecta_local.py"),
-        ("Projecta", "--windowed", ROOT / "scripts" / "projecta_desktop.py"),
+    work_root.mkdir(parents=True, exist_ok=True)
+    removed_inputs: list[dict[str, str]] = []
+    for name, console, entrypoint in (
+        ("ProjectaLocal", True, ROOT / "scripts" / "projecta_local.py"),
+        ("Projecta", False, ROOT / "scripts" / "projecta_desktop.py"),
     ):
-        command = [
-            *common,
-            interface,
-            "--name",
-            name,
-            "--workpath",
-            str(work_root / f"{name.casefold()}-work"),
-            "--specpath",
-            str(work_root / f"{name.casefold()}-spec"),
-            str(entrypoint),
-        ]
-        result = subprocess.run(command, capture_output=True, text=True, cwd=ROOT)
+        spec_root = work_root / f"{name.casefold()}-spec"
+        build_root = work_root / f"{name.casefold()}-work"
+        spec_root.mkdir(parents=True, exist_ok=True)
+        report_path = work_root / f"{name}.vc-runtime-exclusions.json"
+        spec_path = spec_root / f"{name}.spec"
+        spec_path.write_text(
+            f"""# -*- mode: python ; coding: utf-8 -*-
+import json
+import os
+import re
+from PyInstaller.utils.hooks import collect_all
+
+datas = []
+binaries = []
+hiddenimports = []
+tmp_ret = collect_all('cryptography')
+datas += tmp_ret[0]
+binaries += tmp_ret[1]
+hiddenimports += tmp_ret[2]
+a = Analysis(
+    [{str(entrypoint)!r}],
+    pathex=[{str(trust_dir)!r}, {str(ROOT / 'scripts')!r}],
+    binaries=binaries,
+    datas=datas,
+    hiddenimports=hiddenimports,
+    hookspath=[],
+    hooksconfig={{}},
+    runtime_hooks=[],
+    excludes=[],
+    noarchive=False,
+    optimize=0,
+)
+vc_pattern = re.compile(
+    r'^(?:msvcp|msvcr|vcruntime|vccorlib|concrt|vcomp|vcamp|mfc|mfcm|msvcm|atl)[0-9]+[A-Za-z0-9_]*\\.dll$',
+    re.IGNORECASE,
+)
+def is_vc_runtime(name):
+    return vc_pattern.fullmatch(name.replace('\\\\', '/').rsplit('/', 1)[-1]) is not None
+removed_binaries = [entry for entry in a.binaries if is_vc_runtime(entry[0])]
+removed_datas = [entry for entry in a.datas if is_vc_runtime(entry[0])]
+removed = removed_binaries + removed_datas
+required = {{'vcruntime140.dll', 'vcruntime140_1.dll'}}
+found = {{entry[0].replace('\\\\', '/').rsplit('/', 1)[-1].casefold() for entry in removed}}
+if not required.issubset(found):
+    raise SystemExit('the frozen application did not expose its expected MSVC runtime inputs')
+with open({str(report_path)!r}, 'w', encoding='utf-8') as stream:
+    json.dump([{{'name': entry[0], 'source': entry[1]}} for entry in removed], stream)
+a.binaries = [entry for entry in a.binaries if not is_vc_runtime(entry[0])]
+a.datas = [entry for entry in a.datas if not is_vc_runtime(entry[0])]
+pyz = PYZ(a.pure)
+exe = EXE(
+    pyz,
+    a.scripts,
+    a.binaries,
+    a.datas,
+    [],
+    name={name!r},
+    debug=False,
+    bootloader_ignore_signals=False,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    runtime_tmpdir=None,
+    console={console!r},
+    disable_windowed_traceback=False,
+    argv_emulation=False,
+    target_arch=None,
+    codesign_identity=None,
+    entitlements_file=None,
+)
+""",
+            encoding="utf-8",
+        )
+        result = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "PyInstaller",
+                "--clean",
+                "--noconfirm",
+                "--distpath",
+                str(package),
+                "--workpath",
+                str(build_root),
+                str(spec_path),
+            ],
+            capture_output=True,
+            text=True,
+            cwd=ROOT,
+        )
         if result.returncode:
-            raise SystemExit(f"PyInstaller failed for {name}.exe: {result.stderr[-3000:] or result.stdout[-3000:]}")
+            raise SystemExit(
+                f"PyInstaller failed for {name}.exe: {result.stderr[-3000:] or result.stdout[-3000:]}"
+            )
+        if not report_path.is_file():
+            raise SystemExit(f"PyInstaller did not record excluded VC runtime inputs for {name}.exe")
+        try:
+            entries = json.loads(report_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as error:
+            raise SystemExit(f"PyInstaller wrote invalid VC runtime metadata for {name}.exe") from error
+        if not isinstance(entries, list) or not entries:
+            raise SystemExit(f"PyInstaller recorded no excluded VC runtime inputs for {name}.exe")
+        removed_inputs.extend(
+            {"application": name, "name": entry["name"], "source": entry["source"]}
+            for entry in entries
+            if isinstance(entry, dict)
+            and isinstance(entry.get("name"), str)
+            and isinstance(entry.get("source"), str)
+        )
+        report_path.unlink()
+
+    return removed_inputs
 
 class _LicenseTextParser(HTMLParser):
     def __init__(self) -> None:
@@ -898,6 +1216,8 @@ def _write_native_dependency_manifest(package: Path) -> dict[str, object]:
         folded = name.casefold()
         if folded in bundled_modules:
             return "appLocal"
+        if launcher._is_app_local_vc_runtime(Path(folded)):
+            return "externalPrerequisite"
         if folded in system_dlls or folded.startswith(api_set_prefixes):
             return "windows11X64OSBaseline"
         return "unresolved"
@@ -1109,12 +1429,27 @@ def _write_native_dependency_manifest(package: Path) -> dict[str, object]:
             "windows11X64OSBaseline": "Windows system DLL, UCRT, or OS API-set contract for the declared baseline.",
             "unresolved": "Static or delay import not found in the package or declared Windows 11 x64 OS/API-set baseline.",
             "unverifiedDynamicStringCandidate": "DLL-like string in a loader-API importing image; not proven to be passed to a loader without code-flow analysis.",
+            "externalPrerequisite": "Microsoft Visual C++ v14 x64 runtime installed per-machine only by the vendor installer after user consent.",
         },
         "windowsSystemDlls": sorted(system_dlls),
         "apiSetPrefixes": list(api_set_prefixes),
         "bundledModules": {
             name: sorted(paths, key=str.casefold)
             for name, paths in sorted(module_paths.items())
+        },
+        "externalPrerequisites": {
+            "microsoftVisualCpp": {
+                **launcher.VC_RUNTIME_PREREQUISITE,
+                "runtimeDlls": sorted(
+                    {
+                        name
+                        for image in entries
+                        for name in image["staticImports"] + image["delayImports"]
+                        if launcher._is_app_local_vc_runtime(Path(name))
+                    },
+                    key=str.casefold,
+                ),
+            }
         },
         "images": entries,
         "unresolvedDependencies": sorted(unresolved),
@@ -1256,9 +1591,17 @@ def stage_project(dest: Path) -> None:
         shutil.rmtree(dest)
     api_src = ROOT / "apps" / "api" / "src" / "projecta_api"
     api_dest = dest / "api" / "src" / "projecta_api"
-    shutil.copytree(api_src, api_dest)
+    shutil.copytree(
+        api_src,
+        api_dest,
+        ignore=shutil.ignore_patterns("__pycache__", "*.pyc"),
+    )
     shutil.copy2(ROOT / "apps" / "api" / "alembic.ini", dest / "api" / "alembic.ini")
-    shutil.copytree(ROOT / "apps" / "api" / "alembic", dest / "api" / "alembic")
+    shutil.copytree(
+        ROOT / "apps" / "api" / "alembic",
+        dest / "api" / "alembic",
+        ignore=shutil.ignore_patterns("__pycache__", "*.pyc"),
+    )
     core_classes = ROOT / "services" / "semantic-core" / "target" / "classes"
     core_lib = ROOT / "services" / "semantic-core" / "target" / "lib"
     if not (core_classes / "org" / "projecta" / "semanticcore" / "SemanticCoreApplication.class").is_file():
@@ -1300,117 +1643,36 @@ def stage_project(dest: Path) -> None:
         raise SystemExit("compiled SPA is missing; build apps/web first")
     shutil.copytree(web_src, dest / "web")
     _write_component_manifest(dest / "web", "web", APP_VERSION)
-
-
-def _verify_app_local_vc_runtime(
-    package: Path,
-    receipt: dict[str, dict[str, object]],
-) -> list[dict[str, object]]:
-    vc_runtime_names = {
-        "msvcp140.dll",
-        "msvcp140_1.dll",
-        "msvcp140_2.dll",
-        "msvcp140_atomic_wait.dll",
-        "vcruntime140.dll",
-        "vcruntime140_1.dll",
-    }
-    runtime_root = package / "runtime"
-    files = sorted(
-        (
-            path for path in runtime_root.rglob("*")
-            if path.is_file() and path.name.casefold() in vc_runtime_names
-        ),
-        key=lambda path: path.as_posix().casefold(),
+    shutil.copy2(ROOT / "scripts" / "projecta_start.ps1", dest.parent / "ProjectaStart.ps1")
+    shutil.copy2(
+        ROOT / "scripts" / "vc_runtime_prerequisite.ps1",
+        dest.parent / "runtime" / "vc_runtime_prerequisite.ps1",
     )
-    if not files:
-        raise SystemExit("no app-local Microsoft VC runtime DLLs were found in the staged package.")
-    if os.name != "nt":
-        raise SystemExit("Authenticode verification of app-local VC runtime DLLs requires Windows.")
 
-    import ctypes
-    import uuid
-    from ctypes import wintypes
 
-    class Guid(ctypes.Structure):
-        _fields_ = [
-            ("Data1", ctypes.c_uint32),
-            ("Data2", ctypes.c_uint16),
-            ("Data3", ctypes.c_uint16),
-            ("Data4", ctypes.c_ubyte * 8),
-        ]
 
-        @classmethod
-        def from_uuid(cls, value: str) -> Guid:
-            result = cls()
-            ctypes.memmove(ctypes.byref(result), uuid.UUID(value).bytes_le, 16)
-            return result
 
-    class FileInfo(ctypes.Structure):
-        _fields_ = [
-            ("cbStruct", wintypes.DWORD),
-            ("pcwszFilePath", wintypes.LPCWSTR),
-            ("hFile", wintypes.HANDLE),
-            ("pgKnownSubject", ctypes.POINTER(Guid)),
-        ]
-
-    class TrustData(ctypes.Structure):
-        _fields_ = [
-            ("cbStruct", wintypes.DWORD),
-            ("pPolicyCallbackData", ctypes.c_void_p),
-            ("pSIPClientData", ctypes.c_void_p),
-            ("dwUIChoice", wintypes.DWORD),
-            ("fdwRevocationChecks", wintypes.DWORD),
-            ("dwUnionChoice", wintypes.DWORD),
-            ("pFile", ctypes.POINTER(FileInfo)),
-            ("dwStateAction", wintypes.DWORD),
-            ("hWVTStateData", wintypes.HANDLE),
-            ("pwszURLReference", wintypes.LPWSTR),
-            ("dwProvFlags", wintypes.DWORD),
-            ("dwUIContext", wintypes.DWORD),
-            ("pSignatureSettings", ctypes.c_void_p),
-        ]
-
-    wintrust = ctypes.WinDLL("wintrust", use_last_error=True)
-    verify = wintrust.WinVerifyTrust
-    verify.argtypes = [
-        wintypes.HWND,
-        ctypes.POINTER(Guid),
-        ctypes.POINTER(TrustData),
-    ]
-    verify.restype = ctypes.c_long
-    action = Guid.from_uuid("00AAC56B-CD44-11d0-8CC2-00C04FC295EE")
-    for path in files:
-        file_info = FileInfo(ctypes.sizeof(FileInfo), str(path), None, None)
-        trust_data = TrustData()
-        trust_data.cbStruct = ctypes.sizeof(TrustData)
-        trust_data.dwUIChoice = 2
-        trust_data.fdwRevocationChecks = 0
-        trust_data.dwUnionChoice = 1
-        trust_data.pFile = ctypes.pointer(file_info)
-        trust_data.dwStateAction = 0
-        trust_data.dwProvFlags = 0x1000
-        status = verify(None, ctypes.byref(action), ctypes.byref(trust_data))
-        if status != 0:
-            raise SystemExit(
-                f"app-local VC runtime DLL failed WinVerifyTrust: "
-                f"{path.relative_to(package).as_posix()} (0x{status & 0xFFFFFFFF:08x})"
-            )
-
+def _read_signed_vc_metadata(files: list[Path], purpose: str) -> list[dict[str, object]]:
     powershell = shutil.which("powershell.exe")
     if powershell is None:
-        raise SystemExit("PowerShell is required to read signed VC runtime publisher/version metadata.")
+        raise SystemExit(f"PowerShell is required to verify {purpose} VC runtime metadata.")
     environment = os.environ.copy()
     for secret_name in ("PROJECTA_UPDATE_SIGNING_KEY_PATH", "PROJECTA_UPDATE_SIGNING_KEY_PASSWORD"):
         environment.pop(secret_name, None)
     environment["PROJECTA_VC_RUNTIME_PATHS_JSON"] = json.dumps([str(path) for path in files])
     script = (
+        "$env:PSModulePath=$PSHOME+'\\Modules;'+$env:PSModulePath; "
+        "$securityModule=$PSHOME+'\\Modules\\Microsoft.PowerShell.Security\\Microsoft.PowerShell.Security.psd1'; "
+        "Import-Module -Name $securityModule -ErrorAction Stop; "
         "$paths=ConvertFrom-Json $env:PROJECTA_VC_RUNTIME_PATHS_JSON; "
         "$items=@(foreach($path in $paths){"
         "$v=[System.Diagnostics.FileVersionInfo]::GetVersionInfo($path);"
-        "$c=[System.Security.Cryptography.X509Certificates.X509Certificate]::CreateFromSignedFile($path);"
+        "$s=Get-AuthenticodeSignature -LiteralPath $path -ErrorAction Stop;"
+        "$c=$s.SignerCertificate;"
+        "if($null -ne $c){$signer=$c.Subject;$thumbprint=$c.Thumbprint}else{$signer=$null;$thumbprint=$null};"
         "[pscustomobject]@{Path=$path;Company=$v.CompanyName;OriginalFilename=$v.OriginalFilename;"
-        "FileVersion=$v.FileVersion;ProductVersion=$v.ProductVersion;Signer=$c.Subject;"
-        "Thumbprint=$c.GetCertHashString()}});"
+        "FileVersion=$v.FileVersion;ProductVersion=$v.ProductVersion;SignerStatus=[string]$s.Status;"
+        "Signer=$signer;Thumbprint=$thumbprint}});"
         "ConvertTo-Json -InputObject $items -Depth 4 -Compress"
     )
     result = subprocess.run(
@@ -1418,19 +1680,42 @@ def _verify_app_local_vc_runtime(
         capture_output=True,
         text=True,
         env=environment,
+        check=False,
     )
     if result.returncode:
-        raise SystemExit("PowerShell could not read signed VC runtime publisher/version metadata.")
+        details = (result.stderr or result.stdout).strip()[-1200:]
+        raise SystemExit(f"PowerShell could not verify {purpose} VC runtime metadata. {details}")
     try:
         metadata = json.loads(result.stdout)
     except json.JSONDecodeError as error:
-        raise SystemExit("PowerShell returned invalid signed VC runtime metadata.") from error
+        raise SystemExit(f"PowerShell returned invalid {purpose} VC runtime metadata.") from error
     if not isinstance(metadata, list):
-        raise SystemExit("PowerShell returned an incomplete signed VC runtime inventory.")
+        raise SystemExit(f"PowerShell returned incomplete {purpose} VC runtime metadata.")
+    return [
+        item
+        for item in metadata
+        if isinstance(item, dict) and isinstance(item.get("Path"), str)
+    ]
+
+
+def _strip_app_local_vc_runtime(
+    package: Path,
+    receipt: dict[str, dict[str, object]],
+) -> list[dict[str, object]]:
+    runtime_root = package / "runtime"
+    files = sorted(
+        (
+            path for path in runtime_root.rglob("*")
+            if path.is_file() and launcher._is_msvc_runtime_dll(path)
+        ),
+        key=lambda path: path.as_posix().casefold(),
+    )
+    if not files:
+        raise SystemExit("no source VC runtime DLL inputs were found in the staged package.")
+    metadata = _read_signed_vc_metadata(files, "upstream")
     metadata_by_path = {
         Path(item["Path"]).resolve().as_posix().casefold(): item
         for item in metadata
-        if isinstance(item, dict) and isinstance(item.get("Path"), str)
     }
     source_archives = {
         "python": ("python-embed.zip", PYTHON_SOURCE),
@@ -1440,18 +1725,23 @@ def _verify_app_local_vc_runtime(
     inventory: list[dict[str, object]] = []
     for path in files:
         item = metadata_by_path.get(path.resolve().as_posix().casefold())
-        if item is None:
-            raise SystemExit(f"VC runtime publisher/version metadata is missing: {path.name}")
-        if (
+        if item is None or (
             item.get("Company") != "Microsoft Corporation"
-            or item.get("OriginalFilename", "").casefold() != path.name.casefold()
-            or "O=Microsoft Corporation" not in item.get("Signer", "")
+            or str(item.get("OriginalFilename", "")).casefold() != path.name.casefold()
+            or item.get("SignerStatus") != "Valid"
+            or "O=Microsoft Corporation" not in str(item.get("Signer", ""))
         ):
-            raise SystemExit(f"app-local VC runtime publisher is not Microsoft: {path.name}")
+            raise SystemExit(f"upstream VC runtime publisher/signature is not Microsoft: {path.name}")
+        version = item.get("FileVersion")
+        version_key = _vc_version_key(version)
+        if version_key[0] != 14:
+            raise SystemExit(
+                f"the Microsoft Visual C++ v14 prerequisite cannot satisfy legacy runtime input {path.name} ({version})."
+            )
         component = path.relative_to(runtime_root).parts[0].casefold()
         source = source_archives.get(component)
         if source is None:
-            raise SystemExit(f"app-local VC runtime has no staged source archive mapping: {path.name}")
+            raise SystemExit(f"upstream VC runtime has no staged source archive mapping: {path.name}")
         archive_name, source_url = source
         input_record = receipt[archive_name]
         hash_key = "sha256" if "sha256" in input_record else "md5"
@@ -1459,26 +1749,34 @@ def _verify_app_local_vc_runtime(
             {
                 "path": path.relative_to(package).as_posix(),
                 "sha256": sha256(path),
-                "fileVersion": item["FileVersion"],
+                "fileVersion": version,
                 "productVersion": item["ProductVersion"],
                 "company": item["Company"],
                 "signerSubject": item["Signer"],
                 "signerThumbprint": item["Thumbprint"],
                 "authenticodeStatus": "Valid",
-                "verification": "WinVerifyTrust Default Authenticode policy; revocation checks disabled",
                 "sourceArchive": archive_name,
                 "sourceArchiveUrl": source_url,
                 "sourceArchiveHashAlgorithm": hash_key.upper().replace("SHA", "SHA-"),
                 "sourceArchiveHash": input_record[hash_key],
             }
         )
-    (runtime_root / "vc-runtime-inventory.json").write_text(
+    for path in files:
+        path.unlink()
+    inventory_path = runtime_root / "vc-runtime-inventory.json"
+    inventory_path.write_text(
         json.dumps(
             {
-                "formatVersion": 1,
-                "deploymentMethod": "appLocal",
-                "separateRedistributableInstallerIncluded": False,
-                "files": inventory,
+                "formatVersion": 2,
+                "deploymentMethod": "microsoftPrerequisite",
+                "architecture": "x64",
+                "sourceUrl": launcher.VC_RUNTIME_PREREQUISITE["sourceUrl"],
+                "minimumVersion": max(
+                    (entry["fileVersion"] for entry in inventory),
+                    key=_vc_version_key,
+                ),
+                "removedFiles": inventory,
+                "frozenBuildFiles": [],
             },
             indent=2,
         )
@@ -1486,6 +1784,129 @@ def _verify_app_local_vc_runtime(
         encoding="utf-8",
     )
     return inventory
+
+
+def _vc_version_key(value: object) -> tuple[int, int, int, int]:
+    if not isinstance(value, str) or not re.fullmatch(r"\d+\.\d+\.\d+\.\d+", value):
+        raise SystemExit("the Visual C++ runtime version is invalid.")
+    return tuple(int(part) for part in value.split("."))  # type: ignore[return-value]
+
+
+def _complete_vc_runtime_inventory(
+    package: Path,
+    source_files: list[dict[str, object]],
+    frozen_inputs: list[dict[str, str]],
+) -> dict[str, object]:
+    powershell = shutil.which("powershell.exe")
+    if powershell is None:
+        raise SystemExit("PowerShell is required to verify frozen VC runtime build inputs.")
+    sources: dict[str, dict[str, object]] = {}
+    for entry in frozen_inputs:
+        path = Path(entry["source"])
+        if not path.is_file() or path.is_symlink():
+            raise SystemExit(f"the frozen VC runtime build input is missing or unsafe: {entry['name']}")
+        key = str(path.resolve()).casefold()
+        record = sources.setdefault(
+            key,
+            {
+                "path": path,
+                "name": entry["name"],
+                "applications": [],
+            },
+        )
+        applications = record["applications"]
+        if isinstance(applications, list) and entry["application"] not in applications:
+            applications.append(entry["application"])
+    paths = [str(record["path"]) for record in sources.values()]
+    environment = os.environ.copy()
+    for secret_name in ("PROJECTA_UPDATE_SIGNING_KEY_PATH", "PROJECTA_UPDATE_SIGNING_KEY_PASSWORD"):
+        environment.pop(secret_name, None)
+    environment["PROJECTA_VC_RUNTIME_PATHS_JSON"] = json.dumps(paths)
+    script = (
+        "$env:PSModulePath=$PSHOME+'\\Modules;'+$env:PSModulePath; "
+        "$securityModule=$PSHOME+'\\Modules\\Microsoft.PowerShell.Security\\Microsoft.PowerShell.Security.psd1'; "
+        "Import-Module -Name $securityModule -ErrorAction Stop; "
+        "$paths=ConvertFrom-Json $env:PROJECTA_VC_RUNTIME_PATHS_JSON; "
+        "$items=@(foreach($path in $paths){"
+        "$v=[System.Diagnostics.FileVersionInfo]::GetVersionInfo($path);"
+        "$s=Get-AuthenticodeSignature -LiteralPath $path -ErrorAction Stop;"
+        "$c=$s.SignerCertificate;"
+        "if($null -ne $c){$signer=$c.Subject}else{$signer=$null};"
+        "[pscustomobject]@{Path=$path;Company=$v.CompanyName;OriginalFilename=$v.OriginalFilename;"
+        "FileVersion=$v.FileVersion;SignerStatus=[string]$s.Status;Signer=$signer}});"
+        "ConvertTo-Json -InputObject $items -Depth 4 -Compress"
+    )
+    result = subprocess.run(
+        [powershell, "-NoProfile", "-NonInteractive", "-Command", script],
+        capture_output=True,
+        text=True,
+        env=environment,
+        check=False,
+    )
+    if result.returncode:
+        details = (result.stderr or result.stdout).strip()[-1200:]
+        raise SystemExit(f"PowerShell could not verify frozen VC runtime build inputs. {details}")
+    try:
+        metadata = json.loads(result.stdout)
+    except json.JSONDecodeError as error:
+        raise SystemExit("PowerShell returned invalid frozen VC runtime metadata.") from error
+    if not isinstance(metadata, list):
+        raise SystemExit("PowerShell returned incomplete frozen VC runtime metadata.")
+    metadata_by_path = {
+        Path(item["Path"]).resolve().as_posix().casefold(): item
+        for item in metadata
+        if isinstance(item, dict) and isinstance(item.get("Path"), str)
+    }
+    frozen_files: list[dict[str, object]] = []
+    for source in sources.values():
+        path = source["path"]
+        if not isinstance(path, Path):
+            raise SystemExit("the frozen VC runtime source path is invalid.")
+        item = metadata_by_path.get(path.resolve().as_posix().casefold())
+        if item is None or (
+            item.get("Company") != "Microsoft Corporation"
+            or str(item.get("OriginalFilename", "")).casefold() != str(source["name"]).casefold()
+            or item.get("SignerStatus") != "Valid"
+            or "O=Microsoft Corporation" not in str(item.get("Signer", ""))
+        ):
+            raise SystemExit(f"the frozen VC runtime input is not a valid Microsoft binary: {source['name']}")
+        version = item.get("FileVersion")
+        _vc_version_key(version)
+        frozen_files.append(
+            {
+                "name": source["name"],
+                "fileVersion": version,
+                "sha256": sha256(path),
+                "company": item["Company"],
+                "signerSubject": item["Signer"],
+                "authenticodeStatus": "Valid",
+                "applications": source["applications"],
+            }
+        )
+    actual_minimum = max(
+        (
+            _vc_version_key(entry["fileVersion"])
+            for entry in [*source_files, *frozen_files]
+        ),
+        default=(0, 0, 0, 0),
+    )
+    pinned_minimum = _vc_version_key(launcher.VC_RUNTIME_PREREQUISITE["minimumVersion"])
+    if actual_minimum != pinned_minimum:
+        raise SystemExit(
+            "the pinned Visual C++ prerequisite minimum does not match the highest staged/frozen build input."
+        )
+    inventory_path = package / "runtime" / "vc-runtime-inventory.json"
+    inventory = json.loads(inventory_path.read_text(encoding="utf-8"))
+    inventory["minimumVersion"] = launcher.VC_RUNTIME_PREREQUISITE["minimumVersion"]
+    inventory["frozenBuildFiles"] = frozen_files
+    inventory_path.write_text(json.dumps(inventory, indent=2) + "\n", encoding="utf-8")
+    policy_path = package / "runtime" / "vc-runtime-policy.json"
+    policy_path.write_text(
+        json.dumps(launcher.VC_RUNTIME_PREREQUISITE, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    return inventory
+
 
 
 def write_notices(
@@ -1508,7 +1929,6 @@ def write_notices(
     vc_manifest = json.loads(
         (package / "runtime" / "vc-runtime-inventory.json").read_text(encoding="utf-8")
     )
-    app_local_vc = vc_manifest["files"]
     java_libraries = java_manifest["libraries"]
     java_unclassified = [
         library["jar"]
@@ -1560,15 +1980,22 @@ def write_notices(
         f"- Bundled Python wheels from apps/api/uv.lock: {len(wheel_manifest['distributions'])} distributions.",
         "  Exact lock, generated requirements, hashes, per-wheel files, and available license metadata/text",
         "  are in runtime/python/uv.lock, wheel-requirements.txt, and wheel-manifest.json.",
-        "- App-local Microsoft VC runtime DLLs with Authenticode-valid signatures:",
-        *(
-            f"  - {item['path']} | {item['fileVersion']} | {item['signerSubject']}"
-            for item in app_local_vc
-        ),
-        "  Source archive URLs/hashes and per-file SHA-256 values are in runtime/vc-runtime-inventory.json.",
-        "  The package includes no separate Visual C++ Redistributable installer. App-local deployment is",
-        "  permitted only under applicable Visual Studio redistribution terms; owner licensing approval is required.",
-        "  Microsoft deployment guidance: https://learn.microsoft.com/en-us/cpp/windows/choosing-a-deployment-method?view=msvc-170",
+        "- Microsoft Visual C++ v14 x64 runtime: no runtime DLLs or Redistributable installer",
+        "  are bundled; when the runtime is absent or below the build-derived minimum,",
+        "  the bootstrap downloads the Microsoft installer directly from",
+        f"  {launcher.VC_RUNTIME_PREREQUISITE['sourceUrl']}.",
+        "  Microsoft's latest-supported download guidance is",
+        "  https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170.",
+        f"  Minimum x64 v14 version: {vc_manifest['minimumVersion']}. The Microsoft Authenticode",
+        "  signature, publisher, x64 product metadata, and file version are verified;",
+        "  the downloaded file's SHA-256 is rechecked immediately before execution.",
+        "  The vendor's license/consent UI and prerequisite UAC are required when",
+        "  installation is needed. Projecta and its services remain per-user and are",
+        "  never elevated; Windows is not restarted automatically. No vendor payload",
+        "  is cached or mirrored in this package. Microsoft redistribution guidance:",
+        "  https://learn.microsoft.com/en-us/cpp/windows/redistributing-visual-cpp-files?view=msvc-170.",
+        "  Removed source DLLs, signed source metadata, and frozen-image exclusions are",
+        "  recorded in runtime/vc-runtime-inventory.json.",
         "- Recursive x64 PE static/delay import results, app-local module paths, the Windows 11 x64 OS/API-set",
         "  baseline, and dynamic loader API/string candidates are recorded in runtime/native-dependency-manifest.json.",
         "  Unresolved static/delay imports fail the package build. DLL-like strings are candidates, not proof of",
@@ -1596,6 +2023,7 @@ def write_manifest(
     package: Path,
     public_key_fingerprint: str | None,
     *,
+    source_provenance: dict[str, object],
     release_eligible: bool = False,
     unsigned_pre_release_test: bool = False,
     authenticode_signing: dict[str, object] | None = None,
@@ -1621,7 +2049,12 @@ def write_manifest(
         "runtime/postgresql/commandlinetools_3rd_party_licenses.txt",
         "projecta/semantic-core/java-third-party-notices.json",
     }
-    notice_files.add("runtime/vc-runtime-inventory.json")
+    notice_files.update(
+        {
+            "runtime/vc-runtime-inventory.json",
+            "runtime/vc-runtime-policy.json",
+        }
+    )
     installer_notice = package / "runtime" / "installer-tool" / "NSIS-COPYING.txt"
     if unsigned_pre_release_test and not installer_notice.is_file():
         raise SystemExit("the unsigned pre-release package must include the NSIS installer license notice.")
@@ -1671,11 +2104,16 @@ def write_manifest(
             if unsigned_pre_release_test
             else "host-validation"
         ),
-        "sourceRevision": _source_revision(),
+        "sourceRevision": source_provenance["sourceRevision"],
+        "sourceRevisionMeaning": (
+            "Git HEAD at build time; sourceProvenance records the actual selected build inputs."
+        ),
+        "sourceProvenance": source_provenance,
         "signatureAlgorithm": "Ed25519",
         "publicKeyFingerprint": public_key_fingerprint,
         "authenticodeSigning": authenticode_signing,
         "runtimeVersions": dict(RUNTIME_VERSIONS),
+        "vcRuntimePrerequisite": dict(launcher.VC_RUNTIME_PREREQUISITE),
         "noticeFiles": sorted(notice_files, key=str.casefold),
         "files": files,
     }
@@ -1734,6 +2172,9 @@ def verify_assembled(
         package / "runtime" / "python" / "wheel-manifest.json",
         package / "runtime" / "native-dependency-manifest.json",
         package / "runtime" / "vc-runtime-inventory.json",
+        package / "runtime" / "vc-runtime-policy.json",
+        package / "runtime" / "vc_runtime_prerequisite.ps1",
+        package / "ProjectaStart.ps1",
         package / "projecta" / "semantic-core" / "runtime-manifest.json",
         package / "projecta" / "semantic-core" / "java-third-party-notices.json",
         package / "projecta" / "ontology" / "runtime-manifest.json",
@@ -1742,6 +2183,7 @@ def verify_assembled(
         package / "Projecta.exe",
         package / "PROJECTA-LICENSE.txt",
         package / "runtime-manifest.json",
+        package / "runtime" / "source-provenance.json",
     ]
     missing = [str(p.relative_to(package)) for p in required if not p.is_file()]
     if missing:
@@ -1752,6 +2194,113 @@ def verify_assembled(
     if native_manifest["unresolvedDependencies"]:
         raise SystemExit("native runtime dependency manifest contains unresolved imports")
     manifest = json.loads((package / "runtime-manifest.json").read_text(encoding="utf-8"))
+    source_provenance = manifest.get("sourceProvenance")
+    if (
+        not isinstance(source_provenance, dict)
+        or source_provenance.get("file") != "runtime/source-provenance.json"
+        or source_provenance.get("sourceRevision") != manifest.get("sourceRevision")
+        or source_provenance.get("sha256") != sha256(package / "runtime" / "source-provenance.json")
+    ):
+        raise SystemExit("the package source-provenance reference is missing or inconsistent.")
+    provenance_document = json.loads(
+        (package / "runtime" / "source-provenance.json").read_text(encoding="utf-8")
+    )
+    source_files = provenance_document.get("sourceFiles")
+    if (
+        provenance_document.get("formatVersion") != 1
+        or provenance_document.get("projectaVersion") != manifest.get("projectaVersion")
+        or provenance_document.get("dataContractVersion") != manifest.get("dataContractVersion")
+        or provenance_document.get("runtimeVersions") != manifest.get("runtimeVersions")
+        or provenance_document.get("vcRuntimePrerequisite") != manifest.get("vcRuntimePrerequisite")
+        or provenance_document.get("sourceRevision") != manifest.get("sourceRevision")
+        or provenance_document.get("sourceFilesSha256") != source_provenance.get("sourceFilesSha256")
+        or not isinstance(source_files, list)
+        or source_files != _source_input_records()
+        or _records_sha256(source_files) != source_provenance.get("sourceFilesSha256")
+    ):
+        raise SystemExit("the package provenance does not match the actual build source inputs.")
+    payload_files = {
+        entry["path"]: entry
+        for entry in manifest.get("files", [])
+        if isinstance(entry, dict) and isinstance(entry.get("path"), str)
+    }
+    if payload_files.get("runtime/source-provenance.json", {}).get("sha256") != source_provenance["sha256"]:
+        raise SystemExit("the package provenance file is not bound to the payload manifest.")
+    derived_outputs = provenance_document.get("derivedOutputs")
+    expected_package_paths = {
+        "projecta/api",
+        "projecta/web",
+        "projecta/semantic-core/classes",
+        "projecta/semantic-core/lib",
+        "projecta/ontology",
+        "projecta/fuseki-config.template.ttl",
+        "projecta/fuseki-config.ttl",
+        "projecta/scripts/bootstrap_fuseki.py",
+        "projecta/scripts/projecta_local.py",
+        "runtime/python/uv.lock",
+        "runtime/python/wheel-requirements.txt",
+        "runtime/python/Lib/site-packages",
+        "runtime/python/wheel-manifest.json",
+        "ProjectaStart.ps1",
+        "runtime/vc_runtime_prerequisite.ps1",
+        "ProjectaLocal.exe",
+        "Projecta.exe",
+    }
+    if (
+        not isinstance(derived_outputs, list)
+        or {output.get("packagePath") for output in derived_outputs if isinstance(output, dict)}
+        != expected_package_paths
+    ):
+        raise SystemExit("the package provenance omits a required derived build output.")
+    for output in derived_outputs:
+        if not isinstance(output, dict) or not isinstance(output.get("files"), list):
+            raise SystemExit("the package provenance contains an invalid derived-output record.")
+        for entry in output["files"]:
+            if not isinstance(entry, dict) or payload_files.get(entry.get("path")) != entry:
+                raise SystemExit("the package provenance derived outputs differ from the payload manifest.")
+    policy = json.loads(
+        (package / "runtime" / "vc-runtime-policy.json").read_text(encoding="utf-8")
+    )
+    runtime_inventory = json.loads(
+        (package / "runtime" / "vc-runtime-inventory.json").read_text(encoding="utf-8")
+    )
+    if (
+        policy != launcher.VC_RUNTIME_PREREQUISITE
+        or manifest.get("vcRuntimePrerequisite") != launcher.VC_RUNTIME_PREREQUISITE
+        or runtime_inventory.get("deploymentMethod") != "microsoftPrerequisite"
+        or runtime_inventory.get("minimumVersion") != launcher.VC_RUNTIME_PREREQUISITE["minimumVersion"]
+        or runtime_inventory.get("sourceUrl") != launcher.VC_RUNTIME_PREREQUISITE["sourceUrl"]
+    ):
+        raise SystemExit("the package Visual C++ prerequisite contract is missing or unsupported.")
+    prohibited = [
+        path.relative_to(package).as_posix()
+        for path in package.rglob("*")
+        if path.is_file() and launcher._is_msvc_runtime_dll(path)
+    ]
+    if prohibited:
+        raise SystemExit(f"distributed files contain prohibited Microsoft Visual C++ runtime DLLs: {prohibited}")
+    prohibited_installers = [
+        path.relative_to(package).as_posix()
+        for path in package.rglob("*")
+        if path.is_file() and launcher._is_vc_runtime_installer(path)
+    ]
+    if prohibited_installers:
+        raise SystemExit(f"the Microsoft Visual C++ Redistributable installer must not be bundled: {prohibited_installers}")
+    from PyInstaller.archive.readers import CArchiveReader
+
+
+    for executable_name in ("Projecta.exe", "ProjectaLocal.exe"):
+        embedded = CArchiveReader(package / executable_name).toc
+        prohibited_embedded = sorted(
+            name
+            for name in embedded
+            if launcher._is_msvc_runtime_dll(Path(name))
+            or launcher._is_vc_runtime_installer(Path(name))
+        )
+        if prohibited_embedded:
+            raise SystemExit(
+                f"{executable_name} embeds prohibited Microsoft Visual C++ runtime payloads: {prohibited_embedded}"
+            )
     signature_path = package / "runtime-manifest.sig"
     if release_eligible:
         if (
@@ -1888,6 +2437,7 @@ def main(argv: list[str] | None = None) -> int:
     signing = _load_release_signing_configuration(package, archive_path) if args.release else None
     if package.exists() and (not output_is_default or args.unsigned_pre_release_test):
         raise SystemExit("the requested package directory already exists; existing output was left untouched.")
+    captured_source_provenance = _capture_source_provenance(receipt)
     _build_web_assets()
 
     if package.exists():
@@ -1899,11 +2449,12 @@ def main(argv: list[str] | None = None) -> int:
     stage_java(package / "runtime" / "java")
     stage_postgres(package / "runtime" / "postgresql")
     stage_project(package / "projecta")
-    _verify_app_local_vc_runtime(package, receipt)
+    source_vc_files = _strip_app_local_vc_runtime(package, receipt)
     trust_dir, public_key_fingerprint = _write_update_trust_module(release_eligible=args.release)
     if args.release and public_key_fingerprint != signing["publicKeyFingerprint"]:
         raise SystemExit("the frozen launcher trust anchor does not match the owner Ed25519 release key.")
-    _freeze_launcher(package, trust_dir)
+    frozen_vc_inputs = _freeze_launcher(package, trust_dir)
+    _complete_vc_runtime_inventory(package, source_vc_files, frozen_vc_inputs)
     authenticode_signing = _sign_authenticode_images(package, signing) if signing is not None else None
     native_dependencies = _write_native_dependency_manifest(package)
     write_notices(
@@ -1913,9 +2464,11 @@ def main(argv: list[str] | None = None) -> int:
         unsigned_pre_release_test=args.unsigned_pre_release_test,
         installer_tool_notice=args.installer_tool_notice,
     )
+    source_provenance = _write_source_provenance(package, captured_source_provenance)
     manifest = write_manifest(
         package,
         public_key_fingerprint,
+        source_provenance=source_provenance,
         release_eligible=args.release,
         unsigned_pre_release_test=args.unsigned_pre_release_test,
         authenticode_signing=authenticode_signing,
@@ -1939,6 +2492,7 @@ def main(argv: list[str] | None = None) -> int:
         "releaseEligible": args.release,
         "distributionChannel": manifest["distributionChannel"],
         "sourceRevision": manifest["sourceRevision"],
+        "sourceProvenance": manifest["sourceProvenance"],
         "unsignedPreReleaseException": (
             UNSIGNED_PRE_RELEASE_EXCEPTION if args.unsigned_pre_release_test else None
         ),

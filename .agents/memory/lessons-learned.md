@@ -1045,3 +1045,46 @@ in diagnostics.
 **Root cause:** The escalation guidance was mistaken for evidence that the existing host Git route was unavailable; the tool schema intentionally exposed no such parameter.
 **Fix / workaround:** Use the available standard host Git route with the parameters its schema supports, and report the actual command result. Never invent an unsupported elevation parameter or claim administrator privileges.
 **Watch out for:** When Git-related guidance asks for an elevation mechanism absent from the tool schema, the missing field alone is not a Git failure or proof that administrator rights are required.
+
+## [2026-10-01] One-file GUI launcher parent has no window
+
+**Symptom:** A normal PyInstaller one-file GUI launch can return a `Projecta.exe` PID with no main-window handle even while the application window exists.
+**Root cause:** The one-file bootloader parent starts the application in a child process; the child owns the Tk window, not necessarily the PID returned by process creation.
+**Fix / workaround:** Match processes by exact executable path and parent PID, then inspect each process's window handle/title and UI Automation state. Do not use the bootstrap parent's missing handle alone as proof that the application window failed to open.
+**Watch out for:** A child window handle or UI Automation element still does not prove the owner can see or interact with it; inspect the owner desktop/session and keep machine-specific evidence distinct.
+
+## [2026-10-02] PyInstaller .spec invocations reject makespec-only flags
+
+**Symptom:** PyInstaller rejected the explicit spec build and reported
+`--specpath` is not allowed when a `.spec` file is given.
+**Root cause:** The PyInstaller command supplied `--specpath`, which applies
+only when generating a spec from source; this build already passes an explicit
+`.spec` path.
+**Fix / workaround:** Remove `--specpath` and its directory argument from the
+`.spec` invocation; retain the independent `--workpath` build directory.
+**Watch out for:** CLI flags accepted for PyInstaller's source/makespec mode
+are not necessarily valid when the command consumes an existing `.spec`.
+
+## [2026-10-02] Frozen runtime inputs remain subject to publisher checks
+
+**Symptom:** The package build rejected `VCRUNTIME140.dll` even though the
+runtime DLLs were removed from the frozen archives.
+**Root cause:** The builder audits the DLLs PyInstaller analyzed as build
+inputs as well as the staged runtime files; uv-managed CPython 3.12.12 supplied
+Microsoft-labeled but unsigned 14.44.35211.0 runtime files.
+**Fix / workaround:** Build in an isolated Python 3.13.3 environment whose
+frozen runtime sources are Microsoft-signed 14.42.34438.0 binaries, matching
+the package-derived minimum; keep the signature gate unchanged.
+**Watch out for:** Removing a DLL from the final archive does not remove its
+provenance from the frozen executable build; do not weaken Authenticode checks.
+
+## [2026-10-02] Staged launcher names must match package consumers
+
+**Symptom:** NSIS package validation failed with `PACKAGE_RUNTIME_INCOMPLETE`
+after the package and archive had otherwise built successfully.
+**Root cause:** Staging emitted `projecta_start.ps1`, while runtime validation,
+the installer shortcut, and NSIS start paths require `ProjectaStart.ps1`.
+**Fix / workaround:** Stage the source script under the consumer-expected
+`ProjectaStart.ps1` name and require that exact path in `verify_assembled`.
+**Watch out for:** A source file's presence is not enough; validate its staged
+name against every runtime and installer callsite.
