@@ -44,7 +44,7 @@ Status legend: [ ] pending / [~] in progress / [x] done.
     lifecycle/backup/recovery, and clean no-Docker proof as S14-08
     implementation/verification requirements. This approves installation
     architecture only, not production or any release/`1.0.0` decision.
-- [~] **S14-08 — Deliver the approved Docker-free user path (requirement §4):**
+- [x] **S14-08 — Deliver the approved Docker-free user path (requirement §4):**
   Package the owner-approved unsigned 0.7.0 Windows 11 x64 per-user native
   install/start/stop path, with truthful readiness/failure feedback and
   verified source/payload integrity. Accept the frozen-runtime journey proof
@@ -84,9 +84,11 @@ Status legend: [ ] pending / [~] in progress / [x] done.
 
 ## Current Evidence Gate
 
-- S14-01–07 passed task evidence review. S14-08 remains `[~]` pending a fresh
-  evidence gate on its owner-approved unsigned closure scope and the exact
-  reviewed-snapshot project checkpoint. Historical reviews E1/E2 failed under
+- S14-01–08 passed task evidence review. S14-08 closed on the owner-approved
+  unsigned scope after review `S14-08-E20261002-A3` / `S14UnsignedClosure03`
+  **PASS** and the exact reviewed-source checkpoint
+  `4716daaa4ff727e163604db5aaf3d93d51828210`.
+  Historical reviews E1/E2 failed under
   the previous full clean/signed scope; they are not new closure verdicts.
   The historical guide-only `UnsignedGuideEvidence` PASS is not a binary gate.
   The owner confirms installation on machine 2 and now states, “Xác nhận 4
@@ -121,10 +123,12 @@ Status legend: [ ] pending / [~] in progress / [x] done.
   (`agent://S14HybridEvidence02`) resolved the earlier candidate-runtime and
   distributable-provenance findings, but full-task and bounded-publication
   verdicts were **FAIL** in that completed review, which predates the owner's
-  four-check acceptance and explicit unsigned task-closure decision. A fresh
-  applicable review and the exact-snapshot checkpoint are required before
-  Main marks S14-08 `[x]`. No source rebuild or repeated owner trial is required
-  merely to reconfirm accepted evidence.
+  four-check acceptance and explicit unsigned task-closure decision.
+  Closure review `S14-08-E20261002-A3` (`agent://S14UnsignedClosure03`) passed
+  the owner-approved unsigned task scope. Main verified source checkpoint
+  `4716daaa4ff727e163604db5aaf3d93d51828210` before marking S14-08 `[x]`.
+  No source rebuild or repeated owner trial was needed to reconfirm accepted
+  evidence. This task PASS is not a bounded-publication verdict.
 - Fresh correction candidate **S14-08-W20261002-A2-R1** has embedded
   `runtime/source-provenance.json` (SHA-256
   `e1dfadbebde7c4eae55b2156576da13a7bb9df804fcbd8546f4f471cc6c99bd3`) with
@@ -248,9 +252,9 @@ This bounded pre-release does not complete Sprint 14 or start S14-09.
   reusing remote-server configuration or provisioning a VM.
 - [x] Commit scoped temporary Sprint 14 changes and push six reviewed source
   checkpoints to GitHub `main`, ending at `aefb457c44d17bfa61a3b045c63b62ad16eb6ad5`.
-- [~] Produce one Windows 11 x64 per-user unsigned 0.7.0 pre-release installer
+- [x] Produce one Windows 11 x64 per-user unsigned 0.7.0 pre-release installer
   with an easy normal launch/stop path, bundled dependencies and verified smoke.
-- [~] Implement the owner-approved hybrid online installer: keep permitted
+- [x] Implement the owner-approved hybrid online installer: keep permitted
   bundled dependencies, omit the disputed app-local Microsoft VC++ binaries
   from distributed artifacts, and obtain a missing VC++ prerequisite directly
   from Microsoft's official source with version and publisher verification.
@@ -258,6 +262,8 @@ This bounded pre-release does not complete Sprint 14 or start S14-09.
   Projecta itself per-user and do not elevate its services. Verify prerequisite
   detection, download failure, user cancellation, installation/restart outcomes,
   and the packaged launch lifecycle before the bounded publication review.
+  Implementation/scoped proof and accepted machine-2 QA are complete for the
+  unsigned task; unreported live vendor execution stays RG14-NATIVE-VC.
 - [x] Provide manual download/install/start/stop instructions for the second
   machine in `unsigned-0.7.0-machine-install.md`; no repo clone or user-installed
   development runtime. The owner confirms installation and all four requested
@@ -274,4 +280,5 @@ This bounded pre-release does not complete Sprint 14 or start S14-09.
   installer payload, and verify online Microsoft download/signature/version/
   integrity and prerequisite-only UAC disclosure. No tag, release, or asset is
   authorized before that review. The exact local candidate and provenance are
-  recorded in `artifacts/sprint-14/task-08.md`; S14-08 remains `[~]`.
+  recorded in `artifacts/sprint-14/task-08.md`; S14-08 is `[x]` on the accepted
+  unsigned scope, while the separate release gates remain open.

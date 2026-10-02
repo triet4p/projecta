@@ -42,9 +42,10 @@ safely. This is not clean-host proof: the exercised host already supplied the
 Visual C++ runtime, and 29 of 30 dynamic-string candidate names were not
 observed (not thereby proven missing).
 
-The owner has accepted all four machine-2 QA checks and explicitly selected
-unsigned S14-08 task closure, subject to fresh evidence review and the project
-checkpoint. Clean-Windows/resource-floor, real missing-runtime vendor UAC,
+The owner accepted all four machine-2 QA checks and explicitly selected
+unsigned S14-08 task closure. Fresh evidence review passed and the reviewed
+source checkpoint was verified before Main marked the task complete.
+Clean-Windows/resource-floor, real missing-runtime vendor UAC,
 and signing remain separate open release gates; no signed, clean-certified,
 production, or `1.0.0` claim follows. See the
 [current Sprint 14 plan](docs/sprint-plans/sprint-14.md).

@@ -132,10 +132,11 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
 ## Active Sprint
 
 - [Sprint 14 — End-to-end Experience and Portable Delivery](sprint-plans/sprint-14.md)
-  — *In progress; S14-01–07 passed evidence review. The owner approved the
+  — *In progress; S14-01–08 passed task evidence review. The owner approved the
   Windows 11 x64 per-user native launcher boundary and a hybrid online installer
-  with official prerequisite downloads and prerequisite UAC. S14-08 remains
-  `[~]` pending fresh unsigned-scope evidence review and its project checkpoint.
+  with official prerequisite downloads and prerequisite UAC. S14-08 closed
+  after unsigned-scope evidence PASS and verified source checkpoint
+  `4716daaa4ff727e163604db5aaf3d93d51828210`.
   The latest R1 local
   unsigned package/archive and NSIS candidate include build-source provenance
   and have scoped integrity/runtime audits. A frozen developer-host smoke under
