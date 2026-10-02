@@ -154,6 +154,15 @@ Xây Projecta theo các vertical slice có thể kiểm chứng, bắt đầu t�
   separate `1.0.0` release approval. S13-08 offline evaluation and production
   materialization remain closed pending separate authority.*
 
+    Continuation target: finish the remaining Sprint 14 tasks and end-of-sprint
+    deep review. S14-09 is active for the owner-approved portable-data contract;
+    evidence PASS and its delegated checkpoint precede export/import implementation.
+    Per the owner instruction, subagents execute future reviewed-snapshot Git commits;
+    Main retains approval and checkpoint/status verification. Clean-install and
+    direct-user gates are unchanged.
+    The [portable project-data contract](sprint-plans/sprint-14/portable-data-contract.md)
+    is owner-approved; S14-09 remains active pending evidence review/checkpoint.
+
 ## Historical / Closed Sprint
 
 - [Sprint 12 — Business Semantic Quality and Evaluation](sprint-plans/sprint-12.md)

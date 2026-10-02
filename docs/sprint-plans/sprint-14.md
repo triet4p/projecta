@@ -8,6 +8,29 @@ Source of requirements: [Sprint 14 requirements and post-sprint release target](
 
 Make existing Projecta capabilities usable as understandable end-to-end journeys, accessible through a reliable user-facing deployment without requiring the user to install/operate Docker, and portable through a safe export/import handoff between installations. Keep the existing semantic, project-isolation, evidence and review boundaries intact.
 
+## Remaining Sprint Execution — Owner Instruction
+
+The owner requested continuation through Sprint 14 completion and delegated
+future Git commits to subagents. Main retains planning, gate decisions,
+snapshot approval, checkpoint verification, and task-status authority; Main
+does not execute Git commits. After each completed evidence PASS, a fresh
+commit-only subagent may commit only the exact approved, wholly task-owned
+snapshot using normal Git porcelain with configured hooks/signing. Commit
+failure or snapshot drift keeps the task `commit_pending`; no next independent
+task starts. Preserve unrelated user changes and never force-add build outputs.
+The owner separately approved ordinary local Git through OMP Bash at current
+user privileges for Sprint 14 inspection/checkpoints: the mandatory global
+shell rules name an escalation parameter this runtime does not expose.
+This exception authorizes no admin/network/push/tag operation, hook/signing
+bypass, global-rule edit or other restricted-tool execution.
+
+S14-09 is active for the portable-data inventory and owner-approved
+`projecta-portable.v1` contract. Fresh evidence PASS and the delegated
+checkpoint remain required before S14-10/11 implementation.
+S14-12 still requires real clean-install/transfer evidence,
+and S14-13 still requires the direct owner's explicit trial verdict; a general
+instruction to finish the sprint does not fabricate those observations.
+
 ## Atomic Tasks
 
 Status legend: [ ] pending / [~] in progress / [x] done.
@@ -54,12 +77,14 @@ Status legend: [ ] pending / [~] in progress / [x] done.
   task-closure scope. Clean-Windows/resource-floor, signing, and unreported
   real missing-VC vendor proof remain separate release gates below, not
   completed acceptance claims.
-- [ ] **S14-09 — Decide the portable-data contract (requirement §5):**
+- [~] **S14-09 — Decide the portable-data contract (requirement §5):**
   Inventory authoritative project, source/evidence, receipt, operational and
   semantic states needed for a usable transfer; define versioned format,
   integrity, ownership, sensitive-data exclusions, compatibility and conflict
   policy. Obtain approval before implementation. Google Drive is manual file
   transport, not a required connector.
+  See the [portable project-data contract](sprint-14/portable-data-contract.md);
+  the owner approved the concrete contract; evidence review/checkpoint remain pending.
 - [ ] **S14-10 — Implement project data export (requirement §5):** Produce a
   bounded package from a consistent project snapshot under the approved
   contract, preserving required evidence/provenance and refusing incomplete

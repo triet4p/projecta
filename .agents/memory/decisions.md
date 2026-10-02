@@ -1077,3 +1077,23 @@ opaque and cannot infer them from display labels.
 **Reason:** The owner confirmed all four checks, requested task closure, and explicitly selected “Đóng theo nghiệm thu unsigned” after being told that those checks did not establish clean-Windows or signing proof.
 
 **Consequences:** This supersedes only the earlier clean/signed prerequisite for closing S14-08. No deferred gate is considered passed; the unsigned 0.7.0 exception, `releaseEligible=false`, and fail-closed signed-update verification remain unchanged. Actual clean-Windows dependency/resource proof, owner Authenticode/Ed25519/timestamp configuration, and real missing-runtime consent/UAC/vendor-install evidence remain required before the corresponding release claim. S14-12/S14-13 criteria are unchanged, and no publication, signed release, production enablement, or `1.0.0` approval is implied.
+
+## [2026-10-02] Approve the complete projecta-portable.v1 logical transfer contract
+
+**Decision:** Approve the complete `projecta-portable.v1` contract in `docs/sprint-plans/sprint-14/portable-data-contract.md` for native one-project logical export/import, preserving semantic/evidence/workflow/receipt identities and history with strict compatibility, no merge/overwrite, staged recovery, explicit plaintext/integrity-only limitations and the specified hard caps.
+
+**Alternatives considered:** Require encryption/authentication and a separately approved key/trust/recipient design before transfer, or withhold approval to revise scope/conflicts/compatibility/limits; raw machine backups and semantic-only transfer do not satisfy the required portable project scope safely.
+
+**Reason:** After reviewing the complete proposal summary, resource ceilings, collision policy and plaintext/authenticity risks, the owner explicitly selected “Duyệt contract đề xuất” and requested continuation through Sprint 14.
+
+**Consequences:** S14-10/S14-11 may implement this contract only after S14-09 evidence PASS and a verified delegated checkpoint. Preserve all five semantic graphs, required evidence, durable drafts/history, terminal connector state and safe recognized cursors; transfer no credentials/keys/sessions/permissions and trigger no model/provider, connector sync, new approval or materialization. A distinct project may be added beside the default; same-ID adoption requires the exact pristine two-triple first-run placeholder and otherwise fails closed. Caps are 2 GiB archive, 4 GiB expanded payload, 2 MiB manifest, 4,096 ZIP entries, 2,048 evidence objects at the existing 1 MiB cap, 512 MiB/1,000,000 semantic triples and 250,000 logical records. These are approved policy, not measured memory/performance guarantees. Hashes do not encrypt data or authenticate the sender; warnings and trusted private manual transport remain mandatory. No ontology change, cross-machine/clean-host proof, signing/publication, Compose migration or `1.0.0` permission follows.
+
+## [2026-10-02] Delegate Sprint 14 checkpoints through ordinary OMP local Git
+
+**Decision:** Delegate future Sprint 14 Git checkpoints to fresh commit-only subagents, with the owner's explicit exception permitting ordinary local Git inspection/commit through OMP `functions.bash` at current user privileges where the unavailable `sandbox_permissions: require_escalated` parameter cannot be supplied.
+
+**Alternatives considered:** Retain the literal escalation-parameter requirement and block checkpoints until a compatible executor exists; Main-executed commits are disallowed by the current owner instruction.
+
+**Reason:** The owner requested subagent-executed commits and selected “Cho phép local Git qua OMP” after being informed that both global shell rules require a parameter absent from this runtime's Bash schema.
+
+**Consequences:** Scope this exception to Sprint 14 local Git metadata and exact reviewed-snapshot commits only. Main retains planning, evidence decisions, snapshot approval, checkpoint verification and `[x]` authority; implementation workers/reviewers still do not commit. Preserve ordinary hooks/signing/identity, real-index ownership, expected base/ref/content/modes and post-commit checks. No admin/UAC escalation, push/tag, ignored build output, unrelated user changes, synthetic index, add-all, stash/reset/checkout/amend, global-rule/config edit or execution of other restricted tools is authorized. A failed or drifted checkpoint remains `commit_pending` and blocks the next independent task.
