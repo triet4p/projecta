@@ -2,28 +2,30 @@
 
 ## Scope and precedence
 
-This workflow is mandatory whenever the primary owner considers delegating
-work to a subagent.
-
-The repository copy and `~/.agents/rules/subagent-workflow.md` are synchronized
-requirements. Read and follow both when they exist. Repository-specific
-constraints remain binding; the global copy supplies shared defaults and must
-not weaken repository requirements. If the copies differ, apply the stricter
-compatible requirement, report the divergence to the primary owner, and do not
-silently choose the weaker interpretation.
+This rule records Projecta-specific delegation constraints and non-OMP guidance.
+For OMP sprint work, `skill://omp-subagent-flows` is the canonical workflow;
+implementation workers also follow `skill://implement-atomic-task`. This file is
+not a synchronized copy of a global workflow: OMP role/model routing,
+concurrency, asynchronous jobs, evidence gates, and exact-snapshot checkpoint
+ownership come from the canonical skill and effective role definitions.
+Outside OMP, follow the coding agent's native lifecycle; never translate OMP
+agent names, tools, lifecycle operations, or artifact URLs into another runtime.
 
 Apply requirements in this order:
 
 1. System, developer, tool, skill, and safety requirements.
 2. Explicit user instructions.
 3. `AGENTS.md`, approved decisions, and applicable repository documentation.
-4. Both copies of this rule, using the stricter compatible interpretation if
-   they differ.
+4. Projecta-specific requirements in this rule; for OMP workflow mechanics, follow
+   the canonical OMP skill and effective role definitions.
 
 The primary owner is the agent responsible for the user-facing task. A
 subagent is an owner-delegated worker, not an independent task owner.
 
 ## When to delegate
+
+Outside OMP, use this project-local delegation heuristic. In OMP, worker
+selection and assignment follow `skill://omp-subagent-flows`.
 
 Use exactly one subagent when delegation materially improves accuracy or
 keeps technical context focused, especially when any of these conditions apply:
@@ -49,23 +51,26 @@ investigation.
 Do not delegate merely to parallelize trivial work, avoid a straightforward
 owner decision, or obtain an unscoped second opinion.
 
-## Active-agent limit and model
+## Non-OMP agent concurrency and model selection
 
-At most one subagent may be active at a time. Do not spawn a replacement until
-the current subagent has completed, has been intentionally stopped, or has
-returned a definitive blocker.
+Outside OMP, at most one subagent may be active at a time. Do not spawn a
+replacement until the current subagent has completed, been intentionally
+stopped, or returned a definitive blocker.
 
-Whenever a subagent is used, use exactly `gpt-5.6-luna` with reasoning effort
-`high`. Do not silently substitute another model or effort level. If this
-configuration is unavailable, report the blocker to the user or primary owner.
+For OMP, agent limits, role/model routing, and attempt freshness are determined
+by `skill://omp-subagent-flows` and effective role definitions; this file sets
+no OMP-wide model or reasoning-effort pin.
 
-Reuse the same subagent for follow-up work, clarification, and post-fix auditing
-unless its context is polluted, stale, or otherwise unusable. Replacement for
-convenience or speculative parallelism is not allowed.
+Outside OMP, reuse the same subagent for follow-up work, clarification, and
+post-fix auditing unless its context is polluted, stale, or otherwise unusable.
+Replacement for convenience or speculative parallelism is not allowed.
 
 A subagent must not spawn descendants or delegate its assigned work further.
 
 ## Delegation contract
+
+Outside OMP, use this delegation contract. OMP assignment, write authority,
+worker evidence, and handoff boundaries follow the canonical workflow.
 
 Before delegation, the primary owner defines the objective, scope, relevant
 files or boundaries, constraints, expected evidence, authorization boundary,
@@ -91,6 +96,9 @@ the evidence it actually obtained.
 
 ## Owner responsibilities
 
+Outside OMP, the following owner-workflow rules apply. In OMP, Main's
+responsibilities are defined by `skill://omp-subagent-flows`.
+
 The primary owner sets the plan and scope, resolves conflicts, synthesizes the
 findings, chooses the final approach, performs or approves final edits, checks
 authorization, coordinates follow-up work, and owns the user-facing result.
@@ -98,6 +106,10 @@ authorization, coordinates follow-up work, and owns the user-facing result.
 Subagent recommendations are advisory. The primary owner independently decides
 whether the result satisfies the user request, applicable rules, validation
 requirements, and authorization boundary.
+
+## Project-wide authorization and confidentiality
+
+These safeguards apply to Projecta work in every agent environment.
 
 Destructive operations, external communications, provider or API calls,
 credential use, deployments, releases, and other externally consequential
@@ -107,7 +119,10 @@ authority.
 Never expose secrets, credentials, tokens, private payloads, or production data
 in delegation prompts, outputs, logs, or reports.
 
-## Follow-up, audit, and completion
+## Non-OMP follow-up, audit, and completion
+
+These lifecycle rules apply outside OMP. For OMP corrections, reviews,
+completion, and checkpoints, follow the canonical workflow and effective roles.
 
 After the subagent reports, the primary owner reviews the evidence, synthesizes
 the result, and performs or approves the final edits. After any owner-applied

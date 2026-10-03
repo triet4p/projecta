@@ -32,11 +32,12 @@ Load the applicable source rather than duplicating it:
 - Markdown: `.agents/rules/markdown.md`
 - Python: `.agents/rules/python.md`
 - Changelog: `.agents/rules/changelog.md`
-- Subagent workflow: read and follow both
-  `.agents/rules/subagent-workflow.md` and
-  `~/.agents/rules/subagent-workflow.md`; both are mandatory synchronized
-  requirements. If they differ, apply the stricter compatible interpretation
-  and report the divergence to the primary owner.
+- OMP sprint workflow: follow the canonical
+  `~/.agents/skills/omp-subagent-flows/SKILL.md`; implementation workers also
+  follow `~/.agents/skills/implement-atomic-task/SKILL.md`. The project rule at
+  `.agents/rules/subagent-workflow.md` is not a synchronized copy of the OMP
+  workflow. Outside OMP, use the agent environment's native lifecycle; do not
+  translate OMP roles, tools, lifecycle operations, or artifact URLs.
 - Ontology evolution: `$projecta-evolve-ontology`
 
 For ontology work, the project skill and human review gate are mandatory.
@@ -57,6 +58,3 @@ Follow `docs/initialization/06-Tech-Stack.md` and `08-Deployment-Choice.md` when
 Derive test scope from the changed layer and its initialization document. Ontology changes must follow the validation and review packet required by `$projecta-evolve-ontology`.
 
 PRs should state intent, affected boundaries, validation evidence, and unresolved risks. Reference the applicable rules instead of restating them. Never commit secrets, credentials, sensitive payloads, or production data.
-
-## Graphify
-You should use graphify to understand codebase more effiency, instead of scan all codebase. See `$graphify` skills
