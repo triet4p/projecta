@@ -1443,6 +1443,7 @@ class RuntimeManager:
                 "PROJECTA_API_EXPERIENCE_ACTOR_ID": self.workspace.actor_id,
                 "PROJECTA_API_EXPERIENCE_PROJECT_CATALOG": self.workspace.project_id,
                 "PROJECTA_API_WEB_ASSETS_DIRECTORY": str(self.paths.project / "web"),
+                "PROJECTA_API_PORTABLE_EXPORT_LOCK_HELD": "true",
             }
         )
         return environment

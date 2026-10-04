@@ -1097,3 +1097,13 @@ opaque and cannot infer them from display labels.
 **Reason:** The owner requested subagent-executed commits and selected “Cho phép local Git qua OMP” after being informed that both global shell rules require a parameter absent from this runtime's Bash schema.
 
 **Consequences:** Scope this exception to Sprint 14 local Git metadata and exact reviewed-snapshot commits only. Main retains planning, evidence decisions, snapshot approval, checkpoint verification and `[x]` authority; implementation workers/reviewers still do not commit. Preserve ordinary hooks/signing/identity, real-index ownership, expected base/ref/content/modes and post-commit checks. No admin/UAC escalation, push/tag, ignored build output, unrelated user changes, synthetic index, add-all, stash/reset/checkout/amend, global-rule/config edit or execution of other restricted tools is authorized. A failed or drifted checkpoint remains `commit_pending` and blocks the next independent task.
+
+## [2026-10-03] Require the canonical source revision in projecta-portable.v1
+
+**Decision:** Add a required, closed-schema `sourceRevision` manifest member carrying the selected project's exact server-returned Semantic Core `freshnessRevision` and require an equal reread on every complete export collection pass.
+
+**Alternatives considered:** Leave the envelope unchanged and omit the actual source revision, treat payload hashes as if they were the source revision, or add an optional field/legacy fallback.
+
+**Reason:** The approved §7.1 export point requires the source catalog/project revision in the manifest, while the original §4.2 closed envelope had no slot for it. The owner explicitly chose “Thêm trường revision nguồn thật”; content digests are not source-side revision metadata, and the old proposal/sample archives have not shipped as supported v1 data.
+
+**Consequences:** Complete the still-unreleased `projecta-portable.v1` envelope in place with a required top-level field sourced unchanged from the canonical project overview; reject missing, malformed, identity-mismatched, or drifted revision values. Older pre-amendment drafts are unsupported, with no shim. Existing payload digests continue to detect content changes. This decision authorizes no import implementation, deployment, release, or cross-machine compatibility claim.

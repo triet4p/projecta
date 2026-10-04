@@ -446,8 +446,15 @@ def _request_digest_from_event(project_id: str, event: CorrectionBurdenEventReco
 
 
 def _event_digest(request_digest: str, occurred_at: datetime) -> str:
+    if occurred_at.tzinfo is None or occurred_at.utcoffset() is None:
+        raise ValueError("correction event timestamp must be timezone-aware")
     return _digest_bytes(
-        _stable_json({"requestDigest": request_digest, "occurredAt": occurred_at.isoformat()}).encode("utf-8")
+        _stable_json(
+            {
+                "requestDigest": request_digest,
+                "occurredAt": occurred_at.astimezone(UTC).isoformat(),
+            }
+        ).encode("utf-8")
     )
 
 

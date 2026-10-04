@@ -488,6 +488,63 @@ label,
   background: var(--dws-success-soft);
   color: var(--dws-success);
 }
+
+dialog.export-dialog {
+  background: var(--dws-surface-raised);
+  border: 1px solid var(--dws-border-strong);
+  border-radius: var(--dws-radius-panel);
+  color: var(--dws-text);
+  max-height: calc(100vh - 32px);
+  max-width: min(540px, calc(100vw - 32px));
+  padding: 24px;
+  width: min(540px, calc(100vw - 32px));
+}
+dialog.export-dialog::backdrop {
+  background: var(--dws-overlay);
+}
+.export-dialog h2 {
+  margin: 0 0 16px;
+}
+.export-warning {
+  background: var(--dws-warning-soft);
+  border-inline-start: 3px solid var(--dws-warning);
+  margin: 0 0 16px;
+  padding: 12px;
+}
+.export-warning p {
+  margin: 0;
+}
+.export-warning p + p {
+  margin-top: 8px;
+}
+.export-authorization {
+  align-items: flex-start;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: auto minmax(0, 1fr);
+  line-height: 20px;
+}
+.export-authorization input {
+  margin: 2px 0 0;
+  min-height: 16px;
+  width: 16px;
+}
+.export-dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+.export-disabled {
+  color: var(--dws-text-muted);
+  margin: 0;
+  max-width: 280px;
+}
+.export-result {
+  overflow-wrap: anywhere;
+}
+
 .result-stack {
   display: grid;
   gap: 8px;

@@ -44,6 +44,9 @@ class Settings(BaseSettings):
         default="", max_length=128, validation_alias="PROJECTA_LOCAL_SUGGESTION_MODEL"
     )
     runtime_mode: Literal["headless", "experience", "production"] = "headless"
+    portable_export_lock_held: bool = Field(
+        default=False, validation_alias="PROJECTA_API_PORTABLE_EXPORT_LOCK_HELD"
+    )
     operational_database_path: str = Field(
         default=":memory:", validation_alias="PROJECTA_API_OPERATIONAL_DATABASE_PATH"
     )

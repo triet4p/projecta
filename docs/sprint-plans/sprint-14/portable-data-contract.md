@@ -1,6 +1,6 @@
 # S14-09 — Portable project-data contract
 
-**Status:** `OWNER APPROVED — EVIDENCE REVIEW AND CHECKPOINT PENDING`  
+**Status:** `OWNER APPROVED — EVIDENCE PASS — CHECKPOINT VERIFIED (c97b118)`  
 **Contract:** `projecta-portable.v1`  
 **Scope:** one logical Projecta project transferred as a user-managed file between supported native Windows installations.  
 **The owner approved this contract, not an implemented exporter/importer or cross-machine result.**
@@ -10,10 +10,21 @@
 The owner explicitly selected **“Duyệt contract đề xuất”** for the complete
 recommendation in §12, including full logical scope, strict compatibility and
 resource caps, preserved identities, no merge/overwrite, staged recovery and
-plaintext/integrity-only limitations. Evidence review and the delegated
-checkpoint remain pending before S14-10/S14-11 implementation.
+plaintext/integrity-only limitations. Evidence review passed and delegated
+checkpoint `c97b118` passed verification. The owner subsequently instructed
+not to start S14-10; exporter/importer implementation has not begun.
 
 No permission, membership, session, provider credential, secret, model call, review decision, graph materialization, Google Drive integration, or synchronization is transferred or created by importing an archive.
+
+**S14-10 manifest amendment (2026-10-03):** After the original S14-09
+evidence PASS and checkpoint `c97b118`, the owner explicitly authorized a
+required `sourceRevision` manifest field for the actual server-owned source
+catalog/project revision. This is a bounded completion of the still-unreleased
+`projecta-portable.v1` schema; it does not reopen the S14-09 decision or change
+any other transfer scope, limit, identity, security, or recovery rule. Earlier
+pre-amendment draft archives without this field are unsupported. No importer or
+cross-machine compatibility is implemented or implied by this amendment.
+
 
 ## 1. Scope and normative terms
 
@@ -89,7 +100,11 @@ The archive contains logical records, not `postgres/`, `fuseki/`, `operational.d
 
 ### 4.2 Required manifest envelope
 
-The manifest is strict UTF-8 JSON. The exact top-level members are `portableContract`, `exportId`, `exportedAt`, `project`, `producer`, `evidenceReferences`, `counts`, and `entries`; every nested object is also closed to unknown fields. For a given producer build, the exporter uses UTF-8 without BOM, no duplicate keys, deterministic property/member ordering, UTC RFC 3339 timestamps, integer byte counts, and lowercase 64-hex SHA-256 digests. `exportId` is a new UUIDv4 per export, not a project identity or permission. The following is a **JSON shape fixture only**; it is not a valid complete archive inventory:
+The manifest is strict UTF-8 JSON. The exact top-level members are `portableContract`, `exportId`, `exportedAt`, `project`, `sourceRevision`, `producer`, `evidenceReferences`, `counts`, and `entries`; every nested object is also closed to unknown fields. `sourceRevision` is required and MUST be the exact canonical per-project revision returned by the server-owned Semantic Core project overview, not a worker/browser value or a locally derived digest. The exporter reads it before collection and again in each complete collection pass; all values MUST equal before the archive is finalized. Per-payload SHA-256 values remain the content-integrity and recheck evidence.
+
+The current native Semantic Core exposes this value as the selected project's `freshnessRevision` (`project.freshnessRevision` in its overview response). It is serialized unchanged. The current value has the exact form `catalog-r-` followed by 40 lowercase hexadecimal characters. This revision identifies the canonical source project/catalog scope; it is not a substitute for the payload digests that detect project-content changes.
+
+For the still-unreleased v1 implementation, this is a required closed-schema field. Archives created from earlier proposal samples or drafts without `sourceRevision` are not compatible and MUST fail closed; no optional field, alias, or legacy compatibility path is permitted. The exporter uses UTF-8 without BOM, no duplicate keys, deterministic property/member ordering, UTC RFC 3339 timestamps, integer byte counts, and lowercase 64-hex SHA-256 digests. `exportId` is a new UUIDv4 per export, not a project identity or permission. The following is a **JSON shape fixture only**; it is not a valid complete archive inventory:
 
 ```json
 {
@@ -101,6 +116,7 @@ The manifest is strict UTF-8 JSON. The exact top-level members are `portableCont
     "projectName": "Checkout modernization",
     "tenantId": null
   },
+  "sourceRevision": "catalog-r-0000000000000000000000000000000000000000",
   "producer": {
     "projectaVersion": "0.7.0",
     "apiVersion": "0.7.0",
@@ -153,6 +169,7 @@ The manifest is strict UTF-8 JSON. The exact top-level members are `portableCont
 Normative shape and cross-field validation:
 
 - `project` has exactly `projectId`, `projectName`, and `tenantId`. `projectId` matches `[a-z0-9][a-z0-9-]{0,62}`; `projectName` is non-empty, trimmed, control-character-free, and at most 128 characters (a larger source name is an explicit `UNSUPPORTED_STATE`, never truncated). Only `tenantId: null` is supported by the native profile.
+- `sourceRevision` is exactly the selected project's server-owned Semantic Core `freshnessRevision` from its project overview and matches `^catalog-r-[0-9a-f]{40}$` in the current native compatibility tuple. It is not recomputed from a browser value, project handle, archive contents, or a locally synthesized revision. The exporter reads the canonical source value before collection and on each full collection pass; absence, malformed identity/revision, or any mismatch fails the entire export with no final archive. The independent per-payload digest/recheck vector remains required to detect content changes.
 - `producer` has exactly the version fields shown above. `ontologyAssets` is the exact deterministic inventory of every packaged ontology module, SHACL shape and inference-rule asset; each entry has `assetType` (`ontology`, `shape`, or `inference-rule`), package-relative `path`, nullable declared `versionIri`, and the asset's SHA-256. A version IRI is never invented for an asset that has none.
 - `evidenceReferences` is sorted by `evidenceReference`; each closed object contains exactly `evidenceReference`, `sha256`, `sizeBytes`, `contentType`, `createdAt`, `retentionClass`, `retainUntil`, `sourceReference`, and `contractVersion`. The manifest `projectId` is the evidence metadata's `project_scope`; a conflicting scope is rejected. Content types are only `application/json` or `text/plain`, an object is at most 1 MiB, and the v1 native retention class is `connector-default`; unknown classes fail rather than disappear. `contractVersion` is `connector-evidence.v1`. Nullable `retainUntil` and all original reference/timestamp/digest values are preserved. A source reference is historical metadata only and is never fetched during import.
 - `counts` has exactly the six non-negative integer fields shown. `namedGraphs` is exactly 5; `evidenceObjects` equals the evidence-reference and evidence-member counts; `workflowRecords`, `connectorRecords`, `reviewReceipts`, and `correctionBurdenEvents` equal the decoded allowlisted records in their respective members.
@@ -167,6 +184,13 @@ Normative shape and cross-field validation:
 The sample's one-byte member and zero digests are deliberately synthetic. It demonstrates JSON syntax and typed envelope fields only; it does not have the mandatory full member list, hashes of payloads, complete ontology inventory, or valid payload bytes and MUST NOT be treated as a package fixture. The archive tables and cross-field rules above, rather than this abbreviated specimen, define a valid package.
 
 The manifest's producer inventory records the exact supported application/runtime/schema/connector/ontology tuple. A destination compares it against an explicit implementation compatibility matrix and exact asset fingerprints before staging. Any unavailable fingerprint or unknown field/version is `UNSUPPORTED_VERSION`; there is no inferred compatibility or silent migration.
+
+This owner-authorized required `sourceRevision` field completes the closed
+manifest for the still-unreleased `projecta-portable.v1` implementation.
+Pre-amendment proposal/sample manifests without the field are unsupported;
+future consumers MUST reject them rather than infer a revision or use an
+optional-field compatibility path.
+
 
 ### 4.3 Hard resource bounds proposed for owner approval
 
@@ -227,7 +251,7 @@ PostgreSQL, SQLite, Fuseki/TDB2 and evidence are separate state authorities; no 
 
 1. Require explicit project selection and owner confirmation; acquire the one native launcher instance lock. Pause new project writes, connector dispatch, evidence retention/purge, local suggestions and any other project mutation through a server-owned maintenance/write fence. Drain existing operations to terminal outcomes. If any connector run/attempt or suggestion attempt is active, return a safe `EXPORT_BUSY` result; do not silently cancel or resume it.
 2. Keep the write fence held for the entire collection and digest pass. Read PostgreSQL and SQLite under consistent read-only transactions and enumerate only selected-project records. Read the five named graphs under a Semantic Core/TDB2 read transaction/typed export boundary. Enumerate immutable evidence metadata/objects for the same project, verify referenced bytes and SHA-256, and include complete stable objects only. Unknown or incomplete records fail the whole export.
-3. Capture the source catalog/project revision, supported migration heads, graph role inventory, object refs and per-payload digest in the manifest. Recheck the frozen revision vector before finalizing. Any write attempt, revision mismatch, unavailable store, missing evidence or capacity overflow aborts and leaves the source unchanged.
+3. Capture the exact source project's canonical `freshnessRevision` returned by the server-owned Semantic Core project overview and place that unchanged value in the required manifest `sourceRevision` field. Re-read it during each complete collection pass under the same write fence and require both reads to equal the starting value. Capture the supported migration heads, five-graph role inventory, object references, and per-payload digests as well; recheck the full frozen revision vector before finalizing. Missing, invalid, or changed revision metadata, any write attempt, revision-vector mismatch, unavailable store, missing evidence, or capacity overflow aborts the whole export and leaves source data unchanged.
 4. Write to a same-volume restricted temporary `.partial` archive, fsync/close, reopen and validate every member, ZIP CRC and SHA-256, then atomically rename to the final `.projecta` path. An interruption leaves no apparently complete final file. The source data remains unchanged.
 
 The native launcher already owns process lifecycle/locking; Fuseki is configured for one local TDB2 owner; evidence writes are immutable/content-addressed; local data is grouped under one per-user root. These are feasible seams. There is no current project export API, global write fence, or multi-store portable snapshot protocol. S14-10 must implement and prove them; do not confuse the local `BackupManager`'s stopped-service whole-state snapshot with this logical export.
@@ -272,7 +296,7 @@ These are required future consumer-visible vectors, not checks performed by this
 | Authorization/cross-project/cross-tenant | Unauthorized actor, unsupported tenant, mismatched `projectId`, graph/reference/row from another project, or altered source scope is rejected without disclosing unrelated project existence. |
 | Fresh native target | Keep the first-run workspace and add a distinct imported ID to the destination catalog; if the archive has the same ID, allow adoption only for the exact untouched seed-only placeholder (two known asserted seed triples and no other project state). Show the decision. All other collisions fail without merge or overwrite. |
 | Existing destination, pending data and exact replay | Non-colliding import does not change any existing project's graphs, drafts, evidence, connectors, receipts, credentials, selections or pending state. Controlled failure/cancel/unauthorized import preserves the full pre-import state. Exact archive replay is a no-op; changed bytes for an already-used project ID conflict. |
-| Source mutation/concurrency | Start a competing write during export; exporter maintains its no-writer epoch or aborts on revision drift and never emits a mixed point. Concurrent destination writes/imports cannot alter the target while staged apply is committed; stale catalog/selection results fail explicitly. |
+| Source mutation/concurrency | Start a competing write during export; the exporter maintains its no-writer epoch or aborts on revision drift and never emits a mixed point. The required manifest `sourceRevision` is the exact server-returned project `freshnessRevision` observed before collection and on both full collection passes; any mismatch aborts without a final archive. Per-payload hashes/recheck still detect content changes. Concurrent destination writes/imports cannot alter the target while staged apply is committed; stale catalog/selection results fail explicitly. |
 | Restart/rollback fault injection | Interrupt after evidence staging, SQLite preparation, PostgreSQL receipt staging, semantic graph preparation, directory/root move, catalog update and commit marker. On restart prove exact old or exact complete new state, all existing data intact, no mixed selectable project, and no broken append-only receipt chain. |
 | Connector continuity and rebind | Verify only recognized Teams/GitHub cursors survive exactly; imported installations are disabled and do not execute. Without target credentials no token/session is present and a connector cannot run. Unsupported cursor reports explicit full-resync-required status, never silently skips or auto-replays. |
 | Confidentiality/exclusions | Inspect only a synthetic archive with test values and prove no source credential, ciphertext, secret reference, master key, DPAPI, session, host config or signing key is present. Verify the UI warns the user that source content is plaintext and may be sensitive. |
@@ -314,7 +338,7 @@ The following are not established and must remain open until implemented/tested 
 
 **Approval question:** “Do you approve `projecta-portable.v1` with the full logical project scope, exact compatibility and hard limits in §§2–4, preserved identities/receipts and no materialization in §5, first-run/collision and recovery behavior in §§6–7, and the explicit plaintext/integrity-only limitations in §8, so S14-10 and S14-11 may implement exactly this contract? If not, which listed material choice changes?”
 
-**Current decision:** owner approved the complete recommendation by selecting “Duyệt contract đề xuất”. No ontology change or runtime PASS is implied. The approval is recorded append-only in `.agents/memory/decisions.md`; S14-09 evidence review and delegated checkpoint remain pending.
+**Current decision:** owner approved the complete recommendation by selecting “Duyệt contract đề xuất”. No ontology change or runtime PASS is implied. The approval is recorded append-only in `.agents/memory/decisions.md`; S14-09 evidence review passed and delegated checkpoint `c97b118` passed verification. Sprint continuation is paused by the owner's subsequent instruction not to start S14-10.
 
 ## Source map
 

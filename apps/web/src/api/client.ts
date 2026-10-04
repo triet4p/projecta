@@ -71,6 +71,13 @@ export class ApiError extends Error {
   }
 }
 
+export interface ProjectArchiveDownload {
+  blob: Blob;
+  filename: string;
+  sha256: string;
+  sizeBytes: number;
+}
+
 export interface AuthSession {
   requestId: string;
   authenticated: boolean;
@@ -225,6 +232,63 @@ export class ProjectaApiClient {
       `/v1/projects/${encodeURIComponent(handle)}/overview`,
       { method: "GET" },
     );
+  }
+
+  async exportProject(handle: string): Promise<ProjectArchiveDownload> {
+    const path = `/v1/projects/${encodeURIComponent(handle)}/exports`;
+    const { headers, requestId } = makeRequestHeaders("POST", "application/zip");
+    headers.set("Content-Type", "application/json");
+    const response = await fetch(`${this.baseUrl}${path}`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ confirmed: true }),
+      credentials: "same-origin",
+    });
+    const responseRequestId = response.headers.get("X-Request-Id");
+    if (!responseRequestId) {
+      throw contractError(requestId, "The API response did not include a request ID.");
+    }
+    const contentType = response.headers.get("content-type") ?? "";
+    if (!response.ok) {
+      if (
+        !contentType.includes("application/json") &&
+        !contentType.includes("application/problem+json")
+      ) {
+        throw contractError(responseRequestId, "The API error response content type is invalid.");
+      }
+      let body: unknown;
+      try {
+        body = await response.json();
+      } catch {
+        throw contractError(responseRequestId, "The API error response was not valid JSON.");
+      }
+      throw new ApiError(normalizeProblem(body, response.status, responseRequestId));
+    }
+    if (!contentType.toLowerCase().startsWith("application/zip")) {
+      throw contractError(responseRequestId, "The export response content type is invalid.");
+    }
+    const filenameMatch =
+      /^attachment;\s*filename="([a-z0-9][a-z0-9-]{0,62}-export-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\.projecta)"$/.exec(
+        response.headers.get("Content-Disposition") ?? "",
+      );
+    const filename = filenameMatch?.[1];
+    const sha256 = response.headers.get("X-Projecta-Export-SHA256") ?? "";
+    const sizeHeader = response.headers.get("X-Projecta-Export-Size-Bytes") ?? "";
+    const sizeBytes = Number(sizeHeader);
+    if (
+      !filename ||
+      !/^[0-9a-f]{64}$/.test(sha256) ||
+      !/^(0|[1-9][0-9]*)$/.test(sizeHeader) ||
+      !Number.isSafeInteger(sizeBytes) ||
+      sizeBytes < 1
+    ) {
+      throw contractError(responseRequestId, "The export response metadata is invalid.");
+    }
+    const blob = await response.blob();
+    if (blob.size !== sizeBytes) {
+      throw contractError(responseRequestId, "The export size did not match its response metadata.");
+    }
+    return { blob, filename, sha256, sizeBytes };
   }
 
   async getProjectGraph(
@@ -705,23 +769,14 @@ export class ProjectaApiClient {
   }
 
   private async request<T>(path: string, options: RequestOptions): Promise<T> {
-    const requestId = crypto.randomUUID();
-    const operationId = crypto.randomUUID();
-    const headers = new Headers(options.headers);
-    headers.set("Accept", "application/json");
-    headers.set("X-Request-Id", requestId);
-    headers.set("X-Operation-Id", operationId);
+    const { headers, requestId } = makeRequestHeaders(
+      options.method,
+      "application/json",
+      options.headers,
+    );
     if (options.body !== undefined) headers.set("Content-Type", "application/json");
     if (options.idempotencyKey !== undefined)
       headers.set("Idempotency-Key", options.idempotencyKey);
-    if (options.method !== "GET" && typeof document !== "undefined") {
-      const csrf = document.cookie
-        .split(";")
-        .map((item) => item.trim())
-        .find((item) => item.startsWith("projecta_csrf="))
-        ?.slice("projecta_csrf=".length);
-      if (csrf) headers.set("X-CSRF-Token", decodeURIComponent(csrf));
-    }
     const response = await fetch(`${this.baseUrl}${path}`, {
       method: options.method,
       headers,
@@ -760,6 +815,27 @@ interface RequestOptions {
   headers?: HeadersInit;
   idempotencyKey?: string;
   signal?: AbortSignal;
+}
+
+function makeRequestHeaders(
+  method: RequestOptions["method"],
+  accept: string,
+  provided?: HeadersInit,
+): { headers: Headers; requestId: string } {
+  const requestId = crypto.randomUUID();
+  const headers = new Headers(provided);
+  headers.set("Accept", accept);
+  headers.set("X-Request-Id", requestId);
+  headers.set("X-Operation-Id", crypto.randomUUID());
+  if (method !== "GET" && typeof document !== "undefined") {
+    const csrf = document.cookie
+      .split(";")
+      .map((item) => item.trim())
+      .find((item) => item.startsWith("projecta_csrf="))
+      ?.slice("projecta_csrf=".length);
+    if (csrf) headers.set("X-CSRF-Token", decodeURIComponent(csrf));
+  }
+  return { headers, requestId };
 }
 
 function normalizeProblem(body: unknown, status: number, requestId: string): Problem {

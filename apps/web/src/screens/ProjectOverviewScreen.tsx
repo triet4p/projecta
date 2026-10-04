@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactElement } from "react";
+import { useEffect, useRef, useState, type ReactElement } from "react";
 
 import type { ProjectaApiClient } from "../api/client";
 import type { ProjectCatalogItem, ProjectOverviewResponse } from "../api/generated";
@@ -41,10 +41,23 @@ export function ProjectOverviewScreen({
   const [overview, setOverview] = useState<ProjectOverviewResponse | null>(null);
   const [error, setError] = useState<unknown>(null);
 
+  const [authorizationConfirmed, setAuthorizationConfirmed] = useState(false);
+  const [exportError, setExportError] = useState<unknown>(null);
+  const [exporting, setExporting] = useState(false);
+  const [exportResult, setExportResult] = useState<{
+    filename: string;
+    sizeBytes: number;
+    sha256: string;
+  } | null>(null);
+  const exportDialog = useRef<HTMLDialogElement>(null);
+
   useEffect(() => {
     let active = true;
     setOverview(null);
     setError(null);
+    setAuthorizationConfirmed(false);
+    setExportError(null);
+    setExportResult(null);
     void api
       .getProjectOverview(project.handle)
       .then((result) => {
@@ -58,6 +71,34 @@ export function ProjectOverviewScreen({
     };
   }, [api, project.handle]);
 
+  async function handleExport() {
+    if (!overview?.portableExportEnabled || !authorizationConfirmed || exporting) return;
+    setExporting(true);
+    setExportError(null);
+    setExportResult(null);
+    try {
+      const artifact = await api.exportProject(project.handle);
+      const objectUrl = URL.createObjectURL(artifact.blob);
+      const anchor = document.createElement("a");
+      anchor.href = objectUrl;
+      anchor.download = artifact.filename;
+      anchor.hidden = true;
+      document.body.append(anchor);
+      anchor.click();
+      anchor.remove();
+      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+      setExportResult({
+        filename: artifact.filename,
+        sizeBytes: artifact.sizeBytes,
+        sha256: artifact.sha256,
+      });
+      exportDialog.current?.close();
+    } catch (nextError: unknown) {
+      setExportError(nextError);
+    } finally {
+      setExporting(false);
+    }
+  }
   if (error !== null)
     return (
       <>
@@ -78,7 +119,86 @@ export function ProjectOverviewScreen({
           <h2>{overview.name}</h2>
           {overview.summary && <p className="muted">{overview.summary}</p>}
         </div>
+        <div className="workspace-header-actions">
+          {overview.portableExportEnabled ? (
+            <button
+              onClick={() => {
+                setAuthorizationConfirmed(false);
+                setExportError(null);
+                exportDialog.current?.showModal();
+              }}
+              type="button"
+            >
+              Export project
+            </button>
+          ) : (
+            <p className="export-disabled" role="status">
+              Portable export is available only from the supported native launcher.
+            </p>
+          )}
+        </div>
       </header>
+
+      <dialog
+        aria-labelledby="portable-export-title"
+        className="export-dialog"
+        onClose={() => setAuthorizationConfirmed(false)}
+        ref={exportDialog}
+      >
+        <h2 id="portable-export-title">Export this project?</h2>
+        <div className="export-warning">
+          <p>
+            The archive contains sensitive project data, including stored graph, workflow,
+            connector, receipt, and evidence content. It is plaintext: it is not encrypted, and
+            its integrity hashes are not a signature.
+          </p>
+          <p>
+            You are responsible for choosing a private destination and transport. Export only
+            when you are authorized to move all included project data.
+          </p>
+        </div>
+        {exportError !== null && (
+          <p className="state-message error" role="alert">
+            {exportError instanceof Error ? exportError.message : "The project export failed."}
+          </p>
+        )}
+        <label className="export-authorization">
+          <input
+            checked={authorizationConfirmed}
+            disabled={exporting}
+            onChange={(event) => setAuthorizationConfirmed(event.currentTarget.checked)}
+            type="checkbox"
+          />
+          <span>
+            I am authorized to export and privately transport all sensitive project data in this
+            archive.
+          </span>
+        </label>
+        <div className="export-dialog-actions">
+          <button
+            className="secondary"
+            disabled={exporting}
+            onClick={() => exportDialog.current?.close()}
+            type="button"
+          >
+            Cancel
+          </button>
+          <button
+            disabled={!authorizationConfirmed || exporting}
+            onClick={() => void handleExport()}
+            type="button"
+          >
+            {exporting ? "Preparing export…" : "Download archive"}
+          </button>
+        </div>
+      </dialog>
+      {exportResult && (
+        <div className="state-message success export-result" role="status">
+          <strong>Export downloaded:</strong> {exportResult.filename} · {exportResult.sizeBytes}{" "}
+          bytes · SHA-256 {exportResult.sha256}. Integrity only; not a signature.
+        </div>
+      )}
+
       <Card>
         <div className="metric-grid">
           {Object.entries(overview.counts).map(([label, value]) => (

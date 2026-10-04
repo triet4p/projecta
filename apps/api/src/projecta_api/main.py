@@ -2,6 +2,17 @@
 
 from pathlib import Path
 
+from projecta_api.export_fence import (
+    ExportAlreadyRunning,
+    ExportWriteAttempted,
+    ProjectWriteFence,
+    ProjectWriteFenceMiddleware,
+)
+from projecta_api.portable_export import (
+    PortableExportFailure,
+    ProjectPortableExportService,
+)
+
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import FileResponse, JSONResponse, Response
@@ -254,7 +265,41 @@ def create_app(
     app.state.security_audit_sink = security_audit
     app.state.structured_note_draft_store = structured_note_draft_store
     app.state.structured_candidate_edit_store = structured_candidate_edit_store
-    app.state.connector_runtime = composed_connector_runtime
+    fence = ProjectWriteFence()
+    app.state.project_write_fence = fence
+    app.add_middleware(ProjectWriteFenceMiddleware, fence=fence)
+
+    postgres_engine = None
+    try:
+        postgres_engine = ConnectorDatabase(actual_settings).engine
+    except (ValueError, OSError):
+        pass
+
+    evidence_store = LocalEvidenceStore(actual_settings.evidence_root)
+    portable_export = ProjectPortableExportService(
+        database,
+        postgres_engine,
+        evidence_store,
+        client,
+        native_runtime_lock_held=actual_settings.portable_export_lock_held,
+    )
+    app.state.portable_export_root = Path(actual_settings.evidence_root).parent / "exports"
+
+    @app.exception_handler(PortableExportFailure)
+    async def portable_export_problem(request: Request, error: PortableExportFailure) -> JSONResponse:
+        details = {
+            "EXPORT_CONFIRMATION_REQUIRED": "Confirmation is required to export a project package.",
+            "EXPORT_UNSUPPORTED_RUNTIME": "Portable export is not supported by this runtime configuration.",
+            "EXPORT_BUSY": "A project export is collecting a consistent snapshot. Retry after it completes.",
+            "EXPORT_TOO_LARGE": "The export package or payload exceeds the allowed resource limit.",
+            "EXPORT_UNSUPPORTED_STATE": "The project state contains unsupported fields or formats.",
+            "EXPORT_INTEGRITY_FAILED": "The project export integrity check failed.",
+            "EXPORT_SOURCE_UNAVAILABLE": "Source data required for portable export is unavailable.",
+            "EXPORT_FAILED": "The portable export operation failed safely.",
+        }
+        detail = details.get(error.code, "The portable export operation failed safely.")
+        return _problem(request, error.status_code, error.code, "Portable export failed", detail)
+
     app.add_middleware(LocalExperienceContextMiddleware)
     app.add_middleware(CsrfMiddleware)
 
@@ -547,6 +592,7 @@ def create_app(
             configuration_audit=configuration_audit,
             connector_runtime=composed_connector_runtime,
             local_suggestions=local_suggestion_service,
+            portable_export=portable_export,
         )
     )
     if actual_settings.web_assets_directory is not None:
@@ -572,7 +618,6 @@ def create_app(
                 if Path(web_path).suffix:
                     return Response(status_code=404)
                 return FileResponse(index_path)
-
     return app
 
 

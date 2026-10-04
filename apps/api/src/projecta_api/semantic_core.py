@@ -1,6 +1,10 @@
 """Finite HTTP client for the Semantic Core; no Fuseki access exists here."""
 
+import asyncio
+import hashlib
+import os
 from collections.abc import Mapping
+from pathlib import Path
 from typing import Protocol, cast
 
 import httpx
@@ -46,6 +50,10 @@ class SemanticCoreClient(Protocol):
         self, context: TrustedRequestContext, key: str, body: object
     ) -> object: ...
 
+
+    async def stream_project_trig(
+        self, context: TrustedRequestContext, destination: Path, max_bytes: int
+    ) -> int: ...
     async def readiness(self) -> bool:
         """Return whether Semantic Core reports its Fuseki dependency ready."""
         ...
@@ -169,6 +177,70 @@ class HttpSemanticCoreClient:
     ) -> object:
         """Persist a normalized M3 batch through the finite Core operation."""
         return await self.request(context, "POST", "/v1/quick-notes/extractions", body, key)
+
+    async def stream_project_trig(
+        self, context: TrustedRequestContext, destination: Path, max_bytes: int
+    ) -> int:
+        """Stream the five typed project graphs without buffering their RDF body."""
+        if max_bytes < 1:
+            raise ValueError("semantic export byte limit must be positive")
+        expected_versions = {
+            "X-Projecta-Java-Runtime": "21.0.12.1+1-LTS",
+            "X-Projecta-Fuseki-Version": "6.2.0",
+            "X-Projecta-Semantic-Core-Javalin": "7.2.2",
+            "X-Projecta-Semantic-Core-Jena": "6.2.0",
+        }
+        try:
+            async with httpx.AsyncClient(
+                base_url=self._base_url,
+                timeout=httpx.Timeout(60.0, connect=10.0),
+                transport=self._transport,
+            ) as client:
+                async with client.stream(
+                    "GET",
+                    f"/v1/projects/{context.project_id}/portable-export",
+                    headers=_headers(context),
+                ) as response:
+                    if response.status_code == 409:
+                        raise SemanticCoreProblem(
+                            409, "EXPORT_BUSY", "Semantic Core export is busy"
+                        )
+                    if response.status_code >= 400:
+                        raise SemanticCoreProblem(
+                            503, "EXPORT_SOURCE_UNAVAILABLE", "Semantic Core export is unavailable"
+                        )
+                    media_type = response.headers.get("content-type", "").split(";", 1)[0].strip()
+                    if media_type != "application/trig" or any(
+                        response.headers.get(name) != value
+                        for name, value in expected_versions.items()
+                    ):
+                        raise SemanticCoreProblem(
+                            503, "EXPORT_UNSUPPORTED_VERSION", "Semantic Core export tuple is unsupported"
+                        )
+                    try:
+                        triple_count = int(response.headers["X-Projecta-Graph-Triple-Count"])
+                    except (KeyError, ValueError) as error:
+                        raise SemanticCoreProblem(
+                            503, "EXPORT_INTEGRITY_FAILED", "Semantic Core export metadata is invalid"
+                        ) from error
+                    observed = 0
+                    with destination.open("xb") as output:
+                        async for chunk in response.aiter_bytes():
+                            observed += len(chunk)
+                            if observed > max_bytes:
+                                raise SemanticCoreProblem(
+                                    413, "EXPORT_TOO_LARGE", "Semantic Core project data exceeds the export limit"
+                                )
+                            await asyncio.to_thread(output.write, chunk)
+                        await asyncio.to_thread(output.flush)
+                        await asyncio.to_thread(os.fsync, output.fileno())
+                    return triple_count
+        except SemanticCoreProblem:
+            raise
+        except (httpx.HTTPError, OSError) as error:
+            raise SemanticCoreProblem(
+                503, "EXPORT_SOURCE_UNAVAILABLE", "Semantic Core export is unavailable"
+            ) from error
 
     async def readiness(self) -> bool:
         """Check the private readiness endpoint without forwarding browser context."""

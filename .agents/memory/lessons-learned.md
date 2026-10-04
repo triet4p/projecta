@@ -1088,3 +1088,75 @@ the installer shortcut, and NSIS start paths require `ProjectaStart.ps1`.
 `ProjectaStart.ps1` name and require that exact path in `verify_assembled`.
 **Watch out for:** A source file's presence is not enough; validate its staged
 name against every runtime and installer callsite.
+
+## [2026-10-04] SPARQL lexical graph order can break canonical export order
+
+**Symptom:** The typed Semantic Core exporter aborted a populated snapshot because rows arrived in lexical graph-IRI order, which placed candidates before sources and violated its required canonical role order.
+**Root cause:** `ORDER BY ?g` sorts graph names, not the contract's explicit `SOURCES, CANDIDATES, ASSERTED, INFERRED, PROVENANCE` role sequence.
+**Fix / workaround:** Bind a numeric index to each graph in the query's `VALUES (?graphIndex ?g)` table and order by that index before the RDF terms; retain the strict row-order check. An embedded-Fuseki regression test populates both lexical-reversed roles.
+**Watch out for:** Any serializer that writes named graphs in a governed order must sort by an explicit role index, not by graph IRI spelling or assumed `VALUES` row order.
+
+## [2026-10-04] Verify stored payloads with their producer's fingerprint format
+
+**Symptom:** A native export returned a sanitized HTTP 500 with a stored structured Note draft; full-store regression coverage also exposed rejection of persisted candidate edits.
+**Root cause:** SQLite rows are `sqlite3.Row`, which supports column indexing but not `Mapping.get`; the exporter also hashed different JSON bytes than the draft store and stripped explicit null fields that the candidate edit store persists.
+**Fix / workaround:** Read SQLite columns by name, verify draft fingerprints against exact stored payload text, and validate candidate edits with the source model's unchanged serialized shape. Exercise actual draft-store and candidate-edit-store rows.
+**Watch out for:** Canonical semantic JSON is not necessarily the byte serialization used by the persistence layer; integrity checks must follow the source producer's precise fingerprint contract.
+
+## [2026-10-04] Committed Note drafts retain their submitted fingerprint
+
+**Symptom:** Native export rejected a persisted committed Note draft with
+`EXPORT_INTEGRITY_FAILED`.
+**Root cause:** Committing changes the serialized `draftStatus` to `committed`
+but preserves the fingerprint used for idempotent replay of the authored
+draft. The exporter incorrectly compared that fingerprint with the current
+post-commit payload bytes.
+**Fix / workaround:** Validate uncommitted rows against their exact payload
+bytes; validate committed rows against the store's canonical fingerprints for
+allowed authored status values; hash the current payload separately for the
+exported `payloadDigest`.
+**Watch out for:** A persisted idempotency fingerprint and a current payload
+digest can diverge after a lifecycle transition. Preserve each value's
+contract instead of rewriting the store fingerprint and breaking replays.
+
+## [2026-10-04] Native runtime launch must avoid the named service wrapper
+
+**Symptom:** A named long-lived Bash service failed before running its
+PowerShell command with `execvpe(/bin/bash): No such file or directory`.
+**Root cause:** On this Windows host the named-service route attempted to use
+an unavailable WSL Bash executable.
+**Fix / workaround:** Launch the isolated `ProjectaLocal.exe start --no-browser`
+process through an unnamed non-PTY asynchronous Bash invocation, and stop it
+through the same isolated `ProjectaLocal.exe stop` command.
+**Watch out for:** Avoid named service/ready-port wrappers on this host unless
+WSL Bash is available; confirm runtime state and fixed-port ownership before
+starting another local runtime.
+
+
+## [2026-10-04] PostgreSQL timestamp offsets change digest bytes
+
+**Symptom:** Native portable export returned `EXPORT_INTEGRITY_FAILED` for a valid persisted review receipt when PostgreSQL used a UTC+07 session timezone.
+**Root cause:** Receipt and correction-event digests were created from UTC ISO timestamps, but PostgreSQL returned equivalent `timestamptz` instants using the session offset; recomputing `.isoformat()` without normalization changed the digest bytes.
+**Fix / workaround:** Canonicalize receipt digests and correction-event digests using UTC before comparison, and verify an equivalent UTC+07 database representation in focused regressions.
+**Watch out for:** `timestamptz` preserves instants but drivers render the connection's current timezone. Hash canonical UTC values, not the driver's local ISO representation.
+
+## [2026-10-04] UTC timestamp trimming must exclude the offset suffix
+
+**Symptom:** A UTC export timestamp with zero fractional seconds was emitted with a malformed `+00:` suffix instead of `Z`.
+**Root cause:** Trimming trailing zeroes from the entire ISO timestamp also removed zeroes from the UTC offset before the suffix replacement.
+**Fix / workaround:** Remove the fixed UTC offset suffix first, trim only the fractional component, and append `Z`; test whole-second and fractional timestamps.
+**Watch out for:** String trimming over an ISO timestamp can mutate timezone fields as well as fractional seconds.
+
+## [2026-10-05] SQLAlchemy Core scalars discard export row fields
+
+**Symptom:** Native portable export returned `EXPORT_INTEGRITY_FAILED` for a persisted review receipt.
+**Root cause:** `Connection.execute(select(Model)).scalars()` on a SQLAlchemy Core `Connection` returns the first selected column value, not the model or a named-column row. Receipt and correction-event validators then lacked their `receipt_id`/`event_id` and other fields.
+**Fix / workaround:** Iterate the complete `Connection.execute(statement)` result for ORM-model selections; keep `.scalars()` only for scalar-column queries. Cover both receipt and correction-event export with Core-style results.
+**Watch out for:** `Connection` from `Engine.connect()` is a Core connection, not an ORM `Session`; `Result.scalars()` is not an entity loader.
+
+## [2026-10-05] Empty connector payloads still need valid JSON separators
+
+**Symptom:** Native export returned HTTP 200, but `payload/operations/connectors.json` failed JSON parsing when no connector records existed.
+**Root cause:** The shared object-prefix writer emitted the initial schema-version field without a trailing comma. The SQLite workflow writer added its own separator before the first collection, but the connector writer only added separators after prior collections.
+**Fix / workaround:** Write a comma before every connector collection and test an empty connector payload through the production serializer.
+**Watch out for:** ZIP CRC and a matching member digest do not establish valid member JSON; parse every structured payload independently.

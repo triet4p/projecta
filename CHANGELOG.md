@@ -8,6 +8,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Added
 
+- Added bounded native project data export under the approved projecta-portable.v1 contract, including cross-store writer exclusion fencing, typed schema validation across semantic TriG, evidence objects, application workflows, connectors, review decision receipts, and correction burden events, with hard resource bounds and explicit export confirmation.
+
+- Kept graph-backed exact-span review digests distinct from LocalEvidenceStore
+  object references while preserving required connector-inbox evidence closure.
+
 - Added a hybrid-online Microsoft Visual C++ v14 prerequisite to the unsigned
   0.7.0 Windows 11 x64 build path. Package provenance now records selected
   source inputs, their base-revision meaning, runtime archive identities, and
@@ -60,6 +65,23 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   Fuseki readiness probes the dataset endpoint; the embeddable Python entry
   points resolve the staged API; and the native package builder rebuilds the
   compiled SPA from source before staging.
+
+- Fixed native portable exports with persisted SQLite workflow rows by using
+  column-name access, validating uncommitted draft fingerprints against their
+  exact payload bytes, and checking committed draft fingerprints against the
+  store's authored-status fingerprint while keeping payload digests bound to
+  the exported bytes.
+
+- Fixed portable export of PostgreSQL receipts and correction events by
+  canonicalizing stored aware timestamps to UTC before digest verification and
+  emitting correctly formatted UTC timestamps independent of the database
+  session offset.
+
+- Fixed native export of persisted PostgreSQL review receipts and correction
+  burden events by iterating complete SQLAlchemy Core rows rather than
+  scalarizing away the fields required for record validation.
+
+- Fixed portable project exports so empty connector state is valid JSON instead of producing an unreadable archive.
 
 - Prevented transient native-runtime readiness failures by aligning the API probe deadline with its nested Semantic Core check; failed probes now record bounded, allow-listed health details in the local launcher log.
 - Bounded both native Semantic Core and API outer readiness probes at four seconds to cover their nested three-second checks; regression cases exercise delayed success and the single-request deadline failure.

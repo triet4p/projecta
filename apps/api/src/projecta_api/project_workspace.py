@@ -64,6 +64,9 @@ class ProjectOverviewResponse(ProjectCatalogItem):
     model_config = ConfigDict(extra="forbid", populate_by_name=True)
 
     request_id: str = Field(alias="requestId")
+    portable_export_enabled: bool = Field(
+        default=False, alias="portableExportEnabled"
+    )
     current_requirements: list[dict[str, str]] = Field(alias="currentRequirements")
     open_questions: list[dict[str, str]] = Field(alias="openQuestions")
     tasks: list[dict[str, str]]

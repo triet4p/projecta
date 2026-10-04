@@ -38,6 +38,7 @@ public final class SemanticCoreApplication {
         var queries = new FusekiQueryService(gateway, router, validation);
         var m4 = new M4SemanticService(gateway, router, new M4QueryTemplateRegistry());
         var workspace = new ProjectWorkspaceQueryService(gateway, router);
+        var portableExport = new PortableProjectExportService(gateway, router);
         var application = Javalin.create(config -> {
             config.routes.before(context ->
                     gateway.setCorrelation(context.header("X-Request-Id"), context.header("X-Operation-Id")));
@@ -91,6 +92,36 @@ public final class SemanticCoreApplication {
                                 "recentNotes", result.recentNotes(),
                                 "pendingCandidates", result.pendingCandidates(),
                                 "evidenceCoverage", result.evidenceCoverage()));
+                    })
+                    .get("/v1/projects/{projectId}/portable-export", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        try {
+                            portableExport.writeTriG(
+                                    trusted.projectId(),
+                                    context.res().getOutputStream(),
+                                    tripleCount -> {
+                                        context.contentType("application/trig");
+                                        context.header(
+                                                "X-Projecta-Graph-Triple-Count", Long.toString(tripleCount));
+                                        context.header(
+                                                "X-Projecta-Java-Runtime",
+                                                PortableProjectExportService.javaRuntimeVersion());
+                                        context.header(
+                                                "X-Projecta-Fuseki-Version",
+                                                PortableProjectExportService.fusekiVersion());
+                                        context.header(
+                                                "X-Projecta-Semantic-Core-Javalin",
+                                                PortableProjectExportService.javalinVersion());
+                                        context.header(
+                                                "X-Projecta-Semantic-Core-Jena",
+                                                PortableProjectExportService.jenaVersion());
+                                    });
+                        } catch (PortableProjectExportService.ExportTooLargeException exception) {
+                            context.status(413).json(Map.of(
+                                    "code", "EXPORT_TOO_LARGE",
+                                    "detail", "The selected project exceeds the supported triple limit."));
+                        }
                     })
                     .get("/v1/projects/{projectId}/notes", context -> {
                         var trusted = trustedContext(context);

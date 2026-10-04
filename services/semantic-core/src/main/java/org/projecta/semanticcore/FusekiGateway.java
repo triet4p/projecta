@@ -2,18 +2,19 @@ package org.projecta.semanticcore;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.function.Function;
 import java.util.logging.Logger;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFParser;
-
 /** Executes only service-authored, project-scoped SPARQL against the configured Fuseki dataset. */
 public class FusekiGateway {
     private static final Logger LOGGER = Logger.getLogger("projecta.fuseki-gateway");
@@ -42,6 +43,41 @@ public class FusekiGateway {
     /** Executes a service-authored SELECT query and returns its SPARQL JSON response. */
     public String select(String query) {
         return send("query", "application/sparql-query", query);
+    }
+
+    /** Streams one service-authored SELECT response so bounded export rows are never buffered. */
+    public <T> T selectStream(String query, Function<InputStream, T> consumer) {
+        var endpoint = URI.create(datasetUrl.toString().replaceAll("/$", "") + "/query");
+        var started = System.nanoTime();
+        log("dependency.started", "sparql-query-stream", null, null, null);
+        var request = HttpRequest.newBuilder(endpoint)
+                .header("Content-Type", "application/sparql-query; charset=utf-8")
+                .header("Accept", "application/sparql-results+json")
+                .timeout(Duration.ofMinutes(10))
+                .POST(HttpRequest.BodyPublishers.ofString(query, StandardCharsets.UTF_8))
+                .build();
+        try {
+            var response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
+            try (var body = response.body()) {
+                if (response.statusCode() < 200 || response.statusCode() >= 300) {
+                    log("dependency.failed", "sparql-query-stream", response.statusCode(), elapsed(started), null);
+                    throw new IllegalStateException("semantic store streaming query failed");
+                }
+                var result = consumer.apply(body);
+                log("dependency.completed", "sparql-query-stream", response.statusCode(), elapsed(started), null);
+                return result;
+            }
+        } catch (java.net.http.HttpTimeoutException exception) {
+            log("dependency.failed", "sparql-query-stream", 504, elapsed(started), null);
+            throw new IllegalStateException("semantic store streaming query timed out", exception);
+        } catch (IOException exception) {
+            log("dependency.failed", "sparql-query-stream", 503, elapsed(started), null);
+            throw new IllegalStateException("semantic store streaming query failed", exception);
+        } catch (InterruptedException exception) {
+            Thread.currentThread().interrupt();
+            log("dependency.failed", "sparql-query-stream", 503, elapsed(started), null);
+            throw new IllegalStateException("semantic store streaming query interrupted", exception);
+        }
     }
 
     /** Executes one service-authored SPARQL Update request against the configured dataset. */

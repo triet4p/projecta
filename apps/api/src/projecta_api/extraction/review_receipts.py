@@ -214,14 +214,7 @@ class ReviewDecisionReceiptService:
             )
         )
         occurred_at = datetime.now(UTC)
-        receipt_digest = _digest_bytes(
-            _stable_json(
-                {
-                    "requestDigest": request_digest,
-                    "occurredAt": occurred_at.isoformat(),
-                }
-            )
-        )
+        receipt_digest = _receipt_digest(request_digest, occurred_at)
         write = _ReceiptWrite(
             project_id=request.project_id,
             actor_digest=_digest(actor.actor_id),
@@ -540,4 +533,16 @@ def _digest_bytes(value: bytes) -> str:
 def _stable_json(value: object) -> bytes:
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode(
         "utf-8", "strict"
+    )
+
+def _receipt_digest(request_digest: str, occurred_at: datetime) -> str:
+    if occurred_at.tzinfo is None or occurred_at.utcoffset() is None:
+        raise ValueError("review receipt timestamp must be timezone-aware")
+    return _digest_bytes(
+        _stable_json(
+            {
+                "requestDigest": request_digest,
+                "occurredAt": occurred_at.astimezone(UTC).isoformat(),
+            }
+        )
     )

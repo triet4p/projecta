@@ -1,5 +1,6 @@
 """HTTP routes for typed capture, review, and finite read operations."""
 
+import shutil
 import json
 import logging
 from collections.abc import Sequence
@@ -10,7 +11,10 @@ from urllib.parse import urlencode
 
 from fastapi import APIRouter, Depends, Header, Query, Request, Response
 from pydantic import BaseModel, ConfigDict, Field
+from fastapi.responses import FileResponse
+from starlette.background import BackgroundTask
 
+from projecta_api.connectors.public_api import ConnectorRuntime, add_connector_routes
 from projecta_api.configuration.audit import ConfigurationAudit
 from projecta_api.configuration.connection import ProviderConnectionChecker
 from projecta_api.configuration.errors import ConfigurationProblem
@@ -20,7 +24,13 @@ from projecta_api.configuration.models import (
 )
 from projecta_api.configuration.ports import RuntimeConfigurationProvider
 from projecta_api.configuration.service import LLMConfigurationService
-from projecta_api.connectors.public_api import ConnectorRuntime, add_connector_routes
+from projecta_api.export_fence import ExportAlreadyRunning, ExportWriteAttempted, ProjectWriteFence
+from projecta_api.portable_export import (
+    ExportArtifact,
+    PortableExportFailure,
+    ProjectPortableExportService,
+    project_source_revision,
+)
 from projecta_api.context import (
     TrustedActorContext,
     TrustedRequestContext,
@@ -166,6 +176,11 @@ class ConnectionCheckRequest(BaseModel):
     timeout_seconds: float = Field(default=10.0, gt=0, le=15, alias="timeoutSeconds")
 
 
+class PortableExportRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    confirmed: Literal[True] = Field(alias="confirmed")
+
 class ReviewAbstainRequest(BaseModel):
     """Trusted-boundary input for an explicit, receipt-backed abstention."""
 
@@ -278,6 +293,7 @@ def create_router(
     configuration_audit: ConfigurationAudit | None = None,
     connector_runtime: ConnectorRuntime | None = None,
     local_suggestions: LocalSuggestionService | None = None,
+    portable_export: ProjectPortableExportService | None = None,
 ) -> APIRouter:
     """Create routes bound to one finite Semantic Core client."""
     router = APIRouter()
@@ -343,8 +359,67 @@ def create_router(
             raise _project_not_found()
         raw = await client.request(context, "GET", f"/v1/projects/{context.project_id}/overview")
         mapped = _map_project_overview(context.request_id, raw, handle)
+        mapped["portableExportEnabled"] = bool(portable_export and portable_export.enabled())
         response.headers["X-Request-Id"] = context.request_id
         return ProjectOverviewResponse.model_validate(mapped)
+
+    @router.post(
+        "/v1/projects/{handle}/exports",
+        response_class=FileResponse,
+        responses={200: {"content": {"application/zip": {}}}},
+    )
+    async def export_project(
+        handle: str,
+        payload: PortableExportRequest,
+        context: Context,
+        request: Request,
+        response: Response,
+    ) -> FileResponse:
+        _require_selected_project_handle(request, handle)
+        if payload.confirmed is not True:
+            raise PortableExportFailure("EXPORT_CONFIRMATION_REQUIRED")
+        if portable_export is None or not portable_export.enabled():
+            raise PortableExportFailure("EXPORT_UNSUPPORTED_RUNTIME", status_code=503)
+        fence = cast(ProjectWriteFence, request.app.state.project_write_fence)
+        artifact: ExportArtifact | None = None
+        try:
+            async with fence.export_epoch():
+                raw = await client.request(
+                    context, "GET", f"/v1/projects/{context.project_id}/overview"
+                )
+                project = mapping(required(mapping(raw), "project"))
+                project_name = _required_string(project, "name")
+                source_revision = project_source_revision(raw, context.project_id)
+                artifact = await portable_export.create(
+                    context,
+                    project_name,
+                    source_revision,
+                    request.app.state.portable_export_root,
+                )
+                await fence.ensure_no_write_attempts()
+        except (ExportAlreadyRunning, ExportWriteAttempted) as error:
+            if artifact is not None:
+                shutil.rmtree(artifact.work_directory, ignore_errors=True)
+            raise PortableExportFailure("EXPORT_BUSY") from error
+        except BaseException:
+            if artifact is not None:
+                shutil.rmtree(artifact.work_directory, ignore_errors=True)
+            raise
+        if artifact is None:
+            raise PortableExportFailure("EXPORT_FAILED", status_code=503)
+        response.headers["X-Request-Id"] = context.request_id
+        response.headers["X-Projecta-Export-SHA256"] = artifact.sha256
+        response.headers["X-Projecta-Export-Size-Bytes"] = str(artifact.size_bytes)
+        response.headers["Cache-Control"] = "no-store"
+        return FileResponse(
+            artifact.path,
+            media_type="application/zip",
+            filename=artifact.filename,
+            headers=response.headers,
+            background=BackgroundTask(
+                shutil.rmtree, artifact.work_directory, ignore_errors=True
+            ),
+        )
 
     @router.post(
         "/v1/projects/{handle}/notes/drafts",

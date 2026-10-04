@@ -190,6 +190,56 @@ class LocalEvidenceStore:
 
         return metadata, stream()
 
+    async def list_project(self, project_scope: str) -> tuple[EvidenceMetadata, ...]:
+        """Enumerate only the metadata references owned by one canonical project."""
+        if not _safe_project(project_scope):
+            raise EvidenceError("EVIDENCE_PROJECT_FORBIDDEN")
+        async with self._write_lock:
+            return await asyncio.to_thread(self._list_project_sync, project_scope)
+
+    def _list_project_sync(self, project_scope: str) -> tuple[EvidenceMetadata, ...]:
+        directory = self._root / "references" / project_scope
+        is_junction = getattr(os.path, "isjunction", lambda _path: False)
+        if is_junction(directory) or directory.is_symlink():
+            raise EvidenceError("EVIDENCE_INTEGRITY_FAILED")
+        if not directory.exists():
+            return ()
+        if not directory.is_dir():
+            raise EvidenceError("EVIDENCE_INTEGRITY_FAILED")
+        metadata_items: list[EvidenceMetadata] = []
+        references: set[str] = set()
+        for path in sorted(directory.iterdir(), key=lambda item: item.name):
+            if (
+                is_junction(path)
+                or path.is_symlink()
+                or not path.is_file()
+                or not path.name.endswith(".json")
+            ):
+                raise EvidenceError("EVIDENCE_INTEGRITY_FAILED")
+            evidence_reference = path.name.removesuffix(".json")
+            if not _REFERENCE.fullmatch(evidence_reference) or evidence_reference in references:
+                raise EvidenceError("EVIDENCE_INTEGRITY_FAILED")
+            references.add(evidence_reference)
+            try:
+                value = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, UnicodeError, TypeError, ValueError, json.JSONDecodeError) as error:
+                raise EvidenceError("EVIDENCE_INTEGRITY_FAILED") from error
+            if (
+                not isinstance(value, dict)
+                or set(value) != {"sha256"}
+                or not isinstance(value["sha256"], str)
+                or not _SHA256.fullmatch(value["sha256"])
+            ):
+                raise EvidenceError("EVIDENCE_INTEGRITY_FAILED")
+            metadata = self._read_metadata(
+                self._object_dir(project_scope, value["sha256"]) / "metadata.json",
+                project_scope,
+            )
+            if metadata.evidence_reference != evidence_reference:
+                raise EvidenceError("EVIDENCE_INTEGRITY_FAILED")
+            metadata_items.append(metadata)
+        return tuple(metadata_items)
+
     async def mark_for_retention_purge(
         self, request: EvidenceRetentionRequest, *, deadline: float | None = None
     ) -> str:

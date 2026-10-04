@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import UTC, datetime, timedelta, timezone
 from pathlib import Path
 from types import SimpleNamespace
 from typing import cast
@@ -116,6 +117,40 @@ def test_persisted_row_body_tampering_fails_before_summary() -> None:
     with pytest.raises(TelemetryIntegrityError):
         _event_from_row(row, "accepted")
 
+
+def test_persisted_row_timezone_offset_preserves_event_digest() -> None:
+    service = CorrectionBurdenTelemetryService(InMemoryCorrectionBurdenRepository())
+    accepted = service.record(request())
+    request_digest = _request_digest_from_event("project-alpha", accepted)
+    local_occurred_at = accepted.occurred_at.astimezone(timezone(timedelta(hours=7)))
+    row = SimpleNamespace(
+        project_id="project-alpha",
+        event_id=accepted.event_id,
+        item_kind=accepted.item_kind,
+        item_digest=accepted.item_digest,
+        assertion_digest=accepted.assertion_digest,
+        source_version_digest=accepted.source_version_digest,
+        source_version_revision=accepted.source_version_revision,
+        review_receipt_digest=accepted.review_receipt_digest,
+        materialization_revision=accepted.materialization_revision,
+        inference_revision=accepted.inference_revision,
+        correction_category=accepted.correction_category,
+        correction_dimensions=list(accepted.correction_dimensions),
+        review_outcome=accepted.review_outcome,
+        semantic_edit_count=accepted.semantic_edit_count,
+        review_latency_ms=accepted.review_latency_ms,
+        materialization_state=accepted.materialization_state,
+        inference_state=accepted.inference_state,
+        idempotency_digest=accepted.idempotency_digest,
+        request_digest=request_digest,
+        occurred_at=local_occurred_at,
+        event_digest=accepted.event_digest,
+    )
+
+    restored = _event_from_row(row, "accepted")
+
+    assert restored.event_digest == accepted.event_digest
+    assert restored.occurred_at == accepted.occurred_at
 
 def test_migration_enforces_append_only_rows() -> None:
     migration = MIGRATION.read_text(encoding="utf-8")

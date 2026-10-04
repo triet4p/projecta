@@ -69,7 +69,7 @@ class StructuredNoteDraftStore:
         self, project_id: str, actor_id: str, key: str, draft: StructuredNoteDraft
     ) -> tuple[StoredStructuredNoteDraft, bool]:
         """Create or replay one draft for one project/actor/idempotency key."""
-        fingerprint = _fingerprint(draft)
+        fingerprint = structured_note_draft_fingerprint(draft)
         now = utc_now()
         with self._database.transaction() as connection:
             existing = connection.execute(
@@ -137,7 +137,7 @@ class StructuredNoteDraftStore:
         expected_revision: int,
         draft: StructuredNoteDraft,
     ) -> StoredStructuredNoteDraft:
-        fingerprint = _fingerprint(draft)
+        fingerprint = structured_note_draft_fingerprint(draft)
         now = utc_now()
         with self._database.transaction() as connection:
             row = connection.execute(
@@ -222,7 +222,8 @@ def _serialize(draft: StructuredNoteDraft) -> str:
     )
 
 
-def _fingerprint(draft: StructuredNoteDraft) -> str:
+def structured_note_draft_fingerprint(draft: StructuredNoteDraft) -> str:
+    """Return the exact serialized fingerprint used for draft idempotency."""
     return sha256(_serialize(draft).encode("utf-8")).hexdigest()
 
 

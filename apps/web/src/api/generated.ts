@@ -470,6 +470,7 @@ export interface ProjectSelectionResponse {
 
 export interface ProjectOverviewResponse extends ProjectCatalogItem {
   requestId: string;
+  portableExportEnabled: boolean;
   currentRequirements: Record<string, string>[];
   openQuestions: Record<string, string>[];
   tasks: Record<string, string>[];

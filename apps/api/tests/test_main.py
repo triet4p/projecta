@@ -81,7 +81,9 @@ async def test_invalid_provider_evidence_is_not_reported_as_invalid_caller_input
             raise AssertionError("not used")
 
     settings = Settings(
+        _env_file=None,
         trusted_context_secret="test-secret",
+        experience_project_catalog="project",
         PROJECTA_LLM_TYPE="openai-response",
         PROJECTA_LLM_BASE_URL="https://system-test.invalid",
         PROJECTA_LLM_API_KEY="test-key",

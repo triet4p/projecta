@@ -183,6 +183,19 @@ class OperationalDatabase:
             else:
                 self._connection.commit()
 
+    @contextmanager
+    def read_transaction(self) -> Generator[sqlite3.Connection, None, None]:
+        """Hold one consistent, serialized SQLite read snapshot."""
+        with self._lock:
+            self._connection.execute("BEGIN")
+            try:
+                yield self._connection
+            except BaseException:
+                self._connection.rollback()
+                raise
+            else:
+                self._connection.commit()
+
     def execute(self, sql: str, parameters: Sequence[object] = ()) -> sqlite3.Cursor:
         """Execute one statement under the database lock."""
         with self._lock:
