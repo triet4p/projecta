@@ -297,6 +297,7 @@ def create_app(
         client,
         native_runtime_lock_held=actual_settings.portable_export_lock_held,
     )
+    app.state.portable_export_root = Path(actual_settings.evidence_root).parent / "exports"
     portable_import = ProjectPortableImportService(
         database,
         postgres_engine,

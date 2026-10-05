@@ -100,7 +100,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
    setup modal.
 
 - Fixed the web portable-import preview validator so the `/v1/imports/previews` path is not also checked against the import-result shape; previews (which carry no `status`) no longer fail with a malformed-result error in the Projects import UI.
-
+- Fixed portable project exports failing with an internal error by restoring the export work-directory root on application startup.
+- Fixed portable imports of a new project beside a renamed first-run workspace by sending the incoming project name when the destination has no local display name for it; the Core import validation no longer rejects the request.
+- Fixed corrupted portable-import archives that break deflate decoding failing with an internal error; they now fail closed with the finite package-invalid response.
 - Fixed confirmed portable-import apply so a missing staged package file fails closed with `IMPORT_PACKAGE_INVALID` instead of an unmapped internal error; destination state is unchanged.
 
 ### Changed

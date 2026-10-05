@@ -122,3 +122,25 @@ def test_import_rejects_nested_secret_fields_and_normalizes_names() -> None:
     _check_no_secret_fields(
         {"receipt": {"authorizationDigest": "sha256:" + "b" * 64}, "attemptTokenCount": 2}
     )
+
+
+def test_import_maps_corrupt_deflate_payload_to_finite_error(tmp_path) -> None:
+    """A mid-archive byte flip that breaks deflate decoding must fail closed finite."""
+    import hashlib
+    import zipfile
+
+    from projecta_api.portable_import import _validate_archive
+
+    source = tmp_path / "source.projecta"
+    with zipfile.ZipFile(source, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        archive.writestr("manifest.json", b'{"portableContract": "projecta-portable.v1"}')
+        archive.writestr("payload/semantic/project.trig", b"a" * 4096)
+    raw = bytearray(source.read_bytes())
+    raw[100] ^= 0xFF
+    raw = bytes(raw)
+    target_dir = tmp_path / "staged"
+    target_dir.mkdir()
+    target = target_dir / "package.projecta"
+    target.write_bytes(raw)
+    with pytest.raises(PortableImportFailure, match="IMPORT_PACKAGE_INVALID"):
+        _validate_archive("probe", target_dir, target, hashlib.sha256(raw).hexdigest(), len(raw))

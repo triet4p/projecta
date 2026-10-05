@@ -1160,3 +1160,24 @@ starting another local runtime.
 **Root cause:** The shared object-prefix writer emitted the initial schema-version field without a trailing comma. The SQLite workflow writer added its own separator before the first collection, but the connector writer only added separators after prior collections.
 **Fix / workaround:** Write a comma before every connector collection and test an empty connector payload through the production serializer.
 **Watch out for:** ZIP CRC and a matching member digest do not establish valid member JSON; parse every structured payload independently.
+
+## [2026-10-06] A checkpoint commit can silently drop sibling state wiring
+
+**Symptom:** Every consented portable-export POST returned HTTP 500 `INTERNAL_ERROR` on the exact checkpointed commit, while the same flow passed before the checkpoint.
+**Root cause:** The checkpoint commit replaced a one-line `app.state.portable_export_root` assignment with a new service block in the same hunk; the reader (`routes.py`) still referenced the dropped attribute, raising `AttributeError` on every export.
+**Fix / workaround:** Restore the exact assignment at the composition root; verify with a full `app.state.*` writer/reader survey so no other sibling state is lost in the same hunk. Never add a route-level fallback that masks the missing wiring.
+**Watch out for:** Any commit that restructures a composition root near `app.state` assignments — diff the state assignments before and after, and exercise the affected endpoint on a native runtime, not just unit suites.
+
+## [2026-10-06] Core rejects blank query params before consuming chunked upload bodies
+
+**Symptom:** Portable-import previews on renamed destinations failed with HTTP 503 `SEMANTIC_CONTRACT_UNAVAILABLE`, while identical direct probes with fast uploads returned clean 400s and the same code path passed on placeholder destinations.
+**Root cause:** The API sent `placeholderName=` (empty) because the registry lookup missed; Core's required-query gate answers 400 without consuming the still-streaming chunked body, Jetty resets the connection, and the API surfaces the resulting transport `ReadError` as 503. Slow uploads reproduce it deterministically; fast uploads mask it.
+**Fix / workaround:** Send a guaranteed non-blank placeholder (`local_name or package.project_name`) on the add-project branch; reproduce suspected transport flakiness with throttled-chunk uploads before blaming the network.
+**Watch out for:** Any API→Core streaming POST where a query parameter can be empty — the failure shape is a transport error, not the Core 400, whenever the body is still in flight.
+
+## [2026-10-06] Persistent Eval kernels keep native-runtime SQLite files locked
+
+**Symptom:** A staged import publication failed at the SQLite directory move and the designed rollback also wedged, even though no runtime services were running.
+**Root cause:** Earlier diagnosis cells opened the destination `operational.db` in the shared persistent kernel namespace; the unreferenced-but-not-garbage-collected handles kept Windows delete-sharing locks on the directory across many later turns.
+**Fix / workaround:** Never open a live native-runtime store from a persistent diagnosis kernel; when it happens, `gc.collect()` after dropping references and verify with a directory rename round-trip before blaming product code.
+**Watch out for:** Any Windows directory move (`os.replace`/`shutil`) over a native data tree while a long-lived Python process has ever touched its SQLite files — `WinError 5` here means an operator-held lock, not a packaging defect.

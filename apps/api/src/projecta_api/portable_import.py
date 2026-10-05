@@ -11,6 +11,7 @@ import shutil
 import stat
 import uuid
 import zipfile
+import zlib
 from collections.abc import AsyncIterable, Mapping, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -659,13 +660,13 @@ class ProjectPortableImportService:
         checked = await self._semantic.validate_portable_import(
             actor,
             project_id,
-            local_name,
+            local_name or package.project_name,
             package.project_name,
             package.payload_paths["payload/semantic/project.trig"],
         )
         if checked.get("destinationState") != "absent":
-            return "conflict", local_name, checked
-        return "add-project", local_name, checked
+            return "conflict", local_name or package.project_name, checked
+        return "add-project", local_name or package.project_name, checked
 
     async def _check_local_empty(self, project_id: str) -> None:
         if self._postgres_engine is None:
@@ -1168,7 +1169,7 @@ def _validate_archive(
                 payload_paths[info.filename] = target
     except PortableImportFailure:
         raise
-    except (OSError, ValueError, zipfile.BadZipFile, RuntimeError) as error:
+    except (OSError, ValueError, zipfile.BadZipFile, RuntimeError, zlib.error) as error:
         raise PortableImportFailure("IMPORT_PACKAGE_INVALID") from error
     return _finish_archive_validation(
         token, directory, archive_path, archive_sha256, archive_size,
@@ -1208,7 +1209,7 @@ def _revalidate_staged_archive(
                 payload_paths[path] = target
     except PortableImportFailure:
         raise
-    except (OSError, ValueError, zipfile.BadZipFile, RuntimeError) as error:
+    except (OSError, ValueError, zipfile.BadZipFile, RuntimeError, zlib.error) as error:
         raise PortableImportFailure("IMPORT_PACKAGE_INVALID") from error
     return _finish_archive_validation(
         token, directory, archive_path, archive_sha256, archive_size,
