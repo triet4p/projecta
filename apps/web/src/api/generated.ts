@@ -452,6 +452,40 @@ export interface ProjectCatalogResponse {
   nextCursor?: string | null;
 }
 
+export interface PortableImportPreviewResponse {
+  requestId: string;
+  importId: string;
+  projectId: string;
+  projectName: string;
+  exportId: string;
+  exportedAt: string;
+  archiveSha256: string;
+  sizeBytes: number;
+  destinationAction: "add-project" | "adopt-placeholder" | "already-imported" | "conflict";
+  counts: Record<string, number>;
+  plaintextWarning: string;
+}
+
+export interface PortableImportApplyResponse {
+  requestId: string;
+  importId?: string;
+  projectId: string;
+  projectName: string;
+  alreadyImported: boolean;
+  restartRequired: boolean;
+  status?: "staging";
+  nextAction?: string;
+}
+
+export interface PortableImportResultResponse {
+  requestId: string;
+  importId: string;
+  status: "staging" | "complete" | "failed";
+  projectId: string;
+  projectName: string;
+  failureCode?: string;
+}
+
 export interface ProjectReadResponse {
   requestId: string;
   project: ProjectCatalogItem;

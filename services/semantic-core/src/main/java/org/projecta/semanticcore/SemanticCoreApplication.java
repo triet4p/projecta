@@ -39,6 +39,7 @@ public final class SemanticCoreApplication {
         var m4 = new M4SemanticService(gateway, router, new M4QueryTemplateRegistry());
         var workspace = new ProjectWorkspaceQueryService(gateway, router);
         var portableExport = new PortableProjectExportService(gateway, router);
+        var portableImport = new PortableProjectImportService(gateway, router, validation);
         var application = Javalin.create(config -> {
             config.routes.before(context ->
                     gateway.setCorrelation(context.header("X-Request-Id"), context.header("X-Operation-Id")));
@@ -122,6 +123,36 @@ public final class SemanticCoreApplication {
                                     "code", "EXPORT_TOO_LARGE",
                                     "detail", "The selected project exceeds the supported triple limit."));
                         }
+                    })
+                    .post("/v1/projects/{projectId}/portable-import/validate", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        context.json(portableImport.validate(
+                                trusted.projectId(),
+                                requiredQueryParameter(context, "placeholderName"),
+                                requiredQueryParameter(context, "projectName"),
+                                context.bodyInputStream()));
+                    })
+                    .post("/v1/projects/{projectId}/portable-import/apply", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        context.json(portableImport.apply(
+                                trusted.projectId(),
+                                requiredQueryParameter(context, "placeholderName"),
+                                requiredQueryParameter(context, "projectName"),
+                                booleanQueryParameter(context, "adoptPlaceholder"),
+                                context.bodyInputStream()));
+                    })
+                    .post("/v1/projects/{projectId}/portable-import/rollback", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        portableImport.rollback(
+                                trusted.projectId(),
+                                requiredQueryParameter(context, "placeholderName"),
+                                requiredQueryParameter(context, "projectName"),
+                                booleanQueryParameter(context, "restorePlaceholder"),
+                                context.bodyInputStream());
+                        context.status(204);
                     })
                     .get("/v1/projects/{projectId}/notes", context -> {
                         var trusted = trustedContext(context);
@@ -516,6 +547,23 @@ public final class SemanticCoreApplication {
             throw new io.javalin.http.UnauthorizedResponse("trusted actor context is required");
         }
         return new TrustedActorContext(actor, operationId(context));
+    }
+
+ 
+    private static String requiredQueryParameter(io.javalin.http.Context context, String name) {
+        var value = context.queryParam(name);
+        if (value == null || value.isBlank()) {
+            throw new IllegalArgumentException("required import parameter is missing");
+        }
+        return value;
+    }
+
+    private static boolean booleanQueryParameter(io.javalin.http.Context context, String name) {
+        var value = requiredQueryParameter(context, name);
+        if (!"true".equals(value) && !"false".equals(value)) {
+            throw new IllegalArgumentException("import boolean parameter is invalid");
+        }
+        return Boolean.parseBoolean(value);
     }
 
     private record ConfirmationRequest(Assertion assertion) {}

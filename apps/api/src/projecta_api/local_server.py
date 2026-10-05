@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 import sys
 import threading
 
@@ -10,7 +11,7 @@ import uvicorn
 
 
 HOST = "127.0.0.1"
-PORT = 18732
+PORT = int(os.environ.get("PROJECTA_API_PORT", "18732"))
 
 
 def _run() -> None:

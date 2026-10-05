@@ -12,6 +12,7 @@ from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoin
 from starlette.responses import JSONResponse, Response
 
 _EXPORT_PATH = re.compile(r"^/v1/projects/[^/]+/exports$")
+_IMPORT_APPLY_PATH = re.compile(r"^/v1/imports/previews/[^/]+/apply$")
 _MUTATING_METHODS = frozenset({"POST", "PUT", "PATCH", "DELETE"})
 
 
@@ -20,18 +21,22 @@ class ExportAlreadyRunning(RuntimeError):
 
 
 class ProjectWriteFence:
-    """Exclude API writers while one bounded multi-store snapshot is collected."""
+    """Exclude API writes and reads while a project import publishes cross-store state."""
 
     def __init__(self) -> None:
         self._condition = asyncio.Condition()
         self._active_writers = 0
+        self._active_readers = 0
         self._exporting = False
+        self._maintenance_kind = ""
         self._write_attempted = False
+        self._recovery_required = False
 
     async def enter_write(self) -> bool:
         async with self._condition:
-            if self._exporting:
-                self._write_attempted = True
+            if self._recovery_required or self._exporting:
+                if self._maintenance_kind == "export":
+                    self._write_attempted = True
                 return False
             self._active_writers += 1
             return True
@@ -44,17 +49,39 @@ class ProjectWriteFence:
             if self._active_writers == 0:
                 self._condition.notify_all()
 
+    async def enter_read(self) -> bool:
+        async with self._condition:
+            if self._recovery_required or self._maintenance_kind == "import":
+                return False
+            self._active_readers += 1
+            return True
+
+    async def exit_read(self) -> None:
+        async with self._condition:
+            if self._active_readers < 1:
+                raise RuntimeError("project read fence accounting is inconsistent")
+            self._active_readers -= 1
+            if self._active_readers == 0:
+                self._condition.notify_all()
+
+    async def require_recovery(self) -> None:
+        async with self._condition:
+            self._recovery_required = True
+            self._condition.notify_all()
+
     @asynccontextmanager
     async def export_epoch(self) -> AsyncIterator[None]:
         async with self._condition:
-            if self._exporting:
+            if self._recovery_required or self._exporting:
                 raise ExportAlreadyRunning()
             self._exporting = True
+            self._maintenance_kind = "export"
             self._write_attempted = False
             try:
                 await self._condition.wait_for(lambda: self._active_writers == 0)
             except BaseException:
                 self._exporting = False
+                self._maintenance_kind = ""
                 self._condition.notify_all()
                 raise
         try:
@@ -62,15 +89,54 @@ class ProjectWriteFence:
         except BaseException:
             async with self._condition:
                 self._exporting = False
+                self._maintenance_kind = ""
                 self._condition.notify_all()
             raise
         else:
             async with self._condition:
                 write_attempted = self._write_attempted
                 self._exporting = False
+                self._maintenance_kind = ""
                 self._condition.notify_all()
             if write_attempted:
                 raise ExportWriteAttempted()
+
+    @asynccontextmanager
+    async def maintenance_epoch(self) -> AsyncIterator[None]:
+        """Drain API requests and exclude all project access during import publication."""
+        async with self._condition:
+            if self._recovery_required or self._exporting:
+                raise ExportAlreadyRunning()
+            self._exporting = True
+            self._maintenance_kind = "import"
+            self._write_attempted = False
+            try:
+                await self._condition.wait_for(
+                    lambda: self._active_writers == 0 and self._active_readers == 0
+                )
+            except BaseException:
+                self._exporting = False
+                self._maintenance_kind = ""
+                self._condition.notify_all()
+                raise
+        try:
+            yield
+        finally:
+            async with self._condition:
+                self._exporting = False
+                self._maintenance_kind = ""
+                self._condition.notify_all()
+
+    async def busy_code(self) -> str:
+        async with self._condition:
+            if self._recovery_required:
+                return "IMPORT_RECOVERY_REQUIRED"
+            return "IMPORT_BUSY" if self._maintenance_kind == "import" else "EXPORT_BUSY"
+
+    async def recovery_required(self) -> bool:
+        async with self._condition:
+            return self._recovery_required
+
 
     async def ensure_no_write_attempts(self) -> None:
         async with self._condition:
@@ -86,7 +152,7 @@ class ExportWriteAttempted(RuntimeError):
 
 
 class ProjectWriteFenceMiddleware(BaseHTTPMiddleware):
-    """Reject new mutating Application API requests during the export epoch."""
+    """Fence project API traffic during imports and reject fatal recovery states."""
 
     def __init__(self, app: object, fence: ProjectWriteFence) -> None:
         super().__init__(app)  # type: ignore[arg-type]
@@ -95,27 +161,71 @@ class ProjectWriteFenceMiddleware(BaseHTTPMiddleware):
     async def dispatch(
         self, request: Request, call_next: RequestResponseEndpoint
     ) -> Response:
+        if not request.url.path.startswith("/v1/"):
+            return await call_next(request)
+
+        if await self._fence.recovery_required():
+            return _maintenance_response(request, "IMPORT_RECOVERY_REQUIRED")
+
+        if _IMPORT_APPLY_PATH.fullmatch(request.url.path) is not None:
+            return await call_next(request)
+
         if (
-            request.url.path.startswith("/v1/")
-            and request.method in _MUTATING_METHODS
+            request.method in _MUTATING_METHODS
             and _EXPORT_PATH.fullmatch(request.url.path) is None
         ):
             if not await self._fence.enter_write():
-                request_id = getattr(request.state, "request_id", "unknown")
-                return JSONResponse(
-                    status_code=409,
-                    media_type="application/problem+json",
-                    content={
-                        "type": "about:blank",
-                        "title": "Project export in progress",
-                        "status": 409,
-                        "detail": "A project export is collecting a consistent snapshot. Retry after it completes.",
-                        "code": "EXPORT_BUSY",
-                        "requestId": request_id,
-                    },
-                )
+                return _maintenance_response(request, await self._fence.busy_code())
             try:
                 return await call_next(request)
             finally:
                 await self._fence.exit_write()
-        return await call_next(request)
+
+        if not await self._fence.enter_read():
+            return _maintenance_response(request, await self._fence.busy_code())
+        release_read = True
+        try:
+            response = await call_next(request)
+            body_iterator = getattr(response, "body_iterator", None)
+            if body_iterator is None:
+                await self._fence.exit_read()
+                release_read = False
+                return response
+
+            async def stream_body() -> AsyncIterator[bytes]:
+                try:
+                    async for chunk in body_iterator:
+                        yield chunk
+                finally:
+                    await self._fence.exit_read()
+
+            response.body_iterator = stream_body()
+            release_read = False
+            return response
+        finally:
+            if release_read:
+                await self._fence.exit_read()
+
+
+def _maintenance_response(request: Request, code: str) -> JSONResponse:
+    recovery_required = code == "IMPORT_RECOVERY_REQUIRED"
+    return JSONResponse(
+        status_code=503 if recovery_required else 409,
+        media_type="application/problem+json",
+        content={
+            "type": "about:blank",
+            "title": (
+                "Project import recovery required"
+                if recovery_required
+                else "Project maintenance in progress"
+            ),
+            "status": 503 if recovery_required else 409,
+            "detail": (
+                "Project import recovery is required before this runtime can serve requests."
+                if recovery_required
+                else "A project maintenance operation is excluding project access. Retry after it completes."
+            ),
+            "code": code,
+            "requestId": getattr(request.state, "request_id", "unknown"),
+        },
+    )

@@ -20,6 +20,114 @@ describe("ProjectaApiClient", () => {
     expect(new Headers(request.headers).get("X-Operation-Id")).toMatch(/^[-a-z0-9]+$/i);
     vi.unstubAllGlobals();
   });
+  it("streams portable project files without JSON-encoding their bytes", async () => {
+    const fetchMock = vi.fn().mockImplementation(async (_input: RequestInfo | URL, init?: RequestInit) => {
+      const requestId = new Headers(init?.headers).get("X-Request-Id") ?? "req-import";
+      return new Response(
+        JSON.stringify({
+          requestId,
+          importId: "b50dc4e1-9605-4191-9b49-0b3bf675523a",
+          projectId: "portable-project",
+          projectName: "Portable Project",
+          exportId: "a50dc4e1-9605-4191-9b49-0b3bf675523a",
+          exportedAt: "2026-10-05T00:00:00Z",
+          archiveSha256: "a".repeat(64),
+          sizeBytes: 7,
+          destinationAction: "add-project",
+          counts: { notes: 1 },
+          plaintextWarning: "Review before applying.",
+        }),
+        {
+          status: 200,
+          headers: { "content-type": "application/json", "X-Request-Id": requestId },
+        },
+      );
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await new ProjectaApiClient().previewPortableImport(new Blob(["archive"]));
+
+    const [, init] = fetchMock.mock.calls[0] as [RequestInfo | URL, RequestInit];
+    expect(new Headers(init.headers).get("Content-Type")).toBe("application/octet-stream");
+    expect(init.body).toBeInstanceOf(Blob);
+    await expect((init.body as Blob).text()).resolves.toBe("archive");
+    vi.unstubAllGlobals();
+  });
+
+  it("tracks staged portable imports until the published result is available", async () => {
+    const importId = "b50dc4e1-9605-4191-9b49-0b3bf675523a";
+    const fetchMock = vi.fn().mockImplementation(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const requestId = new Headers(init?.headers).get("X-Request-Id") ?? "req-import-result";
+      const path = new URL(String(input), "http://projecta.test").pathname;
+      const result = path.endsWith("/apply")
+        ? {
+            requestId,
+            importId,
+            projectId: "portable-project",
+            projectName: "Portable Project",
+            alreadyImported: false,
+            restartRequired: true,
+            status: "staging",
+          }
+        : {
+            requestId,
+            importId,
+            projectId: "portable-project",
+            projectName: "Portable Project",
+            status: "complete",
+          };
+      return new Response(JSON.stringify(result), {
+        status: 200,
+        headers: { "content-type": "application/json", "X-Request-Id": requestId },
+      });
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const api = new ProjectaApiClient();
+    await expect(api.applyPortableImport(importId, true)).resolves.toMatchObject({
+      importId,
+      status: "staging",
+      restartRequired: true,
+    });
+    await expect(api.getPortableImportResult(importId)).resolves.toMatchObject({
+      importId,
+      status: "complete",
+      projectId: "portable-project",
+    });
+    expect(String(fetchMock.mock.calls[1][0])).toContain(`/v1/imports/${importId}`);
+    vi.unstubAllGlobals();
+  });
+  it("accepts a portable import preview whose path also matches the result pattern", async () => {
+    const requestId = "req-import-preview-path";
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          requestId,
+          importId: "b50dc4e1-9605-4191-9b49-0b3bf675523a",
+          projectId: "portable-project",
+          projectName: "Portable Project",
+          exportId: "a50dc4e1-9605-4191-9b49-0b3bf675523a",
+          exportedAt: "2026-10-04T20:08:22.325728Z",
+          archiveSha256: "a3127b6bc912ec8c64d160fdcd293857e9879fe9ac02a6b53ed7af86a321f97f",
+          sizeBytes: 6827,
+          destinationAction: "already-imported",
+          counts: { namedGraphs: 5 },
+          plaintextWarning: "Unsigned plaintext package.",
+        }),
+        {
+          status: 200,
+          headers: { "content-type": "application/json", "X-Request-Id": requestId },
+        },
+      ),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+    await expect(new ProjectaApiClient().previewPortableImport(new Blob(["archive"]))).resolves.toMatchObject({
+      importId: "b50dc4e1-9605-4191-9b49-0b3bf675523a",
+      destinationAction: "already-imported",
+    });
+    vi.unstubAllGlobals();
+  });
+
 
   it("maps RFC 7807 responses to ApiError", async () => {
     vi.stubGlobal(

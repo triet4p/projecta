@@ -1147,6 +1147,69 @@ th {
   font-size: 12px;
   line-height: 16px;
 }
+.portable-import-card {
+  align-items: start;
+}
+.import-file-field {
+  display: grid;
+  gap: 6px;
+  max-width: 640px;
+}
+.import-file-field > span {
+  font-weight: 600;
+}
+.import-review,
+.import-result {
+  border-top: 1px solid var(--dws-border);
+  display: grid;
+  gap: 12px;
+  padding-top: 12px;
+}
+.import-review h4,
+.import-result h4 {
+  margin: 0;
+}
+.import-details {
+  display: grid;
+  gap: 8px 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin: 0;
+}
+.import-details > div {
+  min-width: 0;
+}
+.import-details dt {
+  color: var(--dws-text-muted);
+  font-size: 12px;
+}
+.import-details dd {
+  margin: 2px 0 0;
+  overflow-wrap: anywhere;
+}
+.import-warning {
+  background: var(--dws-warning-soft);
+  border-inline-start: 3px solid var(--dws-warning);
+  margin: 0;
+  padding: 12px;
+}
+.import-conflict {
+  background: var(--dws-danger-soft);
+  border-inline-start: 3px solid var(--dws-danger);
+  margin: 0;
+  padding: 12px;
+}
+.import-confirmation {
+  align-items: flex-start;
+  display: flex;
+  gap: 8px;
+  line-height: 1.5;
+  max-width: 720px;
+}
+.import-confirmation input {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  min-height: auto;
+}
 .status-badge {
   border: 1px solid var(--dws-border-strong);
   border-radius: 999px;

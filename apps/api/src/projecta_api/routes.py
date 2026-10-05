@@ -31,6 +31,7 @@ from projecta_api.portable_export import (
     ProjectPortableExportService,
     project_source_revision,
 )
+from projecta_api.portable_import import PortableImportFailure, ProjectPortableImportService
 from projecta_api.context import (
     TrustedActorContext,
     TrustedRequestContext,
@@ -181,6 +182,11 @@ class PortableExportRequest(BaseModel):
 
     confirmed: Literal[True] = Field(alias="confirmed")
 
+class PortableImportApplyRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    confirmed: bool
+
 class ReviewAbstainRequest(BaseModel):
     """Trusted-boundary input for an explicit, receipt-backed abstention."""
 
@@ -294,6 +300,7 @@ def create_router(
     connector_runtime: ConnectorRuntime | None = None,
     local_suggestions: LocalSuggestionService | None = None,
     portable_export: ProjectPortableExportService | None = None,
+    portable_import: ProjectPortableImportService | None = None,
 ) -> APIRouter:
     """Create routes bound to one finite Semantic Core client."""
     router = APIRouter()
@@ -420,6 +427,64 @@ def create_router(
                 shutil.rmtree, artifact.work_directory, ignore_errors=True
             ),
         )
+
+    @router.post("/v1/imports/previews")
+    async def preview_portable_import(
+        request: Request, actor: ActorContext, response: Response
+    ) -> dict[str, object]:
+        if portable_import is None or not portable_import.enabled():
+            raise PortableImportFailure("IMPORT_UNSUPPORTED_RUNTIME", status_code=503)
+        preview = await portable_import.create_preview(actor, request.stream())
+        response.headers["X-Request-Id"] = actor.request_id
+        response.headers["Cache-Control"] = "no-store"
+        return {"requestId": actor.request_id, **preview.response()}
+
+    @router.delete("/v1/imports/previews/{token}")
+    async def cancel_portable_import(token: str, actor: ActorContext) -> dict[str, str]:
+        if portable_import is None or not portable_import.enabled():
+            raise PortableImportFailure("IMPORT_UNSUPPORTED_RUNTIME", status_code=503)
+        await portable_import.cancel_preview(actor, token)
+        return {"requestId": actor.request_id}
+
+    @router.post("/v1/imports/previews/{token}/apply")
+    async def apply_portable_import(
+        token: str,
+        payload: PortableImportApplyRequest,
+        actor: ActorContext,
+        request: Request,
+        response: Response,
+    ) -> dict[str, object]:
+        if portable_import is None or not portable_import.enabled():
+            raise PortableImportFailure("IMPORT_UNSUPPORTED_RUNTIME", status_code=503)
+        fence = cast(ProjectWriteFence, request.app.state.project_write_fence)
+        try:
+            async with fence.maintenance_epoch():
+                try:
+                    result = await portable_import.apply(actor, token, payload.confirmed)
+                    if result.get("restartRequired") is True:
+                        await fence.require_recovery()
+                except PortableImportFailure as error:
+                    if error.code in {"IMPORT_RECOVERY_PENDING", "IMPORT_RECOVERY_REQUIRED"}:
+                        await fence.require_recovery()
+                    raise
+        except ExportAlreadyRunning as error:
+            raise PortableImportFailure("IMPORT_BUSY") from error
+        response.headers["X-Request-Id"] = actor.request_id
+        response.headers["Cache-Control"] = "no-store"
+        return {"requestId": actor.request_id, **result}
+
+    @router.get("/v1/imports/{token}")
+    async def portable_import_result(
+        token: str,
+        actor: ActorContext,
+        response: Response,
+    ) -> dict[str, object]:
+        if portable_import is None or not portable_import.enabled():
+            raise PortableImportFailure("IMPORT_UNSUPPORTED_RUNTIME", status_code=503)
+        result = await portable_import.result(actor, token)
+        response.headers["X-Request-Id"] = actor.request_id
+        response.headers["Cache-Control"] = "no-store"
+        return {"requestId": actor.request_id, **result}
 
     @router.post(
         "/v1/projects/{handle}/notes/drafts",

@@ -1,8 +1,16 @@
 import { useEffect, useMemo, useState, type ReactElement } from "react";
 
+import { ApiError } from "../api/client";
 import type { ProjectaApiClient } from "../api/client";
-import type { ProjectCatalogItem } from "../api/generated";
+import type {
+  PortableImportApplyResponse,
+  PortableImportPreviewResponse,
+  ProjectCatalogItem,
+  PortableImportResultResponse,
+} from "../api/generated";
 import { EmptyState, ErrorMessage, Skeleton, StatusBadge, Toolbar } from "../ui";
+
+const PENDING_IMPORT_SESSION_KEY = "projecta.portableImport.pendingId";
 
 export function ProjectsScreen({
   api,
@@ -17,6 +25,18 @@ export function ProjectsScreen({
   const [loading, setLoading] = useState(true);
   const [selecting, setSelecting] = useState<string | null>(null);
   const [error, setError] = useState<unknown>(null);
+  const [importFile, setImportFile] = useState<File | null>(null);
+  const [importPreview, setImportPreview] = useState<PortableImportPreviewResponse | null>(null);
+  const [importResult, setImportResult] = useState<
+    PortableImportApplyResponse | PortableImportResultResponse | null
+  >(null);
+  const [importError, setImportError] = useState<unknown>(null);
+  const [importWorking, setImportWorking] = useState(false);
+  const [importConfirmed, setImportConfirmed] = useState(false);
+  const [fileInputKey, setFileInputKey] = useState(0);
+  const [pendingImportId, setPendingImportId] = useState<string | null>(() =>
+    window.sessionStorage.getItem(PENDING_IMPORT_SESSION_KEY),
+  );
 
   const load = async () => {
     setLoading(true);
@@ -36,7 +56,55 @@ export function ProjectsScreen({
     void load();
   }, []);
 
+  useEffect(() => {
+    if (!pendingImportId) return;
+    let active = true;
+    let timer: number | undefined;
+    const poll = async () => {
+      try {
+        const result = await api.getPortableImportResult(pendingImportId);
+        if (!active) return;
+        setImportResult(result);
+        if (result.status === "staging") {
+          timer = window.setTimeout(() => void poll(), 1_500);
+        } else {
+          window.sessionStorage.removeItem(PENDING_IMPORT_SESSION_KEY);
+          setPendingImportId(null);
+          if (result.status === "complete") {
+            try {
+              const catalog = await api.listProjects();
+              if (active) {
+                setProjects(catalog.projects);
+                setCatalogRevision(catalog.catalogRevision);
+                setError(null);
+              }
+            } catch (nextError) {
+              if (active) setError(nextError);
+            }
+          }
+        }
+      } catch (nextError) {
+        if (nextError instanceof ApiError && nextError.problem.status === 404) {
+          window.sessionStorage.removeItem(PENDING_IMPORT_SESSION_KEY);
+          setPendingImportId(null);
+          setImportError(nextError);
+          return;
+        }
+        if (active) timer = window.setTimeout(() => void poll(), 1_500);
+      }
+    };
+    void poll();
+    return () => {
+      active = false;
+      if (timer !== undefined) window.clearTimeout(timer);
+    };
+  }, [api, pendingImportId]);
+
   const visible = useMemo(() => filterProjects(projects, search), [projects, search]);
+  const importStatus = importResult && "status" in importResult ? importResult.status : null;
+  const importAlreadyImported = importResult && "alreadyImported" in importResult && importResult.alreadyImported;
+  const importFailureCode = importResult && "failureCode" in importResult ? importResult.failureCode : undefined;
+  const importNextAction = importResult && "nextAction" in importResult ? importResult.nextAction : undefined;
 
   const select = async (project: ProjectCatalogItem) => {
     setSelecting(project.handle);
@@ -47,6 +115,66 @@ export function ProjectsScreen({
       setError(nextError);
     } finally {
       setSelecting(null);
+    }
+  };
+  const reviewImport = async () => {
+    if (!importFile) return;
+    setImportWorking(true);
+    setImportError(null);
+    setImportResult(null);
+    try {
+      const result = await api.previewPortableImport(importFile);
+      setImportPreview(result);
+      setImportConfirmed(false);
+    } catch (nextError) {
+      setImportError(nextError);
+    } finally {
+      setImportWorking(false);
+    }
+  };
+
+  const cancelImport = async () => {
+    setImportWorking(true);
+    setImportError(null);
+    try {
+      if (importPreview) await api.cancelPortableImport(importPreview.importId);
+      setImportPreview(null);
+      setImportResult(null);
+      setImportFile(null);
+      setImportConfirmed(false);
+      setFileInputKey((value) => value + 1);
+    } catch (nextError) {
+      setImportError(nextError);
+    } finally {
+      setImportWorking(false);
+    }
+  };
+
+  const applyImport = async () => {
+    if (
+      !importPreview ||
+      !importConfirmed ||
+      !["add-project", "adopt-placeholder"].includes(importPreview.destinationAction)
+    ) {
+      return;
+    }
+    setImportWorking(true);
+    setImportError(null);
+    try {
+      const result = await api.applyPortableImport(importPreview.importId, true);
+      if (result.restartRequired && result.importId) {
+        window.sessionStorage.setItem(PENDING_IMPORT_SESSION_KEY, result.importId);
+        setPendingImportId(result.importId);
+      }
+      setImportResult(result);
+      setImportPreview(null);
+      setImportFile(null);
+      setImportConfirmed(false);
+      setFileInputKey((value) => value + 1);
+    } catch (nextError) {
+      setImportError(nextError);
+    } finally {
+      setImportWorking(false);
     }
   };
 
@@ -75,6 +203,153 @@ export function ProjectsScreen({
           Refresh
         </button>
       </Toolbar>
+      <section aria-labelledby="portable-import-title" className="project-card portable-import-card">
+        <div>
+          <p className="eyebrow">Manual transfer</p>
+          <h3 id="portable-import-title">Import a project package</h3>
+          <p className="muted">
+            Choose a Projecta <code>.projecta</code> file to validate its contents and destination
+            before you decide whether to import it.
+          </p>
+        </div>
+        <label className="import-file-field">
+          <span>Project package</span>
+          <input
+            key={fileInputKey}
+            accept=".projecta"
+            disabled={importWorking || importPreview !== null || pendingImportId !== null}
+            onChange={(event) => {
+              setImportFile(event.currentTarget.files?.[0] ?? null);
+              setImportError(null);
+              setImportResult(null);
+            }}
+            type="file"
+          />
+        </label>
+        {importFile && (
+          <p className="project-meta">
+            Selected: {importFile.name} · {formatBytes(importFile.size)}
+          </p>
+        )}
+        <div className="workspace-header-actions">
+          {!importPreview && (
+            <button
+              disabled={!importFile || importWorking}
+              onClick={() => void reviewImport()}
+              type="button"
+            >
+              {importWorking ? "Validating package…" : "Review package"}
+            </button>
+          )}
+          {(importFile || importPreview) && (
+            <button
+              className="secondary"
+              disabled={importWorking}
+              onClick={() => void cancelImport()}
+              type="button"
+            >
+              {importPreview ? "Cancel preview" : "Clear file"}
+            </button>
+          )}
+        </div>
+        {importError !== null && <ErrorMessage error={importError} />}
+        {importPreview && (
+          <div aria-live="polite" className="import-review">
+            <h4>Review before importing</h4>
+            <dl className="import-details">
+              <div><dt>Project</dt><dd>{importPreview.projectName}</dd></div>
+              <div><dt>Project ID</dt><dd><code>{importPreview.projectId}</code></dd></div>
+              <div><dt>Exported</dt><dd>{importPreview.exportedAt}</dd></div>
+              <div><dt>Package size</dt><dd>{formatBytes(importPreview.sizeBytes)}</dd></div>
+              <div><dt>Archive SHA-256</dt><dd><code>{importPreview.archiveSha256}</code></dd></div>
+              <div>
+                <dt>Destination</dt>
+                <dd>{destinationLabel(importPreview.destinationAction)}</dd>
+              </div>
+            </dl>
+            <p className="project-meta">
+              Package contents:{" "}
+              {Object.entries(importPreview.counts)
+                .map(([name, count]) => `${name}: ${count}`)
+                .join(" · ")}
+            </p>
+            <p className="import-warning" role="note">{importPreview.plaintextWarning}</p>
+            {importPreview.destinationAction === "conflict" && (
+              <p className="import-conflict" role="alert">
+                The destination conflicts with existing local state. No project data was changed.
+                Cancel this preview to continue.
+              </p>
+            )}
+            {importPreview.destinationAction === "already-imported" && (
+              <p className="project-meta" role="status">
+                This exact export is already recorded locally. Importing it again is a no-op.
+              </p>
+            )}
+            {["add-project", "adopt-placeholder"].includes(importPreview.destinationAction) && (
+              <>
+                <label className="import-confirmation">
+                  <input
+                    checked={importConfirmed}
+                    disabled={importWorking}
+                    onChange={(event) => setImportConfirmed(event.currentTarget.checked)}
+                    type="checkbox"
+                  />
+                  <span>
+                    I am authorized to import this package and understand that existing destination
+                    state will not be overwritten.
+                  </span>
+                </label>
+                <div className="workspace-header-actions">
+                  <button
+                    disabled={!importConfirmed || importWorking}
+                    onClick={() => void applyImport()}
+                    type="button"
+                  >
+                    {importWorking ? "Importing…" : "Apply import"}
+                  </button>
+                  <button
+                    className="secondary"
+                    disabled={importWorking}
+                    onClick={() => void cancelImport()}
+                    type="button"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+        {pendingImportId && !importResult && (
+          <div aria-live="polite" className="import-result" role="status">
+            <h4>Project import in progress</h4>
+            <p>Projecta Local is preparing the project privately before making it available.</p>
+          </div>
+        )}
+        {importResult && (
+          <div aria-live="polite" className="import-result" role={importStatus === "failed" ? "alert" : "status"}>
+            <h4>
+              {importAlreadyImported
+                ? "Project already imported"
+                : importStatus === "staging"
+                  ? "Project import in progress"
+                  : importStatus === "failed"
+                    ? "Project import failed"
+                    : "Project import complete"}
+            </h4>
+            <p>
+              {importStatus === "staging"
+                ? "Projecta Local is preparing the project privately. It will appear in the project list only after the complete staged state is published."
+                : importStatus === "failed"
+                  ? `The staged import was not published. Existing local project data was retained.${importFailureCode ? ` (${importFailureCode})` : ""}`
+                  : importNextAction ??
+                    (importAlreadyImported
+                      ? "This exact archive was already imported; no local data was changed."
+                      : "The project is available from the Projects list. It was not selected automatically.")}
+            </p>
+          </div>
+        )}
+      </section>
       {loading && <Skeleton count={4} />}
       {!loading && error !== null && (
         <>
@@ -114,7 +389,7 @@ export function ProjectsScreen({
                 {project.freshness.state}
               </div>
               <button
-                disabled={selecting !== null}
+                disabled={selecting !== null || importWorking || importPreview !== null}
                 onClick={() => void select(project)}
                 type="button"
               >
@@ -137,4 +412,28 @@ export function filterProjects(
   return projects.filter((project) =>
     `${project.name} ${project.summary ?? ""}`.toLocaleLowerCase().includes(needle),
   );
+}
+function formatBytes(size: number): string {
+  if (size < 1024) return `${size} bytes`;
+  const units = ["KB", "MB", "GB"];
+  let value = size / 1024;
+  let unit = units[0];
+  for (let index = 1; value >= 1024 && index < units.length; index += 1) {
+    value /= 1024;
+    unit = units[index];
+  }
+  return `${value.toFixed(value < 10 ? 1 : 0)} ${unit}`;
+}
+
+function destinationLabel(action: PortableImportPreviewResponse["destinationAction"]): string {
+  switch (action) {
+    case "add-project":
+      return "Add as a separate project";
+    case "adopt-placeholder":
+      return "Use the empty first-run project";
+    case "already-imported":
+      return "This exact package was already imported";
+    case "conflict":
+      return "Conflicts with existing destination state";
+  }
 }

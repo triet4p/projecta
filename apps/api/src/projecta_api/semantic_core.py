@@ -6,6 +6,7 @@ import os
 from collections.abc import Mapping
 from pathlib import Path
 from typing import Protocol, cast
+from urllib.parse import urlencode
 
 import httpx
 from pydantic import ValidationError
@@ -54,6 +55,21 @@ class SemanticCoreClient(Protocol):
     async def stream_project_trig(
         self, context: TrustedRequestContext, destination: Path, max_bytes: int
     ) -> int: ...
+    async def validate_portable_import(
+        self, actor: TrustedActorContext, project_id: str, placeholder_name: str,
+        project_name: str, trig_path: Path,
+    ) -> Mapping[str, object]: ...
+
+    async def apply_portable_import(
+        self, actor: TrustedActorContext, project_id: str, placeholder_name: str,
+        project_name: str, adopt_placeholder: bool, trig_path: Path,
+    ) -> Mapping[str, object]: ...
+
+    async def rollback_portable_import(
+        self, actor: TrustedActorContext, project_id: str, placeholder_name: str,
+        project_name: str, restore_placeholder: bool, trig_path: Path,
+    ) -> None: ...
+
     async def readiness(self) -> bool:
         """Return whether Semantic Core reports its Fuseki dependency ready."""
         ...
@@ -177,6 +193,111 @@ class HttpSemanticCoreClient:
     ) -> object:
         """Persist a normalized M3 batch through the finite Core operation."""
         return await self.request(context, "POST", "/v1/quick-notes/extractions", body, key)
+
+    async def validate_portable_import(
+        self,
+        actor: TrustedActorContext,
+        project_id: str,
+        placeholder_name: str,
+        project_name: str,
+        trig_path: Path,
+    ) -> Mapping[str, object]:
+        return await self._portable_import_request(
+            actor, project_id, "validate",
+            {"placeholderName": placeholder_name, "projectName": project_name}, trig_path,
+        )
+
+    async def apply_portable_import(
+        self,
+        actor: TrustedActorContext,
+        project_id: str,
+        placeholder_name: str,
+        project_name: str,
+        adopt_placeholder: bool,
+        trig_path: Path,
+    ) -> Mapping[str, object]:
+        return await self._portable_import_request(
+            actor, project_id, "apply",
+            {
+                "placeholderName": placeholder_name,
+                "projectName": project_name,
+                "adoptPlaceholder": str(adopt_placeholder).lower(),
+            },
+            trig_path,
+        )
+
+    async def rollback_portable_import(
+        self,
+        actor: TrustedActorContext,
+        project_id: str,
+        placeholder_name: str,
+        project_name: str,
+        restore_placeholder: bool,
+        trig_path: Path,
+    ) -> None:
+        await self._portable_import_request(
+            actor, project_id, "rollback",
+            {
+                "placeholderName": placeholder_name,
+                "projectName": project_name,
+                "restorePlaceholder": str(restore_placeholder).lower(),
+            },
+            trig_path,
+            allow_empty=True,
+        )
+
+    async def _portable_import_request(
+        self,
+        actor: TrustedActorContext,
+        project_id: str,
+        action: str,
+        query: Mapping[str, str],
+        trig_path: Path,
+        *,
+        allow_empty: bool = False,
+    ) -> Mapping[str, object]:
+        path = f"/v1/projects/{project_id}/portable-import/{action}?{urlencode(query)}"
+        context = TrustedRequestContext(
+            project_id=project_id,
+            actor_id=actor.actor_id,
+            request_id=actor.request_id,
+            operation_id=actor.operation_id,
+        )
+
+        async def chunks():
+            with trig_path.open("rb") as source:
+                while data := await asyncio.to_thread(source.read, 64 * 1024):
+                    yield data
+
+        try:
+            async with httpx.AsyncClient(
+                base_url=self._base_url,
+                timeout=httpx.Timeout(300.0, connect=10.0),
+                transport=self._transport,
+            ) as client:
+                response = await client.post(
+                    path,
+                    content=chunks(),
+                    headers={**_headers(context), "Content-Type": "application/trig"},
+                )
+        except (httpx.HTTPError, OSError) as error:
+            raise SemanticCoreProblem(
+                503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core is temporarily unavailable"
+            ) from error
+        if response.is_error:
+            try:
+                payload: object = response.json()
+            except ValueError:
+                payload = {}
+            raise _problem(response.status_code, payload)
+        if allow_empty and not response.content:
+            return {}
+        try:
+            return _mapping(response.json())
+        except (ValueError, SemanticCoreProblem) as error:
+            raise SemanticCoreProblem(
+                503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core returned invalid import data"
+            ) from error
 
     async def stream_project_trig(
         self, context: TrustedRequestContext, destination: Path, max_bytes: int

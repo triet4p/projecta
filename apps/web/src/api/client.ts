@@ -33,6 +33,9 @@ import type {
   Problem,
   ProjectContextQuestion,
   ProjectCatalogResponse,
+  PortableImportApplyResponse,
+  PortableImportPreviewResponse,
+  PortableImportResultResponse,
   ProjectOverviewResponse,
   ProjectReadResponse,
   ProjectSelectionRequest,
@@ -108,6 +111,38 @@ export class ProjectaApiClient {
   async listProjects(limit = 50): Promise<ProjectCatalogResponse> {
     return this.request<ProjectCatalogResponse>(`/v1/projects?limit=${limit}`, { method: "GET" });
   }
+  async previewPortableImport(file: Blob): Promise<PortableImportPreviewResponse> {
+    return this.request<PortableImportPreviewResponse>("/v1/imports/previews", {
+      method: "POST",
+      rawBody: file,
+      contentType: "application/octet-stream",
+    });
+  }
+
+  async cancelPortableImport(importId: string): Promise<{ requestId: string }> {
+    return this.request<{ requestId: string }>(
+      `/v1/imports/previews/${encodeURIComponent(importId)}`,
+      { method: "DELETE" },
+    );
+  }
+
+  async applyPortableImport(
+    importId: string,
+    confirmed: boolean,
+  ): Promise<PortableImportApplyResponse> {
+    return this.request<PortableImportApplyResponse>(
+      `/v1/imports/previews/${encodeURIComponent(importId)}/apply`,
+      { method: "POST", body: { confirmed } },
+    );
+  }
+
+  async getPortableImportResult(importId: string): Promise<PortableImportResultResponse> {
+    return this.request<PortableImportResultResponse>(
+      `/v1/imports/${encodeURIComponent(importId)}`,
+      { method: "GET" },
+    );
+  }
+
 
   async getConnectorCatalog(): Promise<ConnectorCatalogResponse> {
     return this.request<ConnectorCatalogResponse>("/v1/connectors/catalog", { method: "GET" });
@@ -774,13 +809,19 @@ export class ProjectaApiClient {
       "application/json",
       options.headers,
     );
-    if (options.body !== undefined) headers.set("Content-Type", "application/json");
+    if (options.rawBody !== undefined) {
+      headers.set("Content-Type", options.contentType ?? "application/octet-stream");
+    } else if (options.body !== undefined) {
+      headers.set("Content-Type", "application/json");
+    }
     if (options.idempotencyKey !== undefined)
       headers.set("Idempotency-Key", options.idempotencyKey);
     const response = await fetch(`${this.baseUrl}${path}`, {
       method: options.method,
       headers,
-      body: options.body === undefined ? undefined : JSON.stringify(options.body),
+      body:
+        options.rawBody ??
+        (options.body === undefined ? undefined : JSON.stringify(options.body)),
       signal: options.signal,
       credentials: "same-origin",
     });
@@ -814,6 +855,8 @@ interface RequestOptions {
   body?: unknown;
   headers?: HeadersInit;
   idempotencyKey?: string;
+  rawBody?: BodyInit;
+  contentType?: string;
   signal?: AbortSignal;
 }
 
@@ -896,6 +939,52 @@ function validateSuccess(path: string, body: unknown, requestId: string): void {
   if (path === "/v1/projects/" || path.startsWith("/v1/projects?") || path === "/v1/projects") {
     if (!Array.isArray(value.projects) || typeof value.catalogRevision !== "string") {
       throw contractError(requestId, "The project catalog response is malformed.");
+    }
+  }
+  if (path === "/v1/imports/previews") {
+    if (
+      typeof value.importId !== "string" ||
+      typeof value.projectId !== "string" ||
+      typeof value.projectName !== "string" ||
+      typeof value.exportId !== "string" ||
+      typeof value.exportedAt !== "string" ||
+      typeof value.archiveSha256 !== "string" ||
+      !/^[0-9a-f]{64}$/.test(value.archiveSha256) ||
+      typeof value.sizeBytes !== "number" ||
+      !Number.isSafeInteger(value.sizeBytes) ||
+      !["add-project", "adopt-placeholder", "already-imported", "conflict"].includes(
+        String(value.destinationAction),
+      ) ||
+      typeof value.counts !== "object" ||
+      value.counts === null ||
+      typeof value.plaintextWarning !== "string"
+    ) {
+      throw contractError(requestId, "The portable import preview response is malformed.");
+    }
+  }
+  if (path.endsWith("/apply")) {
+    if (
+      typeof value.projectId !== "string" ||
+      typeof value.projectName !== "string" ||
+      typeof value.alreadyImported !== "boolean" ||
+      typeof value.restartRequired !== "boolean" ||
+      (value.importId !== undefined && typeof value.importId !== "string") ||
+      (value.status !== undefined && value.status !== "staging") ||
+      (value.restartRequired && (typeof value.importId !== "string" || value.status !== "staging")) ||
+      (value.nextAction !== undefined && typeof value.nextAction !== "string")
+    ) {
+      throw contractError(requestId, "The portable import response is malformed.");
+    }
+  }
+  if (path !== "/v1/imports/previews" && /^\/v1\/imports\/[^/]+$/.test(path)) {
+    if (
+      typeof value.importId !== "string" ||
+      !["staging", "complete", "failed"].includes(String(value.status)) ||
+      typeof value.projectId !== "string" ||
+      typeof value.projectName !== "string" ||
+      (value.failureCode !== undefined && typeof value.failureCode !== "string")
+    ) {
+      throw contractError(requestId, "The portable import result response is malformed.");
     }
   }
   if (path.includes("/overview")) {

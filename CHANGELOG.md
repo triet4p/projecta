@@ -55,6 +55,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   and channel; it does not establish clean-Windows readiness or signed-release
   eligibility.
 
+- Added validated manual portable-project import under the approved projecta-portable.v1 contract: full archive validation before any live change, explicit owner preview/confirmation/cancel, staged-copy apply with quiesced services and catalog-last publication, durable interrupted-recovery journaling with fail-closed restart behavior, idempotent exact-replay, and finite tamper/partial/version/conflict/unauthorized responses with no implicit approval or materialization. Verified on isolated disposable native runtimes with the accepted S14-10 archive, including real-browser preview/confirm/apply/status proof; no clean-host or cross-machine claim.
+
 ### Fixed
 
 - Corrected the native launcher path: approved first-run workspace provisioning
@@ -94,8 +96,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   assembled payload.
 
 - Fixed the desktop first-run flow so submitting a workspace name starts
-  background provisioning instead of leaving the panel indefinitely at the
-  setup modal.
+   background provisioning instead of leaving the panel indefinitely at the
+   setup modal.
+
+- Fixed the web portable-import preview validator so the `/v1/imports/previews` path is not also checked against the import-result shape; previews (which carry no `status`) no longer fail with a malformed-result error in the Projects import UI.
+
+- Fixed confirmed portable-import apply so a missing staged package file fails closed with `IMPORT_PACKAGE_INVALID` instead of an unmapped internal error; destination state is unchanged.
 
 ### Changed
 

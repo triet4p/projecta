@@ -47,6 +47,24 @@ class Settings(BaseSettings):
     portable_export_lock_held: bool = Field(
         default=False, validation_alias="PROJECTA_API_PORTABLE_EXPORT_LOCK_HELD"
     )
+    portable_import_lock_held: bool = Field(
+        default=False, validation_alias="PROJECTA_API_PORTABLE_IMPORT_LOCK_HELD"
+    )
+    portable_import_root: Path | None = Field(
+        default=None, validation_alias="PROJECTA_API_PORTABLE_IMPORT_ROOT"
+    )
+    portable_import_registry_path: Path | None = Field(
+        default=None, validation_alias="PROJECTA_API_PORTABLE_IMPORT_REGISTRY_PATH"
+    )
+    portable_import_restart_file: Path | None = Field(
+        default=None, validation_alias="PROJECTA_API_PORTABLE_IMPORT_RESTART_FILE"
+    )
+    portable_import_staging_copy: bool = Field(
+        default=False, validation_alias="PROJECTA_API_PORTABLE_IMPORT_STAGING_COPY"
+    )
+    portable_import_runtime_id: str = Field(
+        default="", validation_alias="PROJECTA_API_RUNTIME_ID"
+    )
     operational_database_path: str = Field(
         default=":memory:", validation_alias="PROJECTA_API_OPERATIONAL_DATABASE_PATH"
     )

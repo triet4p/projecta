@@ -8,9 +8,10 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import tempfile
 import uuid
-from collections.abc import AsyncIterable, AsyncIterator
+from collections.abc import AsyncIterable, AsyncIterator, Mapping
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -196,6 +197,128 @@ class LocalEvidenceStore:
             raise EvidenceError("EVIDENCE_PROJECT_FORBIDDEN")
         async with self._write_lock:
             return await asyncio.to_thread(self._list_project_sync, project_scope)
+
+    async def restore_portable(
+        self,
+        project_scope: str,
+        reference: Mapping[str, object],
+        content_path: Path,
+    ) -> None:
+        """Restore one already-validated archive object with its stable reference metadata."""
+        if not _safe_project(project_scope):
+            raise EvidenceError("EVIDENCE_PROJECT_FORBIDDEN")
+        async with self._write_lock:
+            await asyncio.to_thread(self._restore_portable_sync, project_scope, reference, content_path)
+
+    def _restore_portable_sync(
+        self,
+        project_scope: str,
+        reference: Mapping[str, object],
+        content_path: Path,
+    ) -> None:
+        try:
+            evidence_reference = str(reference["evidenceReference"])
+            digest = str(reference["sha256"])
+            size_bytes = int(reference["sizeBytes"])
+            content_type = str(reference["contentType"])
+            created_at = datetime.fromisoformat(str(reference["createdAt"]))
+            retain_until_value = reference["retainUntil"]
+            retain_until = (
+                datetime.fromisoformat(str(retain_until_value))
+                if retain_until_value is not None
+                else None
+            )
+            retention_class = str(reference["retentionClass"])
+            source_reference = str(reference["sourceReference"])
+            contract_version = str(reference["contractVersion"])
+        except (KeyError, TypeError, ValueError) as error:
+            raise EvidenceError("EVIDENCE_METADATA_INVALID") from error
+        if (
+            not _REFERENCE.fullmatch(evidence_reference)
+            or not _SHA256.fullmatch(digest)
+            or not 0 <= size_bytes <= self._max_bytes
+            or content_type not in _ALLOWED_CONTENT_TYPES
+            or self._content_reference(project_scope, digest) != evidence_reference
+            or not created_at.tzinfo
+            or created_at.utcoffset() is None
+            or retain_until is not None
+            and (not retain_until.tzinfo or retain_until.utcoffset() is None)
+            or retention_class != "connector-default"
+            or contract_version != "connector-evidence.v1"
+            or not source_reference
+            or len(source_reference) > 512
+            or source_reference.startswith(("/", "\\"))
+            or ".." in source_reference
+            or any(ord(character) < 32 for character in source_reference)
+            or content_path.is_symlink()
+            or not content_path.is_file()
+            or content_path.stat().st_size != size_bytes
+        ):
+            raise EvidenceError("EVIDENCE_METADATA_INVALID")
+        target_dir = self._object_dir(project_scope, digest)
+        object_path = target_dir / "content"
+        metadata_path = target_dir / "metadata.json"
+        reference_path = self._reference_path(project_scope, evidence_reference)
+        if target_dir.exists() or reference_path.exists():
+            raise EvidenceError("EVIDENCE_CONTENT_CONFLICT")
+        temporary = target_dir.parent / f".{digest}.{uuid.uuid4().hex}.partial"
+        observed = 0
+        actual = hashlib.sha256()
+        try:
+            target_dir.parent.mkdir(parents=True, exist_ok=True)
+            with content_path.open("rb") as source, temporary.open("xb") as destination:
+                while chunk := source.read(_CHUNK_BYTES):
+                    observed += len(chunk)
+                    if observed > size_bytes or observed > self._max_bytes:
+                        raise EvidenceError("EVIDENCE_SIZE_EXCEEDED")
+                    actual.update(chunk)
+                    destination.write(chunk)
+                destination.flush()
+                os.fsync(destination.fileno())
+            if observed != size_bytes or actual.hexdigest() != digest:
+                raise EvidenceError("EVIDENCE_DIGEST_MISMATCH")
+            target_dir.mkdir(parents=True)
+            os.replace(temporary, object_path)
+            metadata = EvidenceMetadata(
+                evidence_reference=evidence_reference,
+                project_scope=project_scope,
+                sha256=digest,
+                size_bytes=size_bytes,
+                content_type=content_type,
+                created_at=created_at,
+                retention_class=retention_class,
+                retain_until=retain_until,
+                source_reference=source_reference,
+                contract_version=contract_version,
+            )
+            self._write_metadata(metadata_path, metadata)
+            self._write_reference_index(metadata)
+        except EvidenceError:
+            raise
+        except OSError as error:
+            raise EvidenceError("EVIDENCE_WRITE_INTERRUPTED") from error
+        finally:
+            temporary.unlink(missing_ok=True)
+
+    async def remove_project_for_import(self, project_scope: str) -> None:
+        """Remove only this import's preflight-empty project evidence roots on rollback."""
+        if not _safe_project(project_scope):
+            raise EvidenceError("EVIDENCE_PROJECT_FORBIDDEN")
+        async with self._write_lock:
+            await asyncio.to_thread(self._remove_project_for_import_sync, project_scope)
+
+    def _remove_project_for_import_sync(self, project_scope: str) -> None:
+        is_junction = getattr(os.path, "isjunction", lambda _path: False)
+        for directory in (
+            self._root / "references" / project_scope,
+            self._root / "objects" / project_scope,
+        ):
+            if is_junction(directory) or directory.is_symlink():
+                raise EvidenceError("EVIDENCE_INTEGRITY_FAILED")
+            if directory.exists():
+                if not directory.is_dir():
+                    raise EvidenceError("EVIDENCE_INTEGRITY_FAILED")
+                shutil.rmtree(directory)
 
     def _list_project_sync(self, project_scope: str) -> tuple[EvidenceMetadata, ...]:
         directory = self._root / "references" / project_scope

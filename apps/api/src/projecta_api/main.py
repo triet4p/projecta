@@ -1,5 +1,7 @@
 """FastAPI composition root."""
 
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from projecta_api.export_fence import (
@@ -12,6 +14,8 @@ from projecta_api.portable_export import (
     PortableExportFailure,
     ProjectPortableExportService,
 )
+from projecta_api.portable_import import PortableImportFailure, ProjectPortableImportService
+
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
@@ -251,7 +255,17 @@ def create_app(
             authoring_telemetry_service=local_suggestion_service.authoring_telemetry,
         )
     retrieval = RetrievalService(client)
-    app = FastAPI(title="Projecta Application API", version="0.7.0")
+    portable_import: ProjectPortableImportService | None = None
+
+    @asynccontextmanager
+    async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+        if portable_import is not None and portable_import.enabled():
+            await portable_import.recover_before_serving(
+                actual_settings.experience_actor_id or ""
+            )
+        yield
+
+    app = FastAPI(title="Projecta Application API", version="0.7.0", lifespan=lifespan)
     app.state.settings = actual_settings
     app.state.startup_problems = startup_problems
     app.state.runtime_configuration = configuration
@@ -283,7 +297,19 @@ def create_app(
         client,
         native_runtime_lock_held=actual_settings.portable_export_lock_held,
     )
-    app.state.portable_export_root = Path(actual_settings.evidence_root).parent / "exports"
+    portable_import = ProjectPortableImportService(
+        database,
+        postgres_engine,
+        evidence_store,
+        client,  # type: ignore[arg-type]
+        import_root=actual_settings.portable_import_root,
+        registry_path=actual_settings.portable_import_registry_path,
+        restart_file=actual_settings.portable_import_restart_file,
+        runtime_id=actual_settings.portable_import_runtime_id,
+        native_runtime_lock_held=actual_settings.portable_import_lock_held,
+        context_secret=actual_settings.trusted_context_secret,
+        staging_copy=actual_settings.portable_import_staging_copy,
+    )
 
     @app.exception_handler(PortableExportFailure)
     async def portable_export_problem(request: Request, error: PortableExportFailure) -> JSONResponse:
@@ -299,6 +325,32 @@ def create_app(
         }
         detail = details.get(error.code, "The portable export operation failed safely.")
         return _problem(request, error.status_code, error.code, "Portable export failed", detail)
+    @app.exception_handler(PortableImportFailure)
+    async def portable_import_problem(request: Request, error: PortableImportFailure) -> JSONResponse:
+        details = {
+            "IMPORT_CONFIRMATION_REQUIRED": "Confirm the reviewed project package before applying it.",
+            "IMPORT_UNSUPPORTED_RUNTIME": "Portable import is available only in Projecta Local.",
+            "IMPORT_UNSUPPORTED_VERSION": "This package or local runtime version is not supported.",
+            "IMPORT_TOO_LARGE": "The selected package exceeds the allowed size or record limit.",
+            "IMPORT_PACKAGE_INVALID": "The selected package failed integrity or contract validation.",
+            "IMPORT_CONFLICT": "The destination contains conflicting project or relational state.",
+            "IMPORT_CATALOG_FULL": "The local project catalog supports at most 100 projects and cannot accept another import.",
+            "IMPORT_BUSY": "Project maintenance is already in progress. Retry when it completes.",
+            "IMPORT_NOT_FOUND": "The import preview is no longer available.",
+            "IMPORT_UNAUTHORIZED": "The import preview belongs to another local actor.",
+            "IMPORT_DESTINATION_FORBIDDEN": "The package project identity or tenant is not supported by this destination.",
+            "IMPORT_FAILED": "The project import failed and local state was restored.",
+            "IMPORT_RECOVERY_PENDING": "The project import is committed; restart Projecta Local to finish publication.",
+            "IMPORT_RECOVERY_REQUIRED": "Projecta Local needs to recover an interrupted import before it can serve requests.",
+        }
+        return _problem(
+            request,
+            error.status_code,
+            error.code,
+            "Portable import failed",
+            details.get(error.code, "The project import could not be completed safely."),
+        )
+
 
     app.add_middleware(LocalExperienceContextMiddleware)
     app.add_middleware(CsrfMiddleware)
@@ -593,6 +645,7 @@ def create_app(
             connector_runtime=composed_connector_runtime,
             local_suggestions=local_suggestion_service,
             portable_export=portable_export,
+            portable_import=portable_import,
         )
     )
     if actual_settings.web_assets_directory is not None:

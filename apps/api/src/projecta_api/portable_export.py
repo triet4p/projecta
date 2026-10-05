@@ -62,6 +62,9 @@ _PROJECT_ID = re.compile(r"^[a-z0-9][a-z0-9-]{0,62}$")
 _SOURCE_REVISION = re.compile(r"^catalog-r-[0-9a-f]{40}$")
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _DIGEST = re.compile(r"^sha256:[0-9a-f]{64}$")
+_PORTABLE_DIGEST_MARKER = re.compile(
+    r"^projecta-portable-(?:key|actor)\.v1\|(sha256:[0-9a-f]{64})\|[0-9a-f]{32}$"
+)
 _TEAMS_CURSOR = re.compile(r"^teams\.v1\|([^|]{1,64})\|([0-9a-f]{32})$")
 _FIXED_MEMBERS: tuple[tuple[str, str, str], ...] = (
     ("payload/semantic/project.trig", "semantic-project", "application/trig"),
@@ -954,6 +957,36 @@ def _connector_record(
             "revision": _nullable_int(row.get("revision")),
             "recordedAt": _db_timestamp(row.get("recorded_at")),
         }
+    raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
+
+
+def _validate_cursor(connector_type: str, checkpoint: str | None) -> None:
+    """Validate only the recognized v1 connector cursors; unknown codecs fail as unsupported."""
+    if checkpoint is None:
+        return
+    if connector_type == "teams":
+        match = _TEAMS_CURSOR.fullmatch(checkpoint)
+        if match is None:
+            raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
+        try:
+            datetime.fromisoformat(match.group(1)).astimezone(UTC)
+        except ValueError as error:
+            raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE") from error
+        return
+    if connector_type == "github-public-issues":
+        try:
+            GitHubCursorCodec.decode(checkpoint)
+        except Exception as error:
+            raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE") from error
+        return
+    if connector_type == "json-mock":
+        try:
+            index = int(checkpoint)
+        except ValueError as error:
+            raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE") from error
+        if index < 0 or index > 100:
+            raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
+        return
     raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
 
 
@@ -1917,9 +1950,13 @@ def _hex_digest(value: object) -> str:
 
 
 def _digest_format(value: str) -> str:
-    if not _DIGEST.fullmatch(value):
-        raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
-    return value
+    if _DIGEST.fullmatch(value):
+        return value
+    if _SHA256.fullmatch(value):
+        return "sha256:" + value
+    if value.startswith("ls1_") and _SHA256.fullmatch(value[4:]):
+        return "sha256:" + value[4:]
+    raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
 
 
 def _nullable_digest(value: object) -> str | None:
@@ -1927,6 +1964,9 @@ def _nullable_digest(value: object) -> str | None:
 
 
 def _digest_text(value: str) -> str:
+    marker = _PORTABLE_DIGEST_MARKER.fullmatch(value)
+    if marker:
+        return marker.group(1)
     return "sha256:" + hashlib.sha256(value.encode("utf-8", "strict")).hexdigest()
 
 

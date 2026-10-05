@@ -22,6 +22,7 @@ public final class RemoteCandidateValidationService {
     private final Model legacyShapes;
     private final Model m2Shapes;
     private final Model m3Shapes;
+    private final Model m4Shapes;
 
     public RemoteCandidateValidationService(FusekiGateway gateway, GraphIriRouter router, Path shapesDirectory) {
         this.gateway = gateway;
@@ -29,7 +30,8 @@ public final class RemoteCandidateValidationService {
         if (!Files.isRegularFile(shapesDirectory.resolve("candidate-shapes.ttl"))
                 || !Files.isRegularFile(shapesDirectory.resolve("evidence-shapes.ttl"))
                 || !Files.isRegularFile(shapesDirectory.resolve("source-shapes.ttl"))
-                || !Files.isRegularFile(shapesDirectory.resolve("llm-extraction-draft-shapes.ttl"))) {
+                || !Files.isRegularFile(shapesDirectory.resolve("llm-extraction-draft-shapes.ttl"))
+                || !Files.isRegularFile(shapesDirectory.resolve("m4-retrieval-shapes.ttl"))) {
             throw new IllegalStateException("released candidate SHACL shapes are unavailable");
         }
         this.legacyShapes = loadShapes(shapesDirectory, "candidate-shapes.ttl", "source-shapes.ttl");
@@ -44,6 +46,7 @@ public final class RemoteCandidateValidationService {
                         .resolve("llm-extraction-draft-shapes.ttl")
                         .toUri()
                         .toString());
+        this.m4Shapes = loadShapes(shapesDirectory, "m4-retrieval-shapes.ttl");
     }
 
     /**
@@ -159,6 +162,42 @@ public final class RemoteCandidateValidationService {
                         entry.message()))
                 .toList();
         return new CandidateValidationResult(report.conforms(), violations);
+    }
+
+    /** Validates imported source, candidate, provenance, assertion, and inference state without mutation. */
+    public CandidateValidationResult validatePortableImport(
+            Model sources, Model candidates, Model asserted, Model inferred, Model provenance) {
+        var ontology = gateway.graph(ONTOLOGY_GRAPH);
+        var data = ModelFactory.createDefaultModel();
+        var inferenceData = ModelFactory.createDefaultModel();
+        try {
+            data.add(ontology);
+            data.add(sources);
+            data.add(candidates);
+            data.add(asserted);
+            data.add(provenance);
+            var projectReport = ShaclValidator.get().validate(
+                    shapesForCapture(candidates, provenance).getGraph(), data.getGraph());
+
+            inferenceData.add(ontology);
+            inferenceData.add(asserted);
+            inferenceData.add(inferred);
+            var inferenceReport =
+                    ShaclValidator.get().validate(m4Shapes.getGraph(), inferenceData.getGraph());
+            var violations = java.util.stream.Stream.concat(
+                            projectReport.getEntries().stream(), inferenceReport.getEntries().stream())
+                    .map(entry -> new CandidateValidationResult.Violation(
+                            entry.source() == null ? null : entry.source().toString(),
+                            entry.resultPath() == null ? null : entry.resultPath().toString(),
+                            entry.message()))
+                    .toList();
+            return new CandidateValidationResult(
+                    projectReport.conforms() && inferenceReport.conforms(), violations);
+        } finally {
+            ontology.close();
+            data.close();
+            inferenceData.close();
+        }
     }
 
     private Model shapesForCapture(Model candidates, Model provenance) {

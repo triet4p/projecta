@@ -110,6 +110,37 @@ asks whether to keep services running, choose **No** to return to the panel
 and stop them first; choose **Yes** only when background operation is
 intentional.
 
+## Transfer a project between local installations
+
+Projecta's Projects screen can export a project as a `.projecta` package and
+import it on another local installation. Transfer the file yourself using a
+channel you trust; Projecta does not synchronize the two installations.
+
+1. On the source installation, open **Projects**, export the intended project,
+   and save the `.projecta` file. The package excludes provider credentials,
+   authentication sessions, and other secret material.
+2. Move that file to the destination computer. The package is not encrypted:
+   it may contain sensitive project content. Only transfer it when authorized,
+   and protect it like the source data.
+3. On the destination, open **Projects → Import a project package**, choose
+   the file, select **Review package**, and check the project identity,
+   contents, and destination before confirming. The SHA-256 value detects
+   accidental archive changes; it does not authenticate the sender.
+4. Confirm only if the destination is correct and you are authorized to import
+   the package. Projecta prepares a private staged copy while its local
+   services are stopped, then publishes the catalog last. Existing destination
+   project data is never overwritten. A destination conflict stops the import
+   without changing the live workspace.
+5. Keep the Projects tab open until it reports **Project import complete** or a
+   failure code. The imported project appears in the list only after the full
+   staged state is published. Projecta does not select it automatically;
+   refresh the list if needed, then choose it explicitly. If the import fails,
+   the staged copy is discarded or rolled back and the existing destination
+   state is retained; report the displayed failure code.
+
+This is a manual, same-contract transfer. It does not establish account sync,
+provider credential transfer, clean-host certification, or release readiness.
+
 ## Data, uninstall, and reporting
 
 Application files are under `%LOCALAPPDATA%\Programs\Projecta\0.7.0`.
