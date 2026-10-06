@@ -95,9 +95,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   pinned prerequisite policy, and rejects any residual runtime DLL in the
   assembled payload.
 
+- Fixed the desktop control panel so its window appears immediately on launch while package verification continues in the background; a failed check now reports its exact code on the visible panel instead of leaving a windowless process.
 - Fixed the desktop first-run flow so submitting a workspace name starts
-   background provisioning instead of leaving the panel indefinitely at the
-   setup modal.
+  background provisioning instead of leaving the panel indefinitely at the
+  setup modal.
 
 - Fixed the web portable-import preview validator so the `/v1/imports/previews` path is not also checked against the import-result shape; previews (which carry no `status`) no longer fail with a malformed-result error in the Projects import UI.
 - Fixed portable project exports failing with an internal error by restoring the export work-directory root on application startup.

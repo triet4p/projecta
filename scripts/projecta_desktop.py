@@ -299,6 +299,37 @@ def _single_instance_mutex(kernel32: object) -> int:
     return int(handle)
 
 
+def _verify_installation(paths: launcher.ProjectaPaths) -> None:
+    """Run the slow package-integrity verification off the Tk thread.
+
+    The frozen entry point calls this on a worker thread after the visible
+    panel already exists, then marshals the outcome back with ``root.after``.
+    It performs no Tk calls and starts no service; on failure the panel
+    reports the exact startup code instead of silently staying empty.
+    """
+    manifest = launcher.load_runtime_manifest(paths)
+    launcher._require_package_distribution(manifest)
+
+
+def _begin_verified(root: tk.Tk, app: ProjectaDesktop) -> None:
+    if not root.winfo_exists():
+        return
+    app.begin()
+
+
+def _report_verification_failure(
+    root: tk.Tk, app: ProjectaDesktop, message: str
+) -> None:
+    if not root.winfo_exists():
+        return
+    try:
+        app.start_button.configure(state="disabled")
+    except tk.TclError:
+        return
+    app.state.set(message)
+    messagebox.showerror("Projecta could not be opened", message, parent=root)
+
+
 def main() -> int:
     if os.name != "nt":
         return 2
@@ -311,8 +342,6 @@ def main() -> int:
             )
             return 0
         paths = launcher.ProjectaPaths.discover()
-        manifest = launcher.load_runtime_manifest(paths)
-        launcher._require_package_distribution(manifest)
     except launcher.RuntimeFailure as error:
         _show_startup_error(f"Projecta could not be opened: {error.message} [{error.code}]\n\nLocal data was not deleted.")
         return 2
@@ -323,7 +352,34 @@ def main() -> int:
     try:
         root = tk.Tk()
         app = ProjectaDesktop(root, paths)
-        app.begin()
+        app.state.set("Checking installation…")
+        root.update_idletasks()
+        root.deiconify()
+        root.lift()
+
+        def verify() -> None:
+            try:
+                _verify_installation(paths)
+            except launcher.RuntimeFailure as error:
+                message = f"Projecta could not be opened: {error.message} [{error.code}]\n\nLocal data was not deleted."
+                try:
+                    root.after(0, lambda: _report_verification_failure(root, app, message))
+                except tk.TclError:
+                    pass
+                return
+            except OSError as error:
+                message = f"Projecta could not be opened: {error}\n\nLocal data was not deleted."
+                try:
+                    root.after(0, lambda: _report_verification_failure(root, app, message))
+                except tk.TclError:
+                    pass
+                return
+            try:
+                root.after(0, lambda: _begin_verified(root, app))
+            except tk.TclError:
+                pass
+
+        threading.Thread(target=verify, name="projecta-startup-verify", daemon=True).start()
         root.mainloop()
     except tk.TclError:
         _show_startup_error("The Projecta control panel could not be opened. Local data was not deleted.")
