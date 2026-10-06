@@ -104,6 +104,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Fixed portable imports of a new project beside a renamed first-run workspace by sending the incoming project name when the destination has no local display name for it; the Core import validation no longer rejects the request.
 - Fixed corrupted portable-import archives that break deflate decoding failing with an internal error; they now fail closed with the finite package-invalid response.
 - Fixed confirmed portable-import apply so a missing staged package file fails closed with `IMPORT_PACKAGE_INVALID` instead of an unmapped internal error; destination state is unchanged.
+- Fixed the unsigned Windows installer failing at the staged-application commit step: setup now leaves the staging directory before renaming it over the install location, commits onto a pre-created empty install directory instead of treating it as an existing installation, no longer aborts silent installs during startup, and uses distinct staging and previous-install temporary names. Fresh installs commit, upgrades replace the previous tree, and a failed commit still restores or leaves the previous installation without touching workspace data.
 
 ### Changed
 

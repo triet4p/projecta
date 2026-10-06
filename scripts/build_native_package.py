@@ -998,6 +998,10 @@ def _download_license_text(url: str) -> str:
             content = response.read(4 * 1024 * 1024 + 1)
     except (OSError, urllib.error.URLError) as error:
         raise SystemExit(f"official Java license text could not be retrieved: {url}") from error
+    return _normalize_license_text(content, content_type, url)
+
+
+def _normalize_license_text(content: bytes, content_type: str, url: str) -> str:
     if len(content) > 4 * 1024 * 1024:
         raise SystemExit(f"official Java license text is unexpectedly large: {url}")
     try:
@@ -1015,26 +1019,68 @@ def _download_license_text(url: str) -> str:
     return text + "\n"
 
 
+def _resolve_license_overrides(raw: str | None) -> dict[str, Path]:
+    if not raw:
+        return {}
+    overrides: dict[str, Path] = {}
+    for item in raw.split(";"):
+        url, _, path_text = item.partition("=")
+        url = url.strip()
+        path_text = path_text.strip()
+        if not url or not path_text:
+            raise SystemExit("a --license-text-file entry must have the form URL=PATH.")
+        if url in overrides:
+            raise SystemExit(f"a --license-text-file URL is listed twice: {url}")
+        path = Path(path_text).expanduser()
+        if not path.is_absolute():
+            path = ROOT / path
+        path = Path(os.path.abspath(path))
+        if path.is_symlink() or not path.is_file():
+            raise SystemExit(f"the pinned license text file is missing or unsafe: {url}")
+        overrides[url] = path
+    return overrides
+
+def _read_pinned_license_text(path: Path, url: str) -> str:
+    if path.is_symlink() or not path.is_file():
+        raise SystemExit(f"the pinned license text file is missing or unsafe: {url}")
+    content = path.read_bytes()
+    suffix = path.suffix.casefold()
+    if suffix == ".txt":
+        content_type = "text/plain"
+    elif suffix in {".html", ".htm"}:
+        content_type = "text/html"
+    else:
+        raise SystemExit(f"the pinned license text file must end in .txt, .html, or .htm: {url}")
+    return _normalize_license_text(content, content_type, url)
 def _store_java_license(
     notice_root: Path,
     content_paths: dict[str, str],
     *,
     name: str,
     url: str,
+    pinned_files: dict[str, Path] | None = None,
 ) -> dict[str, str]:
-    content = _download_license_text(url)
+    pinned = (pinned_files or {}).get(url)
+    if pinned is None:
+        content = _download_license_text(url)
+    else:
+        content = _read_pinned_license_text(pinned, url)
     digest = hashlib.sha256(content.encode("utf-8")).hexdigest()
     stored = content_paths.get(digest)
     if stored is None:
         stored = f"third-party-notices/{digest[:16]}-LICENSE.txt"
         (notice_root.parent / stored).write_text(content, encoding="utf-8", newline="\n")
         content_paths[digest] = stored
-    return {"name": name, "sourceUrl": url, "path": stored, "sha256": digest}
+    record = {"name": name, "sourceUrl": url, "path": stored, "sha256": digest}
+    if pinned is not None:
+        record["retrieval"] = f"pinned-file:{pinned.name}"
+    return record
 
 
 def _write_java_notices(
     semantic_core: Path,
     resolved_dependencies: dict[str, dict[str, str]] | None = None,
+    pinned_license_files: dict[str, Path] | None = None,
 ) -> dict[str, object]:
     notice_root = semantic_core / "third-party-notices"
     notice_root.mkdir(parents=True, exist_ok=True)
@@ -1087,6 +1133,7 @@ def _write_java_notices(
                     content_paths,
                     name=license_item["name"],
                     url=source_url,
+                    pinned_files=pinned_license_files,
                 )
             )
         upstream_notices: list[dict[str, str]] = []
@@ -1098,6 +1145,7 @@ def _write_java_notices(
                     content_paths,
                     name="Upstream NOTICE.txt",
                     url=notice_url,
+                    pinned_files=pinned_license_files,
                 )
             )
             external.append(
@@ -1106,6 +1154,7 @@ def _write_java_notices(
                     content_paths,
                     name="BSD-style license for Scala-derived portions",
                     url="https://raw.githubusercontent.com/andrewoma/dexx/0.7/licenses/LICENSE_Scala.txt",
+                    pinned_files=pinned_license_files,
                 )
             )
         libraries.append(
@@ -1586,7 +1635,7 @@ def stage_postgres(dest: Path) -> None:
     shutil.rmtree(tmp, ignore_errors=True)
 
 
-def stage_project(dest: Path) -> None:
+def stage_project(dest: Path, pinned_license_files: dict[str, Path] | None = None) -> None:
     if dest.exists():
         shutil.rmtree(dest)
     api_src = ROOT / "apps" / "api" / "src" / "projecta_api"
@@ -1616,7 +1665,7 @@ def stage_project(dest: Path) -> None:
     runtime_dependencies = _maven_runtime_dependencies()
     for coordinate in runtime_dependencies.values():
         shutil.copy2(coordinate["jarPath"], lib_dest / Path(coordinate["jarPath"]).name)
-    _write_java_notices(semantic_core, runtime_dependencies)
+    _write_java_notices(semantic_core, runtime_dependencies, pinned_license_files)
     _write_component_manifest(
         semantic_core,
         "semantic-core",
@@ -2384,6 +2433,11 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--output", type=Path, default=OUT)
     parser.add_argument("--archive", type=Path)
+    parser.add_argument(
+        "--license-text-file",
+        default=None,
+        help="pinned license text for one official Java license URL (URL=PATH), used only when that URL is unreachable.",
+    )
     args = parser.parse_args(argv)
     if args.installer_tool_notice is not None:
         installer_tool_notice = args.installer_tool_notice.expanduser()
@@ -2438,6 +2492,7 @@ def main(argv: list[str] | None = None) -> int:
     if package.exists() and (not output_is_default or args.unsigned_pre_release_test):
         raise SystemExit("the requested package directory already exists; existing output was left untouched.")
     captured_source_provenance = _capture_source_provenance(receipt)
+    pinned_license_files = _resolve_license_overrides(args.license_text_file)
     _build_web_assets()
 
     if package.exists():
@@ -2448,7 +2503,7 @@ def main(argv: list[str] | None = None) -> int:
     stage_python(package / "runtime" / "python")
     stage_java(package / "runtime" / "java")
     stage_postgres(package / "runtime" / "postgresql")
-    stage_project(package / "projecta")
+    stage_project(package / "projecta", pinned_license_files)
     source_vc_files = _strip_app_local_vc_runtime(package, receipt)
     trust_dir, public_key_fingerprint = _write_update_trust_module(release_eligible=args.release)
     if args.release and public_key_fingerprint != signing["publicKeyFingerprint"]:
@@ -2498,7 +2553,10 @@ def main(argv: list[str] | None = None) -> int:
         ),
         "runtimeVersions": dict(RUNTIME_VERSIONS),
         "inputs": receipt,
-        "package": str(package),
+        "pinnedLicenseTextFiles": {
+            url: {"file": path.name, "sha256": sha256(path), "size": path.stat().st_size}
+            for url, path in sorted(pinned_license_files.items())
+        },
         "manifest": manifest,
         "nativeDependencies": {
             "imageCount": len(native_dependencies["images"]),

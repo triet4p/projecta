@@ -54,3 +54,51 @@ def test_source_provenance_hashes_untracked_build_inputs(tmp_path: Path) -> None
     script.write_bytes(b"changed build input\n")
     second_records = builder._source_input_records(tmp_path, ("scripts",))
     assert builder._records_sha256(second_records) != first_digest
+
+
+def test_license_override_rejects_malformed_entry(tmp_path: Path) -> None:
+    """A pinned license entry without URL=PATH fails closed."""
+
+    with pytest.raises(SystemExit) as failure:
+        builder._resolve_license_overrides("https://example.invalid/license.html")
+
+    assert "URL=PATH" in str(failure.value)
+
+
+def test_license_override_rejects_missing_file(tmp_path: Path) -> None:
+    """A pinned license URL pointing at no file fails closed."""
+
+    with pytest.raises(SystemExit) as failure:
+        builder._resolve_license_overrides(
+            f"https://example.invalid/license.html={tmp_path / 'absent.txt'}"
+        )
+
+    assert "missing or unsafe" in str(failure.value)
+
+
+def test_pinned_license_text_keeps_official_url_and_validates_content(
+    tmp_path: Path,
+) -> None:
+    """A pinned file supplies authentic bytes without changing the source URL."""
+
+    notice_root = tmp_path / "semantic-core" / "third-party-notices"
+    notice_root.mkdir(parents=True)
+    pinned = tmp_path / "classpath-license.txt"
+    pinned.write_bytes(b"GPL2 w/ CPE authentic license text " + b"x" * 200)
+    overrides = builder._resolve_license_overrides(
+        f"https://www.gnu.org/software/classpath/license.html={pinned}"
+    )
+    record = builder._store_java_license(
+        notice_root,
+        {},
+        name="GPL2 w/ CPE",
+        url="https://www.gnu.org/software/classpath/license.html",
+        pinned_files=overrides,
+    )
+
+    assert record["sourceUrl"] == "https://www.gnu.org/software/classpath/license.html"
+    assert record["retrieval"] == "pinned-file:classpath-license.txt"
+    assert (tmp_path / "semantic-core" / record["path"]).is_file()
+
+    with pytest.raises(SystemExit):
+        builder._read_pinned_license_text(tmp_path / "absent.txt", "https://example.invalid/x")

@@ -1181,3 +1181,17 @@ starting another local runtime.
 **Root cause:** Earlier diagnosis cells opened the destination `operational.db` in the shared persistent kernel namespace; the unreferenced-but-not-garbage-collected handles kept Windows delete-sharing locks on the directory across many later turns.
 **Fix / workaround:** Never open a live native-runtime store from a persistent diagnosis kernel; when it happens, `gc.collect()` after dropping references and verify with a directory rename round-trip before blaming product code.
 **Watch out for:** Any Windows directory move (`os.replace`/`shutil`) over a native data tree while a long-lived Python process has ever touched its SQLite files — `WinError 5` here means an operator-held lock, not a packaging defect.
+
+## [2026-10-06] NSIS cannot rename or remove its own working directory
+
+**Symptom:** The unsigned Windows installer always failed at the staged-application commit with "could not commit the staged application files" (exit 32), while the backup rename of the previous install succeeded moments earlier.
+**Root cause:** The script set `SetOutPath` to the staging directory for file extraction and never left it; Windows refuses to rename a process's own current directory, so the commit rename deterministically failed. The backup rename succeeded only because neither its source nor destination was the working directory.
+**Fix / workaround:** `SetOutPath` to a neutral directory (here `$INSTDIR\..`) before every rename or recursive remove of the staging tree, and re-establish the working directory only after the commit. Prove the mechanism with same-engine throwaway installers (identical script with and without the neutral `SetOutPath`) rather than inferring from the dialog alone.
+**Watch out for:** Any NSIS staging/transaction pattern that renames or deletes a directory after `SetOutPath` into it — the failure is deterministic on every install, yet a prior success report on a different script version does not contradict it.
+
+## [2026-10-06] NSIS Rename onto an existing empty directory fails like a lock
+
+**Symptom:** The corrected installer commit still failed on fresh targets with `RENAME_FAILED` (Win32 183) even after the working-directory fix, while an identical shape with a clean stage name committed.
+**Root cause:** `CreateDirectory "$INSTDIR\.."` creates the empty `$INSTDIR`; `MoveFile`/`Rename` cannot move a directory onto an existing directory, so Win32 183 ("already exists") mimics a file-lock failure. A second defect hid it: both temp names derived from one `GetTempFileName` call, so stage and previous names collided; and `.onInit` aborted silent installs (`SetErrorLevel 2`) before any section ran.
+**Fix / workaround:** Probe with the Win32 error code (`GetLastError` after `Rename`), branch on directory-vs-content existence (`IfFileExists "$INSTDIR"` then `IfFileExists "$INSTDIR\*.*"`), remove only a proven-empty target before the commit rename, give stage and previous names distinct temp bases, and let silent mode reach the sections. Prove each variant with tiny same-engine installers and the observed error code, not the dialog text.
+**Watch out for:** Any installer transaction that pre-creates its own commit target for staging-temp purposes — the `183` shape is a pre-existing-empty-target defect, not a lock, and identical names for two temp roles corrupt the backup/rollback branches.

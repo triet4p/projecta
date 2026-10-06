@@ -36,15 +36,13 @@ Var HadPrevious
 !define UNINSTALL_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\Projecta-0.7.0-Unsigned-Pre-Release-Test"
 
 Function .onInit
-  IfSilent silentMode
+  IfSilent proceed
   SetShellVarContext current
   MessageBox MB_ICONEXCLAMATION|MB_OKCANCEL|MB_DEFBUTTON2 "Projecta 0.7.0 is an owner-authorized unsigned test pre-release. Windows cannot verify the publisher, and SmartScreen or antivirus software may warn. Continue only if you obtained this installer from the owner-approved source and verified its published SHA-256. Projecta itself installs and runs per-user and is never elevated. If the x64 Visual C++ prerequisite is missing, Internet access is required and setup will ask before downloading the official Microsoft installer directly; Microsoft shows its own license/consent screen and may request approval through Windows UAC. Clean Windows installation, publisher identity, and production readiness are not certified." IDOK proceed
   Abort
 proceed:
+  SetShellVarContext current
   Return
-silentMode:
-  SetErrorLevel 2
-  Abort
 FunctionEnd
 
 Section "Install Projecta 0.7.0"
@@ -54,6 +52,9 @@ Section "Install Projecta 0.7.0"
   GetTempFileName $0 "$INSTDIR\.."
   Delete "$0"
   StrCpy $StageDir "$0.staging"
+  GetTempFileName $0 "$INSTDIR\.."
+  Delete "$0"
+  StrCpy $PreviousDir "$0.previous"
   CreateDirectory "$StageDir"
   SetOutPath "$StageDir"
   File /r "${PACKAGE_DIR}\*"
@@ -64,16 +65,17 @@ Section "Install Projecta 0.7.0"
   StrCmp $1 0 prerequisiteReady prerequisiteCheckFailed
 
 prerequisiteCheckFailed:
+  SetOutPath "$INSTDIR\.."
   RMDir /r "$StageDir"
   MessageBox MB_ICONSTOP|MB_OK "Projecta was not installed because its Microsoft Visual C++ prerequisite could not be prepared or verified. Nothing in an existing Projecta installation or workspace was changed. Connect to the Internet, rerun setup, and approve the Microsoft installer through its own license screen and Windows UAC prompt if required. Error code: $1"
   SetErrorLevel 30
   Abort
 
 prerequisiteReady:
-  GetTempFileName $0 "$INSTDIR\.."
-  Delete "$0"
-  StrCpy $PreviousDir "$0.previous"
   StrCpy $HadPrevious 0
+  IfFileExists "$INSTDIR" backupExistingIfDir stageReady
+
+backupExistingIfDir:
   IfFileExists "$INSTDIR\*.*" backupExisting stageReady
 
 backupExisting:
@@ -83,13 +85,25 @@ backupExisting:
   StrCpy $HadPrevious 1
 
 stageReady:
+  SetOutPath "$INSTDIR\.."
   ClearErrors
+  IfFileExists "$INSTDIR" removeEmptyTargetDir commitRename
+
+removeEmptyTargetDir:
+  RMDir "$INSTDIR"
+  ClearErrors
+
+commitRename:
   Rename "$StageDir" "$INSTDIR"
   IfErrors installCommitFailed
-  StrCmp $HadPrevious 1 removePrevious finishCommit
+  StrCmp $HadPrevious 1 removePrevious cleanupTempPrevious
+
+cleanupTempPrevious:
+  RMDir "$PreviousDir"
 
 removePrevious:
   RMDir /r "$PreviousDir"
+  Goto finishCommit
 
 finishCommit:
   SetOutPath "$INSTDIR"
@@ -106,6 +120,7 @@ finishCommit:
   Goto installComplete
 
 backupFailed:
+  SetOutPath "$INSTDIR\.."
   RMDir /r "$StageDir"
   MessageBox MB_ICONSTOP|MB_OK "Projecta could not safely replace the existing installation. The existing application files and workspace were left in place. Close any open Projecta installer or application and retry."
   SetErrorLevel 31
@@ -121,6 +136,7 @@ restorePrevious:
 
 previousInstallPreserved:
   RMDir /r "$StageDir"
+  RMDir "$PreviousDir"
   MessageBox MB_ICONSTOP|MB_OK "Projecta could not commit the staged application files. The previous installation was restored or left in place. Your workspace was not changed. Retry setup."
   SetErrorLevel 32
   Abort
