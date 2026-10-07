@@ -511,7 +511,7 @@ export function ProjectsScreen({
                 </div>
                 <div>
                   <dt>Graph triples</dt>
-                  <dd>{Object.values(deletionPreview.graphTriples).reduce((a, b) => a + b, 0)}</dd>
+                  <dd>{deletionPreview.graphTriples.total}</dd>
                 </div>
                 <div>
                   <dt>Evidence objects</dt>

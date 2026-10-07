@@ -106,6 +106,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Fixed corrupted portable-import archives that break deflate decoding failing with an internal error; they now fail closed with the finite package-invalid response.
 - Fixed confirmed portable-import apply so a missing staged package file fails closed with `IMPORT_PACKAGE_INVALID` instead of an unmapped internal error; destination state is unchanged.
 - Fixed the unsigned Windows installer failing at the staged-application commit step: setup now leaves the staging directory before renaming it over the install location, commits onto a pre-created empty install directory instead of treating it as an existing installation, no longer aborts silent installs during startup, and uses distinct staging and previous-install temporary names. Fresh installs commit, upgrades replace the previous tree, and a failed commit still restores or leaves the previous installation without touching workspace data.
+- Fixed project deletion refusing with a crash-loop when an interrupted delete is recovered after its staged previews were already forgotten, and refusing only after destroying data when a staged preview belonged to another actor. Recovery now completes an already-forgotten staging tail idempotently, and a foreign-actor staged preview refuses before any project data is touched.
+- Fixed the project-deletion confirmation showing and reporting double the actual graph count. The dialog and the deletion receipt now report the authoritative total.
 
 ### Changed
 

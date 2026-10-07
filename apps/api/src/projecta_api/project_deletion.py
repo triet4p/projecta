@@ -13,11 +13,19 @@ Safety shape (contract §5):
   are present (same ``enabled()`` shape as the portable import service). There
   is no browser-supplied SQL anywhere on this path; every store call carries
   an exact ``project_id``/``project_digest`` predicate.
-- quiescence: ``delete()`` must run inside the API ``maintenance_epoch`` (the
-  route owns the fence). The service additionally refuses when an import
-  journal/restart marker exists, when any import preview/result entry targets
-  the scope, or when active connector runs or pending suggestion workflows
-  exist for the scope.
+- quiescence: ``delete()`` must run inside the API ``deletion_epoch`` (the
+  delete route owns the fence; import publication owns the separate
+  ``maintenance_epoch``). The service additionally refuses while live import
+  publication or recovery state exists (API ``journal.json``,
+  ``state/import-restart.json``, launcher publication/stage/previous
+  markers), while any import preview/result entry for the scope is claimed by
+  live publication, or while active connector runs or pending suggestion
+  workflows exist for the scope. A merely staged, never-applied import
+  preview (validated proposal with no journal, no restart marker, and no
+  launcher publication state) is durable idle data — not publication — so it
+  no longer refuses deletion preview, and an explicit confirmed delete purges
+  exactly that scope's idle preview entries as part of its own journaled
+  transaction. Unreadable preview bytes still refuse fail-closed.
 - journal: ``data/deletion/journal.json`` records the finite phase before each
   store mutation; ``recover_before_serving()`` resolves an interrupted delete
   to exactly-old or exactly-new state before the API serves traffic.
@@ -75,6 +83,7 @@ _JOURNAL_PHASES = (
     "sqlite-cleared",
     "postgres-cleared",
     "ledger-forgotten",
+    "staging-forgotten",
     "registry-published",
 )
 _AUTHORING_COST_TRIGGERS_SQL = (
@@ -216,7 +225,7 @@ class ProjectDeletionService:
         """Count every owned row/object for the scope without mutating anything."""
         self._require_enabled()
         resolved_id, resolved_name = self._resolve_scope(actor, project_id, project_name)
-        self._refuse_active_operation(resolved_id)
+        self._refuse_active_operation(resolved_id, actor.actor_id)
         graph_triples = await self._semantic.project_graph_counts(actor, resolved_id)
         evidence_objects = len(await self._evidence.list_project(resolved_id))
         sqlite_rows = self._sqlite_scope_counts(resolved_id)
@@ -254,7 +263,7 @@ class ProjectDeletionService:
         resolved_id, resolved_name = self._resolve_scope(actor, project_id, project_name)
         if typed_identity.strip() not in (resolved_id, resolved_name):
             raise ProjectDeletionFailure("DELETE_IDENTITY_MISMATCH", status_code=400)
-        self._refuse_active_operation(resolved_id)
+        idle_tokens = self._refuse_active_operation(resolved_id, actor.actor_id)
         self._scan_unknown_hold_markers(resolved_id)
         assert self._root is not None
         journal_path = self._root / "journal.json"
@@ -276,6 +285,7 @@ class ProjectDeletionService:
             "expectedSqliteRows": dict(sqlite_rows),
             "expectedPostgresRows": dict(postgres_rows),
             "exportIds": sorted(export_ids),
+            "idlePreviewTokens": sorted(idle_tokens),
             "startedAt": datetime.now(UTC).isoformat(),
         }
         _write_private_json(journal_path, journal)
@@ -295,6 +305,9 @@ class ProjectDeletionService:
             ledger_forgotten = self._forget_ledger_scope(export_ids)
             journal["phase"] = "ledger-forgotten"
             _write_private_json(journal_path, journal)
+            self._remove_idle_previews(resolved_id, actor.actor_id, idle_tokens)
+            journal["phase"] = "staging-forgotten"
+            _write_private_json(journal_path, journal)
             memberships_removed = self._remove_memberships(resolved_id)
             self._publish_registry_removal(resolved_id)
             journal["phase"] = "registry-published"
@@ -307,7 +320,7 @@ class ProjectDeletionService:
             return ProjectDeletionResult(
                 project_id=resolved_id,
                 project_name=resolved_name,
-                graph_triples_removed=sum(int(value) for value in cleared_graphs.values()),
+                graph_triples_removed=int(cleared_graphs.get("total", sum(int(value) for key, value in cleared_graphs.items() if key != "total"))),
                 evidence_objects_removed=evidence_objects,
                 sqlite_rows_removed=sqlite_removed,
                 postgres_rows_removed=postgres_removed,
@@ -337,15 +350,17 @@ class ProjectDeletionService:
             != {
                 "formatVersion", "phase", "projectId", "projectName", "actorId",
                 "expectedGraphTriples", "expectedEvidenceObjects", "expectedSqliteRows",
-                "expectedPostgresRows", "exportIds", "startedAt",
+                "expectedPostgresRows", "exportIds", "idlePreviewTokens", "startedAt",
             }
             or journal.get("formatVersion") != 1
             or journal.get("actorId") != actor_id
             or phase not in _JOURNAL_PHASES
+            or not isinstance(journal.get("idlePreviewTokens"), list)
         ):
             raise ProjectDeletionFailure("DELETE_RECOVERY_REQUIRED", status_code=503)
         project_id = str(journal["projectId"])
         recovery_actor = TrustedActorContext(actor_id=actor_id, request_id="delete-recovery", operation_id="delete-recovery")
+        idle_tokens = {str(value) for value in cast(Sequence[object], journal["idlePreviewTokens"])}
         if phase in {"prepared", "graphs-cleared", "evidence-cleared"}:
             # Catalog was never published and graphs may be partially cleared
             # with no snapshot to roll back to, so the only safe resolution is
@@ -356,8 +371,9 @@ class ProjectDeletionService:
             self._purge_sqlite_scope(project_id)
             self._purge_postgres_scope(project_id)
             self._forget_ledger_scope({str(value) for value in cast(Sequence[object], journal["exportIds"])})
+            self._remove_idle_previews(project_id, actor_id, idle_tokens, recovery=True)
             self._remove_memberships(project_id)
-            self._publish_registry_removal(project_id)
+            self._publish_registry_removal(project_id, recovery=True)
             self._clear_selections(project_id)
             journal_path.unlink(missing_ok=True)
             self._request_runtime_restart()
@@ -373,11 +389,12 @@ class ProjectDeletionService:
         if await self._evidence.list_project(project_id):
             raise ProjectDeletionFailure("DELETE_RECOVERY_REQUIRED", status_code=503)
         export_ids = {str(value) for value in cast(Sequence[object], journal["exportIds"])}
-        if phase in {"sqlite-cleared", "postgres-cleared", "ledger-forgotten"}:
+        if phase in {"sqlite-cleared", "postgres-cleared", "ledger-forgotten", "staging-forgotten"}:
             self._purge_postgres_scope(project_id)
             self._forget_ledger_scope(export_ids)
+            self._remove_idle_previews(project_id, actor_id, idle_tokens, recovery=True)
             self._remove_memberships(project_id)
-        self._publish_registry_removal(project_id)
+        self._publish_registry_removal(project_id, recovery=True)
         self._clear_selections(project_id)
         journal_path.unlink(missing_ok=True)
         self._request_runtime_restart()
@@ -407,28 +424,109 @@ class ProjectDeletionService:
             raise ProjectDeletionFailure("DELETE_IDENTITY_MISMATCH", status_code=400)
         return project_id, match["projectName"]
 
-    def _refuse_active_operation(self, project_id: str) -> None:
+    def _refuse_active_operation(self, project_id: str, actor_id: str) -> set[str]:
         assert self._import_root is not None
         journal_path = self._import_root / "journal.json"
-        # Any live import journal blocks deletion: staged state belongs to the
-        # import operation and must never be swept by a project delete.
+        # Live import publication owns the scope's staged state: the API
+        # journal, the state restart marker, and the launcher publication /
+        # stage / previous markers all refuse deletion fail-closed. Staged
+        # state belongs to the import operation and must never be swept by a
+        # project delete while publication or recovery is live.
         if journal_path.exists() or (self._import_root / "import-restart.json").exists():
             raise ProjectDeletionFailure("DELETE_BUSY", status_code=409)
-        previews_root = self._import_root / "previews"
-        if previews_root.is_dir() and not previews_root.is_symlink():
-            for preview_file in sorted(previews_root.glob("*/preview.json")):
-                try:
-                    preview = json.loads(preview_file.read_text(encoding="utf-8"))
-                except (OSError, UnicodeError, ValueError):
-                    raise ProjectDeletionFailure("DELETE_BUSY", status_code=409)
-                if isinstance(preview, dict) and preview.get("projectId") == project_id:
-                    # A staged preview targets this scope: cancel it first, then
-                    # delete. Retained previews are never swept by deletion.
-                    raise ProjectDeletionFailure("DELETE_BUSY", status_code=409)
+        self._refuse_live_import_publication()
+        idle_tokens = self._scope_idle_preview_tokens(project_id, actor_id)
+        if idle_tokens is None:
+            # A scope preview exists but its ownership or phase cannot be
+            # established (foreign-actor claim, unreadable bytes, or unknown
+            # marker): fail closed BEFORE any store is touched.
+            raise ProjectDeletionFailure("DELETE_BUSY", status_code=409)
         if self._has_active_connector_runs(project_id):
             raise ProjectDeletionFailure("DELETE_BUSY", status_code=409)
         if self._has_pending_suggestion_workflows(project_id):
             raise ProjectDeletionFailure("DELETE_BUSY", status_code=409)
+        return idle_tokens
+
+    def _refuse_live_import_publication(self) -> None:
+        """Refuse while any live import publication/recovery marker exists.
+
+        Covers the launcher-owned publication lifecycle that the API journal
+        alone cannot see: ``recovery/portable-import-publication.json`` plus
+        the per-token ``recovery/portable-import-stage-<token>`` and
+        ``recovery/portable-import-previous-<token>`` trees. ``state/`` holds
+        the restart request consumed by the launcher supervisor. Both roots
+        anchor on the configured restart file (``<data_root>/state/…``), so
+        the check follows the real deployment layout instead of assuming how
+        many levels sit above the import root.
+        """
+        assert self._import_root is not None
+        restart_anchor = self._restart_file
+        data_root = restart_anchor.parent.parent if restart_anchor is not None else self._import_root.parent
+        markers: list[Path] = [data_root / "recovery" / "portable-import-publication.json"]
+        recovery_root = data_root / "recovery"
+        if not recovery_root.is_symlink():
+            markers.extend(sorted(recovery_root.glob("portable-import-stage-*")))
+            markers.extend(sorted(recovery_root.glob("portable-import-previous-*")))
+        for marker in markers:
+            try:
+                exists = marker.exists() or marker.is_symlink()
+            except OSError as error:
+                raise ProjectDeletionFailure("DELETE_BUSY", status_code=409) from error
+            if exists:
+                raise ProjectDeletionFailure("DELETE_BUSY", status_code=409)
+        state_restart = data_root / "state" / "import-restart.json"
+        try:
+            state_exists = state_restart.exists() or state_restart.is_symlink()
+        except OSError as error:
+            raise ProjectDeletionFailure("DELETE_BUSY", status_code=409) from error
+        if state_exists:
+            raise ProjectDeletionFailure("DELETE_BUSY", status_code=409)
+
+    def _scope_idle_preview_tokens(self, project_id: str, actor_id: str) -> set[str] | None:
+        """Return idle staged-preview tokens for the scope and actor, or None if unknown.
+
+        A token counts as idle only when its directory holds validated staged
+        bytes (``package.projecta`` + readable ``preview.json`` naming this
+        scope AND this actor) while no live publication marker claims it: no
+        API journal, no restart marker, and no launcher publication/state
+        marker (checked by the caller via ``_refuse_live_import_publication``).
+        A same-scope preview owned by another actor, unreadable preview
+        bytes, a symlinked previews root, or an unreadable directory listing
+        returns None so the caller refuses fail-closed BEFORE any store is
+        touched. Tokens for other scopes are never returned.
+        """
+        assert self._import_root is not None
+        previews_root = self._import_root / "previews"
+        try:
+            if previews_root.is_symlink():
+                return None
+            if not previews_root.is_dir():
+                return set()
+            preview_files = sorted(previews_root.glob("*/preview.json"))
+        except OSError:
+            return None
+        idle: set[str] = set()
+        for preview_file in preview_files:
+            try:
+                preview = json.loads(preview_file.read_text(encoding="utf-8"))
+            except (OSError, UnicodeError, ValueError):
+                return None
+            if not isinstance(preview, dict) or preview.get("projectId") != project_id:
+                continue
+            if preview.get("actorId") != actor_id:
+                # A foreign actor owns staged state for this scope. Ownership
+                # cannot be decided from the previews root alone, so the
+                # caller refuses fail-closed instead of silently ignoring it.
+                return None
+            token = preview_file.parent.name
+            archive = preview_file.parent / "package.projecta"
+            try:
+                if archive.is_symlink() or not archive.is_file():
+                    return None
+            except OSError:
+                return None
+            idle.add(token)
+        return idle
 
     def _has_active_connector_runs(self, project_id: str) -> bool:
         assert self._postgres_engine is not None
@@ -843,6 +941,64 @@ class ProjectDeletionService:
         _write_private_json(ledger_path, {"formatVersion": 1, "imports": imports})
         return forgotten
 
+    def _remove_idle_previews(
+        self, project_id: str, actor_id: str, tokens: set[str], *, recovery: bool = False
+    ) -> int:
+        """Remove exactly the scope's idle staged previews recorded at delete time.
+
+        Runs inside the delete journal (after ledger, before registry), so an
+        interrupted delete resumes it via recovery. Each present token is
+        revalidated before removal: same actor, same scope, validated staged
+        bytes, and still no live publication marker. In recovery, an
+        already-removed recorded token is already-forgotten (per-token loop
+        skips it) instead of raising; a fresh delete (``recovery=False``)
+        still refuses when a recorded token is absent, because the caller's
+        preflight named it as present-on-disk seconds earlier. Any other
+        revalidation failure refuses fail-closed instead of sweeping an
+        unknown or newly-claimed preview. Tokens for other scopes are never
+        touched; results records (completed import receipts) are never
+        touched. A ``None`` scan (foreign-actor claim, unreadable bytes, or
+        unknown marker) refuses fail-closed in both paths; recovery must
+        never silently reinterpret a genuinely foreign or malformed staged
+        preview as already-purged.
+        """
+        assert self._import_root is not None
+        if not tokens:
+            return 0
+        self._refuse_live_import_publication()
+        current = self._scope_idle_preview_tokens(project_id, actor_id)
+        if current is None:
+            raise ProjectDeletionFailure("DELETE_BUSY", status_code=409)
+        missing = set(tokens) - set(current)
+        if missing and not recovery:
+            raise ProjectDeletionFailure("DELETE_BUSY", status_code=409)
+        removed = 0
+        for token in sorted(set(tokens) & set(current)):
+            directory = self._import_root / "previews" / token
+            try:
+                if directory.is_symlink() or not directory.is_dir():
+                    raise ProjectDeletionFailure("DELETE_BUSY", status_code=409)
+                preview = json.loads((directory / "preview.json").read_text(encoding="utf-8"))
+            except ProjectDeletionFailure:
+                raise
+            except (OSError, UnicodeError, ValueError) as error:
+                raise ProjectDeletionFailure("DELETE_BUSY", status_code=409) from error
+            if (
+                not isinstance(preview, dict)
+                or preview.get("projectId") != project_id
+                or preview.get("actorId") != actor_id
+            ):
+                raise ProjectDeletionFailure("DELETE_BUSY", status_code=409)
+            archive = directory / "package.projecta"
+            try:
+                if archive.is_symlink() or not archive.is_file():
+                    raise ProjectDeletionFailure("DELETE_BUSY", status_code=409)
+            except OSError as error:
+                raise ProjectDeletionFailure("DELETE_BUSY", status_code=409) from error
+            shutil.rmtree(directory, ignore_errors=False)
+            removed += 1
+        return removed
+
     def _remove_memberships(self, project_id: str) -> int:
         """Remove authorization grants for the scope; global sessions untouched."""
         repository = self._identity_repository
@@ -851,12 +1007,16 @@ class ProjectDeletionService:
             return 0
         return int(remover(project_id))
 
-    def _publish_registry_removal(self, project_id: str) -> None:
+    def _publish_registry_removal(self, project_id: str, *, recovery: bool = False) -> None:
         assert self._registry_path is not None
         registry = _read_registry(self._registry_path)
         entries = _registry_entries(registry)
         remaining = [item for item in entries if item["projectId"] != project_id]
         if len(remaining) == len(entries):
+            if recovery:
+                # A repeated recovery after registry-published already removed
+                # the scope: already-gone is done, never an unknown refusal.
+                return
             raise ProjectDeletionFailure("DELETE_UNKNOWN_PROJECT", status_code=404)
         updated = dict(registry)
         if remaining:

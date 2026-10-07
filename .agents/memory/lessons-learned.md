@@ -1209,3 +1209,24 @@ starting another local runtime.
 **Root cause:** The catalog exposes only opaque `project-h-…` handles while the deletion service authorizes canonical project IDs; the UI passed the handle straight through as `project_id` and the service (correctly) refused the unknown scope.
 **Fix / workaround:** Resolve the scope server-side in the deletion routes (handle or canonical ID to canonical scope under the existing actor/registry authorization; unknown values still fall through to `DELETE_UNKNOWN_PROJECT`), and show the resolved canonical ID in the dialog scope line. Prove with handle-preview-200 plus unknown-handle-404 and mismatched-typed-400 no-mutation checks on the closing root, not unit mocks alone.
 **Watch out for:** Any destructive route that takes a canonical scope ID while its screen only carries an opaque handle — resolution belongs behind the existing authorization boundary, never as a client-side ID swap or a broadened accept-any-ID path.
+
+## [2026-10-07] Frozen ProjectaLocal.exe ignores PROJECTA_LAUNCHER_* data-root overrides
+
+**Symptom:** An "isolated" proof start attached to the real per-user data root despite the spawn env carrying package/data-root overrides — the live root gained an import result, a ledger entry, a registry project, and log lines, while the intended disposable root stayed empty.
+**Root cause:** `ProjectaPaths.discover()` honors `PROJECTA_LAUNCHER_PACKAGE_ROOT`/`PROJECTA_LAUNCHER_DATA_ROOT` only when `sys.frozen` is False; the frozen exe resolves the package from its own parent and the data root from `%LOCALAPPDATA%/Projecta`. Env propagation from the spawning shell was never the issue — the binary never reads those variables.
+**Fix / workaround:** Drive isolation proof with the UNFROZEN launcher (dev interpreter running `scripts/projecta_local.py`) plus BOTH overrides, dry-print `discover()` before launch, assert the data root sits under owned disposable space with no pre-existing config, and re-verify catalog/bindings before the first mutating call. Never launch the frozen exe expecting env overrides.
+**Watch out for:** Any frozen-binary start/stop/status where isolation matters — `LOCALAPPDATA` redirection alone is not proof; always confirm the resolved paths from the actual child (dry status + config/catalog reads) before treating the run as isolated.
+
+## [2026-10-07] Deriving data_root with import_root.parent silently checked the wrong tree
+
+**Symptom:** The live import-publication guard never fired on an isolated root (delete preview/delete returned 200 with a publication marker present), yet the regression suite stayed green.
+**Root cause:** The import root is `<data_root>/data/imports` (two levels), not `<data_root>/imports`; the guard used `.parent` (landing in `data/`) while the test seeded markers beside its own flattened tmp import root — both wrong in the same way, so code and test agreed with each other instead of with production.
+**Fix / workaround:** Anchor marker checks on the configured restart file (`<data_root>/state/…`, whose parent.parent is the data root) and remodel test helpers to the production layout (`tmp/data/imports` + `tmp/state` + `tmp/recovery`).
+**Watch out for:** Any path derived with `.parent` from a nested root — verify the depth against `ProjectaPaths`/launcher truth, and make regression doubles mirror the production directory layout rather than a flattened tmp convenience.
+
+## [2026-10-07] Summing a per-role map that already carries total doubles the receipt
+
+**Symptom:** The browser delete dialog showed 146 graph triples and the API receipt reported `graphTriplesRemoved: 146` (last-project: 4) while every authoritative preview and reimport compare said 73 (last-project: 2) — yet all stores verified empty, so the purge was correct and only the number lied.
+**Root cause:** The Semantic Core `counts`/`delete` payloads carry per-role keys PLUS a `total` key; the web dialog used `Object.values(graphTriples).reduce(...)` and the API result used `sum(cleared.values())`, counting the total twice.
+**Fix / workaround:** Render `graphTriples.total` in the dialog and prefer `cleared.get("total", role-sum-without-total)` in the result; add a regression with the real payload shape (per-role keys + total) asserting the result equals `total`. Verify live-bundle provenance before calling a dialog truthful — a staged package predating the fix still shows the old number.
+**Watch out for:** Any map that embeds its own aggregate (`total`, `count`, `sum`) alongside parts — never `sum(values)` it; and any long-lived proof root whose staged web bundle predates a UI fix.
