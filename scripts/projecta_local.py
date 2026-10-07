@@ -858,8 +858,13 @@ def workspace_project_ids(path: Path, primary: WorkspaceConfig) -> list[str]:
     raw_projects = value.get("projects")
     if raw_projects is None:
         return [primary.project_id]
-    if not isinstance(raw_projects, list) or not 1 <= len(raw_projects) <= 100:
+    if not isinstance(raw_projects, list) or len(raw_projects) > 100:
         raise RuntimeFailure("LOCAL_PROJECT_CONFIGURATION_INVALID", "The local project registry is invalid.")
+    if len(raw_projects) == 0:
+        # Persisted empty catalog after the last project was deleted: no seed
+        # resurrection is possible because first-run provisioning refuses to
+        # overwrite this existing file.
+        return []
     project_ids: list[str] = []
     project_names: list[str] = []
     for entry in raw_projects:
@@ -878,13 +883,14 @@ def workspace_project_ids(path: Path, primary: WorkspaceConfig) -> list[str]:
             raise RuntimeFailure("LOCAL_PROJECT_CONFIGURATION_INVALID", "The local project registry is invalid.")
         project_ids.append(project_id)
         project_names.append(project_name.strip())
-    if (
-        len(set(project_ids)) != len(project_ids)
-        or project_ids[0] != primary.project_id
-        or project_names[0] != primary.project_name
-        or value.get("actorId") != primary.actor_id
-    ):
+    if len(set(project_ids)) != len(project_ids) or value.get("actorId") != primary.actor_id:
         raise RuntimeFailure("LOCAL_PROJECT_CONFIGURATION_INVALID", "The local project registry is invalid.")
+    if project_ids[0] != primary.project_id or project_names[0] != primary.project_name:
+        # The former first-run primary was deleted and a fresh import re-pointed
+        # the header to the new serving primary: accept the repaired registry
+        # only when the header and the first entry agree with each other.
+        if value.get("projectId") != project_ids[0] or value.get("projectName") != project_names[0]:
+            raise RuntimeFailure("LOCAL_PROJECT_CONFIGURATION_INVALID", "The local project registry is invalid.")
     return project_ids
 
 
@@ -1521,8 +1527,8 @@ class RuntimeManager:
                 "PROJECTA_EVIDENCE_ROOT": str(self.paths.data / "evidence"),
                 "PROJECTA_API_SECRET_STORE_MASTER_KEY": self.secrets.secret_store_master_key,
                 "PROJECTA_API_EXPERIENCE_ACTOR_ID": self.workspace.actor_id,
-                "PROJECTA_API_EXPERIENCE_PROJECT_CATALOG": ",".join(
-                    workspace_project_ids(self.paths.local_config, self.workspace)
+                "PROJECTA_API_EXPERIENCE_PROJECT_CATALOG": (
+                    ",".join(workspace_project_ids(self.paths.local_config, self.workspace)) or "[]"
                 ),
                 "PROJECTA_API_WEB_ASSETS_DIRECTORY": str(self.paths.project / "web"),
                 "PROJECTA_API_PORTABLE_EXPORT_LOCK_HELD": "true",

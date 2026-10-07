@@ -32,6 +32,7 @@ from projecta_api.portable_export import (
     project_source_revision,
 )
 from projecta_api.portable_import import PortableImportFailure, ProjectPortableImportService
+from projecta_api.project_deletion import ProjectDeletionFailure, ProjectDeletionService
 from projecta_api.context import (
     TrustedActorContext,
     TrustedRequestContext,
@@ -187,6 +188,20 @@ class PortableImportApplyRequest(BaseModel):
 
     confirmed: bool
 
+class ProjectDeletionPreviewRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid", populate_by_name=True)
+
+    project_id: str = Field(alias="projectId", min_length=1, max_length=63)
+    project_name: str = Field(alias="projectName", min_length=1, max_length=128)
+
+class ProjectDeletionRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid", populate_by_name=True)
+
+    project_id: str = Field(alias="projectId", min_length=1, max_length=63)
+    project_name: str = Field(alias="projectName", min_length=1, max_length=128)
+    typed_identity: str = Field(alias="typedIdentity", min_length=1, max_length=128)
+    confirmed: Literal[True] = Field(alias="confirmed")
+
 class ReviewAbstainRequest(BaseModel):
     """Trusted-boundary input for an explicit, receipt-backed abstention."""
 
@@ -301,6 +316,7 @@ def create_router(
     local_suggestions: LocalSuggestionService | None = None,
     portable_export: ProjectPortableExportService | None = None,
     portable_import: ProjectPortableImportService | None = None,
+    project_deletion: ProjectDeletionService | None = None,
 ) -> APIRouter:
     """Create routes bound to one finite Semantic Core client."""
     router = APIRouter()
@@ -485,6 +501,55 @@ def create_router(
         response.headers["X-Request-Id"] = actor.request_id
         response.headers["Cache-Control"] = "no-store"
         return {"requestId": actor.request_id, **result}
+
+    @router.post("/v1/projects/deletion/preview")
+    async def preview_project_deletion(
+        payload: ProjectDeletionPreviewRequest,
+        actor: ActorContext,
+        request: Request,
+        response: Response,
+    ) -> dict[str, object]:
+        if project_deletion is None or not project_deletion.enabled():
+            raise ProjectDeletionFailure("DELETE_UNSUPPORTED_RUNTIME", status_code=503)
+        resolved = _resolve_deletion_scope(request, payload.project_id)
+        preview = await project_deletion.preview(actor, resolved, payload.project_name)
+        response.headers["X-Request-Id"] = actor.request_id
+        response.headers["Cache-Control"] = "no-store"
+        return {"requestId": actor.request_id, **preview.response()}
+    @router.post("/v1/projects/deletion/delete")
+    async def delete_project(
+        payload: ProjectDeletionRequest,
+        actor: ActorContext,
+        request: Request,
+        response: Response,
+    ) -> dict[str, object]:
+        if project_deletion is None or not project_deletion.enabled():
+            raise ProjectDeletionFailure("DELETE_UNSUPPORTED_RUNTIME", status_code=503)
+        fence = cast(ProjectWriteFence, request.app.state.project_write_fence)
+        try:
+            async with fence.deletion_epoch():
+                try:
+                    resolved = _resolve_deletion_scope(request, payload.project_id)
+                    typed = payload.typed_identity
+                    if typed.strip() == payload.project_id:
+                        typed = resolved
+                    result = await project_deletion.delete(
+                        actor,
+                        resolved,
+                        payload.project_name,
+                        typed,
+                        payload.confirmed,
+                    )
+                    await fence.require_recovery()
+                except ProjectDeletionFailure as error:
+                    if error.code in {"DELETE_RECOVERY_REQUIRED"}:
+                        await fence.require_recovery()
+                    raise
+        except ExportAlreadyRunning as error:
+            raise ProjectDeletionFailure("DELETE_BUSY") from error
+        response.headers["X-Request-Id"] = actor.request_id
+        response.headers["Cache-Control"] = "no-store"
+        return {"requestId": actor.request_id, **result.response()}
 
     @router.post(
         "/v1/projects/{handle}/notes/drafts",
@@ -2392,16 +2457,36 @@ def create_router(
 
 def _catalog_ids(request: Request) -> tuple[str, ...]:
     """Read the explicit allowlist from the request app without exposing it publicly."""
-    if not request.app.state.settings.experience_project_catalog.strip():
+    raw = request.app.state.settings.experience_project_catalog
+    if raw.strip() == "[]":
+        # Persisted empty catalog after the last project was deleted: the
+        # catalog lists zero projects instead of failing closed.
+        return ()
+    if not raw.strip():
         raise SemanticCoreProblem(
             503, "PROJECT_CATALOG_UNAVAILABLE", "Project catalog is not configured"
         )
     try:
-        return configured_project_ids(request.app.state.settings.experience_project_catalog)
+        return configured_project_ids(raw)
     except ValueError as error:
         raise SemanticCoreProblem(
             503, "PROJECT_CATALOG_UNAVAILABLE", "Project catalog configuration is invalid"
         ) from error
+
+
+def _resolve_deletion_scope(request: Request, project_id: str) -> str:
+    """Accept the canonical projectId or its opaque catalog handle.
+
+    The Projects screen only carries opaque ``project-h-…`` handles; the
+    deletion service authorizes canonical IDs. Handles are derived by
+    ``opaque_project_handle`` (SHA-256 prefix), so resolution never exposes
+    the allowlist and an unknown value falls through to the service's
+    ``DELETE_UNKNOWN_PROJECT`` refusal.
+    """
+    for candidate in _catalog_ids(request):
+        if project_id == candidate or project_id == opaque_project_handle(candidate):
+            return candidate
+    return project_id
 
 
 async def _read_project_catalog(

@@ -15,6 +15,7 @@ from projecta_api.portable_export import (
     ProjectPortableExportService,
 )
 from projecta_api.portable_import import PortableImportFailure, ProjectPortableImportService
+from projecta_api.project_deletion import ProjectDeletionFailure, ProjectDeletionService
 
 
 from fastapi import FastAPI, HTTPException, Request
@@ -151,6 +152,7 @@ def create_app(
     runtime_configuration: RuntimeConfigurationProvider | None = None,
     connector_runtime: ConnectorRuntime | None = None,
     identity_repository: object | None = None,
+    project_deletion: ProjectDeletionService | None = None,
 ) -> FastAPI:
     """Create the application without performing network I/O."""
     actual_settings = settings or Settings()  # pyright: ignore[reportCallIssue]
@@ -256,11 +258,16 @@ def create_app(
         )
     retrieval = RetrievalService(client)
     portable_import: ProjectPortableImportService | None = None
+    composed_deletion = project_deletion
 
     @asynccontextmanager
     async def lifespan(_: FastAPI) -> AsyncIterator[None]:
         if portable_import is not None and portable_import.enabled():
             await portable_import.recover_before_serving(
+                actual_settings.experience_actor_id or ""
+            )
+        if composed_deletion is not None and composed_deletion.enabled():
+            await composed_deletion.recover_before_serving(
                 actual_settings.experience_actor_id or ""
             )
         yield
@@ -311,6 +318,21 @@ def create_app(
         context_secret=actual_settings.trusted_context_secret,
         staging_copy=actual_settings.portable_import_staging_copy,
     )
+    if composed_deletion is None and actual_settings.portable_import_root is not None:
+        composed_deletion = ProjectDeletionService(
+            database,
+            postgres_engine,
+            evidence_store,
+            client,  # type: ignore[arg-type]
+            deletion_root=actual_settings.portable_import_root.parent / "deletion",
+            import_root=actual_settings.portable_import_root,
+            exports_root=Path(actual_settings.evidence_root).parent / "exports",
+            registry_path=actual_settings.portable_import_registry_path,
+            native_runtime_lock_held=actual_settings.portable_import_lock_held,
+            identity_repository=identity_repository_value,
+            restart_file=actual_settings.portable_import_restart_file,
+            runtime_id=actual_settings.portable_import_runtime_id,
+        )
 
     @app.exception_handler(PortableExportFailure)
     async def portable_export_problem(request: Request, error: PortableExportFailure) -> JSONResponse:
@@ -350,6 +372,28 @@ def create_app(
             error.code,
             "Portable import failed",
             details.get(error.code, "The project import could not be completed safely."),
+        )
+
+    @app.exception_handler(ProjectDeletionFailure)
+    async def project_deletion_problem(request: Request, error: ProjectDeletionFailure) -> JSONResponse:
+        details = {
+            "DELETE_CONFIRMATION_REQUIRED": "Confirm the reviewed project deletion before applying it.",
+            "DELETE_UNSUPPORTED_RUNTIME": "Project deletion is available only in Projecta Local.",
+            "DELETE_BUSY": "A project maintenance operation is already in progress. Retry when it completes.",
+            "DELETE_UNAUTHORIZED": "The project deletion belongs to another local actor.",
+            "DELETE_UNKNOWN_PROJECT": "The project is not visible in the authorized catalog.",
+            "DELETE_IDENTITY_MISMATCH": "The typed project identity does not match the selected project.",
+            "DELETE_REFUSED_LEGAL_HOLD": "The project scope carries an unrecognized hold marker and cannot be deleted.",
+            "DELETE_DESTINATION_INVALID": "The local project registry is invalid.",
+            "DELETE_FAILED": "The project deletion failed safely before publication.",
+            "DELETE_RECOVERY_REQUIRED": "Projecta Local needs to recover an interrupted deletion before it can serve requests.",
+        }
+        return _problem(
+            request,
+            error.status_code,
+            error.code,
+            "Project deletion failed",
+            details.get(error.code, "The project deletion could not be completed safely."),
         )
 
 
@@ -647,6 +691,7 @@ def create_app(
             local_suggestions=local_suggestion_service,
             portable_export=portable_export,
             portable_import=portable_import,
+            project_deletion=composed_deletion,
         )
     )
     if actual_settings.web_assets_directory is not None:

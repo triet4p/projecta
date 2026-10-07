@@ -674,7 +674,7 @@ def _write_postgres_payloads(
                     text("SELECT version_num FROM alembic_version")
                 ).scalars().all()
                 if tuple(str(item) for item in head_rows) != (
-                    "0011_review_receipts_append_only",
+                    "0012_project_purge_exception",
                 ):
                     raise PortableExportFailure("EXPORT_UNSUPPORTED_VERSION")
                 _reject_active_connectors(connection, project_id)
@@ -707,7 +707,7 @@ def _write_postgres_payloads(
         raise PortableExportFailure("EXPORT_SOURCE_UNAVAILABLE", status_code=503) from error
     return {
         "record_counts": record_counts,
-        "alembic_head": "0011_review_receipts_append_only",
+        "alembic_head": "0012_project_purge_exception",
         "server_version": server_version,
         "receipt_digests": receipt_digests,
         "inbox_references": inbox_references,
@@ -1442,7 +1442,7 @@ def _manifest(
 
 
 def _producer_inventory(collection: _Collection) -> dict[str, object]:
-    if collection.postgres_alembic_head != "0011_review_receipts_append_only":
+    if collection.postgres_alembic_head != "0012_project_purge_exception":
         raise PortableExportFailure("EXPORT_UNSUPPORTED_VERSION")
     if collection.sqlite_schema_versions != (1, 2, 3) or collection.postgres_version != "16.15":
         raise PortableExportFailure("EXPORT_UNSUPPORTED_VERSION")

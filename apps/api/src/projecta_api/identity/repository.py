@@ -29,10 +29,11 @@ class IdentityRepository:
 
     def memberships(self, subject: str) -> tuple[MembershipRecord, ...]: ...
 
-    def replace_membership(self, subject: str, project_id: str, roles: Iterable[ProjectRole]) -> MembershipRecord: ...
-
     def remove_membership(self, subject: str, project_id: str) -> None: ...
 
+    def remove_memberships_for_project(self, project_id: str) -> int:
+        """Remove every authorization grant for one deleted project scope."""
+        ...
 
 class InMemoryIdentityRepository:
     """Deterministic adapter for unit tests and explicitly non-production modes."""
@@ -120,6 +121,14 @@ class InMemoryIdentityRepository:
         with self._lock:
             self._memberships.pop((subject, project_id), None)
         emit_safe(self._audit_sink, category="membership", action="membership.remove", outcome="changed", correlation_id="membership-revision", project_id=project_id, actor_id=subject)
+
+    def remove_memberships_for_project(self, project_id: str) -> int:
+        with self._lock:
+            doomed = [key for key in self._memberships if key[1] == project_id]
+            for key in doomed:
+                del self._memberships[key]
+        emit_safe(self._audit_sink, category="membership", action="membership.remove-scope", outcome="changed", correlation_id="membership-revision", project_id=project_id, actor_id="")
+        return len(doomed)
 
 
 class PostgresIdentityRepository:
@@ -214,3 +223,10 @@ class PostgresIdentityRepository:
         with self.engine.begin() as connection:
             connection.execute(text("DELETE FROM projecta_project_memberships WHERE subject = :subject AND project_id = :project_id"), {"subject": subject, "project_id": project_id})
         emit_safe(self._audit_sink, category="membership", action="membership.remove", outcome="changed", correlation_id="membership-revision", project_id=project_id, actor_id=subject)
+
+    def remove_memberships_for_project(self, project_id: str) -> int:
+        with self.engine.begin() as connection:
+            result = connection.execute(text("DELETE FROM projecta_project_memberships WHERE project_id = :project_id"), {"project_id": project_id})
+            removed = int(result.rowcount)
+        emit_safe(self._audit_sink, category="membership", action="membership.remove-scope", outcome="changed", correlation_id="membership-revision", project_id=project_id, actor_id="")
+        return removed

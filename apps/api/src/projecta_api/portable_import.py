@@ -1371,15 +1371,25 @@ def _validate_producer(value: object) -> None:
             "postgresql": "16.15",
             "semanticCore": {"javalin": "7.2.2", "jena": "6.2.0"},
         },
-        "postgresAlembicHead": "0011_review_receipts_append_only",
+        "postgresAlembicHead": "0012_project_purge_exception",
         "sqliteSchemaVersions": [1, 2, 3],
         "connectorContract": "connector-contract.v1",
         "reviewReceiptContract": REVIEW_RECEIPT_CONTRACT_VERSION,
         "correctionBurdenContract": CORRECTION_BURDEN_CONTRACT_VERSION,
         "ontologyAssets": expected_assets,
     }
-    if producer != expected:
-        raise PortableImportFailure("IMPORT_UNSUPPORTED_VERSION")
+    if producer == expected:
+        return
+    # Bounded backward compatibility: archives exported before the approved
+    # 0012 purge-exception migration stamp 0011. Migration 0012 adds only the
+    # scoped purge helper function and changes no table shape, so a 0011
+    # archive restores byte-identical state on a 0012 database. Any other
+    # producer difference (including an unknown head) still fails closed.
+    pre_purge = dict(expected)
+    pre_purge["postgresAlembicHead"] = "0011_review_receipts_append_only"
+    if producer == pre_purge:
+        return
+    raise PortableImportFailure("IMPORT_UNSUPPORTED_VERSION")
 
 
 def _validate_evidence(
@@ -1952,6 +1962,13 @@ def _append_project(
     result = dict(registry)
     projects = _registry_entries(registry)
     projects.append({"projectId": project_id, "projectName": project_name})
+    if not projects[:-1] or registry.get("projectId") not in {item["projectId"] for item in projects[:-1]}:
+        # First project after the persisted empty catalog (or any import whose
+        # header identity is gone, e.g. the former primary was deleted): the
+        # appended entry becomes the serving primary so the launcher
+        # entries[0]==header invariant holds again across restart.
+        result["projectId"] = project_id
+        result["projectName"] = project_name
     result["projects"] = projects
     return result
 
@@ -1997,12 +2014,11 @@ def _read_registry(path: Path | None) -> Mapping[str, object]:
     ):
         raise PortableImportFailure("IMPORT_DESTINATION_INVALID", status_code=503)
     entries = _registry_entries(value)
-    if not entries or entries[0]["projectId"] != value["projectId"]:
+    if entries and entries[0]["projectId"] != value["projectId"]:
         raise PortableImportFailure("IMPORT_DESTINATION_INVALID", status_code=503)
     if len({item["projectId"] for item in entries}) != len(entries):
         raise PortableImportFailure("IMPORT_DESTINATION_INVALID", status_code=503)
     return value
-
 
 def _read_private_json(path: Path, code: str = "IMPORT_RECOVERY_REQUIRED", *, status_code: int = 503) -> dict[str, object]:
     try:

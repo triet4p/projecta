@@ -61,6 +61,30 @@ public final class ApiErrorTranslator {
                     requestId, status, code, "Invalid request", "The request does not meet the published contract.");
         }
         if (exception instanceof IllegalStateException) {
+            if (message.contains("project has no semantic state to delete")) {
+                return problem(
+                        requestId,
+                        404,
+                        "PROJECT_STATE_ABSENT",
+                        "Project state absent",
+                        "The project has no semantic state to delete.");
+            }
+            if (message.contains("project has graphs outside its canonical scope")) {
+                return problem(
+                        requestId,
+                        409,
+                        "PROJECT_SCOPE_FOREIGN",
+                        "Project scope foreign",
+                        "The project has graphs outside its canonical scope.");
+            }
+            if (message.contains("project graph was not fully cleared")) {
+                return problem(
+                        requestId,
+                        503,
+                        "PROJECT_DELETE_INCOMPLETE",
+                        "Project delete incomplete",
+                        "The project graphs were not fully cleared.");
+            }
             if (message.contains("semantic store response")) {
                 return problem(
                         requestId,

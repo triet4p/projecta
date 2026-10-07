@@ -565,3 +565,66 @@ def test_package_inventory_rejects_visual_cpp_runtime_payload(filename: str, tmp
         launcher._verify_package_inventory(package, manifest, error_code="PACKAGE_CONTENT_INVALID")
 
     assert failure.value.code == "PACKAGE_CONTENT_INVALID"
+
+def _workspace_registry(
+    tmp_path: Path,
+    header: tuple[str, str],
+    projects: list[tuple[str, str]],
+) -> Path:
+    target = tmp_path / "local-runtime.json"
+    target.write_text(
+        json.dumps(
+            {
+                "formatVersion": 1,
+                "projectId": header[0],
+                "projectName": header[1],
+                "actorId": launcher.FIRST_RUN_ACTOR_ID,
+                "projects": [
+                    {"projectId": project_id, "projectName": name}
+                    for project_id, name in projects
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    return target
+
+
+def test_allowlist_accepts_repaired_primary_after_fresh_import(tmp_path: Path) -> None:
+    """A fresh import after last-project deletion re-points the serving primary.
+
+    The header and first entry agree with each other even though the stale
+    first-run identity is gone; the allowlist must serve the repaired set.
+    """
+    primary = launcher.WorkspaceConfig(
+        "my-projecta-workspace", "My Projecta Workspace", launcher.FIRST_RUN_ACTOR_ID
+    )
+    target = _workspace_registry(
+        tmp_path, ("fresh-project", "Fresh Project"), [("fresh-project", "Fresh Project")]
+    )
+    assert launcher.workspace_project_ids(target, primary) == ["fresh-project"]
+
+
+def test_allowlist_still_refuses_header_entry_disagreement(tmp_path: Path) -> None:
+    """A registry whose header disagrees with its first entry stays invalid."""
+    primary = launcher.WorkspaceConfig(
+        "my-projecta-workspace", "My Projecta Workspace", launcher.FIRST_RUN_ACTOR_ID
+    )
+    target = _workspace_registry(
+        tmp_path, ("evil-project", "Evil"), [("fresh-project", "Fresh Project")]
+    )
+    with pytest.raises(launcher.RuntimeFailure) as failure:
+        launcher.workspace_project_ids(target, primary)
+    assert failure.value.code == "LOCAL_PROJECT_CONFIGURATION_INVALID"
+
+
+def test_allowlist_keeps_serving_empty_catalog_without_resurrection(tmp_path: Path) -> None:
+    """The persisted empty catalog still serves zero projects after the fix."""
+    primary = launcher.WorkspaceConfig(
+        "my-projecta-workspace", "My Projecta Workspace", launcher.FIRST_RUN_ACTOR_ID
+    )
+    target = _workspace_registry(
+        tmp_path, ("my-projecta-workspace", "My Projecta Workspace"), []
+    )
+    assert launcher.workspace_project_ids(target, primary) == []
+

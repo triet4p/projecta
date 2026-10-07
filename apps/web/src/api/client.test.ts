@@ -127,7 +127,57 @@ describe("ProjectaApiClient", () => {
     });
     vi.unstubAllGlobals();
   });
+  it("previews and confirms a project deletion with typed identity", async () => {
+    const requestId = "req-deletion-1";
+    const fetchMock = vi.fn().mockImplementation(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const outgoing = new Headers(init?.headers).get("X-Request-Id") ?? requestId;
+      const path = new URL(String(input), "http://projecta.test").pathname;
+      const body =
+        path.endsWith("/delete")
+          ? {
+              requestId: outgoing,
+              projectId: "portable-project",
+              projectName: "Portable Project",
+              outcome: "deleted",
+              restartRequired: true,
+              graphTriplesRemoved: 3,
+              evidenceObjectsRemoved: 1,
+              sqliteRowsRemoved: 2,
+              postgresRowsRemoved: 1,
+              ledgerEntriesForgotten: 1,
+              membershipsRemoved: 0,
+              retained: ["other projects unchanged"],
+            }
+          : {
+              requestId: outgoing,
+              projectId: "portable-project",
+              projectName: "Portable Project",
+              graphTriples: { sources: 2, asserted: 1 },
+              evidenceObjects: 1,
+              sqliteRows: { structured_note_drafts: 2 },
+              postgresRows: { review_decision_receipts: 1 },
+              ledgerEntries: 1,
+              warnings: ["There is no undo."],
+            };
+      return new Response(JSON.stringify(body), {
+        status: 200,
+        headers: { "content-type": "application/json", "X-Request-Id": outgoing },
+      });
+    });
+    vi.stubGlobal("fetch", fetchMock);
 
+    const api = new ProjectaApiClient();
+    await expect(api.previewProjectDeletion("portable-project", "Portable Project")).resolves.toMatchObject({
+      projectId: "portable-project",
+      evidenceObjects: 1,
+    });
+    await expect(
+      api.deleteProject("portable-project", "Portable Project", "Portable Project"),
+    ).resolves.toMatchObject({ outcome: "deleted", ledgerEntriesForgotten: 1 });
+    const [, deleteInit] = fetchMock.mock.calls[1] as [RequestInfo | URL, RequestInit];
+    expect(String(deleteInit.body)).toContain('"confirmed":true');
+    vi.unstubAllGlobals();
+  });
 
   it("maps RFC 7807 responses to ApiError", async () => {
     vi.stubGlobal(

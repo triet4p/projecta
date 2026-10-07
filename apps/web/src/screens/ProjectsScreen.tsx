@@ -7,6 +7,8 @@ import type {
   PortableImportPreviewResponse,
   ProjectCatalogItem,
   PortableImportResultResponse,
+  ProjectDeletionPreviewResponse,
+  ProjectDeletionResponse,
 } from "../api/generated";
 import { EmptyState, ErrorMessage, Skeleton, StatusBadge, Toolbar } from "../ui";
 
@@ -37,6 +39,12 @@ export function ProjectsScreen({
   const [pendingImportId, setPendingImportId] = useState<string | null>(() =>
     window.sessionStorage.getItem(PENDING_IMPORT_SESSION_KEY),
   );
+  const [deletionTarget, setDeletionTarget] = useState<ProjectCatalogItem | null>(null);
+  const [deletionPreview, setDeletionPreview] = useState<ProjectDeletionPreviewResponse | null>(null);
+  const [deletionResult, setDeletionResult] = useState<ProjectDeletionResponse | null>(null);
+  const [deletionError, setDeletionError] = useState<unknown>(null);
+  const [deletionWorking, setDeletionWorking] = useState(false);
+  const [deletionIdentity, setDeletionIdentity] = useState("");
 
   const load = async () => {
     setLoading(true);
@@ -178,6 +186,54 @@ export function ProjectsScreen({
     }
   };
 
+  const openDeletion = async (project: ProjectCatalogItem) => {
+    setDeletionTarget(project);
+    setDeletionPreview(null);
+    setDeletionResult(null);
+    setDeletionError(null);
+    setDeletionIdentity("");
+    setDeletionWorking(true);
+    try {
+      const preview = await api.previewProjectDeletion(project.handle, project.name);
+      setDeletionPreview(preview);
+    } catch (nextError) {
+      setDeletionError(nextError);
+    } finally {
+      setDeletionWorking(false);
+    }
+  };
+
+  const closeDeletion = () => {
+    if (deletionWorking) return;
+    setDeletionTarget(null);
+    setDeletionPreview(null);
+    setDeletionError(null);
+    setDeletionIdentity("");
+  };
+
+  const confirmDeletion = async () => {
+    if (!deletionTarget || !deletionPreview) return;
+    const typed = deletionIdentity.trim();
+    if (typed !== deletionPreview.projectId && typed !== deletionPreview.projectName) return;
+    setDeletionWorking(true);
+    setDeletionError(null);
+    try {
+      const result = await api.deleteProject(
+        deletionPreview.projectId,
+        deletionPreview.projectName,
+        typed,
+      );
+      setDeletionResult(result);
+      setDeletionTarget(null);
+      setDeletionPreview(null);
+      setDeletionIdentity("");
+      await load();
+    } catch (nextError) {
+      setDeletionError(nextError);
+    } finally {
+      setDeletionWorking(false);
+    }
+  };
   return (
     <div className="workspace-page">
       <header className="workspace-header">
@@ -395,9 +451,114 @@ export function ProjectsScreen({
               >
                 {selecting === project.handle ? "Opening…" : "Open project"}
               </button>
+              <button
+                className="secondary danger"
+                disabled={selecting !== null || importWorking || importPreview !== null || deletionWorking}
+                onClick={() => void openDeletion(project)}
+                type="button"
+              >
+                Delete project
+              </button>
             </article>
           ))}
         </div>
+      )}
+      {deletionResult && (
+        <div aria-live="polite" className="state-message success" role="status">
+          <strong>Project deleted:</strong> {deletionResult.projectName} (
+          <code>{deletionResult.projectId}</code>). Removed {deletionResult.graphTriplesRemoved}{" "}
+          graph triples, {deletionResult.evidenceObjectsRemoved} evidence objects,{" "}
+          {deletionResult.sqliteRowsRemoved} workspace rows, {deletionResult.postgresRowsRemoved}{" "}
+          connector and history rows, and forgot {deletionResult.ledgerEntriesForgotten} import
+          ledger entries. {deletionResult.retained.join("; ")}.{" "}
+          {deletionResult.nextAction ?? "Projecta Local is restarting to serve the new project catalog."}
+        </div>
+      )}
+      {deletionTarget && (
+        <dialog
+          aria-labelledby="project-deletion-title"
+          className="export-dialog"
+          open
+          onClose={closeDeletion}
+        >
+          <h2 id="project-deletion-title">Delete {deletionTarget.name}?</h2>
+          <div className="export-warning" role="note">
+            <p>
+              This permanently deletes ALL data for <strong>{deletionTarget.name}</strong> (
+              <code>{deletionPreview?.projectId ?? deletionTarget.handle}</code>), including semantic graphs, evidence objects,
+              drafts and workflow history, connector state, review receipts, correction and cost
+              history, configuration audit rows, and this scope&apos;s import ledger entries. There
+              is no undo. Active exports or imports must be idle first.
+            </p>
+            <p>
+              Not deleted: other projects, installation secrets and configuration, exported{" "}
+              <code>.projecta</code> files, and whole-installation backups. Logical removal only;
+              copies in backups or exported files remain wherever you kept them.
+            </p>
+          </div>
+          {deletionWorking && !deletionPreview && deletionError === null && (
+            <p className="project-meta" role="status">Loading project scope…</p>
+          )}
+          {deletionError !== null && <ErrorMessage error={deletionError} />}
+          {deletionPreview && (
+            <>
+              <dl className="import-details">
+                <div>
+                  <dt>Project ID</dt>
+                  <dd>
+                    <code>{deletionPreview.projectId}</code>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Graph triples</dt>
+                  <dd>{Object.values(deletionPreview.graphTriples).reduce((a, b) => a + b, 0)}</dd>
+                </div>
+                <div>
+                  <dt>Evidence objects</dt>
+                  <dd>{deletionPreview.evidenceObjects}</dd>
+                </div>
+                <div>
+                  <dt>Ledger entries</dt>
+                  <dd>{deletionPreview.ledgerEntries}</dd>
+                </div>
+              </dl>
+              {deletionPreview.warnings.map((warning) => (
+                <p className="import-warning" key={warning} role="note">
+                  {warning}
+                </p>
+              ))}
+              <label className="stacked-label" htmlFor="project-deletion-identity">
+                Type the project name or project ID to confirm
+                <input
+                  autoComplete="off"
+                  disabled={deletionWorking}
+                  id="project-deletion-identity"
+                  onChange={(event) => setDeletionIdentity(event.currentTarget.value)}
+                  placeholder={deletionPreview.projectName}
+                  value={deletionIdentity}
+                />
+              </label>
+            </>
+          )}
+          <div className="export-dialog-actions">
+            <button className="secondary" disabled={deletionWorking} onClick={closeDeletion} type="button">
+              Cancel
+            </button>
+            <button
+              className="danger"
+              disabled={
+                deletionWorking ||
+                !deletionPreview ||
+                (deletionIdentity.trim() !== deletionPreview.projectId &&
+                  deletionIdentity.trim() !== deletionPreview.projectName)
+              }
+              onClick={() => void confirmDeletion()}
+              type="button"
+            >
+              {deletionWorking ? "Deleting…" : "Delete permanently"}
+            </button>
+          </div>
+        </dialog>
       )}
     </div>
   );

@@ -486,6 +486,46 @@ export interface PortableImportResultResponse {
   failureCode?: string;
 }
 
+export interface ProjectDeletionPreviewRequest {
+  projectId: string;
+  projectName: string;
+}
+
+export interface ProjectDeletionPreviewResponse {
+  requestId: string;
+  projectId: string;
+  projectName: string;
+  graphTriples: Record<string, number>;
+  evidenceObjects: number;
+  sqliteRows: Record<string, number>;
+  postgresRows: Record<string, number>;
+  ledgerEntries: number;
+  warnings: string[];
+}
+
+export interface ProjectDeletionRequest {
+  projectId: string;
+  projectName: string;
+  typedIdentity: string;
+  confirmed: true;
+}
+
+export interface ProjectDeletionResponse {
+  requestId: string;
+  projectId: string;
+  projectName: string;
+  outcome: "deleted";
+  restartRequired: boolean;
+  nextAction?: string;
+  graphTriplesRemoved: number;
+  evidenceObjectsRemoved: number;
+  sqliteRowsRemoved: number;
+  postgresRowsRemoved: number;
+  ledgerEntriesForgotten: number;
+  membershipsRemoved: number;
+  retained: string[];
+}
+
 export interface ProjectReadResponse {
   requestId: string;
   project: ProjectCatalogItem;
@@ -792,7 +832,12 @@ export interface Paths {
   "/v1/projects/selection": {
     post: { body: ProjectSelectionRequest; response: ProjectSelectionResponse };
   };
-  "/v1/projects/{handle}/overview": { get: { response: ProjectOverviewResponse } };
+  "/v1/projects/deletion/preview": {
+    post: { body: ProjectDeletionPreviewRequest; response: ProjectDeletionPreviewResponse };
+  };
+  "/v1/projects/deletion/delete": {
+    post: { body: ProjectDeletionRequest; response: ProjectDeletionResponse };
+  };
   "/v1/projects/{handle}/graph": { get: { response: GraphProjectionResponse } };
   "/v1/projects/{handle}/graph/neighborhood/{nodeHandle}": {
     get: { response: GraphProjectionResponse };

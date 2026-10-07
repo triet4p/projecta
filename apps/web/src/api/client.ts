@@ -36,6 +36,8 @@ import type {
   PortableImportApplyResponse,
   PortableImportPreviewResponse,
   PortableImportResultResponse,
+  ProjectDeletionPreviewResponse,
+  ProjectDeletionResponse,
   ProjectOverviewResponse,
   ProjectReadResponse,
   ProjectSelectionRequest,
@@ -136,13 +138,33 @@ export class ProjectaApiClient {
     );
   }
 
+  async previewProjectDeletion(
+    projectId: string,
+    projectName: string,
+  ): Promise<ProjectDeletionPreviewResponse> {
+    return this.request<ProjectDeletionPreviewResponse>(
+      "/v1/projects/deletion/preview",
+      { method: "POST", body: { projectId, projectName } },
+    );
+  }
+
+  async deleteProject(
+    projectId: string,
+    projectName: string,
+    typedIdentity: string,
+  ): Promise<ProjectDeletionResponse> {
+    return this.request<ProjectDeletionResponse>(
+      "/v1/projects/deletion/delete",
+      { method: "POST", body: { projectId, projectName, typedIdentity, confirmed: true } },
+    );
+  }
+
   async getPortableImportResult(importId: string): Promise<PortableImportResultResponse> {
     return this.request<PortableImportResultResponse>(
       `/v1/imports/${encodeURIComponent(importId)}`,
       { method: "GET" },
     );
   }
-
 
   async getConnectorCatalog(): Promise<ConnectorCatalogResponse> {
     return this.request<ConnectorCatalogResponse>("/v1/connectors/catalog", { method: "GET" });
@@ -985,6 +1007,43 @@ function validateSuccess(path: string, body: unknown, requestId: string): void {
       (value.failureCode !== undefined && typeof value.failureCode !== "string")
     ) {
       throw contractError(requestId, "The portable import result response is malformed.");
+    }
+  }
+  if (path === "/v1/projects/deletion/preview") {
+    if (
+      typeof value.projectId !== "string" ||
+      typeof value.projectName !== "string" ||
+      typeof value.graphTriples !== "object" ||
+      value.graphTriples === null ||
+      typeof value.evidenceObjects !== "number" ||
+      !Number.isSafeInteger(value.evidenceObjects) ||
+      typeof value.sqliteRows !== "object" ||
+      value.sqliteRows === null ||
+      typeof value.postgresRows !== "object" ||
+      value.postgresRows === null ||
+      typeof value.ledgerEntries !== "number" ||
+      !Number.isSafeInteger(value.ledgerEntries) ||
+      !Array.isArray(value.warnings)
+    ) {
+      throw contractError(requestId, "The project deletion preview response is malformed.");
+    }
+  }
+  if (path === "/v1/projects/deletion/delete") {
+    if (
+      typeof value.projectId !== "string" ||
+      typeof value.projectName !== "string" ||
+      value.outcome !== "deleted" ||
+      typeof value.restartRequired !== "boolean" ||
+      (value.nextAction !== undefined && typeof value.nextAction !== "string") ||
+      typeof value.graphTriplesRemoved !== "number" ||
+      typeof value.evidenceObjectsRemoved !== "number" ||
+      typeof value.sqliteRowsRemoved !== "number" ||
+      typeof value.postgresRowsRemoved !== "number" ||
+      typeof value.ledgerEntriesForgotten !== "number" ||
+      typeof value.membershipsRemoved !== "number" ||
+      !Array.isArray(value.retained)
+    ) {
+      throw contractError(requestId, "The project deletion response is malformed.");
     }
   }
   if (path.includes("/overview")) {

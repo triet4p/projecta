@@ -26,9 +26,17 @@ class SemanticCoreProblem(Exception):
         self.detail = detail
         super().__init__(detail)
 
-
 class SemanticCoreClient(Protocol):
     """Finite operations available to the application service."""
+
+    async def project_graph_counts(
+        self, context: TrustedActorContext, project_id: str
+    ) -> Mapping[str, object]: ...
+
+    async def delete_project_graphs(
+        self, context: TrustedActorContext, project_id: str
+    ) -> Mapping[str, object]: ...
+
 
     async def capture(
         self, context: TrustedRequestContext, key: str, request: SemanticCapture
@@ -246,6 +254,51 @@ class HttpSemanticCoreClient:
             allow_empty=True,
         )
 
+    async def project_graph_counts(
+        self, actor: TrustedActorContext, project_id: str
+    ) -> Mapping[str, object]:
+        return await self._project_data_request(actor, project_id, "counts", "GET")
+
+    async def delete_project_graphs(
+        self, actor: TrustedActorContext, project_id: str
+    ) -> Mapping[str, object]:
+        return await self._project_data_request(actor, project_id, "delete", "POST")
+
+    async def _project_data_request(
+        self, actor: TrustedActorContext, project_id: str, action: str, method: str
+    ) -> Mapping[str, object]:
+        context = TrustedRequestContext(
+            project_id=project_id,
+            actor_id=actor.actor_id,
+            request_id=actor.request_id,
+            operation_id=actor.operation_id,
+        )
+        try:
+            async with httpx.AsyncClient(
+                base_url=self._base_url,
+                timeout=httpx.Timeout(300.0, connect=10.0),
+            ) as client:
+                response = await client.request(
+                    method,
+                    f"/v1/projects/{project_id}/project-data/{action}",
+                    headers=_headers(context),
+                )
+        except httpx.HTTPError as error:
+            raise SemanticCoreProblem(
+                503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core is temporarily unavailable"
+            ) from error
+        if response.is_error:
+            try:
+                payload: object = response.json()
+            except ValueError:
+                payload = {}
+            raise _problem(response.status_code, payload)
+        try:
+            return _mapping(response.json())
+        except (ValueError, SemanticCoreProblem) as error:
+            raise SemanticCoreProblem(
+                503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core returned invalid project data"
+            ) from error
     async def _portable_import_request(
         self,
         actor: TrustedActorContext,

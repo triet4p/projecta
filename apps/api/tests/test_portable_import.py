@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import asyncio
+import json
+from pathlib import Path
 
 import pytest
 from fastapi import FastAPI
@@ -12,6 +14,7 @@ from projecta_api.portable_import import (
     PortableImportFailure,
     _check_no_secret_fields,
     _validate_archive_references,
+    _validate_producer,
 )
 
 
@@ -144,3 +147,70 @@ def test_import_maps_corrupt_deflate_payload_to_finite_error(tmp_path) -> None:
     target.write_bytes(raw)
     with pytest.raises(PortableImportFailure, match="IMPORT_PACKAGE_INVALID"):
         _validate_archive("probe", target_dir, target, hashlib.sha256(raw).hexdigest(), len(raw))
+
+
+def test_import_accepts_pre_purge_archive_head_without_shape_change() -> None:
+    """A real pre-0012 (0011-stamped) archive stays importable: 0012 adds only the purge helper."""
+    import copy
+    import zipfile
+
+    from projecta_api.portable_export import _ontology_assets
+
+    source = Path("F:/ai-ml/projecta/build/s14-12-A2-export.projecta")
+    with zipfile.ZipFile(source, "r") as archive:
+        manifest = json.loads(archive.read("manifest.json").decode("utf-8"))
+    assert manifest["producer"]["postgresAlembicHead"] == "0011_review_receipts_append_only"
+    producer = copy.deepcopy(manifest["producer"])
+    producer["ontologyAssets"] = _ontology_assets()
+    # Current-database producer passes unchanged (no exception).
+    _validate_producer({**producer, "postgresAlembicHead": "0012_project_purge_exception"})
+    # Pre-purge producer passes through the bounded compatibility branch.
+    _validate_producer(producer)
+    # Any other head still fails closed.
+    with pytest.raises(PortableImportFailure, match="IMPORT_UNSUPPORTED_VERSION"):
+        _validate_producer({**producer, "postgresAlembicHead": "0009_review_decision_receipts"})
+
+def test_import_after_empty_catalog_repoints_serving_primary() -> None:
+    """Fresh import on the persisted empty catalog re-points the serving primary.
+
+    Regression: last-project deletion persists ``projects: []`` with the stale
+    first-run header; the next fresh import must repair the header so the
+    launcher ``entries[0] == header`` invariant holds again across restart.
+    """
+    from projecta_api.portable_import import _append_project
+
+    empty = {
+        "formatVersion": 1,
+        "projectId": "my-projecta-workspace",
+        "projectName": "My Projecta Workspace",
+        "actorId": "local-operator",
+        "projects": [],
+    }
+    repaired = _append_project(empty, "fresh-project", "Fresh Project", False)
+    assert repaired["projects"] == [
+        {"projectId": "fresh-project", "projectName": "Fresh Project"}
+    ]
+    assert repaired["projectId"] == "fresh-project"
+    assert repaired["projectName"] == "Fresh Project"
+
+
+def test_import_on_nonempty_catalog_keeps_serving_primary() -> None:
+    """Ordinary imports never move the serving primary header."""
+    from projecta_api.portable_import import _append_project
+
+    registry = {
+        "formatVersion": 1,
+        "projectId": "my-projecta-workspace",
+        "projectName": "My Projecta Workspace",
+        "actorId": "local-operator",
+        "projects": [
+            {"projectId": "my-projecta-workspace", "projectName": "My Projecta Workspace"}
+        ],
+    }
+    updated = _append_project(registry, "second-project", "Second Project", False)
+    assert updated["projectId"] == "my-projecta-workspace"
+    assert [item["projectId"] for item in updated["projects"]] == [
+        "my-projecta-workspace",
+        "second-project",
+    ]
+

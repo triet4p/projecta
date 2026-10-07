@@ -40,6 +40,7 @@ public final class SemanticCoreApplication {
         var workspace = new ProjectWorkspaceQueryService(gateway, router);
         var portableExport = new PortableProjectExportService(gateway, router);
         var portableImport = new PortableProjectImportService(gateway, router, validation);
+        var projectDelete = new ProjectDataDeleteService(gateway, router);
         var application = Javalin.create(config -> {
             config.routes.before(context ->
                     gateway.setCorrelation(context.header("X-Request-Id"), context.header("X-Operation-Id")));
@@ -153,6 +154,16 @@ public final class SemanticCoreApplication {
                                 booleanQueryParameter(context, "restorePlaceholder"),
                                 context.bodyInputStream());
                         context.status(204);
+                    })
+                    .get("/v1/projects/{projectId}/project-data/counts", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        context.json(projectDelete.counts(trusted.projectId()));
+                    })
+                    .post("/v1/projects/{projectId}/project-data/delete", context -> {
+                        var trusted = trustedContext(context);
+                        requireProjectPath(context, trusted);
+                        context.json(projectDelete.delete(trusted.projectId()));
                     })
                     .get("/v1/projects/{projectId}/notes", context -> {
                         var trusted = trustedContext(context);

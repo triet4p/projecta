@@ -13,6 +13,7 @@ from starlette.responses import JSONResponse, Response
 
 _EXPORT_PATH = re.compile(r"^/v1/projects/[^/]+/exports$")
 _IMPORT_APPLY_PATH = re.compile(r"^/v1/imports/previews/[^/]+/apply$")
+_DELETION_PATH = re.compile(r"^/v1/projects/deletion/(preview|delete)$")
 _MUTATING_METHODS = frozenset({"POST", "PUT", "PATCH", "DELETE"})
 
 
@@ -21,7 +22,7 @@ class ExportAlreadyRunning(RuntimeError):
 
 
 class ProjectWriteFence:
-    """Exclude API writes and reads while a project import publishes cross-store state."""
+    """Exclude API writes and reads while a project maintenance operation publishes cross-store state."""
 
     def __init__(self) -> None:
         self._condition = asyncio.Condition()
@@ -127,11 +128,40 @@ class ProjectWriteFence:
                 self._maintenance_kind = ""
                 self._condition.notify_all()
 
+    @asynccontextmanager
+    async def deletion_epoch(self) -> AsyncIterator[None]:
+        """Drain API requests and exclude all project access during project deletion."""
+        async with self._condition:
+            if self._recovery_required or self._exporting:
+                raise ExportAlreadyRunning()
+            self._exporting = True
+            self._maintenance_kind = "deletion"
+            self._write_attempted = False
+            try:
+                await self._condition.wait_for(
+                    lambda: self._active_writers == 0 and self._active_readers == 0
+                )
+            except BaseException:
+                self._exporting = False
+                self._maintenance_kind = ""
+                self._condition.notify_all()
+                raise
+        try:
+            yield
+        finally:
+            async with self._condition:
+                self._exporting = False
+                self._condition.notify_all()
+
     async def busy_code(self) -> str:
         async with self._condition:
             if self._recovery_required:
                 return "IMPORT_RECOVERY_REQUIRED"
-            return "IMPORT_BUSY" if self._maintenance_kind == "import" else "EXPORT_BUSY"
+            if self._maintenance_kind == "import":
+                return "IMPORT_BUSY"
+            if self._maintenance_kind == "deletion":
+                return "DELETE_BUSY"
+            return "EXPORT_BUSY"
 
     async def recovery_required(self) -> bool:
         async with self._condition:
@@ -148,11 +178,8 @@ class ExportWriteAttempted(RuntimeError):
     """A mutating request arrived during the frozen export epoch."""
 
 
- 
-
-
 class ProjectWriteFenceMiddleware(BaseHTTPMiddleware):
-    """Fence project API traffic during imports and reject fatal recovery states."""
+    """Fence project API traffic during maintenance and reject fatal recovery states."""
 
     def __init__(self, app: object, fence: ProjectWriteFence) -> None:
         super().__init__(app)  # type: ignore[arg-type]
@@ -168,6 +195,9 @@ class ProjectWriteFenceMiddleware(BaseHTTPMiddleware):
             return _maintenance_response(request, "IMPORT_RECOVERY_REQUIRED")
 
         if _IMPORT_APPLY_PATH.fullmatch(request.url.path) is not None:
+            return await call_next(request)
+
+        if _DELETION_PATH.fullmatch(request.url.path) is not None:
             return await call_next(request)
 
         if (

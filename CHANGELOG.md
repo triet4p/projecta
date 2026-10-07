@@ -55,8 +55,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   and channel; it does not establish clean-Windows readiness or signed-release
   eligibility.
 
-- Added validated manual portable-project import under the approved projecta-portable.v1 contract: full archive validation before any live change, explicit owner preview/confirmation/cancel, staged-copy apply with quiesced services and catalog-last publication, durable interrupted-recovery journaling with fail-closed restart behavior, idempotent exact-replay, and finite tamper/partial/version/conflict/unauthorized responses with no implicit approval or materialization. Verified on isolated disposable native runtimes with the accepted S14-10 archive, including real-browser preview/confirm/apply/status proof; no clean-host or cross-machine claim.
-
+- Added validated native project-data deletion under the approved projecta-deletion.v1 contract: discoverable per-project Delete action with explicit typed-identity confirmation, per-store purge across semantic graphs, evidence, SQLite, PostgreSQL history (via a narrow transaction-local purge exception), import-ledger scope entries, registry and selections, with truthful deleted/refused outcomes, busy/cancel no-mutation behavior, interruption recovery, persisted empty catalog on last-project delete with fresh import afterwards, and launcher restart guidance. Verified on isolated disposable native roots with real browser journeys.
+- Added validated manual portable-project import under the approved projecta-portable.v1 contract: full archive validation before any live change, explicit owner preview/confirmation/cancel, staged-copy apply with quiesced services and catalog-last publication, durable interrupted-recovery journaling with fail-closed restart behavior, idempotent exact-replay, and finite tamper/partial/version/conflict/unauthorized responses with no implicit approval or materialization. Verified on isolated disposable native roots with real browser journeys.
 ### Fixed
 
 - Corrected the native launcher path: approved first-run workspace provisioning

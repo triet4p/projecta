@@ -36,7 +36,7 @@ def validate_startup(settings: Settings) -> tuple[StartupProblem, ...]:
     if settings.runtime_mode == "experience":
         if not settings.experience_project_catalog.strip():
             problems.append(StartupProblem("EXPERIENCE_PROJECT_CATALOG_MISSING"))
-        else:
+        elif settings.experience_project_catalog.strip() != "[]":
             try:
                 configured_project_ids(settings.experience_project_catalog)
             except ValueError:
