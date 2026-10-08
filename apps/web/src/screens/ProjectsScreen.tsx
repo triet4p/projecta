@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactElement } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactElement } from "react";
 
 import { ApiError } from "../api/client";
 import type { ProjectaApiClient } from "../api/client";
@@ -45,6 +45,8 @@ export function ProjectsScreen({
   const [deletionError, setDeletionError] = useState<unknown>(null);
   const [deletionWorking, setDeletionWorking] = useState(false);
   const [deletionIdentity, setDeletionIdentity] = useState("");
+  const deletionDialogRef = useRef<HTMLDialogElement | null>(null);
+  const deletionIdentityRef = useRef<HTMLInputElement | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -205,11 +207,23 @@ export function ProjectsScreen({
 
   const closeDeletion = () => {
     if (deletionWorking) return;
+    if (deletionDialogRef.current?.open) deletionDialogRef.current.close();
     setDeletionTarget(null);
     setDeletionPreview(null);
     setDeletionError(null);
     setDeletionIdentity("");
   };
+  useEffect(() => {
+    if (deletionTarget && deletionDialogRef.current && !deletionDialogRef.current.open) {
+      deletionDialogRef.current.showModal();
+    }
+  }, [deletionTarget]);
+  useEffect(() => {
+    if (deletionPreview && deletionDialogRef.current?.open) {
+      deletionIdentityRef.current?.focus({ preventScroll: true });
+      deletionIdentityRef.current?.scrollIntoView({ block: "nearest" });
+    }
+  }, [deletionPreview]);
 
   const confirmDeletion = async () => {
     if (!deletionTarget || !deletionPreview) return;
@@ -224,6 +238,7 @@ export function ProjectsScreen({
         typed,
       );
       setDeletionResult(result);
+      if (deletionDialogRef.current?.open) deletionDialogRef.current.close();
       setDeletionTarget(null);
       setDeletionPreview(null);
       setDeletionIdentity("");
@@ -478,8 +493,11 @@ export function ProjectsScreen({
         <dialog
           aria-labelledby="project-deletion-title"
           className="export-dialog"
-          open
+          onCancel={(event) => {
+            if (deletionWorking) event.preventDefault();
+          }}
           onClose={closeDeletion}
+          ref={deletionDialogRef}
         >
           <h2 id="project-deletion-title">Delete {deletionTarget.name}?</h2>
           <div className="export-warning" role="note">
@@ -535,6 +553,7 @@ export function ProjectsScreen({
                   id="project-deletion-identity"
                   onChange={(event) => setDeletionIdentity(event.currentTarget.value)}
                   placeholder={deletionPreview.projectName}
+                  ref={deletionIdentityRef}
                   value={deletionIdentity}
                 />
               </label>

@@ -108,6 +108,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Fixed the unsigned Windows installer failing at the staged-application commit step: setup now leaves the staging directory before renaming it over the install location, commits onto a pre-created empty install directory instead of treating it as an existing installation, no longer aborts silent installs during startup, and uses distinct staging and previous-install temporary names. Fresh installs commit, upgrades replace the previous tree, and a failed commit still restores or leaves the previous installation without touching workspace data.
 - Fixed project deletion refusing with a crash-loop when an interrupted delete is recovered after its staged previews were already forgotten, and refusing only after destroying data when a staged preview belonged to another actor. Recovery now completes an already-forgotten staging tail idempotently, and a foreign-actor staged preview refuses before any project data is touched.
 - Fixed the project-deletion confirmation showing and reporting double the actual graph count. The dialog and the deletion receipt now report the authoritative total.
+- Fixed the project-deletion confirmation escaping the viewport on short screens. The confirmation now opens as a bounded modal dialog with scrollable content and keeps every warning, the typed project name/ID field, and the Cancel/Delete permanently actions reachable by mouse and keyboard.
 
 ### Changed
 

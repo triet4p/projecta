@@ -493,9 +493,16 @@ dialog.export-dialog {
   background: var(--dws-surface-raised);
   border: 1px solid var(--dws-border-strong);
   border-radius: var(--dws-radius-panel);
+  box-sizing: border-box;
   color: var(--dws-text);
-  max-height: calc(100vh - 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: auto;
+  max-height: min(calc(100vh - 32px), calc(100dvh - 32px));
   max-width: min(540px, calc(100vw - 32px));
+  overflow: hidden auto;
+  overscroll-behavior: contain;
   padding: 24px;
   width: min(540px, calc(100vw - 32px));
 }
@@ -530,11 +537,15 @@ dialog.export-dialog::backdrop {
   width: 16px;
 }
 .export-dialog-actions {
+  background: inherit;
+  bottom: 0;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   justify-content: flex-end;
   margin-top: 20px;
+  padding-bottom: 4px;
+  position: sticky;
 }
 .export-disabled {
   color: var(--dws-text-muted);
