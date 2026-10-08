@@ -214,3 +214,11 @@ def test_import_on_nonempty_catalog_keeps_serving_primary() -> None:
         "second-project",
     ]
 
+
+def test_successful_publication_requests_no_restart(tmp_path) -> None:
+    """A clean publication exposes no restart affordance on the live contract."""
+    from projecta_api.portable_import import ProjectPortableImportService
+
+    assert not hasattr(ProjectPortableImportService, "_request_runtime_restart")
+    assert not hasattr(ProjectPortableImportService, "_request_recovery_restart")
+    assert not (tmp_path / "state" / "import-restart.json").exists()

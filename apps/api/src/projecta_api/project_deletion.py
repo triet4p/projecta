@@ -155,10 +155,10 @@ class ProjectDeletionResult:
             "projectId": self.project_id,
             "projectName": self.project_name,
             "outcome": "deleted",
-            "restartRequired": True,
+            "restartRequired": False,
             "nextAction": (
-                "Projecta Local is restarting to serve the new project catalog. "
-                "The deleted project is gone; select a remaining project from Projects when ready."
+                "The deleted project is gone; the project list already shows "
+                "the remaining projects."
             ),
             "graphTriplesRemoved": self.graph_triples_removed,
             "evidenceObjectsRemoved": self.evidence_objects_removed,
@@ -203,6 +203,8 @@ class ProjectDeletionService:
         self._registry_path = registry_path
         self._native_runtime_lock_held = native_runtime_lock_held
         self._identity_repository = identity_repository
+        # Retained only to anchor the live-publication guard paths on the real
+        # deployment layout; successful deletes no longer request any restart.
         self._restart_file = restart_file
         self._runtime_id = runtime_id
 
@@ -309,14 +311,14 @@ class ProjectDeletionService:
             journal["phase"] = "staging-forgotten"
             _write_private_json(journal_path, journal)
             memberships_removed = self._remove_memberships(resolved_id)
-            self._publish_registry_removal(resolved_id)
+            updated_registry = self._publish_registry_removal(resolved_id)
             journal["phase"] = "registry-published"
             _write_private_json(journal_path, journal)
             self._clear_selections(resolved_id)
             journal_path.unlink(missing_ok=True)
-            # The running API still carries the pre-delete allowlist; ask the
-            # launcher to restart services so the catalog serves the new set.
-            self._request_runtime_restart()
+            # The registry file is the published catalog: propagate it to
+            # in-process readers at once, with no service restart.
+            self._publish_catalog_live(updated_registry)
             return ProjectDeletionResult(
                 project_id=resolved_id,
                 project_name=resolved_name,
@@ -373,10 +375,10 @@ class ProjectDeletionService:
             self._forget_ledger_scope({str(value) for value in cast(Sequence[object], journal["exportIds"])})
             self._remove_idle_previews(project_id, actor_id, idle_tokens, recovery=True)
             self._remove_memberships(project_id)
-            self._publish_registry_removal(project_id, recovery=True)
+            updated_registry = self._publish_registry_removal(project_id, recovery=True)
             self._clear_selections(project_id)
             journal_path.unlink(missing_ok=True)
-            self._request_runtime_restart()
+            self._publish_catalog_live(updated_registry)
             return
         # Catalog publication is the commit boundary; finish the tail so the
         # scope is exactly gone instead of half-published. A journal at or past
@@ -394,18 +396,10 @@ class ProjectDeletionService:
             self._forget_ledger_scope(export_ids)
             self._remove_idle_previews(project_id, actor_id, idle_tokens, recovery=True)
             self._remove_memberships(project_id)
-        self._publish_registry_removal(project_id, recovery=True)
+        updated_registry = self._publish_registry_removal(project_id, recovery=True)
         self._clear_selections(project_id)
         journal_path.unlink(missing_ok=True)
-        self._request_runtime_restart()
-
-    def _request_runtime_restart(self) -> None:
-        if self._restart_file is None or not self._runtime_id:
-            return
-        _write_private_json(
-            self._restart_file,
-            {"runtimeId": self._runtime_id, "requestedAt": datetime.now(UTC).isoformat(), "restart": True},
-        )
+        self._publish_catalog_live(updated_registry)
 
     def _resolve_scope(
         self, actor: TrustedActorContext, project_id: str, project_name: str
@@ -423,6 +417,17 @@ class ProjectDeletionService:
         if not project_name or project_name.strip() != match["projectName"]:
             raise ProjectDeletionFailure("DELETE_IDENTITY_MISMATCH", status_code=400)
         return project_id, match["projectName"]
+
+    def _publish_catalog_live(self, registry: Mapping[str, object]) -> None:
+        """Propagate the just-published registry to in-process catalog readers.
+
+        The registry file is the durable catalog; the running process holds a
+        snapshot only via the shared publisher attached at composition time.
+        """
+        publisher = getattr(self, "_catalog_publisher", None)
+        if publisher is None:
+            return
+        publisher(registry)
 
     def _refuse_active_operation(self, project_id: str, actor_id: str) -> set[str]:
         assert self._import_root is not None
@@ -1007,7 +1012,7 @@ class ProjectDeletionService:
             return 0
         return int(remover(project_id))
 
-    def _publish_registry_removal(self, project_id: str, *, recovery: bool = False) -> None:
+    def _publish_registry_removal(self, project_id: str, *, recovery: bool = False) -> Mapping[str, object]:
         assert self._registry_path is not None
         registry = _read_registry(self._registry_path)
         entries = _registry_entries(registry)
@@ -1016,7 +1021,7 @@ class ProjectDeletionService:
             if recovery:
                 # A repeated recovery after registry-published already removed
                 # the scope: already-gone is done, never an unknown refusal.
-                return
+                return dict(registry)
             raise ProjectDeletionFailure("DELETE_UNKNOWN_PROJECT", status_code=404)
         updated = dict(registry)
         if remaining:
@@ -1034,6 +1039,7 @@ class ProjectDeletionService:
             item["projectId"] for item in remaining
         }:
             raise ProjectDeletionFailure("DELETE_RECOVERY_REQUIRED", status_code=503)
+        return dict(reread)
 
     def _clear_selections(self, project_id: str) -> None:
         with self._database.read_transaction() as connection:

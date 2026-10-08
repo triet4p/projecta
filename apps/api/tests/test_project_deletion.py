@@ -204,6 +204,9 @@ async def test_idle_staged_preview_no_longer_deadlocks_delete(tmp_path: Path) ->
     assert idle_dir.is_dir()
     result = await service.delete(actor, "alpha", "Alpha", "Alpha", True)
     assert result.project_id == "alpha"
+    assert result.response()["restartRequired"] is False
+    # Live publication writes no restart request: the catalog serves at once.
+    assert not (tmp_path / "state" / "import-restart.json").exists()
     # The authorized delete purged exactly its own scope's idle staging.
     assert not idle_dir.exists()
     assert not (tmp_path / "deletion" / "journal.json").exists()
@@ -268,10 +271,10 @@ async def test_live_publication_markers_still_refuse(tmp_path: Path) -> None:
     idle_dir = _stage_idle_preview(
         tmp_path, "62b8c1d6-ccc9-4b70-9d93-bf152081c885", "alpha"
     )
-    # The launcher writes these during staged publication (RuntimeManager
-    # _execute_queued_import_if_present / _finish_import_publication): the
-    # publication journal plus the per-token stage/previous trees at
-    # <data_root>/recovery. Refusal must hold for each shape, with no mutation.
+    # The launcher writes these during genuine interrupted live-publication
+    # recovery (RuntimeManager _recover_import_publication): the publication
+    # journal plus the per-token stage/previous trees at <data_root>/recovery.
+    # Refusal must hold for each shape, with no mutation.
     recovery_root = tmp_path / "recovery"
     recovery_root.mkdir(parents=True, exist_ok=True)
     token = "62b8c1d6-ccc9-4b70-9d93-bf152081c885"

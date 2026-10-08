@@ -628,3 +628,79 @@ def test_allowlist_keeps_serving_empty_catalog_without_resurrection(tmp_path: Pa
     )
     assert launcher.workspace_project_ids(target, primary) == []
 
+
+def _queued_journal(token: str, old_revision: str) -> dict[str, object]:
+    return {
+        "formatVersion": 1,
+        "phase": "queued",
+        "token": token,
+        "projectId": "fresh-project",
+        "projectName": "Fresh Project",
+        "exportId": "export-1",
+        "archiveSha256": "a" * 64,
+        "archiveSize": 7,
+        "adoptPlaceholder": False,
+        "placeholderName": "",
+        "actorId": launcher.FIRST_RUN_ACTOR_ID,
+        "expectedPostgresRows": 0,
+        "oldCatalogRevision": old_revision,
+    }
+
+
+def _legacy_queued_manager(tmp_path: Path, journal: dict[str, object]) -> launcher.RuntimeManager:
+    token = str(journal["token"])
+    paths = launcher.ProjectaPaths(tmp_path / "package", tmp_path / "user-data")
+    paths.ensure_user_directories()
+    registry = {
+        "formatVersion": 1,
+        "projectId": "my-projecta-workspace",
+        "projectName": "My Projecta Workspace",
+        "actorId": launcher.FIRST_RUN_ACTOR_ID,
+        "projects": [{"projectId": "my-projecta-workspace", "projectName": "My Projecta Workspace"}],
+    }
+    paths.local_config.write_text(json.dumps(registry), encoding="utf-8")
+    (paths.data / "imports" / "journal.json").write_text(json.dumps(journal), encoding="utf-8")
+    preview = paths.data / "imports" / "previews" / token
+    preview.mkdir(parents=True)
+    (preview / "package.projecta").write_bytes(b"queued!")
+    (paths.data / "imports" / "ledger.json").write_text(
+        json.dumps({"formatVersion": 1, "imports": {}}), encoding="utf-8"
+    )
+    return launcher.RuntimeManager(paths, open_browser=False)
+
+
+def test_legacy_queued_journal_resolves_finite_without_catalog_check(tmp_path: Path) -> None:
+    """A never-started legacy queued journal resolves before any catalog comparison.
+
+    Both the same-revision and the changed-revision journal must record the
+    same finite IMPORT_SUPERSEDED_RESTART_PATH receipt with zero state change:
+    no 90s staging wait, no uncaught IMPORT_RECOVERY_REQUIRED, and the registry,
+    ledger, and staged bytes all unchanged.
+    """
+    for old_revision in ("sha256:" + "0" * 64, "sha256:" + "f" * 64):
+        token = "62b8c1d6-ccc9-4b70-9d93-bf152081c885"
+        manager = _legacy_queued_manager(tmp_path, _queued_journal(token, old_revision))
+        registry_before = manager.paths.local_config.read_bytes()
+        ledger_before = (manager.paths.data / "imports" / "ledger.json").read_bytes()
+        manager._fail_legacy_queued_import_if_present()
+        assert not (manager.paths.data / "imports" / "journal.json").exists()
+        assert not (manager.paths.data / "imports" / "previews" / token).exists()
+        assert manager.paths.local_config.read_bytes() == registry_before
+        assert (manager.paths.data / "imports" / "ledger.json").read_bytes() == ledger_before
+        receipt = json.loads((manager.paths.data / "imports" / "results" / f"{token}.json").read_text(encoding="utf-8"))
+        assert receipt["status"] == "failed"
+        assert receipt["failureCode"] == "IMPORT_SUPERSEDED_RESTART_PATH"
+        assert receipt["projectId"] == "fresh-project"
+        assert receipt["exportId"] == "export-1"
+
+
+def test_live_publication_journal_is_not_a_legacy_queued_journal(tmp_path: Path) -> None:
+    """The legacy resolver must leave a genuine live journal untouched for API recovery."""
+    token = "62b8c1d6-ccc9-4b70-9d93-bf152081c885"
+    journal = _queued_journal(token, "sha256:" + "0" * 64)
+    journal["phase"] = "prepared"
+    del journal["oldCatalogRevision"]
+    manager = _legacy_queued_manager(tmp_path, journal)
+    manager._fail_legacy_queued_import_if_present()
+    assert (manager.paths.data / "imports" / "journal.json").is_file()
+    assert not (manager.paths.data / "imports" / "results" / f"{token}.json").exists()

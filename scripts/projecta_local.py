@@ -20,7 +20,6 @@ import time
 import urllib.error
 import urllib.request
 import uuid
-import zipfile
 from collections.abc import Callable, Iterator, Mapping, Sequence
 from contextlib import contextmanager
 from dataclasses import dataclass
@@ -1135,12 +1134,10 @@ class RuntimeManager:
         paths: ProjectaPaths,
         *,
         open_browser: bool = True,
-        staging_import: bool = False,
         api_port: int | None = None,
     ) -> None:
         self.paths = paths
         self.open_browser = open_browser
-        self.staging_import = staging_import
         self.api_port = api_port if api_port is not None else PORTS["api"]
         self.host = ProcessHost()
         self.runtime_id = uuid.uuid4().hex
@@ -1162,9 +1159,12 @@ class RuntimeManager:
                 self.workspace = read_workspace_config(self.paths.local_config, provision_first_run=True)
                 self.secrets = unprotect_runtime_secrets(self.paths.protected_secrets)
                 self._validate_installation()
+                # Legacy never-started supervisor-handoff journals resolve here,
+                # BEFORE any staging or service start: a finite failed receipt with
+                # zero state change. Any other journal phase belongs to genuine
+                # live publication and is left for the API recovery below.
+                self._fail_legacy_queued_import_if_present()
                 self._pending_import = self._recover_import_publication()
-                if self._pending_import is None:
-                    self._execute_queued_import_if_present()
                 self.workspace = read_workspace_config(self.paths.local_config)
                 self._validate_installation()
                 if self._pending_import is not None:
@@ -1212,21 +1212,6 @@ class RuntimeManager:
         self._run_fuseki_bootstrap()
         self._start_semantic_core()
         self._start_api()
-
-    def run_import_staging_copy(self) -> None:
-        """Apply the queued import only to the manager's private data-root copy."""
-        self.paths.ensure_user_directories()
-        self.manifest = load_runtime_manifest(self.paths)
-        _require_package_distribution(self.manifest)
-        self.workspace = read_workspace_config(self.paths.local_config)
-        self.secrets = unprotect_runtime_secrets(self.paths.protected_secrets)
-        self._validate_installation()
-        try:
-            self._start_services()
-        finally:
-            stop_error = self._stop_owned_processes()
-            if stop_error is not None:
-                raise stop_error
 
     def _validate_installation(self) -> None:
         if self.manifest is None or self.workspace is None or self.secrets is None:
@@ -1535,9 +1520,8 @@ class RuntimeManager:
                 "PROJECTA_API_PORTABLE_IMPORT_LOCK_HELD": "true",
                 "PROJECTA_API_PORTABLE_IMPORT_ROOT": str(self.paths.data / "imports"),
                 "PROJECTA_API_PORTABLE_IMPORT_REGISTRY_PATH": str(self.paths.local_config),
-                "PROJECTA_API_PORTABLE_IMPORT_STAGING_COPY": str(self.staging_import).lower(),
-                "PROJECTA_API_PORT": str(self.api_port),
                 "PROJECTA_API_PORTABLE_IMPORT_RESTART_FILE": str(self.paths.import_restart_file),
+                "PROJECTA_API_PORT": str(self.api_port),
                 "PROJECTA_API_RUNTIME_ID": self.runtime_id,
             }
         )
@@ -1588,22 +1572,6 @@ class RuntimeManager:
             self.host.check_alive("postgres")
             if self._postgres_probe() != 0:
                 raise RuntimeFailure("SERVICE_BECAME_UNREADY", "PostgreSQL stopped reporting readiness.", "postgres")
-            if self._consume_import_restart_request():
-                _append_safe_log(self.paths.log_file, "project-import-staging")
-                stop_error = self._stop_owned_processes()
-                if stop_error is not None:
-                    raise stop_error
-                self._write_status("import-staging")
-                self._execute_queued_import_if_present()
-                self.workspace = read_workspace_config(self.paths.local_config)
-                self._validate_installation()
-                if self._pending_import is not None:
-                    self._write_import_result(self._pending_import, "staging")
-                self._start_services()
-                if self._pending_import is not None:
-                    self._complete_published_import()
-                self._write_status("ready")
-                continue
             self._write_status("ready")
             time.sleep(2)
 
@@ -1631,26 +1599,6 @@ class RuntimeManager:
             return False
         self.paths.stop_file.unlink(missing_ok=True)
         return True
-    def _consume_import_restart_request(self) -> bool:
-        path = self.paths.import_restart_file
-        if not path.exists():
-            return False
-        if _is_reparse_point(path):
-            raise RuntimeFailure(
-                "IMPORT_RESTART_REQUEST_INVALID", "A local project-import restart request is invalid."
-            )
-        value = load_json(path, "IMPORT_RESTART_REQUEST_INVALID")
-        if (
-            set(value) != {"runtimeId", "requestedAt", "restart"}
-            or not isinstance(value.get("runtimeId"), str)
-            or not isinstance(value.get("requestedAt"), str)
-            or value.get("restart") is not True
-        ):
-            raise RuntimeFailure(
-                "IMPORT_RESTART_REQUEST_INVALID", "A local project-import restart request is invalid."
-            )
-        path.unlink(missing_ok=True)
-        return value["runtimeId"] == self.runtime_id
 
     def _publication_journal_path(self) -> Path:
         return self.paths.recovery / "portable-import-publication.json"
@@ -1733,189 +1681,6 @@ class RuntimeManager:
             return None
         self._finish_import_publication(record)
         return record
-
-    def _execute_queued_import_if_present(self) -> None:
-        imports_root = self.paths.data / "imports"
-        journal_path = imports_root / "journal.json"
-        if not journal_path.exists():
-            return
-        if _is_reparse_point(imports_root) or _is_reparse_point(journal_path):
-            raise RuntimeFailure("IMPORT_RECOVERY_REQUIRED", "The queued project-import record is unsafe.")
-        journal = load_json(journal_path, "IMPORT_RECOVERY_REQUIRED")
-        expected_fields = {
-            "formatVersion", "phase", "token", "projectId", "projectName", "exportId", "archiveSha256",
-            "archiveSize", "adoptPlaceholder", "placeholderName", "actorId", "expectedPostgresRows",
-            "oldCatalogRevision",
-        }
-        token = journal.get("token")
-        project_id = journal.get("projectId")
-        project_name = journal.get("projectName")
-        actor_id = journal.get("actorId")
-        archive_digest = journal.get("archiveSha256")
-        old_revision = journal.get("oldCatalogRevision")
-        archive_size = journal.get("archiveSize")
-        if (
-            set(journal) != expected_fields
-            or journal.get("formatVersion") != 1
-            or journal.get("phase") != "queued"
-            or not isinstance(token, str)
-            or not IMPORT_TOKEN_PATTERN.fullmatch(token)
-            or not isinstance(project_id, str)
-            or not PROJECT_ID_PATTERN.fullmatch(project_id)
-            or not isinstance(project_name, str)
-            or not 1 <= len(project_name) <= 128
-            or not isinstance(actor_id, str)
-            or not ACTOR_ID_PATTERN.fullmatch(actor_id)
-            or self.workspace is None
-            or actor_id != self.workspace.actor_id
-            or not isinstance(archive_digest, str)
-            or not re.fullmatch(r"[0-9a-f]{64}", archive_digest)
-            or type(archive_size) is not int
-            or not 1 <= archive_size <= 512 * 1024 * 1024
-            or not isinstance(old_revision, str)
-            or not re.fullmatch(r"sha256:[0-9a-f]{64}", old_revision)
-            or not isinstance(journal.get("exportId"), str)
-            or not journal["exportId"]
-            or type(journal.get("adoptPlaceholder")) is not bool
-            or not isinstance(journal.get("placeholderName"), str)
-            or type(journal.get("expectedPostgresRows")) is not int
-        ):
-            raise RuntimeFailure("IMPORT_RECOVERY_REQUIRED", "The queued project-import record is invalid.")
-        current_revision = "sha256:" + _file_sha256(self.paths.local_config)
-        if current_revision != old_revision:
-            raise RuntimeFailure("IMPORT_RECOVERY_REQUIRED", "The local project catalog changed during import.")
-        preview = imports_root / "previews" / token
-        archive = preview / "package.projecta"
-        if (
-            _is_reparse_point(preview)
-            or _is_reparse_point(imports_root / "previews")
-            or _is_reparse_point(archive)
-            or not archive.is_file()
-            or archive.stat().st_size != archive_size
-            or _file_sha256(archive) != archive_digest
-        ):
-            raise RuntimeFailure("IMPORT_RECOVERY_REQUIRED", "The queued project-import archive changed.")
-
-        record: dict[str, object] = {
-            "formatVersion": 1,
-            "token": token,
-            "projectId": project_id,
-            "projectName": project_name,
-            "exportId": journal["exportId"],
-            "archiveSha256": archive_digest,
-            "actorId": actor_id,
-            "oldCatalogRevision": old_revision,
-            "archiveSize": archive_size,
-            "stageDirectory": f"portable-import-stage-{token}",
-            "previousDirectory": f"portable-import-previous-{token}",
-            "snapshotId": uuid.uuid4().hex,
-            "newCatalogRevision": "",
-            "phase": "copying",
-        }
-        journal_path_native = self._publication_journal_path()
-        stage_root = self._import_stage_path(token)
-        previous_root = self._import_previous_path(token)
-        if stage_root.exists() or previous_root.exists() or journal_path_native.exists():
-            raise RuntimeFailure("IMPORT_RECOVERY_REQUIRED", "A previous project-import recovery state must be resolved.")
-        try:
-            self._check_import_staging_space(archive)
-            atomic_json(journal_path_native, record)
-            stage_root.mkdir()
-            previous_root.mkdir()
-            for name in PORTABLE_IMPORT_ROOTS:
-                _copy_state(self.paths.data / name, stage_root / "data" / name)
-            _copy_state(self.paths.local_config, stage_root / "config" / "local-runtime.json")
-            _copy_state(self.paths.installation_config, stage_root / "config" / "installation.json")
-            _copy_state(self.paths.protected_secrets, stage_root / "secrets" / "launcher.dpapi")
-            _copy_state(self.paths.local_config, previous_root / "config" / "local-runtime.json")
-            record["phase"] = "staged"
-            atomic_json(journal_path_native, record)
-            staged_paths = ProjectaPaths(self.paths.package_root, stage_root)
-            staging_manager = RuntimeManager(
-                staged_paths,
-                open_browser=False,
-                staging_import=True,
-                api_port=self._available_loopback_port(),
-            )
-            staging_manager.run_import_staging_copy()
-            new_revision = self._verify_staged_import(staged_paths, record)
-            record["newCatalogRevision"] = new_revision
-            record["phase"] = "commit-ready"
-            atomic_json(journal_path_native, record)
-            self._pending_import = record
-            self._finish_import_publication(record)
-        except Exception as error:
-            phase = record.get("phase")
-            code = error.code if isinstance(error, RuntimeFailure) else "IMPORT_STAGE_FAILED"
-            if phase in {"commit-ready", "publishing", "catalog-published"}:
-                try:
-                    self._rollback_import_publication(record)
-                    self._complete_import_rollback(record, code)
-                except Exception as recovery_error:
-                    raise RuntimeFailure(
-                        "IMPORT_RECOVERY_REQUIRED",
-                        "Projecta could not finish or roll back the staged project import.",
-                    ) from recovery_error
-            else:
-                self._remove_import_recovery_tree(stage_root)
-                self._remove_import_recovery_tree(previous_root)
-                journal_path_native.unlink(missing_ok=True)
-                self._clear_queued_import(token)
-                self._write_import_result(record, "failed", failure_code=code)
-            self._pending_import = None
-            return
-
-    def _check_import_staging_space(self, archive: Path) -> None:
-        source_paths = [self.paths.data / name for name in PORTABLE_IMPORT_ROOTS]
-        source_paths.extend((self.paths.local_config, self.paths.installation_config, self.paths.protected_secrets))
-        source_bytes = sum(self._safe_path_size(path) for path in source_paths)
-        try:
-            with zipfile.ZipFile(archive, "r") as package:
-                expanded_bytes = sum(info.file_size for info in package.infolist())
-        except (OSError, zipfile.BadZipFile, ValueError) as error:
-            raise RuntimeFailure("IMPORT_PACKAGE_INVALID", "The project-import archive is invalid.") from error
-        if expanded_bytes > 4 * 1024 * 1024 * 1024:
-            raise RuntimeFailure("IMPORT_TOO_LARGE", "The project-import archive exceeds the supported size.")
-        required_bytes = source_bytes + expanded_bytes * 2 + 64 * 1024 * 1024
-        if shutil.disk_usage(self.paths.data_root).free < required_bytes:
-            raise RuntimeFailure("IMPORT_SPACE_INSUFFICIENT", "There is not enough local disk space to stage this import safely.")
-
-    def _safe_path_size(self, path: Path) -> int:
-        if _is_reparse_point(path):
-            raise RuntimeFailure("IMPORT_RECOVERY_REQUIRED", "The local project data contains an unsafe path.")
-        if path.is_file():
-            return path.stat().st_size
-        if path.is_dir():
-            return sum(self._safe_path_size(child) for child in path.iterdir())
-        raise RuntimeFailure("IMPORT_RECOVERY_REQUIRED", "The local project data is incomplete.")
-
-    def _verify_staged_import(self, staged_paths: ProjectaPaths, record: Mapping[str, object]) -> str:
-        if (staged_paths.data / "imports" / "journal.json").exists():
-            raise RuntimeFailure("IMPORT_RECOVERY_REQUIRED", "The staged project import did not complete.")
-        workspace = read_workspace_config(staged_paths.local_config)
-        registry = load_json(staged_paths.local_config, "IMPORT_RECOVERY_REQUIRED")
-        if workspace.actor_id != record["actorId"]:
-            raise RuntimeFailure("IMPORT_RECOVERY_REQUIRED", "The staged project catalog changed unexpectedly.")
-        projects = registry.get("projects")
-        found = workspace.project_id == record["projectId"] and workspace.project_name == record["projectName"]
-        if isinstance(projects, list):
-            found = any(
-                isinstance(item, dict)
-                and item.get("projectId") == record["projectId"]
-                and item.get("projectName") == record["projectName"]
-                for item in projects
-            )
-        if not found:
-            raise RuntimeFailure("IMPORT_RECOVERY_REQUIRED", "The staged project is missing from its catalog.")
-        ledger = load_json(staged_paths.data / "imports" / "ledger.json", "IMPORT_RECOVERY_REQUIRED")
-        imported = ledger.get("imports")
-        if (
-            ledger.get("formatVersion") != 1
-            or not isinstance(imported, dict)
-            or imported.get(record["exportId"]) != record["archiveSha256"]
-        ):
-            raise RuntimeFailure("IMPORT_RECOVERY_REQUIRED", "The staged import receipt is missing.")
-        return "sha256:" + _file_sha256(staged_paths.local_config)
 
     def _finish_import_publication(self, record: Mapping[str, object]) -> None:
         token = record["token"]
@@ -2046,6 +1811,31 @@ class RuntimeManager:
             result["failureCode"] = failure_code
         atomic_json(result_root / f"{token}.json", result)
 
+    def _fail_legacy_queued_import_if_present(self) -> None:
+        """Resolve a never-started legacy supervisor-handoff journal, if present.
+
+        Pre-S14-17 applies wrote a ``phase: "queued"`` journal plus (in live
+        builds) a restart file for the supervisor staged-copy consumer. Live
+        publication no longer writes either artifact, so a surviving queued
+        journal can only be a pre-cutover leftover: record a finite failed
+        receipt (IMPORT_SUPERSEDED_RESTART_PATH) with zero state change —
+        never a silent re-apply or a whole-stack restart. Any other journal
+        phase is a genuine interrupted live publication and is left for the
+        API recovery path, which owns the durable stores.
+        """
+        imports_root = self.paths.data / "imports"
+        journal_path = imports_root / "journal.json"
+        if not journal_path.exists():
+            return
+        journal = load_json(journal_path, "IMPORT_RECOVERY_REQUIRED")
+        if journal.get("phase") != "queued":
+            return
+        token = journal.get("token")
+        if not isinstance(token, str) or not IMPORT_TOKEN_PATTERN.fullmatch(token):
+            raise RuntimeFailure("IMPORT_RECOVERY_REQUIRED", "The queued project-import identifier is invalid.")
+        self._write_import_result(journal, "failed", failure_code="IMPORT_SUPERSEDED_RESTART_PATH")
+        self._clear_queued_import(token)
+
     def _clear_queued_import(self, token: str) -> None:
         if not IMPORT_TOKEN_PATTERN.fullmatch(token):
             raise RuntimeFailure("IMPORT_RECOVERY_REQUIRED", "The queued project-import identifier is invalid.")
@@ -2060,12 +1850,6 @@ class RuntimeManager:
     def _remove_import_recovery_tree(self, path: Path) -> None:
         if path.exists():
             _remove_directory_tree(path)
-
-    @staticmethod
-    def _available_loopback_port() -> int:
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as listener:
-            listener.bind(("127.0.0.1", 0))
-            return int(listener.getsockname()[1])
 
     def _write_status(self, state: str, *, failure: RuntimeFailure | None = None) -> None:
         services = {

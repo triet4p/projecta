@@ -214,6 +214,8 @@ class ProjectPortableImportService:
         self._semantic = semantic_core
         self._root = import_root
         self._registry_path = registry_path
+        # Retained only to anchor recovery/publication guard paths on the real
+        # deployment layout; successful imports publish live, never restart.
         self._restart_file = restart_file
         self._runtime_id = runtime_id
         self._native_runtime_lock_held = native_runtime_lock_held
@@ -350,12 +352,10 @@ class ProjectPortableImportService:
                 and journal.get("token") == token
                 and journal.get("actorId") == actor.actor_id
             ):
-                return {
-                    "importId": token,
-                    "status": "staging",
-                    "projectId": _bounded_string(journal.get("projectId"), 63),
-                    "projectName": _bounded_string(journal.get("projectName"), 128),
-                }
+                # Legacy supervisor-handoff journal: the launcher reports the
+                # finite failed receipt; the API never serves a live staging
+                # state for it.
+                raise PortableImportFailure("IMPORT_NOT_FOUND", status_code=404)
         raise PortableImportFailure("IMPORT_NOT_FOUND", status_code=404)
 
     async def apply(
@@ -418,29 +418,6 @@ class ProjectPortableImportService:
             "actorId": actor.actor_id,
             "expectedPostgresRows": _postgres_record_count(package),
         }
-        if not self._staging_copy:
-            try:
-                registry_bytes = self._registry_path.read_bytes()
-            except OSError as error:
-                raise PortableImportFailure("IMPORT_DESTINATION_INVALID", status_code=503) from error
-            journal["phase"] = "queued"
-            journal["oldCatalogRevision"] = (
-                "sha256:" + hashlib.sha256(registry_bytes).hexdigest()
-            )
-            _write_private_json(journal_path, journal)
-            self._request_runtime_restart()
-            return {
-                "importId": token,
-                "projectId": package.project_id,
-                "projectName": package.project_name,
-                "alreadyImported": False,
-                "restartRequired": True,
-                "status": "staging",
-                "nextAction": (
-                    "Projecta Local is preparing the import in a private destination copy. "
-                    "The project will appear only after the complete staged state is published."
-                ),
-            }
         _write_private_json(journal_path, journal)
         try:
             semantic_result = await self._semantic.apply_portable_import(
@@ -481,15 +458,25 @@ class ProjectPortableImportService:
             await asyncio.to_thread(_write_private_json, self._registry_path, updated_registry)
             journal["phase"] = "catalog-published"
             _write_private_json(journal_path, journal)
-            self._request_runtime_restart()
+            self._publish_catalog_live(updated_registry)
+            await asyncio.to_thread(
+                self._write_result_record,
+                token,
+                actor.actor_id,
+                package.project_id,
+                package.project_name,
+                package.export_id,
+                package.archive_sha256,
+                "complete",
+            )
             journal_path.unlink(missing_ok=True)
             await asyncio.to_thread(shutil.rmtree, directory, True)
             return {
                 "projectId": package.project_id,
                 "projectName": package.project_name,
                 "alreadyImported": False,
-                "restartRequired": True,
-                "nextAction": "Projecta Local is restarting. Select the imported project from Projects when it is ready.",
+                "restartRequired": False,
+                "nextAction": "The project is available from the Projects list. It was not selected automatically.",
             }
         except BaseException as error:
             try:
@@ -500,18 +487,15 @@ class ProjectPortableImportService:
                     cast(str, journal["phase"]),
                 )
             except PortableImportFailure as recovery_error:
-                self._request_recovery_restart()
                 raise PortableImportFailure("IMPORT_RECOVERY_REQUIRED", status_code=503) from recovery_error
             if committed:
                 # The PostgreSQL transaction is the commit boundary; retain the journal until catalog and ledger publication finish.
-                self._request_recovery_restart()
                 raise PortableImportFailure("IMPORT_RECOVERY_PENDING", status_code=503) from error
             try:
                 await self._rollback_import(actor, package, adopt_placeholder, placeholder_name)
                 journal_path.unlink(missing_ok=True)
                 await asyncio.to_thread(shutil.rmtree, directory, True)
             except BaseException as recovery_error:
-                self._request_recovery_restart()
                 raise PortableImportFailure(
                     "IMPORT_RECOVERY_REQUIRED", status_code=503
                 ) from recovery_error
@@ -534,8 +518,10 @@ class ProjectPortableImportService:
             "archiveSha256", "archiveSize", "adoptPlaceholder", "placeholderName", "actorId",
             "expectedPostgresRows",
         }
-        if phase == "queued":
-            journal_fields.add("oldCatalogRevision")
+        # Legacy "queued" journals (written by pre-S14-17 builds that handed
+        # publication to the launcher supervisor) are resolved by the launcher
+        # at startup with a finite IMPORT_SUPERSEDED_RESTART_PATH receipt,
+        # never by the live API recovery below.
         if (
             set(journal) != journal_fields
             or journal.get("formatVersion") != 1
@@ -558,26 +544,13 @@ class ProjectPortableImportService:
         ):
             raise PortableImportFailure("IMPORT_RECOVERY_REQUIRED", status_code=503)
         if phase not in {
-            "queued", "prepared", "semantic-applied", "evidence-applied", "sqlite-applied",
+            "prepared", "semantic-applied", "evidence-applied", "sqlite-applied",
             "postgres-committed", "ledger-written", "publishing", "catalog-published",
         }:
+            # Legacy "queued" journals are launcher-resolved at startup; refuse
+            # fail-closed here so they are never live re-applied.
             raise PortableImportFailure("IMPORT_RECOVERY_REQUIRED", status_code=503)
-        if phase == "queued":
-            if not self._staging_copy:
-                raise PortableImportFailure("IMPORT_RECOVERY_REQUIRED", status_code=503)
-            old_catalog_revision = _bounded_string(journal.get("oldCatalogRevision"), 71)
-            try:
-                current_catalog_revision = (
-                    "sha256:" + hashlib.sha256(self._registry_path.read_bytes()).hexdigest()
-                )
-            except OSError as error:
-                raise PortableImportFailure("IMPORT_RECOVERY_REQUIRED", status_code=503) from error
-            if (
-                not _SHA_DIGEST.fullmatch(old_catalog_revision)
-                or old_catalog_revision != current_catalog_revision
-            ):
-                raise PortableImportFailure("IMPORT_RECOVERY_REQUIRED", status_code=503)
-        elif not self._staging_copy:
+        if not self._staging_copy:
             raise PortableImportFailure("IMPORT_RECOVERY_REQUIRED", status_code=503)
         registry = _read_registry(self._registry_path)
         if registry.get("actorId") != actor_id:
@@ -599,10 +572,6 @@ class ProjectPortableImportService:
         ):
             raise PortableImportFailure("IMPORT_RECOVERY_REQUIRED", status_code=503)
         actor = TrustedActorContext(actor_id=actor_id, request_id=f"import-recovery-{token[:12]}")
-        if phase == "queued":
-            journal_path.unlink(missing_ok=True)
-            await self.apply(actor, token, True)
-            return
         expected_rows = _bounded_int(journal.get("expectedPostgresRows"), MAX_LOGICAL_RECORDS)
         committed = _import_is_committed(
             self._postgres_engine, package.project_id, expected_rows, phase
@@ -611,7 +580,17 @@ class ProjectPortableImportService:
             await asyncio.to_thread(self._write_ledger, package)
             updated_registry = _append_project(registry, package.project_id, package.project_name, adopt_placeholder)
             await asyncio.to_thread(_write_private_json, self._registry_path, updated_registry)
-            self._request_runtime_restart()
+            self._publish_catalog_live(updated_registry)
+            await asyncio.to_thread(
+                self._write_result_record,
+                token,
+                actor_id,
+                package.project_id,
+                package.project_name,
+                package.export_id,
+                package.archive_sha256,
+                "complete",
+            )
             journal_path.unlink(missing_ok=True)
             await asyncio.to_thread(shutil.rmtree, token_directory, True)
             return
@@ -1055,6 +1034,40 @@ class ProjectPortableImportService:
         updated[package.export_id] = package.archive_sha256
         _write_private_json(ledger_path, {"formatVersion": 1, "imports": updated})
 
+    def _write_result_record(
+        self,
+        token: str,
+        actor_id: str,
+        project_id: str,
+        project_name: str,
+        export_id: str,
+        archive_sha256: str,
+        status: str,
+    ) -> None:
+        """Record the durable per-import receipt the deletion ledger resolver reads.
+
+        Written only after the registry publish succeeds, inside the caller's
+        maintenance fence: the receipt binds the same exportId the ledger
+        records, so a later delete forgets exactly this scope's keys.
+        """
+        assert self._root is not None
+        _valid_token(token)
+        result_root = self._root / "results"
+        result_root.mkdir(parents=True, exist_ok=True)
+        _write_private_json(
+            result_root / f"{token}.json",
+            {
+                "formatVersion": 1,
+                "importId": token,
+                "actorId": actor_id,
+                "status": status,
+                "projectId": project_id,
+                "projectName": project_name,
+                "exportId": export_id,
+                "archiveSha256": archive_sha256,
+            },
+        )
+
     def _read_ledger(self) -> Mapping[str, str]:
         assert self._root is not None
         path = self._root / "ledger.json"
@@ -1076,20 +1089,22 @@ class ProjectPortableImportService:
             raise PortableImportFailure("IMPORT_NOT_FOUND", status_code=404)
         return directory
 
-    def _request_runtime_restart(self) -> None:
-        if self._staging_copy:
-            return
-        assert self._restart_file is not None
-        _write_private_json(
-            self._restart_file,
-            {"runtimeId": self._runtime_id, "requestedAt": datetime.now(UTC).isoformat(), "restart": True},
-        )
+    def _publish_catalog_live(self, registry: Mapping[str, object]) -> None:
+        """Propagate the just-published registry to in-process catalog readers.
 
-    def _request_recovery_restart(self) -> None:
-        try:
-            self._request_runtime_restart()
-        except BaseException as error:
-            raise PortableImportFailure("IMPORT_RECOVERY_REQUIRED", status_code=503) from error
+        The registry file is the durable catalog: startup recovery and future
+        restarts consume it directly. The running process additionally holds
+        the allowlist string plus connector authorization/fixture snapshots
+        taken at composition time, so refresh exactly those snapshots here,
+        inside the caller's maintenance fence, after the registry write
+        succeeds. Genuine interrupted-operation recovery still refuses
+        fail-closed via IMPORT_RECOVERY_REQUIRED; only a clean publication
+        reaches this call.
+        """
+        publisher = getattr(self, "_catalog_publisher", None)
+        if publisher is None:
+            return
+        publisher(registry)
 
 
 def _validate_archive(

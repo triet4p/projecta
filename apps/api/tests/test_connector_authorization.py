@@ -88,6 +88,36 @@ def test_local_experience_adapter_is_disabled_in_production() -> None:
 
 
 @pytest.mark.asyncio
+async def test_local_adapter_refresh_replaces_snapshot_without_widening_actor() -> None:
+    """A published catalog refresh swaps scope without changing the actor gate."""
+    adapter = LocalConnectorPrincipalAdapter(
+        Settings(
+            _env_file=None,
+            runtime_mode="experience",
+            trusted_context_secret="secret",
+            experience_actor_id="actor-1",
+            experience_project_catalog="alpha",
+        )
+    )
+    adapter.refresh_catalog(("beta",))
+    principal = await adapter.resolve(
+        ConnectorAuthorizationRequest("catalog.read", context())
+    )
+    assert principal.allowed_projects == ("beta",)
+    assert principal.actor_id == "actor-1"
+    with pytest.raises(ConnectorAuthorizationError) as forged:
+        await adapter.resolve(ConnectorAuthorizationRequest("catalog.read", context("forged")))
+    assert forged.value.code == "AUTH_PRINCIPAL_REQUIRED"
+    policy = ConnectorPolicy(adapter, InstallationSpy(installation("beta")))
+    with pytest.raises(ConnectorAuthorizationError) as stale_scope:
+        await policy.authorize(
+            ConnectorAuthorizationRequest(
+                "installation.read", context(), project_id="alpha", installation_id="install-alpha"
+            )
+        )
+    assert stale_scope.value.code == "PROJECT_FORBIDDEN"
+
+@pytest.mark.asyncio
 async def test_catalog_and_reader_operations_are_independent_from_admin() -> None:
     lookup = InstallationSpy(installation())
     reader = DeterministicTestPrincipalAdapter(

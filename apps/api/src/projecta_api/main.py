@@ -333,6 +333,12 @@ def create_app(
             restart_file=actual_settings.portable_import_restart_file,
             runtime_id=actual_settings.portable_import_runtime_id,
         )
+    _attach_live_catalog_publisher(
+        actual_settings,
+        portable_import,
+        composed_connector_runtime,
+        composed_deletion,
+    )
 
     @app.exception_handler(PortableExportFailure)
     async def portable_export_problem(request: Request, error: PortableExportFailure) -> JSONResponse:
@@ -796,6 +802,60 @@ def _build_correction_burden_service(settings: Settings) -> CorrectionBurdenTele
         return CorrectionBurdenTelemetryService(PostgresCorrectionBurdenRepository(database))
     except (ValueError, OSError):
         return None
+
+
+def _attach_live_catalog_publisher(
+    settings: Settings,
+    portable_import: ProjectPortableImportService,
+    connector_runtime: ConnectorRuntime | None,
+    project_deletion: ProjectDeletionService | None = None,
+) -> None:
+    """Propagate published registry bytes to in-process catalog readers.
+
+    The registry file stays the durable catalog: startup recovery and future
+    restarts consume it directly. The running process additionally snapshots
+    the allowlist string plus connector authorization/fixture state at
+    composition time, so refresh exactly those snapshots after each
+    journaled publication succeeds, inside the caller's maintenance fence.
+    Reads the registry file (never caller-supplied IDs); a missing or
+    invalid registry fails the publication instead of serving a guess.
+    """
+    from projecta_api.project_workspace import configured_project_ids
+
+    def _publisher(registry: object) -> None:
+        entries = registry if isinstance(registry, dict) else {}
+        raw_projects = entries.get("projects") if isinstance(entries, dict) else None
+        project_ids: tuple[str, ...]
+        if raw_projects is None:
+            project_id = entries.get("projectId") if isinstance(entries, dict) else None
+            project_ids = (str(project_id),) if isinstance(project_id, str) else ()
+        else:
+            project_ids = tuple(
+                str(item.get("projectId"))
+                for item in raw_projects
+                if isinstance(item, dict) and isinstance(item.get("projectId"), str)
+            )
+        project_ids = tuple(dict.fromkeys(project_ids))
+        # Validate before touching any snapshot: a malformed publication must
+        # fail instead of partially refreshing readers.
+        configured_project_ids(",".join(project_ids) if project_ids else "[]")
+        settings.experience_project_catalog = ",".join(project_ids) if project_ids else "[]"
+        if connector_runtime is not None:
+            principal = connector_runtime.policy._principal_port  # noqa: SLF001 - owned composition refresh
+            refresher = getattr(principal, "refresh_catalog", None)
+            if callable(refresher):
+                refresher(project_ids)
+            try:
+                adapter = connector_runtime.registry.resolve("json-mock")
+            except Exception:  # noqa: BLE001 - optional fixture refresh never fails publication
+                adapter = None
+            refresher = getattr(adapter, "refresh_projects", None)
+            if callable(refresher):
+                refresher(project_ids)
+
+    portable_import._catalog_publisher = _publisher  # noqa: SLF001 - owned composition hook
+    if project_deletion is not None:
+        project_deletion._catalog_publisher = _publisher  # noqa: SLF001 - owned composition hook
 
 
 def _default_fixture(settings: Settings) -> JsonMockFixture:

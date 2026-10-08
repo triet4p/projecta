@@ -196,6 +196,15 @@ class LocalConnectorPrincipalAdapter:
         self._projects = projects
         self._admin_enabled = settings.connector_local_admin_enabled
 
+    def refresh_catalog(self, project_ids: tuple[str, ...]) -> None:
+        """Replace the snapshot allowlist with the just-published catalog.
+
+        Called only after the registry write succeeds, inside the caller's
+        maintenance fence. An empty catalog clears the snapshot; callers that
+        require at least one project keep failing closed at request time.
+        """
+        self._projects = tuple(dict.fromkeys(project_ids))
+
     async def resolve(self, request: ConnectorAuthorizationRequest) -> ConnectorPrincipal:
         context = request.actor_context
         if context is None or not context.actor_id or context.actor_id != self._actor_id:

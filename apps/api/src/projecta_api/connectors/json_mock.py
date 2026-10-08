@@ -96,6 +96,46 @@ class JsonMockAdapter(ConnectorAdapter):
         self._fixture = fixture
         self.pull_call_count = 0
 
+    def refresh_projects(self, project_ids: tuple[str, ...]) -> None:
+        """Extend the fixture with per-project resources for the live catalog.
+
+        Called only after the registry write succeeds, inside the caller's
+        maintenance fence. Existing fixture resources are preserved; only
+        missing per-project entries are added so connector reads stay scoped.
+        """
+        known = {
+            resource.external_reference
+            for resource in self._fixture.resources
+        }
+        additions = [
+            JsonMockResource.model_validate(
+                {
+                    "externalReference": f"fixture://{project_id}/message-001",
+                    "occurredAt": "2026-08-10T00:00:00Z",
+                    "eventType": "source.created",
+                    "actorHint": "json-mock-user",
+                    "contentType": "application/json",
+                    "content": {
+                        "title": "JSON Mock import",
+                        "items": [{"type": "task", "text": "Review imported source"}],
+                    },
+                }
+            )
+            for project_id in dict.fromkeys(project_ids)
+            if f"fixture://{project_id}/message-001" not in known
+        ]
+        if additions:
+            self._fixture = JsonMockFixture.model_validate(
+                {
+                    "fixtureVersion": "json-mock.v1",
+                    "connectorType": "json-mock",
+                    "resources": [
+                        *(resource.model_dump(mode="json", by_alias=True) for resource in self._fixture.resources),
+                        *(resource.model_dump(mode="json", by_alias=True) for resource in additions),
+                    ],
+                }
+            )
+
     def descriptor(self) -> ConnectorDescriptor:
         return self.DESCRIPTOR
 

@@ -477,8 +477,6 @@ def create_router(
             async with fence.maintenance_epoch():
                 try:
                     result = await portable_import.apply(actor, token, payload.confirmed)
-                    if result.get("restartRequired") is True:
-                        await fence.require_recovery()
                 except PortableImportFailure as error:
                     if error.code in {"IMPORT_RECOVERY_PENDING", "IMPORT_RECOVERY_REQUIRED"}:
                         await fence.require_recovery()
@@ -540,7 +538,6 @@ def create_router(
                         typed,
                         payload.confirmed,
                     )
-                    await fence.require_recovery()
                 except ProjectDeletionFailure as error:
                     if error.code in {"DELETE_RECOVERY_REQUIRED"}:
                         await fence.require_recovery()

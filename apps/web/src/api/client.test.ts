@@ -54,7 +54,7 @@ describe("ProjectaApiClient", () => {
     vi.unstubAllGlobals();
   });
 
-  it("tracks staged portable imports until the published result is available", async () => {
+  it("applies a portable import with live publication and reads its result", async () => {
     const importId = "b50dc4e1-9605-4191-9b49-0b3bf675523a";
     const fetchMock = vi.fn().mockImplementation(async (input: RequestInfo | URL, init?: RequestInit) => {
       const requestId = new Headers(init?.headers).get("X-Request-Id") ?? "req-import-result";
@@ -62,12 +62,11 @@ describe("ProjectaApiClient", () => {
       const result = path.endsWith("/apply")
         ? {
             requestId,
-            importId,
             projectId: "portable-project",
             projectName: "Portable Project",
             alreadyImported: false,
-            restartRequired: true,
-            status: "staging",
+            restartRequired: false,
+            nextAction: "The project is available from the Projects list. It was not selected automatically.",
           }
         : {
             requestId,
@@ -85,9 +84,9 @@ describe("ProjectaApiClient", () => {
 
     const api = new ProjectaApiClient();
     await expect(api.applyPortableImport(importId, true)).resolves.toMatchObject({
-      importId,
-      status: "staging",
-      restartRequired: true,
+      projectId: "portable-project",
+      alreadyImported: false,
+      restartRequired: false,
     });
     await expect(api.getPortableImportResult(importId)).resolves.toMatchObject({
       importId,
@@ -139,7 +138,7 @@ describe("ProjectaApiClient", () => {
               projectId: "portable-project",
               projectName: "Portable Project",
               outcome: "deleted",
-              restartRequired: true,
+              restartRequired: false,
               graphTriplesRemoved: 3,
               evidenceObjectsRemoved: 1,
               sqliteRowsRemoved: 2,

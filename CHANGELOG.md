@@ -109,7 +109,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Fixed project deletion refusing with a crash-loop when an interrupted delete is recovered after its staged previews were already forgotten, and refusing only after destroying data when a staged preview belonged to another actor. Recovery now completes an already-forgotten staging tail idempotently, and a foreign-actor staged preview refuses before any project data is touched.
 - Fixed the project-deletion confirmation showing and reporting double the actual graph count. The dialog and the deletion receipt now report the authoritative total.
 - Fixed the project-deletion confirmation escaping the viewport on short screens. The confirmation now opens as a bounded modal dialog with scrollable content and keeps every warning, the typed project name/ID field, and the Cancel/Delete permanently actions reachable by mouse and keyboard.
-
+- Stopped restarting every local service when a project is imported or deleted. The new or remaining project catalog serves immediately: the Projects list refreshes itself with no manual browser reload, and PostgreSQL, Fuseki, Semantic Core, and the API keep running. Interrupted operations still refuse safely until recovered.
 ### Changed
 
 - Separated project selection from workspace navigation; the active project

@@ -67,6 +67,8 @@ export function ProjectsScreen({
   }, []);
 
   useEffect(() => {
+    // Legacy supervisor-handoff receipts (pre-S14-17) never complete: surface
+    // them once as a failed import instead of polling forever.
     if (!pendingImportId) return;
     let active = true;
     let timer: number | undefined;
@@ -175,6 +177,17 @@ export function ProjectsScreen({
       if (result.restartRequired && result.importId) {
         window.sessionStorage.setItem(PENDING_IMPORT_SESSION_KEY, result.importId);
         setPendingImportId(result.importId);
+      } else if (!result.restartRequired) {
+        // Live publication: the new project already serves, so refresh the
+        // catalog immediately instead of waiting for a runtime restart.
+        try {
+          const catalog = await api.listProjects();
+          setProjects(catalog.projects);
+          setCatalogRevision(catalog.catalogRevision);
+          setError(null);
+        } catch (catalogError) {
+          setError(catalogError);
+        }
       }
       setImportResult(result);
       setImportPreview(null);
@@ -486,7 +499,7 @@ export function ProjectsScreen({
           {deletionResult.sqliteRowsRemoved} workspace rows, {deletionResult.postgresRowsRemoved}{" "}
           connector and history rows, and forgot {deletionResult.ledgerEntriesForgotten} import
           ledger entries. {deletionResult.retained.join("; ")}.{" "}
-          {deletionResult.nextAction ?? "Projecta Local is restarting to serve the new project catalog."}
+          {deletionResult.nextAction ?? "The deleted project is gone; the project list already shows the remaining projects."}
         </div>
       )}
       {deletionTarget && (
