@@ -57,6 +57,8 @@ from projecta_api.routes import create_router
 from projecta_api.semantic_core import HttpSemanticCoreClient, SemanticCoreProblem
 from projecta_api.structured_candidate_store import StructuredCandidateEditStore
 
+pytestmark = pytest.mark.local_contract
+
 _PROJECT_ID = "project-alpha"
 _PROJECT_HANDLE = "project-h-abc12345"
 _SOURCE_TEXT = "Plan \U0001f680 rollout"
@@ -67,8 +69,6 @@ _PROVENANCE_IRI = (
 )
 _VALID_FROM = date(2026, 9, 27)
 
-_REPO_ROOT = Path(__file__).resolve().parents[3]
-_CORE_ROOT = _REPO_ROOT / "services" / "semantic-core"
 _CORE_CLASS = "org.projecta.semanticcore.ManualApprovedCrossServiceTest$SinglePipeCoreBoundary"
 
 _CORE_ENV = ("PROJECTA_S13_SINGLE_PIPE", "PROJECTA_CONNECTOR_INTEGRATION")
@@ -85,6 +85,12 @@ def _enabled() -> bool:
     return all(os.getenv(name) == "1" for name in _CORE_ENV) and all(
         os.getenv(name) for name in _DB_ENV
     )
+
+
+def _core_root() -> Path:
+    """Resolve the repository Java Core root only for enabled host runs."""
+
+    return Path(__file__).resolve().parents[3] / "services" / "semantic-core"
 
 
 async def _semantic_problem_response(request: object, error: SemanticCoreProblem) -> JSONResponse:
@@ -113,14 +119,15 @@ def _run_suffix() -> str:
 @contextmanager
 def _java_boundary() -> Iterator[str]:
     """Launch the real Java SinglePipeCoreBoundary and yield its base URL."""
-    classpath_file = _CORE_ROOT / "target" / "s13-cp.txt"
+    core_root = _core_root()
+    classpath_file = core_root / "target" / "s13-cp.txt"
     assert classpath_file.is_file(), "Java test classpath is not built (target/s13-cp.txt)"
     classpath = (
         f"target/test-classes;target/classes;{classpath_file.read_text(encoding='utf-8').strip()}"
     )
     process = subprocess.Popen(
         ["java", "-cp", classpath, _CORE_CLASS],
-        cwd=str(_CORE_ROOT),
+        cwd=str(core_root),
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,

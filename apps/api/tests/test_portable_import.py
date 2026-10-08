@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-import json
-from pathlib import Path
 
 import pytest
 from fastapi import FastAPI
@@ -149,19 +147,30 @@ def test_import_maps_corrupt_deflate_payload_to_finite_error(tmp_path) -> None:
         _validate_archive("probe", target_dir, target, hashlib.sha256(raw).hexdigest(), len(raw))
 
 
-def test_import_accepts_pre_purge_archive_head_without_shape_change() -> None:
-    """A real pre-0012 (0011-stamped) archive stays importable: 0012 adds only the purge helper."""
-    import copy
-    import zipfile
-
+def test_import_accepts_pre_purge_producer_head_without_shape_change() -> None:
+    """Pre-purge (0011-stamped) producer stays importable: 0012 adds only the purge helper."""
+    from projecta_api.extraction.correction_burden import CORRECTION_BURDEN_CONTRACT_VERSION
+    from projecta_api.extraction.review_receipts import REVIEW_RECEIPT_CONTRACT_VERSION
     from projecta_api.portable_export import ontology_assets
 
-    source = Path("F:/ai-ml/projecta/build/s14-12-A2-export.projecta")
-    with zipfile.ZipFile(source, "r") as archive:
-        manifest = json.loads(archive.read("manifest.json").decode("utf-8"))
-    assert manifest["producer"]["postgresAlembicHead"] == "0011_review_receipts_append_only"
-    producer = copy.deepcopy(manifest["producer"])
-    producer["ontologyAssets"] = ontology_assets()
+    producer: dict[str, object] = {
+        "projectaVersion": "0.7.0",
+        "apiVersion": "0.7.0",
+        "webVersion": "0.7.0",
+        "nativeRuntime": {
+            "python": "3.12.10",
+            "java": "21.0.12.1+1",
+            "fuseki": "6.2.0",
+            "postgresql": "16.15",
+            "semanticCore": {"javalin": "7.2.2", "jena": "6.2.0"},
+        },
+        "postgresAlembicHead": "0011_review_receipts_append_only",
+        "sqliteSchemaVersions": [1, 2, 3],
+        "connectorContract": "connector-contract.v1",
+        "reviewReceiptContract": REVIEW_RECEIPT_CONTRACT_VERSION,
+        "correctionBurdenContract": CORRECTION_BURDEN_CONTRACT_VERSION,
+        "ontologyAssets": ontology_assets(),
+    }
     # Current-database producer passes unchanged (no exception).
     _validate_producer({**producer, "postgresAlembicHead": "0012_project_purge_exception"})
     # Pre-purge producer passes through the bounded compatibility branch.

@@ -34,7 +34,7 @@ Assert-NoPattern 'ResilientGateway\([\s\S]{0,300}max_retries\s*=\s*[1-9]' 'impli
 Assert-NoPattern 'return\s+\{\s*"status"\s*:\s*"ready"\s*,\s*"semanticCore"\s*:\s*"injected"' 'synthetic readiness success'
 Assert-NoPattern 'except\s+Exception\s*:\s*\r?\n\s*(pass|return)' 'catch-and-ignore path'
 Assert-NoPattern '_propose_note_items|item_type\s*=\s*"research-need"' 'heuristic Note import fallback'
-Assert-NoPattern '(setdefault|get)\("(semanticType|lifecycleState|verificationState|provenanceState|relationType)"\s*,' 'fabricated semantic projection state'
+Assert-NoPattern '(setdefault\("(semanticType|lifecycleState|verificationState|provenanceState|relationType)"|get\("(semanticType|lifecycleState|verificationState|provenanceState|relationType)"\s*,\s*")' 'fabricated semantic projection state'
 Assert-NoPattern 'getOrDefault\("(label|title|rawText|recordedAt|validFrom)"\s*,' 'fabricated Semantic Core projection values'
 Assert-NoPattern 'placeholder="Opaque (link|actor) handle"' 'user-entered opaque handles'
 

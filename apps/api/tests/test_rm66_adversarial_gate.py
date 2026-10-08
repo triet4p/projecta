@@ -2,9 +2,7 @@
 
 from __future__ import annotations
 
-import hashlib
 from concurrent.futures import ThreadPoolExecutor
-from pathlib import Path
 from typing import cast
 
 import pytest
@@ -28,7 +26,6 @@ from projecta_api.extraction.source_version import SourceVersion, create_source_
 from projecta_api.extraction.text_anchor import TextAnchor, resolve_text_anchor, verify_text_anchor
 from projecta_api.models import ExtractionRequest
 
-ROOT = Path(__file__).resolve().parents[3]
 SOURCE = "sv_0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
 
 
@@ -219,16 +216,3 @@ async def test_legacy_default_path_has_no_implicit_rm55_to_rm65_enablement_or_pr
         )
 
 
-def test_rm66_test_inputs_are_not_written_to_immutable_evaluation_artifacts() -> None:
-    expected = {
-        ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v6.json":
-            "419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
-        ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v9.json":
-            "84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e",
-    }
-    before = {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in expected}
-    assert before == expected
-    absent_v8 = ROOT / "evaluation/sprint-12/optimization/s12-f-12-stage-a-report.v8.json"
-    assert not absent_v8.exists()
-    assert {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in expected} == before
-    assert not absent_v8.exists()

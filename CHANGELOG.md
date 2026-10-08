@@ -8,7 +8,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Fixed
 
-- Fixed Linux CI test bootstrap so API pytest and release validation use an owned per-run evidence directory instead of the unwritable deployment default, and added a validation-only release workflow dispatch that cannot publish.
+- Fixed Linux CI collection of host repository-fixture tests so the container `api-system-test` suite (`-m 'not local_contract'`) imports without the host repo layout, and made the portable-import pre-purge compatibility test hermetic by building its producer fixture in-test instead of reading an uncommitted developer-host archive.
+- Removed the CRLF-workstation-pinned evaluation report hash test in favor of the durable byte-provenance contracts that already bind those reports, and narrowed the implicit-behavior gate to reject fabricated semantic-state defaults instead of absence-tolerant optional projection.
 
 ## [0.7.0] - 2026-10-08
 
