@@ -43,10 +43,10 @@ jobs:
 
   api:
     runs-on: ubuntu-latest
-    # Same owned-temp CI bootstrap as the main-push contract job; the deployment
+    # Same owned workspace evidence bootstrap as the main-push contract job; the deployment
     # default /var/lib/projecta/evidence is unwritable on ubuntu-latest.
     env:
-      PROJECTA_EVIDENCE_ROOT: ${{ runner.temp }}/projecta-evidence
+      PROJECTA_EVIDENCE_ROOT: ${{ github.workspace }}/projecta-evidence
       PROJECTA_API_RUNTIME_MODE: headless
     steps:
       - uses: actions/checkout@v7
@@ -64,9 +64,9 @@ jobs:
 
   web:
     runs-on: ubuntu-latest
-    # check:api-drift builds the app in-process; same owned-temp evidence bootstrap.
+    # check:api-drift builds the app in-process; same owned workspace evidence bootstrap.
     env:
-      PROJECTA_EVIDENCE_ROOT: ${{ runner.temp }}/projecta-evidence
+      PROJECTA_EVIDENCE_ROOT: ${{ github.workspace }}/projecta-evidence
       PROJECTA_API_RUNTIME_MODE: headless
     steps:
       - uses: actions/checkout@v7
@@ -141,9 +141,9 @@ jobs:
 
   sprint10-validation:
     runs-on: ubuntu-latest
-    # The validation script runs API pytest gates; same owned-temp bootstrap.
+    # The validation script runs API pytest gates; same owned workspace bootstrap.
     env:
-      PROJECTA_EVIDENCE_ROOT: ${{ runner.temp }}/projecta-evidence
+      PROJECTA_EVIDENCE_ROOT: ${{ github.workspace }}/projecta-evidence
       PROJECTA_API_RUNTIME_MODE: headless
     steps:
       - uses: actions/checkout@v7
@@ -176,9 +176,9 @@ jobs:
   sprint10-acceptance:
     needs: [sprint10-validation]
     runs-on: ubuntu-latest
-    # Acceptance host-test pytest journeys create the app; same bootstrap.
+    # Acceptance host-test pytest journeys create the app; same workspace bootstrap.
     env:
-      PROJECTA_EVIDENCE_ROOT: ${{ runner.temp }}/projecta-evidence
+      PROJECTA_EVIDENCE_ROOT: ${{ github.workspace }}/projecta-evidence
       PROJECTA_API_RUNTIME_MODE: headless
     steps:
       - uses: actions/checkout@v7
@@ -206,10 +206,10 @@ jobs:
   sprint10-recovery:
     needs: [sprint10-validation]
     runs-on: ubuntu-latest
-    # Isolated recovery uses its own temp evidence roots; the job-level
-    # bootstrap keeps any incidental app creation off the deployment default.
+    # Isolated recovery uses its own temp evidence roots; this workspace bootstrap
+    # keeps incidental app creation off the deployment default.
     env:
-      PROJECTA_EVIDENCE_ROOT: ${{ runner.temp }}/projecta-evidence
+      PROJECTA_EVIDENCE_ROOT: ${{ github.workspace }}/projecta-evidence
       PROJECTA_API_RUNTIME_MODE: headless
     steps:
       - uses: actions/checkout@v7
@@ -263,9 +263,9 @@ jobs:
   sprint11-deterministic:
     needs: [release-contract, api, web, semantic-core, repository-contracts]
     runs-on: ubuntu-latest
-    # The validation script runs API pytest gates; same owned-temp bootstrap.
+    # The validation script runs API pytest gates; same owned workspace bootstrap.
     env:
-      PROJECTA_EVIDENCE_ROOT: ${{ runner.temp }}/projecta-evidence
+      PROJECTA_EVIDENCE_ROOT: ${{ github.workspace }}/projecta-evidence
       PROJECTA_API_RUNTIME_MODE: headless
     steps:
       - uses: actions/checkout@v7
@@ -296,9 +296,9 @@ jobs:
     needs: [sprint11-deterministic]
     runs-on: ubuntu-latest
     # Deterministic pytest contracts create the app; keep them off the
-    # deployment default with the same owned-temp bootstrap.
+    # deployment default with the same owned workspace bootstrap.
     env:
-      PROJECTA_EVIDENCE_ROOT: ${{ runner.temp }}/projecta-evidence
+      PROJECTA_EVIDENCE_ROOT: ${{ github.workspace }}/projecta-evidence
       PROJECTA_API_RUNTIME_MODE: headless
     steps:
       - uses: actions/checkout@v7
@@ -343,9 +343,9 @@ jobs:
   sprint11-recovery:
     needs: [sprint11-acceptance]
     runs-on: ubuntu-latest
-    # Recovery pytest contracts create the app; same owned-temp bootstrap.
+    # Recovery pytest contracts create the app; same owned workspace bootstrap.
     env:
-      PROJECTA_EVIDENCE_ROOT: ${{ runner.temp }}/projecta-evidence
+      PROJECTA_EVIDENCE_ROOT: ${{ github.workspace }}/projecta-evidence
       PROJECTA_API_RUNTIME_MODE: headless
     steps:
       - uses: actions/checkout@v7
