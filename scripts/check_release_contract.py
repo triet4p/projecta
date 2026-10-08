@@ -56,9 +56,9 @@ def declared_versions(root: Path) -> dict[str, str]:
     if semantic_version is None:
         raise ReleaseContractError("Semantic Core pom.xml has no project version")
     api_main = (root / "apps/api/src/projecta_api/main.py").read_text(encoding="utf-8")
-    api_runtime_match = re.search(r'FastAPI\(title="Projecta Application API", version="([^"]+)"\)', api_main)
-    if api_runtime_match is None:
-        raise ReleaseContractError("Application API runtime version is not explicit")
+    api_runtime_match = re.search(
+        r'FastAPI\(title="Projecta Application API", version="([^"]+)"[^)]*\)', api_main
+    )
     return {
         "VERSION": (root / "VERSION").read_text(encoding="utf-8").strip(),
         "api pyproject": str(api_project["project"]["version"]),

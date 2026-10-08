@@ -124,6 +124,8 @@ def _runtime(*, admin: bool = True) -> ConnectorRuntime:
 
 def _settings() -> Settings:
     return Settings(
+        _env_file=None,
+        runtime_mode="headless",
         trusted_context_secret="test-secret",
         PROJECTA_LLM_TYPE="openai-response",
         PROJECTA_LLM_BASE_URL="https://api.deepseek.com",

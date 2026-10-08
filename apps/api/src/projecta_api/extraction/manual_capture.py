@@ -1,13 +1,18 @@
 """Deterministically bind human Note candidates to server-owned source evidence."""
 
 from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from projecta_api.extraction.source_version import SourceVersion, create_source_version
-from projecta_api.extraction.text_anchor import TextAnchor, TextAnchorVerificationError, resolve_text_anchor
+from projecta_api.extraction.text_anchor import (
+    TextAnchor,
+    TextAnchorVerificationError,
+    resolve_text_anchor,
+)
 from projecta_api.structured_note import CandidateEditType
 
 

@@ -14,39 +14,38 @@ import stat
 import tempfile
 import uuid
 import zipfile
-from collections import defaultdict
-from collections.abc import AsyncIterator, Iterable, Iterator, Mapping, Sequence
+from collections.abc import Iterable, Iterator, Mapping, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from hashlib import sha256
 from pathlib import Path
-from typing import Protocol, cast, get_args
+from typing import BinaryIO, Protocol, TypedDict, cast, get_args
 
 from sqlalchemy import Engine, inspect, select, text
 from sqlalchemy.engine import Connection
 
 from projecta_api.configuration.storage import OperationalDatabase
+from projecta_api.connectors.github_public_issues import GitHubCursorCodec
 from projecta_api.context import TrustedRequestContext
 from projecta_api.evidence.local import LocalEvidenceStore
 from projecta_api.evidence.ports import EvidenceGetRequest, EvidenceMetadata
 from projecta_api.extraction.correction_burden import (
     CORRECTION_BURDEN_CONTRACT_VERSION,
     CorrectionBurdenEventRecord,
-    _event_from_row,
+    event_from_row,
 )
+from projecta_api.extraction.local_suggestions import LocalSuggestionProposal
 from projecta_api.extraction.review_receipts import (
     REVIEW_RECEIPT_CONTRACT_VERSION,
     ReviewDecisionReceiptRecord,
-    _receipt_digest,
-    _receipt_from_row,
+    receipt_digest,
+    receipt_from_row,
 )
-from projecta_api.connectors.github_public_issues import GitHubCursorCodec
-from projecta_api.connectors.teams import _cursor_watermark
+from projecta_api.operational.schema import CorrectionBurdenEvent, ReviewDecisionReceipt
+from projecta_api.semantic_core import SemanticCoreProblem
 from projecta_api.structured_candidate_store import StructuredCandidateEditRequest
 from projecta_api.structured_note import NoteDraftStatus, StructuredNoteDraft
 from projecta_api.structured_note_store import structured_note_draft_fingerprint
-from projecta_api.semantic_core import SemanticCoreProblem
-from projecta_api.extraction.local_suggestions import LocalSuggestionProposal
 
 PORTABLE_CONTRACT = "projecta-portable.v1"
 MAX_ARCHIVE_BYTES = 2 * 1024 * 1024 * 1024
@@ -58,15 +57,15 @@ MAX_EVIDENCE_BYTES = 1024 * 1024
 MAX_SEMANTIC_BYTES = 512 * 1024 * 1024
 MAX_SEMANTIC_TRIPLES = 1_000_000
 MAX_LOGICAL_RECORDS = 250_000
-_PROJECT_ID = re.compile(r"^[a-z0-9][a-z0-9-]{0,62}$")
+PROJECT_ID = re.compile(r"^[a-z0-9][a-z0-9-]{0,62}$")
 _SOURCE_REVISION = re.compile(r"^catalog-r-[0-9a-f]{40}$")
-_SHA256 = re.compile(r"^[0-9a-f]{64}$")
+SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _DIGEST = re.compile(r"^sha256:[0-9a-f]{64}$")
 _PORTABLE_DIGEST_MARKER = re.compile(
     r"^projecta-portable-(?:key|actor)\.v1\|(sha256:[0-9a-f]{64})\|[0-9a-f]{32}$"
 )
 _TEAMS_CURSOR = re.compile(r"^teams\.v1\|([^|]{1,64})\|([0-9a-f]{32})$")
-_FIXED_MEMBERS: tuple[tuple[str, str, str], ...] = (
+FIXED_MEMBERS: tuple[tuple[str, str, str], ...] = (
     ("payload/semantic/project.trig", "semantic-project", "application/trig"),
     ("payload/application/project-workflows.json", "application-workflows", "application/json"),
     ("payload/operations/connectors.json", "connector-state", "application/json"),
@@ -164,6 +163,23 @@ class _EvidenceReference:
         }
 
 
+class _SqliteResult(TypedDict):
+    """Typed operational payload result from the SQLite workflow writer."""
+
+    record_counts: dict[str, int]
+    schema_versions: tuple[int, ...]
+
+
+class _PostgresResult(TypedDict):
+    """Typed operational payload result from the PostgreSQL writer."""
+
+    record_counts: dict[str, int]
+    alembic_head: str
+    server_version: str
+    receipt_digests: frozenset[str]
+    inbox_references: frozenset[str]
+
+
 @dataclass(frozen=True, slots=True)
 class _Collection:
     source_revision: str
@@ -204,30 +220,30 @@ class _Collection:
 class _BoundedArchiveFile:
     """File proxy that rejects an archive as soon as its physical limit is crossed."""
 
-    def __init__(self, stream: object, limit: int) -> None:
-        self._stream = cast(object, stream)
+    def __init__(self, stream: BinaryIO, limit: int) -> None:
+        self._stream = stream
         self._limit = limit
         self._high_water = 0
 
     def write(self, value: bytes) -> int:
-        stream = cast(object, self._stream)
-        write = getattr(stream, "write")
-        written = cast(int, write(value))
-        tell = getattr(stream, "tell")
-        position = cast(int, tell())
+        written = self._stream.write(value)
+        position = self._stream.tell()
         self._high_water = max(self._high_water, position)
         if self._high_water > self._limit:
             raise PortableExportFailure("EXPORT_TOO_LARGE", status_code=413)
         return written
 
     def tell(self) -> int:
-        return cast(int, getattr(self._stream, "tell")())
+        return self._stream.tell()
 
     def seek(self, offset: int, whence: int = 0) -> int:
-        return cast(int, getattr(self._stream, "seek")(offset, whence))
+        return self._stream.seek(offset, whence)
 
     def flush(self) -> None:
-        getattr(self._stream, "flush")()
+        self._stream.flush()
+
+    def close(self) -> None:
+        self._stream.close()
 
     def seekable(self) -> bool:
         return True
@@ -268,7 +284,7 @@ class ProjectPortableExportService:
         project_id = context.project_id
         if not self.enabled():
             raise PortableExportFailure("EXPORT_UNSUPPORTED_RUNTIME", status_code=503)
-        if not _PROJECT_ID.fullmatch(project_id):
+        if not PROJECT_ID.fullmatch(project_id):
             raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
         _validate_project_name(project_name)
         _validate_source_revision(source_revision)
@@ -288,7 +304,7 @@ class ProjectPortableExportService:
             await asyncio.to_thread(shutil.rmtree, work_directory / "recheck")
             producer = _producer_inventory(first)
             manifest = _manifest(project_id, project_name, producer, first)
-            manifest_bytes = _canonical_json(manifest)
+            manifest_bytes = canonical_json(manifest)
             if len(manifest_bytes) > MAX_MANIFEST_BYTES:
                 raise PortableExportFailure("EXPORT_TOO_LARGE", status_code=413)
             expanded = len(manifest_bytes) + sum(item.size_bytes for item in first.payloads)
@@ -322,9 +338,8 @@ class ProjectPortableExportService:
     ) -> _Collection:
         project_id = context.project_id
         source_revision = await _read_source_revision(self._semantic, context)
-        directory.mkdir(mode=0o700, parents=True, exist_ok=False)
+        await asyncio.to_thread(_prepare_collection_directories, directory)
         payload_directory = directory / "payload"
-        payload_directory.mkdir(mode=0o700)
         semantic_path = directory / "semantic.trig"
         try:
             triple_count = await self._semantic.stream_project_trig(
@@ -341,12 +356,9 @@ class ProjectPortableExportService:
                 status_code = error.status_code if error.status_code in {409, 413, 503} else 503
                 raise PortableExportFailure(error.code, status_code=status_code) from error
             raise PortableExportFailure("EXPORT_SOURCE_UNAVAILABLE", status_code=503) from error
-        if triple_count < 0 or triple_count > MAX_SEMANTIC_TRIPLES:
-            raise PortableExportFailure("EXPORT_TOO_LARGE", status_code=413)
         semantic_size = semantic_path.stat().st_size
         if semantic_size > MAX_SEMANTIC_BYTES:
             raise PortableExportFailure("EXPORT_TOO_LARGE", status_code=413)
-        assets = _ontology_assets()
         workflows_path = payload_directory / "project-workflows.json"
         connectors_path = payload_directory / "connectors.json"
         receipts_path = payload_directory / "review-decision-receipts.jsonl"
@@ -368,7 +380,7 @@ class ProjectPortableExportService:
             corrections_path,
             candidate_identities,
         )
-        inbox_references = cast(frozenset[str], postgres_result["inbox_references"])
+        inbox_references = postgres_result["inbox_references"]
         evidence_references = await self._write_evidence_payloads(
             project_id, payload_directory, inbox_references
         )
@@ -548,13 +560,13 @@ def _write_operational_payloads(
     receipts_path: Path,
     corrections_path: Path,
     candidate_identities: Mapping[str, str],
-) -> tuple[dict[str, object], dict[str, object]]:
+) -> tuple[_SqliteResult, _PostgresResult]:
     if engine is None:
         raise PortableExportFailure("EXPORT_SOURCE_UNAVAILABLE", status_code=503)
     sqlite_result = _write_sqlite_workflows(
         database, project_id, workflows_path, candidate_identities
     )
-    sqlite_count = sum(cast(Mapping[str, int], sqlite_result["record_counts"]).values())
+    sqlite_count = sum(sqlite_result["record_counts"].values())
     postgres_result = _write_postgres_payloads(
         engine,
         project_id,
@@ -563,7 +575,7 @@ def _write_operational_payloads(
         corrections_path,
         record_limit=MAX_LOGICAL_RECORDS - sqlite_count,
     )
-    count = sqlite_count + sum(cast(Mapping[str, int], postgres_result["record_counts"]).values())
+    count = sqlite_count + sum(postgres_result["record_counts"].values())
     if count > MAX_LOGICAL_RECORDS:
         raise PortableExportFailure("EXPORT_TOO_LARGE", status_code=413)
     return sqlite_result, postgres_result
@@ -574,7 +586,7 @@ def _write_sqlite_workflows(
     project_id: str,
     destination: Path,
     candidate_identities: Mapping[str, str],
-) -> dict[str, object]:
+) -> _SqliteResult:
     counts: dict[str, int] = {}
     schema_versions: tuple[int, ...]
     with database.read_transaction() as connection:
@@ -629,7 +641,7 @@ def _write_postgres_payloads(
     corrections_path: Path,
     *,
     record_limit: int = MAX_LOGICAL_RECORDS,
-) -> dict[str, object]:
+) -> _PostgresResult:
     try:
         from projecta_api.operational.schema import (
             ConnectorAuditRecord,
@@ -799,12 +811,15 @@ def _write_connector_json(
                 )
             records = connection.execute(statement, {"project_id": project_id}).mappings()
 
-            def mapped_records() -> Iterator[dict[str, object]]:
-                for row in records:
+            def mapped_records(
+                rows: object = records,
+                collection: str = field,
+            ) -> Iterator[dict[str, object]]:
+                for row in cast(object, rows):  # type: ignore[union-attr]
                     record = _connector_record(
-                        field, cast(Mapping[str, object], row), project_id, installations
+                        collection, cast(Mapping[str, object], row), project_id, installations
                     )
-                    if field == "inbox":
+                    if collection == "inbox":
                         inbox_references.add(_text(record["contentReference"]))
                     yield record
 
@@ -833,16 +848,19 @@ def _connector_record(
         connector = _text(row.get("connector_type"))
         if connector not in {"json-mock", "teams", "github-public-issues"}:
             raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
-        capabilities = row.get("capabilities")
+        raw_capabilities: object = row.get("capabilities")
         allowed: dict[str, tuple[str, ...]] = {
             "json-mock": ("inbound-import", "resource-fetch", "cancellation"),
             "teams": ("inbound-import",),
             "github-public-issues": ("inbound-import",),
         }
-        if not isinstance(capabilities, list) or not capabilities or any(
-            not isinstance(value, str) or value not in allowed[connector] for value in capabilities
-        ):
+        if not isinstance(raw_capabilities, list) or not raw_capabilities:
             raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
+        capabilities: list[str] = []
+        for raw_capability in cast(list[object], raw_capabilities):
+            if not isinstance(raw_capability, str) or raw_capability not in allowed[connector]:
+                raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
+            capabilities.append(raw_capability)
         return {
             "installationId": _text(row.get("installation_id")),
             "projectId": project_id,
@@ -919,7 +937,7 @@ def _connector_record(
         if connector_type is None:
             raise PortableExportFailure("EXPORT_INTEGRITY_FAILED")
         checkpoint = _nullable_text(row.get("checkpoint"))
-        _validate_cursor(connector_type, checkpoint)
+        validate_cursor(connector_type, checkpoint)
         return {
             "installationId": installation_id,
             "projectId": project_id,
@@ -960,7 +978,7 @@ def _connector_record(
     raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
 
 
-def _validate_cursor(connector_type: str, checkpoint: str | None) -> None:
+def validate_cursor(connector_type: str, checkpoint: str | None) -> None:
     """Validate only the recognized v1 connector cursors; unknown codecs fail as unsupported."""
     if checkpoint is None:
         return
@@ -1045,8 +1063,6 @@ def _read_and_write_receipts(
     *,
     limit: int,
 ) -> tuple[int, frozenset[str]]:
-    from projecta_api.operational.schema import ReviewDecisionReceipt
-
     statement = (
         select(ReviewDecisionReceipt)
         .where(ReviewDecisionReceipt.project_id == project_id)
@@ -1061,9 +1077,10 @@ def _read_and_write_receipts(
     count = 0
     with destination.open("xb") as output:
         for row in connection.execute(statement):
+            model: ReviewDecisionReceipt = row.tuple()[0]
             try:
-                record = _receipt_from_row(row, "accepted")
-                request_digest = _validate_receipt(row, record)
+                record = receipt_from_row(model, "accepted")
+                request_digest = _validate_receipt(model, record)
             except PortableExportFailure:
                 raise
             except Exception as error:  # noqa: BLE001 - malformed source history is not a valid export.
@@ -1097,21 +1114,19 @@ def _read_and_write_receipts(
     return count, frozenset(receipt_digests)
 
 
-def _validate_receipt(row: object, record: ReviewDecisionReceiptRecord) -> str:
-    source = cast(object, row)
-    project_id = _text(getattr(source, "project_id", None))
-    request_digest = _digest_format(_text(getattr(source, "request_digest", None)))
-    receipt_id = _text(getattr(source, "receipt_id", None))
-    occurred_at = getattr(source, "occurred_at", None)
+def _validate_receipt(row: ReviewDecisionReceipt, record: ReviewDecisionReceiptRecord) -> str:
+    project_id = _text(row.project_id)
+    request_digest = _digest_format(_text(row.request_digest))
+    receipt_id = _text(row.receipt_id)
+    occurred_at = row.occurred_at
     if (
         receipt_id != "rr1_" + request_digest.removeprefix("sha256:")
-        or not isinstance(occurred_at, datetime)
         or occurred_at.tzinfo is None
         or occurred_at.utcoffset() is None
         or occurred_at != record.occurred_at
     ):
         raise PortableExportFailure("EXPORT_INTEGRITY_FAILED")
-    expected_digest = _receipt_digest(request_digest, occurred_at)
+    expected_digest = receipt_digest(request_digest, occurred_at)
     if record.project_digest != _digest_text(project_id) or record.receipt_digest != expected_digest:
         raise PortableExportFailure("EXPORT_INTEGRITY_FAILED")
     return request_digest
@@ -1150,7 +1165,6 @@ def _write_correction_events(
     limit: int,
 ) -> int:
     from projecta_api.extraction.correction_burden import TelemetryIntegrityError
-    from projecta_api.operational.schema import CorrectionBurdenEvent
 
     statement = (
         select(CorrectionBurdenEvent)
@@ -1160,8 +1174,9 @@ def _write_correction_events(
     count = 0
     with destination.open("xb") as output:
         for row in connection.execute(statement):
+            model: CorrectionBurdenEvent = row.tuple()[0]
             try:
-                record = _event_from_row(row, "accepted")
+                record = event_from_row(model, "accepted")
             except (TelemetryIntegrityError, ValueError, TypeError) as error:
                 raise PortableExportFailure("EXPORT_INTEGRITY_FAILED") from error
             if (
@@ -1205,9 +1220,9 @@ def _correction_export_value(record: CorrectionBurdenEventRecord, project_id: st
 
 
 def _correction_request_digest(record: CorrectionBurdenEventRecord, project_id: str) -> str:
-    from projecta_api.extraction.correction_burden import _request_digest_from_event
+    from projecta_api.extraction.correction_burden import request_digest_from_event
 
-    return _request_digest_from_event(project_id, record)
+    return request_digest_from_event(project_id, record)
 
 
 def _reject_active_suggestions(connection: sqlite3.Connection, project_id: str) -> None:
@@ -1233,10 +1248,10 @@ def _structured_note_drafts(
         (project_id,),
     )
     for raw in rows:
-        row = cast(Mapping[str, object], raw)
+        row: Mapping[str, object] = cast(Mapping[str, object], raw)
         _check_project(row["project_id"], project_id)
         payload_text = _text(row["payload"])
-        payload_value = _load_json(payload_text)
+        payload_value = load_json(payload_text)
         draft = StructuredNoteDraft.model_validate(payload_value)
         if draft.model_dump(mode="json", by_alias=True) != payload_value:
             raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
@@ -1283,13 +1298,13 @@ def _candidate_edits(
         (project_id,),
     )
     for raw in rows:
-        row = cast(Mapping[str, object], raw)
+        row: Mapping[str, object] = cast(Mapping[str, object], raw)
         _check_project(row["project_id"], project_id)
         source_candidate_handle = _text(row["candidate_handle"])
         candidate_id = candidate_identities.get(source_candidate_handle)
         if candidate_id is None:
             raise PortableExportFailure("EXPORT_INTEGRITY_FAILED")
-        payload = _load_json(_text(row["payload"]))
+        payload = load_json(_text(row["payload"]))
         edit = StructuredCandidateEditRequest.model_validate(payload)
         if edit.model_dump(mode="json", by_alias=True) != payload:
             raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
@@ -1315,7 +1330,7 @@ def _suggestion_workflows(connection: sqlite3.Connection, project_id: str) -> It
         (project_id,),
     )
     for raw in rows:
-        row = cast(Mapping[str, object], raw)
+        row: Mapping[str, object] = cast(Mapping[str, object], raw)
         _check_project(row["project_id"], project_id)
         state = _text(row["state"])
         if state == "pending":
@@ -1325,7 +1340,7 @@ def _suggestion_workflows(connection: sqlite3.Connection, project_id: str) -> It
         proposal: object = None
         raw_proposal = row["proposal_json"]
         if raw_proposal is not None:
-            proposal = LocalSuggestionProposal.model_validate(_load_json(_text(raw_proposal))).model_dump(
+            proposal = LocalSuggestionProposal.model_validate(load_json(_text(raw_proposal))).model_dump(
                 mode="json", by_alias=True, exclude_none=True
             )
         yield {
@@ -1355,7 +1370,7 @@ def _suggestion_attempts(connection: sqlite3.Connection, project_id: str) -> Ite
         (project_id,),
     )
     for raw in rows:
-        row = cast(Mapping[str, object], raw)
+        row: Mapping[str, object] = cast(Mapping[str, object], raw)
         _check_project(row["project_id"], project_id)
         state = _text(row["state"])
         if state == "pending":
@@ -1385,12 +1400,17 @@ def _authoring_cost_events(connection: sqlite3.Connection, project_id: str) -> I
         (expected,),
     )
     for raw in rows:
-        row = cast(Mapping[str, object], raw)
+        row: Mapping[str, object] = cast(Mapping[str, object], raw)
         if row["project_digest"] != expected:
             raise PortableExportFailure("EXPORT_INTEGRITY_FAILED")
-        dimensions = _load_json(_text(row["correction_dimensions"]))
-        if not isinstance(dimensions, list) or any(not isinstance(item, str) for item in dimensions):
+        raw_dimensions: object = load_json(_text(row["correction_dimensions"]))
+        if not isinstance(raw_dimensions, list):
             raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
+        dimensions: list[str] = []
+        for raw_dimension in cast(list[object], raw_dimensions):
+            if not isinstance(raw_dimension, str):
+                raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
+            dimensions.append(raw_dimension)
         yield {
             "eventId": _bounded_text(row["event_id"], 128),
             "projectId": project_id,
@@ -1464,11 +1484,11 @@ def _producer_inventory(collection: _Collection) -> dict[str, object]:
         "connectorContract": "connector-contract.v1",
         "reviewReceiptContract": REVIEW_RECEIPT_CONTRACT_VERSION,
         "correctionBurdenContract": CORRECTION_BURDEN_CONTRACT_VERSION,
-        "ontologyAssets": _ontology_assets(),
+        "ontologyAssets": ontology_assets(),
     }
 
 
-def _ontology_assets() -> list[dict[str, object]]:
+def ontology_assets() -> list[dict[str, object]]:
     package_root = _package_root()
     ontology = package_root / "ontology"
     modules = (
@@ -1535,6 +1555,13 @@ def _package_root() -> Path:
     raise PortableExportFailure("EXPORT_UNSUPPORTED_VERSION")
 
 
+def _prepare_collection_directories(directory: Path) -> None:
+    """Create the export collection directories with owner-only modes."""
+
+    directory.mkdir(mode=0o700, parents=True, exist_ok=False)
+    (directory / "payload").mkdir(mode=0o700)
+
+
 def _write_archive(path: Path, manifest_bytes: bytes, payloads: Sequence[_Payload]) -> None:
     try:
         with path.open("w+b") as raw:
@@ -1580,10 +1607,13 @@ def _verify_archive(
             if archived_manifest != manifest_bytes:
                 raise PortableExportFailure("EXPORT_INTEGRITY_FAILED")
             try:
-                manifest_value = _load_json(archived_manifest.decode("utf-8", "strict"))
+                manifest_value = load_json(archived_manifest.decode("utf-8", "strict"))
             except (UnicodeError, PortableExportFailure) as error:
                 raise PortableExportFailure("EXPORT_INTEGRITY_FAILED") from error
-            if not isinstance(manifest_value, dict) or set(manifest_value) != {
+            if not isinstance(manifest_value, dict):
+                raise PortableExportFailure("EXPORT_INTEGRITY_FAILED")
+            typed_manifest: Mapping[str, object] = cast(Mapping[str, object], manifest_value)
+            if set(typed_manifest) != {
                 "portableContract",
                 "exportId",
                 "exportedAt",
@@ -1595,9 +1625,9 @@ def _verify_archive(
                 "entries",
             }:
                 raise PortableExportFailure("EXPORT_INTEGRITY_FAILED")
-            manifest_revision = manifest_value.get("sourceRevision")
+            manifest_revision: object = typed_manifest.get("sourceRevision")
             if (
-                manifest_value.get("portableContract") != PORTABLE_CONTRACT
+                typed_manifest.get("portableContract") != PORTABLE_CONTRACT
                 or not isinstance(manifest_revision, str)
                 or manifest_revision != source_revision
                 or not _SOURCE_REVISION.fullmatch(manifest_revision)
@@ -1682,21 +1712,23 @@ def _hash_file(path: Path) -> tuple[str, int]:
     return digest.hexdigest(), size
 
 
-def _write_json_object_start(output: object, first_key: str, value: int) -> None:
-    stream = cast(object, output)
-    write = getattr(stream, "write")
-    write(b"{")
+_JsonSink = BinaryIO
+"""Binary sink for the bounded JSON writers below (file objects opened in binary mode)."""
+
+
+def _write_json_object_start(output: _JsonSink, first_key: str, value: int) -> None:
+    output.write(b"{")
     _write_json_key(output, first_key)
-    write(str(value).encode("ascii"))
+    output.write(str(value).encode("ascii"))
 
 
-def _write_json_key(output: object, value: str) -> None:
-    getattr(output, "write")(_canonical_json(value))
-    getattr(output, "write")(b":")
+def _write_json_key(output: _JsonSink, value: str) -> None:
+    output.write(canonical_json(value))
+    output.write(b":")
 
 
 def _write_json_records(
-    output: object, records: Iterable[dict[str, object]], *, limit: int = MAX_LOGICAL_RECORDS
+    output: _JsonSink, records: Iterable[dict[str, object]], *, limit: int = MAX_LOGICAL_RECORDS
 ) -> int:
     count = 0
     first = True
@@ -1706,18 +1738,18 @@ def _write_json_records(
         if count > limit:
             raise PortableExportFailure("EXPORT_TOO_LARGE", status_code=413)
         if not first:
-            getattr(output, "write")(b",")
+            output.write(b",")
         first = False
-        getattr(output, "write")(_canonical_json(record))
+        output.write(canonical_json(record))
     return count
 
 
-def _write_json_line(output: object, value: dict[str, object]) -> None:
-    getattr(output, "write")(_canonical_json(value))
-    getattr(output, "write")(b"\n")
+def _write_json_line(output: _JsonSink, value: dict[str, object]) -> None:
+    output.write(canonical_json(value))
+    output.write(b"\n")
 
 
-def _canonical_json(value: object) -> bytes:
+def canonical_json(value: object) -> bytes:
     try:
         return json.dumps(
             value,
@@ -1730,7 +1762,7 @@ def _canonical_json(value: object) -> bytes:
         raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE") from error
 
 
-def _load_json(value: str) -> object:
+def load_json(value: str) -> object:
     def unique_pairs(pairs: list[tuple[str, object]]) -> dict[str, object]:
         result: dict[str, object] = {}
         for key, item in pairs:
@@ -1740,12 +1772,17 @@ def _load_json(value: str) -> object:
         return result
 
     try:
-        result = json.loads(value, object_pairs_hook=unique_pairs, parse_constant=_reject_json_constant)
+        parsed: object = json.loads(value, object_pairs_hook=unique_pairs, parse_constant=_reject_json_constant)
     except (TypeError, ValueError, json.JSONDecodeError) as error:
         raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE") from error
-    if isinstance(result, dict) and any(not isinstance(key, str) for key in result):
-        raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
-    return result
+    if isinstance(parsed, dict):
+        typed_parsed: dict[object, object] = cast(dict[object, object], parsed)
+        for parsed_key in typed_parsed:
+            if not isinstance(parsed_key, str):
+                raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
+        validated: object = typed_parsed
+        return validated
+    return parsed
 
 
 def _reject_json_constant(value: str) -> object:
@@ -1790,7 +1827,7 @@ def _sqlite_timestamp(value: object) -> str:
 
 
 def _validate_source_revision(value: str) -> None:
-    if not isinstance(value, str) or not _SOURCE_REVISION.fullmatch(value):
+    if not _SOURCE_REVISION.fullmatch(value):
         raise PortableExportFailure("EXPORT_INTEGRITY_FAILED")
 
 
@@ -1833,7 +1870,7 @@ async def _read_source_revision(
 def _validate_evidence_metadata(project_id: str, metadata: EvidenceMetadata) -> None:
     if (
         metadata.project_scope != project_id
-        or not _SHA256.fullmatch(metadata.sha256)
+        or not SHA256.fullmatch(metadata.sha256)
         or metadata.size_bytes < 0
         or metadata.size_bytes > MAX_EVIDENCE_BYTES
         or metadata.content_type not in {"application/json", "text/plain"}
@@ -1889,8 +1926,11 @@ def _validate_project_name(value: str) -> None:
 
 
 def _mapping(value: object) -> Mapping[str, object]:
-    if not isinstance(value, Mapping) or any(not isinstance(key, str) for key in value):
+    if not isinstance(value, Mapping):
         raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
+    for raw_key in cast(Mapping[object, object], value):
+        if not isinstance(raw_key, str):
+            raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
     return cast(Mapping[str, object], value)
 
 
@@ -1944,7 +1984,7 @@ def _bool(value: object) -> bool:
 
 def _hex_digest(value: object) -> str:
     result = _text(value)
-    if not _SHA256.fullmatch(result):
+    if not SHA256.fullmatch(result):
         raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
     return result
 
@@ -1952,9 +1992,9 @@ def _hex_digest(value: object) -> str:
 def _digest_format(value: str) -> str:
     if _DIGEST.fullmatch(value):
         return value
-    if _SHA256.fullmatch(value):
+    if SHA256.fullmatch(value):
         return "sha256:" + value
-    if value.startswith("ls1_") and _SHA256.fullmatch(value[4:]):
+    if value.startswith("ls1_") and SHA256.fullmatch(value[4:]):
         return "sha256:" + value[4:]
     raise PortableExportFailure("EXPORT_UNSUPPORTED_STATE")
 

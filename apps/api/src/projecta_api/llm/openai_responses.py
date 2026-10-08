@@ -2,6 +2,7 @@
 
 import asyncio
 import json
+from collections.abc import Mapping, Sequence
 from typing import Any, cast
 
 import httpx
@@ -12,6 +13,7 @@ from openai import (
     AsyncOpenAI,
     OpenAIError,
     RateLimitError,
+    omit,
 )
 
 from projecta_api.extraction.contracts import ExtractionResponse, UsageMetadata
@@ -107,11 +109,8 @@ class OpenAIResponsesGateway:
             sort_keys=True,
             separators=(",", ":"),
         )
-        sampling: dict[str, float] = {}
-        if request.temperature is not None:
-            sampling["temperature"] = request.temperature
-        if request.top_p is not None:
-            sampling["top_p"] = request.top_p
+        temperature = request.temperature if request.temperature is not None else omit
+        top_p = request.top_p if request.top_p is not None else omit
         response: Any = await self._client.chat.completions.create(
             model=request.model_id,
             messages=[
@@ -127,7 +126,8 @@ class OpenAIResponsesGateway:
             max_tokens=request.max_output_tokens,
             extra_body={"thinking": {"type": "disabled"}},
             timeout=request.timeout_seconds,
-            **sampling,
+            temperature=temperature,
+            top_p=top_p,
         )
         choices = getattr(response, "choices", None)
         if not choices:
@@ -217,7 +217,7 @@ def _materialize_entity_evidence(payload: Any, source_text: str) -> Any:
                     diagnostic={
                         "category": category,
                         "candidateIndex": candidate_index,
-                        "payloadShape": _payload_shape(payload),
+                        "payloadShape": _payload_shape(cast(object, payload)),
                     },
                 )
             start = starts[occurrence - 1]
@@ -226,24 +226,26 @@ def _materialize_entity_evidence(payload: Any, source_text: str) -> Any:
     return typed_payload
 
 
-def _payload_shape(value: Any, *, depth: int = 0) -> object:
+def _payload_shape(value: object, *, depth: int = 0) -> object:
     """Return structure-only diagnostics; never persist provider string values."""
     if depth > 4:
         return {"kind": "truncated"}
     if isinstance(value, dict):
+        typed_value: Mapping[str, object] = cast(Mapping[str, object], value)
         return {
             "kind": "object",
-            "keys": sorted(str(key) for key in value),
+            "keys": sorted(str(key) for key in typed_value),
             "fields": {
                 str(key): _payload_shape(item, depth=depth + 1)
-                for key, item in value.items()
+                for key, item in typed_value.items()
             },
         }
     if isinstance(value, list):
+        typed_items: list[object] = cast(list[object], value)
         return {
             "kind": "array",
-            "length": len(value),
-            "items": [_payload_shape(item, depth=depth + 1) for item in value[:5]],
+            "length": len(typed_items),
+            "items": [_payload_shape(item, depth=depth + 1) for item in typed_items[:5]],
         }
     if isinstance(value, str):
         return {"kind": "string", "length": len(value)}
@@ -256,12 +258,20 @@ def _schema_diagnostic(payload: Any, output_text: str, error: Exception) -> dict
     errors_method = getattr(error, "errors", None)
     validation_errors: list[dict[str, object]] = []
     if callable(errors_method):
-        for item in errors_method()[:20]:
-            if isinstance(item, dict):
+        raw_items: object = errors_method()
+        items: list[object] = list(cast(Sequence[object], raw_items))[:20]
+        for raw_item in items:
+            if isinstance(raw_item, dict):
+                item: Mapping[str, object] = cast(Mapping[str, object], raw_item)
+                raw_loc: object = item.get("loc", ())
+                loc_sequence: Sequence[object] = (
+                    cast(Sequence[object], raw_loc) if isinstance(raw_loc, (list, tuple)) else ()
+                )
+                raw_type: object = item.get("type", "unknown")
                 validation_errors.append(
                     {
-                        "location": [str(part) for part in item.get("loc", ())],
-                        "type": str(item.get("type", "unknown")),
+                        "location": [str(part) for part in loc_sequence],
+                        "type": str(raw_type),
                     }
                 )
     return {

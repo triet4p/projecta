@@ -101,7 +101,7 @@ def _contains(start: int, end: int, *spans: EvidenceSpan) -> bool:
 def _trigger_ranges(raw_text: str, trigger: str | None, start: int, end: int) -> list[tuple[int, int]]:
     if trigger is None:
         return []
-    ranges = []
+    ranges: list[tuple[int, int]] = []
     cursor = start
     while cursor < end:
         found = raw_text.find(trigger, cursor, end)

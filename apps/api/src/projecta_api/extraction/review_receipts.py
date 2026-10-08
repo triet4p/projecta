@@ -214,7 +214,7 @@ class ReviewDecisionReceiptService:
             )
         )
         occurred_at = datetime.now(UTC)
-        receipt_digest = _receipt_digest(request_digest, occurred_at)
+        digest = receipt_digest(request_digest, occurred_at)
         write = _ReceiptWrite(
             project_id=request.project_id,
             actor_digest=_digest(actor.actor_id),
@@ -233,7 +233,7 @@ class ReviewDecisionReceiptService:
             request_digest=request_digest,
             receipt_id="rr1_" + request_digest.split(":", 1)[1],
             occurred_at=occurred_at,
-            receipt_digest=receipt_digest,
+            receipt_digest=digest,
         )
         result = self._repository.append(write)
         if result.replayed:
@@ -377,7 +377,7 @@ class PostgresReviewDecisionReceiptRepository:
                 if existing is not None:
                     if existing.request_digest != write.request_digest:
                         raise IdempotencyConflict("idempotency key belongs to a different request")
-                    return _AppendResult(_receipt_from_row(existing, "replayed"), True)
+                    return _AppendResult(receipt_from_row(existing, "replayed"), True)
                 rows = (
                     session.execute(
                         select(ReviewDecisionReceipt)
@@ -439,7 +439,7 @@ class PostgresReviewDecisionReceiptRepository:
                     .scalars()
                     .all()
                 )
-        return tuple(_receipt_from_row(row, "accepted") for row in rows)
+        return tuple(receipt_from_row(row, "accepted") for row in rows)
 
 
 def _validate_append(rows: Sequence[ReviewDecisionReceiptRecord], write: _ReceiptWrite) -> None:
@@ -484,7 +484,7 @@ def _receipt(
     )
 
 
-def _receipt_from_row(
+def receipt_from_row(
     row: ReviewDecisionReceipt, outcome: Literal["accepted", "replayed"]
 ) -> ReviewDecisionReceiptRecord:
     return ReviewDecisionReceiptRecord(
@@ -535,7 +535,7 @@ def _stable_json(value: object) -> bytes:
         "utf-8", "strict"
     )
 
-def _receipt_digest(request_digest: str, occurred_at: datetime) -> str:
+def receipt_digest(request_digest: str, occurred_at: datetime) -> str:
     if occurred_at.tzinfo is None or occurred_at.utcoffset() is None:
         raise ValueError("review receipt timestamp must be timezone-aware")
     return _digest_bytes(

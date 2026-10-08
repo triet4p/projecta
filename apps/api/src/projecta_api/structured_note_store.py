@@ -95,7 +95,7 @@ class StructuredNoteDraftStore:
                     handle,
                     project_id,
                     actor_id,
-                    _serialize(draft),
+                    serialize_note_draft(draft),
                     fingerprint,
                     key,
                     now,
@@ -154,7 +154,7 @@ class StructuredNoteDraftStore:
                 SET revision = revision + 1, payload = ?, fingerprint = ?, updated_at = ?
                 WHERE project_id = ? AND handle = ? AND revision = ? AND committed_note_id IS NULL
                 """,
-                (_serialize(draft), fingerprint, now, project_id, handle, expected_revision),
+                (serialize_note_draft(draft), fingerprint, now, project_id, handle, expected_revision),
             )
             updated = connection.execute(
                 "SELECT * FROM structured_note_drafts WHERE project_id = ? AND handle = ?",
@@ -186,7 +186,7 @@ class StructuredNoteDraftStore:
                 """,
                 (
                     note_id,
-                    _serialize(committed_payload),
+                    serialize_note_draft(committed_payload),
                     now,
                     project_id,
                     handle,
@@ -216,7 +216,7 @@ def _new_handle() -> str:
     return "draft-h-" + secrets.token_hex(12)
 
 
-def _serialize(draft: StructuredNoteDraft) -> str:
+def serialize_note_draft(draft: StructuredNoteDraft) -> str:
     return json.dumps(
         draft.model_dump(mode="json", by_alias=True), ensure_ascii=False, sort_keys=True
     )
@@ -224,7 +224,7 @@ def _serialize(draft: StructuredNoteDraft) -> str:
 
 def structured_note_draft_fingerprint(draft: StructuredNoteDraft) -> str:
     """Return the exact serialized fingerprint used for draft idempotency."""
-    return sha256(_serialize(draft).encode("utf-8")).hexdigest()
+    return sha256(serialize_note_draft(draft).encode("utf-8")).hexdigest()
 
 
 def _draft_from_row(row: sqlite3.Row) -> StoredStructuredNoteDraft:

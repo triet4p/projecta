@@ -83,8 +83,7 @@ class ManualApprovedCandidateMaterializationTest {
         var capture = new QuickNoteCaptureService(
                 gateway,
                 router,
-                (candidateProject, sources, candidates, provenance) ->
-                        new CandidateValidationResult(true, List.of()));
+                (candidateProject, sources, candidates, provenance) -> new CandidateValidationResult(true, List.of()));
         var rawText = "Plan \uD83D\uDE80 rollout";
         var captured = capture.capture(
                 project,
@@ -132,8 +131,8 @@ class ManualApprovedCandidateMaterializationTest {
                 "0.3.0",
                 "manual-entity-capture.v1",
                 "text-anchor.v1",
-                ApprovedAssertionMaterializationService.graphRevision(
-                        dataset.getNamedModel(router.route(project, GraphRole.ASSERTED).toString())),
+                ApprovedAssertionMaterializationService.graphRevision(dataset.getNamedModel(
+                        router.route(project, GraphRole.ASSERTED).toString())),
                 ACTIVITY,
                 "manual-plan-1");
         var bindingComment = ApprovedAssertionPlan.metadataComment(candidate);
@@ -145,7 +144,8 @@ class ManualApprovedCandidateMaterializationTest {
         assertThrows(IllegalStateException.class, () -> disabled.materialize(plan));
         assertEquals(
                 0,
-                dataset.getNamedModel(router.route(project, GraphRole.ASSERTED).toString()).size());
+                dataset.getNamedModel(router.route(project, GraphRole.ASSERTED).toString())
+                        .size());
 
         var result = service(dataset, router, MaterializationAuthorization.enabledForTest(), () -> {})
                 .materialize(plan);
@@ -153,11 +153,13 @@ class ManualApprovedCandidateMaterializationTest {
         assertEquals(plan.bodyDigest(), result.bodyDigest());
         assertTrue(result.materializationRevision().startsWith("sha256:"));
         // The asserted graph now holds the approved item derived from the real Note.
-        assertTrue(dataset.getNamedModel(router.route(project, GraphRole.ASSERTED).toString())
-                .containsResource(ResourceFactory.createResource(ASSERTED)));
+        assertTrue(
+                dataset.getNamedModel(router.route(project, GraphRole.ASSERTED).toString())
+                        .containsResource(ResourceFactory.createResource(ASSERTED)));
         assertEquals(
                 "asserted",
-                dataset.getNamedModel(router.route(project, GraphRole.CANDIDATES).toString())
+                dataset.getNamedModel(
+                                router.route(project, GraphRole.CANDIDATES).toString())
                         .getResource(candidateIri)
                         .getProperty(
                                 ResourceFactory.createProperty("https://w3id.org/projecta/ontology/candidateStatus"))
@@ -266,15 +268,19 @@ class ManualApprovedCandidateMaterializationTest {
 
     private static ApprovedAssertionPlan seed(Dataset dataset, GraphIriRouter router, String key, String label) {
         var plan = plan(key, label);
-        seedFixture(dataset, router, plan, ApprovedAssertionPlan.metadataComment(plan.candidates().getFirst()));
+        seedFixture(
+                dataset,
+                router,
+                plan,
+                ApprovedAssertionPlan.metadataComment(plan.candidates().getFirst()));
         return plan;
     }
 
     private static void seedFixture(
             Dataset dataset, GraphIriRouter router, ApprovedAssertionPlan plan, String bindingComment) {
         var seeded = plan.candidates().getFirst();
-        var candidates = dataset.getNamedModel(
-                router.route(new ProjectId(seeded.project()), GraphRole.CANDIDATES).toString());
+        var candidates = dataset.getNamedModel(router.route(new ProjectId(seeded.project()), GraphRole.CANDIDATES)
+                .toString());
         var candidate = candidates.createResource(seeded.candidateIri());
         var project = ResourceFactory.createResource("https://w3id.org/projecta/data/project/" + seeded.project());
         candidate.addProperty(RDF.type, ResourceFactory.createResource("https://w3id.org/projecta/ontology/Candidate"));
@@ -321,8 +327,7 @@ class ManualApprovedCandidateMaterializationTest {
     private static String sha256Hex(String value) throws Exception {
         return "sha256:"
                 + HexFormat.of()
-                        .formatHex(MessageDigest.getInstance("SHA-256")
-                                .digest(value.getBytes(StandardCharsets.UTF_8)));
+                        .formatHex(MessageDigest.getInstance("SHA-256").digest(value.getBytes(StandardCharsets.UTF_8)));
     }
 
     /** Executes service-authored SPARQL against the test dataset instead of a remote Fuseki. */

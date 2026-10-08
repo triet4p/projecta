@@ -13,8 +13,8 @@ from projecta_api.extraction.confirmed_entity_gate import RelationAuthorization
 from projecta_api.extraction.source_version import (
     SourceVersion,
     SourceVersionVerificationError,
-    _strict_utf8,
     create_source_version,
+    strict_utf8,
 )
 from projecta_api.extraction.text_anchor import (
     TextAnchor,
@@ -273,7 +273,7 @@ def _verified_canonical(source: SourceVersion | None, content: bytes | str | Non
     if source is None or content is None:
         raise RelationEvidenceSelectionError("SOURCE_MISSING")
     try:
-        original_bytes, decoded = _strict_utf8(content)
+        original_bytes, decoded = strict_utf8(content)
         canonical = decoded.replace("\r\n", "\n").replace("\r", "\n")
         rebuilt = create_source_version(
             project_id=source.project_id,

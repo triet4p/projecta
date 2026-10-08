@@ -69,11 +69,17 @@ public final class PortableProjectExportService {
         for (int index = 0; index < graphs.size(); index++) {
             graphIndexes.put(graphs.get(index), index);
         }
-        var values = String.join(" ", graphs.stream().map(graph -> "<" + graph + ">").toList());
+        var values =
+                String.join(" ", graphs.stream().map(graph -> "<" + graph + ">").toList());
         var orderedGraphValues = new StringBuilder();
         for (int index = 0; index < graphs.size(); index++) {
             if (index > 0) orderedGraphValues.append(' ');
-            orderedGraphValues.append('(').append(index).append(" <").append(graphs.get(index)).append(">)");
+            orderedGraphValues
+                    .append('(')
+                    .append(index)
+                    .append(" <")
+                    .append(graphs.get(index))
+                    .append(">)");
         }
         var query = "SELECT ?tripleCount ?g ?s ?p ?o WHERE { "
                 + "{ SELECT (COUNT(*) AS ?tripleCount) WHERE { VALUES ?countGraph { " + values
@@ -104,7 +110,9 @@ public final class PortableProjectExportService {
             writeGraphStart(writer, graphs.get(graphIndex));
             while (row != null) {
                 if (row.graph() == null) {
-                    if (row.subject() != null || row.predicate() != null || row.object() != null
+                    if (row.subject() != null
+                            || row.predicate() != null
+                            || row.object() != null
                             || declaredCount != 0) {
                         throw new IllegalStateException("semantic export contains an incomplete row");
                     }
@@ -112,8 +120,11 @@ public final class PortableProjectExportService {
                     continue;
                 }
                 Integer nextGraphIndex = graphIndexes.get(row.graph());
-                if (nextGraphIndex == null || nextGraphIndex < graphIndex
-                        || row.subject() == null || row.predicate() == null || row.object() == null
+                if (nextGraphIndex == null
+                        || nextGraphIndex < graphIndex
+                        || row.subject() == null
+                        || row.predicate() == null
+                        || row.object() == null
                         || row.tripleCount() != declaredCount) {
                     throw new IllegalStateException("semantic export row is outside the typed snapshot");
                 }
@@ -170,7 +181,8 @@ public final class PortableProjectExportService {
         private Node literalNode() {
             if (language != null && !language.isBlank()) return NodeFactory.createLiteralLang(value, language);
             if (datatype != null && !datatype.isBlank()) {
-                return NodeFactory.createLiteralDT(value, TypeMapper.getInstance().getSafeTypeByName(datatype));
+                return NodeFactory.createLiteralDT(
+                        value, TypeMapper.getInstance().getSafeTypeByName(datatype));
             }
             return NodeFactory.createLiteralString(value);
         }

@@ -21,7 +21,11 @@ class PortableProjectImportServiceTest {
     void validatesM4StateAndAppliesThenRollsBackFiveGraphPackage() {
         var router = new GraphIriRouter();
         var dataset = DatasetFactory.createTxnMem();
-        var server = FusekiServer.create().loopback(true).port(0).add("/projecta", dataset).build();
+        var server = FusekiServer.create()
+                .loopback(true)
+                .port(0)
+                .add("/projecta", dataset)
+                .build();
         try {
             server.start();
             var gateway = new FusekiGateway(
@@ -31,15 +35,18 @@ class PortableProjectImportServiceTest {
 
             var plainProject = new ProjectId("portable-import-rollback");
             var plainPackage = trig(router, plainProject, projectIdentity(plainProject), "");
-            var preview = importer.validate(
-                    plainProject, "Placeholder", PROJECT_NAME, input(plainPackage));
+            var preview = importer.validate(plainProject, "Placeholder", PROJECT_NAME, input(plainPackage));
             assertEquals("absent", preview.get("destinationState"));
             importer.apply(plainProject, "Placeholder", PROJECT_NAME, false, input(plainPackage));
-            assertEquals("populated", importer.validate(
-                    plainProject, "Placeholder", PROJECT_NAME, input(plainPackage)).get("destinationState"));
+            assertEquals(
+                    "populated",
+                    importer.validate(plainProject, "Placeholder", PROJECT_NAME, input(plainPackage))
+                            .get("destinationState"));
             importer.rollback(plainProject, "Placeholder", PROJECT_NAME, false, input(plainPackage));
-            assertEquals("absent", importer.validate(
-                    plainProject, "Placeholder", PROJECT_NAME, input(plainPackage)).get("destinationState"));
+            assertEquals(
+                    "absent",
+                    importer.validate(plainProject, "Placeholder", PROJECT_NAME, input(plainPackage))
+                            .get("destinationState"));
 
             var m4Project = new ProjectId("portable-import-m4");
             var task = PROJECT_BASE + m4Project.value() + "/task/t1";
@@ -49,8 +56,7 @@ class PortableProjectImportServiceTest {
                     + "<" + requirement + "> a <" + PROJECTA + "Requirement> .\n";
             var validInference = inference(m4Project, task, requirement, "source-r1", true);
             var m4Package = trig(router, m4Project, asserted, validInference);
-            var validPreview = importer.validate(
-                    m4Project, "Placeholder", PROJECT_NAME, input(m4Package));
+            var validPreview = importer.validate(m4Project, "Placeholder", PROJECT_NAME, input(m4Package));
             assertEquals("absent", validPreview.get("destinationState"));
 
             var unresolvedProject = new ProjectId("portable-import-unresolved");
@@ -65,14 +71,12 @@ class PortableProjectImportServiceTest {
                     inference(unresolvedProject, unresolvedTask, unresolvedRequirement, "source-r1", false));
             assertThrows(
                     IllegalArgumentException.class,
-                    () -> importer.validate(
-                            unresolvedProject, "Placeholder", PROJECT_NAME, input(unresolvedArchive)));
+                    () -> importer.validate(unresolvedProject, "Placeholder", PROJECT_NAME, input(unresolvedArchive)));
 
             var malformedProject = new ProjectId("portable-import-shacl");
             var malformedTask = PROJECT_BASE + malformedProject.value() + "/task/t1";
             var malformedRequirement = PROJECT_BASE + malformedProject.value() + "/requirement/r1";
-            var malformedInference = inference(
-                            malformedProject, malformedTask, malformedRequirement, "source-r1", true)
+            var malformedInference = inference(malformedProject, malformedTask, malformedRequirement, "source-r1", true)
                     .replace("<" + PROJECTA + "ruleVersion> \"1\" ;", "");
             var malformedArchive = trig(
                     router,
@@ -83,12 +87,10 @@ class PortableProjectImportServiceTest {
                     malformedInference);
             assertThrows(
                     IllegalArgumentException.class,
-                    () -> importer.validate(
-                            malformedProject, "Placeholder", PROJECT_NAME, input(malformedArchive)));
+                    () -> importer.validate(malformedProject, "Placeholder", PROJECT_NAME, input(malformedArchive)));
             var secretProject = new ProjectId("portable-import-secret");
             var secretSourceGraph = "<" + router.route(secretProject, GraphRole.SOURCES) + "> {\n}\n";
-            var secretPackage = trig(
-                            router, secretProject, projectIdentity(secretProject), "")
+            var secretPackage = trig(router, secretProject, projectIdentity(secretProject), "")
                     .replace(
                             secretSourceGraph,
                             "<" + router.route(secretProject, GraphRole.SOURCES) + "> {\n"
@@ -97,19 +99,16 @@ class PortableProjectImportServiceTest {
                                     + "}\n");
             assertThrows(
                     IllegalArgumentException.class,
-                    () -> importer.validate(
-                            secretProject, "Placeholder", PROJECT_NAME, input(secretPackage)));
+                    () -> importer.validate(secretProject, "Placeholder", PROJECT_NAME, input(secretPackage)));
             var unexpectedGraph = PROJECT_BASE + secretProject.value() + "/extra";
-            var alternateEmptyGraphPackage = trig(
-                            router, secretProject, projectIdentity(secretProject), "")
-                    + "GRAPH <" + unexpectedGraph + "> { }\n";
+            var alternateEmptyGraphPackage = trig(router, secretProject, projectIdentity(secretProject), "") + "GRAPH <"
+                    + unexpectedGraph + "> { }\n";
             assertThrows(
                     IllegalArgumentException.class,
                     () -> importer.validate(
                             secretProject, "Placeholder", PROJECT_NAME, input(alternateEmptyGraphPackage)));
-            var spacedEmptyGraphPackage = trig(
-                            router, secretProject, projectIdentity(secretProject), "")
-                    + "<" + unexpectedGraph + "> # graph labels may span lines\n{ }\n";
+            var spacedEmptyGraphPackage = trig(router, secretProject, projectIdentity(secretProject), "") + "<"
+                    + unexpectedGraph + "> # graph labels may span lines\n{ }\n";
             assertThrows(
                     IllegalArgumentException.class,
                     () -> importer.validate(

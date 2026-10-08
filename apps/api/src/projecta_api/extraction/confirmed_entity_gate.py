@@ -226,8 +226,8 @@ class InMemoryConfirmedEntityRegistry:
         expected_revision: str | None = None,
     ) -> EntityHandle:
         source = self._require_source(project_id, source)
-        if not isinstance(value, str) or not value.startswith(_HANDLE_PREFIX):
-            if isinstance(value, str) and value.startswith("eh"):
+        if not value.startswith(_HANDLE_PREFIX):
+            if value.startswith("eh"):
                 raise ConfirmedEntityGateError("TYPE_VERSION_MISMATCH")
             raise ConfirmedEntityGateError("MODEL_CREATED_ID")
         if len(value) != len(_HANDLE_PREFIX) + 64 or any(

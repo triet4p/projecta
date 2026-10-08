@@ -482,8 +482,9 @@ def _summarize(
     workflow_records: list[WorkflowCostRecord] = []
     for workflow_digest, events in sorted(grouped.items()):
         kinds = {str(row["workflow_kind"]) for row in events}
-        if len(kinds) != 1:
+        if len(kinds) != 1 or next(iter(kinds)) not in {"entity", "relation"}:
             raise ValueError("workflow kind changed within one telemetry scope")
+        kind: WorkflowKind = cast(WorkflowKind, next(iter(kinds)))
         event_types = {str(row["event_type"]) for row in events}
         attempts = sum(
             int(row["local_inference_units"])
@@ -510,7 +511,7 @@ def _summarize(
         workflow_records.append(
             WorkflowCostRecord(
                 workflowDigest=workflow_digest,
-                workflowKind=next(iter(kinds)),
+                workflowKind=kind,
                 workflowMode="mixed" if manual and local else "local" if local else "manual",
                 modelUsage="local-attempted" if attempts else "none",
                 localRequestCount=requests,

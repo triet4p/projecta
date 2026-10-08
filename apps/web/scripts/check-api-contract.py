@@ -14,7 +14,12 @@ os.environ.setdefault("PROJECTA_LLM_TYPE", "openai-response")
 os.environ.setdefault("PROJECTA_LLM_BASE_URL", "https://provider.example")
 os.environ.setdefault("PROJECTA_LLM_API_KEY", "contract-test-not-a-secret")
 os.environ.setdefault("PROJECTA_LLM_MODEL", "contract-test-model")
-
+# The drift check only reads the OpenAPI route table; it must never create
+# host evidence directories. Point the default evidence root at a
+# throwaway temp dir so CI runners without /var/lib/projecta stay read-only.
+os.environ.setdefault(
+    "PROJECTA_EVIDENCE_ROOT", os.path.join(os.environ.get("RUNNER_TEMP", "/tmp"), "projecta-api-drift")
+)
 from projecta_api.main import app
 
 SNAPSHOT = ROOT / "docs" / "architecture" / "application-api.sprint7.openapi.json"

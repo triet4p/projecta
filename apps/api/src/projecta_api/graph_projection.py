@@ -637,7 +637,10 @@ def _review_reasons(value: object) -> list[str]:
         "VALIDATION_REQUIRED",
         "AMBIGUOUS_RELATION",
     }
-    return [item if isinstance(item, str) and item in allowed else "UNSPECIFIED" for item in value]
+    reasons: list[str] = []
+    for raw_item in cast(list[object], value):
+        reasons.append(raw_item if isinstance(raw_item, str) and raw_item in allowed else "UNSPECIFIED")
+    return reasons
 
 
 def _review_proposal(value: object) -> dict[str, str | None] | None:

@@ -121,7 +121,7 @@ try {
         }
 
         Save-Environment
-        Invoke-Gate "Release-contract unit tests" "uv" @("run", "--project", "apps/api", "python", "-m", "unittest", "discover", "-s", "scripts/tests", "-p", "test_*.py")
+        Invoke-Gate "Release-contract unit tests" "uv" @("run", "--project", "apps/api", "--with", "jsonschema", "python", "-m", "unittest", "discover", "-s", "scripts/tests", "-p", "test_*.py")
         Invoke-Gate "API Ruff" "uv" @("run", "ruff", "check", ".") $apiRoot
         Invoke-Gate "API Pyright" "uv" @("run", "pyright") $apiRoot
         Invoke-Gate "API full tests" "uv" @("run", "pytest", "-q") $apiRoot

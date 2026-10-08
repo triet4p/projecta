@@ -1,7 +1,6 @@
 package org.projecta.semanticcore;
 
 import org.apache.jena.query.Dataset;
-import org.apache.jena.rdf.model.ModelFactory;
 
 /**
  * Test-only composition for the S13-02 connected slice: applies the human-approval lifecycle
@@ -18,8 +17,8 @@ final class ManualApprovedReviewBinding {
     private final ApprovedCandidateBindingService delegate;
 
     ManualApprovedReviewBinding(Dataset dataset, GraphIriRouter router) {
-        this.delegate = new ApprovedCandidateBindingService(
-                dataset, router, MaterializationAuthorization.enabledForTest());
+        this.delegate =
+                new ApprovedCandidateBindingService(dataset, router, MaterializationAuthorization.enabledForTest());
     }
 
     /**
@@ -30,8 +29,7 @@ final class ManualApprovedReviewBinding {
      * @param bindingComment exact {@code projecta-approved-candidate/v1|...} comment
      * @param ontologyVersion released manual ontology version, rechecked against the row
      */
-    void applyConfirmedBinding(
-            ProjectId project, String candidateIri, String bindingComment, String ontologyVersion) {
+    void applyConfirmedBinding(ProjectId project, String candidateIri, String bindingComment, String ontologyVersion) {
         delegate.applyConfirmedBinding(project, candidateIri, bindingComment, ontologyVersion);
     }
 

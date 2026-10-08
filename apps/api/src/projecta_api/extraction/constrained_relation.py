@@ -9,6 +9,7 @@ from typing import Final, Literal, cast
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from projecta_api.extraction.confirmed_entity_gate import EntityHandle, RelationAuthorization
+from projecta_api.extraction.contracts import RelationPredicate
 from projecta_api.extraction.relation_evidence_selection import RelationEvidenceSelection
 from projecta_api.extraction.source_version import SourceVersion
 
@@ -56,10 +57,10 @@ _PREDICATE_TYPES: dict[str, tuple[frozenset[str], frozenset[str]]] = {
     "constrainedBy": (frozenset({"Requirement", "Decision", "Task"}), frozenset({"Constraint"})),
 }
 
-def allowed_relation_predicates(source_type: str, target_type: str) -> list[str]:
+def allowed_relation_predicates(source_type: str, target_type: str) -> list[RelationPredicate]:
     """Return predicates whose server-owned direction matrix accepts these endpoint types."""
     return [
-        predicate
+        cast(RelationPredicate, predicate)
         for predicate, (source_types, target_types) in _PREDICATE_TYPES.items()
         if source_type in source_types and target_type in target_types
     ]

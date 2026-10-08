@@ -27,12 +27,14 @@ class PortableProjectExportServiceTest {
         try {
             dataset.getNamedModel(router.route(project, GraphRole.SOURCES).toString())
                     .add(
-                            ResourceFactory.createResource("https://w3id.org/projecta/data/project/ecommerce-checkout/note/n1"),
+                            ResourceFactory.createResource(
+                                    "https://w3id.org/projecta/data/project/ecommerce-checkout/note/n1"),
                             ResourceFactory.createProperty(PROJECTA + "exportMarker"),
                             ResourceFactory.createStringLiteral("source marker"));
             dataset.getNamedModel(router.route(project, GraphRole.CANDIDATES).toString())
                     .add(
-                            ResourceFactory.createResource("https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/c1"),
+                            ResourceFactory.createResource(
+                                    "https://w3id.org/projecta/data/project/ecommerce-checkout/candidate/c1"),
                             ResourceFactory.createProperty(PROJECTA + "exportMarker"),
                             ResourceFactory.createStringLiteral("candidate marker"));
             dataset.commit();
@@ -40,16 +42,19 @@ class PortableProjectExportServiceTest {
             dataset.end();
         }
 
-        var server = FusekiServer.create().loopback(true).port(0).add("/projecta", dataset).build();
+        var server = FusekiServer.create()
+                .loopback(true)
+                .port(0)
+                .add("/projecta", dataset)
+                .build();
         try {
             server.start();
             var gateway = new FusekiGateway(
-                    HttpClient.newHttpClient(),
-                    URI.create("http://127.0.0.1:" + server.getPort() + "/projecta"));
+                    HttpClient.newHttpClient(), URI.create("http://127.0.0.1:" + server.getPort() + "/projecta"));
             var output = new ByteArrayOutputStream();
 
-            var tripleCount = new PortableProjectExportService(gateway, router)
-                    .writeTriG(project, output, ignored -> {});
+            var tripleCount =
+                    new PortableProjectExportService(gateway, router).writeTriG(project, output, ignored -> {});
 
             assertEquals(2L, tripleCount);
             var trig = output.toString(StandardCharsets.UTF_8);

@@ -1,7 +1,6 @@
 package org.projecta.semanticcore;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -29,8 +28,6 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.update.UpdateExecutionFactory;
 import org.apache.jena.update.UpdateFactory;
-import org.apache.jena.vocabulary.RDF;
-import org.apache.jena.vocabulary.RDFS;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -67,11 +64,10 @@ class ManualApprovedCrossServiceTest {
         var capture = new QuickNoteCaptureService(
                 gateway,
                 router,
-                (candidateProject, sources, candidates, provenance) ->
-                        new CandidateValidationResult(true, List.of()));
+                (candidateProject, sources, candidates, provenance) -> new CandidateValidationResult(true, List.of()));
         var queries = new FusekiQueryService(gateway, router, null);
-        var binding = new ApprovedCandidateBindingService(
-                dataset, router, MaterializationAuthorization.enabledForTest());
+        var binding =
+                new ApprovedCandidateBindingService(dataset, router, MaterializationAuthorization.enabledForTest());
         var core = new TestCoreBoundary(dataset, router, gateway, capture, queries, binding);
         var server = core.start();
         try {
@@ -84,8 +80,7 @@ class ManualApprovedCrossServiceTest {
                     "rawText",
                     RAW_TEXT,
                     "segments",
-                    List.of(Map.of(
-                            "type", "task", "startOffset", 0, "endOffset", 14, "text", RAW_TEXT))));
+                    List.of(Map.of("type", "task", "startOffset", 0, "endOffset", 14, "text", RAW_TEXT))));
             var captured = post(client, base + "/test/capture", captureBody);
             assertEquals(201, captured.statusCode());
             var capturedJson = JSON.readTree(captured.body());
@@ -121,11 +116,8 @@ class ManualApprovedCrossServiceTest {
             planPayload.put("constrainedRelationContractVersion", "manual-entity-capture.v1");
             planPayload.put("evidenceSelectionVersion", "text-anchor.v1");
             planPayload.put(
-                    "assertedIri",
-                    "https://w3id.org/projecta/data/project/project-alpha/requirement/req-manual-1");
-            planPayload.put(
-                    "reviewerIri",
-                    "https://w3id.org/projecta/data/project/project-alpha/person/reviewer-1");
+                    "assertedIri", "https://w3id.org/projecta/data/project/project-alpha/requirement/req-manual-1");
+            planPayload.put("reviewerIri", "https://w3id.org/projecta/data/project/project-alpha/person/reviewer-1");
             planPayload.put("label", RAW_TEXT);
             planPayload.put("validFrom", "2026-09-27");
             planPayload.put("expectedAssertedGraphRevision", expectedRevision.body());
@@ -135,31 +127,32 @@ class ManualApprovedCrossServiceTest {
             planPayload.put("idempotencyKey", "manual-plan-1");
 
             // 4. Disabled default fails closed with zero asserted writes (production lock).
-            var blocked = post(client, base + "/test/materialize?authorization=disabled",
-                    JSON.writeValueAsString(planPayload));
+            var blocked = post(
+                    client, base + "/test/materialize?authorization=disabled", JSON.writeValueAsString(planPayload));
             assertEquals(423, blocked.statusCode());
-            assertEquals(
-                    "0",
-                    get(client, base + "/test/asserted-size").body());
+            assertEquals("0", get(client, base + "/test/asserted-size").body());
 
             // 5. Test-only authorization transacts the SAME candidate into the asserted graph.
-            var accepted = post(client, base + "/test/materialize?authorization=test",
-                    JSON.writeValueAsString(planPayload));
+            var accepted =
+                    post(client, base + "/test/materialize?authorization=test", JSON.writeValueAsString(planPayload));
             assertEquals(200, accepted.statusCode());
             var acceptedJson = JSON.readTree(accepted.body());
             assertEquals("accepted", acceptedJson.path("outcome").asText());
             assertTrue(acceptedJson.path("bodyDigest").asText().startsWith("sha256:"));
             assertTrue(acceptedJson.path("materializationRevision").asText().startsWith("sha256:"));
-            assertTrue(get(client, base + "/test/asserted-contains?iri="
-                            + "https://w3id.org/projecta/data/project/project-alpha/requirement/req-manual-1")
+            assertTrue(get(
+                            client,
+                            base + "/test/asserted-contains?iri="
+                                    + "https://w3id.org/projecta/data/project/project-alpha/requirement/req-manual-1")
                     .body()
                     .equals("true"));
 
             // 6. Exact replay is idempotent: same revision, no duplicate asserted writes.
-            var replay = post(client, base + "/test/materialize?authorization=test",
-                    JSON.writeValueAsString(planPayload));
+            var replay =
+                    post(client, base + "/test/materialize?authorization=test", JSON.writeValueAsString(planPayload));
             assertEquals(200, replay.statusCode());
-            assertEquals("replayed", JSON.readTree(replay.body()).path("outcome").asText());
+            assertEquals(
+                    "replayed", JSON.readTree(replay.body()).path("outcome").asText());
             assertEquals(
                     acceptedJson.path("materializationRevision").asText(),
                     JSON.readTree(replay.body()).path("materializationRevision").asText());
@@ -168,20 +161,19 @@ class ManualApprovedCrossServiceTest {
             // transactionally (423 maps IllegalStateException, 422 maps
             // IllegalArgumentException; both leave the asserted graph untouched).
             var tampered = new HashMap<>(planPayload);
-            tampered.put("reviewReceiptDigest",
-                    "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+            tampered.put(
+                    "reviewReceiptDigest", "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
             tampered.put("idempotencyKey", "manual-plan-tampered");
-            var tamperedResponse = post(client, base + "/test/materialize?authorization=test",
-                    JSON.writeValueAsString(tampered));
+            var tamperedResponse =
+                    post(client, base + "/test/materialize?authorization=test", JSON.writeValueAsString(tampered));
             assertTrue(
                     tamperedResponse.statusCode() == 422 || tamperedResponse.statusCode() == 423,
                     "tampered binding must fail closed, got " + tamperedResponse.statusCode());
             var crossProject = new HashMap<>(planPayload);
-            crossProject.put("project",
-                    "project-beta");
+            crossProject.put("project", "project-beta");
             crossProject.put("idempotencyKey", "manual-plan-cross");
-            var crossResponse = post(client, base + "/test/materialize?authorization=test",
-                    JSON.writeValueAsString(crossProject));
+            var crossResponse =
+                    post(client, base + "/test/materialize?authorization=test", JSON.writeValueAsString(crossProject));
             assertTrue(
                     crossResponse.statusCode() == 422 || crossResponse.statusCode() == 423,
                     "cross-project plan must fail closed, got " + crossResponse.statusCode());
@@ -208,8 +200,7 @@ class ManualApprovedCrossServiceTest {
     private static String sha256Hex(String value) throws Exception {
         return "sha256:"
                 + HexFormat.of()
-                        .formatHex(MessageDigest.getInstance("SHA-256")
-                                .digest(value.getBytes(StandardCharsets.UTF_8)));
+                        .formatHex(MessageDigest.getInstance("SHA-256").digest(value.getBytes(StandardCharsets.UTF_8)));
     }
 
     /**
@@ -257,9 +248,15 @@ class ManualApprovedCrossServiceTest {
                             ACTOR,
                             "cross-service-" + System.nanoTime(),
                             new QuickNoteCaptureService.CaptureRequest(
-                                    body.path("title").asText(), body.path("rawText").asText(), segments));
-                    respond(exchange, 201, JSON.writeValueAsString(Map.of(
-                            "candidateId", result.candidates().getFirst().id())));
+                                    body.path("title").asText(),
+                                    body.path("rawText").asText(),
+                                    segments));
+                    respond(
+                            exchange,
+                            201,
+                            JSON.writeValueAsString(Map.of(
+                                    "candidateId",
+                                    result.candidates().getFirst().id())));
                 } catch (IllegalArgumentException failure) {
                     respond(exchange, 422, failure.getMessage());
                 } catch (RuntimeException failure) {
@@ -277,8 +274,7 @@ class ManualApprovedCrossServiceTest {
             });
             server.createContext("/test/source-context/", exchange -> {
                 try {
-                    var candidateId =
-                            exchange.getRequestURI().getPath().substring("/test/source-context/".length());
+                    var candidateId = exchange.getRequestURI().getPath().substring("/test/source-context/".length());
                     var context = queries.manualCaptureSourceContext(new ProjectId(PROJECT), candidateId);
                     var rawText = String.valueOf(context.get("rawText"));
                     var payload = new HashMap<>(context);
@@ -302,8 +298,8 @@ class ManualApprovedCrossServiceTest {
             server.createContext("/test/asserted-revision", exchange -> {
                 try {
                     var project = new ProjectId(PROJECT);
-                    var asserted =
-                            dataset.getNamedModel(router.route(project, GraphRole.ASSERTED).toString());
+                    var asserted = dataset.getNamedModel(
+                            router.route(project, GraphRole.ASSERTED).toString());
                     respond(exchange, 200, ApprovedAssertionMaterializationService.graphRevision(asserted));
                 } catch (RuntimeException failure) {
                     respond(exchange, 500, failure.getMessage());
@@ -312,8 +308,8 @@ class ManualApprovedCrossServiceTest {
             server.createContext("/test/asserted-size", exchange -> {
                 try {
                     var project = new ProjectId(PROJECT);
-                    var asserted =
-                            dataset.getNamedModel(router.route(project, GraphRole.ASSERTED).toString());
+                    var asserted = dataset.getNamedModel(
+                            router.route(project, GraphRole.ASSERTED).toString());
                     respond(exchange, 200, String.valueOf(asserted.size()));
                 } catch (RuntimeException failure) {
                     respond(exchange, 500, failure.getMessage());
@@ -324,8 +320,8 @@ class ManualApprovedCrossServiceTest {
                     var project = new ProjectId(PROJECT);
                     var query = exchange.getRequestURI().getQuery();
                     var iri = query.substring(query.indexOf("iri=") + 4);
-                    var asserted =
-                            dataset.getNamedModel(router.route(project, GraphRole.ASSERTED).toString());
+                    var asserted = dataset.getNamedModel(
+                            router.route(project, GraphRole.ASSERTED).toString());
                     respond(
                             exchange,
                             200,
@@ -360,16 +356,18 @@ class ManualApprovedCrossServiceTest {
                                 ApprovedAssertionPlan.metadataComment(candidate),
                                 candidate.ontologyVersion());
                     } catch (IllegalStateException alreadyBound) {
-                        if (!"candidate is not validated for review binding"
-                                .equals(alreadyBound.getMessage())) {
+                        if (!"candidate is not validated for review binding".equals(alreadyBound.getMessage())) {
                             throw alreadyBound;
                         }
                     }
                     var result = service.materialize(plan);
-                    respond(exchange, 200, JSON.writeValueAsString(Map.of(
-                            "outcome", result.outcome(),
-                            "bodyDigest", result.bodyDigest(),
-                            "materializationRevision", result.materializationRevision())));
+                    respond(
+                            exchange,
+                            200,
+                            JSON.writeValueAsString(Map.of(
+                                    "outcome", result.outcome(),
+                                    "bodyDigest", result.bodyDigest(),
+                                    "materializationRevision", result.materializationRevision())));
                 } catch (IllegalStateException failure) {
                     respond(exchange, 423, failure.getMessage());
                 } catch (IllegalArgumentException failure) {
@@ -383,15 +381,18 @@ class ManualApprovedCrossServiceTest {
         private ApprovedAssertionMaterializationService service(MaterializationAuthorization authorization) {
             var shapes = ModelFactory.createDefaultModel();
             return new ApprovedAssertionMaterializationService(
-                    dataset, router, new CandidateValidationService(dataset, router, shapes), shapes, authorization,
+                    dataset,
+                    router,
+                    new CandidateValidationService(dataset, router, shapes),
+                    shapes,
+                    authorization,
                     () -> {});
         }
 
         private ApprovedAssertionPlan planFromPayload(JsonNode payload) {
             var candidates = new ArrayList<ApprovedAssertionPlan.ApprovedCandidate>();
-            for (JsonNode row : payload.path("candidates").isMissingNode()
-                    ? List.of(payload)
-                    : payload.path("candidates")) {
+            for (JsonNode row :
+                    payload.path("candidates").isMissingNode() ? List.of(payload) : payload.path("candidates")) {
                 candidates.add(new ApprovedAssertionPlan.ApprovedCandidate(
                         text(row, "project"),
                         text(row, "candidateIri"),
@@ -421,11 +422,26 @@ class ManualApprovedCrossServiceTest {
                     text(payload, "idempotencyKey"));
             // Reject unknown/extra fields and digest mismatches exactly like the API wire parser.
             var known = new java.util.HashSet<>(List.of(
-                    "contractVersion", "project", "candidateIri", "candidateRevision", "sourceVersionId",
-                    "sourceVersionRevision", "reviewReceiptDigest", "evidenceDigest", "ontologyVersion",
-                    "constrainedRelationContractVersion", "evidenceSelectionVersion", "assertedIri",
-                    "reviewerIri", "label", "validFrom", "expectedAssertedGraphRevision",
-                    "provenanceActivityIri", "idempotencyKey", "bodyDigest", "candidates"));
+                    "contractVersion",
+                    "project",
+                    "candidateIri",
+                    "candidateRevision",
+                    "sourceVersionId",
+                    "sourceVersionRevision",
+                    "reviewReceiptDigest",
+                    "evidenceDigest",
+                    "ontologyVersion",
+                    "constrainedRelationContractVersion",
+                    "evidenceSelectionVersion",
+                    "assertedIri",
+                    "reviewerIri",
+                    "label",
+                    "validFrom",
+                    "expectedAssertedGraphRevision",
+                    "provenanceActivityIri",
+                    "idempotencyKey",
+                    "bodyDigest",
+                    "candidates"));
             var fields = new java.util.HashSet<String>();
             payload.fieldNames().forEachRemaining(fields::add);
             fields.removeAll(known);
@@ -574,7 +590,8 @@ class ManualApprovedCrossServiceTest {
                             JSON.writeValueAsString(Map.of(
                                     "note",
                                     Map.of("id", result.noteId(), "recordedAt", result.recordedAt()),
-                                    "candidates", candidates)));
+                                    "candidates",
+                                    candidates)));
                 } catch (IllegalArgumentException failure) {
                     respond(exchange, 422, failure.getMessage());
                 } catch (RuntimeException failure) {
@@ -588,8 +605,7 @@ class ManualApprovedCrossServiceTest {
                     var path = exchange.getRequestURI().getPath();
                     if (path.endsWith("/candidates") && "GET".equalsIgnoreCase(exchange.getRequestMethod())) {
                         requirePathProject(path, trusted.project());
-                        var queue = queries.candidates(
-                                new ProjectId(trusted.project()), boundedLimit(exchange));
+                        var queue = queries.candidates(new ProjectId(trusted.project()), boundedLimit(exchange));
                         respond(exchange, 200, JSON.writeValueAsString(queue));
                         return;
                     }
@@ -617,10 +633,14 @@ class ManualApprovedCrossServiceTest {
                                 exchange,
                                 200,
                                 JSON.writeValueAsString(Map.of(
-                                        "requestId", "single-pipe",
-                                        "candidateId", candidateId,
-                                        "conforms", true,
-                                        "violations", List.of())));
+                                        "requestId",
+                                        "single-pipe",
+                                        "candidateId",
+                                        candidateId,
+                                        "conforms",
+                                        true,
+                                        "violations",
+                                        List.of())));
                         return;
                     }
                     if (path.endsWith("/confirmations") && "POST".equalsIgnoreCase(exchange.getRequestMethod())) {
@@ -664,16 +684,14 @@ class ManualApprovedCrossServiceTest {
                     (candidateProject, sources, candidates, provenance) ->
                             new CandidateValidationResult(true, List.of()));
             var queries = new FusekiQueryService(gateway, router, null);
-            var binding = new ApprovedCandidateBindingService(
-                    dataset, router, MaterializationAuthorization.enabledForTest());
-            var server = new SinglePipeCoreBoundary(dataset, router, gateway, capture, queries, binding)
-                    .start();
+            var binding =
+                    new ApprovedCandidateBindingService(dataset, router, MaterializationAuthorization.enabledForTest());
+            var server = new SinglePipeCoreBoundary(dataset, router, gateway, capture, queries, binding).start();
             System.out.println("S13_SINGLE_PIPE_PORT=" + server.getAddress().getPort());
             System.out.flush();
             // Block until the orchestrating test kills this process.
             Thread.currentThread().join();
         }
-
 
         private record Trusted(String project, String actor) {}
 
@@ -732,7 +750,6 @@ class ManualApprovedCrossServiceTest {
             TestCoreBoundary.respond(exchange, status, body);
         }
     }
-
 
     /** Executes service-authored SPARQL against the test dataset instead of a remote Fuseki. */
     private static final class InDatasetGateway extends FusekiGateway {

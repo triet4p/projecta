@@ -8,6 +8,7 @@ from typing import Literal, Protocol, cast
 from projecta_api.configuration.models import LLMConfigurationSnapshot
 from projecta_api.configuration.ports import RuntimeConfigurationProvider
 from projecta_api.context import TrustedRequestContext
+from projecta_api.extraction.authoring_telemetry import AuthoringTelemetryService
 from projecta_api.extraction.confirmed_entity_gate import (
     ConfirmedEntityRegistry,
     EntityHandle,
@@ -25,7 +26,6 @@ from projecta_api.extraction.contracts import (
     ExtractionResponse,
     UsageMetadata,
 )
-from projecta_api.extraction.authoring_telemetry import AuthoringTelemetryService
 from projecta_api.extraction.correction_burden import (
     CorrectionBurdenEventRecord,
     CorrectionBurdenRequest,

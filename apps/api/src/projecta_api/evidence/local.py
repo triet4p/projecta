@@ -11,10 +11,10 @@ import re
 import shutil
 import tempfile
 import uuid
-from collections.abc import AsyncIterable, AsyncIterator, Mapping
+from collections.abc import AsyncIterable, AsyncIterator, Callable, Mapping
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 from projecta_api.evidence.ports import (
     EvidenceError,
@@ -37,6 +37,21 @@ _CHUNK_BYTES = 64 * 1024
 def _safe_project(value: str) -> bool:
     return bool(_PROJECT.fullmatch(value))
 
+
+def _bounded_text(value: object, maximum: int) -> str:
+    if not isinstance(value, str) or not value or len(value) > maximum or "\x00" in value:
+        raise EvidenceError("EVIDENCE_METADATA_INVALID")
+    return value
+
+
+_IsJunction = Callable[[Path], bool]
+
+
+def _is_junction() -> _IsJunction:
+    probed: object = getattr(os.path, "isjunction", None)
+    if callable(probed):
+        return cast(_IsJunction, probed)
+    return lambda _path: False
 
 class LocalEvidenceStore:
     """Write immutable objects below a dedicated root, never from a client key."""
@@ -217,20 +232,24 @@ class LocalEvidenceStore:
         content_path: Path,
     ) -> None:
         try:
-            evidence_reference = str(reference["evidenceReference"])
-            digest = str(reference["sha256"])
-            size_bytes = int(reference["sizeBytes"])
-            content_type = str(reference["contentType"])
-            created_at = datetime.fromisoformat(str(reference["createdAt"]))
-            retain_until_value = reference["retainUntil"]
+            typed_reference = reference
+            evidence_reference = _bounded_text(typed_reference["evidenceReference"], 32)
+            digest = _bounded_text(typed_reference["sha256"], 64)
+            size_value: object = typed_reference["sizeBytes"]
+            if type(size_value) is not int or size_value < 0:
+                raise EvidenceError("EVIDENCE_METADATA_INVALID")
+            size_bytes: int = size_value
+            content_type = _bounded_text(typed_reference["contentType"], 64)
+            created_at = datetime.fromisoformat(_bounded_text(typed_reference["createdAt"], 40))
+            retain_until_value: object = typed_reference["retainUntil"]
             retain_until = (
-                datetime.fromisoformat(str(retain_until_value))
+                datetime.fromisoformat(_bounded_text(retain_until_value, 40))
                 if retain_until_value is not None
                 else None
             )
-            retention_class = str(reference["retentionClass"])
-            source_reference = str(reference["sourceReference"])
-            contract_version = str(reference["contractVersion"])
+            retention_class = _bounded_text(typed_reference["retentionClass"], 64)
+            source_reference = _bounded_text(typed_reference["sourceReference"], 512)
+            contract_version = _bounded_text(typed_reference["contractVersion"], 64)
         except (KeyError, TypeError, ValueError) as error:
             raise EvidenceError("EVIDENCE_METADATA_INVALID") from error
         if (
@@ -308,7 +327,7 @@ class LocalEvidenceStore:
             await asyncio.to_thread(self._remove_project_for_import_sync, project_scope)
 
     def _remove_project_for_import_sync(self, project_scope: str) -> None:
-        is_junction = getattr(os.path, "isjunction", lambda _path: False)
+        is_junction = _is_junction()
         for directory in (
             self._root / "references" / project_scope,
             self._root / "objects" / project_scope,
@@ -322,7 +341,7 @@ class LocalEvidenceStore:
 
     def _list_project_sync(self, project_scope: str) -> tuple[EvidenceMetadata, ...]:
         directory = self._root / "references" / project_scope
-        is_junction = getattr(os.path, "isjunction", lambda _path: False)
+        is_junction = _is_junction()
         if is_junction(directory) or directory.is_symlink():
             raise EvidenceError("EVIDENCE_INTEGRITY_FAILED")
         if not directory.exists():
@@ -344,18 +363,20 @@ class LocalEvidenceStore:
                 raise EvidenceError("EVIDENCE_INTEGRITY_FAILED")
             references.add(evidence_reference)
             try:
-                value = json.loads(path.read_text(encoding="utf-8"))
+                raw_value: object = json.loads(path.read_text(encoding="utf-8"))
             except (OSError, UnicodeError, TypeError, ValueError, json.JSONDecodeError) as error:
                 raise EvidenceError("EVIDENCE_INTEGRITY_FAILED") from error
+            if not isinstance(raw_value, dict):
+                raise EvidenceError("EVIDENCE_INTEGRITY_FAILED")
+            typed_value: Mapping[str, object] = cast(Mapping[str, object], raw_value)
             if (
-                not isinstance(value, dict)
-                or set(value) != {"sha256"}
-                or not isinstance(value["sha256"], str)
-                or not _SHA256.fullmatch(value["sha256"])
+                set(typed_value) != {"sha256"}
+                or not isinstance(typed_value["sha256"], str)
+                or not _SHA256.fullmatch(typed_value["sha256"])
             ):
                 raise EvidenceError("EVIDENCE_INTEGRITY_FAILED")
             metadata = self._read_metadata(
-                self._object_dir(project_scope, value["sha256"]) / "metadata.json",
+                self._object_dir(project_scope, typed_value["sha256"]) / "metadata.json",
                 project_scope,
             )
             if metadata.evidence_reference != evidence_reference:

@@ -1,7 +1,6 @@
 """Finite HTTP client for the Semantic Core; no Fuseki access exists here."""
 
 import asyncio
-import hashlib
 import os
 from collections.abc import Mapping
 from pathlib import Path
@@ -255,14 +254,14 @@ class HttpSemanticCoreClient:
         )
 
     async def project_graph_counts(
-        self, actor: TrustedActorContext, project_id: str
+        self, context: TrustedActorContext, project_id: str
     ) -> Mapping[str, object]:
-        return await self._project_data_request(actor, project_id, "counts", "GET")
+        return await self._project_data_request(context, project_id, "counts", "GET")
 
     async def delete_project_graphs(
-        self, actor: TrustedActorContext, project_id: str
+        self, context: TrustedActorContext, project_id: str
     ) -> Mapping[str, object]:
-        return await self._project_data_request(actor, project_id, "delete", "POST")
+        return await self._project_data_request(context, project_id, "delete", "POST")
 
     async def _project_data_request(
         self, actor: TrustedActorContext, project_id: str, action: str, method: str

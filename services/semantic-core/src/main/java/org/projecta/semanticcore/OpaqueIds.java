@@ -25,8 +25,7 @@ public final class OpaqueIds {
 
     public static String opaqueHandle(String value) {
         try {
-            var digest = MessageDigest.getInstance("SHA-256")
-                    .digest(value.getBytes(StandardCharsets.UTF_8));
+            var digest = MessageDigest.getInstance("SHA-256").digest(value.getBytes(StandardCharsets.UTF_8));
             return HexFormat.of().formatHex(digest, 0, 12);
         } catch (NoSuchAlgorithmException exception) {
             throw new IllegalStateException("opaque handle hashing is unavailable", exception);

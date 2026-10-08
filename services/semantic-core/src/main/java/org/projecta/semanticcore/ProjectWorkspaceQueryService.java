@@ -96,8 +96,10 @@ public final class ProjectWorkspaceQueryService {
                 + PROJECTA + type + "> ; <" + RDFS + "label> ?label . } } ORDER BY ?item LIMIT " + limit));
         return result.stream()
                 .map(row -> Map.of(
-                        "handle", "node-h-" + OpaqueIds.opaqueHandle(required(row, "item")),
-                        "label", required(row, "label")))
+                        "handle",
+                        "node-h-" + OpaqueIds.opaqueHandle(required(row, "item")),
+                        "label",
+                        required(row, "label")))
                 .toList();
     }
 
@@ -125,8 +127,10 @@ public final class ProjectWorkspaceQueryService {
                 + "label> ?label . } } } ORDER BY ?candidate LIMIT " + limit));
         return result.stream()
                 .map(row -> Map.of(
-                        "handle", "candidate-h-" + OpaqueIds.opaqueHandle(required(row, "candidate")),
-                        "label", required(row, "label")))
+                        "handle",
+                        "candidate-h-" + OpaqueIds.opaqueHandle(required(row, "candidate")),
+                        "label",
+                        required(row, "label")))
                 .toList();
     }
 

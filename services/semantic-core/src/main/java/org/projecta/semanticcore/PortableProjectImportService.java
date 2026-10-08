@@ -48,10 +48,26 @@ public final class PortableProjectImportService {
     private static final String RULE_VERSION = PROJECTA + "ruleVersion";
     private static final String INFERENCE_SNAPSHOT = PROJECTA + "InferenceSnapshot";
     private static final Set<String> FORBIDDEN_IMPORT_PREDICATES = Set.of(
-            "secret", "secretreference", "secretreferencedigest", "token", "accesstoken",
-            "refreshtoken", "oauthtoken", "providertoken", "clientsecret", "apikey",
-            "privatekey", "signingkey", "password", "ciphertext", "credential",
-            "credentials", "session", "sessiontoken", "masterkey", "setuphandle",
+            "secret",
+            "secretreference",
+            "secretreferencedigest",
+            "token",
+            "accesstoken",
+            "refreshtoken",
+            "oauthtoken",
+            "providertoken",
+            "clientsecret",
+            "apikey",
+            "privatekey",
+            "signingkey",
+            "password",
+            "ciphertext",
+            "credential",
+            "credentials",
+            "session",
+            "sessiontoken",
+            "masterkey",
+            "setuphandle",
             "authorization");
 
     private final FusekiGateway gateway;
@@ -79,9 +95,10 @@ public final class PortableProjectImportService {
 
     /** Atomically installs the archived five-graph state for one project. */
     public Map<String, Object> apply(
-            ProjectId project, String placeholderName, String projectName, boolean adoptPlaceholder,
-            InputStream trig) {
-        if (projectName == null || projectName.isBlank() || projectName.length() > 128
+            ProjectId project, String placeholderName, String projectName, boolean adoptPlaceholder, InputStream trig) {
+        if (projectName == null
+                || projectName.isBlank()
+                || projectName.length() > 128
                 || projectName.strip().length() != projectName.length()) {
             throw new IllegalArgumentException("import project name is invalid");
         }
@@ -130,28 +147,27 @@ public final class PortableProjectImportService {
         if (adoptPlaceholder) {
             var projectIri = "https://w3id.org/projecta/data/project/" + project.value();
             var asserted = graphs.get(GraphRole.ASSERTED);
-            var rename =
-                    "DELETE { GRAPH <"
-                            + asserted
-                            + "> { <"
-                            + projectIri
-                            + "> <"
-                            + PROJECTA
-                            + "name> ?old } } INSERT { GRAPH <"
-                            + asserted
-                            + "> { <"
-                            + projectIri
-                            + "> <"
-                            + PROJECTA
-                            + "name> "
-                            + quoted(projectName)
-                            + " } } WHERE { GRAPH <"
-                            + asserted
-                            + "> { <"
-                            + projectIri
-                            + "> <"
-                            + PROJECTA
-                            + "name> ?old } }; ";
+            var rename = "DELETE { GRAPH <"
+                    + asserted
+                    + "> { <"
+                    + projectIri
+                    + "> <"
+                    + PROJECTA
+                    + "name> ?old } } INSERT { GRAPH <"
+                    + asserted
+                    + "> { <"
+                    + projectIri
+                    + "> <"
+                    + PROJECTA
+                    + "name> "
+                    + quoted(projectName)
+                    + " } } WHERE { GRAPH <"
+                    + asserted
+                    + "> { <"
+                    + projectIri
+                    + "> <"
+                    + PROJECTA
+                    + "name> ?old } }; ";
             update = update + rename;
         }
         gateway.update(update);
@@ -198,9 +214,7 @@ public final class PortableProjectImportService {
         var graphs = canonicalGraphs(project);
         var update = new StringBuilder();
         for (var role : GraphRole.values()) {
-            update.append("DELETE WHERE { GRAPH <")
-                    .append(graphs.get(role))
-                    .append("> { ?s ?p ?o } }; ");
+            update.append("DELETE WHERE { GRAPH <").append(graphs.get(role)).append("> { ?s ?p ?o } }; ");
         }
         if (restorePlaceholder) {
             var projectIri = "https://w3id.org/projecta/data/project/" + project.value();
@@ -281,8 +295,7 @@ public final class PortableProjectImportService {
                 if (!semanticValidation.conforms()) {
                     throw new IllegalArgumentException("import TriG violates the released semantic shapes");
                 }
-                validateInferenceSemantics(
-                        project, byGraph.get(GraphRole.ASSERTED), byGraph.get(GraphRole.INFERRED));
+                validateInferenceSemantics(project, byGraph.get(GraphRole.ASSERTED), byGraph.get(GraphRole.INFERRED));
                 var candidateIds = candidateIds(byGraph.get(GraphRole.CANDIDATES));
                 var candidateHandles = new LinkedHashMap<String, String>();
                 for (var id : candidateIds) {
@@ -323,8 +336,7 @@ public final class PortableProjectImportService {
                 }
             }
         }
-        if (snapshotSubjects.size() > 1
-                || (!derivedRules.isEmpty() && snapshotSubjects.size() != 1)) {
+        if (snapshotSubjects.size() > 1 || (!derivedRules.isEmpty() && snapshotSubjects.size() != 1)) {
             throw new IllegalArgumentException("import inference snapshot is missing or ambiguous");
         }
         if (snapshotSubjects.isEmpty()) {
@@ -333,8 +345,7 @@ public final class PortableProjectImportService {
 
         var projectIri = "https://w3id.org/projecta/data/project/" + project.value();
         var snapshot = snapshotSubjects.iterator().next();
-        if (!snapshot.isURI()
-                || !snapshot.getURI().equals(projectIri + "/inferred/snapshot-m4-v1")) {
+        if (!snapshot.isURI() || !snapshot.getURI().equals(projectIri + "/inferred/snapshot-m4-v1")) {
             throw new IllegalArgumentException("import inference snapshot identifier is invalid");
         }
         var assertedIndex = indexBySubject(asserted);
@@ -361,7 +372,9 @@ public final class PortableProjectImportService {
             }
             var assertions = objects(inferredIndex, derived, DERIVED_FROM_ASSERTION);
             if (assertions.size() < 2
-                    || assertions.stream().anyMatch(node -> !node.isURI() || !assertedIndex.bySubject().containsKey(node))) {
+                    || assertions.stream()
+                            .anyMatch(node ->
+                                    !node.isURI() || !assertedIndex.bySubject().containsKey(node))) {
                 throw new IllegalArgumentException("import inference assertion reference is unresolved");
             }
         }
@@ -393,16 +406,14 @@ public final class PortableProjectImportService {
         return values.get(0);
     }
 
-    private static void assertExactlyOneUri(
-            TripleIndex index, Node subject, String predicate, Node expected) {
+    private static void assertExactlyOneUri(TripleIndex index, Node subject, String predicate, Node expected) {
         var value = exactlyOne(index, subject, predicate);
         if (!value.isURI() || !expected.equals(value)) {
             throw new IllegalArgumentException("import inference project reference is invalid");
         }
     }
 
-    private static void assertExactlyOneLiteral(
-            TripleIndex index, Node subject, String predicate, String expected) {
+    private static void assertExactlyOneLiteral(TripleIndex index, Node subject, String predicate, String expected) {
         var value = exactlyOne(index, subject, predicate);
         if (!value.isLiteral() || !expected.equals(value.getLiteralLexicalForm())) {
             throw new IllegalArgumentException("import inference version or rule is invalid");
@@ -413,35 +424,38 @@ public final class PortableProjectImportService {
         return objects(index, subject, RDF_TYPE).contains(NodeFactory.createURI(type));
     }
 
-
     private static org.apache.jena.rdf.model.Model stagedDatasetModel(StagedTriG staged, GraphRole role) {
         var model = org.apache.jena.rdf.model.ModelFactory.createDefaultModel();
         for (var quad : staged.byGraph().get(role)) {
-            model.getGraph().add(org.apache.jena.graph.Triple.create(
-                    quad.getSubject(), quad.getPredicate(), quad.getObject()));
+            model.getGraph()
+                    .add(org.apache.jena.graph.Triple.create(quad.getSubject(), quad.getPredicate(), quad.getObject()));
         }
         return model;
     }
 
-    private static void assertProjectIdentity(
-            ProjectId project, String projectName, List<Quad> asserted) {
+    private static void assertProjectIdentity(ProjectId project, String projectName, List<Quad> asserted) {
         var projectIri = "https://w3id.org/projecta/data/project/" + project.value();
         var typeCount = 0;
         var nameCount = 0;
         for (var quad : asserted) {
-            if (!quad.getSubject().isURI() || !projectIri.equals(quad.getSubject().getURI())) {
+            if (!quad.getSubject().isURI()
+                    || !projectIri.equals(quad.getSubject().getURI())) {
                 continue;
             }
-            if (quad.getPredicate().isURI() && RDF_TYPE.equals(quad.getPredicate().getURI())) {
+            if (quad.getPredicate().isURI()
+                    && RDF_TYPE.equals(quad.getPredicate().getURI())) {
                 typeCount++;
-                if (!quad.getObject().isURI() || !(PROJECTA + "Project").equals(quad.getObject().getURI())) {
+                if (!quad.getObject().isURI()
+                        || !(PROJECTA + "Project").equals(quad.getObject().getURI())) {
                     throw new IllegalArgumentException("import project identity is invalid");
                 }
             }
-            if (quad.getPredicate().isURI() && (PROJECTA + "name").equals(quad.getPredicate().getURI())) {
+            if (quad.getPredicate().isURI()
+                    && (PROJECTA + "name").equals(quad.getPredicate().getURI())) {
                 nameCount++;
                 if (!quad.getObject().isLiteral()
-                        || !projectName.equals(quad.getObject().getLiteralValue().toString())) {
+                        || !projectName.equals(
+                                quad.getObject().getLiteralValue().toString())) {
                     throw new IllegalArgumentException("import project name does not match its manifest");
                 }
             }
@@ -489,8 +503,7 @@ public final class PortableProjectImportService {
         return "populated";
     }
 
-    private boolean isPristinePlaceholder(
-            ProjectId project, String placeholderName, Map<GraphRole, Long> counts) {
+    private boolean isPristinePlaceholder(ProjectId project, String placeholderName, Map<GraphRole, Long> counts) {
         for (var entry : counts.entrySet()) {
             if (entry.getKey() == GraphRole.ASSERTED) {
                 if (entry.getValue() != 2L) {
@@ -502,15 +515,13 @@ public final class PortableProjectImportService {
         }
         var projectIri = "https://w3id.org/projecta/data/project/" + project.value();
         var asserted = canonicalGraphs(project).get(GraphRole.ASSERTED);
-        var response =
-                gateway.select(
-                        "SELECT ?name ?type WHERE { GRAPH <"
-                                + asserted
-                                + "> { <"
-                                + projectIri
-                                + "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type ; <"
-                                + PROJECTA
-                                + "name> ?name . } }");
+        var response = gateway.select("SELECT ?name ?type WHERE { GRAPH <"
+                + asserted
+                + "> { <"
+                + projectIri
+                + "> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type ; <"
+                + PROJECTA
+                + "name> ?name . } }");
         try {
             var bindings = new com.fasterxml.jackson.databind.ObjectMapper()
                     .readTree(response)
@@ -529,19 +540,18 @@ public final class PortableProjectImportService {
     }
 
     private boolean hasForeignProjectGraphs(ProjectId project, Map<GraphRole, String> graphs) {
-        var allowed = String.join(", ", graphs.values().stream().map(graph -> "<" + graph + ">").toList());
+        var allowed = String.join(
+                ", ", graphs.values().stream().map(graph -> "<" + graph + ">").toList());
         var prefix = "https://w3id.org/projecta/data/project/" + project.value() + "/";
-        return gateway.ask(
-                "ASK { GRAPH ?graph { ?s ?p ?o } FILTER(STRSTARTS(STR(?graph), "
-                        + quoted(prefix)
-                        + ")) FILTER(?graph NOT IN ("
-                        + allowed
-                        + ")) }");
+        return gateway.ask("ASK { GRAPH ?graph { ?s ?p ?o } FILTER(STRSTARTS(STR(?graph), "
+                + quoted(prefix)
+                + ")) FILTER(?graph NOT IN ("
+                + allowed
+                + ")) }");
     }
 
     private long countTriples(String graph) {
-        var response = gateway.select(
-                "SELECT (COUNT(*) AS ?count) WHERE { GRAPH <" + graph + "> { ?s ?p ?o } }");
+        var response = gateway.select("SELECT (COUNT(*) AS ?count) WHERE { GRAPH <" + graph + "> { ?s ?p ?o } }");
         try {
             var bindings = new com.fasterxml.jackson.databind.ObjectMapper()
                     .readTree(response)
@@ -587,10 +597,8 @@ public final class PortableProjectImportService {
         }
         var iri = predicate.getURI();
         var separator = Math.max(iri.lastIndexOf('/'), iri.lastIndexOf('#'));
-        var localName = iri.substring(separator + 1)
-                .replace("_", "")
-                .replace("-", "")
-                .toLowerCase(Locale.ROOT);
+        var localName =
+                iri.substring(separator + 1).replace("_", "").replace("-", "").toLowerCase(Locale.ROOT);
         if (FORBIDDEN_IMPORT_PREDICATES.contains(localName)) {
             throw new IllegalArgumentException("import TriG contains a prohibited secret field");
         }
@@ -727,8 +735,10 @@ public final class PortableProjectImportService {
             }
             if (value == '{') {
                 finishBare();
-                if (graphOpen || lastTokenKind != TokenKind.IRI
-                        || lastToken == null || !allowedGraphs.contains(lastToken)
+                if (graphOpen
+                        || lastTokenKind != TokenKind.IRI
+                        || lastToken == null
+                        || !allowedGraphs.contains(lastToken)
                         || !graphNames.add(lastToken)) {
                     throw new IllegalArgumentException(
                             "import TriG declares a default, repeated, or non-canonical graph");
@@ -825,8 +835,14 @@ public final class PortableProjectImportService {
         }
 
         private static boolean isPunctuation(int value) {
-            return value == '.' || value == ';' || value == ',' || value == '('
-                    || value == ')' || value == '[' || value == ']' || value == '^';
+            return value == '.'
+                    || value == ';'
+                    || value == ','
+                    || value == '('
+                    || value == ')'
+                    || value == '['
+                    || value == ']'
+                    || value == '^';
         }
 
         private enum TokenKind {

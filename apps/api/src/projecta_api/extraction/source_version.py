@@ -176,7 +176,7 @@ def create_source_version(
 ) -> SourceVersion:
     """Create a deterministic source version after strict UTF-8 validation."""
 
-    original_bytes, decoded = _strict_utf8(content)
+    original_bytes, decoded = strict_utf8(content)
     canonical = decoded.replace("\r\n", "\n").replace("\r", "\n")
     canonical_bytes = canonical.encode("utf-8", "strict")
     project_scope_id = _scope_id("project", project_id)
@@ -186,7 +186,7 @@ def create_source_version(
     original_digest = _sha256_digest(original_bytes)
     canonical_digest = _sha256_digest(canonical_bytes)
     retention_value = retention or RetentionMetadata()
-    identity = {
+    identity: dict[str, object] = {
         "contractVersion": SOURCE_VERSION_CONTRACT_VERSION,
         "projectScopeId": project_scope_id,
         "sourceArtifactScopeId": artifact_scope_id,
@@ -258,19 +258,17 @@ def verify_source_receipt(
         raise SourceVersionVerificationError(reason)
 
 
-def _strict_utf8(content: bytes | str) -> tuple[bytes, str]:
+def strict_utf8(content: bytes | str) -> tuple[bytes, str]:
     if isinstance(content, bytes):
         try:
             return content, content.decode("utf-8", "strict")
         except UnicodeDecodeError as error:
             raise SourceVersionVerificationError("source bytes are not strict UTF-8") from error
-    if isinstance(content, str):
-        try:
-            encoded = content.encode("utf-8", "strict")
-        except UnicodeEncodeError as error:
-            raise SourceVersionVerificationError("source text contains invalid Unicode") from error
-        return encoded, content
-    raise TypeError("source content must be bytes or str")
+    try:
+        encoded = content.encode("utf-8", "strict")
+    except UnicodeEncodeError as error:
+        raise SourceVersionVerificationError("source text contains invalid Unicode") from error
+    return encoded, content
 
 
 def _scope_id(prefix: Literal["project", "artifact"], value: str) -> str:

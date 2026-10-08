@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import asyncio
 import re
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator, AsyncIterator
 from contextlib import asynccontextmanager
+from typing import cast
 
 from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
@@ -71,7 +72,7 @@ class ProjectWriteFence:
             self._condition.notify_all()
 
     @asynccontextmanager
-    async def export_epoch(self) -> AsyncIterator[None]:
+    async def export_epoch(self) -> AsyncGenerator[None]:
         async with self._condition:
             if self._recovery_required or self._exporting:
                 raise ExportAlreadyRunning()
@@ -103,7 +104,7 @@ class ProjectWriteFence:
                 raise ExportWriteAttempted()
 
     @asynccontextmanager
-    async def maintenance_epoch(self) -> AsyncIterator[None]:
+    async def maintenance_epoch(self) -> AsyncGenerator[None]:
         """Drain API requests and exclude all project access during import publication."""
         async with self._condition:
             if self._recovery_required or self._exporting:
@@ -129,7 +130,7 @@ class ProjectWriteFence:
                 self._condition.notify_all()
 
     @asynccontextmanager
-    async def deletion_epoch(self) -> AsyncIterator[None]:
+    async def deletion_epoch(self) -> AsyncGenerator[None]:
         """Drain API requests and exclude all project access during project deletion."""
         async with self._condition:
             if self._recovery_required or self._exporting:
@@ -178,6 +179,12 @@ class ExportWriteAttempted(RuntimeError):
     """A mutating request arrived during the frozen export epoch."""
 
 
+class _FencedResponse(Response):
+    """Response carrying the drained streaming body the fence must keep open."""
+
+    body_iterator: AsyncIterator[bytes]
+
+
 class ProjectWriteFenceMiddleware(BaseHTTPMiddleware):
     """Fence project API traffic during maintenance and reject fatal recovery states."""
 
@@ -216,11 +223,17 @@ class ProjectWriteFenceMiddleware(BaseHTTPMiddleware):
         release_read = True
         try:
             response = await call_next(request)
-            body_iterator = getattr(response, "body_iterator", None)
-            if body_iterator is None:
+            fenced = cast(_FencedResponse, response)
+            raw_iterator: object = getattr(fenced, "body_iterator", None)
+            if raw_iterator is None:
                 await self._fence.exit_read()
                 release_read = False
                 return response
+            if not isinstance(raw_iterator, AsyncIterator):
+                await self._fence.exit_read()
+                release_read = False
+                return response
+            body_iterator: AsyncIterator[bytes] = cast(AsyncIterator[bytes], raw_iterator)
 
             async def stream_body() -> AsyncIterator[bytes]:
                 try:
@@ -229,7 +242,7 @@ class ProjectWriteFenceMiddleware(BaseHTTPMiddleware):
                 finally:
                     await self._fence.exit_read()
 
-            response.body_iterator = stream_body()
+            fenced.body_iterator = stream_body()
             release_read = False
             return response
         finally:

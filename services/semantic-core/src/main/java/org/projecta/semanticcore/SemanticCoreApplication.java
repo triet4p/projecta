@@ -100,12 +100,9 @@ public final class SemanticCoreApplication {
                         requireProjectPath(context, trusted);
                         try {
                             portableExport.writeTriG(
-                                    trusted.projectId(),
-                                    context.res().getOutputStream(),
-                                    tripleCount -> {
+                                    trusted.projectId(), context.res().getOutputStream(), tripleCount -> {
                                         context.contentType("application/trig");
-                                        context.header(
-                                                "X-Projecta-Graph-Triple-Count", Long.toString(tripleCount));
+                                        context.header("X-Projecta-Graph-Triple-Count", Long.toString(tripleCount));
                                         context.header(
                                                 "X-Projecta-Java-Runtime",
                                                 PortableProjectExportService.javaRuntimeVersion());
@@ -120,9 +117,10 @@ public final class SemanticCoreApplication {
                                                 PortableProjectExportService.jenaVersion());
                                     });
                         } catch (PortableProjectExportService.ExportTooLargeException exception) {
-                            context.status(413).json(Map.of(
-                                    "code", "EXPORT_TOO_LARGE",
-                                    "detail", "The selected project exceeds the supported triple limit."));
+                            context.status(413)
+                                    .json(Map.of(
+                                            "code", "EXPORT_TOO_LARGE",
+                                            "detail", "The selected project exceeds the supported triple limit."));
                         }
                     })
                     .post("/v1/projects/{projectId}/portable-import/validate", context -> {
@@ -333,8 +331,7 @@ public final class SemanticCoreApplication {
                                                         "status",
                                                         candidate.status(),
                                                         "handle",
-                                                        queries.candidateHandle(
-                                                                trusted.projectId(), candidate.id())))
+                                                        queries.candidateHandle(trusted.projectId(), candidate.id())))
                                                 .toList()));
                     })
                     .post("/v1/quick-notes/extractions", context -> {
@@ -560,7 +557,6 @@ public final class SemanticCoreApplication {
         return new TrustedActorContext(actor, operationId(context));
     }
 
- 
     private static String requiredQueryParameter(io.javalin.http.Context context, String name) {
         var value = context.queryParam(name);
         if (value == null || value.isBlank()) {

@@ -1,22 +1,9 @@
 """FastAPI composition root."""
 
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator, Mapping
 from contextlib import asynccontextmanager
 from pathlib import Path
-
-from projecta_api.export_fence import (
-    ExportAlreadyRunning,
-    ExportWriteAttempted,
-    ProjectWriteFence,
-    ProjectWriteFenceMiddleware,
-)
-from projecta_api.portable_export import (
-    PortableExportFailure,
-    ProjectPortableExportService,
-)
-from projecta_api.portable_import import PortableImportFailure, ProjectPortableImportService
-from projecta_api.project_deletion import ProjectDeletionFailure, ProjectDeletionService
-
+from typing import cast
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
@@ -56,6 +43,7 @@ from projecta_api.connectors.teams_setup import PostgresTeamsSetupRegistry
 from projecta_api.context import LocalExperienceContextMiddleware
 from projecta_api.correlation import resolve_correlation
 from projecta_api.evidence.local import LocalEvidenceStore
+from projecta_api.export_fence import ProjectWriteFence, ProjectWriteFenceMiddleware
 from projecta_api.extraction.correction_burden import (
     CorrectionBurdenTelemetryService,
     PostgresCorrectionBurdenRepository,
@@ -81,6 +69,12 @@ from projecta_api.llm.resilience import ResilientGateway
 from projecta_api.operational.audit import InMemorySecurityAuditSink, SecurityAuditSink
 from projecta_api.operational.database import ConnectorDatabase
 from projecta_api.operational.repository import PostgresConnectorRepository
+from projecta_api.portable_export import (
+    PortableExportFailure,
+    ProjectPortableExportService,
+)
+from projecta_api.portable_import import PortableImportFailure, ProjectPortableImportService
+from projecta_api.project_deletion import ProjectDeletionFailure, ProjectDeletionService
 from projecta_api.project_workspace_store import ProjectSelectionRepository
 from projecta_api.retrieval.errors import RetrievalError
 from projecta_api.retrieval.service import RetrievalService
@@ -95,6 +89,7 @@ from projecta_api.semantic_core import (
 from projecta_api.startup import validate_startup
 from projecta_api.structured_candidate_store import StructuredCandidateEditStore
 from projecta_api.structured_note_store import StructuredNoteDraftStore
+
 _CONTROLLED_RELATION_PUBLIC_ERRORS: dict[str, tuple[frozenset[int], str]] = {
     "CONTROLLED_RELATION_REQUEST_INVALID": (
         frozenset({422}),
@@ -261,7 +256,7 @@ def create_app(
     composed_deletion = project_deletion
 
     @asynccontextmanager
-    async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+    async def lifespan(_: FastAPI) -> AsyncGenerator[None]:
         if portable_import is not None and portable_import.enabled():
             await portable_import.recover_before_serving(
                 actual_settings.experience_actor_id or ""
@@ -823,39 +818,44 @@ def _attach_live_catalog_publisher(
     from projecta_api.project_workspace import configured_project_ids
 
     def _publisher(registry: object) -> None:
-        entries = registry if isinstance(registry, dict) else {}
-        raw_projects = entries.get("projects") if isinstance(entries, dict) else None
+        typed_registry: Mapping[str, object] = (
+            cast(Mapping[str, object], registry) if isinstance(registry, dict) else {}
+        )
+        raw_projects: object = typed_registry.get("projects")
         project_ids: tuple[str, ...]
         if raw_projects is None:
-            project_id = entries.get("projectId") if isinstance(entries, dict) else None
-            project_ids = (str(project_id),) if isinstance(project_id, str) else ()
+            project_id: object = typed_registry.get("projectId")
+            project_ids = (project_id,) if isinstance(project_id, str) else ()
         else:
-            project_ids = tuple(
-                str(item.get("projectId"))
-                for item in raw_projects
-                if isinstance(item, dict) and isinstance(item.get("projectId"), str)
-            )
+            if not isinstance(raw_projects, list):
+                raise ValueError("published registry projects must be a list")
+            collected: list[str] = []
+            for item in cast(list[object], raw_projects):
+                if not isinstance(item, dict):
+                    raise ValueError("published registry entry must be an object")
+                typed_item: Mapping[str, object] = cast(Mapping[str, object], item)
+                entry_id: object = typed_item.get("projectId")
+                if isinstance(entry_id, str):
+                    collected.append(entry_id)
+            project_ids = tuple(collected)
         project_ids = tuple(dict.fromkeys(project_ids))
         # Validate before touching any snapshot: a malformed publication must
         # fail instead of partially refreshing readers.
         configured_project_ids(",".join(project_ids) if project_ids else "[]")
         settings.experience_project_catalog = ",".join(project_ids) if project_ids else "[]"
         if connector_runtime is not None:
-            principal = connector_runtime.policy._principal_port  # noqa: SLF001 - owned composition refresh
-            refresher = getattr(principal, "refresh_catalog", None)
-            if callable(refresher):
-                refresher(project_ids)
+            connector_runtime.policy.refresh_principal_catalog(project_ids)
             try:
                 adapter = connector_runtime.registry.resolve("json-mock")
             except Exception:  # noqa: BLE001 - optional fixture refresh never fails publication
                 adapter = None
-            refresher = getattr(adapter, "refresh_projects", None)
-            if callable(refresher):
-                refresher(project_ids)
+            projects_refresher: object = getattr(adapter, "refresh_projects", None)
+            if callable(projects_refresher):
+                projects_refresher(project_ids)
 
-    portable_import._catalog_publisher = _publisher  # noqa: SLF001 - owned composition hook
+    portable_import.attach_catalog_publisher(_publisher)
     if project_deletion is not None:
-        project_deletion._catalog_publisher = _publisher  # noqa: SLF001 - owned composition hook
+        project_deletion.attach_catalog_publisher(_publisher)
 
 
 def _default_fixture(settings: Settings) -> JsonMockFixture:

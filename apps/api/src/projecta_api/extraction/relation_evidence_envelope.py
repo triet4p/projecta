@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Literal
+from typing import Literal, cast
 
 from pydantic import Field, model_validator
 
@@ -10,6 +10,7 @@ from projecta_api.extraction.contracts import (
     ContractModel,
     ExtractionResponse,
     OpaqueId,
+    RelationCandidateOutput,
     RelationPredicate,
 )
 from projecta_api.extraction.relation_evidence import (
@@ -37,7 +38,8 @@ class RelationEvidenceEnvelopeV1(ContractModel):
     )
     extraction: ExtractionResponse
     relation_triggers: list[RelationTriggerV1] = Field(
-        default_factory=list, alias="relationTriggers"
+        default_factory=lambda: cast(list[RelationTriggerV1], []),
+        alias="relationTriggers",
     )
 
     @model_validator(mode="after")
@@ -81,7 +83,7 @@ def materialize_relation_evidence_envelope(
         ): trigger.trigger_quote
         for trigger in envelope.relation_triggers
     }
-    materialized = []
+    materialized: list[RelationCandidateOutput] = []
     for relation in envelope.extraction.relations:
         source_span = entity_spans.get(relation.source_entity_id)
         target_span = entity_spans.get(relation.target_entity_id)

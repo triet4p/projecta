@@ -25,6 +25,8 @@ class ReplayCore:
 
 async def test_m4_http_answers_history_and_blocker_without_mutation() -> None:
     settings = Settings(
+        _env_file=None,
+        runtime_mode="headless",
         trusted_context_secret="test-secret",
         PROJECTA_LLM_TYPE="openai-response",
         PROJECTA_LLM_BASE_URL="https://system-test.invalid",

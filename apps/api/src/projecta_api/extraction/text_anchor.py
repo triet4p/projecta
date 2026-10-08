@@ -12,8 +12,8 @@ from projecta_api.extraction.source_version import (
     COORDINATE_SYSTEM_VERSION,
     SourceVersion,
     SourceVersionVerificationError,
-    _strict_utf8,
     create_source_version,
+    strict_utf8,
 )
 
 TEXT_ANCHOR_CONTRACT_VERSION: Final = "text-anchor.v1"
@@ -217,7 +217,7 @@ def _verified_source_maps(
     if source is None or content is None:
         raise TextAnchorVerificationError("SOURCE_MISSING")
     try:
-        original_bytes, original = _strict_utf8(content)
+        original_bytes, original = strict_utf8(content)
     except (TypeError, SourceVersionVerificationError, UnicodeError) as error:
         raise TextAnchorVerificationError("INVALID_UNICODE") from error
     try:

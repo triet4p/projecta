@@ -154,14 +154,14 @@ def test_import_accepts_pre_purge_archive_head_without_shape_change() -> None:
     import copy
     import zipfile
 
-    from projecta_api.portable_export import _ontology_assets
+    from projecta_api.portable_export import ontology_assets
 
     source = Path("F:/ai-ml/projecta/build/s14-12-A2-export.projecta")
     with zipfile.ZipFile(source, "r") as archive:
         manifest = json.loads(archive.read("manifest.json").decode("utf-8"))
     assert manifest["producer"]["postgresAlembicHead"] == "0011_review_receipts_append_only"
     producer = copy.deepcopy(manifest["producer"])
-    producer["ontologyAssets"] = _ontology_assets()
+    producer["ontologyAssets"] = ontology_assets()
     # Current-database producer passes unchanged (no exception).
     _validate_producer({**producer, "postgresAlembicHead": "0012_project_purge_exception"})
     # Pre-purge producer passes through the bounded compatibility branch.

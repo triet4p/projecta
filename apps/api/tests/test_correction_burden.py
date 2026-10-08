@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import timedelta, timezone
 from pathlib import Path
 from types import SimpleNamespace
 from typing import cast
@@ -13,8 +13,8 @@ from projecta_api.extraction.correction_burden import (
     CorrectionBurdenRequest,
     CorrectionBurdenTelemetryService,
     InMemoryCorrectionBurdenRepository,
-    _event_from_row,
-    _request_digest_from_event,
+    event_from_row,
+    request_digest_from_event,
 )
 from projecta_api.extraction.review_receipts import (
     InMemoryReviewDecisionReceiptRepository,
@@ -89,7 +89,7 @@ def test_persisted_row_body_tampering_fails_before_summary() -> None:
     repository = InMemoryCorrectionBurdenRepository()
     service = CorrectionBurdenTelemetryService(repository)
     accepted = service.record(request())
-    request_digest = _request_digest_from_event("project-alpha", accepted)
+    request_digest = request_digest_from_event("project-alpha", accepted)
     row = SimpleNamespace(
         project_id="project-alpha",
         event_id=accepted.event_id,
@@ -115,13 +115,13 @@ def test_persisted_row_body_tampering_fails_before_summary() -> None:
     )
 
     with pytest.raises(TelemetryIntegrityError):
-        _event_from_row(row, "accepted")
+        event_from_row(row, "accepted")
 
 
 def test_persisted_row_timezone_offset_preserves_event_digest() -> None:
     service = CorrectionBurdenTelemetryService(InMemoryCorrectionBurdenRepository())
     accepted = service.record(request())
-    request_digest = _request_digest_from_event("project-alpha", accepted)
+    request_digest = request_digest_from_event("project-alpha", accepted)
     local_occurred_at = accepted.occurred_at.astimezone(timezone(timedelta(hours=7)))
     row = SimpleNamespace(
         project_id="project-alpha",
@@ -147,7 +147,7 @@ def test_persisted_row_timezone_offset_preserves_event_digest() -> None:
         event_digest=accepted.event_digest,
     )
 
-    restored = _event_from_row(row, "accepted")
+    restored = event_from_row(row, "accepted")
 
     assert restored.event_digest == accepted.event_digest
     assert restored.occurred_at == accepted.occurred_at

@@ -26,9 +26,10 @@ from __future__ import annotations
 
 import hashlib
 import re
+from collections.abc import Mapping
 from dataclasses import dataclass
 from datetime import date
-from typing import Final
+from typing import Final, cast
 from urllib.parse import urlparse
 
 from projecta_api.extraction.manual_capture import VerifiedManualCapture
@@ -166,6 +167,7 @@ def plan_from_wire_format(payload: object) -> ManualApprovedPlan:
 
     if not isinstance(payload, dict):
         raise ManualApprovedPlanError("approved plan payload is invalid")
+    wire: Mapping[str, object] = cast(Mapping[str, object], payload)
     known = {
         "contractVersion",
         "project",
@@ -187,40 +189,50 @@ def plan_from_wire_format(payload: object) -> ManualApprovedPlan:
         "idempotencyKey",
         "bodyDigest",
     }
-    unknown = set(payload) - known
+    unknown: set[str] = set(wire) - known
     if unknown:
         raise ManualApprovedPlanError("approved plan payload carries unknown fields")
+    candidate_revision = _wire_int(wire.get("candidateRevision"))
+    source_version_revision = _wire_int(wire.get("sourceVersionRevision"))
     try:
         plan = ManualApprovedPlan(
-            project=str(payload["project"]),
-            candidate_iri=str(payload["candidateIri"]),
-            candidate_revision=int(payload["candidateRevision"]),  # type: ignore[arg-type]
-            source_version_id=str(payload["sourceVersionId"]),
-            source_version_revision=int(payload["sourceVersionRevision"]),  # type: ignore[arg-type]
-            review_receipt_digest=str(payload["reviewReceiptDigest"]),
-            evidence_digest=str(payload["evidenceDigest"]),
-            ontology_version=str(payload["ontologyVersion"]),
+            project=str(wire["project"]),
+            candidate_iri=str(wire["candidateIri"]),
+            candidate_revision=candidate_revision,
+            source_version_id=str(wire["sourceVersionId"]),
+            source_version_revision=source_version_revision,
+            review_receipt_digest=str(wire["reviewReceiptDigest"]),
+            evidence_digest=str(wire["evidenceDigest"]),
+            ontology_version=str(wire["ontologyVersion"]),
             constrained_relation_contract_version=str(
-                payload["constrainedRelationContractVersion"]
+                wire["constrainedRelationContractVersion"]
             ),
-            evidence_selection_version=str(payload["evidenceSelectionVersion"]),
-            asserted_iri=str(payload["assertedIri"]),
-            reviewer_iri=str(payload["reviewerIri"]),
-            label=str(payload["label"]),
-            valid_from=date.fromisoformat(str(payload["validFrom"])),
-            expected_asserted_graph_revision=str(payload["expectedAssertedGraphRevision"]),
-            provenance_activity_iri=str(payload["provenanceActivityIri"]),
-            idempotency_key=str(payload["idempotencyKey"]),
+            evidence_selection_version=str(wire["evidenceSelectionVersion"]),
+            asserted_iri=str(wire["assertedIri"]),
+            reviewer_iri=str(wire["reviewerIri"]),
+            label=str(wire["label"]),
+            valid_from=date.fromisoformat(str(wire["validFrom"])),
+            expected_asserted_graph_revision=str(wire["expectedAssertedGraphRevision"]),
+            provenance_activity_iri=str(wire["provenanceActivityIri"]),
+            idempotency_key=str(wire["idempotencyKey"]),
         )
     except (KeyError, TypeError, ValueError) as error:
         raise ManualApprovedPlanError("approved plan payload is invalid") from error
     _validate_plan(plan)
-    if str(payload.get("bodyDigest", plan.body_digest())) != plan.body_digest():
+    if str(wire.get("bodyDigest", plan.body_digest())) != plan.body_digest():
         raise ManualApprovedPlanError("approved plan body digest does not match")
-    contract = str(payload.get("contractVersion", APPROVED_ASSERTION_PLAN_VERSION))
+    contract = str(wire.get("contractVersion", APPROVED_ASSERTION_PLAN_VERSION))
     if contract != APPROVED_ASSERTION_PLAN_VERSION:
         raise ManualApprovedPlanError("approved plan contract is not supported")
     return plan
+
+
+def _wire_int(value: object) -> int:
+    """Validate a wire-format revision without coercing bools or strings."""
+
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ManualApprovedPlanError("approved plan payload is invalid")
+    return value
 
 
 def build_manual_approved_plan(

@@ -10,14 +10,16 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from projecta_api.extraction.constrained_relation import allowed_relation_predicates
 from projecta_api.extraction.confirmed_entity_gate import EntityHandle, RelationAuthorization
+from projecta_api.extraction.constrained_relation import allowed_relation_predicates
+from projecta_api.extraction.contracts import RelationPredicate
 from projecta_api.extraction.manual_capture import VerifiedManualCapture
 from projecta_api.extraction.relation_evidence_selection import (
     RelationEvidenceSelection,
     select_relation_evidence,
 )
 from projecta_api.extraction.review_receipts import ReviewDecisionReceiptRecord
+from projecta_api.structured_note import CandidateEditType
 
 RelationDirection = Literal["source-to-target", "target-to-source"]
 RelationSuggestionMode = Literal["manual", "local"]
@@ -93,7 +95,7 @@ class RelationSuggestionOption:
     """One predicate option with server-resolved endpoint identities and evidence."""
 
     relation_id: str
-    predicate: str
+    predicate: RelationPredicate
     source_handle: str
     target_handle: str
     source_candidate_handle: str
@@ -116,8 +118,8 @@ class RelationSuggestionContext:
     semantic_target_candidate_handle: str
     source_label: str
     target_label: str
-    source_type: str
-    target_type: str
+    source_type: CandidateEditType
+    target_type: CandidateEditType
     allowed_predicates: tuple[str, ...]
     options: tuple[RelationSuggestionOption, ...]
     evidence_digest: str
@@ -128,7 +130,7 @@ class RelationSuggestionContext:
 
 def allowed_predicates_by_direction(
     source_type: str, target_type: str
-) -> dict[RelationDirection, list[str]]:
+) -> dict[RelationDirection, list[RelationPredicate]]:
     """Return only the server's supported predicate/type matrix for each orientation."""
 
     return {

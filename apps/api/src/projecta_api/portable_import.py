@@ -12,26 +12,27 @@ import stat
 import uuid
 import zipfile
 import zlib
-from collections.abc import AsyncIterable, Mapping, Sequence
+from collections.abc import AsyncIterable, Callable, Mapping, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path, PurePosixPath
 from typing import Protocol, cast
 
-from sqlalchemy import Engine, inspect, text
+from sqlalchemy import Engine, Table, inspect, text
 
 from projecta_api.configuration.storage import OperationalDatabase
 from projecta_api.context import TrustedActorContext
 from projecta_api.evidence.local import LocalEvidenceStore
 from projecta_api.extraction.correction_burden import (
     CORRECTION_BURDEN_CONTRACT_VERSION,
-    _event_digest,
+    event_digest,
 )
 from projecta_api.extraction.review_receipts import (
     REVIEW_RECEIPT_CONTRACT_VERSION,
-    _receipt_digest,
+    receipt_digest,
 )
 from projecta_api.portable_export import (
+    FIXED_MEMBERS,
     MAX_ARCHIVE_BYTES,
     MAX_ENTRIES,
     MAX_EVIDENCE_BYTES,
@@ -42,14 +43,13 @@ from projecta_api.portable_export import (
     MAX_SEMANTIC_BYTES,
     MAX_SEMANTIC_TRIPLES,
     PORTABLE_CONTRACT,
+    PROJECT_ID,
+    SHA256,
     PortableExportFailure,
-    _FIXED_MEMBERS,
-    _PROJECT_ID,
-    _SHA256,
-    _canonical_json,
-    _load_json,
-    _ontology_assets,
-    _validate_cursor,
+    canonical_json,
+    load_json,
+    ontology_assets,
+    validate_cursor,
 )
 
 _MAX_UPLOAD_CHUNK = 1024 * 1024
@@ -100,6 +100,18 @@ _CONNECTOR_FIELDS: dict[str, frozenset[str]] = {
 }
 _RECEIPT_FIELDS = frozenset({"receiptId", "projectId", "actorDigest", "authorizationDigest", "itemKind", "itemHandleDigest", "decision", "candidateRevision", "sourceVersionDigest", "sourceVersionRevision", "constrainedContractVersion", "evidenceDigest", "previousDecisionDigest", "idempotencyDigest", "requestDigest", "sequence", "occurredAt", "receiptDigest"})
 _CORRECTION_FIELDS = frozenset({"eventId", "projectId", "itemKind", "itemDigest", "assertionDigest", "sourceVersionDigest", "sourceVersionRevision", "reviewReceiptDigest", "materializationRevision", "inferenceRevision", "correctionCategory", "correctionDimensions", "reviewOutcome", "semanticEditCount", "reviewLatencyMs", "materializationState", "inferenceState", "idempotencyDigest", "requestDigest", "occurredAt", "eventDigest"})
+
+def _table(model: object) -> Table:
+    """Return the mapped table with its accurate insert/update surface."""
+
+    table = cast(Table, getattr(model, "__table__"))  # noqa: B009 -- __table__ is FromClause-typed on the base; mapped models carry Table.
+    return table
+
+
+def _parse_time(value: object) -> datetime:
+    """Parse a validated export timestamp carried as an untyped mapping value."""
+
+    return _datetime(_bounded_string(value, _MAX_EXPORT_TIME_LENGTH))
 
 
 class PortableImportFailure(RuntimeError):
@@ -221,6 +233,14 @@ class ProjectPortableImportService:
         self._native_runtime_lock_held = native_runtime_lock_held
         self._context_secret = context_secret
         self._staging_copy = staging_copy
+        self._catalog_publisher: Callable[[Mapping[str, object]], None] | None = None
+
+    def attach_catalog_publisher(
+        self, publisher: Callable[[Mapping[str, object]], None]
+    ) -> None:
+        """Attach the composition-owned live catalog refresh hook."""
+
+        self._catalog_publisher = publisher
 
     def enabled(self) -> bool:
         return bool(
@@ -267,12 +287,15 @@ class ProjectPortableImportService:
                 _validate_archive, token, directory, archive_path, digest.hexdigest(), observed
             )
             registry = _read_registry(self._registry_path)
-            action, placeholder_name, semantic_validation = await self._destination_action(actor, package, registry)
+            action, preview_placeholder_name, semantic_validation = await self._destination_action(actor, package, registry)
             if semantic_validation is not None:
                 _bounded_int(semantic_validation.get("tripleCount"), MAX_SEMANTIC_TRIPLES)
-                candidate_ids = semantic_validation.get("candidateIds")
-                if not isinstance(candidate_ids, list) or any(not isinstance(item, str) for item in candidate_ids):
+                raw_candidate_ids: object = semantic_validation.get("candidateIds")
+                if not isinstance(raw_candidate_ids, list):
                     raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
+                candidate_ids: list[str] = []
+                for raw_candidate_id in cast(list[object], raw_candidate_ids):
+                    candidate_ids.append(_bounded_string(raw_candidate_id, 512))
                 workflow_map = cast(dict[str, object], package.workflows)
                 for edit in _objects(workflow_map["candidateEdits"]):
                     if edit["candidateId"] not in candidate_ids:
@@ -283,12 +306,17 @@ class ProjectPortableImportService:
                     "actorId": actor.actor_id,
                     "createdAt": datetime.now(UTC).isoformat(),
                     "projectId": package.project_id,
+                    "projectName": package.project_name,
+                    "placeholderName": preview_placeholder_name,
                     "exportId": package.export_id,
                     "archiveSha256": package.archive_sha256,
                     "archiveSize": package.archive_size,
                 },
             )
             manifest_counts = _mapping(package.manifest["counts"])
+            typed_counts: dict[str, int] = {
+                key: _bounded_int(value, MAX_LOGICAL_RECORDS) for key, value in manifest_counts.items()
+            }
             return ImportPreview(
                 token=token,
                 project_id=package.project_id,
@@ -298,7 +326,7 @@ class ProjectPortableImportService:
                 archive_sha256=package.archive_sha256,
                 size_bytes=package.archive_size,
                 destination_action=action,
-                counts={key: cast(int, value) for key, value in manifest_counts.items()},
+                counts=typed_counts,
                 plaintext_warning=(
                     "This unsigned, unencrypted package may contain sensitive source content. "
                     "SHA-256 detects accidental changes but does not authenticate its sender. "
@@ -428,19 +456,21 @@ class ProjectPortableImportService:
                 adopt_placeholder,
                 package.payload_paths["payload/semantic/project.trig"],
             )
-            candidate_handles = semantic_result.get("candidateHandles")
-            if not isinstance(candidate_handles, dict) or any(
-                not isinstance(key, str) or not isinstance(value, str)
-                for key, value in candidate_handles.items()
-            ):
+            raw_handles: object = semantic_result.get("candidateHandles")
+            if not isinstance(raw_handles, dict):
                 raise PortableImportFailure("IMPORT_FAILED", status_code=503)
+            candidate_handles: dict[str, str] = {}
+            for raw_handle_key, raw_handle_value in cast(dict[object, object], raw_handles).items():
+                if not isinstance(raw_handle_key, str) or not isinstance(raw_handle_value, str):
+                    raise PortableImportFailure("IMPORT_FAILED", status_code=503)
+                candidate_handles[raw_handle_key] = raw_handle_value
             journal["phase"] = "semantic-applied"
             _write_private_json(journal_path, journal)
             await self._restore_evidence(package)
             journal["phase"] = "evidence-applied"
             _write_private_json(journal_path, journal)
             await asyncio.to_thread(
-                self._restore_sqlite, package, cast(Mapping[str, str], candidate_handles)
+                self._restore_sqlite, package, candidate_handles
             )
             journal["phase"] = "sqlite-applied"
             _write_private_json(journal_path, journal)
@@ -539,7 +569,7 @@ class ProjectPortableImportService:
         placeholder_name = _bounded_string(journal.get("placeholderName"), 128)
         adopt_placeholder = journal.get("adoptPlaceholder")
         if (
-            not _SHA256.fullmatch(archive_digest)
+            not SHA256.fullmatch(archive_digest)
             or type(adopt_placeholder) is not bool
         ):
             raise PortableImportFailure("IMPORT_RECOVERY_REQUIRED", status_code=503)
@@ -773,13 +803,13 @@ class ProjectPortableImportService:
             for row in _objects(data["structuredNoteDrafts"]):
                 from projecta_api.structured_note import StructuredNoteDraft
                 from projecta_api.structured_note_store import (
-                    _serialize,
+                    serialize_note_draft,
                     structured_note_draft_fingerprint,
                 )
 
                 local_handle = "draft-h-" + uuid.uuid4().hex[:24]
                 draft = StructuredNoteDraft.model_validate(row["draft"])
-                payload_text = _serialize(draft)
+                payload_text = serialize_note_draft(draft)
                 payload_sha = hashlib.sha256(payload_text.encode("utf-8")).hexdigest()
                 if payload_sha != row["payloadDigest"]:
                     raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
@@ -823,7 +853,7 @@ class ProjectPortableImportService:
                         _raw_digest(row["sourceVersionDigest"]), row["sourceVersionRevision"],
                         _raw_digest(row["itemHandleDigest"]), row["itemRevision"],
                         _raw_digest(row["evidenceDigest"]), row["state"],
-                        None if row["proposal"] is None else _canonical_json(row["proposal"]).decode("utf-8"),
+                        None if row["proposal"] is None else canonical_json(row["proposal"]).decode("utf-8"),
                         row["proposalRevision"], row["modelId"], row["errorCode"], row["latestReceiptDigest"],
                         row["createdAt"], row["updatedAt"],
                     ),
@@ -866,14 +896,23 @@ class ProjectPortableImportService:
 
         data = _mapping(package.connectors)
         project_id = package.project_id
-        parse_time = _datetime
+        parse_time = _parse_time
+        installation_table = _table(ConnectorInstallation)
+        inbox_table = _table(ConnectorEventInbox)
+        run_table = _table(ConnectorSyncRun)
+        attempt_table = _table(ConnectorSyncAttempt)
+        cursor_table = _table(ConnectorCursor)
+        dead_letter_table = _table(ConnectorDeadLetter)
+        audit_table = _table(ConnectorAuditRecord)
+        receipt_table = _table(ReviewDecisionReceipt)
+        correction_table = _table(CorrectionBurdenEvent)
         with self._postgres_engine.begin() as connection:
             installation_ids: set[str] = set()
             for row in _objects(data["installations"]):
                 installation_id = _bounded_string(row["installationId"], 128)
                 installation_ids.add(installation_id)
                 connection.execute(
-                    ConnectorInstallation.__table__.insert().values(
+                    installation_table.insert().values(
                         installation_id=installation_id,
                         project_id=project_id,
                         connector_type=row["connectorType"],
@@ -887,7 +926,7 @@ class ProjectPortableImportService:
                 )
             for row in _objects(data["inbox"]):
                 connection.execute(
-                    ConnectorEventInbox.__table__.insert().values(
+                    inbox_table.insert().values(
                         event_id=row["eventId"], installation_id=row["installationId"], project_id=project_id,
                         body_hash=row["bodyHash"], content_reference=row["contentReference"],
                         accepted_outcome=row["acceptedOutcome"], accepted_at=_nullable_datetime(row["acceptedAt"]),
@@ -898,7 +937,7 @@ class ProjectPortableImportService:
             runs = _objects(data["runs"])
             for row in runs:
                 connection.execute(
-                    ConnectorSyncRun.__table__.insert().values(
+                    run_table.insert().values(
                         run_id=row["runId"], installation_id=row["installationId"], project_id=project_id,
                         status=row["status"], started_at=parse_time(row["startedAt"]), terminal_at=parse_time(row["terminalAt"]),
                         terminal_outcome=row["terminalOutcome"], revision=row["revision"], event_count=row["eventCount"],
@@ -910,7 +949,7 @@ class ProjectPortableImportService:
                 )
             for row in _objects(data["attempts"]):
                 connection.execute(
-                    ConnectorSyncAttempt.__table__.insert().values(
+                    attempt_table.insert().values(
                         run_id=row["runId"], attempt_number=row["attemptNumber"], status=row["status"],
                         started_at=parse_time(row["startedAt"]), terminal_at=parse_time(row["terminalAt"]),
                         outcome=row["outcome"], failure_code=row["failureCode"], failure_detail=row["failureDetail"],
@@ -918,38 +957,38 @@ class ProjectPortableImportService:
                 )
             for row in _objects(data["cursors"]):
                 connection.execute(
-                    ConnectorCursor.__table__.insert().values(
+                    cursor_table.insert().values(
                         installation_id=row["installationId"], project_id=project_id,
                         checkpoint=row["checkpoint"], revision=row["revision"], updated_at=parse_time(row["updatedAt"]),
                     )
                 )
             dead_letter_map: dict[int, int] = {}
             for row in _objects(data["deadLetters"]):
-                source_id = cast(int, row["deadLetterId"])
+                source_id = _bounded_int(row["deadLetterId"], 2**63 - 1, minimum=1)
                 inserted_id = connection.execute(
-                    ConnectorDeadLetter.__table__.insert().values(
+                    dead_letter_table.insert().values(
                         installation_id=row["installationId"], project_id=project_id, run_id=row["runId"],
                         event_id=row["eventId"], failure_code=row["failureCode"],
                         sanitized_detail=row["sanitizedDetail"], created_at=parse_time(row["createdAt"]),
                         resolved_at=_nullable_datetime(row["resolvedAt"]),
                     ).returning(ConnectorDeadLetter.dead_letter_id)
                 ).scalar_one()
-                dead_letter_map[source_id] = cast(int, inserted_id)
+                dead_letter_map[source_id] = _bounded_int(inserted_id, 2**63 - 1, minimum=1)
             for row in runs:
                 changes: dict[str, object] = {}
                 if row["deadLetterId"] is not None:
-                    changes["dead_letter_id"] = dead_letter_map[cast(int, row["deadLetterId"])]
+                    changes["dead_letter_id"] = dead_letter_map[_bounded_int(row["deadLetterId"], 2**63 - 1, minimum=1)]
                 if row["retryOfRunId"] is not None:
                     changes["retry_of_run_id"] = row["retryOfRunId"]
                 if changes:
                     connection.execute(
-                        ConnectorSyncRun.__table__.update()
+                        run_table.update()
                         .where(ConnectorSyncRun.run_id == row["runId"])
                         .values(**changes)
                     )
             for row in _objects(data["auditEvents"]):
                 connection.execute(
-                    ConnectorAuditRecord.__table__.insert().values(
+                    audit_table.insert().values(
                         project_id=project_id, installation_id=row["installationId"], operation=row["operation"],
                         outcome=row["outcome"],
                         actor_reference=_portable_marker("actor", _digest(row["actorDigest"])),
@@ -959,7 +998,7 @@ class ProjectPortableImportService:
                 )
             for row in package.receipts:
                 connection.execute(
-                    ReviewDecisionReceipt.__table__.insert().values(
+                    receipt_table.insert().values(
                         receipt_id=row["receiptId"], project_id=project_id, actor_digest=row["actorDigest"],
                         authorization_digest=row["authorizationDigest"], item_kind=row["itemKind"],
                         item_handle_digest=row["itemHandleDigest"], decision=row["decision"],
@@ -973,7 +1012,7 @@ class ProjectPortableImportService:
                 )
             for row in package.corrections:
                 connection.execute(
-                    CorrectionBurdenEvent.__table__.insert().values(
+                    correction_table.insert().values(
                         event_id=row["eventId"], project_id=project_id, item_kind=row["itemKind"],
                         item_digest=row["itemDigest"], assertion_digest=row["assertionDigest"],
                         source_version_digest=row["sourceVersionDigest"], source_version_revision=row["sourceVersionRevision"],
@@ -1023,11 +1062,13 @@ class ProjectPortableImportService:
     def _write_ledger(self, package: _ValidatedPackage) -> None:
         assert self._root is not None
         ledger_path = self._root / "ledger.json"
-        ledger = _read_private_json(ledger_path) if ledger_path.exists() else {"formatVersion": 1, "imports": {}}
-        if set(ledger) != {"formatVersion", "imports"} or ledger.get("formatVersion") != 1:
+        raw_ledger: dict[str, object] = (
+            _read_private_json(ledger_path) if ledger_path.exists() else {"formatVersion": 1, "imports": {}}
+        )
+        if set(raw_ledger) != {"formatVersion", "imports"} or raw_ledger.get("formatVersion") != 1:
             raise PortableImportFailure("IMPORT_RECOVERY_REQUIRED", status_code=503)
-        imports = _mapping(ledger["imports"])
-        existing = imports.get(package.export_id)
+        imports = _mapping(raw_ledger["imports"])
+        existing: object = imports.get(package.export_id)
         if existing is not None and existing != package.archive_sha256:
             raise PortableImportFailure("IMPORT_CONFLICT")
         updated = dict(imports)
@@ -1077,9 +1118,12 @@ class ProjectPortableImportService:
         if set(value) != {"formatVersion", "imports"} or value.get("formatVersion") != 1:
             raise PortableImportFailure("IMPORT_RECOVERY_REQUIRED", status_code=503)
         imports = _mapping(value["imports"])
-        if any(not isinstance(key, str) or not _SHA256.fullmatch(digest) for key, digest in imports.items()):
-            raise PortableImportFailure("IMPORT_RECOVERY_REQUIRED", status_code=503)
-        return cast(Mapping[str, str], imports)
+        ledger: dict[str, str] = {}
+        for key, digest in imports.items():
+            ledger[key] = _bounded_string(digest, 64)
+            if not SHA256.fullmatch(ledger[key]):
+                raise PortableImportFailure("IMPORT_RECOVERY_REQUIRED", status_code=503)
+        return ledger
 
     def _preview_directory(self, token: str) -> Path:
         valid = _valid_token(token)
@@ -1101,7 +1145,7 @@ class ProjectPortableImportService:
         fail-closed via IMPORT_RECOVERY_REQUIRED; only a clean publication
         reaches this call.
         """
-        publisher = getattr(self, "_catalog_publisher", None)
+        publisher = self._catalog_publisher
         if publisher is None:
             return
         publisher(registry)
@@ -1114,7 +1158,7 @@ def _validate_archive(
     archive_sha256: str,
     archive_size: int,
 ) -> _ValidatedPackage:
-    if archive_size < 1 or archive_size > MAX_ARCHIVE_BYTES or not _SHA256.fullmatch(archive_sha256):
+    if archive_size < 1 or archive_size > MAX_ARCHIVE_BYTES or not SHA256.fullmatch(archive_sha256):
         raise PortableImportFailure("IMPORT_TOO_LARGE", status_code=413)
     expected_payloads = directory / "payload"
     if expected_payloads.is_dir() and not expected_payloads.is_symlink():
@@ -1138,7 +1182,7 @@ def _validate_archive(
             manifest_bytes = archive.read(manifest_info)
             try:
                 manifest_text = manifest_bytes.decode("utf-8", "strict")
-                manifest_value = _load_json(manifest_text)
+                manifest_value = load_json(manifest_text)
             except (UnicodeError, PortableExportFailure) as error:
                 raise PortableImportFailure("IMPORT_PACKAGE_INVALID") from error
             manifest = _manifest(manifest_value)
@@ -1162,7 +1206,8 @@ def _validate_archive(
                 if info.filename == "manifest.json":
                     continue
                 entry = payload_entries[info.filename]
-                if info.file_size != entry["sizeBytes"]:
+                entry_size = _bounded_int(entry["sizeBytes"], MAX_EXPANDED_BYTES)
+                if info.file_size != entry_size:
                     raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
                 target = directory / "payload" / Path(*PurePosixPath(info.filename).parts[1:])
                 target.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
@@ -1174,12 +1219,12 @@ def _validate_archive(
                         if not chunk:
                             break
                         observed += len(chunk)
-                        if observed > entry["sizeBytes"] or observed > MAX_EXPANDED_BYTES:
+                        if observed > entry_size or observed > MAX_EXPANDED_BYTES:
                             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
                         digest.update(chunk)
                         destination.write(chunk)
                     destination.flush()
-                if observed != entry["sizeBytes"] or digest.hexdigest() != entry["sha256"]:
+                if observed != entry_size or digest.hexdigest() != _bounded_string(entry["sha256"], 64):
                     raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
                 payload_paths[info.filename] = target
     except PortableImportFailure:
@@ -1207,7 +1252,7 @@ def _revalidate_staged_archive(
                 raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
             manifest_bytes = archive.read("manifest.json")
             try:
-                manifest = _manifest(_load_json(manifest_bytes.decode("utf-8", "strict")))
+                manifest = _manifest(load_json(manifest_bytes.decode("utf-8", "strict")))
             except (UnicodeError, PortableExportFailure) as error:
                 raise PortableImportFailure("IMPORT_PACKAGE_INVALID") from error
             payload_entries = _manifest_entries(manifest)
@@ -1295,7 +1340,7 @@ def _finish_archive_validation(
 
 def _manifest(value: object) -> Mapping[str, object]:
     manifest = _mapping(value)
-    if set(manifest) != _MANIFEST_KEYS or manifest.get("portableContract") != PORTABLE_CONTRACT:
+    if set(manifest) != set(_MANIFEST_KEYS) or manifest.get("portableContract") != PORTABLE_CONTRACT:
         if manifest.get("portableContract") != PORTABLE_CONTRACT:
             raise PortableImportFailure("IMPORT_UNSUPPORTED_VERSION")
         raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
@@ -1313,7 +1358,7 @@ def _manifest(value: object) -> Mapping[str, object]:
         raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
     project_id = _bounded_string(project["projectId"], 63)
     project_name = _bounded_string(project["projectName"], 128)
-    if not _PROJECT_ID.fullmatch(project_id) or project["tenantId"] is not None:
+    if not PROJECT_ID.fullmatch(project_id) or project["tenantId"] is not None:
         raise PortableImportFailure("IMPORT_DESTINATION_FORBIDDEN")
     if not project_name or project_name != project_name.strip() or _PROJECT_NAME_CONTROL.search(project_name):
         raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
@@ -1321,32 +1366,42 @@ def _manifest(value: object) -> Mapping[str, object]:
     if not re.fullmatch(r"catalog-r-[0-9a-f]{40}", source_revision):
         raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
     counts = _mapping(manifest["counts"])
-    if set(counts) != _COUNT_KEYS or any(type(number) is not int or number < 0 for number in counts.values()):
+    if set(counts) != set(_COUNT_KEYS):
         raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
-    if counts["namedGraphs"] != 5 or counts["evidenceObjects"] > MAX_EVIDENCE_OBJECTS:
+    typed_counts: dict[str, int] = {}
+    for count_key, count_value in counts.items():
+        if type(count_value) is not int or count_value < 0:
+            raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
+        typed_counts[count_key] = count_value
+    if typed_counts["namedGraphs"] != 5 or typed_counts["evidenceObjects"] > MAX_EVIDENCE_OBJECTS:
         raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
-    if sum(counts[key] for key in ("workflowRecords", "connectorRecords", "reviewReceipts", "correctionBurdenEvents")) > MAX_LOGICAL_RECORDS:
+    if sum(typed_counts[key] for key in ("workflowRecords", "connectorRecords", "reviewReceipts", "correctionBurdenEvents")) > MAX_LOGICAL_RECORDS:
         raise PortableImportFailure("IMPORT_TOO_LARGE", status_code=413)
     return manifest
 
 
 def _manifest_entries(manifest: Mapping[str, object]) -> dict[str, Mapping[str, object]]:
-    values = manifest.get("entries")
-    if not isinstance(values, list) or len(values) + 1 > MAX_ENTRIES:
+    raw_values: object = manifest.get("entries")
+    if not isinstance(raw_values, list):
         raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
-    expected_fixed = {member[0]: (member[1], member[2]) for member in _FIXED_MEMBERS}
+    values: list[object] = cast(list[object], raw_values)
+    if len(values) + 1 > MAX_ENTRIES:
+        raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
+    expected_fixed = {member[0]: (member[1], member[2]) for member in FIXED_MEMBERS}
     entries: dict[str, Mapping[str, object]] = {}
     seen_casefold: set[str] = set()
-    for value in values:
-        entry = _mapping(value)
-        if set(entry) != _ENTRY_KEYS:
+    for raw_entry in values:
+        entry = _mapping(raw_entry)
+        if set(entry) != set(_ENTRY_KEYS):
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
         path = _bounded_string(entry["path"], 1024)
         if not _safe_member(path) or path in entries or path.casefold() in seen_casefold:
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
         seen_casefold.add(path.casefold())
-        if type(entry["sizeBytes"]) is not int or entry["sizeBytes"] < 0 or not _SHA256.fullmatch(_bounded_string(entry["sha256"], 64)):
+        entry_size: object = entry["sizeBytes"]
+        if type(entry_size) is not int or entry_size < 0 or not SHA256.fullmatch(_bounded_string(entry["sha256"], 64)):
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
+        typed_size: int = entry_size
         if path in expected_fixed:
             role, media = expected_fixed[path]
             if entry["role"] != role or entry["mediaType"] != media:
@@ -1357,14 +1412,15 @@ def _manifest_entries(manifest: Mapping[str, object]) -> dict[str, Mapping[str, 
             filename = path.removeprefix("payload/evidence/sha256/")
             if not re.fullmatch(r"[0-9a-f]{64}\.bin", filename) or filename[:-4] != entry["sha256"]:
                 raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
-            if entry["sizeBytes"] > MAX_EVIDENCE_BYTES:
+            if typed_size > MAX_EVIDENCE_BYTES:
                 raise PortableImportFailure("IMPORT_TOO_LARGE", status_code=413)
         else:
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
         entries[path] = entry
     if not set(expected_fixed) <= set(entries):
         raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
-    if entries["payload/semantic/project.trig"]["sizeBytes"] > MAX_SEMANTIC_BYTES:
+    trig_size: int = cast(int, entries["payload/semantic/project.trig"]["sizeBytes"])
+    if trig_size > MAX_SEMANTIC_BYTES:
         raise PortableImportFailure("IMPORT_TOO_LARGE", status_code=413)
     return entries
 
@@ -1372,7 +1428,7 @@ def _manifest_entries(manifest: Mapping[str, object]) -> dict[str, Mapping[str, 
 def _validate_producer(value: object) -> None:
     producer = _mapping(value)
     try:
-        expected_assets = _ontology_assets()
+        expected_assets = ontology_assets()
     except PortableExportFailure as error:
         raise PortableImportFailure("IMPORT_UNSUPPORTED_VERSION") from error
     expected = {
@@ -1412,14 +1468,18 @@ def _validate_evidence(
     project_id: str,
     entries: Mapping[str, Mapping[str, object]],
 ) -> list[Mapping[str, object]]:
-    if not isinstance(value, list) or len(value) > MAX_EVIDENCE_OBJECTS:
+    raw_items: object = value
+    if not isinstance(raw_items, list):
+        raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
+    items: list[object] = cast(list[object], raw_items)
+    if len(items) > MAX_EVIDENCE_OBJECTS:
         raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
     references: list[Mapping[str, object]] = []
     seen_ref: set[str] = set()
     seen_digest: set[str] = set()
-    for raw in value:
+    for raw in items:
         item = _mapping(raw)
-        if set(item) != _EVIDENCE_KEYS:
+        if set(item) != set(_EVIDENCE_KEYS):
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
         reference = _bounded_string(item["evidenceReference"], 32)
         digest = _bounded_string(item["sha256"], 64)
@@ -1429,7 +1489,7 @@ def _validate_evidence(
             reference in seen_ref
             or digest in seen_digest
             or not re.fullmatch(r"ev_[A-Za-z0-9_-]{22}", reference)
-            or not _SHA256.fullmatch(digest)
+            or not SHA256.fullmatch(digest)
             or content_type not in {"application/json", "text/plain"}
         ):
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
@@ -1462,7 +1522,7 @@ def _validate_evidence(
 
 def _read_payload_json(path: Path) -> object:
     try:
-        value = _load_json(path.read_text(encoding="utf-8", errors="strict"))
+        value = load_json(path.read_text(encoding="utf-8", errors="strict"))
     except (OSError, UnicodeError, PortableExportFailure) as error:
         raise PortableImportFailure("IMPORT_PACKAGE_INVALID") from error
     return value
@@ -1475,9 +1535,9 @@ def _read_json_lines(path: Path, fields: frozenset[str]) -> list[Mapping[str, ob
             for line in stream:
                 if not line.endswith("\n") or not line.strip():
                     raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
-                raw = _load_json(line[:-1])
+                raw = load_json(line[:-1])
                 record = _mapping(raw)
-                if set(record) != fields or len(records) >= MAX_LOGICAL_RECORDS:
+                if set(record) != set(fields) or len(records) >= MAX_LOGICAL_RECORDS:
                     raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
                 records.append(record)
     except PortableImportFailure:
@@ -1495,7 +1555,7 @@ def _validate_workflows(value: object, project_id: str) -> None:
     records = 0
     for collection in _WORKFLOW_ARRAYS:
         for row in _objects(payload[collection]):
-            if set(row) != _WORKFLOW_FIELDS[collection] or row.get("projectId") != project_id:
+            if set(row) != set(_WORKFLOW_FIELDS[collection]) or row.get("projectId") != project_id:
                 raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
             records += 1
             if records > MAX_LOGICAL_RECORDS:
@@ -1519,7 +1579,9 @@ def _validate_workflows(value: object, project_id: str) -> None:
                 by_workflow[workflow_id] = row
                 if row["proposal"] is not None:
                     try:
-                        from projecta_api.extraction.local_suggestions import LocalSuggestionProposal
+                        from projecta_api.extraction.local_suggestions import (
+                            LocalSuggestionProposal,
+                        )
 
                         proposal = LocalSuggestionProposal.model_validate(row["proposal"])
                     except Exception as error:
@@ -1548,17 +1610,17 @@ def _validate_workflows(value: object, project_id: str) -> None:
 def _validate_note_draft(row: Mapping[str, object]) -> None:
     try:
         from projecta_api.structured_note import StructuredNoteDraft
-        from projecta_api.structured_note_store import _serialize
+        from projecta_api.structured_note_store import serialize_note_draft
 
         draft = StructuredNoteDraft.model_validate(row["draft"])
-        serialized = _serialize(draft)
+        serialized = serialize_note_draft(draft)
     except Exception as error:
         raise PortableImportFailure("IMPORT_PACKAGE_INVALID") from error
     if draft.model_dump(mode="json", by_alias=True) != row["draft"]:
         raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
     payload_digest = hashlib.sha256(serialized.encode("utf-8")).hexdigest()
     if (
-        not _SHA256.fullmatch(_bounded_string(row["payloadDigest"], 64))
+        not SHA256.fullmatch(_bounded_string(row["payloadDigest"], 64))
         or payload_digest != row["payloadDigest"]
         or not _SHA_DIGEST.fullmatch(_bounded_string(row["idempotencyDigest"], 71))
     ):
@@ -1610,13 +1672,16 @@ def _validate_cost_event(row: Mapping[str, object]) -> None:
         raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
     if row["correctionCategory"] not in {None, "unchanged", "minor", "major"}:
         raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
-    dimensions = row["correctionDimensions"]
+    raw_dimensions: object = row["correctionDimensions"]
     allowed_dimensions = {"span", "type", "label", "predicate", "endpoint", "evidence"}
-    if (
-        not isinstance(dimensions, list)
-        or any(not isinstance(item, str) or item not in allowed_dimensions for item in dimensions)
-        or len(dimensions) != len(set(dimensions))
-    ):
+    if not isinstance(raw_dimensions, list):
+        raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
+    dimensions: list[str] = []
+    for raw_dimension in cast(list[object], raw_dimensions):
+        if not isinstance(raw_dimension, str) or raw_dimension not in allowed_dimensions:
+            raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
+        dimensions.append(raw_dimension)
+    if len(dimensions) != len(set(dimensions)):
         raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
     for key in ("localInferenceUnits", "semanticEditCount"):
         _bounded_int(row[key], 2**63 - 1)
@@ -1638,19 +1703,20 @@ def _validate_connectors(value: object, project_id: str, evidence: Sequence[Mapp
     terminal_outcomes = {"accepted", "replayed", "failed", "cancelled", "truncated", "conflict"}
     installations: dict[str, str] = {}
     for row in arrays["installations"]:
-        if set(row) != _CONNECTOR_FIELDS["installations"] or row["projectId"] != project_id:
+        if set(row) != set(_CONNECTOR_FIELDS["installations"]) or row["projectId"] != project_id:
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
         connector = _bounded_string(row["connectorType"], 64)
         if connector not in allowed_connectors:
             raise PortableImportFailure("IMPORT_UNSUPPORTED_VERSION")
-        capabilities = row["capabilities"]
-        if (
-            type(row["enabled"]) is not bool
-            or not isinstance(capabilities, list)
-            or not capabilities
-            or any(not isinstance(item, str) or item not in allowed_connectors[connector] for item in capabilities)
-            or len(capabilities) != len(set(capabilities))
-        ):
+        raw_capabilities: object = row["capabilities"]
+        if type(row["enabled"]) is not bool or not isinstance(raw_capabilities, list) or not raw_capabilities:
+            raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
+        capabilities: list[str] = []
+        for raw_capability in cast(list[object], raw_capabilities):
+            if not isinstance(raw_capability, str) or raw_capability not in allowed_connectors[connector]:
+                raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
+            capabilities.append(raw_capability)
+        if len(capabilities) != len(set(capabilities)):
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
         installation_id = _bounded_string(row["installationId"], 128)
         if installation_id in installations:
@@ -1662,7 +1728,7 @@ def _validate_connectors(value: object, project_id: str, evidence: Sequence[Mapp
     evidence_refs = {cast(str, item["evidenceReference"]) for item in evidence}
     event_ids: set[tuple[str, str]] = set()
     for row in arrays["inbox"]:
-        if set(row) != _CONNECTOR_FIELDS["inbox"] or row["projectId"] != project_id:
+        if set(row) != set(_CONNECTOR_FIELDS["inbox"]) or row["projectId"] != project_id:
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
         installation_id = _bounded_string(row["installationId"], 128)
         if installation_id not in installations:
@@ -1672,7 +1738,7 @@ def _validate_connectors(value: object, project_id: str, evidence: Sequence[Mapp
         if event_key in event_ids:
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
         event_ids.add(event_key)
-        if row["contentReference"] not in evidence_refs or not _SHA256.fullmatch(_bounded_string(row["bodyHash"], 64)):
+        if row["contentReference"] not in evidence_refs or not SHA256.fullmatch(_bounded_string(row["bodyHash"], 64)):
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
         _bounded_int(row["conflictCount"], 2**31 - 1)
         if row["acceptedOutcome"] is not None:
@@ -1687,7 +1753,7 @@ def _validate_connectors(value: object, project_id: str, evidence: Sequence[Mapp
     runs: dict[str, Mapping[str, object]] = {}
     run_start_times: dict[str, datetime] = {}
     for row in arrays["runs"]:
-        if set(row) != _CONNECTOR_FIELDS["runs"] or row["projectId"] != project_id:
+        if set(row) != set(_CONNECTOR_FIELDS["runs"]) or row["projectId"] != project_id:
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
         installation_id = _bounded_string(row["installationId"], 128)
         status = _bounded_string(row["status"], 32)
@@ -1725,7 +1791,7 @@ def _validate_connectors(value: object, project_id: str, evidence: Sequence[Mapp
 
     attempts: set[tuple[str, int]] = set()
     for row in arrays["attempts"]:
-        if set(row) != _CONNECTOR_FIELDS["attempts"]:
+        if set(row) != set(_CONNECTOR_FIELDS["attempts"]):
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
         run_id = _bounded_string(row["runId"], 128)
         status = _bounded_string(row["status"], 32)
@@ -1746,25 +1812,24 @@ def _validate_connectors(value: object, project_id: str, evidence: Sequence[Mapp
                 _bounded_string(row[field], maximum)
     cursor_installations: set[str] = set()
     for row in arrays["cursors"]:
-        if set(row) != _CONNECTOR_FIELDS["cursors"] or row["projectId"] != project_id:
+        if set(row) != set(_CONNECTOR_FIELDS["cursors"]) or row["projectId"] != project_id:
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
         installation_id = _bounded_string(row["installationId"], 128)
         connector = installations.get(installation_id)
         if connector is None or installation_id in cursor_installations:
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
         cursor_installations.add(installation_id)
-        checkpoint = row["checkpoint"]
-        if checkpoint is not None:
-            checkpoint = _bounded_string(checkpoint, 2048)
+        raw_checkpoint: object = row["checkpoint"]
+        checkpoint: str | None = None if raw_checkpoint is None else _bounded_string(raw_checkpoint, 2048)
         try:
-            _validate_cursor(connector, cast(str | None, checkpoint))
+            validate_cursor(connector, checkpoint)
         except PortableExportFailure as error:
             raise PortableImportFailure("IMPORT_UNSUPPORTED_VERSION") from error
         _bounded_int(row["revision"], 2**31 - 1)
         _datetime(_bounded_string(row["updatedAt"], _MAX_EXPORT_TIME_LENGTH))
     dead_ids: set[int] = set()
     for row in arrays["deadLetters"]:
-        if set(row) != _CONNECTOR_FIELDS["deadLetters"] or row["projectId"] != project_id:
+        if set(row) != set(_CONNECTOR_FIELDS["deadLetters"]) or row["projectId"] != project_id:
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
         installation_id = _bounded_string(row["installationId"], 128)
         if installation_id not in installations:
@@ -1790,7 +1855,7 @@ def _validate_connectors(value: object, project_id: str, evidence: Sequence[Mapp
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
     audit_ids: set[int] = set()
     for row in arrays["auditEvents"]:
-        if set(row) != _CONNECTOR_FIELDS["auditEvents"] or row["projectId"] != project_id:
+        if set(row) != set(_CONNECTOR_FIELDS["auditEvents"]) or row["projectId"] != project_id:
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
         installation_id = row["installationId"]
         if installation_id is not None and _bounded_string(installation_id, 128) not in installations:
@@ -1819,12 +1884,12 @@ def _validate_receipts(receipts: Sequence[Mapping[str, object]], project_id: str
     receipt_ids: set[str] = set()
     receipt_digests: set[str] = set()
     for row in receipts:
-        if set(row) != _RECEIPT_FIELDS or row["projectId"] != project_id:
+        if set(row) != set(_RECEIPT_FIELDS) or row["projectId"] != project_id:
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
         try:
             from projecta_api.extraction.review_receipts import ReviewDecisionReceiptRecord
 
-            receipt = ReviewDecisionReceiptRecord.model_validate_json(_canonical_json({
+            receipt = ReviewDecisionReceiptRecord.model_validate_json(canonical_json({
                 "contractVersion": REVIEW_RECEIPT_CONTRACT_VERSION,
                 "outcome": "accepted",
                 "projectDigest": project_digest,
@@ -1847,19 +1912,19 @@ def _validate_receipts(receipts: Sequence[Mapping[str, object]], project_id: str
             _bounded_int(row[key], 2**31 - 1, minimum=1)
         request_digest = _digest(row["requestDigest"])
         occurred = _datetime(_bounded_string(row["occurredAt"], _MAX_EXPORT_TIME_LENGTH))
-        receipt_digest = _digest(row["receiptDigest"])
+        computed_receipt_digest = _digest(row["receiptDigest"])
         receipt_id = _bounded_string(row["receiptId"], 128)
         if (
             receipt_id != "rr1_" + request_digest.removeprefix("sha256:")
-            or _receipt_digest(request_digest, occurred) != receipt_digest
+            or receipt_digest(request_digest, occurred) != computed_receipt_digest
         ):
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
         key = (cast(str, row["itemKind"]), cast(str, row["itemHandleDigest"]))
         histories.setdefault(key, []).append(row)
-        if receipt_id in receipt_ids or receipt_digest in receipt_digests:
+        if receipt_id in receipt_ids or computed_receipt_digest in receipt_digests:
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
         receipt_ids.add(receipt_id)
-        receipt_digests.add(receipt_digest)
+        receipt_digests.add(computed_receipt_digest)
     for history in histories.values():
         history.sort(key=lambda item: cast(int, item["sequence"]))
         previous: str | None = None
@@ -1878,12 +1943,12 @@ def _validate_corrections(
     receipt_digests = {row["receiptDigest"] for row in receipts}
     ids: set[str] = set()
     for row in corrections:
-        if set(row) != _CORRECTION_FIELDS or row["projectId"] != project_id:
+        if set(row) != set(_CORRECTION_FIELDS) or row["projectId"] != project_id:
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
         try:
             from projecta_api.extraction.correction_burden import CorrectionBurdenEventRecord
 
-            correction = CorrectionBurdenEventRecord.model_validate_json(_canonical_json({
+            correction = CorrectionBurdenEventRecord.model_validate_json(canonical_json({
                 "contractVersion": CORRECTION_BURDEN_CONTRACT_VERSION,
                 "outcome": "accepted",
                 "projectDigest": project_digest,
@@ -1904,12 +1969,12 @@ def _validate_corrections(
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
         request_digest = _digest(row["requestDigest"])
         occurred = _datetime(_bounded_string(row["occurredAt"], _MAX_EXPORT_TIME_LENGTH))
-        event_digest = _digest(row["eventDigest"])
+        computed_event_digest = _digest(row["eventDigest"])
         event_id = _bounded_string(row["eventId"], 128)
         if (
             row["reviewReceiptDigest"] not in receipt_digests
             or event_id != "cbe1_" + request_digest.removeprefix("sha256:")
-            or _event_digest(request_digest, occurred) != event_digest
+            or event_digest(request_digest, occurred) != computed_event_digest
             or event_id in ids
         ):
             raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
@@ -1943,16 +2008,17 @@ def _check_no_secret_fields(*values: object) -> None:
 
     def walk(value: object) -> None:
         if isinstance(value, Mapping):
+            typed_value: Mapping[str, object] = cast(Mapping[str, object], value)
             if any(
-                isinstance(key, str)
-                and key.replace("_", "").replace("-", "").casefold() in forbidden
-                for key in value
+                key.replace("_", "").replace("-", "").casefold() in forbidden
+                for key in typed_value
             ):
                 raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
-            for item in value.values():
+            for item in typed_value.values():
                 walk(item)
         elif isinstance(value, list):
-            for item in value:
+            typed_items: list[object] = cast(list[object], value)
+            for item in typed_items:
                 walk(item)
 
     for value in values:
@@ -1989,14 +2055,19 @@ def _append_project(
 
 
 def _registry_entries(registry: Mapping[str, object]) -> list[dict[str, str]]:
-    raw = registry.get("projects")
+    raw: object = registry.get("projects")
     if raw is None:
-        return [{"projectId": cast(str, registry["projectId"]), "projectName": cast(str, registry["projectName"])}]
+        header_id: object = registry["projectId"]
+        header_name: object = registry["projectName"]
+        if not isinstance(header_id, str) or not isinstance(header_name, str):
+            raise PortableImportFailure("IMPORT_DESTINATION_INVALID", status_code=503)
+        return [{"projectId": header_id, "projectName": header_name}]
     if not isinstance(raw, list):
         raise PortableImportFailure("IMPORT_DESTINATION_INVALID", status_code=503)
+    raw_items: list[object] = cast(list[object], raw)
     result: list[dict[str, str]] = []
-    for value in raw:
-        item = _mapping(value)
+    for raw_value in raw_items:
+        item = _mapping(raw_value)
         if set(item) != {"projectId", "projectName"}:
             raise PortableImportFailure("IMPORT_DESTINATION_INVALID", status_code=503)
         result.append({"projectId": _bounded_string(item["projectId"], 63), "projectName": _bounded_string(item["projectName"], 128)})
@@ -2039,7 +2110,7 @@ def _read_private_json(path: Path, code: str = "IMPORT_RECOVERY_REQUIRED", *, st
     try:
         if path.is_symlink() or not path.is_file():
             raise OSError("not a regular file")
-        value = _load_json(path.read_text(encoding="utf-8", errors="strict"))
+        value = load_json(path.read_text(encoding="utf-8", errors="strict"))
         return dict(_mapping(value))
     except PortableImportFailure:
         raise
@@ -2054,7 +2125,7 @@ def _write_private_json(path: Path, value: object) -> None:
     temporary = path.with_name(f".{path.name}.{uuid.uuid4().hex}.partial")
     try:
         with temporary.open("xb") as output:
-            output.write(_canonical_json(value) + b"\n")
+            output.write(canonical_json(value) + b"\n")
             output.flush()
             os.fsync(output.fileno())
         os.replace(temporary, path)
@@ -2082,15 +2153,19 @@ def _safe_member(path: str) -> bool:
 
 
 def _mapping(value: object) -> Mapping[str, object]:
-    if not isinstance(value, Mapping) or any(not isinstance(key, str) for key in value):
+    if not isinstance(value, Mapping):
         raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
+    for raw_key in cast(Mapping[object, object], value):
+        if not isinstance(raw_key, str):
+            raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
     return cast(Mapping[str, object], value)
 
 
 def _objects(value: object) -> list[Mapping[str, object]]:
     if not isinstance(value, list):
         raise PortableImportFailure("IMPORT_PACKAGE_INVALID")
-    return [_mapping(item) for item in value]
+    raw_items: list[object] = cast(list[object], value)
+    return [_mapping(item) for item in raw_items]
 
 
 def _digest(value: object) -> str:

@@ -8,7 +8,7 @@ import sqlite3
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from datetime import UTC, date, datetime, time, timedelta
-from typing import Literal
+from typing import Literal, cast
 
 from projecta_api.configuration.storage import OperationalDatabase
 from projecta_api.extraction.authoring_telemetry import (
@@ -491,21 +491,38 @@ def _cache_fields(key: LocalSuggestionKey) -> dict[str, object]:
 def _stored(row: sqlite3.Row | Mapping[str, object] | None) -> StoredLocalSuggestion | None:
     if row is None:
         return None
-    return StoredLocalSuggestion(
-        workflow_id=str(row["workflow_id"]),
-        state=str(row["state"]),
-        proposal_json=str(row["proposal_json"]) if row["proposal_json"] is not None else None,
-        revision=int(row["proposal_revision"]),
-        source_version_revision=int(row["source_version_revision"]),
-        evidence_digest=str(row["evidence_digest"]),
-        model_id=str(row["model_id"]) if row["model_id"] is not None else None,
-        error_code=str(row["error_code"]) if row["error_code"] is not None else None,
-        receipt_digest=(
-            str(row["latest_receipt_digest"])
-            if row["latest_receipt_digest"] is not None
-            else None
-        ),
+    typed_row: Mapping[str, object] = (
+        cast(Mapping[str, object], dict(row)) if isinstance(row, sqlite3.Row) else row
     )
+    return StoredLocalSuggestion(
+        workflow_id=_row_text(typed_row["workflow_id"]),
+        state=_row_text(typed_row["state"]),
+        proposal_json=_row_optional_text(typed_row["proposal_json"]),
+        revision=_row_int(typed_row["proposal_revision"]),
+        source_version_revision=_row_int(typed_row["source_version_revision"]),
+        evidence_digest=_row_text(typed_row["evidence_digest"]),
+        model_id=_row_optional_text(typed_row["model_id"]),
+        error_code=_row_optional_text(typed_row["error_code"]),
+        receipt_digest=_row_optional_text(typed_row["latest_receipt_digest"]),
+    )
+
+
+def _row_text(value: object) -> str:
+    if not isinstance(value, str):
+        raise ValueError("stored suggestion field must be text")
+    return value
+
+
+def _row_optional_text(value: object) -> str | None:
+    if value is None:
+        return None
+    return _row_text(value)
+
+
+def _row_int(value: object) -> int:
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ValueError("stored suggestion field must be an integer")
+    return value
 
 
 def _budget(

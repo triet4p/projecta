@@ -20,7 +20,9 @@ class SemanticCoreConfigurationTest {
 
         assertEquals(8080, configuration.port());
         assertEquals("0.0.0.0", configuration.host());
-        assertEquals("http://fuseki:3030/projecta/query?query=ASK%7B%7D", configuration.fusekiReadinessUrl().toString());
+        assertEquals(
+                "http://fuseki:3030/projecta/query?query=ASK%7B%7D",
+                configuration.fusekiReadinessUrl().toString());
         assertEquals(Paths.get("/ontology/shapes"), configuration.shapesDirectory());
     }
 
@@ -40,20 +42,15 @@ class SemanticCoreConfigurationTest {
                 "PROJECTA_SHAPES_DIRECTORY",
                 "C:\\Projecta\\package\\projecta\\ontology\\shapes"));
 
-        assertEquals(
-                Paths.get("C:\\Projecta\\package\\projecta\\ontology\\shapes"),
-                configuration.shapesDirectory());
+        assertEquals(Paths.get("C:\\Projecta\\package\\projecta\\ontology\\shapes"), configuration.shapesDirectory());
     }
 
     @Test
     void rejectsBlankShapesDirectory() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> SemanticCoreConfiguration.fromEnvironment(Map.of(
-                        "FUSEKI_BASE_URL",
-                        "http://fuseki:3030/projecta",
-                        "PROJECTA_SHAPES_DIRECTORY",
-                        "   ")));
+                () -> SemanticCoreConfiguration.fromEnvironment(
+                        Map.of("FUSEKI_BASE_URL", "http://fuseki:3030/projecta", "PROJECTA_SHAPES_DIRECTORY", "   ")));
     }
 
     @Test

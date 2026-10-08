@@ -13,18 +13,18 @@ from fastapi.responses import JSONResponse
 from httpx import ASGITransport, AsyncClient
 
 from projecta_api.config import Settings
+from projecta_api.configuration.storage import OperationalDatabase
 from projecta_api.context import TrustedRequestContext, trusted_context
 from projecta_api.extraction.review_receipts import (
     InMemoryReviewDecisionReceiptRepository,
     ReviewActorContext,
+    ReviewDecisionReceiptRecord,
     ReviewDecisionReceiptService,
     ReviewDecisionRequest,
-    ReviewDecisionReceiptRecord,
 )
 from projecta_api.models import CaptureRequest, CaptureResponse
 from projecta_api.routes import create_router
 from projecta_api.semantic_core import SemanticCoreProblem
-from projecta_api.configuration.storage import OperationalDatabase
 from projecta_api.structured_candidate_store import StructuredCandidateEditStore
 
 _PROJECT_ID = "project-alpha"

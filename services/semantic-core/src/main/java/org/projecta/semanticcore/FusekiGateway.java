@@ -15,6 +15,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFParser;
+
 /** Executes only service-authored, project-scoped SPARQL against the configured Fuseki dataset. */
 public class FusekiGateway {
     private static final Logger LOGGER = Logger.getLogger("projecta.fuseki-gateway");

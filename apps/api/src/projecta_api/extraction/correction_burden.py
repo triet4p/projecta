@@ -208,7 +208,7 @@ class CorrectionBurdenTelemetryService:
     def record(self, request: CorrectionBurdenRequest) -> CorrectionBurdenEventRecord:
         request_digest = _digest_bytes(_stable_json(request.safe_dict()).encode("utf-8"))
         occurred_at = datetime.now(UTC)
-        event_digest = _event_digest(request_digest, occurred_at)
+        digest = event_digest(request_digest, occurred_at)
         write = _EventWrite(
             project_id=request.project_id,
             item_kind=request.item_kind,
@@ -230,7 +230,7 @@ class CorrectionBurdenTelemetryService:
             request_digest=request_digest,
             event_id="cbe1_" + request_digest.split(":", 1)[1],
             occurred_at=occurred_at,
-            event_digest=event_digest,
+            event_digest=digest,
         )
         return self._repository.append(write)
 
@@ -279,7 +279,7 @@ class PostgresCorrectionBurdenRepository:
                     )
                 ).scalar_one_or_none()
                 if existing is not None:
-                    existing_record = _event_from_row(existing, "replayed")
+                    existing_record = event_from_row(existing, "replayed")
                     if existing.request_digest != write.request_digest:
                         raise IdempotencyConflict("telemetry idempotency key conflicts with event body")
                     return existing_record
@@ -321,7 +321,7 @@ class PostgresCorrectionBurdenRepository:
                     .where(CorrectionBurdenEvent.project_id == project_id)
                     .order_by(CorrectionBurdenEvent.occurred_at.asc(), CorrectionBurdenEvent.event_id.asc())
                 ).scalars().all()
-        return tuple(_event_from_row(row, "accepted") for row in rows)
+        return tuple(event_from_row(row, "accepted") for row in rows)
 
 
 def summarize_events(
@@ -378,7 +378,7 @@ def _event(write: _EventWrite, outcome: Literal["accepted", "replayed"]) -> Corr
     )
 
 
-def _event_from_row(row: CorrectionBurdenEvent, outcome: Literal["accepted", "replayed"]) -> CorrectionBurdenEventRecord:
+def event_from_row(row: CorrectionBurdenEvent, outcome: Literal["accepted", "replayed"]) -> CorrectionBurdenEventRecord:
     try:
         project_id = _row_text(row.project_id, "project_id", max_length=128)
         dimensions = row.correction_dimensions
@@ -411,17 +411,17 @@ def _event_from_row(row: CorrectionBurdenEvent, outcome: Literal["accepted", "re
     except (TypeError, ValueError, ValidationError) as exc:
         raise TelemetryIntegrityError("correction-burden row failed schema validation") from exc
 
-    request_digest = _request_digest_from_event(project_id, record)
+    request_digest = request_digest_from_event(project_id, record)
     if _row_text(row.request_digest, "request_digest") != request_digest:
         raise TelemetryIntegrityError("correction-burden request digest mismatch")
     if record.event_id != "cbe1_" + request_digest.split(":", 1)[1]:
         raise TelemetryIntegrityError("correction-burden event identity mismatch")
-    if record.event_digest != _event_digest(request_digest, record.occurred_at):
+    if record.event_digest != event_digest(request_digest, record.occurred_at):
         raise TelemetryIntegrityError("correction-burden event digest mismatch")
     return record
 
 
-def _request_digest_from_event(project_id: str, event: CorrectionBurdenEventRecord) -> str:
+def request_digest_from_event(project_id: str, event: CorrectionBurdenEventRecord) -> str:
     safe: dict[str, object] = {
         "contractVersion": event.contract_version,
         "projectDigest": _digest(project_id),
@@ -445,7 +445,7 @@ def _request_digest_from_event(project_id: str, event: CorrectionBurdenEventReco
     return _digest_bytes(_stable_json(safe).encode("utf-8"))
 
 
-def _event_digest(request_digest: str, occurred_at: datetime) -> str:
+def event_digest(request_digest: str, occurred_at: datetime) -> str:
     if occurred_at.tzinfo is None or occurred_at.utcoffset() is None:
         raise ValueError("correction event timestamp must be timezone-aware")
     return _digest_bytes(

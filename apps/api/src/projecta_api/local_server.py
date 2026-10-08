@@ -9,7 +9,6 @@ import threading
 
 import uvicorn
 
-
 HOST = "127.0.0.1"
 PORT = int(os.environ.get("PROJECTA_API_PORT", "18732"))
 

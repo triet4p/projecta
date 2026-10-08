@@ -15,7 +15,11 @@ class ProjectDataDeleteServiceTest {
     void countsAndDeletesExactlyOneProjectScope() {
         var router = new GraphIriRouter();
         var dataset = DatasetFactory.createTxnMem();
-        var server = FusekiServer.create().loopback(true).port(0).add("/projecta", dataset).build();
+        var server = FusekiServer.create()
+                .loopback(true)
+                .port(0)
+                .add("/projecta", dataset)
+                .build();
         try {
             server.start();
             var gateway = new FusekiGateway(
@@ -53,7 +57,8 @@ class ProjectDataDeleteServiceTest {
                     + "<https://w3id.org/projecta/data/project/delete-victim/source/s2> "
                     + "<https://w3id.org/projecta/ontology/name> \"x\" . } }");
             assertThrows(IllegalStateException.class, () -> service.delete(victim));
-            assertTrue(gateway.ask("ASK { GRAPH <https://w3id.org/projecta/data/project/delete-victim/custom/> { ?s ?p ?o } }"));
+            assertTrue(gateway.ask(
+                    "ASK { GRAPH <https://w3id.org/projecta/data/project/delete-victim/custom/> { ?s ?p ?o } }"));
         } finally {
             server.stop();
         }

@@ -1,20 +1,19 @@
 """HTTP routes for typed capture, review, and finite read operations."""
 
-import shutil
 import json
 import logging
-from collections.abc import Sequence
+import shutil
+from collections.abc import Mapping, Sequence
 from datetime import UTC, datetime
 from hashlib import sha256
-from typing import Annotated, Literal, Protocol, cast
+from typing import Annotated, Literal, Protocol, cast, overload
 from urllib.parse import urlencode
 
 from fastapi import APIRouter, Depends, Header, Query, Request, Response
-from pydantic import BaseModel, ConfigDict, Field
 from fastapi.responses import FileResponse
+from pydantic import BaseModel, ConfigDict, Field
 from starlette.background import BackgroundTask
 
-from projecta_api.connectors.public_api import ConnectorRuntime, add_connector_routes
 from projecta_api.configuration.audit import ConfigurationAudit
 from projecta_api.configuration.connection import ProviderConnectionChecker
 from projecta_api.configuration.errors import ConfigurationProblem
@@ -24,44 +23,32 @@ from projecta_api.configuration.models import (
 )
 from projecta_api.configuration.ports import RuntimeConfigurationProvider
 from projecta_api.configuration.service import LLMConfigurationService
-from projecta_api.export_fence import ExportAlreadyRunning, ExportWriteAttempted, ProjectWriteFence
-from projecta_api.portable_export import (
-    ExportArtifact,
-    PortableExportFailure,
-    ProjectPortableExportService,
-    project_source_revision,
-)
-from projecta_api.portable_import import PortableImportFailure, ProjectPortableImportService
-from projecta_api.project_deletion import ProjectDeletionFailure, ProjectDeletionService
+from projecta_api.connectors.public_api import ConnectorRuntime, add_connector_routes
 from projecta_api.context import (
     TrustedActorContext,
     TrustedRequestContext,
     trusted_actor_context,
     trusted_context,
 )
-from projecta_api.extraction.contracts import ExtractionResponse
+from projecta_api.export_fence import ExportAlreadyRunning, ExportWriteAttempted, ProjectWriteFence
+from projecta_api.extraction.authoring_telemetry import (
+    AuthoringCostMetrics,
+    CorrectionDimension,
+)
 from projecta_api.extraction.constrained_relation import allowed_relation_predicates
+from projecta_api.extraction.contracts import ExtractionResponse
 from projecta_api.extraction.controlled_relations import (
     ControlledRelationDecisionRequest,
     ControlledRelationEndpoint,
     ControlledRelationRequest,
     RelationDirection,
-    RelationSuggestionMode,
     RelationSuggestionContext,
+    RelationSuggestionMode,
     RelationSuggestionOption,
     RelationSuggestionTarget,
     RelationSuggestionTargetsResponse,
     build_relation_suggestion_context,
     relation_workflow_item_handle,
-)
-from projecta_api.extraction.manual_capture import (
-    ManualCaptureContextError,
-    VerifiedManualCapture,
-    resolve_manual_capture,
-)
-from projecta_api.extraction.authoring_telemetry import (
-    AuthoringCostMetrics,
-    CorrectionDimension,
 )
 from projecta_api.extraction.local_suggestion_store import LocalSuggestionStoreConflict
 from projecta_api.extraction.local_suggestions import (
@@ -76,6 +63,11 @@ from projecta_api.extraction.local_suggestions import (
     LocalSuggestionService,
     LocalSuggestionSubject,
     LocalSuggestionTarget,
+)
+from projecta_api.extraction.manual_capture import (
+    ManualCaptureContextError,
+    VerifiedManualCapture,
+    resolve_manual_capture,
 )
 from projecta_api.extraction.review_receipts import (
     ReviewActorContext,
@@ -96,8 +88,8 @@ from projecta_api.graph_projection import (
     ReviewWorkbenchDetailResponse,
     finite_types,
     mapping,
-    opaque_or_hashed,
     opaque_navigation_handle,
+    opaque_or_hashed,
     project_candidate_queue,
     project_graph_page,
     project_knowledge_collection,
@@ -118,6 +110,14 @@ from projecta_api.models import (
     TypedSegment,
 )
 from projecta_api.operational.errors import IdempotencyConflict, RevisionConflict
+from projecta_api.portable_export import (
+    ExportArtifact,
+    PortableExportFailure,
+    ProjectPortableExportService,
+    project_source_revision,
+)
+from projecta_api.portable_import import PortableImportFailure, ProjectPortableImportService
+from projecta_api.project_deletion import ProjectDeletionFailure, ProjectDeletionService
 from projecta_api.project_workspace import (
     ProjectCatalogItem,
     ProjectCatalogResponse,
@@ -428,19 +428,18 @@ def create_router(
             if artifact is not None:
                 shutil.rmtree(artifact.work_directory, ignore_errors=True)
             raise
-        if artifact is None:
-            raise PortableExportFailure("EXPORT_FAILED", status_code=503)
+        completed: ExportArtifact = artifact
         response.headers["X-Request-Id"] = context.request_id
-        response.headers["X-Projecta-Export-SHA256"] = artifact.sha256
-        response.headers["X-Projecta-Export-Size-Bytes"] = str(artifact.size_bytes)
+        response.headers["X-Projecta-Export-SHA256"] = completed.sha256
+        response.headers["X-Projecta-Export-Size-Bytes"] = str(completed.size_bytes)
         response.headers["Cache-Control"] = "no-store"
         return FileResponse(
-            artifact.path,
+            completed.path,
             media_type="application/zip",
-            filename=artifact.filename,
+            filename=completed.filename,
             headers=response.headers,
             background=BackgroundTask(
-                shutil.rmtree, artifact.work_directory, ignore_errors=True
+                shutil.rmtree, completed.work_directory, ignore_errors=True
             ),
         )
 
@@ -1137,10 +1136,6 @@ def create_router(
         capture = await _manual_capture_snapshot(
             client, context, candidate_handle, missing_is_none=False
         )
-        if capture is None:
-            raise SemanticCoreProblem(
-                404, "RESOURCE_NOT_FOUND", "The manual candidate is not visible in this project"
-            )
         if capture.candidate_status != "validated":
             raise SemanticCoreProblem(
                 409, "MANUAL_CAPTURE_NOT_VALIDATED", "Validate this Note item before approval"
@@ -2602,6 +2597,26 @@ def _resolve_review_candidate(payload: object, candidate_handle: str) -> dict[st
 
 
 
+@overload
+async def _manual_capture_snapshot(
+    client: SemanticCoreClient,
+    context: TrustedRequestContext,
+    candidate_handle: str,
+    *,
+    missing_is_none: Literal[True],
+) -> VerifiedManualCapture | None: ...
+
+
+@overload
+async def _manual_capture_snapshot(
+    client: SemanticCoreClient,
+    context: TrustedRequestContext,
+    candidate_handle: str,
+    *,
+    missing_is_none: Literal[False],
+) -> VerifiedManualCapture: ...
+
+
 async def _manual_capture_snapshot(
     client: SemanticCoreClient,
     context: TrustedRequestContext,
@@ -2625,7 +2640,8 @@ async def _manual_capture_snapshot(
         raise SemanticCoreProblem(
             503, "SEMANTIC_CONTRACT_UNAVAILABLE", "Semantic Core returned invalid manual source context"
         )
-    payload = {key: value for key, value in raw.items() if key != "_projecta_http_status"}
+    typed_raw: Mapping[str, object] = cast(Mapping[str, object], raw)
+    payload: dict[str, object] = {key: value for key, value in typed_raw.items() if key != "_projecta_http_status"}
     try:
         return resolve_manual_capture(context.project_id, payload)
     except ManualCaptureContextError as error:
@@ -2811,8 +2827,6 @@ async def _local_suggestion_subject(
     capture = await _manual_capture_snapshot(
         client, context, candidate_handle, missing_is_none=False
     )
-    if capture is None:
-        raise SemanticCoreProblem(404, "RESOURCE_NOT_FOUND", "The manual candidate is not visible")
     if capture.candidate_status != "validated":
         raise SemanticCoreProblem(
             409, "LOCAL_SUGGESTION_REQUIRES_VALIDATION", "Validate the manual occurrence first"
@@ -2905,8 +2919,6 @@ async def _controlled_relation_endpoint(
     capture = await _manual_capture_snapshot(
         client, context, candidate_handle, missing_is_none=False
     )
-    if capture is None:
-        raise SemanticCoreProblem(404, "RESOURCE_NOT_FOUND", "The relation endpoint is not visible")
     return _controlled_relation_endpoint_from_capture(
         extraction, context, candidate_handle, capture
     )

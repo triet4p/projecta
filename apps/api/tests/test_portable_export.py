@@ -4,42 +4,52 @@ import hashlib
 import json
 import zipfile
 from datetime import UTC, datetime, timedelta, timezone
-from types import SimpleNamespace
 
 import pytest
 from httpx import ASGITransport, AsyncClient, MockTransport, Response
 
 import projecta_api.portable_export as export_module
+from projecta_api.config import Settings
+from projecta_api.configuration.storage import OperationalDatabase
+from projecta_api.context import TrustedActorContext, TrustedRequestContext
+from projecta_api.evidence import EvidencePutRequest, LocalEvidenceStore
+from projecta_api.export_fence import ExportWriteAttempted, ProjectWriteFence
 from projecta_api.extraction.correction_burden import (
     CorrectionBurdenRequest,
     CorrectionBurdenTelemetryService,
     InMemoryCorrectionBurdenRepository,
-    _request_digest_from_event,
+    request_digest_from_event,
 )
-from projecta_api.configuration.storage import OperationalDatabase
-from projecta_api.structured_candidate_store import StructuredCandidateEditStore
-from projecta_api.config import Settings
-from projecta_api.context import TrustedActorContext, TrustedRequestContext
-from projecta_api.evidence import EvidencePutRequest, LocalEvidenceStore
-from projecta_api.structured_note import StructuredCandidateEditRequest, StructuredNoteDraft
-from projecta_api.structured_note_store import (
-    StructuredNoteDraftStore,
-    structured_note_draft_fingerprint,
-)
-from projecta_api.export_fence import ExportWriteAttempted, ProjectWriteFence
 from projecta_api.main import create_app
+from projecta_api.operational.schema import CorrectionBurdenEvent, ReviewDecisionReceipt
 from projecta_api.portable_export import (
     PORTABLE_CONTRACT,
     PortableExportFailure,
     ProjectPortableExportService,
     _Payload,
-    _canonical_json,
     _verify_archive,
     _write_archive,
+    canonical_json,
     project_source_revision,
 )
 from projecta_api.project_workspace import catalog_revision, opaque_project_handle
 from projecta_api.semantic_core import HttpSemanticCoreClient, SemanticCoreProblem
+from projecta_api.structured_candidate_store import StructuredCandidateEditStore
+from projecta_api.structured_note import StructuredCandidateEditRequest, StructuredNoteDraft
+from projecta_api.structured_note_store import (
+    StructuredNoteDraftStore,
+    structured_note_draft_fingerprint,
+)
+
+
+class _FakeRow:
+    """Minimal Row shape: single-model tuple for Core Connection fakes."""
+
+    def __init__(self, values: tuple[object, ...]) -> None:
+        self._values = values
+
+    def tuple(self) -> tuple[object, ...]:
+        return self._values
 
 
 class ExportCore:
@@ -185,7 +195,7 @@ def test_archive_verifier_rejects_pre_amendment_or_invalid_source_revision(
     }
     if source_revision is not None:
         manifest["sourceRevision"] = source_revision
-    manifest_bytes = _canonical_json(manifest)
+    manifest_bytes = canonical_json(manifest)
     archive_path = tmp_path / "proposal.projecta"
     payloads = (payload,)
     _write_archive(archive_path, manifest_bytes, payloads)
@@ -249,7 +259,7 @@ def test_archive_verifier_rejects_payload_digest_corruption(tmp_path) -> None:
         sha256=hashlib.sha256(payload_bytes).hexdigest(),
     )
     source_revision = "catalog-r-" + "0" * 40
-    manifest_bytes = _canonical_json(
+    manifest_bytes = canonical_json(
         {
             "portableContract": PORTABLE_CONTRACT,
             "exportId": "7cccb4d4-38a5-4c96-a5c4-c7d90ae5c57a",
@@ -295,7 +305,7 @@ def test_archive_verifier_rejects_incomplete_payload_snapshot(tmp_path) -> None:
         sha256=hashlib.sha256(payload_bytes).hexdigest(),
     )
     source_revision = "catalog-r-" + "0" * 40
-    manifest_bytes = _canonical_json(
+    manifest_bytes = canonical_json(
         {
             "portableContract": PORTABLE_CONTRACT,
             "exportId": "7cccb4d4-38a5-4c96-a5c4-c7d90ae5c57a",
@@ -443,14 +453,13 @@ async def test_receipt_export_iterates_core_rows_without_store_span_reference(tm
     evidence_digest = "sha256:" + hashlib.sha256(quote.encode("utf-8")).hexdigest()
     request_digest = "sha256:" + "1" * 64
     occurred_at = datetime(2026, 10, 4, 7, tzinfo=timezone(timedelta(hours=7)))
-    receipt_digest = export_module._receipt_digest(request_digest, occurred_at)
-    assert receipt_digest == export_module._receipt_digest(
+    receipt_digest = export_module.receipt_digest(request_digest, occurred_at)
+    assert receipt_digest == export_module.receipt_digest(
         request_digest, occurred_at.astimezone(UTC)
     )
-    row = SimpleNamespace(
+    row = ReviewDecisionReceipt(
         receipt_id="rr1_" + request_digest.removeprefix("sha256:"),
         project_id=project_id,
-        project_digest=export_module._digest_text(project_id),
         actor_digest="sha256:" + "2" * 64,
         authorization_digest="sha256:" + "3" * 64,
         item_kind="entity",
@@ -468,11 +477,10 @@ async def test_receipt_export_iterates_core_rows_without_store_span_reference(tm
         occurred_at=occurred_at,
         receipt_digest=receipt_digest,
     )
-
     class Result:
-        # Core Connection scalars() returns only the selected receipt_id column.
+        # Core Connection yields Row tuples holding the single selected model.
         def __iter__(self):
-            return iter((row,))
+            return iter([_FakeRow((row,))])
 
         def scalars(self):
             return iter((row.receipt_id,))
@@ -533,15 +541,34 @@ def test_portable_export_iterates_core_correction_rows(tmp_path) -> None:
     event = CorrectionBurdenTelemetryService(InMemoryCorrectionBurdenRepository()).record(
         request
     )
-    row_values = event.model_dump()
-    row_values["request_digest"] = _request_digest_from_event(project_id, event)
-    row_values["project_id"] = project_id
-    row = SimpleNamespace(**row_values)
+    row = CorrectionBurdenEvent(
+        event_id=event.event_id,
+        project_id=project_id,
+        item_kind=event.item_kind,
+        item_digest=event.item_digest,
+        assertion_digest=event.assertion_digest,
+        source_version_digest=event.source_version_digest,
+        source_version_revision=event.source_version_revision,
+        review_receipt_digest=event.review_receipt_digest,
+        materialization_revision=event.materialization_revision,
+        inference_revision=event.inference_revision,
+        correction_category=event.correction_category,
+        correction_dimensions=list(event.correction_dimensions),
+        review_outcome=event.review_outcome,
+        semantic_edit_count=event.semantic_edit_count,
+        review_latency_ms=event.review_latency_ms,
+        materialization_state=event.materialization_state,
+        inference_state=event.inference_state,
+        idempotency_digest=event.idempotency_digest,
+        request_digest=request_digest_from_event(project_id, event),
+        occurred_at=event.occurred_at,
+        event_digest=event.event_digest,
+    )
 
     class Result:
-        # Core Connection scalars() returns only the selected event_id column.
+        # Core Connection yields Row tuples holding the single selected model.
         def __iter__(self):
-            return iter((row,))
+            return iter([_FakeRow((row,))])
 
         def scalars(self):
             return iter((row.event_id,))
@@ -694,7 +721,7 @@ def test_portable_export_serializes_sqlite_rows(tmp_path) -> None:
 def test_portable_export_serializes_committed_sqlite_draft(tmp_path) -> None:
     database = OperationalDatabase(str(tmp_path / "operational.db"))
     draft_store = StructuredNoteDraftStore(database)
-    candidate_store = StructuredCandidateEditStore(database)
+    candidate_store = StructuredCandidateEditStore(database)  # noqa: F841 -- ensures candidate table exists
     draft = StructuredNoteDraft.model_validate(
         {
             "title": "Committed SQLite export",
@@ -747,7 +774,7 @@ def test_portable_export_serializes_committed_sqlite_draft(tmp_path) -> None:
 def test_portable_export_rejects_tampered_committed_sqlite_draft(tmp_path) -> None:
     database = OperationalDatabase(str(tmp_path / "operational.db"))
     draft_store = StructuredNoteDraftStore(database)
-    candidate_store = StructuredCandidateEditStore(database)
+    candidate_store = StructuredCandidateEditStore(database)  # noqa: F841 -- ensures candidate table exists
     draft = StructuredNoteDraft.model_validate(
         {
             "title": "Committed SQLite export",

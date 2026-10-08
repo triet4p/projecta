@@ -167,6 +167,10 @@ class ConnectorPrincipalPort(Protocol):
         self, principal: ConnectorPrincipal, project_id: str
     ) -> ProjectMembershipDecision: ...
 
+    def refresh_catalog(self, project_ids: tuple[str, ...]) -> None:
+        """Replace the snapshot allowlist with the just-published catalog."""
+        ...
+
 
 class InstallationLookup(Protocol):
     def get_installation(self, project_id: str, installation_id: str) -> InstallationRecord | None: ...
@@ -295,6 +299,10 @@ class DeterministicTestPrincipalAdapter:
     ) -> ProjectMembershipDecision:
         return ProjectMembershipDecision(project_id in principal.allowed_projects)
 
+    def refresh_catalog(self, project_ids: tuple[str, ...]) -> None:
+        """Test adapter holds a fixed allowlist; publication refresh is a no-op."""
+
+        _ = project_ids
 
 class ProductionConnectorPrincipalAdapter:
     """Resolve connector authority from the validated Projecta session only."""
@@ -334,6 +342,10 @@ class ProductionConnectorPrincipalAdapter:
     async def project_membership(self, principal: ConnectorPrincipal, project_id: str) -> ProjectMembershipDecision:
         return ProjectMembershipDecision(project_id in principal.allowed_projects)
 
+    def refresh_catalog(self, project_ids: tuple[str, ...]) -> None:
+        """Production authority resolves per session; publication refresh is a no-op."""
+
+        _ = project_ids
 
 class ConnectorPolicy:
     """Authorize each connector action independently after principal resolution."""
@@ -347,6 +359,11 @@ class ConnectorPolicy:
         self._principal_port = principal_port
         self._installation_lookup = installation_lookup
         self._run_lookup = run_lookup
+
+    def refresh_principal_catalog(self, project_ids: tuple[str, ...]) -> None:
+        """Refresh the principal snapshot after a journaled catalog publication."""
+
+        self._principal_port.refresh_catalog(project_ids)
 
     async def authorize(
         self, request: ConnectorAuthorizationRequest

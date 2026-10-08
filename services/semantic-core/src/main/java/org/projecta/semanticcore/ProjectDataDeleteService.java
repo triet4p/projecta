@@ -60,9 +60,7 @@ public final class ProjectDataDeleteService {
         }
         var update = new StringBuilder();
         for (var role : GraphRole.values()) {
-            update.append("DELETE WHERE { GRAPH <")
-                    .append(graphs.get(role))
-                    .append("> { ?s ?p ?o } }; ");
+            update.append("DELETE WHERE { GRAPH <").append(graphs.get(role)).append("> { ?s ?p ?o } }; ");
         }
         gateway.update(update.toString());
         var removed = new LinkedHashMap<String, Object>();
@@ -80,22 +78,21 @@ public final class ProjectDataDeleteService {
     }
 
     private void assertNoForeignProjectGraphs(ProjectId project, Map<GraphRole, String> graphs) {
-        var allowed = String.join(", ", graphs.values().stream().map(graph -> "<" + graph + ">").toList());
+        var allowed = String.join(
+                ", ", graphs.values().stream().map(graph -> "<" + graph + ">").toList());
         var prefix = "https://w3id.org/projecta/data/project/" + project.value() + "/";
-        boolean foreign = gateway.ask(
-                "ASK { GRAPH ?graph { ?s ?p ?o } FILTER(STRSTARTS(STR(?graph), "
-                        + quoted(prefix)
-                        + ")) FILTER(?graph NOT IN ("
-                        + allowed
-                        + ")) }");
+        boolean foreign = gateway.ask("ASK { GRAPH ?graph { ?s ?p ?o } FILTER(STRSTARTS(STR(?graph), "
+                + quoted(prefix)
+                + ")) FILTER(?graph NOT IN ("
+                + allowed
+                + ")) }");
         if (foreign) {
             throw new IllegalStateException("project has graphs outside its canonical scope");
         }
     }
 
     private long countTriples(String graph) {
-        var response = gateway.select(
-                "SELECT (COUNT(*) AS ?count) WHERE { GRAPH <" + graph + "> { ?s ?p ?o } }");
+        var response = gateway.select("SELECT (COUNT(*) AS ?count) WHERE { GRAPH <" + graph + "> { ?s ?p ?o } }");
         try {
             var bindings = new com.fasterxml.jackson.databind.ObjectMapper()
                     .readTree(response)

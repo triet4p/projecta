@@ -4,7 +4,6 @@ import org.apache.jena.query.Dataset;
 import org.apache.jena.query.ReadWrite;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.ResourceFactory;
-import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
 
 /**
@@ -36,8 +35,7 @@ public final class ApprovedCandidateBindingService {
         }
         this.dataset = dataset;
         this.router = router;
-        this.authorization =
-                authorization == null ? MaterializationAuthorization.disabled() : authorization;
+        this.authorization = authorization == null ? MaterializationAuthorization.disabled() : authorization;
     }
 
     /**
@@ -63,8 +61,8 @@ public final class ApprovedCandidateBindingService {
         }
         dataset.begin(ReadWrite.WRITE);
         try {
-            var candidates =
-                    dataset.getNamedModel(router.route(project, GraphRole.CANDIDATES).toString());
+            var candidates = dataset.getNamedModel(
+                    router.route(project, GraphRole.CANDIDATES).toString());
             var candidate = candidates.getResource(candidateIri);
             if (!candidates.containsResource(candidate)) {
                 throw new IllegalStateException("candidate is not in the trusted project graph");
@@ -81,9 +79,7 @@ public final class ApprovedCandidateBindingService {
                 throw new IllegalStateException("candidate is outside the project scope");
             }
             if (!candidates.contains(
-                    candidate,
-                    ResourceFactory.createProperty(PROJECTA + "proposedOntologyVersion"),
-                    ontologyVersion)) {
+                    candidate, ResourceFactory.createProperty(PROJECTA + "proposedOntologyVersion"), ontologyVersion)) {
                 throw new IllegalStateException("candidate ontology version does not match the plan");
             }
             candidates.removeAll(candidate, status, null);
@@ -102,7 +98,11 @@ public final class ApprovedCandidateBindingService {
     public ApprovedAssertionMaterializationService materializer(MaterializationAuthorization materialization) {
         var shapes = ModelFactory.createDefaultModel();
         return new ApprovedAssertionMaterializationService(
-                dataset, router, new CandidateValidationService(dataset, router, shapes), shapes, materialization, () -> {
-                });
+                dataset,
+                router,
+                new CandidateValidationService(dataset, router, shapes),
+                shapes,
+                materialization,
+                () -> {});
     }
 }

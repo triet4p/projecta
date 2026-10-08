@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import unicodedata
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from typing import Literal, Protocol, cast
@@ -24,6 +24,8 @@ from projecta_api.extraction.controlled_relations import (
 )
 from projecta_api.extraction.local_suggestion_store import (
     LocalSuggestionBudget as StoredBudget,
+)
+from projecta_api.extraction.local_suggestion_store import (
     LocalSuggestionKey,
     LocalSuggestionRepository,
     LocalSuggestionStoreConflict,
@@ -297,6 +299,14 @@ class LocalSuggestionView(BaseModel):
     materialization_state: Literal["blocked"] = Field(default="blocked", alias="materializationState")
 
 
+LocalSuggestionFailureCode = Literal[
+    "local_runtime_unavailable",
+    "local_output_invalid",
+    "source_too_large",
+    "suggestion_budget_exhausted",
+]
+
+
 class LocalSuggestionResponse(BaseModel):
     model_config = ConfigDict(extra="forbid", populate_by_name=True)
 
@@ -308,13 +318,11 @@ class LocalSuggestionResponse(BaseModel):
     )
     budget: LocalSuggestionBudgetView
     suggestion: LocalSuggestionView | None = None
-    link_options: list[LocalSuggestionLinkOption] = Field(default_factory=list, alias="linkOptions")
-    failure_code: Literal[
-        "local_runtime_unavailable",
-        "local_output_invalid",
-        "source_too_large",
-        "suggestion_budget_exhausted",
-    ] | None = Field(default=None, alias="failureCode")
+    link_options: list[LocalSuggestionLinkOption] = Field(
+        default_factory=lambda: cast(list[LocalSuggestionLinkOption], []),
+        alias="linkOptions",
+    )
+    failure_code: LocalSuggestionFailureCode | None = Field(default=None, alias="failureCode")
     receipt: ReviewDecisionReceiptRecord | None = None
 
 
@@ -420,10 +428,13 @@ class OllamaLocalSuggestionGateway:
         if response.status_code != 200:
             raise LocalSuggestionError("local_runtime_unavailable")
         try:
-            body: object = response.json()
+            raw_body: object = response.json()
         except ValueError as error:
             raise LocalSuggestionError("local_output_invalid") from error
-        if not isinstance(body, dict) or not isinstance(body.get("response"), str):
+        if not isinstance(raw_body, dict):
+            raise LocalSuggestionError("local_output_invalid")
+        body: Mapping[str, object] = cast(Mapping[str, object], raw_body)
+        if not isinstance(body.get("response"), str):
             raise LocalSuggestionError("local_output_invalid")
         try:
             raw_output = json.loads(cast(str, body["response"]))
@@ -744,7 +755,7 @@ class LocalSuggestionService:
         link_options: Sequence[LocalSuggestionLinkOption],
         *,
         state_override: SuggestionState | None = None,
-        failure_code: str | None = None,
+        failure_code: LocalSuggestionFailureCode | None = None,
     ) -> LocalSuggestionResponse:
         available = self.model_available
         availability_reason: Literal["local_model_not_configured", "production_disabled"] | None = (
@@ -789,14 +800,18 @@ class LocalSuggestionService:
                 evidenceDigest=record.evidence_digest,
                 receiptDigest=record.receipt_digest,
             )
-        actual_failure: str | None = failure_code or (record.error_code if record is not None else None)
-        if actual_failure not in {
-            None,
+        raw_failure: str | None = failure_code or (record.error_code if record is not None else None)
+        actual_failure: LocalSuggestionFailureCode | None
+        if raw_failure in {
             "local_runtime_unavailable",
             "local_output_invalid",
             "source_too_large",
             "suggestion_budget_exhausted",
         }:
+            actual_failure = cast(LocalSuggestionFailureCode, raw_failure)
+        elif raw_failure is None:
+            actual_failure = None
+        else:
             actual_failure = "local_runtime_unavailable"
         return LocalSuggestionResponse(
             requestId="local-suggestion-service",
@@ -827,9 +842,9 @@ def _validate_model_proposal(
     if relation is not None and output.kind not in {"relation", "abstain"}:
         raise LocalSuggestionError("local_output_invalid")
     if output.kind == "relation":
-        if output.predicate is None:
+        if output.predicate is None or relation is None:
             raise LocalSuggestionError("local_output_invalid")
-        option = relation.option_for(output.predicate) if relation is not None else None
+        option = relation.option_for(output.predicate)
         if option is None:
             raise LocalSuggestionError("local_output_invalid")
         return LocalSuggestionProposal(
@@ -942,15 +957,20 @@ def _model_output_schema() -> dict[str, object]:
     ):
         variant_properties: dict[str, object] = {"kind": {"const": kind}}
         for field_name in required_fields:
-            field_schema = cast(dict[str, object], properties[field_name])
-            alternatives = field_schema.get("anyOf")
+            raw_schema: object = properties[field_name]
+            if not isinstance(raw_schema, dict):
+                raise RuntimeError("optional model output field has no nullable schema")
+            field_schema: dict[str, object] = cast(dict[str, object], raw_schema)
+            alternatives: object = field_schema.get("anyOf")
             if not isinstance(alternatives, list):
                 raise RuntimeError("optional model output field has no nullable schema")
-            non_null = next(
+            non_null: dict[str, object] | None = next(
                 (
-                    alternative
-                    for alternative in alternatives
-                    if isinstance(alternative, dict) and alternative.get("type") != "null"
+                    typed_alternative
+                    for alternative in cast(list[object], alternatives)
+                    if isinstance(alternative, dict)
+                    for typed_alternative in [cast(dict[str, object], alternative)]
+                    if typed_alternative.get("type") != "null"
                 ),
                 None,
             )

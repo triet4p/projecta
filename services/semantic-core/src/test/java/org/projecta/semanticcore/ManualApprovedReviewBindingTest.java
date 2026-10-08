@@ -15,8 +15,7 @@ import org.junit.jupiter.api.Test;
 
 class ManualApprovedReviewBindingTest {
     private static final String PROJECT = "project-alpha";
-    private static final String CANDIDATE =
-            "https://w3id.org/projecta/data/project/project-alpha/candidate/note-1-1";
+    private static final String CANDIDATE = "https://w3id.org/projecta/data/project/project-alpha/candidate/note-1-1";
     private static final String BINDING =
             "projecta-approved-candidate/v1|candidateRevision=1|sourceVersionId=sv_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
                     + "|sourceVersionRevision=1|reviewReceiptDigest=sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
@@ -30,12 +29,11 @@ class ManualApprovedReviewBindingTest {
         var project = new ProjectId(PROJECT);
         seedValidated(dataset, router);
 
-        new ManualApprovedReviewBinding(dataset, router)
-                .applyConfirmedBinding(project, CANDIDATE, BINDING, "0.3.0");
+        new ManualApprovedReviewBinding(dataset, router).applyConfirmedBinding(project, CANDIDATE, BINDING, "0.3.0");
 
         var status = ResourceFactory.createProperty("https://w3id.org/projecta/ontology/candidateStatus");
-        var candidates =
-                dataset.getNamedModel(router.route(project, GraphRole.CANDIDATES).toString());
+        var candidates = dataset.getNamedModel(
+                router.route(project, GraphRole.CANDIDATES).toString());
         assertEquals(
                 "confirmed",
                 candidates
@@ -43,10 +41,7 @@ class ManualApprovedReviewBindingTest {
                         .getProperty(status)
                         .getResource()
                         .getLocalName());
-        assertTrue(candidates.contains(
-                candidates.getResource(CANDIDATE),
-                RDFS.comment,
-                BINDING));
+        assertTrue(candidates.contains(candidates.getResource(CANDIDATE), RDFS.comment, BINDING));
     }
 
     @Test
@@ -57,8 +52,7 @@ class ManualApprovedReviewBindingTest {
         var binding = new ManualApprovedReviewBinding(dataset, router);
 
         assertThrows(
-                IllegalStateException.class,
-                () -> binding.applyConfirmedBinding(project, CANDIDATE, BINDING, "0.3.0"));
+                IllegalStateException.class, () -> binding.applyConfirmedBinding(project, CANDIDATE, BINDING, "0.3.0"));
         assertEquals(
                 0,
                 dataset.getNamedModel(router.route(project, GraphRole.ASSERTED).toString())
@@ -67,31 +61,29 @@ class ManualApprovedReviewBindingTest {
         seedValidated(dataset, router);
         assertThrows(
                 IllegalArgumentException.class,
-                () -> binding.applyConfirmedBinding(
-                        new ProjectId("project-beta"), CANDIDATE, BINDING, "0.3.0"));
+                () -> binding.applyConfirmedBinding(new ProjectId("project-beta"), CANDIDATE, BINDING, "0.3.0"));
         assertThrows(
                 IllegalArgumentException.class,
                 () -> binding.applyConfirmedBinding(project, CANDIDATE, "tampered", "0.3.0"));
         assertThrows(
-                IllegalStateException.class,
-                () -> binding.applyConfirmedBinding(project, CANDIDATE, BINDING, "0.2.0"));
+                IllegalStateException.class, () -> binding.applyConfirmedBinding(project, CANDIDATE, BINDING, "0.2.0"));
 
-        var candidates =
-                dataset.getNamedModel(router.route(project, GraphRole.CANDIDATES).toString());
+        var candidates = dataset.getNamedModel(
+                router.route(project, GraphRole.CANDIDATES).toString());
         assertEquals(
                 "validated",
                 candidates
                         .getResource(CANDIDATE)
-                        .getProperty(ResourceFactory.createProperty(
-                                "https://w3id.org/projecta/ontology/candidateStatus"))
+                        .getProperty(
+                                ResourceFactory.createProperty("https://w3id.org/projecta/ontology/candidateStatus"))
                         .getResource()
                         .getLocalName());
     }
 
     private static void seedValidated(Dataset dataset, GraphIriRouter router) {
         var project = new ProjectId(PROJECT);
-        var candidates =
-                dataset.getNamedModel(router.route(project, GraphRole.CANDIDATES).toString());
+        var candidates = dataset.getNamedModel(
+                router.route(project, GraphRole.CANDIDATES).toString());
         var candidate = candidates.createResource(CANDIDATE);
         candidate.addProperty(
                 org.apache.jena.vocabulary.RDF.type,
@@ -103,8 +95,7 @@ class ManualApprovedReviewBindingTest {
                 ResourceFactory.createProperty("https://w3id.org/projecta/ontology/candidateStatus"),
                 ResourceFactory.createResource("https://w3id.org/projecta/ontology/validated"));
         candidate.addLiteral(
-                ResourceFactory.createProperty("https://w3id.org/projecta/ontology/proposedOntologyVersion"),
-                "0.3.0");
+                ResourceFactory.createProperty("https://w3id.org/projecta/ontology/proposedOntologyVersion"), "0.3.0");
         candidate.addProperty(
                 ResourceFactory.createProperty("http://www.w3.org/ns/prov#wasDerivedFrom"),
                 ResourceFactory.createResource("https://w3id.org/projecta/data/project/" + PROJECT + "/note-item/x-1"));
@@ -117,8 +108,7 @@ class ManualApprovedReviewBindingTest {
         candidate.addProperty(
                 ResourceFactory.createProperty("http://www.w3.org/ns/prov#generatedAtTime"),
                 candidates.createTypedLiteral(
-                        "2026-09-27T00:00:00Z",
-                        org.apache.jena.datatypes.xsd.XSDDatatype.XSDdateTime));
+                        "2026-09-27T00:00:00Z", org.apache.jena.datatypes.xsd.XSDDatatype.XSDdateTime));
     }
 
     @Test
@@ -165,7 +155,8 @@ class ManualApprovedReviewBindingTest {
         assertThrows(IllegalStateException.class, () -> disabled.materialize(plan));
         assertEquals(
                 0,
-                dataset.getNamedModel(router.route(new ProjectId(PROJECT), GraphRole.ASSERTED).toString())
+                dataset.getNamedModel(router.route(new ProjectId(PROJECT), GraphRole.ASSERTED)
+                                .toString())
                         .size());
     }
 }

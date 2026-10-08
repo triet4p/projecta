@@ -30,7 +30,9 @@ public record SemanticCoreConfiguration(URI fusekiDatasetUrl, String host, int p
             throw new IllegalArgumentException(HOST + " must be 0.0.0.0 or 127.0.0.1");
         }
         var rawPort = environment.getOrDefault(PORT, "8080");
-        var rawShapes = environment.getOrDefault(SHAPES_DIRECTORY, DEFAULT_SHAPES_DIRECTORY).trim();
+        var rawShapes = environment
+                .getOrDefault(SHAPES_DIRECTORY, DEFAULT_SHAPES_DIRECTORY)
+                .trim();
         if (rawShapes.isBlank()) {
             throw new IllegalArgumentException(SHAPES_DIRECTORY + " must not be blank");
         }

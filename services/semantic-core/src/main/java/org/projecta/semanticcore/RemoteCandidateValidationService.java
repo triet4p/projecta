@@ -176,23 +176,23 @@ public final class RemoteCandidateValidationService {
             data.add(candidates);
             data.add(asserted);
             data.add(provenance);
-            var projectReport = ShaclValidator.get().validate(
-                    shapesForCapture(candidates, provenance).getGraph(), data.getGraph());
+            var projectReport = ShaclValidator.get()
+                    .validate(shapesForCapture(candidates, provenance).getGraph(), data.getGraph());
 
             inferenceData.add(ontology);
             inferenceData.add(asserted);
             inferenceData.add(inferred);
-            var inferenceReport =
-                    ShaclValidator.get().validate(m4Shapes.getGraph(), inferenceData.getGraph());
+            var inferenceReport = ShaclValidator.get().validate(m4Shapes.getGraph(), inferenceData.getGraph());
             var violations = java.util.stream.Stream.concat(
                             projectReport.getEntries().stream(), inferenceReport.getEntries().stream())
                     .map(entry -> new CandidateValidationResult.Violation(
                             entry.source() == null ? null : entry.source().toString(),
-                            entry.resultPath() == null ? null : entry.resultPath().toString(),
+                            entry.resultPath() == null
+                                    ? null
+                                    : entry.resultPath().toString(),
                             entry.message()))
                     .toList();
-            return new CandidateValidationResult(
-                    projectReport.conforms() && inferenceReport.conforms(), violations);
+            return new CandidateValidationResult(projectReport.conforms() && inferenceReport.conforms(), violations);
         } finally {
             ontology.close();
             data.close();

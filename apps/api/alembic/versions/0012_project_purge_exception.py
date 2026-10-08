@@ -33,6 +33,7 @@ Invariant (also enforced by the API purge service, never by session flags):
 from collections.abc import Sequence
 
 import sqlalchemy as sa
+
 from alembic import op
 
 revision: str = "0012_project_purge_exception"

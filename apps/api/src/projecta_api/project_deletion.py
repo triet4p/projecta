@@ -42,8 +42,9 @@ import json
 import os
 import re
 import shutil
+import sqlite3
 import uuid
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -207,6 +208,14 @@ class ProjectDeletionService:
         # deployment layout; successful deletes no longer request any restart.
         self._restart_file = restart_file
         self._runtime_id = runtime_id
+        self._catalog_publisher: Callable[[Mapping[str, object]], None] | None = None
+
+    def attach_catalog_publisher(
+        self, publisher: Callable[[Mapping[str, object]], None]
+    ) -> None:
+        """Attach the composition-owned live catalog refresh hook."""
+
+        self._catalog_publisher = publisher
 
     def enabled(self) -> bool:
         return bool(
@@ -424,7 +433,7 @@ class ProjectDeletionService:
         The registry file is the durable catalog; the running process holds a
         snapshot only via the shared publisher attached at composition time.
         """
-        publisher = getattr(self, "_catalog_publisher", None)
+        publisher = self._catalog_publisher
         if publisher is None:
             return
         publisher(registry)
@@ -513,10 +522,13 @@ class ProjectDeletionService:
         idle: set[str] = set()
         for preview_file in preview_files:
             try:
-                preview = json.loads(preview_file.read_text(encoding="utf-8"))
+                raw_preview: object = json.loads(preview_file.read_text(encoding="utf-8"))
             except (OSError, UnicodeError, ValueError):
                 return None
-            if not isinstance(preview, dict) or preview.get("projectId") != project_id:
+            if not isinstance(raw_preview, Mapping):
+                continue
+            preview: Mapping[str, object] = cast(Mapping[str, object], raw_preview)
+            if preview.get("projectId") != project_id:
                 continue
             if preview.get("actorId") != actor_id:
                 # A foreign actor owns staged state for this scope. Ownership
@@ -706,12 +718,14 @@ class ProjectDeletionService:
         if previews_root.is_dir() and not previews_root.is_symlink():
             for preview_file in sorted(previews_root.glob("*/preview.json")):
                 try:
-                    preview = json.loads(preview_file.read_text(encoding="utf-8"))
+                    raw_preview: object = json.loads(preview_file.read_text(encoding="utf-8"))
                 except (OSError, UnicodeError, ValueError):
                     continue
+                if not isinstance(raw_preview, Mapping):
+                    continue
+                preview: Mapping[str, object] = cast(Mapping[str, object], raw_preview)
                 if (
-                    isinstance(preview, dict)
-                    and preview.get("projectId") == project_id
+                    preview.get("projectId") == project_id
                     and isinstance(preview.get("exportId"), str)
                 ):
                     export_ids.add(str(preview["exportId"]))
@@ -719,12 +733,14 @@ class ProjectDeletionService:
         if results_root.is_dir() and not results_root.is_symlink():
             for result_file in sorted(results_root.glob("*.json")):
                 try:
-                    record = json.loads(result_file.read_text(encoding="utf-8"))
+                    raw_record: object = json.loads(result_file.read_text(encoding="utf-8"))
                 except (OSError, UnicodeError, ValueError):
                     continue
+                if not isinstance(raw_record, Mapping):
+                    continue
+                record: Mapping[str, object] = cast(Mapping[str, object], raw_record)
                 if (
-                    isinstance(record, dict)
-                    and record.get("projectId") == project_id
+                    record.get("projectId") == project_id
                     and isinstance(record.get("exportId"), str)
                 ):
                     export_ids.add(str(record["exportId"]))
@@ -823,7 +839,7 @@ class ProjectDeletionService:
                 probe.execute(
                     "DELETE FROM authoring_cost_events WHERE event_id = 'purge-guard-probe'"
                 )
-            except Exception:
+            except sqlite3.Error:
                 pass
             else:
                 raise ProjectDeletionFailure("DELETE_RECOVERY_REQUIRED", status_code=503)
@@ -847,13 +863,15 @@ class ProjectDeletionService:
         Every other table uses an exact ``project_id = ?`` predicate; attempts
         resolve through their parent runs. Any failure rolls everything back.
         """
-        assert self._postgres_engine is not None
         removed = 0
+        engine = self._postgres_engine
+        if engine is None:
+            return removed
         try:
-            is_postgresql = self._postgres_engine.dialect.name == "postgresql"
-        except Exception:
+            is_postgresql = engine.dialect.name == "postgresql"
+        except (AttributeError, ValueError):
             is_postgresql = True
-        with self._postgres_engine.begin() as connection:
+        with engine.begin() as connection:
             if is_postgresql:
                 attempts = connection.execute(
                     text(
@@ -983,14 +1001,16 @@ class ProjectDeletionService:
             try:
                 if directory.is_symlink() or not directory.is_dir():
                     raise ProjectDeletionFailure("DELETE_BUSY", status_code=409)
-                preview = json.loads((directory / "preview.json").read_text(encoding="utf-8"))
+                raw_preview: object = json.loads((directory / "preview.json").read_text(encoding="utf-8"))
             except ProjectDeletionFailure:
                 raise
             except (OSError, UnicodeError, ValueError) as error:
                 raise ProjectDeletionFailure("DELETE_BUSY", status_code=409) from error
+            if not isinstance(raw_preview, Mapping):
+                raise ProjectDeletionFailure("DELETE_BUSY", status_code=409)
+            preview: Mapping[str, object] = cast(Mapping[str, object], raw_preview)
             if (
-                not isinstance(preview, dict)
-                or preview.get("projectId") != project_id
+                preview.get("projectId") != project_id
                 or preview.get("actorId") != actor_id
             ):
                 raise ProjectDeletionFailure("DELETE_BUSY", status_code=409)
@@ -1048,7 +1068,7 @@ class ProjectDeletionService:
                     "SELECT actor_id FROM project_selections WHERE project_id = ?",
                     (project_id,),
                 ).fetchall()
-            except Exception:
+            except sqlite3.Error:
                 return
             actors = [str(row["actor_id"]) for row in rows]
         for actor_id in actors:
@@ -1080,12 +1100,16 @@ def _read_archive_identity(archive: Path) -> tuple[str | None, str | None]:
             return None, None
         with zipfile.ZipFile(archive, "r") as package:
             raw = package.read("manifest.json")
-        manifest = json.loads(raw.decode("utf-8", "strict"))
-        project = manifest.get("project") if isinstance(manifest, dict) else None
-        export_id = manifest.get("exportId") if isinstance(manifest, dict) else None
-        if not isinstance(project, dict) or not isinstance(export_id, str):
+        manifest_raw: object = json.loads(raw.decode("utf-8", "strict"))
+        if not isinstance(manifest_raw, Mapping):
             return None, None
-        project_id = project.get("projectId")
+        manifest: Mapping[str, object] = cast(Mapping[str, object], manifest_raw)
+        project_raw: object = manifest.get("project")
+        export_id: object = manifest.get("exportId")
+        if not isinstance(project_raw, Mapping) or not isinstance(export_id, str):
+            return None, None
+        typed_project: Mapping[str, object] = cast(Mapping[str, object], project_raw)
+        project_id: object = typed_project.get("projectId")
         if not isinstance(project_id, str) or not _PROJECT_ID.fullmatch(project_id):
             return None, None
         try:
@@ -1102,21 +1126,26 @@ def _read_archive_identity(archive: Path) -> tuple[str | None, str | None]:
 
 
 def _registry_entries(registry: Mapping[str, object]) -> list[dict[str, str]]:
-    raw = registry.get("projects")
+    raw: object = registry.get("projects")
     if raw is None:
+        header_id: object = registry["projectId"]
+        header_name: object = registry["projectName"]
+        if not isinstance(header_id, str) or not isinstance(header_name, str):
+            raise ProjectDeletionFailure("DELETE_DESTINATION_INVALID", status_code=503)
         return [
             {
-                "projectId": cast(str, registry["projectId"]),
-                "projectName": cast(str, registry["projectName"]),
+                "projectId": header_id,
+                "projectName": header_name,
             }
         ]
     if not isinstance(raw, list):
         raise ProjectDeletionFailure("DELETE_DESTINATION_INVALID", status_code=503)
+    raw_items: list[object] = cast(list[object], raw)
     result: list[dict[str, str]] = []
-    for value in raw:
-        if not isinstance(value, Mapping):
+    for raw_value in raw_items:
+        if not isinstance(raw_value, Mapping):
             raise ProjectDeletionFailure("DELETE_DESTINATION_INVALID", status_code=503)
-        item = cast(Mapping[str, object], value)
+        item = cast(Mapping[str, object], raw_value)
         if set(item) != {"projectId", "projectName"}:
             raise ProjectDeletionFailure("DELETE_DESTINATION_INVALID", status_code=503)
         project_id, project_name = item["projectId"], item["projectName"]
@@ -1156,10 +1185,11 @@ def _read_private_json(path: Path, code: str = "DELETE_RECOVERY_REQUIRED") -> di
     try:
         if path.is_symlink() or not path.is_file():
             raise OSError("not a regular file")
-        value = json.loads(path.read_text(encoding="utf-8", errors="strict"))
-        if not isinstance(value, dict):
+        raw_value: object = json.loads(path.read_text(encoding="utf-8", errors="strict"))
+        if not isinstance(raw_value, dict):
             raise ValueError("not an object")
-        return {str(key): item for key, item in value.items()}
+        typed_value: Mapping[str, object] = cast(Mapping[str, object], raw_value)
+        return {str(key): item for key, item in typed_value.items()}
     except ProjectDeletionFailure:
         raise
     except (OSError, UnicodeError, ValueError) as error:

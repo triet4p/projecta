@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-import hashlib
 import base64
+import hashlib
 import importlib.util
 import sys
 from pathlib import Path
@@ -9,13 +9,13 @@ from pathlib import Path
 import pytest
 
 _builder_path = Path(__file__).resolve().parents[1] / "build_native_package.py"
+sys.path.insert(0, str(_builder_path.parent))  # sibling projecta_local import
 _builder_spec = importlib.util.spec_from_file_location("build_native_package", _builder_path)
 if _builder_spec is None or _builder_spec.loader is None:
     raise RuntimeError("could not load the native package builder")
 builder = importlib.util.module_from_spec(_builder_spec)
 sys.modules[_builder_spec.name] = builder
 _builder_spec.loader.exec_module(builder)
-
 
 def test_release_signing_rejects_private_key_inside_repository(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
