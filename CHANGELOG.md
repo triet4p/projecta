@@ -6,12 +6,72 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+No unreleased changes.
+
+## [0.7.0] - 2026-10-08
+
 ### Added
 
-- Added bounded native project data export under the approved projecta-portable.v1 contract, including cross-store writer exclusion fencing, typed schema validation across semantic TriG, evidence objects, application workflows, connectors, review decision receipts, and correction burden events, with hard resource bounds and explicit export confirmation.
+- Added human-authored exact-span capture from Notes with a direct return to
+  the Review Queue, so the zero-model workflow is reachable through normal
+  workspace navigation. Capture returns the server-issued project-scoped
+  candidate handle, and does not approve or materialize the candidate.
 
-- Kept graph-backed exact-span review digests distinct from LocalEvidenceStore
-  object references while preserving required connector-inbox evidence closure.
+- Added explicitly requested, locally routed item/type/link suggestions for
+  confirmed manual captures, with revision-bound caching, daily budgets, and
+  append-only human decisions. No model call runs during capture or reads;
+  production remains disabled and suggestions do not write graph assertions.
+
+- Added controlled relations between distinct, same-project manual captures
+  with current confirmation receipts and deterministic shared-source evidence.
+  Manual predicate selection is zero-model; local assistance can propose only
+  an allowlisted predicate. Confirm/reject decisions append receipts and never
+  materialize graph relations.
+
+- Added digest-only, project- and actor-scoped authoring metrics for local
+  inference attempts, zero-model workflows, correction burden, and
+  receipt-backed accepted assertions. Confirm receipts alone do not count as
+  materialization; no source text, prompts, or provider payloads enter telemetry.
+
+- Added bounded native project data export under the approved
+  projecta-portable.v1 contract, with cross-store writer exclusion fencing,
+  typed schema validation across semantic TriG, evidence objects, application
+  workflows, connectors, review decision receipts, and correction burden
+  events, plus hard resource bounds and explicit owner export confirmation.
+  Export lives on the Project Overview screen and is available only from the
+  supported native launcher; the archive is plaintext with integrity hashes,
+  not encryption or signing.
+
+- Added validated manual portable-project import under the approved
+  projecta-portable.v1 contract: full archive validation before any live
+  change, explicit owner preview/confirmation/cancel, staged-copy apply with
+  quiesced services and catalog-last publication, durable
+  interrupted-recovery journaling with fail-closed restart behavior, idempotent
+  exact-replay, and finite tamper/partial/version/conflict/unauthorized
+  responses with no implicit approval or materialization. Verified on isolated
+  disposable native roots with real browser journeys.
+
+- Added validated native project-data deletion under the approved
+  projecta-deletion.v1 contract: a discoverable per-project Delete action with
+  explicit typed-identity confirmation, per-store purge across semantic
+  graphs, evidence, SQLite, PostgreSQL history (via a narrow
+  transaction-local purge exception), import-ledger scope entries, project
+  authorization grants, registry and selections, with truthful
+  deleted/refused outcomes, busy/cancel no-mutation behavior, interruption
+  recovery, persisted empty catalog on last-project delete with fresh import
+  afterwards, and no automatic backup, rollback, or undo. Verified on isolated
+  disposable native roots with real browser journeys.
+
+- Added optional directory-backed serving of the compiled React SPA from the
+  Application API for a same-origin local package path. Missing or invalid
+  configured assets fail readiness instead of masquerading as a usable install.
+
+- Added a Windows 11 x64 per-user launcher path with loopback-bound managed
+  services, CurrentUser DPAPI secrets, readiness/status/stop controls, and
+  hash-verified whole-state backup/restore with rollback. The owner-authorized
+  unsigned 0.7.0 test-pre-release exception applies only to that exact version
+  and channel; it does not establish clean-Windows readiness or signed-release
+  eligibility.
 
 - Added a hybrid-online Microsoft Visual C++ v14 prerequisite to the unsigned
   0.7.0 Windows 11 x64 build path. Package provenance now records selected
@@ -25,48 +85,51 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   fixed-port collision. The NSIS installer itself remains unrun; no clean-host
   proof, public download, or signed-release eligibility is established.
 
-- Added explicitly requested, locally routed item/type/link suggestions for
-  confirmed manual captures, with revision-bound caching, daily budgets, and
-  append-only human decisions. No model call runs during capture or reads;
-  production remains disabled and suggestions do not write graph assertions.
+- Kept graph-backed exact-span review digests distinct from LocalEvidenceStore
+  object references while preserving required connector-inbox evidence closure.
 
-- Added controlled relations between distinct, same-project manual captures
-  with current confirmation receipts and deterministic shared-source evidence.
-  Manual predicate selection is zero-model; local assistance can propose only
-  an allowlisted predicate. Confirm/reject decisions append receipts and never
-  materialize graph relations.
-- Added digest-only, project- and actor-scoped authoring metrics for local
-  inference attempts, zero-model workflows, correction burden, and
-  receipt-backed accepted assertions. Confirm receipts alone do not count as
-  materialization; no source text, prompts, or provider payloads enter telemetry.
-
-- Exposed human-authored exact-span capture from Notes and returned completed
-  captures directly to the Review Queue, making the zero-model workflow
-  reachable through normal workspace navigation.
-
-- Added optional directory-backed serving of the compiled React SPA from the
-  Application API for a same-origin local package path. Missing or invalid
-  configured assets fail readiness instead of masquerading as a usable install.
-
-- Added a Windows 11 x64 per-user launcher path with loopback-bound managed
-  services, CurrentUser DPAPI secrets, readiness/status/stop controls, and
-  hash-verified whole-state backup/restore with rollback. The owner-authorized
-  unsigned 0.7.0 test-pre-release exception applies only to that exact version
-  and channel; it does not establish clean-Windows readiness or signed-release
-  eligibility.
-
-- Added validated native project-data deletion under the approved projecta-deletion.v1 contract: discoverable per-project Delete action with explicit typed-identity confirmation, per-store purge across semantic graphs, evidence, SQLite, PostgreSQL history (via a narrow transaction-local purge exception), import-ledger scope entries, registry and selections, with truthful deleted/refused outcomes, busy/cancel no-mutation behavior, interruption recovery, persisted empty catalog on last-project delete with fresh import afterwards, and launcher restart guidance. Verified on isolated disposable native roots with real browser journeys.
-- Added validated manual portable-project import under the approved projecta-portable.v1 contract: full archive validation before any live change, explicit owner preview/confirmation/cancel, staged-copy apply with quiesced services and catalog-last publication, durable interrupted-recovery journaling with fail-closed restart behavior, idempotent exact-replay, and finite tamper/partial/version/conflict/unauthorized responses with no implicit approval or materialization. Verified on isolated disposable native roots with real browser journeys.
 ### Fixed
 
-- Corrected the native launcher path: approved first-run workspace provisioning
-  replaces the previous setup blocker; Semantic Core reads the packaged shapes
-  directory instead of a hardcoded Unix path; child services are owned by a
-  Windows Job Object so a manager crash cannot orphan them; restore uses a
-  two-phase directory swap that preserves full state across partial failures;
-  Fuseki readiness probes the dataset endpoint; the embeddable Python entry
-  points resolve the staged API; and the native package builder rebuilds the
-  compiled SPA from source before staging.
+- Fixed the project-deletion confirmation showing and reporting double the
+  actual graph count. The dialog and the deletion receipt now report the
+  authoritative total.
+
+- Fixed the project-deletion confirmation escaping the viewport on short
+  screens. The confirmation now opens as a bounded modal dialog with scrollable
+  content and keeps every warning, the typed project name/ID field, and the
+  Cancel/Delete permanently actions reachable by mouse and keyboard.
+
+- Fixed project deletion refusing with a crash-loop when an interrupted delete
+  is recovered after its staged previews were already forgotten, and refusing
+  only after destroying data when a staged preview belonged to another actor.
+  Recovery now completes an already-forgotten staging tail idempotently, and a
+  foreign-actor staged preview refuses before any project data is touched.
+
+- Stopped restarting every local service when a project is imported or
+  deleted. The new or remaining project catalog serves immediately: the
+  Projects list refreshes itself with no manual browser reload, and
+  PostgreSQL, Fuseki, Semantic Core, and the API keep running. Interrupted
+  operations still refuse safely until recovered.
+
+- Fixed the web portable-import preview validator so the `/v1/imports/previews`
+  path is not also checked against the import-result shape; previews (which
+  carry no `status`) no longer fail with a malformed-result error in the
+  Projects import UI.
+
+- Fixed portable project exports failing with an internal error by restoring
+  the export work-directory root on application startup.
+
+- Fixed portable imports of a new project beside a renamed first-run workspace
+  by sending the incoming project name when the destination has no local
+  display name for it; the Core import validation no longer rejects the request.
+
+- Fixed corrupted portable-import archives that break deflate decoding failing
+  with an internal error; they now fail closed with the finite package-invalid
+  response.
+
+- Fixed confirmed portable-import apply so a missing staged package file fails
+  closed with `IMPORT_PACKAGE_INVALID` instead of an unmapped internal error;
+  destination state is unchanged.
 
 - Fixed native portable exports with persisted SQLite workflow rows by using
   column-name access, validating uncommitted draft fingerprints against their
@@ -83,10 +146,26 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   burden events by iterating complete SQLAlchemy Core rows rather than
   scalarizing away the fields required for record validation.
 
-- Fixed portable project exports so empty connector state is valid JSON instead of producing an unreadable archive.
+- Fixed portable project exports so empty connector state is valid JSON
+  instead of producing an unreadable archive.
 
-- Prevented transient native-runtime readiness failures by aligning the API probe deadline with its nested Semantic Core check; failed probes now record bounded, allow-listed health details in the local launcher log.
-- Bounded both native Semantic Core and API outer readiness probes at four seconds to cover their nested three-second checks; regression cases exercise delayed success and the single-request deadline failure.
+- Corrected the native launcher path: approved first-run workspace provisioning
+  replaces the previous setup blocker; Semantic Core reads the packaged shapes
+  directory instead of a hardcoded Unix path; child services are owned by a
+  Windows Job Object so a manager crash cannot orphan them; restore uses a
+  two-phase directory swap that preserves full state across partial failures;
+  Fuseki readiness probes the dataset endpoint; the embeddable Python entry
+  points resolve the staged API; and the native package builder rebuilds the
+  compiled SPA from source before staging.
+
+- Prevented transient native-runtime readiness failures by aligning the API
+  probe deadline with its nested Semantic Core check; failed probes now record
+  bounded, allow-listed health details in the local launcher log.
+
+- Bounded both native Semantic Core and API outer readiness probes at four
+  seconds to cover their nested three-second checks; regression cases exercise
+  delayed success and the single-request deadline failure.
+
 - Expanded native package assembly to inventory exact Maven runtime and license
   inputs, distinguish the Microsoft Visual C++ v14 external prerequisite from
   Windows baseline imports, and report recursive x64 PE imports and unverified
@@ -95,21 +174,50 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   pinned prerequisite policy, and rejects any residual runtime DLL in the
   assembled payload.
 
-- Fixed the desktop control panel so its window appears immediately on launch while package verification continues in the background; a failed check now reports its exact code on the visible panel instead of leaving a windowless process.
+- Fixed the desktop control panel so its window appears immediately on launch
+  while package verification continues in the background; a failed check now
+  reports its exact code on the visible panel instead of leaving a windowless
+  process.
+
 - Fixed the desktop first-run flow so submitting a workspace name starts
   background provisioning instead of leaving the panel indefinitely at the
   setup modal.
 
-- Fixed the web portable-import preview validator so the `/v1/imports/previews` path is not also checked against the import-result shape; previews (which carry no `status`) no longer fail with a malformed-result error in the Projects import UI.
-- Fixed portable project exports failing with an internal error by restoring the export work-directory root on application startup.
-- Fixed portable imports of a new project beside a renamed first-run workspace by sending the incoming project name when the destination has no local display name for it; the Core import validation no longer rejects the request.
-- Fixed corrupted portable-import archives that break deflate decoding failing with an internal error; they now fail closed with the finite package-invalid response.
-- Fixed confirmed portable-import apply so a missing staged package file fails closed with `IMPORT_PACKAGE_INVALID` instead of an unmapped internal error; destination state is unchanged.
-- Fixed the unsigned Windows installer failing at the staged-application commit step: setup now leaves the staging directory before renaming it over the install location, commits onto a pre-created empty install directory instead of treating it as an existing installation, no longer aborts silent installs during startup, and uses distinct staging and previous-install temporary names. Fresh installs commit, upgrades replace the previous tree, and a failed commit still restores or leaves the previous installation without touching workspace data.
-- Fixed project deletion refusing with a crash-loop when an interrupted delete is recovered after its staged previews were already forgotten, and refusing only after destroying data when a staged preview belonged to another actor. Recovery now completes an already-forgotten staging tail idempotently, and a foreign-actor staged preview refuses before any project data is touched.
-- Fixed the project-deletion confirmation showing and reporting double the actual graph count. The dialog and the deletion receipt now report the authoritative total.
-- Fixed the project-deletion confirmation escaping the viewport on short screens. The confirmation now opens as a bounded modal dialog with scrollable content and keeps every warning, the typed project name/ID field, and the Cancel/Delete permanently actions reachable by mouse and keyboard.
-- Stopped restarting every local service when a project is imported or deleted. The new or remaining project catalog serves immediately: the Projects list refreshes itself with no manual browser reload, and PostgreSQL, Fuseki, Semantic Core, and the API keep running. Interrupted operations still refuse safely until recovered.
+- Fixed the unsigned Windows installer failing at the staged-application
+  commit step: setup now leaves the staging directory before renaming it over
+  the install location, commits onto a pre-created empty install directory
+  instead of treating it as an existing installation, no longer aborts silent
+  installs during startup, and uses distinct staging and previous-install
+  temporary names. Fresh installs commit, upgrades replace the previous tree,
+  and a failed commit still restores or leaves the previous installation
+  without touching workspace data.
+
+- Preserved the API's finite local-suggestion error codes and safe reason
+  details for disabled, unconfigured, and unreachable local models.
+
+- Preserved the finite `REVIEW_RECEIPTS_UNAVAILABLE` reason and a safe 503
+  detail when review receipt history is unavailable.
+
+- Preserved actionable controlled-relation reason codes and their 409/422/503
+  statuses through the API error envelope while sanitizing unrecognized codes.
+
+- Preserved the safe `REVIEW_RECEIPT_REQUIRED` 409 response for legacy manual
+  Note rejection requests, directing reviewers to the source-bound receipt route.
+
+- Preserved already-opaque Semantic Core candidate handles when listing
+  supported manual relation targets, avoiding a second hash that hid eligible
+  targets.
+
+- Corrected manual candidate edit metrics so date-only changes stay outside
+  correction categories while date plus a classified field retains its RM-67
+  category.
+
+- Separated the connector migration service image from the API development
+  image so full Compose startup can run migrations before starting the API.
+
+- Aligned the web review-workbench response type with its OpenAPI
+  `manualCapture` field.
+
 ### Changed
 
 - Separated project selection from workspace navigation; the active project
@@ -126,7 +234,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   target-node boundaries; the legend explains non-color patterns for
   verification/lifecycle states, selection, hover, and keyboard focus.
 
-- Canonicalized experience catalog revisions to Semantic Core's sorted project allowlist, preventing a valid selection from becoming stale when the configured allowlist order differs.
+- Canonicalized experience catalog revisions to Semantic Core's sorted project
+  allowlist, preventing a valid selection from becoming stale when the
+  configured allowlist order differs.
 
 - Preserved cross-screen journey context: exact-span captures focus the matching
   source-bound Review Queue candidate; Project Overview items open their
@@ -135,6 +245,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   substitution and offers recovery and return paths. Overview now emits
   destination-compatible, project-scoped `node-h-`, `note-h-`, and
   `candidate-h-` handles from the same opaque resource identity used by Core.
+
 - Kept unfinished exact-span source and selection in memory when returning to
   Notes, with explicit continue/discard actions; switching projects clears the
   unsubmitted capture draft.
@@ -155,37 +266,33 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   version marker in the Fuseki data volume, avoiding graph replacement on
   later starts while preserving existing graph content.
 
-### Fixed
-
 - Appended the system-test M4 fixture to its named graphs instead of replacing
   existing project metadata during local acceptance setup.
 
-- Preserved the API's finite local-suggestion error codes and safe reason details
-  for disabled, unconfigured, and unreachable local models.
-
-- Preserved the finite `REVIEW_RECEIPTS_UNAVAILABLE` reason and a safe 503
-  detail when review receipt history is unavailable.
-- Preserved actionable controlled-relation reason codes and their 409/422/503
-  statuses through the API error envelope while sanitizing unrecognized codes.
-
-- Preserved the safe `REVIEW_RECEIPT_REQUIRED` 409 response for legacy manual
-  Note rejection requests, directing reviewers to the source-bound receipt route.
-
-- Corrected manual candidate edit metrics so date-only changes stay outside
-  correction categories while date plus a classified field retains its RM-67
-  category.
-
-- Separated the connector migration service image from the API development
-  image so full Compose startup can run migrations before starting the API.
-
-- Preserved already-opaque Semantic Core candidate handles when listing supported
-  manual relation targets, avoiding a second hash that hid eligible targets.
+- Preserved the manual-rejection `REVIEW_RECEIPT_REQUIRED` behavior through the
+  production-shaped API path so a source-bound receipt survives container
+  restart and the legacy path still writes nothing.
 
 - Documented the required connector PostgreSQL settings and secure Fernet-key
   initialization in the local Docker Compose quick start.
 
-- Aligned the web review-workbench response type with its OpenAPI
-  `manualCapture` field.
+- Preserved PostgreSQL credential-mismatch recovery in local setup guidance:
+  keep the existing volume and start a separate fresh Compose project instead
+  of erasing data to silence an authentication error.
+
+### Limitations
+
+- The unsigned 0.7.0 Windows 11 x64 path remains unsigned, unpublished as a
+  signed release, and without clean-host proof, public download, production, or
+  `1.0.0` claims. Signed update verification stays fail-closed.
+
+- Offline dense-hard evaluation, provider-backed extraction quality work, and
+  external evaluation/production enablement stay deferred; this release makes
+  no achieved-quality, clean-host, signing, or production claims for them.
+
+- Deletion is irreversible with no automatic backup, rollback, or undo; export
+  archives are plaintext integrity-only artifacts, and copies kept in backups
+  or exported files remain wherever they were kept.
 
 ## [0.6.0] - 2026-08-14
 
