@@ -4,6 +4,15 @@ on:
   push:
     tags:
       - "v*.*.*"
+  # Validation-only manual path for a corrected main SHA (e.g. release_tag v0.7.0
+  # after a CI correction). Tag pushes stay the sole publishing trigger; the
+  # publish job guard below refuses every dispatch run.
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Existing release tag to validate (format vA.B.C)"
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -28,10 +37,17 @@ jobs:
       - name: Test release contract
         run: uv run --project apps/api --with jsonschema python -m unittest discover -s scripts/tests -p "test_*.py"
       - name: Validate tag, versions, and changelog
-        run: python scripts/check_release_contract.py --tag "$GITHUB_REF_NAME"
+        run: |
+          RELEASE_TAG="${{ github.event.inputs.release_tag || github.ref_name }}"
+          python scripts/check_release_contract.py --tag "$RELEASE_TAG"
 
   api:
     runs-on: ubuntu-latest
+    # Same owned-temp CI bootstrap as the main-push contract job; the deployment
+    # default /var/lib/projecta/evidence is unwritable on ubuntu-latest.
+    env:
+      PROJECTA_EVIDENCE_ROOT: ${{ runner.temp }}/projecta-evidence
+      PROJECTA_API_RUNTIME_MODE: headless
     steps:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v6
@@ -48,6 +64,10 @@ jobs:
 
   web:
     runs-on: ubuntu-latest
+    # check:api-drift builds the app in-process; same owned-temp evidence bootstrap.
+    env:
+      PROJECTA_EVIDENCE_ROOT: ${{ runner.temp }}/projecta-evidence
+      PROJECTA_API_RUNTIME_MODE: headless
     steps:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v6
@@ -121,6 +141,10 @@ jobs:
 
   sprint10-validation:
     runs-on: ubuntu-latest
+    # The validation script runs API pytest gates; same owned-temp bootstrap.
+    env:
+      PROJECTA_EVIDENCE_ROOT: ${{ runner.temp }}/projecta-evidence
+      PROJECTA_API_RUNTIME_MODE: headless
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -152,6 +176,10 @@ jobs:
   sprint10-acceptance:
     needs: [sprint10-validation]
     runs-on: ubuntu-latest
+    # Acceptance host-test pytest journeys create the app; same bootstrap.
+    env:
+      PROJECTA_EVIDENCE_ROOT: ${{ runner.temp }}/projecta-evidence
+      PROJECTA_API_RUNTIME_MODE: headless
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -178,6 +206,11 @@ jobs:
   sprint10-recovery:
     needs: [sprint10-validation]
     runs-on: ubuntu-latest
+    # Isolated recovery uses its own temp evidence roots; the job-level
+    # bootstrap keeps any incidental app creation off the deployment default.
+    env:
+      PROJECTA_EVIDENCE_ROOT: ${{ runner.temp }}/projecta-evidence
+      PROJECTA_API_RUNTIME_MODE: headless
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -230,6 +263,10 @@ jobs:
   sprint11-deterministic:
     needs: [release-contract, api, web, semantic-core, repository-contracts]
     runs-on: ubuntu-latest
+    # The validation script runs API pytest gates; same owned-temp bootstrap.
+    env:
+      PROJECTA_EVIDENCE_ROOT: ${{ runner.temp }}/projecta-evidence
+      PROJECTA_API_RUNTIME_MODE: headless
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -258,6 +295,11 @@ jobs:
   sprint11-acceptance:
     needs: [sprint11-deterministic]
     runs-on: ubuntu-latest
+    # Deterministic pytest contracts create the app; keep them off the
+    # deployment default with the same owned-temp bootstrap.
+    env:
+      PROJECTA_EVIDENCE_ROOT: ${{ runner.temp }}/projecta-evidence
+      PROJECTA_API_RUNTIME_MODE: headless
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -301,6 +343,10 @@ jobs:
   sprint11-recovery:
     needs: [sprint11-acceptance]
     runs-on: ubuntu-latest
+    # Recovery pytest contracts create the app; same owned-temp bootstrap.
+    env:
+      PROJECTA_EVIDENCE_ROOT: ${{ runner.temp }}/projecta-evidence
+      PROJECTA_API_RUNTIME_MODE: headless
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -319,6 +365,11 @@ jobs:
         run: python scripts/check_sprint11_repository_contract.py
 
   publish:
+    # Only an authorized tag push may publish. Manual validation dispatches
+    # (workflow_dispatch) run every quality/system/security gate above but stop
+    # here: they must never edit/create a release, replace a tag, or claim a
+    # main-branch installer binary as the release source.
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     needs: [release-contract, api, web, semantic-core, repository-contracts, system, sprint10-validation, sprint10-acceptance, sprint10-recovery, sprint10-frontend-format, sprint10-connector-security, sprint11-deterministic, sprint11-acceptance, sprint11-recovery]
     runs-on: ubuntu-latest
     permissions:

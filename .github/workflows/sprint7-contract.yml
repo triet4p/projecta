@@ -8,6 +8,12 @@ on:
 jobs:
   contract:
     runs-on: ubuntu-latest
+    # Linux runners cannot write the deployment default /var/lib/projecta/evidence
+    # (LocalEvidenceStore mkdir at import). Keep the deployment default unchanged;
+    # point CI-only app creation at the owned per-run temp dir (drift-script precedent).
+    env:
+      PROJECTA_EVIDENCE_ROOT: ${{ runner.temp }}/projecta-evidence
+      PROJECTA_API_RUNTIME_MODE: headless
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6

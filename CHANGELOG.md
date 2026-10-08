@@ -6,7 +6,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
-No unreleased changes.
+### Fixed
+
+- Fixed Linux CI test bootstrap so API pytest and release validation use an owned per-run evidence directory instead of the unwritable deployment default, and added a validation-only release workflow dispatch that cannot publish.
 
 ## [0.7.0] - 2026-10-08
 
