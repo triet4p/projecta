@@ -89,13 +89,9 @@ export function App(): ReactElement {
             api={api}
             onChangeProject={changeProject}
             onNavigate={(screen, item) => {
-              setReviewCandidateHandle(
-                screen === "Review Queue" ? (item?.handle ?? null) : null,
-              );
+              setReviewCandidateHandle(screen === "Review Queue" ? (item?.handle ?? null) : null);
               setGraphSelection(
-                screen === "Graph" && item
-                  ? { handle: item.handle, label: item.label }
-                  : null,
+                screen === "Graph" && item ? { handle: item.handle, label: item.label } : null,
               );
               setNotesSelection(screen === "Notes" && item ? item : null);
               setActive(screen);

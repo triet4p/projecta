@@ -90,7 +90,6 @@ function graphEdgeGeometry(sourceIndex: number, targetIndex: number): GraphEdgeG
   };
 }
 
-
 export function GraphScreen({
   api,
   projectHandle,
@@ -235,8 +234,8 @@ export function GraphScreen({
           )}
           {selectionStatus === "loaded" && (
             <StateMessage kind="success">
-              The matching project-scoped detail is open below. Graph inspection is read-only;
-              no review decision or graph write was made.
+              The matching project-scoped detail is open below. Graph inspection is read-only; no
+              review decision or graph write was made.
             </StateMessage>
           )}
           {selectionStatus === "unavailable" && (
@@ -404,13 +403,7 @@ export function GraphScreen({
                       className="graph-edge-label"
                       textAnchor="middle"
                       x={geometry.selfLoop ? x1 : (x1 + x2) / 2}
-                      y={
-                        geometry.selfLoop
-                          ? y1 + 54
-                          : y1 === y2
-                            ? y1 - 42
-                            : (y1 + y2) / 2 - 8
-                      }
+                      y={geometry.selfLoop ? y1 + 54 : y1 === y2 ? y1 - 42 : (y1 + y2) / 2 - 8}
                     >
                       {edge.relationType}
                     </text>

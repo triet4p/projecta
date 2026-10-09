@@ -91,7 +91,9 @@ export function NotesScreen({
         if (!active) return;
         if (record.noteHandle !== selectedNoteHandle) {
           setSelectedNoteStatus("unavailable");
-          setSelectedNoteError(new Error("The API returned a different Note than the selected one."));
+          setSelectedNoteError(
+            new Error("The API returned a different Note than the selected one."),
+          );
           return;
         }
         setDetail(record);
@@ -197,11 +199,7 @@ export function NotesScreen({
               capture does not approve or materialize the candidate.
             </p>
           </div>
-          <button
-            className="secondary"
-            onClick={() => setManualCaptureOpen(false)}
-            type="button"
-          >
+          <button className="secondary" onClick={() => setManualCaptureOpen(false)} type="button">
             Back to Notes
           </button>
         </div>
@@ -215,10 +213,8 @@ export function NotesScreen({
     );
   }
 
-
   return (
     <div className="workspace-page">
-
       {captureDraft !== null && (
         <Card>
           <StateMessage kind="empty">
@@ -229,11 +225,7 @@ export function NotesScreen({
             <button onClick={() => setManualCaptureOpen(true)} type="button">
               Continue capture
             </button>
-            <button
-              className="danger"
-              onClick={() => onCaptureDraftChange(null)}
-              type="button"
-            >
+            <button className="danger" onClick={() => onCaptureDraftChange(null)} type="button">
               Discard unsubmitted capture
             </button>
           </div>
@@ -265,8 +257,8 @@ export function NotesScreen({
               <div className="note-detail">
                 <h3>{detail.title}</h3>
                 <p className="metadata">
-                  {detail.author} · {detail.recordedAt} · {Math.round(detail.evidenceCoverage * 100)}%
-                  evidence coverage
+                  {detail.author} · {detail.recordedAt} ·{" "}
+                  {Math.round(detail.evidenceCoverage * 100)}% evidence coverage
                 </p>
                 {detail.items.map((item) => (
                   <div className="evidence-row" key={`${item.startOffset}-${item.endOffset}`}>
@@ -321,8 +313,8 @@ export function NotesScreen({
           <article className="note-path-option">
             <h3>Note Composer</h3>
             <p>
-              Use for writing a structured Note from typed items. Save a draft to persist it;
-              commit is a separate, deliberate step.
+              Use for writing a structured Note from typed items. Save a draft to persist it; commit
+              is a separate, deliberate step.
             </p>
             <a className="note-path-action" href="#note-composer">
               Open Note Composer
@@ -344,11 +336,7 @@ export function NotesScreen({
               Use when a specific passage must remain anchored to its source. Capture creates a
               review candidate, not an approval or graph materialization.
             </p>
-            <button
-              className="secondary"
-              onClick={() => setManualCaptureOpen(true)}
-              type="button"
-            >
+            <button className="secondary" onClick={() => setManualCaptureOpen(true)} type="button">
               Capture exact spans
             </button>
           </article>

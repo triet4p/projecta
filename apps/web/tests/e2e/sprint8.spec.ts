@@ -193,7 +193,8 @@ async function mockProjectNavigationApi(
     }
     if (pathname === "/v1/projects" && request.method() === "GET") {
       const state = hasSelectedProject
-        ? catalogStates[Math.min(postSelectionCatalogRead, catalogStates.length - 1)] ?? "projects"
+        ? (catalogStates[Math.min(postSelectionCatalogRead, catalogStates.length - 1)] ??
+          "projects")
         : "projects";
       if (hasSelectedProject) postSelectionCatalogRead += 1;
       if (state === "error") {
@@ -328,20 +329,18 @@ async function openAlphaWorkspace(page: Page) {
 }
 
 async function mockOverviewRecentNote(page: Page, handle: string, label: string) {
-  await page.route(
-    `**/v1/projects/${project.handle}/overview`,
-    async (route) =>
-      json(route, {
-        ...project,
-        currentRequirements: [],
-        openQuestions: [],
-        tasks: [],
-        blockers: [],
-        risks: [],
-        recentNotes: [{ handle, label }],
-        pendingCandidates: [],
-        evidenceCoverage: { covered: 1, total: 1 },
-      }),
+  await page.route(`**/v1/projects/${project.handle}/overview`, async (route) =>
+    json(route, {
+      ...project,
+      currentRequirements: [],
+      openQuestions: [],
+      tasks: [],
+      blockers: [],
+      risks: [],
+      recentNotes: [{ handle, label }],
+      pendingCandidates: [],
+      evidenceCoverage: { covered: 1, total: 1 },
+    }),
   );
 }
 
@@ -378,7 +377,9 @@ async function mockApi(
       return json(route, {
         requestId: "req-overview",
         ...project,
-        currentRequirements: [{ handle: "node-h-0123456789abcdef01234567", label: "Bounded journey" }],
+        currentRequirements: [
+          { handle: "node-h-0123456789abcdef01234567", label: "Bounded journey" },
+        ],
         openQuestions: [],
         tasks: [],
         blockers: [],
@@ -561,7 +562,11 @@ async function mockApi(
     if (pathname === `/v1/projects/${project.handle}/candidate-edit-options`) {
       return json(route, {
         entityLinks: [
-          { handle: "node-h-0123456789abcdef01234567", label: "Bounded journey", type: "Requirement" },
+          {
+            handle: "node-h-0123456789abcdef01234567",
+            label: "Bounded journey",
+            type: "Requirement",
+          },
         ],
         assignments: [{ handle: "actor-h-reviewer", label: "Current reviewer" }],
       });
@@ -584,7 +589,10 @@ async function mockApi(
         corrections: { type: "Requirement", label: "Review bounded browser journey" },
       });
     if (pathname.includes("/confirmations"))
-      return json(route, { decision: "confirmed", candidateHandle: "candidate-h-abcdef0123456789abcdef01" });
+      return json(route, {
+        decision: "confirmed",
+        candidateHandle: "candidate-h-abcdef0123456789abcdef01",
+      });
     if (pathname.endsWith("/manual-approvals"))
       return json(
         route,
@@ -685,7 +693,9 @@ test("project selection, Note lifecycle, graph, review, and Q&A stay ID-free", a
   await expect(page.locator("body")).not.toContainText("candidate-h-");
 });
 
-test("Graph arrowheads end at target frames across directions and self-relations", async ({ page }) => {
+test("Graph arrowheads end at target frames across directions and self-relations", async ({
+  page,
+}) => {
   const nodes = Array.from({ length: 6 }, (_, index) => ({
     handle: `node-h-${String(index + 1).padStart(24, "0")}`,
     label: `Geometry node ${index}`,
@@ -770,19 +780,15 @@ test("Graph arrowheads end at target frames across directions and self-relations
       .nth(edgeIndex)
       .evaluate((group, nodeIndex) => {
         const arrowhead = group.querySelector(".graph-edge-arrowhead");
-        const targetFrame = document.querySelectorAll<SVGGraphicsElement>(".graph-node-frame")[
-          nodeIndex
-        ];
+        const targetFrame =
+          document.querySelectorAll<SVGGraphicsElement>(".graph-node-frame")[nodeIndex];
         if (!(arrowhead instanceof SVGPolygonElement) || !targetFrame) return null;
 
         const bounds = targetFrame.getBBox();
-        const points = Array.from(
-          { length: arrowhead.points.numberOfItems },
-          (_, index) => {
-            const point = arrowhead.points.getItem(index);
-            return { x: point.x, y: point.y };
-          },
-        );
+        const points = Array.from({ length: arrowhead.points.numberOfItems }, (_, index) => {
+          const point = arrowhead.points.getItem(index);
+          return { x: point.x, y: point.y };
+        });
         const [tip, ...base] = points;
         const tolerance = 0.1;
         const tipOnTargetBoundary =
@@ -798,12 +804,15 @@ test("Graph arrowheads end at target frames across directions and self-relations
           (Math.abs(tip!.y - bounds.y - bounds.height) <= tolerance &&
             tip!.x >= bounds.x - tolerance &&
             tip!.x <= bounds.x + bounds.width + tolerance);
-        const baseOutsideTarget = base.length === 2 && base.every((point) =>
-          point.x < bounds.x - tolerance ||
-          point.x > bounds.x + bounds.width + tolerance ||
-          point.y < bounds.y - tolerance ||
-          point.y > bounds.y + bounds.height + tolerance,
-        );
+        const baseOutsideTarget =
+          base.length === 2 &&
+          base.every(
+            (point) =>
+              point.x < bounds.x - tolerance ||
+              point.x > bounds.x + bounds.width + tolerance ||
+              point.y < bounds.y - tolerance ||
+              point.y > bounds.y + bounds.height + tolerance,
+          );
         const style = getComputedStyle(arrowhead);
         const paintBounds = arrowhead.getBoundingClientRect();
         return {
@@ -953,7 +962,9 @@ test("an unavailable overview item leaves Graph recovery and project return avai
   await page.route(`**/v1/projects/${project.handle}/overview`, async (route) => {
     await json(route, {
       ...project,
-      currentRequirements: [{ handle: "node-h-aaaaaaaaaaaaaaaaaaaaaaaa", label: "Unavailable overview item" }],
+      currentRequirements: [
+        { handle: "node-h-aaaaaaaaaaaaaaaaaaaaaaaa", label: "Unavailable overview item" },
+      ],
       openQuestions: [],
       tasks: [],
       blockers: [],
@@ -1073,7 +1084,9 @@ test("session chrome stays available throughout project switching", async ({ pag
   expect(viewport.documentWidth).toBeLessThanOrEqual(viewport.viewportWidth);
 });
 
-test("signing out from a workspace returns to sign-in without project content", async ({ page }) => {
+test("signing out from a workspace returns to sign-in without project content", async ({
+  page,
+}) => {
   await mockProjectNavigationApi(page);
   await openAlphaWorkspace(page);
   await page.getByRole("button", { name: "Graph", exact: true }).click();
@@ -1108,7 +1121,9 @@ test("a catalog error after changing projects offers retry without restoring the
   await page.getByRole("button", { name: "Graph", exact: true }).click();
   await expect(page.locator(".graph-node-label")).toHaveText("Alpha-only knowledge");
   await page.getByRole("button", { name: "Change project" }).click();
-  await expect(page.getByRole("alert")).toContainText("Project catalog is temporarily unavailable.");
+  await expect(page.getByRole("alert")).toContainText(
+    "Project catalog is temporarily unavailable.",
+  );
   await expect(page.getByRole("status").filter({ hasText: "Signed in" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
   await expect(page.getByRole("navigation", { name: "Primary navigation" })).toHaveCount(0);
@@ -1486,7 +1501,11 @@ test("a missing Overview Note stays explicit and can return to its project", asy
 
 test("an unavailable Overview Note reports its error without replacing it", async ({ page }) => {
   await mockApi(page);
-  await mockOverviewRecentNote(page, "note-h-bbbbbbbbbbbbbbbbbbbbbbbb", "Temporarily unavailable Note");
+  await mockOverviewRecentNote(
+    page,
+    "note-h-bbbbbbbbbbbbbbbbbbbbbbbb",
+    "Temporarily unavailable Note",
+  );
   await page.route(
     `**/v1/projects/${project.handle}/notes/note-h-bbbbbbbbbbbbbbbbbbbbbbbb`,
     async (route) =>

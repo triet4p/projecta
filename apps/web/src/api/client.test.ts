@@ -21,28 +21,30 @@ describe("ProjectaApiClient", () => {
     vi.unstubAllGlobals();
   });
   it("streams portable project files without JSON-encoding their bytes", async () => {
-    const fetchMock = vi.fn().mockImplementation(async (_input: RequestInfo | URL, init?: RequestInit) => {
-      const requestId = new Headers(init?.headers).get("X-Request-Id") ?? "req-import";
-      return new Response(
-        JSON.stringify({
-          requestId,
-          importId: "b50dc4e1-9605-4191-9b49-0b3bf675523a",
-          projectId: "portable-project",
-          projectName: "Portable Project",
-          exportId: "a50dc4e1-9605-4191-9b49-0b3bf675523a",
-          exportedAt: "2026-10-05T00:00:00Z",
-          archiveSha256: "a".repeat(64),
-          sizeBytes: 7,
-          destinationAction: "add-project",
-          counts: { notes: 1 },
-          plaintextWarning: "Review before applying.",
-        }),
-        {
-          status: 200,
-          headers: { "content-type": "application/json", "X-Request-Id": requestId },
-        },
-      );
-    });
+    const fetchMock = vi
+      .fn()
+      .mockImplementation(async (_input: RequestInfo | URL, init?: RequestInit) => {
+        const requestId = new Headers(init?.headers).get("X-Request-Id") ?? "req-import";
+        return new Response(
+          JSON.stringify({
+            requestId,
+            importId: "b50dc4e1-9605-4191-9b49-0b3bf675523a",
+            projectId: "portable-project",
+            projectName: "Portable Project",
+            exportId: "a50dc4e1-9605-4191-9b49-0b3bf675523a",
+            exportedAt: "2026-10-05T00:00:00Z",
+            archiveSha256: "a".repeat(64),
+            sizeBytes: 7,
+            destinationAction: "add-project",
+            counts: { notes: 1 },
+            plaintextWarning: "Review before applying.",
+          }),
+          {
+            status: 200,
+            headers: { "content-type": "application/json", "X-Request-Id": requestId },
+          },
+        );
+      });
     vi.stubGlobal("fetch", fetchMock);
 
     await new ProjectaApiClient().previewPortableImport(new Blob(["archive"]));
@@ -56,30 +58,33 @@ describe("ProjectaApiClient", () => {
 
   it("applies a portable import with live publication and reads its result", async () => {
     const importId = "b50dc4e1-9605-4191-9b49-0b3bf675523a";
-    const fetchMock = vi.fn().mockImplementation(async (input: RequestInfo | URL, init?: RequestInit) => {
-      const requestId = new Headers(init?.headers).get("X-Request-Id") ?? "req-import-result";
-      const path = new URL(String(input), "http://projecta.test").pathname;
-      const result = path.endsWith("/apply")
-        ? {
-            requestId,
-            projectId: "portable-project",
-            projectName: "Portable Project",
-            alreadyImported: false,
-            restartRequired: false,
-            nextAction: "The project is available from the Projects list. It was not selected automatically.",
-          }
-        : {
-            requestId,
-            importId,
-            projectId: "portable-project",
-            projectName: "Portable Project",
-            status: "complete",
-          };
-      return new Response(JSON.stringify(result), {
-        status: 200,
-        headers: { "content-type": "application/json", "X-Request-Id": requestId },
+    const fetchMock = vi
+      .fn()
+      .mockImplementation(async (input: RequestInfo | URL, init?: RequestInit) => {
+        const requestId = new Headers(init?.headers).get("X-Request-Id") ?? "req-import-result";
+        const path = new URL(String(input), "http://projecta.test").pathname;
+        const result = path.endsWith("/apply")
+          ? {
+              requestId,
+              projectId: "portable-project",
+              projectName: "Portable Project",
+              alreadyImported: false,
+              restartRequired: false,
+              nextAction:
+                "The project is available from the Projects list. It was not selected automatically.",
+            }
+          : {
+              requestId,
+              importId,
+              projectId: "portable-project",
+              projectName: "Portable Project",
+              status: "complete",
+            };
+        return new Response(JSON.stringify(result), {
+          status: 200,
+          headers: { "content-type": "application/json", "X-Request-Id": requestId },
+        });
       });
-    });
     vi.stubGlobal("fetch", fetchMock);
 
     const api = new ProjectaApiClient();
@@ -120,7 +125,9 @@ describe("ProjectaApiClient", () => {
       ),
     );
     vi.stubGlobal("fetch", fetchMock);
-    await expect(new ProjectaApiClient().previewPortableImport(new Blob(["archive"]))).resolves.toMatchObject({
+    await expect(
+      new ProjectaApiClient().previewPortableImport(new Blob(["archive"])),
+    ).resolves.toMatchObject({
       importId: "b50dc4e1-9605-4191-9b49-0b3bf675523a",
       destinationAction: "already-imported",
     });
@@ -128,11 +135,12 @@ describe("ProjectaApiClient", () => {
   });
   it("previews and confirms a project deletion with typed identity", async () => {
     const requestId = "req-deletion-1";
-    const fetchMock = vi.fn().mockImplementation(async (input: RequestInfo | URL, init?: RequestInit) => {
-      const outgoing = new Headers(init?.headers).get("X-Request-Id") ?? requestId;
-      const path = new URL(String(input), "http://projecta.test").pathname;
-      const body =
-        path.endsWith("/delete")
+    const fetchMock = vi
+      .fn()
+      .mockImplementation(async (input: RequestInfo | URL, init?: RequestInit) => {
+        const outgoing = new Headers(init?.headers).get("X-Request-Id") ?? requestId;
+        const path = new URL(String(input), "http://projecta.test").pathname;
+        const body = path.endsWith("/delete")
           ? {
               requestId: outgoing,
               projectId: "portable-project",
@@ -158,15 +166,17 @@ describe("ProjectaApiClient", () => {
               ledgerEntries: 1,
               warnings: ["There is no undo."],
             };
-      return new Response(JSON.stringify(body), {
-        status: 200,
-        headers: { "content-type": "application/json", "X-Request-Id": outgoing },
+        return new Response(JSON.stringify(body), {
+          status: 200,
+          headers: { "content-type": "application/json", "X-Request-Id": outgoing },
+        });
       });
-    });
     vi.stubGlobal("fetch", fetchMock);
 
     const api = new ProjectaApiClient();
-    await expect(api.previewProjectDeletion("portable-project", "Portable Project")).resolves.toMatchObject({
+    await expect(
+      api.previewProjectDeletion("portable-project", "Portable Project"),
+    ).resolves.toMatchObject({
       projectId: "portable-project",
       evidenceObjects: 1,
     });

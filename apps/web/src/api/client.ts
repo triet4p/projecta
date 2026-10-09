@@ -142,10 +142,10 @@ export class ProjectaApiClient {
     projectId: string,
     projectName: string,
   ): Promise<ProjectDeletionPreviewResponse> {
-    return this.request<ProjectDeletionPreviewResponse>(
-      "/v1/projects/deletion/preview",
-      { method: "POST", body: { projectId, projectName } },
-    );
+    return this.request<ProjectDeletionPreviewResponse>("/v1/projects/deletion/preview", {
+      method: "POST",
+      body: { projectId, projectName },
+    });
   }
 
   async deleteProject(
@@ -153,10 +153,10 @@ export class ProjectaApiClient {
     projectName: string,
     typedIdentity: string,
   ): Promise<ProjectDeletionResponse> {
-    return this.request<ProjectDeletionResponse>(
-      "/v1/projects/deletion/delete",
-      { method: "POST", body: { projectId, projectName, typedIdentity, confirmed: true } },
-    );
+    return this.request<ProjectDeletionResponse>("/v1/projects/deletion/delete", {
+      method: "POST",
+      body: { projectId, projectName, typedIdentity, confirmed: true },
+    });
   }
 
   async getPortableImportResult(importId: string): Promise<PortableImportResultResponse> {
@@ -343,7 +343,10 @@ export class ProjectaApiClient {
     }
     const blob = await response.blob();
     if (blob.size !== sizeBytes) {
-      throw contractError(responseRequestId, "The export size did not match its response metadata.");
+      throw contractError(
+        responseRequestId,
+        "The export size did not match its response metadata.",
+      );
     }
     return { blob, filename, sha256, sizeBytes };
   }
@@ -842,8 +845,7 @@ export class ProjectaApiClient {
       method: options.method,
       headers,
       body:
-        options.rawBody ??
-        (options.body === undefined ? undefined : JSON.stringify(options.body)),
+        options.rawBody ?? (options.body === undefined ? undefined : JSON.stringify(options.body)),
       signal: options.signal,
       credentials: "same-origin",
     });
@@ -992,7 +994,8 @@ function validateSuccess(path: string, body: unknown, requestId: string): void {
       typeof value.restartRequired !== "boolean" ||
       (value.importId !== undefined && typeof value.importId !== "string") ||
       (value.status !== undefined && value.status !== "staging") ||
-      (value.restartRequired && (typeof value.importId !== "string" || value.status !== "staging")) ||
+      (value.restartRequired &&
+        (typeof value.importId !== "string" || value.status !== "staging")) ||
       (value.nextAction !== undefined && typeof value.nextAction !== "string")
     ) {
       throw contractError(requestId, "The portable import response is malformed.");

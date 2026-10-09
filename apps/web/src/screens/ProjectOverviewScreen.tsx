@@ -149,12 +149,12 @@ export function ProjectOverviewScreen({
         <div className="export-warning">
           <p>
             The archive contains sensitive project data, including stored graph, workflow,
-            connector, receipt, and evidence content. It is plaintext: it is not encrypted, and
-            its integrity hashes are not a signature.
+            connector, receipt, and evidence content. It is plaintext: it is not encrypted, and its
+            integrity hashes are not a signature.
           </p>
           <p>
-            You are responsible for choosing a private destination and transport. Export only
-            when you are authorized to move all included project data.
+            You are responsible for choosing a private destination and transport. Export only when
+            you are authorized to move all included project data.
           </p>
         </div>
         {exportError !== null && (

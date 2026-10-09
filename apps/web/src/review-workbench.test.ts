@@ -36,35 +36,33 @@ const detail = (
 });
 const manualDetail = (
   overrides: Partial<ReviewWorkbenchDetailResponse> = {},
-): ReviewWorkbenchDetailResponse =>
-  ({
-    ...detail({
-      sourceVersion: { revision: 1, sourceVersionId: "sv_" + "b".repeat(64) },
-      candidateRevision: 1,
-      evidence: {
-        status: "selected",
-        highlights: [
-          {
-            kind: "evidence",
-            startOffset: 0,
-            endOffset: 4,
-            quoteDigest: "sha256:" + "c".repeat(64),
-          },
-        ],
-      },
-      reviewReceipt: {
-        state: "not-recorded",
-        candidateRevision: 1,
-        sourceVersionRevision: 1,
-      },
-    }),
-    manualCapture: {
-      mode: "human-authored-zero-model",
-      entityHandle: "eh1_" + "d".repeat(64),
+): ReviewWorkbenchDetailResponse => ({
+  ...detail({
+    sourceVersion: { revision: 1, sourceVersionId: "sv_" + "b".repeat(64) },
+    candidateRevision: 1,
+    evidence: {
+      status: "selected",
+      highlights: [
+        {
+          kind: "evidence",
+          startOffset: 0,
+          endOffset: 4,
+          quoteDigest: "sha256:" + "c".repeat(64),
+        },
+      ],
     },
-    ...overrides,
-  });
-
+    reviewReceipt: {
+      state: "not-recorded",
+      candidateRevision: 1,
+      sourceVersionRevision: 1,
+    },
+  }),
+  manualCapture: {
+    mode: "human-authored-zero-model",
+    entityHandle: "eh1_" + "d".repeat(64),
+  },
+  ...overrides,
+});
 
 describe("review workbench decision guard", () => {
   it("requires selected evidence for confirmation and keeps other actions explicit", () => {
@@ -106,7 +104,6 @@ describe("review workbench decision guard", () => {
       ),
     ).toBe(true);
   });
-
 
   it("fails closed for stale, quarantined, and already receipted items", () => {
     expect(reviewDecisionDisabled(detail({ stale: true }), "reject", false)).toBe(true);

@@ -147,6 +147,7 @@ def test_import_maps_corrupt_deflate_payload_to_finite_error(tmp_path) -> None:
         _validate_archive("probe", target_dir, target, hashlib.sha256(raw).hexdigest(), len(raw))
 
 
+@pytest.mark.local_contract
 def test_import_accepts_pre_purge_producer_head_without_shape_change() -> None:
     """Pre-purge (0011-stamped) producer stays importable: 0012 adds only the purge helper."""
     from projecta_api.extraction.correction_burden import CORRECTION_BURDEN_CONTRACT_VERSION

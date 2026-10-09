@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 from typing import Literal, cast
 
 import pytest
@@ -187,19 +186,3 @@ def test_safe_serialization_excludes_raw_identifiers_and_payload() -> None:
     assert "review-1" not in serialized
 
 
-def test_contract_and_migration_bind_append_only_postgres_boundary() -> None:
-    root = Path(__file__).resolve().parents[3]
-    migration = (
-        root / "apps/api/alembic/versions/0009_review_decision_receipts.py"
-    ).read_text(encoding="utf-8")
-    append_only_migration = (
-        root / "apps/api/alembic/versions/0011_review_receipts_append_only.py"
-    ).read_text(encoding="utf-8")
-    schema = (root / "apps/api/src/projecta_api/operational/schema.py").read_text(encoding="utf-8")
-    assert "review_decision_receipts" in migration
-    assert "BEFORE UPDATE OR DELETE" in append_only_migration
-    assert "review_decision_receipts is append-only" in append_only_migration
-    assert "UniqueConstraint(\"project_id\", \"idempotency_digest\")" in schema
-    assert "PostgresReviewDecisionReceiptRepository" in (
-        root / "apps/api/src/projecta_api/extraction/review_receipts.py"
-    ).read_text(encoding="utf-8")

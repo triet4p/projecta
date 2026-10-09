@@ -1251,3 +1251,24 @@ starting another local runtime.
 **Root cause:** The new resolver was appended AFTER the obsolete `_execute_queued_import_if_present()` staged executor in `start()`, so the executor consumed the journal first; the supervisor restart branch kept a second caller alive, and dead success no-ops (`_request_runtime_restart`/`_request_recovery_restart`) made the executor look still-wired.
 **Fix / workaround:** Resolve the legacy journal FIRST at startup (finite failed receipt, zero state change, before any staging/service start), then delete the whole dead staged path — executor, staging-space/size/verify helpers, staging-copy entry, supervise restart branch, `staging_import` flag/env, and both API no-op helpers with their call sites — while keeping genuine interrupted-live recovery (publication journal + `recover_before_serving` + deletion busy guards) intact.
 **Watch out for:** Any fix that adds a resolver without removing the consumer it supersedes — grep every caller of the old path (including supervise loops and env/flag wiring) and prove both journal shapes (same vs changed catalog) plus the live-journal-untouched case on disposable roots.
+
+## [2026-10-09] Host Python SDKs do not prove the locked API environment
+
+**Symptom:** A smoke run can appear healthy under the machine's default Python while exercising a different interpreter or SDK version from the API CI job. The RC23 workspace-context smoke recorded `python=3.12.12` and `openai=2.52.0` only when invoked through `uv run --locked --project apps/api`.
+**Root cause:** The API's `uv.lock` controls its Python and dependency set; packages installed in an unmanaged host SDK are independent of that lock.
+**Fix / workaround:** Run API tests and real-consumer smokes through `uv run --locked` in `apps/api` (and retain `uv sync --locked` in CI). Record the interpreter and critical SDK versions for environment-sensitive smoke evidence.
+**Watch out for:** Bare `python`, `pytest`, or host-installed SDKs are not evidence for the locked API environment unless their versions are independently shown to match.
+
+## [2026-10-09] Valid GitHub Actions YAML can fail context validation
+
+**Symptom:** GitHub rejected workflow dispatch with HTTP 422 for `Unrecognized named-value: 'runner'` in job-level `env`, although the YAML was syntactically valid.
+**Root cause:** `runner` is not an allowed context in `jobs.<job_id>.env`; a YAML parser checks syntax, not GitHub's expression-context rules.
+**Fix / workaround:** Use the supported `${{ github.workspace }}` context for the workspace evidence path and validate changed workflows with `actionlint`. RC23 WA6's official `actionlint` v1.7.12 run passed both workflows after correction; it did not establish that a later live workflow run was green.
+**Watch out for:** Job-level `if` and `env` expressions: syntax-only YAML validation will not catch unsupported GitHub contexts. See `artifacts/sprint-14/task-RC23.md` §WA6 and review `S14-RC23-EA5`.
+
+## [2026-10-09] Host-bound source checks can suppress real container consumers
+
+**Symptom:** A source-text migration test that resolved `Path(__file__).parents[3]` failed in `/app`, and marking its whole module `local_contract` also removed unrelated import and receipt runtime tests from container selection. A separate report test treated CRLF checkout bytes as a content contract.
+**Root cause:** Repository-layout and working-tree encoding assumptions were attached to source-inspection tests rather than observable consumer behavior; module-wide markers broadened one host fixture dependency into a suite-wide exclusion.
+**Fix / workaround:** Delete incidental source-text migration/report tests, mark only the producer-head test that genuinely loads host ontology assets, keep consumer tests selected, and retain the real before/after immutability guard rather than repinning checkout hashes or replacing them with file-presence assertions.
+**Watch out for:** Container markers apply to test functions, not whole consumer modules; raw checkout hashes and `.is_file()` existence checks do not establish runtime custody or compatibility.

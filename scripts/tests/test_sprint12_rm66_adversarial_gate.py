@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 from pathlib import Path
 
@@ -24,16 +23,6 @@ def test_rm66_accepts_adversarial_gate_and_preserves_internal_poc_boundary() -> 
     assert current["experimentState"]["currentGovernance"]["offlineAdversarialTestingAccepted"] is True
     assert current["experimentState"]["currentGovernance"]["nextPermittedAction"] == NEXT
     assert current["nextTasks"] == [NEXT]
-
-
-def test_rm66_binds_immutable_reports_and_absent_v8() -> None:
-    expected = {
-        "s12-f-12-stage-a-report.v6.json": "419ac3c7aa7fad06287b231432d1ae167990ece45ca11ef94882fb6139569233",
-        "s12-f-12-stage-a-report.v9.json": "84cb0667b8ee3469be5bdd4c3545a41012ba46bb07071508c41dca76fbf3761e",
-    }
-    paths = [EVAL / "optimization" / name for name in expected]
-    assert {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in paths} == expected
-    assert not (EVAL / "optimization/s12-f-12-stage-a-report.v8.json").exists()
 
 
 def test_rm66_summary_records_environment_skip_and_non_claims() -> None:

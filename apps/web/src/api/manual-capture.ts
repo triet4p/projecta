@@ -82,7 +82,6 @@ export interface RelationEvidenceView {
   triggerAnchorDigest: string | null;
 }
 
-
 export type LocalSuggestionState =
   | "ready"
   | "unavailable"

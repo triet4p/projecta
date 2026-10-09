@@ -945,13 +945,13 @@ th {
   .graph-canvas-wrap {
     margin-inline: -8px;
   }
-.graph-screen .section-heading {
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
-.graph-screen .section-heading > .toolbar-actions {
-  flex: 1 1 100%;
-}
+  .graph-screen .section-heading {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .graph-screen .section-heading > .toolbar-actions {
+    flex: 1 1 100%;
+  }
   .filter-bar label {
     flex: 1 1 140px;
   }

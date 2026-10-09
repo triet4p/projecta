@@ -49,8 +49,7 @@ export function ReviewScreen({
   );
   const [relationTargetsBusy, setRelationTargetsBusy] = useState(false);
   const [relationTargetCandidate, setRelationTargetCandidate] = useState("");
-  const [relationDirection, setRelationDirection] =
-    useState<RelationDirection>("source-to-target");
+  const [relationDirection, setRelationDirection] = useState<RelationDirection>("source-to-target");
   const [relationMode, setRelationMode] = useState<ControlledRelationMode>("manual");
   const [relationPredicate, setRelationPredicate] = useState("");
   const [relationSuggestion, setRelationSuggestion] = useState<LocalSuggestionResponse | null>(
@@ -61,7 +60,9 @@ export function ReviewScreen({
   const [suggestionItemText, setSuggestionItemText] = useState("");
   const [suggestionEntityType, setSuggestionEntityType] = useState("");
   const [suggestionTargetHandle, setSuggestionTargetHandle] = useState("");
-  const [manualRejection, setManualRejection] = useState<ManualCaptureRejectionResponse | null>(null);
+  const [manualRejection, setManualRejection] = useState<ManualCaptureRejectionResponse | null>(
+    null,
+  );
   const [validation, setValidation] = useState<ValidationResult | null>(null);
   const [decision, setDecision] = useState<DecisionResponse | null>(null);
   const [label, setLabel] = useState("");
@@ -177,11 +178,7 @@ export function ReviewScreen({
   }, [relationDirection, relationMode, relationPredicate, relationPredicateOptions]);
 
   useEffect(() => {
-    if (
-      !controlledRelationCandidate ||
-      !relationTargetCandidate ||
-      !selectedRelationTarget
-    ) {
+    if (!controlledRelationCandidate || !relationTargetCandidate || !selectedRelationTarget) {
       setRelationSuggestion(null);
       setRelationSuggestionBusy(false);
       return;
@@ -207,11 +204,7 @@ export function ReviewScreen({
     setRelationSuggestion(null);
     setRelationSuggestionBusy(true);
     api
-      .getControlledRelationSuggestionState(
-        projectHandle,
-        controlledRelationCandidate,
-        query,
-      )
+      .getControlledRelationSuggestionState(projectHandle, controlledRelationCandidate, query)
       .then((value) => {
         if (active) setRelationSuggestion(value);
       })
@@ -357,12 +350,7 @@ export function ReviewScreen({
   };
 
   const reject = async () => {
-    if (
-      !selected ||
-      !detail ||
-      !reason.trim() ||
-      reviewDecisionDisabled(detail, "reject", busy)
-    ) {
+    if (!selected || !detail || !reason.trim() || reviewDecisionDisabled(detail, "reject", busy)) {
       return;
     }
     setBusy(true);
@@ -445,11 +433,7 @@ export function ReviewScreen({
     }
   };
   const approveManual = async () => {
-    if (
-      !selected ||
-      !detail?.manualCapture ||
-      reviewDecisionDisabled(detail, "confirm", busy)
-    ) {
+    if (!selected || !detail?.manualCapture || reviewDecisionDisabled(detail, "confirm", busy)) {
       return;
     }
     const sourceVersionId = detail.sourceVersion.sourceVersionId;
@@ -512,9 +496,7 @@ export function ReviewScreen({
     }
   };
 
-  const decideLocalSuggestion = async (
-    decision: LocalSuggestionDecisionRequest["decision"],
-  ) => {
+  const decideLocalSuggestion = async (decision: LocalSuggestionDecisionRequest["decision"]) => {
     const current = localSuggestion;
     const proposal = current?.suggestion;
     if (
@@ -576,7 +558,6 @@ export function ReviewScreen({
         : currentLocalProposal?.kind === "link"
           ? Boolean(suggestionTargetHandle)
           : false;
-
 
   const requestControlledRelation = async () => {
     if (
@@ -676,13 +657,7 @@ export function ReviewScreen({
   };
 
   const edit = async () => {
-    if (
-      !selected ||
-      detailBusy ||
-      !detail ||
-      detail.itemHandle !== selected.handle
-    )
-      return;
+    if (!selected || detailBusy || !detail || detail.itemHandle !== selected.handle) return;
     const payload = {
       ...(editType ? { entityType: editType } : {}),
       ...(editLabelValue() ? { label: editLabelValue() } : {}),
@@ -738,8 +713,8 @@ export function ReviewScreen({
         )}
         {candidateHandle && selected?.handle === candidateHandle && (
           <StateMessage kind="success">
-            Opened from Notes capture: {selected.label} is selected. Inspect its source and
-            evidence before validating or recording an outcome.
+            Opened from Notes capture: {selected.label} is selected. Inspect its source and evidence
+            before validating or recording an outcome.
           </StateMessage>
         )}
         {candidateHandle && candidateNotFound && (
@@ -818,8 +793,8 @@ export function ReviewScreen({
             </div>
             {detail?.manualCapture && (
               <StateMessage kind="success">
-                Human-authored zero-model capture. The server resolved the Note revision and
-                Unicode anchor; no model was called.
+                Human-authored zero-model capture. The server resolved the Note revision and Unicode
+                anchor; no model was called.
               </StateMessage>
             )}
             {detail && (
@@ -1271,9 +1246,7 @@ export function ReviewScreen({
                       <strong>{relationSuggestion.suggestion.predicate}</strong>
                       <small>
                         {selected?.label}{" "}
-                        {relationSuggestion.suggestion.direction === "source-to-target"
-                          ? "→"
-                          : "←"}{" "}
+                        {relationSuggestion.suggestion.direction === "source-to-target" ? "→" : "←"}{" "}
                         {selectedRelationTarget?.label}
                       </small>
                     </div>
@@ -1521,18 +1494,15 @@ export function ReviewScreen({
             )}
             {detail?.manualCapture ? (
               <>
-                {validation?.conforms &&
-                  !manualApproval &&
-                  !manualRejection &&
-                  !abstainReceipt && (
-                    <button
-                      disabled={reviewDecisionDisabled(detail, "confirm", busy)}
-                      onClick={() => void approveManual()}
-                      type="button"
-                    >
-                      {busy ? "Recording…" : "Record manual approval"}
-                    </button>
-                  )}
+                {validation?.conforms && !manualApproval && !manualRejection && !abstainReceipt && (
+                  <button
+                    disabled={reviewDecisionDisabled(detail, "confirm", busy)}
+                    onClick={() => void approveManual()}
+                    type="button"
+                  >
+                    {busy ? "Recording…" : "Record manual approval"}
+                  </button>
+                )}
                 {!manualApproval && !manualRejection && !abstainReceipt && (
                   <>
                     <label className="stacked-label">
@@ -1545,9 +1515,7 @@ export function ReviewScreen({
                     </label>
                     <button
                       className="danger"
-                      disabled={
-                        reviewDecisionDisabled(detail, "reject", busy) || !reason.trim()
-                      }
+                      disabled={reviewDecisionDisabled(detail, "reject", busy) || !reason.trim()}
                       onClick={() => void reject()}
                       type="button"
                     >
@@ -1589,9 +1557,7 @@ export function ReviewScreen({
                   </label>
                   <button
                     className="danger"
-                    disabled={
-                      reviewDecisionDisabled(detail, "reject", busy) || !reason.trim()
-                    }
+                    disabled={reviewDecisionDisabled(detail, "reject", busy) || !reason.trim()}
                     onClick={() => void reject()}
                     type="button"
                   >
@@ -1617,16 +1583,16 @@ export function ReviewScreen({
             {manualApproval && (
               <StateMessage kind="empty">
                 Approval receipt {manualApproval.receipt.receiptDigest} was
-                {manualApproval.outcome === "replayed" ? " replayed" : " recorded"}.
-                Assertion materialization is blocked by the RM-63 owner-authorization lock; no
-                asserted or inferred write occurred.
+                {manualApproval.outcome === "replayed" ? " replayed" : " recorded"}. Assertion
+                materialization is blocked by the RM-63 owner-authorization lock; no asserted or
+                inferred write occurred.
               </StateMessage>
             )}
             {manualRejection && (
               <StateMessage kind="success">
                 Rejection receipt {manualRejection.receipt.receiptDigest} was
-                {manualRejection.outcome === "replayed" ? " replayed" : " recorded"}.
-                No asserted or inferred write occurred.
+                {manualRejection.outcome === "replayed" ? " replayed" : " recorded"}. No asserted or
+                inferred write occurred.
               </StateMessage>
             )}
             {decision && (
