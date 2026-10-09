@@ -4,20 +4,27 @@ import importlib.util
 import json
 import subprocess
 import sys
-from datetime import UTC, datetime
 from pathlib import Path
+from types import ModuleType
 
 import pytest
 from cryptography.fernet import Fernet
 
-_ROOT = Path(__file__).resolve().parents[3]
-_LAUNCHER_PATH = _ROOT / "scripts" / "projecta_local.py"
-_LAUNCHER_SPEC = importlib.util.spec_from_file_location("native_opt_in_launcher", _LAUNCHER_PATH)
-if _LAUNCHER_SPEC is None or _LAUNCHER_SPEC.loader is None:
-    raise RuntimeError("could not load the native launcher")
-launcher = importlib.util.module_from_spec(_LAUNCHER_SPEC)
-sys.modules[_LAUNCHER_SPEC.name] = launcher
-_LAUNCHER_SPEC.loader.exec_module(launcher)
+pytestmark = pytest.mark.local_contract
+
+
+@pytest.fixture
+def native_launcher() -> tuple[ModuleType, Path]:
+    repository_root = Path(__file__).resolve().parents[3]
+    launcher_path = repository_root / "scripts" / "projecta_local.py"
+    launcher_spec = importlib.util.spec_from_file_location("native_opt_in_launcher", launcher_path)
+    if launcher_spec is None or launcher_spec.loader is None:
+        raise RuntimeError("could not load the native launcher")
+    launcher = importlib.util.module_from_spec(launcher_spec)
+    sys.modules[launcher_spec.name] = launcher
+    launcher_spec.loader.exec_module(launcher)
+    return launcher, repository_root
+
 
 _FOREIGN_ENVIRONMENT = {
     "PROJECTA_API_TRUSTED_CONTEXT_SECRET": "foreign-context-secret",
@@ -233,6 +240,7 @@ print(json.dumps(result))
 def test_native_opt_in_controls_real_connector_install_route(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
+    native_launcher: tuple[ModuleType, Path],
     opt_in: str | None,
     expected_result: dict[str, object],
 ) -> None:
@@ -248,6 +256,7 @@ def test_native_opt_in_controls_real_connector_install_route(
     trusted_context_secret = "native-test-context-secret"
     database_password = "native-test-database-password"
     secret_store_master_key = Fernet.generate_key().decode("ascii")
+    launcher, repository_root = native_launcher
     paths = launcher.ProjectaPaths(tmp_path / "package", tmp_path / "user-data")
     paths.ensure_user_directories()
     (paths.project / "web").mkdir(parents=True)
@@ -276,7 +285,7 @@ def test_native_opt_in_controls_real_connector_install_route(
     environment = manager._api_environment()
 
     payload = {
-        "api_source": str(_ROOT / "apps" / "api" / "src"),
+        "api_source": str(repository_root / "apps" / "api" / "src"),
         "settings": {
             "project_id": project_id,
             "actor_id": actor_id,
