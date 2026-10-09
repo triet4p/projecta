@@ -1525,6 +1525,12 @@ class RuntimeManager:
                 "PROJECTA_API_RUNTIME_ID": self.runtime_id,
             }
         )
+        if base is None:
+            # Migrations pass a scrubbed base; only the live API service has none.
+            connector_admin_opt_in = os.environ.get("PROJECTA_CONNECTOR_LOCAL_ADMIN_ENABLED")
+            if connector_admin_opt_in is not None:
+                environment["PROJECTA_CONNECTOR_LOCAL_ADMIN_ENABLED"] = connector_admin_opt_in
+
         return environment
 
     def _start_api(self) -> None:

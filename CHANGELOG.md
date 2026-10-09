@@ -12,6 +12,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - Fixed connector installation Enable/Disable requests returning `503` because the composed runtime was not published to the application state those routes read. Both operations now use the same runtime as install, sync, and catalog.
 
+- Restored the documented `PROJECTA_CONNECTOR_LOCAL_ADMIN_ENABLED` opt-in for the native local API; it remains disabled unless explicitly set, and production startup continues to reject it.
+
 - Corrected OpenAI SDK 2 request typing for optional sampling: unspecified `temperature` and `top_p` values are omitted, while explicitly configured values are sent.
 
 - Kept Linux/Compose release and API checks portable with runner-owned evidence roots and container-compatible import/receipt checks; replaced workstation-line-ending and test-source assumptions with byte-provenance and semantic contract checks.

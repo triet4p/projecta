@@ -112,6 +112,44 @@ asks whether to keep services running, choose **No** to return to the panel
 and stop them first; choose **Yes** only when background operation is
 intentional.
 
+## Optional connector administration on corrected 0.7.1 only
+
+This opt-in applies only to a 0.7.1 package rebuilt from source containing the
+native environment-forwarding correction and verified after that rebuild. It
+does not apply to this historical 0.7.0 installer or to the earlier 0.7.1
+candidate, which predates the correction. No 0.7.1 download link is available
+in this guide.
+
+Local connector administration is disabled by default. To opt in for the
+single-user local experience, stop any running Projecta services, set the
+variable in PowerShell, and start the installed manager from that same
+PowerShell process:
+
+```powershell
+$env:PROJECTA_CONNECTOR_LOCAL_ADMIN_ENABLED = "true"
+& "$env:LOCALAPPDATA\Programs\Projecta\0.7.1\ProjectaLocal.exe" start
+```
+
+Leave the PowerShell window open while the manager runs. To stop it from a
+second PowerShell window, run:
+
+```powershell
+& "$env:LOCALAPPDATA\Programs\Projecta\0.7.1\ProjectaLocal.exe" stop
+```
+
+After stopping, remove the variable before starting again to retain the
+default read-only connector authority:
+
+```powershell
+Remove-Item Env:PROJECTA_CONNECTOR_LOCAL_ADMIN_ENABLED -ErrorAction SilentlyContinue
+& "$env:LOCALAPPDATA\Programs\Projecta\0.7.1\ProjectaLocal.exe" start
+```
+
+The variable is an explicit local experience opt-in, not a production identity
+or production authorization mechanism. The API retains its `False` default and
+rejects this local-admin setting in production mode.
+
+
 ## Transfer a project between local installations
 
 Projecta's Projects screen can export a project as a `.projecta` package and

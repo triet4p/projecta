@@ -20,17 +20,32 @@ and ask questions grounded in recorded evidence.
 
 The published [Projecta 0.7.0 unsigned Windows 11 x64 release](https://github.com/triet4p/projecta/releases/tag/v0.7.0) remains
 available, but its frozen installer predates and does not contain the connector
-Enable/Disable 503 fix.
+Enable/Disable 503 fix or the later native connector opt-in correction.
 
-Source metadata for the 0.7.1 patch now contains that fix, but the installer
-has not been built or published. Its planned public filename is
-`Projecta-Setup-0.7.1.exe`; no verified download URL, size, or SHA-256
-exists yet. Do not run a checkout or file from the repository `build`
-directory. For the exact published v0.7.0 asset and checksum, see the
-[v0.7.0 installation guide](docs/sprint-plans/sprint-14/unsigned-0.7.0-machine-install.md).
+The 0.7.1 source contains the connector 503 fix and now forwards the documented
+`PROJECTA_CONNECTOR_LOCAL_ADMIN_ENABLED` opt-in only when explicitly set in the
+process that starts the local runtime. It defaults to off. The previously
+assembled 0.7.1 candidate predates this correction; a corrected, source-bound
+package must be rebuilt and verified before this opt-in is available in a
+downloadable 0.7.1 release. Do not run a checkout or file from the repository
+`build` directory. Until that release is published, use only the exact
+published 0.7.0 asset described in the
+[unsigned Windows installation guide](docs/sprint-plans/sprint-14/unsigned-0.7.0-machine-install.md).
 
-The 0.7.1 binary and publication tasks must establish their own source-bound
-receipts, asset hashes, and release readback before those details are listed.
+For a corrected and verified 0.7.1 installation only, stop any running
+Projecta services first, then set the opt-in and start the installed native
+manager from the same PowerShell process:
+
+```powershell
+$env:PROJECTA_CONNECTOR_LOCAL_ADMIN_ENABLED = "true"
+& "$env:LOCALAPPDATA\Programs\Projecta\0.7.1\ProjectaLocal.exe" start
+```
+
+This grants connector administration only to the local experience actor and
+project catalog. It is not production authentication or authorization. The
+current unsigned installation guide describes the corrected-version boundary
+and the same explicit start command.
+
 
 The attempt-specific R1 package and ZIP audit confirmed that no versioned MSVC
 runtime DLLs or Microsoft Redistributable installer are bundled. Its embedded

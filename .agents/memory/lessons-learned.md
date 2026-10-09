@@ -1279,3 +1279,11 @@ starting another local runtime.
 **Root cause:** `public_api._toggle_installation()` reads `request.app.state.connector_runtime`, but `create_app()` never assigned that attribute; the composed runtime only reached the router closure used by `require_runtime()` (install/catalog/list/sync). Unit tests injected fakes directly into the routes and never exercised the toggle routes through `create_app`, so the gap was invisible; the acceptance job had also been skipped by upstream CI failures in every earlier run.
 **Fix / workaround:** Publish the same composed runtime to the application state (`app.state.connector_runtime = composed_connector_runtime`) beside the other `app.state` assignments, and add a route-level regression test that POSTs `/enable` and `/disable` through `create_app` so the composition wiring itself is under test. Verify by simulating the pre-fix state (attribute removed → 503) and the fixed state (200 with real enabled/revision transitions).
 **Watch out for:** Any module-level route helper that reads `request.app.state.<x>` while sibling routes use the registration closure — grep `app.state` reads against `app.state` assignments after adding a route, and cover new routes through the real `create_app` composition rather than only injected-fake service paths.
+
+## [2026-10-09] A native child scrub can erase a documented opt-in
+
+**Symptom:** The local API's experience principal remained read-only even though the owner set `PROJECTA_CONNECTOR_LOCAL_ADMIN_ENABLED=true` in the process that started the native manager.
+**Root cause:** The manager scrubbed every inherited `PROJECTA_*` key before composing the API child environment, then passed that environment to the API without restoring this one documented opt-in.
+**Fix / workaround:** Forward only the exact `PROJECTA_CONNECTOR_LOCAL_ADMIN_ENABLED` value into the API-service environment when composing that child; retain the API's default-false setting and production guard, and keep migrations/dependencies on the scrubbed environment.
+**Watch out for:** When an API setting is an intentional user opt-in, trace it through launcher sanitization and child process creation. Do not widen a general `PROJECTA_*` allowlist or silently enable admin behavior.
+
