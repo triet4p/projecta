@@ -1,5 +1,6 @@
 """Public connector API contract tests for F45/F47/F50 boundaries."""
 
+from dataclasses import replace
 from datetime import UTC, datetime
 
 import pytest
@@ -215,3 +216,115 @@ async def test_connector_reader_cannot_install_github_public_issues() -> None:
                 connector_type="github-public-issues",
             )
         )
+
+
+class LifecycleRepository:
+    """Mutable installation state so enable/disable transitions stay observable."""
+
+    def __init__(self) -> None:
+        self.record = InstallationRecord(
+            "install-a",
+            "project-a",
+            "json-mock",
+            {"capabilities": ["inbound-import"], "fixtureReference": "fixture://project-a"},
+            None,
+            False,
+            1,
+            NOW,
+            NOW,
+        )
+
+    def get_installation(self, project_id: str, installation_id: str):
+        return (
+            self.record
+            if (project_id, installation_id) == ("project-a", "install-a")
+            else None
+        )
+
+    def list_installations(self, project_id: str, *, limit: int = 50, offset: int = 0):
+        return [self.record][offset : offset + limit] if project_id == "project-a" else []
+
+    def list_runs(self, project_id: str, installation_id: str, *, limit: int = 50):
+        return []
+
+    def get_run(self, project_id: str, installation_id: str, run_id: str):
+        return None
+
+
+class LifecycleInstallationService:
+    """Apply enable/disable to the mutable record like the real service does."""
+
+    def __init__(self, repository: LifecycleRepository) -> None:
+        self._repository = repository
+
+    async def create(self, context, request):
+        raise AssertionError("lifecycle test only toggles an existing installation")
+
+    async def update(self, context, project_id, installation_id, patch):
+        raise AssertionError("lifecycle test only toggles an existing installation")
+
+    async def enable_or_disable(
+        self, context, project_id, installation_id, expected_revision, enabled
+    ):
+        current = self._repository.get_installation(project_id, installation_id)
+        assert current is not None
+        updated = replace(current, enabled=enabled, revision=expected_revision + 1)
+        self._repository.record = updated
+        return InstallationSnapshot(
+            installationId=installation_id,
+            projectId=project_id,
+            connectorType=updated.connector_type,
+            capabilities=("inbound-import",),
+            enabled=enabled,
+            revision=updated.revision,
+            fixtureReference="fixture://project-a",
+        )
+
+
+def _lifecycle_runtime() -> ConnectorRuntime:
+    repository = LifecycleRepository()
+    registry = ConnectorRegistry()
+    policy = ConnectorPolicy(
+        DeterministicTestPrincipalAdapter(
+            actor_id="actor-a", allowed_projects=("project-a",), admin=True
+        ),
+        repository,
+        repository,
+    )
+    return ConnectorRuntime(
+        repository,
+        registry,
+        LifecycleInstallationService(repository),
+        object(),  # type: ignore[arg-type]
+        policy,
+        object(),  # type: ignore[arg-type]
+        SemanticClient(),
+    )
+
+
+@pytest.mark.asyncio
+async def test_enable_and_disable_routes_transition_the_composed_installation() -> None:
+    app = create_app(_settings(), SemanticClient(), connector_runtime=_lifecycle_runtime())
+    handle = connector_handle("project-a", "install-a")
+    base = (
+        f"/v1/projects/{opaque_project_handle('project-a')}"
+        f"/connectors/installations/{handle}"
+    )
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
+        enabled = await client.post(
+            f"{base}/enable",
+            headers=_headers(),
+            json={"expectedInstallationRevision": 1},
+        )
+        disabled = await client.post(
+            f"{base}/disable",
+            headers=_headers(),
+            json={"expectedInstallationRevision": 2},
+        )
+
+    assert enabled.status_code == 200
+    assert enabled.json()["enabled"] is True
+    assert enabled.json()["revision"] == 2
+    assert disabled.status_code == 200
+    assert disabled.json()["enabled"] is False
+    assert disabled.json()["revision"] == 3

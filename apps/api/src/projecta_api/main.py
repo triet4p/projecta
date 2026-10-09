@@ -279,6 +279,7 @@ def create_app(
     app.state.identity_repository = identity_repository_value
     app.state.identity_service = identity_service
     app.state.security_audit_sink = security_audit
+    app.state.connector_runtime = composed_connector_runtime
     app.state.structured_note_draft_store = structured_note_draft_store
     app.state.structured_candidate_edit_store = structured_candidate_edit_store
     fence = ProjectWriteFence()

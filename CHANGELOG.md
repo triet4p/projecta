@@ -8,6 +8,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Fixed
 
+- Fixed connector Enable/Disable failing with "Connector services are temporarily unavailable" in non-production deployments: the composed connector runtime was registered on the router but never published to the application state that the enable/disable routes read, so confirming Enable left the installation Disabled. Enable/disable now transitions the installation against the same runtime used by install, sync, and catalog.
 - Kept container API coverage for portable-import and review-receipt consumer behavior: only the pre-purge producer-head import contract is host-only because it loads repository ontology assets, while the source-text migration and RM66 report assertions were removed.
 - Removed the CRLF-workstation-pinned evaluation report hash assertions (workstation checkout bytes differ from committed LF blob bytes for the v9 report) in favor of the durable byte-provenance contracts that already bind those reports, and narrowed the implicit-behavior gate to reject fabricated semantic-state defaults instead of absence-tolerant optional projection.
 
