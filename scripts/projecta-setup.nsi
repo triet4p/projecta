@@ -6,16 +6,16 @@
 !endif
 
 Unicode true
-Name "Projecta 0.7.0 unsigned test pre-release"
+Name "Projecta 0.7.1 unsigned release"
 OutFile "${OUTPUT_FILE}"
-InstallDir "$LOCALAPPDATA\Programs\Projecta\0.7.0"
+InstallDir "$LOCALAPPDATA\Programs\Projecta\0.7.1"
 RequestExecutionLevel user
 ShowInstDetails show
 ShowUninstDetails show
 SetCompressor /SOLID lzma
 SetCompressorDictSize 32
 CRCCheck on
-BrandingText "Projecta 0.7.0 unsigned test pre-release"
+BrandingText "Projecta 0.7.1 unsigned release"
 
 !include "MUI2.nsh"
 Var StageDir
@@ -33,19 +33,19 @@ Var HadPrevious
 !insertmacro MUI_UNPAGE_INSTFILES
 !insertmacro MUI_LANGUAGE "English"
 
-!define UNINSTALL_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\Projecta-0.7.0-Unsigned-Pre-Release-Test"
+!define UNINSTALL_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\Projecta-0.7.1-Unsigned-Release"
 
 Function .onInit
   IfSilent proceed
   SetShellVarContext current
-  MessageBox MB_ICONEXCLAMATION|MB_OKCANCEL|MB_DEFBUTTON2 "Projecta 0.7.0 is an owner-authorized unsigned test pre-release. Windows cannot verify the publisher, and SmartScreen or antivirus software may warn. Continue only if you obtained this installer from the owner-approved source and verified its published SHA-256. Projecta itself installs and runs per-user and is never elevated. If the x64 Visual C++ prerequisite is missing, Internet access is required and setup will ask before downloading the official Microsoft installer directly; Microsoft shows its own license/consent screen and may request approval through Windows UAC. Clean Windows installation, publisher identity, and production readiness are not certified." IDOK proceed
+  MessageBox MB_ICONEXCLAMATION|MB_OKCANCEL|MB_DEFBUTTON2 "Projecta 0.7.1 is an owner-authorized unsigned Windows 11 x64 release. Windows cannot verify the publisher, and SmartScreen or antivirus software may warn. Continue only if you obtained this installer from the owner-approved source and verified its published SHA-256. Projecta itself installs and runs per-user and is never elevated. If the x64 Visual C++ prerequisite is missing, Internet access is required and setup will ask before downloading the official Microsoft installer; Microsoft's own license/consent UI and a Windows UAC prompt may appear. Only that vendor prerequisite can be elevated; Projecta and its services remain per-user. This is not clean-host or production certification. Continue?"
   Abort
 proceed:
   SetShellVarContext current
   Return
 FunctionEnd
 
-Section "Install Projecta 0.7.0"
+Section "Install Projecta 0.7.1"
   SetShellVarContext current
   StrCpy $PowerShell "$SYSDIR\WindowsPowerShell\v1.0\powershell.exe"
   CreateDirectory "$INSTDIR\.."
@@ -107,14 +107,14 @@ removePrevious:
 
 finishCommit:
   SetOutPath "$INSTDIR"
-  WriteUninstaller "$INSTDIR\..\uninstall-0.7.0.exe"
+  WriteUninstaller "$INSTDIR\..\uninstall-0.7.1.exe"
   CreateDirectory "$SMPROGRAMS\Projecta"
-  CreateShortCut "$SMPROGRAMS\Projecta\Projecta.lnk" "$PowerShell" "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File $\"$INSTDIR\ProjectaStart.ps1$\"" "$INSTDIR\Projecta.exe" 0 SW_SHOWNORMAL "" "Projecta 0.7.0 unsigned test pre-release"
-  WriteRegStr HKCU "${UNINSTALL_KEY}" "DisplayName" "Projecta 0.7.0 unsigned test pre-release"
-  WriteRegStr HKCU "${UNINSTALL_KEY}" "DisplayVersion" "0.7.0"
+  CreateShortCut "$SMPROGRAMS\Projecta\Projecta.lnk" "$PowerShell" "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File $\"$INSTDIR\ProjectaStart.ps1$\"" "$INSTDIR\Projecta.exe" 0 SW_SHOWNORMAL "" "Projecta 0.7.1 unsigned release"
+  WriteRegStr HKCU "${UNINSTALL_KEY}" "DisplayName" "Projecta 0.7.1 unsigned release"
+  WriteRegStr HKCU "${UNINSTALL_KEY}" "DisplayVersion" "0.7.1"
   WriteRegStr HKCU "${UNINSTALL_KEY}" "InstallLocation" "$INSTDIR"
   WriteRegStr HKCU "${UNINSTALL_KEY}" "DisplayIcon" "$INSTDIR\Projecta.exe"
-  WriteRegStr HKCU "${UNINSTALL_KEY}" "UninstallString" "$\"$INSTDIR\..\uninstall-0.7.0.exe$\""
+  WriteRegStr HKCU "${UNINSTALL_KEY}" "UninstallString" "$\"$INSTDIR\..\uninstall-0.7.1.exe$\""
   WriteRegDWORD HKCU "${UNINSTALL_KEY}" "NoModify" 1
   WriteRegDWORD HKCU "${UNINSTALL_KEY}" "NoRepair" 1
   Goto installComplete
@@ -154,7 +154,7 @@ Section "Uninstall"
   Delete "$SMPROGRAMS\Projecta\Projecta.lnk"
   RMDir "$SMPROGRAMS\Projecta"
   DeleteRegKey HKCU "${UNINSTALL_KEY}"
-  Delete "$INSTDIR\..\uninstall-0.7.0.exe"
+  Delete "$INSTDIR\..\uninstall-0.7.1.exe"
   RMDir /r "$INSTDIR"
   RMDir "$INSTDIR\.."
   MessageBox MB_ICONINFORMATION|MB_OK "Projecta application files and shortcuts were removed. Your mutable workspace, databases, secrets, and evidence under %LOCALAPPDATA%\Projecta were intentionally retained. Back up and review that data before deleting it yourself."

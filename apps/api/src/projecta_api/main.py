@@ -267,7 +267,7 @@ def create_app(
             )
         yield
 
-    app = FastAPI(title="Projecta Application API", version="0.7.0", lifespan=lifespan)
+    app = FastAPI(title="Projecta Application API", version="0.7.1", lifespan=lifespan)
     app.state.settings = actual_settings
     app.state.startup_problems = startup_problems
     app.state.runtime_configuration = configuration

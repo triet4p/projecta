@@ -26,11 +26,11 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path, PurePosixPath
 
-APP_VERSION = "0.7.0"
+APP_VERSION = "0.7.1"
 DATA_CONTRACT_VERSION = 1
-UNSIGNED_PRE_RELEASE_VERSION = "0.7.0"
+UNSIGNED_PRE_RELEASE_VERSION = "0.7.1"
 UNSIGNED_PRE_RELEASE_CHANNEL = "unsigned-pre-release-test"
-UNSIGNED_PRE_RELEASE_EXCEPTION = "projecta-0.7.0-unsigned-pre-release-test"
+UNSIGNED_PRE_RELEASE_EXCEPTION = "projecta-0.7.1-unsigned-pre-release-test"
 
 RUNTIME_VERSIONS = {
     "python": "3.12.10",
@@ -719,7 +719,7 @@ def load_runtime_manifest(
         if not (paths.package_root / notice).is_file():
             raise RuntimeFailure("PACKAGE_NOTICES_MISSING", "A required third-party notice is absent from the package.")
     if channel == UNSIGNED_PRE_RELEASE_CHANNEL and "runtime/installer-tool/NSIS-COPYING.txt" not in notices:
-        raise RuntimeFailure("PACKAGE_NOTICES_MISSING", "The installer license notice is absent from the pre-release package.")
+        raise RuntimeFailure("PACKAGE_NOTICES_MISSING", "The installer license notice is absent from the unsigned package.")
     required_files = (
         paths.runtime / "python" / "python.exe",
         paths.runtime / "python" / "python312._pth",
@@ -778,7 +778,7 @@ def _require_package_distribution(manifest: Mapping[str, object]) -> None:
         return
     raise RuntimeFailure(
         "PACKAGE_SIGNATURE_REQUIRED",
-        "This unsigned host-validation package is not enabled for the 0.7.0 test pre-release.",
+        "This unsigned host-validation package is not enabled for the 0.7.1 release.",
     )
 
 
@@ -2286,7 +2286,7 @@ $shortcut.Arguments = $env:PROJECTA_SHORTCUT_ARGUMENTS
 $shortcut.IconLocation = $env:PROJECTA_SHORTCUT_ICON
 $shortcut.TargetPath = $env:PROJECTA_SHORTCUT_TARGET
 $shortcut.WorkingDirectory = $env:PROJECTA_SHORTCUT_WORKING_DIRECTORY
-$shortcut.Description = 'Projecta 0.7.0 unsigned pre-release test application'
+$shortcut.Description = 'Projecta 0.7.1 unsigned release test application'
 $shortcut.Save()
 """
     encoded = base64.b64encode(shortcut_script.encode("utf-16le")).decode("ascii")
@@ -2604,7 +2604,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             fresh_install = not paths.local_config.is_file()
             release_eligible = install(paths, workspace_name=args.workspace_name)
             if not release_eligible:
-                print("Projecta 0.7.0 unsigned pre-release test installed. Publisher identity is unverified; signed updates remain required.")
+                print("Projecta 0.7.1 unsigned test release installed. Publisher identity is unverified; signed updates remain required.")
             elif fresh_install:
                 print("Projecta is installed; the selected first-run workspace was provisioned.")
             else:

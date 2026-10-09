@@ -1,6 +1,6 @@
 [project]
 name = "projecta-api"
-version = "0.7.0"
+version = "0.7.1"
 description = "Projecta application API"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"

@@ -471,9 +471,9 @@ def test_staged_runtime_override_never_authorizes_host_validation(
         assert failure.value.code == "PACKAGE_SIGNATURE_REQUIRED"
 
 
-def test_only_exact_0_7_0_unsigned_prerelease_exception_is_enabled() -> None:
+def test_only_exact_0_7_1_unsigned_exception_is_enabled() -> None:
     authorized = {
-        "projectaVersion": "0.7.0",
+        "projectaVersion": "0.7.1",
         "releaseEligible": False,
         "distributionChannel": launcher.UNSIGNED_PRE_RELEASE_CHANNEL,
         "unsignedPreReleaseException": launcher.UNSIGNED_PRE_RELEASE_EXCEPTION,
@@ -484,8 +484,8 @@ def test_only_exact_0_7_0_unsigned_prerelease_exception_is_enabled() -> None:
     unauthorized = (
         {
             **authorized,
-            "projectaVersion": "0.7.1",
-            "unsignedPreReleaseException": "projecta-0.7.1-unsigned-pre-release-test",
+            "projectaVersion": "0.7.0",
+            "unsignedPreReleaseException": "projecta-0.7.0-unsigned-pre-release-test",
         },
         {**authorized, "unsignedPreReleaseException": "another-exception"},
         {**authorized, "distributionChannel": "host-validation"},

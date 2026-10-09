@@ -1,6 +1,6 @@
 """Staged-commit behavior tests for the per-user NSIS installer transaction.
 
-The 0.7.0 unsigned installer stages the full application tree into a sibling
+The 0.7.1 unsigned installer stages the full application tree into a sibling
 ``*.staging`` directory and then renames it over the install directory. The
 transaction fails closed when the installer process still has the staging
 directory as its working directory: Windows refuses to rename a process's

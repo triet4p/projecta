@@ -43,11 +43,11 @@ ROOT = Path(__file__).resolve().parents[1]
 DL = ROOT / "build" / "native-dl"
 OUT = ROOT / "build" / "native-package"
 
-APP_VERSION = "0.7.0"
+APP_VERSION = "0.7.1"
 DATA_CONTRACT_VERSION = 1
-UNSIGNED_PRE_RELEASE_VERSION = "0.7.0"
+UNSIGNED_PRE_RELEASE_VERSION = "0.7.1"
 UNSIGNED_PRE_RELEASE_CHANNEL = "unsigned-pre-release-test"
-UNSIGNED_PRE_RELEASE_EXCEPTION = "projecta-0.7.0-unsigned-pre-release-test"
+UNSIGNED_PRE_RELEASE_EXCEPTION = "projecta-0.7.1-unsigned-pre-release-test"
 NSIS_VERSION = "3.13"
 NSIS_ARCHIVE_SHA256 = "ba63dffc4410ee89193e1cb5a41989991bd77c61068da17e3156d136b7b0b3d8"
 NSIS_DOWNLOAD_URL = "https://sourceforge.net/projects/nsis/files/NSIS%203/3.13/nsis-3.13.zip/"
@@ -1990,7 +1990,7 @@ def write_notices(
     if unsigned_pre_release_test and (
         APP_VERSION != UNSIGNED_PRE_RELEASE_VERSION or release_eligible or installer_tool_notice is None
     ):
-        raise SystemExit("the unsigned pre-release notice is restricted to the authorized 0.7.0 installer build.")
+        raise SystemExit("the unsigned notice is restricted to the authorized 0.7.1 installer build.")
     lines = [
         "# Third-party runtime notices",
         "",
@@ -1998,14 +1998,14 @@ def write_notices(
             "Owner-signed release package. This inventory records input provenance and indexes"
             if release_eligible
             else (
-                "Owner-authorized unsigned 0.7.0 test pre-release; publisher identity is unverified."
+                "Owner-authorized unsigned 0.7.1 release; publisher identity is unverified."
                 if unsigned_pre_release_test
                 else "Host-validation-only bundle. This inventory records input provenance and indexes"
             )
         ),
         "This inventory records input provenance and indexes included license/notice files; it is not a legal review.",
         (
-            "Unsigned pre-release exception is limited to Projecta 0.7.0 test distribution; this is not a signed release."
+            "Unsigned release exception is limited to Projecta 0.7.1 test distribution; this is not a signed release."
             if unsigned_pre_release_test
             else "This package status is not owner approval."
         ),
@@ -2078,7 +2078,7 @@ def write_manifest(
     authenticode_signing: dict[str, object] | None = None,
 ) -> dict[str, object]:
     if unsigned_pre_release_test and (release_eligible or APP_VERSION != UNSIGNED_PRE_RELEASE_VERSION):
-        raise SystemExit("the unsigned pre-release exception is available only for unsigned Projecta 0.7.0.")
+        raise SystemExit("the unsigned exception is available only for Projecta 0.7.1.")
     manifest_path = package / "runtime-manifest.json"
     manifest_path.unlink(missing_ok=True)
     (package / "runtime-manifest.sig").unlink(missing_ok=True)
@@ -2389,7 +2389,7 @@ def verify_assembled(
             or signature_path.exists()
             or not (package / "runtime" / "installer-tool" / "NSIS-COPYING.txt").is_file()
         ):
-            raise SystemExit("the 0.7.0 unsigned pre-release package does not match its narrow exception contract.")
+            raise SystemExit("the 0.7.1 unsigned package does not match its narrow exception contract.")
     elif (
         manifest.get("releaseEligible") is not False
         or manifest.get("distributionChannel") != "host-validation"
@@ -2413,7 +2413,7 @@ def _build_web_assets() -> None:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Build a host-validation bundle, owner-authorized 0.7.0 unsigned test pre-release, or signed release."
+        description="Build a host-validation bundle, owner-authorized 0.7.1 unsigned release, or signed release."
     )
     parser.add_argument("--manifest-only", action="store_true")
     parser.add_argument(
@@ -2424,12 +2424,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--unsigned-pre-release-test",
         action="store_true",
-        help="build only the owner-authorized unsigned Projecta 0.7.0 test pre-release.",
+        help="build only the owner-authorized unsigned Projecta 0.7.1 test release.",
     )
     parser.add_argument(
         "--installer-tool-notice",
         type=Path,
-        help="upstream NSIS COPYING notice; required for the unsigned 0.7.0 pre-release build.",
+        help="upstream NSIS COPYING notice; required for the unsigned 0.7.1 release build.",
     )
     parser.add_argument("--output", type=Path, default=OUT)
     parser.add_argument("--archive", type=Path)
@@ -2450,11 +2450,11 @@ def main(argv: list[str] | None = None) -> int:
         raise SystemExit("--release and --unsigned-pre-release-test are mutually exclusive.")
     if args.unsigned_pre_release_test:
         if APP_VERSION != UNSIGNED_PRE_RELEASE_VERSION or args.installer_tool_notice is None:
-            raise SystemExit("the unsigned pre-release build requires its pinned 0.7.0 version and NSIS license notice.")
+            raise SystemExit("the unsigned build requires its pinned 0.7.1 version and NSIS license notice.")
         if not args.installer_tool_notice.is_file() or args.installer_tool_notice.is_symlink():
             raise SystemExit("the upstream NSIS license notice must be a regular file.")
     elif args.installer_tool_notice is not None:
-        raise SystemExit("--installer-tool-notice is reserved for the unsigned 0.7.0 pre-release build.")
+        raise SystemExit("--installer-tool-notice is reserved for the unsigned 0.7.1 release build.")
     receipt = verify_inputs()
     if args.manifest_only:
         print(json.dumps(receipt, indent=2))
@@ -2576,7 +2576,7 @@ def main(argv: list[str] | None = None) -> int:
                 "Owner Authenticode and Ed25519 signing completed and verified."
                 if args.release
                 else (
-                    "Owner-authorized 0.7.0 unsigned test pre-release exception; neither Authenticode nor manifest signature is present."
+                    "Owner-authorized 0.7.1 unsigned test release exception; neither Authenticode nor manifest signature is present."
                     if args.unsigned_pre_release_test
                     else "No owner release signature was produced; this host-validation archive is not distributable."
                 )
@@ -2594,9 +2594,9 @@ def main(argv: list[str] | None = None) -> int:
         print(f"archive {archive_path} sha256={archive['sha256']} size={archive['size']}")
         print(f"releaseEligible=true; Authenticode PE images={authenticode_signing['verifiedImageCount']}")
     elif args.unsigned_pre_release_test:
-        print(f"assembled owner-authorized unsigned pre-release package {package} ({APP_VERSION})")
+        print(f"assembled owner-authorized unsigned 0.7.1 package {package}")
         print(f"archive {archive_path} sha256={archive['sha256']} size={archive['size']}")
-        print("releaseEligible=false; unsigned pre-release exception is limited to 0.7.0.")
+        print("releaseEligible=false; unsigned test distribution is limited to 0.7.1.")
     else:
         print(f"assembled host-validation-only unsigned package {package} ({APP_VERSION})")
         print(f"archive {archive_path} sha256={archive['sha256']} size={archive['size']}")

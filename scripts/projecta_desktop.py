@@ -1,4 +1,4 @@
-"""Windows control panel for the bundled Projecta 0.7.0 local runtime."""
+"""Windows control panel for the bundled Projecta 0.7.1 local runtime."""
 
 from __future__ import annotations
 
@@ -39,20 +39,20 @@ class ProjectaDesktop:
         self.stop_button: ttk.Button
         self.browser_button: ttk.Button
 
-        root.title("Projecta 0.7.0 — unsigned test pre-release")
+        root.title("Projecta 0.7.1 — unsigned Windows 11 x64 release")
         root.geometry("620x490")
         root.minsize(540, 430)
         root.protocol("WM_DELETE_WINDOW", self._close)
 
         frame = ttk.Frame(root, padding=20)
         frame.pack(fill="both", expand=True)
-        ttk.Label(frame, text="Projecta 0.7.0", font=("Segoe UI", 18, "bold")).pack(anchor="w")
+        ttk.Label(frame, text="Projecta 0.7.1", font=("Segoe UI", 18, "bold")).pack(anchor="w")
         ttk.Label(
             frame,
             text=(
-                "UNSIGNED TEST PRE-RELEASE — Windows cannot verify the publisher. "
-                "Check the owner's installer SHA-256 before running it. "
-                "This does not pass the signed or clean-install release gate."
+                "UNSIGNED RELEASE — Windows 11 x64 only. Windows cannot verify the publisher. "
+                "Check the published installer SHA-256 before running it. "
+                "This is not a signed release or clean-host certification."
             ),
             foreground="#8b2f00",
             wraplength=570,
@@ -281,7 +281,7 @@ class ProjectaDesktop:
 
 
 def _show_startup_error(message: str) -> None:
-    ctypes.windll.user32.MessageBoxW(None, message, "Projecta 0.7.0", 0x10)
+    ctypes.windll.user32.MessageBoxW(None, message, "Projecta 0.7.1", 0x10)
 
 
 def _single_instance_mutex(kernel32: object) -> int:
@@ -290,7 +290,7 @@ def _single_instance_mutex(kernel32: object) -> int:
     kernel32.CreateMutexW.argtypes = (ctypes.c_void_p, ctypes.c_bool, ctypes.c_wchar_p)
     kernel32.CreateMutexW.restype = ctypes.c_void_p
     kernel32.CloseHandle.argtypes = (ctypes.c_void_p,)
-    handle = kernel32.CreateMutexW(None, True, f"Local\\Projecta-0.7.0-{identity}")
+    handle = kernel32.CreateMutexW(None, True, f"Local\\Projecta-0.7.1-{identity}")
     if not handle:
         raise OSError("The Projecta window could not reserve its single-instance lock.")
     if ctypes.get_last_error() == 183:
@@ -338,7 +338,7 @@ def main() -> int:
         mutex = _single_instance_mutex(kernel32)
         if not mutex:
             ctypes.windll.user32.MessageBoxW(
-                None, "Projecta is already open for this Windows user.", "Projecta 0.7.0", 0x40
+                None, "Projecta is already open for this Windows user.", "Projecta 0.7.1", 0x40
             )
             return 0
         paths = launcher.ProjectaPaths.discover()

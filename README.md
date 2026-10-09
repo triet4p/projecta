@@ -16,19 +16,21 @@ and ask questions grounded in recorded evidence.
 
 ## Quick start
 
-### Windows 11 x64 unsigned 0.7.0 test pre-release
+### Windows 11 x64 unsigned 0.7.1 patch source
 
-The owner-authorized unsigned 0.7.0 Windows 11 x64 pre-release is intended to
-be one hybrid-online installer. A local package/archive and unsigned NSIS
-candidate have now been built and audited for S14-08, but they remain
-unpublished files, not a publication-approved download. The earlier pre-hybrid
-installer checksum is obsolete and must not be used. No public asset or download
-URL is available. Do not run a file from a repository checkout or `build`
-directory. Wait until the owner-approved release lists the exact filename,
-size, and SHA-256 and this
-README and the
-[installation guide](docs/sprint-plans/sprint-14/unsigned-0.7.0-machine-install.md)
-record the same verified values.
+The published [Projecta 0.7.0 unsigned Windows 11 x64 release](https://github.com/triet4p/projecta/releases/tag/v0.7.0) remains
+available, but its frozen installer predates and does not contain the connector
+Enable/Disable 503 fix.
+
+Source metadata for the 0.7.1 patch now contains that fix, but the installer
+has not been built or published. Its planned public filename is
+`Projecta-Setup-0.7.1.exe`; no verified download URL, size, or SHA-256
+exists yet. Do not run a checkout or file from the repository `build`
+directory. For the exact published v0.7.0 asset and checksum, see the
+[v0.7.0 installation guide](docs/sprint-plans/sprint-14/unsigned-0.7.0-machine-install.md).
+
+The 0.7.1 binary and publication tasks must establish their own source-bound
+receipts, asset hashes, and release readback before those details are listed.
 
 The attempt-specific R1 package and ZIP audit confirmed that no versioned MSVC
 runtime DLLs or Microsoft Redistributable installer are bundled. Its embedded
@@ -50,22 +52,23 @@ and signing remain separate open release gates; no signed, clean-certified,
 production, or `1.0.0` claim follows. See the
 [current Sprint 14 plan](docs/sprint-plans/sprint-14.md).
 
-The candidate remains unsigned, unpublished, not publication-approved, and
-`releaseEligible=false`. The worker did not run NSIS on this host: its fixed
-per-user install target, shell Start Menu KnownFolder, and HKCU registration
-cannot be redirected safely from the existing owner installation. This does
-not negate the owner's machine-2 QA acceptance. Actual missing-runtime
-Microsoft consent/UAC execution is not inferred from that acceptance.
+The published v0.7.0 bundle is unsigned and `releaseEligible=false`; it remains
+without clean-Windows, signing, production, or `1.0.0` proof. The build worker
+did not run NSIS on the development host because its fixed per-user install
+target, shell Start Menu KnownFolder, and HKCU registration could not be
+safely redirected from the existing owner installation. This does not negate
+the owner's machine-2 QA acceptance or establish the missing-runtime branch.
 Projecta and its services remain per-user and are not elevated.
 
 The bundle includes local services and native runtimes without requiring Docker,
-Python, Node.js, a JDK, PostgreSQL, or Fuseki installed separately; it uses the
-current Windows account's default browser. Windows may show a standard
-unsigned-file SmartScreen reputation warning for a future asset. Never disable
-security controls or override a Defender alert, hard block, or organization
-policy. This version-specific exception is not clean-Windows proof, a signed
-release, or production readiness; signed update verification remains
-fail-closed.
+Python, Node.js, a JDK, PostgreSQL, or Fuseki installed separately. It opens
+the current Windows account's default browser.
+
+Windows may show a standard unsigned-file SmartScreen reputation warning for a
+published asset. Never disable security controls or override a Defender alert,
+hard block, or organization policy. The published 0.7.0 release is not clean-
+Windows proof, a signed release, or production readiness; signed update
+verification remains fail-closed.
 
 
 ### Development quick start (Docker Compose)

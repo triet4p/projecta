@@ -1,4 +1,4 @@
-"""Build the owner-authorized unsigned Projecta 0.7.0 Windows setup file."""
+"""Build the owner-authorized unsigned Projecta 0.7.1 Windows setup file."""
 
 from __future__ import annotations
 
@@ -18,13 +18,13 @@ import re
 import projecta_local as launcher
 
 ROOT = Path(__file__).resolve().parents[1]
-APP_VERSION = "0.7.0"
+APP_VERSION = "0.7.1"
 CHANNEL = "unsigned-pre-release-test"
-EXCEPTION = "projecta-0.7.0-unsigned-pre-release-test"
+EXCEPTION = "projecta-0.7.1-unsigned-pre-release-test"
 NSIS_VERSION = "3.13"
 NSIS_ARCHIVE_SHA256 = "ba63dffc4410ee89193e1cb5a41989991bd77c61068da17e3156d136b7b0b3d8"
 NSIS_ARCHIVE_URL = "https://sourceforge.net/projects/nsis/files/NSIS%203/3.13/nsis-3.13.zip/"
-INSTALLER_NAME = "Projecta-Setup-0.7.0-win-x64-unsigned-prerelease.exe"
+INSTALLER_NAME = "Projecta-Setup-0.7.1.exe"
 DEFAULT_NSIS_ROOT = ROOT / "build" / "tools" / "nsis-3.13" / "distribution" / "nsis-3.13"
 DEFAULT_NSIS_ARCHIVE = ROOT / "build" / "tools" / "nsis-3.13" / "nsis-3.13.zip"
 
@@ -156,7 +156,7 @@ def _validate_package(package: Path) -> dict[str, Any]:
         manifest = launcher.load_runtime_manifest(paths)
         launcher._require_package_distribution(manifest)
     except launcher.RuntimeFailure as error:
-        raise SystemExit(f"the package does not satisfy the 0.7.0 unsigned test pre-release contract: {error.code}") from error
+        raise SystemExit(f"the package does not satisfy the 0.7.1 unsigned test release contract: {error.code}") from error
     if (
         manifest.get("projectaVersion") != APP_VERSION
         or manifest.get("releaseEligible") is not False
@@ -165,13 +165,13 @@ def _validate_package(package: Path) -> dict[str, Any]:
         or manifest.get("authenticodeSigning") is not None
         or (package / "runtime-manifest.sig").exists()
     ):
-        raise SystemExit("the package does not match the exact owner-authorized unsigned 0.7.0 exception.")
+        raise SystemExit("the package does not match the exact owner-authorized unsigned 0.7.1 exception.")
     _package_source_provenance(package, manifest)
     return manifest
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Build one per-user Projecta 0.7.0 unsigned test installer.")
+    parser = argparse.ArgumentParser(description="Build one per-user Projecta 0.7.1 unsigned installer.")
     parser.add_argument("--package", type=Path, required=True, help="assembled package directory")
     parser.add_argument("--compiler", type=Path, default=DEFAULT_NSIS_ROOT / "makensis.exe")
     parser.add_argument("--nsis-archive", type=Path, default=DEFAULT_NSIS_ARCHIVE)
@@ -181,7 +181,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     if sys.platform != "win32" or platform.machine().upper() not in {"AMD64", "X86_64"}:
-        raise SystemExit("the 0.7.0 x64 Windows installer must be compiled on a Windows x64 host.")
+        raise SystemExit("the 0.7.1 x64 Windows installer must be compiled on a Windows x64 host.")
     package = _rooted(args.package)
     compiler = _rooted(args.compiler)
     nsis_archive = _rooted(args.nsis_archive)
@@ -284,7 +284,7 @@ def main(argv: list[str] | None = None) -> int:
         "sha256": _sha256(output),
         "authenticodeStatus": signature_status,
         "installScope": "Projecta is per-user and not elevated; installing Microsoft's Visual C++ prerequisite may request UAC after user consent.",
-        "installDirectory": "%LOCALAPPDATA%\\Programs\\Projecta\\0.7.0",
+        "installDirectory": "%LOCALAPPDATA%\\Programs\\Projecta\\0.7.1",
         "mutableDataDirectory": "%LOCALAPPDATA%\\Projecta",
         "uninstallRetainsMutableData": True,
     }

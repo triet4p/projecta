@@ -1,13 +1,13 @@
-# Projecta 0.7.0 unsigned test pre-release — Windows 11 x64
+# Projecta 0.7.0 unsigned release — Windows 11 x64
 
-This is the owner-authorized unsigned 0.7.0 test pre-release, not a signed
-release, production installation, or clean-Windows certification. Windows
-cannot verify the publisher; a standard SmartScreen reputation warning may
-appear for this unsigned file. A Defender malware alert, Windows hard block,
-or organization-policy block is different: stop and report it. Never disable
-SmartScreen, Defender, or other security controls, override a malware
-detection, or change organization policy. This exception applies only to
-0.7.0; signed release and update verification remain fail-closed.
+The published, owner-authorized v0.7.0 package is unsigned and intended for
+Windows 11 x64 only. It does not contain the subsequent connector
+Enable/Disable 503 fix; wait for the separate verified v0.7.1 release if that
+correction is required. This package is not signed, production-certified, or
+clean-Windows certified. Windows cannot verify its publisher; a standard
+SmartScreen reputation warning may appear. A Defender alert, hard block, or
+organization-policy block is different: stop and report it. Never disable
+security controls. Signed release and update verification remain fail-closed.
 
 The bundle includes the local Python 3.12 and Java 21 runtimes, PostgreSQL,
 Fuseki/TDB2, Semantic Core, API, and web assets. It does not bundle the
@@ -24,45 +24,47 @@ account's default browser.
 
 ## Get and verify the installer
 
-The owner-authorized unsigned 0.7.0 hybrid candidate has not been published;
-this handoff has no public download URL or published installer checksum. A
-local package/archive and unsigned NSIS installer candidate now exist for
-review, but they are not a published, publication-approved user download.
-The owner's machine-2 QA acceptance is not permission to substitute arbitrary
-build files for the eventual exact asset. The previously recorded pre-hybrid
-installer and checksum are superseded and must not be run. The eventual asset name is
-`Projecta-Setup-0.7.0-win-x64-unsigned-prerelease.exe`, but its final size and
-SHA-256 must come from the owner-approved publication, not an older receipt.
-Do not substitute a repository checkout, `build` folder, package archive, or
-other installer candidate for that exact published asset.
+The published v0.7.0 release is Latest at
+<https://github.com/triet4p/projecta/releases/tag/v0.7.0>. Use only its exact
+installer asset:
 
-The local S14-08-W20261002-A2-R1 candidate has owner-reported acceptance of
-candidate identity, first-run/lifecycle, prerequisite handling, and
-uninstall/data retention on machine 2. Separately, the developer-host smoke
-exercised its extracted package; it did not execute NSIS on the owner's
-existing profile because shell KnownFolder/registry integration was not
-safely isolatable there. Do not repeat the accepted owner checks to reconfirm
-them. The owner approved unsigned task closure; clean-Windows/resource,
-signing, and real missing-runtime vendor execution remain open release gates.
-This is not a published download. Use only the exact publication-approved
-asset when its filename, size, and SHA-256 are listed here.
+`Projecta-Setup-0.7.0.exe` (122,493,613 bytes; SHA-256
+`91209858aabc2e15695e7752c021d4bf34a348705a8ad475ac31b48bf0979cf4`).
+The release also publishes `SHA256SUMS-0.7.0.txt`; verify the installer
+against that file before running it.
 
-When the owner-approved release is available, compare its exact filename,
-size, and SHA-256 before opening it. In Command Prompt:
+The earlier attempt-named installer and pre-hybrid checksum are not the public
+asset. Do not substitute a repository checkout, `build` folder, package
+archive, or another installer candidate. The public 0.7.0 binary was built
+from tag `v0.7.0` at source
+`09ea7d05c37db74159a822fc059b7f363e11d41b` and predates the later connector
+Enable/Disable 503 fix.
+
+The owner's machine-2 QA acceptance and developer-host smoke describe historic
+0.7.0 evidence; they do not certify a clean Windows host, the missing-runtime
+Microsoft installer/UAC branch, or the later 0.7.1 package. The upcoming 0.7.1
+candidate is not built or published at this source cutover. Do not use a local
+0.7.1 build output as a release asset.
+
+Only obtain 0.7.0 from the public release above, and compare its filename,
+size, and checksum before opening it.
+
+Before opening the published 0.7.0 asset, compare its exact filename, size,
+and SHA-256 with the release listing above. In Command Prompt:
 
 ```cmd
-certutil -hashfile "%USERPROFILE%\Downloads\Projecta-Setup-0.7.0-win-x64-unsigned-prerelease.exe" SHA256
+certutil -hashfile "%USERPROFILE%\Downloads\Projecta-Setup-0.7.0.exe" SHA256
 ```
 
 Proceed only if the filename, size, and checksum exactly match the published
-asset. If the asset or checksum is unavailable, stop and wait. After those
-checks, you may choose **More info → Run anyway** only for an ordinary
-SmartScreen unrecognized-app/reputation warning, only if Windows offers that
-option, and only if you accept the unsigned 0.7.0 test risk. This is an
-optional per-file choice for this verified asset, not a safety check or
-permission to run other unsigned files. If Defender reports malware, Windows
-hard-blocks the file, or organization policy blocks it, stop and report the
-alert; do not override it or change security settings.
+release asset. If any does not match, or the checksum is unavailable, stop.
+After the checks, you may choose **More info → Run anyway** only for an
+ordinary SmartScreen reputation warning, only if Windows offers that option
+and you accept the unsigned 0.7.0 release risk. This is an optional
+per-file decision, not a safety check or permission to run other unsigned
+files. If Defender reports malware, Windows hard-blocks the file, or
+organization policy blocks it, stop and report the alert; do not override it
+or change security settings.
 
 ## Install and start
 
@@ -199,16 +201,16 @@ Microsoft's [latest supported Visual C++ Redistributable guidance](https://learn
 publishes the current x64 download and version guidance. Its
 [redistribution guidance](https://learn.microsoft.com/en-us/cpp/windows/redistributing-visual-cpp-files?view=msvc-170)
 limits redistribution of its packages and individual files to eligible
-licensed Visual Studio users and applicable terms. This candidate includes
+licensed Visual Studio users and applicable terms. The published 0.7.0 package includes
 neither disputed runtime DLLs nor the vendor installer; the user downloads and
 accepts Microsoft's package under Microsoft's UI. This is not a blanket waiver
 or legal opinion for other third-party contents.
 
 The worker host already had x64 v14 runtime **14.50.35719.0**, above the
 minimum, so the real installed-runtime check could exercise only the skip path.
-It is not a clean Windows image and does not prove the missing-runtime vendor
-installer/UAC branch. The owner-reported GUI baseline above is not a new
-first-run test of this installer. This unsigned exception applies only to 0.7.0;
-signed update verification remains fail-closed. Clean-Windows dependency
-closure, minimum-resource measurements, owner signing configuration, and the
-remaining S14 evidence gates are still open.
+This was not a clean Windows image and does not prove the missing-runtime vendor
+installer/UAC branch; the owner-reported GUI baseline does not establish it
+either. This unsigned exception applies only to the v0.7.0 package; signed
+update verification remains fail-closed. Clean-Windows dependency closure,
+minimum-resource measurements, owner signing configuration, and the 0.7.1
+patch binary/publication gates remain separate and open.
