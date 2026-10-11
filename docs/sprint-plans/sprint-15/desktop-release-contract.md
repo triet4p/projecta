@@ -72,14 +72,15 @@ Rules:
 
 The desktop shell exposes exactly the existing launcher command surface, minus nothing and plus nothing at this contract level:
 
-- `install` — first-run workspace provisioning on a fresh data directory only; never overwrites existing configuration.
+- `provision --workspace-name <name>` — first-run workspace provisioning on a fresh data directory only. Data-only by construction: it writes the workspace registry, the installation record, and the DPAPI CurrentUser secret, and it NEVER performs OS installation (no package copy, no Start-Menu shortcut, no HKCU write). The S15-04 in-window first-run form invokes exactly this command, so OS shortcut/registry installation stays separate from workspace initialization in both frozen and unfrozen execution.
+- `install` — full first-run installation for the current Windows user on a fresh data directory only; never overwrites existing configuration.
 - `start` — ordered start with readiness gating; opens no system browser in desktop mode (the window replaces `webbrowser.open`).
-- `stop` — graceful reverse-order shutdown request.
+- `stop` — graceful reverse-order shutdown request. While the manager is alive and reports `shutdown-failed` it is waiting for an explicit user stop retry; the surface Stop control writes the retry request instead of terminating the manager.
 - `status` — read-only readiness/state inspection; changes no data.
 - `backup create` / `backup restore` — stopped-runtime snapshots only; restore requires explicit confirmation and retains the pre-restore state.
 - `update <package>` — user-approved signed package only, stopped-runtime only (§9).
 
-S15-03 binds these to window controls (Start/Stop, bounded recovery, sanitized diagnostics). Any additional native operation the slice needs MUST be named in its task evidence and mapped here by contract amendment — never smuggled in as an unreviewed command.
+S15-03 binds these to window controls (Start/Stop, bounded recovery, sanitized diagnostics). S15-05 binds the same operations to the same-window lifecycle surface and to the native Runtime menu (Start runtime / Stop runtime / Show runtime controls); both bindings only invoke this list — they add no supervisor operation, no Tauri command, and no capability. Any additional native operation the slice needs MUST be named in its task evidence and mapped here by contract amendment — never smuggled in as an unreviewed command.
 
 ### 3.2 Operations the desktop MUST NOT add
 

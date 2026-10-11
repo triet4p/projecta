@@ -1,4 +1,4 @@
-# Projecta Desktop (Tauri v2 — S15-04 first-run + S15-03 lifecycle)
+# Projecta Desktop (Tauri v2 — S15-04 first-run + S15-05 runtime controls)
 
 One native Tauri v2 window owns exactly one service tree. On a fresh data
 root, it renders the bundled bootstrap surface (`projecta-bootstrap://localhost/`)
@@ -16,8 +16,33 @@ Window close is the Stop/Cancel binding: graceful reverse-order stop of owned
 children only via the existing `stop` subcommand (prompt owned-child
 termination on mid-startup cancel), releasing locks and ports while retaining
 data. No Tauri commands, retry loop, Rust process manager, hidden service,
-Tkinter, or browser companion. S15-05 recovery UX, S15-06 trust hardening,
-S15-07 external-link adaptation, and S15-09 packaging remain later tasks.
+Tkinter, or browser companion. S15-06 trust hardening, S15-07 external-link
+adaptation, and S15-09 packaging remain later tasks.
+
+## Runtime controls in the same window (S15-05)
+
+The same window presents every contract §2.1 state — `bootstrap`, `starting`,
+`ready`, `degraded`, `stopped`, `failed`, `shutdown-failed` — as a bundled
+lifecycle surface with two bindings of the existing `start`/`stop` operations:
+
+- a plain form on the lifecycle surface (Start/Stop; no script, no Tauri
+  command, no capability change);
+- a native `Runtime` window menu (`Start runtime`, `Stop runtime`,
+  `Show runtime controls`) so the controls stay reachable after the window has
+  navigated to the loopback SPA.
+
+Recovery is bounded and user-initiated only: Start is refused while
+starting/ready, Stop cancels a `starting` tree, and a `degraded` runtime
+(after-ready service failure) offers exactly one Start attempt. Diagnostics are
+sanitized by construction: the state word, the supervisor's finite failure code
+(`PORT_IN_USE`, `SERVICE_BECAME_UNREADY`, `GRACEFUL_STOP_TIMEOUT`, …), the
+failing service name, and for `PORT_IN_USE` which fixed loopback port is
+occupied — all read from the owned `state/runtime.json` document the existing
+`status` command reads, or from the owned child's stderr tail. No secret, log
+line, path, or raw service output is rendered, and nothing retries
+automatically. While the manager reports `shutdown-failed` it stays alive
+awaiting the explicit stop retry; the surface Stop writes that retry request
+instead of terminating the manager.
 
 ## Layout
 
@@ -27,10 +52,13 @@ S15-07 external-link adaptation, and S15-09 packaging remain later tasks.
 - `src-tauri/tauri.conf.json` — single `main` window on the bootstrap
   surface; loopback-only CSP; bundle disabled (S15-09 owns packaging).
 - `src-tauri/src/lifecycle.rs` — owned supervisor child, bounded `provision`
-  command, readiness polling, bootstrap renderer, `LifecycleController`
-  (cold start / first-run / cancel / shutdown), navigation guard, tests.
+  command, readiness polling with manager-exit adoption, lifecycle surface
+  renderer (states, controls, sanitized diagnostics), `LifecycleController`
+  (cold start / first-run / cancel / user start-stop / adopt / shutdown),
+  navigation guard, tests.
 - `src-tauri/src/` — `main.rs` + `lib.rs`: bootstrap-first host, same-window
-  first-run form and bootstrap→SPA transition on readiness, owned-tree shutdown.
+  first-run form, lifecycle surface bindings (bundled form + native Runtime
+  menu), bootstrap⇄SPA transitions, and owned-tree shutdown.
 
 ## Disposable lifecycle smoke
 

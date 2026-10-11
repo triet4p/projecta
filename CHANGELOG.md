@@ -30,6 +30,17 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   form, real runtime readiness, portable export, deletion, and empty-catalog
   reopen using the internal 0.7.1 `unsigned-pre-release-test` channel
   (`releaseEligible=false`; not for public distribution).
+- Added runtime controls and recoverable-error presentation to the existing
+  Tauri v2 window. The same window presents startup/readiness/stopped/failure
+  and after-ready service failure states with Start/Stop controls, a bounded
+  user-initiated recovery action, and sanitized diagnostics carrying the
+  supervisor's own finite failure code and failing service name; a native
+  Runtime menu keeps the controls reachable once the window serves the SPA.
+  No automatic retry, no empty success screen, and no Rust process manager.
+  Verified on disposable state with the internal 0.7.1
+  `unsigned-pre-release-test` channel using controlled port collision,
+  after-ready dependency failure, user-initiated start/stop, data retention,
+  and owned-cleanup evidence.
 
 ## [0.7.1] - 2026-10-09
 

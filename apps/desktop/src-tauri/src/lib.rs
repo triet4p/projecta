@@ -1,23 +1,30 @@
-// Projecta S15-03/04 desktop host: bootstrap-first window over an app-owned service tree.
+// Projecta S15-03/05 desktop host: bootstrap-first window over an app-owned
+// service tree, with the runtime-control surface in the SAME main window.
 //
-// One main window renders the local first-run form or lifecycle surface, then
-// navigates the SAME window to the owned loopback Application API origin on
-// real readiness. The first-run form provisions workspace state before the app
+// One main window renders the local first-run form, the lifecycle surface
+// (Start/Stop, bounded recovery, sanitized diagnostics for the contract's
+// states), or the owned loopback Application API SPA — navigating between
+// them in the same WebView on real readiness, post-ready failure, and user
+// actions. The first-run form provisions workspace state before the app
 // starts exactly one supervisor child (the existing local CLI); close stops
-// only that child via the existing `stop` subcommand. No Tauri command is
+// only that child via the existing `stop` subcommand. The native Runtime menu
+// binds Start/Stop/Show-controls to the same lifecycle operations so the
+// controls stay reachable after the window shows the SPA. No Tauri command is
 // registered: the WebView has no native bridge in this slice, so there is no
-// capability to scope yet (S15-06 owns the manifest). Expanded recovery/error
-// UX belongs to S15-05; packaging belongs to S15-09.
+// capability to scope yet (S15-06 owns the manifest). Packaging belongs to
+// S15-09.
 
 mod lifecycle;
 
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::time::{Duration, Instant};
+use std::time::Duration;
 use lifecycle::{
-    BOOTSTRAP_SCHEME, LifecycleController, LifecyclePaths, LifecycleState, MAIN_WINDOW_LABEL,
-    api_origin, is_allowed_navigation, render_bootstrap, render_first_run,
+    BOOTSTRAP_SCHEME, BOOTSTRAP_SURFACE_URL, LifecycleController, LifecyclePaths, LifecycleState,
+    MAIN_WINDOW_LABEL, StopOutcome, api_origin, is_allowed_navigation, render_bootstrap,
+    render_first_run, runtime_menu_action, RuntimeMenuAction,
 };
+use tauri::menu::{Menu, MenuItem, Submenu};
 use tauri::{Manager, Url};
 
 /// Default first-run display name offered as the form placeholder. This mirrors
@@ -31,6 +38,14 @@ fn html_response(html: String) -> tauri::http::Response<Vec<u8>> {
         .header("Content-Type", "text/html")
         .body(html.into_bytes())
         .unwrap()
+}
+
+/// Absolute URL of the bundled lifecycle surface as the platform expresses it
+/// (the exact navigation guard already accepts). Used for every surface
+/// navigation: control submissions, live refresh during `starting`, and the
+/// native Runtime menu's "show controls" action — always the SAME main window.
+fn surface_url() -> Url {
+    Url::parse(BOOTSTRAP_SURFACE_URL).expect("valid bundled surface URL")
 }
 
 /// Read one query value from a `application/x-www-form-urlencoded` string.
@@ -81,8 +96,7 @@ fn provision_response(
     // workspace would. The existing watcher navigates the SAME window to the
     // loopback SPA on real readiness.
     lifecycle.spawn_cold_start();
-    let (state, code, pid) = lifecycle.snapshot();
-    html_response(render_bootstrap(state, code.as_deref(), pid, api_origin))
+    html_response(render_bootstrap(&lifecycle.snapshot(), api_origin))
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -113,6 +127,11 @@ pub fn run() {
     // protocol request; it is not copied into diagnostics or responses.
     let proto_lifecycle = lifecycle.clone();
     let proto_origin = origin.clone();
+    // Runtime intent handling: Start/Stop are the existing supervisor
+    // operations, bound in the SAME window through this bundled surface. Both
+    // run off the protocol thread so the window stays responsive.
+    let runtime_intent = lifecycle.clone();
+    let runtime_origin = origin.clone();
 
     let close_lifecycle = lifecycle.clone();
     let close_flag = closing.clone();
@@ -120,10 +139,12 @@ pub fn run() {
     // protocol handler and `setup` hold their own handles.
     let provision_starter = lifecycle.clone();
     let setup_lifecycle = lifecycle.clone();
+    // Menu actions need their own handle onto the same controller.
+    let menu_lifecycle = lifecycle.clone();
 
     tauri::Builder::default()
         .plugin(guard)
-        .register_uri_scheme_protocol(BOOTSTRAP_SCHEME, move |_ctx, request| {
+        .register_uri_scheme_protocol(BOOTSTRAP_SCHEME, move |ctx, request| {
             // A first-run submission reaches this handler through its protocol
             // request. Cancel is a no-write dismissal; create validates and
             // provisions. The name is carried by the form request but never
@@ -143,13 +164,92 @@ pub fn run() {
                     render_first_run(FIRST_RUN_DEFAULT_NAME, Some("WORKSPACE_NAME_INVALID"));
                 return html_response(invalid);
             }
+            // Lifecycle surface controls (Start/Stop) submit here as a plain
+            // form navigation. Every action is bounded, single-attempt, and
+            // user-initiated; nothing restarts automatically.
+            if request.uri().path() == "/runtime" {
+                let query = request.uri().query().unwrap_or_default();
+                let intent = query_param(query, "intent").unwrap_or_default();
+                match intent.as_str() {
+                    "start" => {
+                        // A refused start (already starting/ready, or awaiting
+                        // first-run provisioning) changes nothing.
+                        runtime_intent.user_start();
+                    }
+                    "stop" => {
+                        // Mark the stop in flight before rendering the response,
+                        // so this navigation's own render is live (refreshing)
+                        // rather than a stale pre-action page.
+                        runtime_intent.begin_user_stop();
+                        let stopper = runtime_intent.clone();
+                        let stop_app = ctx.app_handle().clone();
+                        std::thread::spawn(move || {
+                            let _: StopOutcome = stopper.complete_user_stop();
+                            // Re-render the surface with the manager's own
+                            // terminal outcome.
+                            if let Some(view) =
+                                stop_app.get_webview_window(MAIN_WINDOW_LABEL)
+                            {
+                                let _ = view.navigate(surface_url());
+                            }
+                        });
+                    }
+                    _ => {}
+                }
+                let snapshot = runtime_intent.snapshot();
+                return html_response(render_bootstrap(&snapshot, &runtime_origin));
+            }
             let html = if proto_lifecycle.is_first_run() {
                 render_first_run(FIRST_RUN_DEFAULT_NAME, None)
             } else {
-                let (state, code, pid) = proto_lifecycle.snapshot();
-                render_bootstrap(state, code.as_deref(), pid, &proto_origin)
+                render_bootstrap(&proto_lifecycle.snapshot(), &proto_origin)
             };
             html_response(html)
+        })
+        .menu(|app| {
+            // Native Runtime menu keeps Start/Stop/Show-controls reachable in
+            // the main window in every state, including while the same window
+            // serves the SPA. It binds only the existing §3.1 operations and
+            // adds no Tauri command or capability.
+            let start = MenuItem::with_id(app, "runtime-start", "Start runtime", true, None::<&str>)?;
+            let stop = MenuItem::with_id(app, "runtime-stop", "Stop runtime", true, None::<&str>)?;
+            let show =
+                MenuItem::with_id(app, "runtime-show", "Show runtime controls", true, None::<&str>)?;
+            let runtime =
+                Submenu::with_items(app, "Runtime", true, &[&start, &stop, &show])?;
+            Menu::with_items(app, &[&runtime])
+        })
+        .on_menu_event(move |app, event| {
+            match runtime_menu_action(event.id().0.as_str()) {
+                RuntimeMenuAction::Start => {
+                    if menu_lifecycle.user_start() {
+                        if let Some(view) = app.get_webview_window(MAIN_WINDOW_LABEL) {
+                            let _ = view.navigate(surface_url());
+                        }
+                    }
+                }
+                RuntimeMenuAction::Stop => {
+                    // Mark the stop in flight BEFORE navigating, so the surface
+                    // render the user sees is a live view of the real stop
+                    // instead of a stale pre-action render.
+                    menu_lifecycle.begin_user_stop();
+                    // Show the surface first so the stop is observable in the
+                    // same window, then run the bounded stop off the UI thread.
+                    if let Some(view) = app.get_webview_window(MAIN_WINDOW_LABEL) {
+                        let _ = view.navigate(surface_url());
+                    }
+                    let stopper = menu_lifecycle.clone();
+                    std::thread::spawn(move || {
+                        let _: StopOutcome = stopper.complete_user_stop();
+                    });
+                }
+                RuntimeMenuAction::ShowControls => {
+                    if let Some(view) = app.get_webview_window(MAIN_WINDOW_LABEL) {
+                        let _ = view.navigate(surface_url());
+                    }
+                }
+                RuntimeMenuAction::None => {}
+            }
         })
         .setup(move |app| {
             // First-run vs reopen: an existing workspace starts immediately
@@ -163,35 +263,51 @@ pub fn run() {
                 first_run.spawn_cold_start();
             }
 
-
             // Same-window transition: on real readiness, navigate the main
-            // view from bootstrap to the owned loopback SPA. Single attempt,
-            // no retry — failure leaves the sanitized bootstrap failure page.
+            // view from the lifecycle surface to the owned loopback SPA; if the
+            // owned manager then exits after that ready episode, adopt its own
+            // terminal outcome and navigate the SAME window back to the
+            // lifecycle surface. Single attempt, no retry — failure leaves the
+            // sanitized failure surface, and recovery stays user-initiated.
             let watcher = setup_lifecycle.clone();
             let watcher_origin = origin.clone();
             let watcher_app = app.handle().clone();
             std::thread::spawn(move || {
-                let started = Instant::now();
-                let limit = lifecycle::STARTUP_DEADLINE + Duration::from_secs(60);
+                let mut spa_shown = false;
                 loop {
                     match watcher.state() {
                         LifecycleState::Ready => {
-                            if let Some(view) =
-                                watcher_app.get_webview_window(MAIN_WINDOW_LABEL)
-                            {
-                                if let Ok(url) = watcher_origin.parse::<Url>() {
-                                    let _ = view.navigate(url);
+                            if !spa_shown {
+                                if let Some(view) =
+                                    watcher_app.get_webview_window(MAIN_WINDOW_LABEL)
+                                {
+                                    if let Ok(url) = watcher_origin.parse::<Url>() {
+                                        let _ = view.navigate(url);
+                                    }
                                 }
+                                spa_shown = true;
                             }
-                            break;
+                            // Post-ready failure: the manager owns service
+                            // supervision, so its exit is the failure signal.
+                            if !watcher.owned_supervisor_alive() {
+                                watcher.adopt_supervisor_exit_after_ready();
+                                if let Some(view) =
+                                    watcher_app.get_webview_window(MAIN_WINDOW_LABEL)
+                                {
+                                    let _ = view.navigate(surface_url());
+                                }
+                                spa_shown = false;
+                            }
                         }
-                        LifecycleState::Failed
+                        LifecycleState::Bootstrap | LifecycleState::Starting => {
+                            spa_shown = false;
+                        }
+                        LifecycleState::Degraded
                         | LifecycleState::Stopped
-                        | LifecycleState::ShutdownFailed => break,
-                        LifecycleState::Bootstrap | LifecycleState::Starting => {}
-                    }
-                    if started.elapsed() > limit {
-                        break;
+                        | LifecycleState::Failed
+                        | LifecycleState::ShutdownFailed => {
+                            spa_shown = false;
+                        }
                     }
                     std::thread::sleep(Duration::from_millis(500));
                 }

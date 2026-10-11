@@ -1,13 +1,23 @@
-// Projecta S15-03 lifecycle bridge: app-owned supervisor child + bootstrap-first window.
+// Projecta S15-03/05 lifecycle bridge: app-owned supervisor child + same-window
+// runtime-control surface.
 //
 // The desktop owns exactly one supervisor tree: it spawns the existing local
 // CLI (`projecta/scripts/projecta_local.py start --no-browser`) as a child
 // process, stops it through the existing `stop` subcommand (stdin-pipe-free;
 // the supervisor consumes `stop.json`), and navigates the SAME main window
-// from the locally bundled bootstrap surface to the loopback SPA on real
+// between the locally bundled bootstrap surface and the loopback SPA on real
 // readiness. Second launch refuses via the supervisor lock (no second
 // tree/TDB2 writer); no retry loop, no Rust process manager, no new Tauri
 // command surface, no hidden background service.
+//
+// S15-05 adds the runtime-control surface in that same window: the durable
+// lifecycle states of contract §2.1 (`bootstrap`, `starting`, `ready`,
+// `degraded`, `stopped`, `failed`, `shutdown-failed`) are presented with
+// Start/Stop controls, bounded user-initiated recovery, and sanitized
+// diagnostics that carry the supervisor's own finite failure code and failing
+// service name (read from the owned `state/runtime.json` document the Python
+// `status` command already reads). No state is inferred, no failure is
+// suppressed, and no automatic recovery is performed by this layer.
 
 use std::io::Read;
 use std::process::{Child, ChildStderr, Command, Stdio};
@@ -39,13 +49,88 @@ pub const STARTUP_DEADLINE: Duration = Duration::from_secs(300);
 /// Bounded graceful-stop wait for reverse-order shutdown on close/cancel.
 pub const STOP_TIMEOUT: Duration = Duration::from_secs(120);
 
-/// Lifecycle states surfaced to the bootstrap page (contract §2.1 subset owned
-/// by S15-03; degraded/recovery presentation belongs to S15-05).
+/// Bounded wait for the surface Stop control while the owned manager performs
+/// its own reverse-order shutdown. This bound only exceeds the manager's own
+/// per-service stop timeouts so a healthy graceful shutdown is never cut short
+/// by the surface; it is never a retry, and the manager stays authoritative for
+/// the `shutdown-failed` explicit stop retry.
+pub const STOP_REQUEST_BOUND: Duration = Duration::from_secs(300);
+
+/// How often the stop path re-reads the owned status document while waiting for
+/// the manager's reverse-order shutdown.
+const STOP_STATUS_POLL: Duration = Duration::from_millis(500);
+
+/// The fixed loopback service ports, mirroring `PORTS` in
+/// `scripts/projecta_local.py`. Nothing here selects or falls back to another
+/// port: the list exists only so the surface can name the occupied port when
+/// the supervisor itself refuses with `PORT_IN_USE`.
+pub const FIXED_SERVICE_PORTS: [(&str, u16); 4] = [
+    ("postgres", 15432),
+    ("fuseki", 18303),
+    ("semanticCore", 18080),
+    ("api", 18732),
+];
+
+/// Absolute URL of the bundled lifecycle surface as WebView2 expresses it. The
+/// platform cannot navigate directly to a non-standard scheme, so every
+/// lifecycle navigation (form actions, meta refresh, menu "show" action) uses
+/// this exact workaround origin, which `is_allowed_navigation` already permits
+/// on its default port without credentials.
+pub const BOOTSTRAP_SURFACE_URL: &str = "http://projecta-bootstrap.localhost/";
+
+/// Sanitized failure record: the supervisor's own finite code, the failing
+/// service name when the supervisor reports one, and an optional short detail
+/// line (currently only the occupied-port observation for `PORT_IN_USE`). No
+/// raw stderr, log line, path, or secret is ever stored or rendered.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct FailureRecord {
+    pub code: String,
+    pub service: Option<String>,
+    pub detail: Option<String>,
+}
+
+impl FailureRecord {
+    /// Build a record from a supervisor code plus optional failing service. A
+    /// `PORT_IN_USE` code additionally records which fixed loopback ports are
+    /// occupied at observation time, so the surface names the dependency the
+    /// supervisor refused to replace.
+    #[must_use]
+    pub fn new(code: String, service: Option<String>) -> Self {
+        let detail = if code == "PORT_IN_USE" {
+            let occupied = occupied_fixed_loopback_ports();
+            (!occupied.is_empty()).then(|| {
+                occupied
+                    .iter()
+                    .map(|(name, port)| format!("{name} on port {port}"))
+                    .collect::<Vec<_>>()
+                    .join(", ")
+            })
+        } else {
+            None
+        };
+        Self { code, service, detail }
+    }
+}
+
+/// Probe the fixed loopback ports read-only (bind and immediately release) and
+/// report which are occupied. Never keeps a listener, never signals another
+/// process, and never chooses a different port.
+#[must_use]
+pub fn occupied_fixed_loopback_ports() -> Vec<(&'static str, u16)> {
+    FIXED_SERVICE_PORTS
+        .iter()
+        .filter(|(_, port)| std::net::TcpListener::bind((LOOPBACK_HOST, *port)).is_err())
+        .map(|(name, port)| (*name, *port))
+        .collect()
+}
+
+/// Lifecycle states surfaced to the same window (contract §2.1).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum LifecycleState {
     Bootstrap,
     Starting,
     Ready,
+    Degraded,
     Stopped,
     Failed,
     ShutdownFailed,
@@ -58,10 +143,53 @@ impl LifecycleState {
             LifecycleState::Bootstrap => "bootstrap",
             LifecycleState::Starting => "starting",
             LifecycleState::Ready => "ready",
+            LifecycleState::Degraded => "degraded",
             LifecycleState::Stopped => "stopped",
             LifecycleState::Failed => "failed",
             LifecycleState::ShutdownFailed => "shutdown-failed",
         }
+    }
+}
+
+/// Live snapshot rendered by the lifecycle surface. Sanitized by construction:
+/// state, finite failure record, owned supervisor PID, and the stop/start
+/// in-flight flags that decide whether the view refreshes.
+#[derive(Debug, Clone)]
+pub struct LifecycleSnapshot {
+    pub state: LifecycleState,
+    pub failure: Option<FailureRecord>,
+    pub supervisor_pid: Option<u32>,
+    pub stop_pending: bool,
+    pub start_pending: bool,
+}
+
+/// Outcome of a surface Stop: either the owned tree reached `stopped`, or the
+/// manager is alive and waiting for the contract's explicit stop retry.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StopOutcome {
+    Stopped,
+    ShutdownFailed,
+}
+
+/// Which runtime action a native menu item maps to. Pure mapping so the menu
+/// wiring is testable without input automation.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RuntimeMenuAction {
+    Start,
+    Stop,
+    ShowControls,
+    None,
+}
+
+/// Map a native menu item id to its runtime action. The ids are the ones the
+/// host registers; anything else is ignored.
+#[must_use]
+pub fn runtime_menu_action(id: &str) -> RuntimeMenuAction {
+    match id {
+        "runtime-start" => RuntimeMenuAction::Start,
+        "runtime-stop" => RuntimeMenuAction::Stop,
+        "runtime-show" => RuntimeMenuAction::ShowControls,
+        _ => RuntimeMenuAction::None,
     }
 }
 
@@ -289,15 +417,7 @@ fn extract_failure_code(stderr: &str) -> Option<String> {
     let rest = &stderr[open + 1..];
     let close = rest.find(']')?;
     let code = &rest[..close];
-    if code.is_empty()
-        || code.len() > 64
-        || !code
-            .bytes()
-            .all(|b| b.is_ascii_uppercase() || b.is_ascii_digit() || b == b'_')
-    {
-        return None;
-    }
-    Some(code.to_string())
+    is_finite_code(code).then(|| code.to_string())
 }
 
 /// Resolve lifecycle paths from the environment, falling back to the packaged
@@ -463,6 +583,69 @@ impl LifecyclePaths {
             let _ = child.wait();
         }
     }
+
+    /// Read the owned manager's status document (`state/runtime.json`) — the
+    /// same document the existing `status` subcommand and the launcher log
+    /// already expose — and return only its sanitized lifecycle view.
+    ///
+    /// This is a read of task-owned state written by the owned manager: no
+    /// foreign state is inspected, no file is written, and every field is
+    /// validated against the finite sets the supervisor itself uses (`state`
+    /// words, `failureCode` token shape, `failedService` service names), so an
+    /// unexpected document degrades to `None` instead of rendering arbitrary
+    /// content.
+    #[must_use]
+    pub fn read_runtime_status(&self) -> Option<RuntimeStatusSnapshot> {
+        let path = self.data_root.join("state/runtime.json");
+        let text = std::fs::read_to_string(&path).ok()?;
+        let document: serde_json::Value = serde_json::from_str(&text).ok()?;
+        let object = document.as_object()?;
+        let state = match object.get("state").and_then(serde_json::Value::as_str) {
+            Some("starting") | Some("ready") | Some("stopped") | Some("failed")
+            | Some("shutdown-failed") => object["state"].as_str().map(str::to_string),
+            _ => None,
+        };
+        let failure = match object.get("failureCode").and_then(serde_json::Value::as_str) {
+            Some(code) if is_finite_code(code) => {
+                let service = object
+                    .get("failedService")
+                    .and_then(serde_json::Value::as_str)
+                    .filter(|service| is_service_name(service))
+                    .map(str::to_string);
+                Some(FailureRecord::new(code.to_string(), service))
+            }
+            _ => None,
+        };
+        Some(RuntimeStatusSnapshot { state, failure })
+    }
+}
+
+/// Sanitized lifecycle view of the owned manager's status document.
+#[derive(Debug, Clone)]
+pub struct RuntimeStatusSnapshot {
+    pub state: Option<String>,
+    pub failure: Option<FailureRecord>,
+}
+
+/// Whether a value is a finite failure-code token: uppercase ASCII letters,
+/// digits, and underscores only, at most 64 characters. Everything else is
+/// refused so the surface can never render arbitrary document content.
+#[must_use]
+pub fn is_finite_code(value: &str) -> bool {
+    !value.is_empty()
+        && value.len() <= 64
+        && value
+            .bytes()
+            .all(|byte| byte.is_ascii_uppercase() || byte.is_ascii_digit() || byte == b'_')
+}
+
+/// Whether a value is one of the owned service names the supervisor reports as
+/// `failedService`.
+#[must_use]
+pub fn is_service_name(value: &str) -> bool {
+    FIXED_SERVICE_PORTS
+        .iter()
+        .any(|(name, _)| *name == value)
 }
 
 /// Readiness outcome for one poll of the owned API (dependency-free:
@@ -602,50 +785,135 @@ pub fn is_allowed_navigation(url: &Url, api_origin: &str) -> bool {
     true
 }
 
-/// Render the bootstrap page for the current lifecycle snapshot: window
-/// chrome plus Start/Stop/diagnostics controls only. No API dependency exists
-/// in this state; the separate S15-04 first-run form handles workspace
-/// provisioning, while S15-05 owns the expanded state/error surface and
-/// explicit control wiring — app launch is the Start binding and window close
-/// is the Stop/Cancel binding in this slice. Content is sanitized: state,
-/// finite failure code, owned PID, and API origin only — never secrets, keys,
-/// or service output.
-pub fn render_bootstrap(
-    state: LifecycleState,
-    failure_code: Option<&str>,
-    supervisor_pid: Option<u32>,
-    api_origin: &str,
-) -> String {
-    let refresh = if state == LifecycleState::Starting {
-        "<meta http-equiv=\"refresh\" content=\"2\">"
+/// Render the lifecycle surface for the current snapshot in the SAME main
+/// window: window chrome plus Start/Stop controls, the finite failure record,
+/// and sanitized diagnostics. No API dependency exists in this state; the
+/// separate S15-04 first-run form handles workspace provisioning.
+///
+/// Controls are plain form submissions to the bundled surface (no script, no
+/// Tauri command, no capability): Start maps to the existing `start` operation
+/// with a single bounded attempt and Stop maps to the existing `stop`
+/// operation. Both are disabled where the action cannot apply (Start while
+/// starting/ready; Stop with nothing to stop) so the surface never offers an
+/// empty success path.
+///
+/// Content is sanitized by construction: state, finite failure code, failing
+/// service name, owned PID, and at most the occupied-port observation. No
+/// secret, key, credential, raw service output, log line, or path is ever
+/// rendered. The only live refresh (2 s, to the same bundled surface) happens
+/// while the state can still change by itself (`bootstrap`, `starting`) or a
+/// user-requested stop is in flight; every terminal state renders statically
+/// until the user acts, so no state is silently retried.
+#[must_use]
+pub fn render_bootstrap(snapshot: &LifecycleSnapshot, api_origin: &str) -> String {
+    let LifecycleSnapshot {
+        state,
+        failure,
+        supervisor_pid,
+        stop_pending,
+        start_pending,
+    } = snapshot;
+    let origin = api_origin.trim_end_matches('/');
+    // Live states: the view can still change by itself while a start or stop is
+    // in flight, or while the state is bootstrap/starting. Every terminal
+    // state renders statically and waits for the user — no automatic retry.
+    let live = matches!(state, LifecycleState::Bootstrap | LifecycleState::Starting)
+        || *stop_pending
+        || *start_pending;
+    let refresh = if live {
+        format!(
+            "<meta http-equiv=\"refresh\" content=\"2; url={BOOTSTRAP_SURFACE_URL}\">"
+        )
     } else {
-        ""
+        String::new()
     };
-    let diagnostics = match (state, failure_code, supervisor_pid) {
-        (LifecycleState::Failed, Some(code), _) => format!(
-            "Startup failed [{code}]. No second service tree was started; data was retained. Close the window, or resolve the cause and relaunch."
+    let service_line = match failure.as_ref().and_then(|record| record.service.clone()) {
+        Some(service) => format!("Failing service: {service}"),
+        None => "Failing service: not reported by the runtime".to_string(),
+    };
+    let diagnostics = match (state, failure, supervisor_pid, stop_pending) {
+        (LifecycleState::Degraded, Some(record), _, _) => format!(
+            "The runtime stopped after it was ready.{} [{}]. Only owned services were stopped; your data was retained. Choose Start for a single bounded recovery attempt, or Stop to leave the runtime stopped.",
+            record
+                .service
+                .as_ref()
+                .map(|service| format!(" Service '{service}' stopped reporting readiness."))
+                .unwrap_or_default(),
+            record.code,
         ),
-        (LifecycleState::Failed, None, _) => {
-            "Startup failed. No second service tree was started; data was retained.".to_string()
-        }
-        (LifecycleState::Starting, _, Some(pid)) => format!(
-            "Starting owned services (supervisor {pid}); waiting for {api_origin}health/ready. Closing the window cancels startup and stops owned services only."
+        (LifecycleState::Failed, Some(record), _, _) => format!(
+            "Startup failed [{}].{}{} No second service tree was started; your data was retained. Resolve the cause, then choose Start for one more attempt, or close the window.",
+            record.code,
+            record
+                .service
+                .as_ref()
+                .map(|service| format!(" Failing service: {service}."))
+                .unwrap_or_default(),
+            record
+                .detail
+                .as_ref()
+                .map(|detail| format!(" Occupied dependency: {detail}."))
+                .unwrap_or_default(),
         ),
-        (LifecycleState::Starting, _, None) => {
-            "Starting owned services; waiting for backend readiness.".to_string()
-        }
-        (LifecycleState::Ready, _, _) => {
-            "Backend ready; opening the workspace.".to_string()
-        }
-        (LifecycleState::ShutdownFailed, Some(code), _) => format!(
-            "Graceful stop did not complete [{code}]. Owned processes were terminated; data was retained."
-        ),
-        (LifecycleState::ShutdownFailed, None, _) => {
-            "Graceful stop did not complete. Owned processes were terminated; data was retained."
+        (LifecycleState::Failed, None, _, _) => {
+            "Startup failed. No second service tree was started; your data was retained."
                 .to_string()
         }
-        _ => "Local runtime bootstrap. No service started yet.".to_string(),
+        (LifecycleState::ShutdownFailed, Some(record), _, _) => format!(
+            "Graceful stop did not complete [{}]. The runtime is waiting for an explicit stop retry; nothing outside the owned tree was touched and your data was retained. Choose Stop to retry the graceful shutdown, or close the window.",
+            record.code,
+        ),
+        (LifecycleState::ShutdownFailed, None, _, _) => {
+            "Graceful stop did not complete. The runtime is waiting for an explicit stop retry; nothing outside the owned tree was touched and your data was retained. Choose Stop to retry the graceful shutdown, or close the window."
+                .to_string()
+        }
+        (LifecycleState::Starting, _, Some(pid), true) => format!(
+            "Stop requested while starting (supervisor {pid}); cancelling startup and stopping only the owned services."
+        ),
+        (LifecycleState::Starting, _, Some(pid), false) => format!(
+            "Starting owned services (supervisor {pid}); waiting for {origin}/health/ready. Choose Stop to cancel; only owned services are stopped and your data is kept."
+        ),
+        (LifecycleState::Starting, _, None, true) => {
+            "Stop requested while starting; cancelling startup and stopping only the owned services."
+                .to_string()
+        }
+        (LifecycleState::Starting, _, None, false) => {
+            "Starting owned services; waiting for backend readiness. Choose Stop to cancel."
+                .to_string()
+        }
+        (LifecycleState::Ready, _, Some(pid), true) => format!(
+            "Stop requested (supervisor {pid}); stopping owned services in reverse order. Your data is retained."
+        ),
+        (LifecycleState::Ready, _, _, _) => {
+            format!("Backend ready at {origin}. Choose Stop to stop the owned runtime, or close the window to stop and quit.")
+        }
+        (LifecycleState::Stopped, _, _, _) => {
+            "The runtime is stopped. Locks and ports are released; your data was retained. Choose Start to run it again."
+                .to_string()
+        }
+        (LifecycleState::Bootstrap, _, _, _) if !*start_pending => {
+            "Local runtime bootstrap. No service is started yet. Choose Start to start the owned runtime for this workspace."
+                .to_string()
+        }
+        (_, _, _, true) => {
+            "Start requested; starting the owned services for this workspace. The runtime starts once and reports its real outcome."
+                .to_string()
+        }
+        (LifecycleState::Bootstrap, _, _, _) => {
+            "Local runtime bootstrap. No service is started yet. Choose Start to start the owned runtime for this workspace."
+                .to_string()
+        }
+        (LifecycleState::Degraded, None, _, _) => {
+            "The runtime stopped after it was ready. Your data was retained. Choose Start for a single bounded recovery attempt, or Stop to leave the runtime stopped."
+                .to_string()
+        }
     };
+    let start_disabled = matches!(
+        state,
+        LifecycleState::Starting | LifecycleState::Ready | LifecycleState::ShutdownFailed
+    ) || *start_pending;
+    let stop_disabled = matches!(state, LifecycleState::Stopped | LifecycleState::Bootstrap)
+        || (matches!(state, LifecycleState::Ready) && *stop_pending);
     format!(
         r#"<!doctype html>
 <html lang="en">
@@ -656,19 +924,28 @@ pub fn render_bootstrap(
 <style>
 body {{ font-family: system-ui, sans-serif; margin: 2rem; color: #1a1a1a; }}
 #state {{ font-weight: bold; }}
+#service {{ margin-top: .5rem; color: #8a1c1c; }}
 #diagnostics {{ white-space: pre-wrap; margin-top: 1rem; color: #444; }}
 button {{ margin-right: .5rem; padding: .4rem 1rem; }}
+button:disabled {{ opacity: .5; }}
 </style>
 </head>
 <body>
 <h1>Projecta</h1>
 <p>State: <span id="state" data-testid="lifecycle-state">{}</span></p>
-<button id="start" data-testid="lifecycle-start" disabled>Start</button>
-<button id="stop" data-testid="lifecycle-stop" disabled>Stop</button>
+<form method="get" action="{BOOTSTRAP_SURFACE_URL}runtime" data-testid="lifecycle-runtime-form">
+<button id="start" type="submit" name="intent" value="start" data-testid="lifecycle-start" {start_attribute}>Start</button>
+<button id="stop" type="submit" name="intent" value="stop" data-testid="lifecycle-stop" {stop_attribute}>Stop</button>
+</form>
+<p id="service" data-testid="lifecycle-failing-service">{service_line}</p>
 <pre id="diagnostics" data-testid="lifecycle-diagnostics">{diagnostics}</pre>
 </body>
 </html>"#,
-        state.as_str()
+        state.as_str(),
+        start_attribute = if start_disabled { "disabled" } else { "" },
+        stop_attribute = if stop_disabled { "disabled" } else { "" },
+        service_line = service_line,
+        diagnostics = diagnostics,
     )
 }
 
@@ -814,16 +1091,25 @@ button {{ margin-top: .75rem; margin-right: .5rem; padding: .4rem 1rem; }}
 }
 
 /// App-owned lifecycle controller: spawn/stop exactly one supervisor child,
-/// poll readiness, and track the window state for bootstrap→SPA navigation.
-/// Interior mutability: the blocking `cold_start` runs on a worker thread
-/// while window-close handling signals cancellation from the event loop.
+/// poll readiness, and track the window state for the same-window runtime
+/// surface (bootstrap/first-run ⇄ lifecycle surface ⇄ SPA). The blocking
+/// `cold_start` runs on a worker thread while window-close handling signals
+/// cancellation from the event loop, and user Start/Stop from the surface or
+/// the native Runtime menu drive the same bounded, single-attempt operations.
 pub struct LifecycleController {
     paths: Option<LifecyclePaths>,
     api_port: u16,
     state: Mutex<LifecycleState>,
-    failure_code: Mutex<Option<String>>,
+    failure: Mutex<Option<FailureRecord>>,
     supervisor: Mutex<Option<OwnedSupervisor>>,
     cancel: AtomicBool,
+    /// Whether a user/auto start is in flight on a worker thread. The surface
+    /// must keep refreshing while a start can still change the state by
+    /// itself, and a second user Start must not race an in-flight worker.
+    start_pending: AtomicBool,
+    /// Whether a user-requested stop is in flight on a worker thread. Only the
+    /// surface renders it; the stop itself never blocks the window.
+    stop_pending: AtomicBool,
     startup_handle: Mutex<Option<JoinHandle<bool>>>,
     /// Whether the data root had no workspace when this app launched. Read once
     /// in `new` (before provisioning), then cleared only by a successful
@@ -841,9 +1127,11 @@ impl LifecycleController {
             paths,
             api_port,
             state: Mutex::new(LifecycleState::Bootstrap),
-            failure_code: Mutex::new(None),
+            failure: Mutex::new(None),
             supervisor: Mutex::new(None),
             cancel: AtomicBool::new(false),
+            start_pending: AtomicBool::new(false),
+            stop_pending: AtomicBool::new(false),
             startup_handle: Mutex::new(None),
             first_run: AtomicBool::new(first_run),
         }
@@ -861,12 +1149,41 @@ impl LifecycleController {
         *self.state.lock().unwrap_or_else(|e| e.into_inner())
     }
 
+    /// The sanitized failure record currently presented (finite code, optional
+    /// failing service, optional occupied-port observation), if any.
     #[must_use]
-    pub fn failure_code(&self) -> Option<String> {
-        self.failure_code
+    pub fn failure(&self) -> Option<FailureRecord> {
+        self.failure
             .lock()
             .unwrap_or_else(|e| e.into_inner())
             .clone()
+    }
+
+    /// Finite failure code currently presented, if any.
+    #[must_use]
+    #[allow(dead_code)]
+    pub fn failure_code(&self) -> Option<String> {
+        self.failure().map(|record| record.code)
+    }
+
+    /// The failing service the supervisor reported, if any.
+    #[must_use]
+    pub fn failure_service(&self) -> Option<String> {
+        self.failure().and_then(|record| record.service)
+    }
+
+    /// Whether a user-requested stop is in flight on a worker thread.
+    #[must_use]
+    pub fn is_stop_pending(&self) -> bool {
+        self.stop_pending.load(Ordering::SeqCst)
+    }
+
+    /// Whether a start is in flight on a worker thread (set before the worker
+    /// runs, cleared when it finishes). The surface keeps refreshing while it
+    /// is set, and a second user Start is refused so it cannot race the worker.
+    #[must_use]
+    pub fn is_start_pending(&self) -> bool {
+        self.start_pending.load(Ordering::SeqCst)
     }
 
     #[must_use]
@@ -893,17 +1210,57 @@ impl LifecycleController {
             .is_some()
     }
 
-    fn set_state(&self, state: LifecycleState, failure_code: Option<String>) {
-        *self.state.lock().unwrap_or_else(|e| e.into_inner()) = state;
-        *self
-            .failure_code
+    /// Whether the owned supervisor child exists and is still running. The
+    /// manager owns service supervision; the desktop only observes this handle,
+    /// never another process.
+    #[must_use]
+    pub fn owned_supervisor_alive(&self) -> bool {
+        self.supervisor
             .lock()
-            .unwrap_or_else(|e| e.into_inner()) = failure_code;
+            .unwrap_or_else(|e| e.into_inner())
+            .as_mut()
+            .is_some_and(OwnedSupervisor::is_running)
     }
 
-    /// Snapshot for the bootstrap renderer: (state, failure code, owned PID).
-    pub fn snapshot(&self) -> (LifecycleState, Option<String>, Option<u32>) {
-        (self.state(), self.failure_code(), self.supervisor_pid())
+    /// Whether a user-initiated Start can legitimately run now. Starting twice
+    /// or starting while ready is refused rather than turned into a silent
+    /// success screen, and a start is refused while an owned supervisor handle
+    /// still exists (for example the manager waiting in `shutdown-failed` for
+    /// its explicit stop retry), so the surface never tries to start a second
+    /// tree over a live manager.
+    #[must_use]
+    pub fn can_start(&self) -> bool {
+        !matches!(
+            self.state(),
+            LifecycleState::Starting | LifecycleState::Ready
+        ) && !self.has_supervisor()
+            && !self.is_first_run()
+            && !self.is_start_pending()
+    }
+
+    fn set_state(&self, state: LifecycleState, failure: Option<FailureRecord>) {
+        *self.state.lock().unwrap_or_else(|e| e.into_inner()) = state;
+        *self.failure.lock().unwrap_or_else(|e| e.into_inner()) = failure;
+    }
+
+    /// Record a terminal failure state from the supervisor's finite code and
+    /// optional failing service. The record is sanitized on construction; a
+    /// `PORT_IN_USE` code additionally observes which fixed port is occupied
+    /// exactly once, at record time.
+    fn set_failure(&self, state: LifecycleState, code: String, service: Option<String>) {
+        let record = FailureRecord::new(code, service);
+        self.set_state(state, Some(record));
+    }
+
+    /// Snapshot for the lifecycle surface renderer.
+    pub fn snapshot(&self) -> LifecycleSnapshot {
+        LifecycleSnapshot {
+            state: self.state(),
+            failure: self.failure(),
+            supervisor_pid: self.supervisor_pid(),
+            stop_pending: self.is_stop_pending(),
+            start_pending: self.is_start_pending(),
+        }
     }
 
     /// Stash the worker-thread handle running `cold_start` (setup path).
@@ -912,16 +1269,31 @@ impl LifecycleController {
     }
 
     /// Run `cold_start` on a worker thread and keep its handle so the close path
-    /// can join it exactly once. Used by both the auto-start (existing
-    /// workspace) path and the first-run provision path; calling it twice is a
-    /// no-op because `startup_handle` is already populated — the second thread
-    /// simply runs `cold_start`, which refuses with `ALREADY_STARTED` and starts
-    /// nothing.
+    /// can join it exactly once. Used by the auto-start (existing workspace)
+    /// path, the first-run provision path, and user Start from the surface or
+    /// the native Runtime menu. A previous startup worker has already returned
+    /// by the time a new start is allowed (its outcome is what produced the
+    /// non-starting state), so the stashed handle is joined and dropped rather
+    /// than asserted away: a second tree is still prevented by `cold_start`
+    /// itself and by the `can_start` guard.
     pub fn spawn_cold_start(self: &std::sync::Arc<Self>) {
+        // A previous startup worker has already returned (a new start is only
+        // reachable from a non-starting state with no in-flight worker), so its
+        // stashed handle is joined and dropped rather than asserted away: a
+        // second tree is still prevented by `cold_start` and the `can_start`
+        // guard. The flag marks the in-flight window so the surface keeps
+        // refreshing (the worker sets `starting` moments later) and a second
+        // user Start cannot race this worker.
+        if let Some(previous) = self.take_startup_handle() {
+            let _ = previous.join();
+        }
+        self.start_pending.store(true, Ordering::SeqCst);
         let worker = Arc::clone(self);
-        let handle = worker.take_startup_handle();
-        debug_assert!(handle.is_none());
-        let startup_thread = std::thread::spawn(move || worker.cold_start());
+        let startup_thread = std::thread::spawn(move || {
+            let outcome = worker.cold_start();
+            worker.start_pending.store(false, Ordering::SeqCst);
+            outcome
+        });
         self.set_startup_handle(startup_thread);
     }
 
@@ -951,16 +1323,14 @@ impl LifecycleController {
     /// reports `stopped`.
     pub fn cold_start(&self) -> bool {
         if self.has_supervisor() {
-            self.set_state(
-                LifecycleState::Failed,
-                Some("ALREADY_STARTED".to_string()),
-            );
+            self.set_failure(LifecycleState::Failed, "ALREADY_STARTED".to_string(), None);
             return false;
         }
         let Some(paths) = self.paths.clone() else {
-            self.set_state(
+            self.set_failure(
                 LifecycleState::Failed,
-                Some("RUNTIME_PACKAGE_MISSING".to_string()),
+                "RUNTIME_PACKAGE_MISSING".to_string(),
+                None,
             );
             return false;
         };
@@ -973,9 +1343,10 @@ impl LifecycleController {
         ) {
             Ok(child) => child,
             Err(_) => {
-                self.set_state(
+                self.set_failure(
                     LifecycleState::Failed,
-                    Some("SUPERVISOR_SPAWN_FAILED".to_string()),
+                    "SUPERVISOR_SPAWN_FAILED".to_string(),
+                    None,
                 );
                 return false;
             }
@@ -992,37 +1363,39 @@ impl LifecycleController {
             .as_mut()
             .is_none_or(|s| !s.is_running());
         if early_exit {
-            let code = self
-                .supervisor
-                .lock()
-                .unwrap_or_else(|e| e.into_inner())
-                .take()
-                .map(|mut s| s.reap_failure_code());
-            self.set_state(LifecycleState::Failed, code);
+            let (code, service) = self.reap_supervisor_failure();
+            self.set_failure(LifecycleState::Failed, code, service);
             return false;
         }
-        // Wait for real readiness, checking cancellation every poll. No
-        // automatic recovery or restart on failure.
+        // Wait for real readiness, checking cancellation every poll. The
+        // manager owns service supervision, so its exit is the failure signal:
+        // a start attempt adopts the manager's own finite record instead of
+        // polling past it until the deadline. No automatic recovery or
+        // restart on failure.
         let started = Instant::now();
         while started.elapsed() < STARTUP_DEADLINE {
             if self.cancel_requested() {
                 self.cancel_start();
                 return false;
             }
-            if poll_api_ready(self.api_port, Duration::from_secs(2)) == Readiness::Ready {
-                // The tree may still be pre-supervision; confirm the manager
-                // holds the lock by requiring the child alive at ready.
-                let alive = self
-                    .supervisor
-                    .lock()
-                    .unwrap_or_else(|e| e.into_inner())
-                    .as_mut()
-                    .is_some_and(OwnedSupervisor::is_running);
-                if alive {
-                    self.set_state(LifecycleState::Ready, None);
-                    return true;
-                }
-                break;
+            let alive = self
+                .supervisor
+                .lock()
+                .unwrap_or_else(|e| e.into_inner())
+                .as_mut()
+                .is_some_and(OwnedSupervisor::is_running);
+            if alive
+                && poll_api_ready(self.api_port, Duration::from_secs(2)) == Readiness::Ready
+            {
+                self.set_state(LifecycleState::Ready, None);
+                return true;
+            }
+            if !alive {
+                // The manager exited during startup (for example it refused a
+                // port collision and failed closed): adopt its own record.
+                let (code, service) = self.reap_supervisor_failure();
+                self.set_failure(LifecycleState::Failed, code, service);
+                return false;
             }
             std::thread::sleep(Duration::from_millis(500));
         }
@@ -1030,8 +1403,8 @@ impl LifecycleController {
             self.cancel_start();
             return false;
         }
-        // Startup deadline passed or the supervisor exited mid-start:
-        // cancel — stop only the owned child, release locks/ports, retain data.
+        // Startup deadline passed with the manager still running: stop only the
+        // owned child, release locks/ports, retain data.
         let still_running = self
             .supervisor
             .lock()
@@ -1040,20 +1413,44 @@ impl LifecycleController {
             .is_some_and(OwnedSupervisor::is_running);
         if still_running {
             self.stop_owned(STOP_TIMEOUT);
-            self.set_state(
+            self.set_failure(
                 LifecycleState::Failed,
-                Some("SERVICE_READINESS_TIMEOUT".to_string()),
+                "SERVICE_READINESS_TIMEOUT".to_string(),
+                None,
             );
         } else {
-            let code = self
-                .supervisor
-                .lock()
-                .unwrap_or_else(|e| e.into_inner())
-                .take()
-                .map(|mut s| s.reap_failure_code());
-            self.set_state(LifecycleState::Failed, code);
+            let (code, service) = self.reap_supervisor_failure();
+            self.set_failure(LifecycleState::Failed, code, service);
         }
         false
+    }
+
+    /// Reap the owned supervisor child and extract the manager's finite failure
+    /// record. The supervisor's own stderr tail names the code for THIS child,
+    /// and the owned status document contributes the failing service name when
+    /// it reports the same code; a status code without a matching stderr code is
+    /// only used when the child printed nothing (it was reaped after an
+    /// abnormal exit). No other source is consulted, so no stale or foreign
+    /// state can be misattributed to this run.
+    fn reap_supervisor_failure(&self) -> (String, Option<String>) {
+        let stderr_code = self
+            .supervisor
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .take()
+            .map(|mut supervisor| supervisor.reap_failure_code())
+            .filter(|code| code != "SUPERVISOR_EXITED");
+        let status_failure = self
+            .paths
+            .as_ref()
+            .and_then(LifecyclePaths::read_runtime_status)
+            .and_then(|status| status.failure);
+        match (stderr_code, status_failure) {
+            (Some(code), Some(record)) if record.code == code => (code, record.service),
+            (Some(code), _) => (code, None),
+            (None, Some(record)) => (record.code, record.service),
+            (None, None) => ("SUPERVISOR_EXITED".to_string(), None),
+        }
     }
 
     /// Create the first-run workspace from the SAME main window, then start the
@@ -1076,9 +1473,10 @@ impl LifecycleController {
         let Some(paths) = self.paths.clone() else {
             // No bundled package at all: fail closed with the finite code rather
             // than showing a first-run form that could never provision.
-            self.set_state(
+            self.set_failure(
                 LifecycleState::Failed,
-                Some("RUNTIME_PACKAGE_MISSING".to_string()),
+                "RUNTIME_PACKAGE_MISSING".to_string(),
+                None,
             );
             return Err("RUNTIME_PACKAGE_MISSING".to_string());
         };
@@ -1095,7 +1493,7 @@ impl LifecycleController {
         };
         self.set_state(LifecycleState::Starting, None);
         if let Err(code) = paths.provision_workspace(&trimmed) {
-            self.set_state(LifecycleState::Failed, Some(code.clone()));
+            self.set_failure(LifecycleState::Failed, code.clone(), None);
             return Err(code);
         }
         // Provisioning is complete; this process owns the workspace now.
@@ -1153,14 +1551,15 @@ impl LifecycleController {
     pub fn shutdown(&self) -> bool {
         self.stop_owned(STOP_TIMEOUT);
         if self.has_supervisor() {
-            self.set_state(
+            self.set_failure(
                 LifecycleState::ShutdownFailed,
-                Some("GRACEFUL_STOP_TIMEOUT".to_string()),
+                "GRACEFUL_STOP_TIMEOUT".to_string(),
+                None,
             );
             return false;
         }
         if self.state() != LifecycleState::Stopped {
-            let failure = self.failure_code();
+            let failure = self.failure();
             let keep = matches!(
                 self.state(),
                 LifecycleState::Failed | LifecycleState::ShutdownFailed
@@ -1170,6 +1569,138 @@ impl LifecycleController {
             self.set_state(LifecycleState::Stopped, keep);
         }
         true
+    }
+
+    /// User-initiated Start from the lifecycle surface or the native Runtime
+    /// menu: a single bounded attempt through the existing `start` operation.
+    ///
+    /// Refused without any state change when a start is already running or the
+    /// tree is already ready (no silent second attempt and no empty success
+    /// screen), and when the data root is still awaiting first-run provisioning
+    /// (the first-run form owns that path). Returns whether a start was begun.
+    pub fn user_start(self: &std::sync::Arc<Self>) -> bool {
+        if !self.can_start() {
+            return false;
+        }
+        // A previous close/cancel may have set the cancel flag; a new explicit
+        // user Start clears it so the new attempt is not cancelled instantly.
+        self.cancel.store(false, Ordering::SeqCst);
+        self.spawn_cold_start();
+        true
+    }
+
+    /// Mark a user-requested stop as in flight synchronously, before any
+    /// navigation happens. The window bindsings call this first and navigate
+    /// afterwards, so every render the user can see after a Stop action is a
+    /// live view that keeps refreshing until the manager's own terminal
+    /// outcome arrives — the surface can never freeze on a stale pre-action
+    /// render, and no state is invented here.
+    pub fn begin_user_stop(&self) {
+        self.stop_pending.store(true, Ordering::SeqCst);
+    }
+
+    /// User-initiated Stop from the lifecycle surface or the native Runtime
+    /// menu. Runs the manager's own reverse-order shutdown on the calling
+    /// thread (callers must not block the window): during `starting` it is the
+    /// bounded mid-start cancel; afterwards it is the graceful `stop` request
+    /// with the manager's own timeouts.
+    ///
+    /// The manager owns the `shutdown-failed` policy: while it is alive and
+    /// reports `shutdown-failed` it is waiting for this explicit stop retry, so
+    /// the desktop reports that state instead of terminating the manager. If
+    /// the bound expires while a healthy manager is still shutting down, the
+    /// owned child is left alone and the post-ready watcher adopts its eventual
+    /// exit — the surface never invents a success or a failure the manager did
+    /// not report.
+    pub fn complete_user_stop(&self) -> StopOutcome {
+        self.begin_user_stop();
+        let outcome = if self.state() == LifecycleState::Starting {
+            self.request_cancel();
+            if let Some(startup) = self.take_startup_handle() {
+                let _ = startup.join();
+            }
+            self.cancel_start();
+            StopOutcome::Stopped
+        } else {
+            self.stop_owned_for_surface()
+        };
+        self.stop_pending.store(false, Ordering::SeqCst);
+        outcome
+    }
+
+    /// Graceful stop for the surface Stop control: request the manager's own
+    /// reverse-order shutdown and wait for its own outcome. Unlike the close
+    /// path, the owned manager is never terminated here.
+    fn stop_owned_for_surface(&self) -> StopOutcome {
+        let Some(paths) = self.paths.clone() else {
+            return StopOutcome::Stopped;
+        };
+        {
+            let mut guard = self.supervisor.lock().unwrap_or_else(|e| e.into_inner());
+            let Some(supervisor) = guard.as_mut() else {
+                return StopOutcome::Stopped;
+            };
+            if !supervisor.is_running() {
+                guard.take();
+                return StopOutcome::Stopped;
+            }
+        }
+        paths.request_stop();
+        let deadline = Instant::now() + STOP_REQUEST_BOUND;
+        loop {
+            {
+                let mut guard = self.supervisor.lock().unwrap_or_else(|e| e.into_inner());
+                let Some(supervisor) = guard.as_mut() else {
+                    return StopOutcome::Stopped;
+                };
+                if !supervisor.is_running() {
+                    guard.take();
+                    return StopOutcome::Stopped;
+                }
+            }
+            // The manager publishes `shutdown-failed` while it waits for the
+            // explicit stop retry; honour that instead of terminating it.
+            if let Some(status) = paths.read_runtime_status() {
+                if status.state.as_deref() == Some("shutdown-failed") {
+                    let code = status
+                        .failure
+                        .map(|record| record.code)
+                        .unwrap_or_else(|| "GRACEFUL_STOP_TIMEOUT".to_string());
+                    self.set_failure(LifecycleState::ShutdownFailed, code, None);
+                    return StopOutcome::ShutdownFailed;
+                }
+            }
+            if Instant::now() >= deadline {
+                // Still inside the manager's own bounded reverse-order stop:
+                // leave the owned child running and keep the current state so
+                // the watcher adopts the manager's real terminal outcome.
+                return StopOutcome::Stopped;
+            }
+            std::thread::sleep(STOP_STATUS_POLL);
+        }
+    }
+
+    /// Adopt the owned manager's exit after the window had shown the SPA: reap
+    /// the child, read the manager's own terminal status, and present the
+    /// contract's post-ready outcome. A supervisor-reported failure becomes
+    /// `degraded` with its finite code and failing service; a clean stop becomes
+    /// `stopped`; anything else is `degraded` with the finite fallback code. No
+    /// automatic restart happens here — recovery stays user-initiated.
+    pub fn adopt_supervisor_exit_after_ready(&self) {
+        if self.state() != LifecycleState::Ready {
+            return;
+        }
+        let (code, service) = self.reap_supervisor_failure();
+        let status_state = self
+            .paths
+            .as_ref()
+            .and_then(LifecyclePaths::read_runtime_status)
+            .and_then(|status| status.state);
+        if code == "SUPERVISOR_EXITED" && status_state.as_deref() == Some("stopped") {
+            self.set_state(LifecycleState::Stopped, None);
+            return;
+        }
+        self.set_failure(LifecycleState::Degraded, code, service);
     }
 
     /// Stop the owned supervisor child: graceful `stop` request first with a
@@ -1230,9 +1761,10 @@ impl LifecycleController {
                 // Graceful stop genuinely did not complete in bound; the
                 // caller records the outcome state.
                 drop(guard);
-                self.set_state(
+                self.set_failure(
                     self.state(),
-                    Some("GRACEFUL_STOP_TIMEOUT".to_string()),
+                    "GRACEFUL_STOP_TIMEOUT".to_string(),
+                    self.failure_service(),
                 );
                 return;
             }
@@ -1244,9 +1776,10 @@ impl LifecycleController {
 #[cfg(test)]
 mod lifecycle_tests {
     use super::{
-        BOOTSTRAP_SCHEME, DEFAULT_API_PORT, LOOPBACK_HOST, LifecycleController, LifecyclePaths,
-        LifecycleState, Readiness, api_origin, bootstrap_url, extract_failure_code,
-        is_allowed_navigation, poll_api_ready, render_bootstrap, render_first_run,
+        BOOTSTRAP_SCHEME, BOOTSTRAP_SURFACE_URL, DEFAULT_API_PORT, FailureRecord, LOOPBACK_HOST,
+        LifecycleController, LifecyclePaths, LifecycleSnapshot, LifecycleState, Readiness,
+        StopOutcome, api_origin, bootstrap_url, extract_failure_code, is_allowed_navigation,
+        is_finite_code, is_service_name, poll_api_ready, render_bootstrap, render_first_run,
         validate_workspace_name,
     };
 
@@ -1314,6 +1847,7 @@ mod lifecycle_tests {
         assert_eq!(LifecycleState::Bootstrap.as_str(), "bootstrap");
         assert_eq!(LifecycleState::Starting.as_str(), "starting");
         assert_eq!(LifecycleState::Ready.as_str(), "ready");
+        assert_eq!(LifecycleState::Degraded.as_str(), "degraded");
         assert_eq!(LifecycleState::Stopped.as_str(), "stopped");
         assert_eq!(LifecycleState::Failed.as_str(), "failed");
         assert_eq!(LifecycleState::ShutdownFailed.as_str(), "shutdown-failed");
@@ -1339,28 +1873,297 @@ mod lifecycle_tests {
     }
 
     #[test]
-    fn bootstrap_page_exposes_lifecycle_controls() {
+    fn lifecycle_surface_exposes_real_controls_and_states() {
+        let origin = format!("http://{LOOPBACK_HOST}:{DEFAULT_API_PORT}/");
+        let starting = render_bootstrap(
+            &LifecycleSnapshot {
+                state: LifecycleState::Starting,
+                failure: None,
+                supervisor_pid: Some(1234),
+                stop_pending: false,
+                start_pending: false,
+            },
+            &origin,
+        );
+        // One form in the same window submits the runtime intents; no script,
+        // no Tauri command, no capability is introduced.
+        assert!(starting.contains("data-testid=\"lifecycle-state\""));
+        assert!(starting.contains("data-testid=\"lifecycle-runtime-form\""));
+        assert!(starting.contains("data-testid=\"lifecycle-start\""));
+        assert!(starting.contains("data-testid=\"lifecycle-stop\""));
+        assert!(starting.contains("data-testid=\"lifecycle-diagnostics\""));
+        assert!(!starting.contains("<script"));
+        // Starting cannot start again (no second tree) but can be cancelled.
+        assert!(starting.contains("data-testid=\"lifecycle-start\" disabled"));
+        assert!(!starting.contains("data-testid=\"lifecycle-stop\" disabled"));
+        // Only a live state refreshes the view (never a service retry), and the
+        // refresh target is the exact bundled workaround origin the guard
+        // already allows.
+        let refresh = format!("http-equiv=\"refresh\" content=\"2; url={BOOTSTRAP_SURFACE_URL}");
+        assert!(starting.contains(&refresh));
+
+        let stopped = render_bootstrap(
+            &LifecycleSnapshot {
+                state: LifecycleState::Stopped,
+                failure: None,
+                supervisor_pid: None,
+                stop_pending: false,
+                start_pending: false,
+            },
+            &origin,
+        );
+        // Stopped is the recovery entry point: Start enabled, Stop meaningless.
+        assert!(!stopped.contains("data-testid=\"lifecycle-start\" disabled"));
+        assert!(stopped.contains("data-testid=\"lifecycle-stop\" disabled"));
+        // A terminal state never auto-refreshes: nothing retries by itself.
+        assert!(!stopped.contains("http-equiv=\"refresh\""));
+    }
+
+    #[test]
+    fn degraded_surface_names_the_failing_dependency_and_recovery() {
         let html = render_bootstrap(
-            LifecycleState::Starting,
-            None,
-            Some(1234),
+            &LifecycleSnapshot {
+                state: LifecycleState::Degraded,
+                failure: Some(FailureRecord::new(
+                    "SERVICE_BECAME_UNREADY".to_string(),
+                    Some("fuseki".to_string()),
+                )),
+                supervisor_pid: None,
+                stop_pending: false,
+                start_pending: false,
+            },
             &format!("http://{LOOPBACK_HOST}:{DEFAULT_API_PORT}/"),
         );
-        assert!(html.contains("data-testid=\"lifecycle-state\""));
-        assert!(html.contains("data-testid=\"lifecycle-start\""));
-        assert!(html.contains("data-testid=\"lifecycle-stop\""));
-        assert!(html.contains("data-testid=\"lifecycle-diagnostics\""));
-        assert!(html.contains("starting"));
-        // Starting state auto-refreshes the view only (no service retry).
-        assert!(html.contains("http-equiv=\"refresh\""));
-        let failed = render_bootstrap(
-            LifecycleState::Failed,
-            Some("RUNTIME_ALREADY_ACTIVE"),
-            None,
+        // The failing dependency and its finite code are surfaced, never an
+        // empty success screen, and recovery is offered but never automatic.
+        assert!(html.contains("degraded"));
+        assert!(html.contains("SERVICE_BECAME_UNREADY"));
+        assert!(html.contains("fuseki"));
+        assert!(!html.contains("http-equiv=\"refresh\""));
+        assert!(!html.contains("data-testid=\"lifecycle-start\" disabled"));
+    }
+
+    #[test]
+    fn shutdown_failed_surface_offers_the_explicit_stop_retry_only() {
+        let html = render_bootstrap(
+            &LifecycleSnapshot {
+                state: LifecycleState::ShutdownFailed,
+                failure: Some(FailureRecord::new(
+                    "GRACEFUL_STOP_TIMEOUT".to_string(),
+                    None,
+                )),
+                supervisor_pid: None,
+                stop_pending: false,
+                start_pending: false,
+            },
             &format!("http://{LOOPBACK_HOST}:{DEFAULT_API_PORT}/"),
         );
-        assert!(failed.contains("RUNTIME_ALREADY_ACTIVE"));
-        assert!(!failed.contains("http-equiv=\"refresh\""));
+        // The finite shutdown code stays visible, the retry stays available,
+        // and nothing stops itself.
+        assert!(html.contains("GRACEFUL_STOP_TIMEOUT"));
+        assert!(!html.contains("http-equiv=\"refresh\""));
+        assert!(!html.contains("data-testid=\"lifecycle-stop\" disabled"));
+        // The manager owns the stop retry; a start cannot apply here.
+        assert!(html.contains("data-testid=\"lifecycle-start\" disabled"));
+    }
+
+    #[test]
+    fn port_in_use_failure_renders_the_occupied_dependency() {
+        // The surface must present the finite code and name the occupied
+        // dependency for a PORT_IN_USE failure, with user-initiated recovery
+        // and no automatic retry. The record is built directly here so the
+        // invariant is deterministic on any host; which fixed port is actually
+        // occupied is owned by the manager's own refusal and is exercised by
+        // the retained disposable native collision smoke, never by binding
+        // host ports in a test.
+        let html = render_bootstrap(
+            &LifecycleSnapshot {
+                state: LifecycleState::Failed,
+                failure: Some(FailureRecord {
+                    code: "PORT_IN_USE".to_string(),
+                    service: None,
+                    detail: Some("api on port 18732".to_string()),
+                }),
+                supervisor_pid: None,
+                stop_pending: false,
+                start_pending: false,
+            },
+            &format!("http://{LOOPBACK_HOST}:{DEFAULT_API_PORT}/"),
+        );
+        // Consumer semantics: finite code, failing dependency + port, recovery.
+        assert!(html.contains("PORT_IN_USE"));
+        assert!(html.contains("api"));
+        assert!(html.contains("18732"));
+        // Still a finite failure screen: no auto-retry, recovery is the user's.
+        assert!(!html.contains("http-equiv=\"refresh\""));
+        assert!(!html.contains("data-testid=\"lifecycle-start\" disabled"));
+    }
+
+    #[test]
+    fn finite_code_and_service_filters_refuse_arbitrary_text() {
+        assert!(is_finite_code("SERVICE_BECAME_UNREADY"));
+        assert!(is_finite_code("PORT_IN_USE"));
+        for rejected in [
+            "",
+            "lower_case",
+            "has space",
+            "has-dash",
+            "unicode-\u{00e9}",
+            &"x".repeat(65),
+        ] {
+            assert!(!is_finite_code(rejected), "must refuse {rejected:?}");
+        }
+        assert!(is_service_name("postgres"));
+        assert!(is_service_name("fuseki"));
+        assert!(is_service_name("semanticCore"));
+        assert!(is_service_name("api"));
+        assert!(!is_service_name("other"));
+        assert!(!is_service_name("api; DROP TABLE"));
+    }
+
+    #[test]
+    fn runtime_status_reading_is_sanitized() {
+        let data_root = disposable_root("s15-05-runtime-status");
+        std::fs::create_dir_all(data_root.join("state")).expect("state dir");
+        let paths = nonexistent_paths(&data_root);
+        // A well-formed supervisor document yields its sanitized view.
+        std::fs::write(
+            data_root.join("state/runtime.json"),
+            serde_json::json!({
+                "formatVersion": 1,
+                "state": "failed",
+                "failureCode": "SERVICE_BECAME_UNREADY",
+                "failedService": "fuseki",
+                "url": null,
+            })
+            .to_string(),
+        )
+        .expect("write status");
+        let status = paths.read_runtime_status().expect("readable status");
+        assert_eq!(status.state.as_deref(), Some("failed"));
+        let failure = status.failure.expect("failure record");
+        assert_eq!(failure.code, "SERVICE_BECAME_UNREADY");
+        assert_eq!(failure.service.as_deref(), Some("fuseki"));
+        // An unexpected code, service, or state is dropped, not rendered.
+        std::fs::write(
+            data_root.join("state/runtime.json"),
+            serde_json::json!({
+                "state": "surprising",
+                "failureCode": "<script>alert(1)</script>",
+                "failedService": "not-a-service",
+            })
+            .to_string(),
+        )
+        .expect("write hostile status");
+        let hostile = paths.read_runtime_status().expect("readable status");
+        assert_eq!(hostile.state, None);
+        assert!(hostile.failure.is_none());
+        // Unreadable or non-object documents degrade to None.
+        std::fs::write(data_root.join("state/runtime.json"), "[]").expect("write array status");
+        assert!(paths.read_runtime_status().is_none());
+        let _ = std::fs::remove_dir_all(&data_root);
+    }
+
+    #[test]
+    fn user_start_is_bounded_and_never_a_second_attempt() {
+        let controller = std::sync::Arc::new(LifecycleController::new(None, DEFAULT_API_PORT));
+        // No package and no workspace: a start is refused before any child
+        // exists, and the failure stays finite rather than a success screen.
+        assert!(controller.can_start());
+        assert!(controller.user_start());
+        // Wait for the single bounded attempt to report its finite failure.
+        if let Some(handle) = controller.take_startup_handle() {
+            let _ = handle.join();
+        }
+        assert_eq!(controller.state(), LifecycleState::Failed);
+        assert_eq!(
+            controller.failure_code().as_deref(),
+            Some("RUNTIME_PACKAGE_MISSING")
+        );
+        // While starting or ready, a second user Start is refused outright.
+        controller.set_state(LifecycleState::Starting, None);
+        assert!(!controller.can_start());
+        assert!(!controller.user_start());
+        controller.set_state(LifecycleState::Ready, None);
+        assert!(!controller.can_start());
+        assert!(!controller.user_start());
+        // First-run never starts from the surface: the first-run form owns it.
+        let first_run = LifecycleController::new(None, DEFAULT_API_PORT);
+        first_run.first_run.store(true, std::sync::atomic::Ordering::SeqCst);
+        assert!(!first_run.can_start());
+    }
+
+    #[test]
+    fn user_stop_from_starting_cancels_and_leaves_the_cycle_restartable() {
+        // Ready→Stop→Start boundary at controller level: a stop during a start
+        // cancels the in-flight worker (single attempt, no retry) and lands in
+        // `stopped`, after which exactly one further user Start is allowed.
+        let controller = std::sync::Arc::new(LifecycleController::new(None, DEFAULT_API_PORT));
+        controller.set_state(LifecycleState::Starting, None);
+        assert!(!controller.can_start(), "a starting tree cannot start again");
+        let outcome = controller.complete_user_stop();
+        assert_eq!(outcome, StopOutcome::Stopped);
+        assert_eq!(controller.state(), LifecycleState::Stopped);
+        assert!(controller.cancel_requested());
+        assert!(!controller.is_stop_pending());
+        // A stop with no owned child is a clean stopped state, not a failure.
+        assert!(controller.failure().is_none());
+        // The cycle restarts exactly once per user action.
+        assert!(controller.can_start());
+        assert!(controller.user_start());
+        if let Some(handle) = controller.take_startup_handle() {
+            let _ = handle.join();
+        }
+        assert_eq!(controller.state(), LifecycleState::Failed);
+        assert!(!controller.has_supervisor());
+    }
+
+    #[test]
+    fn start_pending_blocks_a_second_start_and_keeps_the_view_live() {
+        // Regression for the stale-surface race: while a start is in flight the
+        // snapshot must keep refreshing (the worker sets `starting` moments
+        // later), and a second user Start must be refused rather than racing
+        // the in-flight worker.
+        let controller = std::sync::Arc::new(LifecycleController::new(None, DEFAULT_API_PORT));
+        assert!(controller.user_start());
+        assert!(controller.is_start_pending());
+        assert!(!controller.can_start(), "a second Start must not race the worker");
+        assert!(!controller.user_start());
+        // The in-flight start renders a live view even though the worker has
+        // not yet flipped the state, so the real outcome is always shown.
+        let origin = format!("http://{LOOPBACK_HOST}:{DEFAULT_API_PORT}/");
+        let pending = render_bootstrap(&controller.snapshot(), &origin);
+        let refresh = format!("http-equiv=\"refresh\" content=\"2; url={BOOTSTRAP_SURFACE_URL}");
+        assert!(pending.contains(&refresh));
+        assert!(pending.contains("data-testid=\"lifecycle-start\" disabled"));
+        if let Some(handle) = controller.take_startup_handle() {
+            let _ = handle.join();
+        }
+        assert!(!controller.is_start_pending());
+        // The worker finished with its finite failure; a later user Start is
+        // allowed again exactly once per action.
+        assert_eq!(controller.state(), LifecycleState::Failed);
+        assert!(controller.can_start());
+    }
+
+    #[test]
+    fn repeated_user_starts_do_not_panic_or_stack_workers() {
+        // Regression: a user Start after a finished start episode must reuse the
+        // stashed worker handle (join and drop) instead of panicking, and must
+        // never leave two startup workers alive.
+        let controller = std::sync::Arc::new(LifecycleController::new(None, DEFAULT_API_PORT));
+        assert!(controller.user_start());
+        if let Some(handle) = controller.take_startup_handle() {
+            let _ = handle.join();
+        }
+        assert!(controller.user_start());
+        if let Some(handle) = controller.take_startup_handle() {
+            let _ = handle.join();
+        }
+        // The stashed handle is consumed again: exactly one worker exists.
+        assert!(controller.take_startup_handle().is_none());
+        assert_eq!(controller.state(), LifecycleState::Failed);
+        assert!(!controller.has_supervisor());
     }
 
     #[test]
