@@ -22,6 +22,9 @@ build/
 target/
 **/hsperfdata_*/
 
+# Tauri build-generated schemas (S15-02; never commit generated output)
+apps/desktop/src-tauri/gen/
+
 # Editors and operating systems
 .idea/
 .vscode/

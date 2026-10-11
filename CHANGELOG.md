@@ -6,6 +6,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+### Added
+
+- Added a Tauri v2 desktop slice (`apps/desktop`) with one native window over the existing loopback Application API SPA. The host registers no native commands, refuses foreign navigation inside the privileged view, and starts no service itself; supervisor ownership, first-run, recovery, hardening, and packaging remain later Sprint 15 tasks. Verified against a disposable live backend with in-window project selection and Notes screen navigation; note draft save/commit activation inside the window remains unverified.
+
 ## [0.7.1] - 2026-10-09
 
 ### Fixed

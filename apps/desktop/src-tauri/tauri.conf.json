@@ -1,0 +1,36 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Projecta",
+  "version": "0.7.1",
+  "identifier": "org.projecta.desktop",
+  "build": {
+    "devUrl": "http://127.0.0.1:18732",
+    "frontendDist": "../../web/dist",
+    "beforeDevCommand": "",
+    "beforeBuildCommand": ""
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Projecta",
+        "url": "http://127.0.0.1:18732/",
+        "width": 1280,
+        "height": 860,
+        "minWidth": 1024,
+        "minHeight": 640,
+        "resizable": true,
+        "fullscreen": false,
+        "center": true,
+        "useHttpsScheme": false
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self' http://127.0.0.1:18732; script-src 'self' http://127.0.0.1:18732; style-src 'self' http://127.0.0.1:18732 'unsafe-inline'; img-src 'self' http://127.0.0.1:18732 data:; connect-src 'self' http://127.0.0.1:18732; font-src 'self' http://127.0.0.1:18732 data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+      "capabilities": []
+    }
+  },
+  "bundle": {
+    "active": false
+  }
+}
