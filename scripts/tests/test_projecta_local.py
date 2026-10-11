@@ -313,6 +313,129 @@ def test_first_run_provisioning_never_overwrites_existing_config(tmp_path: Path)
     assert failure.value.code == "LOCAL_PROJECT_CONFIGURATION_INVALID"
 
 
+@pytest.fixture
+def fresh_paths(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> launcher.ProjectaPaths:
+    """A genuinely fresh data root with no workspace, installation, or secrets."""
+    paths = launcher.ProjectaPaths(tmp_path / "package", tmp_path / "user-data")
+    paths.package_root.mkdir(parents=True)
+    (paths.package_root / "runtime-manifest.json").write_text("{}", encoding="utf-8")
+    monkeypatch.setattr(
+        launcher,
+        "load_runtime_manifest",
+        lambda _: {
+            "projectaVersion": launcher.UNSIGNED_PRE_RELEASE_VERSION,
+            "runtimeVersions": dict(launcher.RUNTIME_VERSIONS),
+            "releaseEligible": False,
+            "distributionChannel": launcher.UNSIGNED_PRE_RELEASE_CHANNEL,
+            "unsignedPreReleaseException": launcher.UNSIGNED_PRE_RELEASE_EXCEPTION,
+            "dataContractVersion": launcher.DATA_CONTRACT_VERSION,
+        },
+    )
+    monkeypatch.setattr(launcher, "PORTS", {"unused": 0})
+    return paths
+
+
+def test_provision_writes_workspace_without_os_installation(
+    fresh_paths: launcher.ProjectaPaths,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The in-window first-run operation performs no OS installation.
+
+    `provision` must write the workspace registry, the installation record, and
+    the DPAPI-protected secrets, and must never call the shortcut installer --
+    regardless of frozen or unfrozen execution, because it does not reach that
+    code path at all.
+    """
+    shortcut_calls: list[launcher.ProjectaPaths] = []
+
+    def record_shortcuts(paths: launcher.ProjectaPaths, *, package_root: Path | None = None) -> None:
+        shortcut_calls.append(paths)
+
+    monkeypatch.setattr(launcher, "_create_shortcuts", record_shortcuts)
+
+    launcher.provision(fresh_paths, workspace_name="In-Window Workspace")
+
+    assert shortcut_calls == []
+    config = launcher.read_workspace_config(fresh_paths.local_config)
+    assert config.project_name == "In-Window Workspace"
+    assert config.actor_id == launcher.FIRST_RUN_ACTOR_ID
+    assert launcher.PROJECT_ID_PATTERN.fullmatch(config.project_id)
+    installation = launcher.load_json(fresh_paths.installation_config, "LOCAL_INSTALLATION_INVALID")
+    assert installation["projectaVersion"] == launcher.APP_VERSION
+    assert fresh_paths.protected_secrets.is_file()
+    # No installer artifact was placed in the per-user programs directory.
+    assert not Path(fresh_paths.package_root).joinpath("installed-marker").exists()
+
+
+def test_install_still_performs_os_installation(
+    fresh_paths: launcher.ProjectaPaths,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """`install` keeps the full OS installation behavior: shortcut creation is
+    still part of it, so the boundary is a real separation and not a shared
+    no-op."""
+    shortcut_calls: list[launcher.ProjectaPaths] = []
+    monkeypatch.setattr(
+        launcher,
+        "_create_shortcuts",
+        lambda paths, *, package_root=None: shortcut_calls.append(paths),
+    )
+    monkeypatch.setattr(launcher, "_is_staged_runtime", lambda: False)
+
+    launcher.install(fresh_paths, workspace_name="Installed Workspace")
+
+    assert shortcut_calls == [fresh_paths]
+
+
+def test_provision_refuses_to_rewrite_an_existing_workspace(
+    fresh_paths: launcher.ProjectaPaths,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Re-running the in-window provisioning keeps the existing workspace exactly
+    as-is: no reseed, no overwrite, no second secret."""
+    monkeypatch.setattr(launcher, "_create_shortcuts", lambda paths, *, package_root=None: None)
+    launcher.provision(fresh_paths, workspace_name="First Name")
+    original_config = fresh_paths.local_config.read_bytes()
+    original_secrets = fresh_paths.protected_secrets.read_bytes()
+
+    launcher.provision(fresh_paths, workspace_name="Replacement Name")
+
+    assert fresh_paths.local_config.read_bytes() == original_config
+    assert launcher.read_workspace_config(fresh_paths.local_config).project_name == "First Name"
+    assert fresh_paths.protected_secrets.read_bytes() == original_secrets
+
+
+def test_provision_rejects_invalid_name_without_partial_state(
+    fresh_paths: launcher.ProjectaPaths,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """An invalid display name writes nothing at all: no workspace registry, no
+    installation record, no DPAPI secret file."""
+    monkeypatch.setattr(launcher, "_create_shortcuts", lambda paths, *, package_root=None: None)
+
+    with pytest.raises(launcher.RuntimeFailure) as failure:
+        launcher.provision(fresh_paths, workspace_name="   ")
+
+    assert failure.value.code == "LOCAL_PROJECT_CONFIGURATION_INVALID"
+    assert not fresh_paths.local_config.exists()
+    assert not fresh_paths.installation_config.exists()
+    assert not fresh_paths.protected_secrets.exists()
+
+
+def test_provision_rejects_overlong_name_without_partial_state(
+    fresh_paths: launcher.ProjectaPaths,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(launcher, "_create_shortcuts", lambda paths, *, package_root=None: None)
+
+    with pytest.raises(launcher.RuntimeFailure) as failure:
+        launcher.provision(fresh_paths, workspace_name="x" * 129)
+
+    assert failure.value.code == "LOCAL_PROJECT_CONFIGURATION_INVALID"
+    assert not fresh_paths.local_config.exists()
+    assert not fresh_paths.protected_secrets.exists()
+
+
 def test_backup_restore_preserves_pre_restore_state(local_paths: launcher.ProjectaPaths) -> None:
     manager = launcher.BackupManager(local_paths)
     backup_id = manager.create()

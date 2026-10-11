@@ -1,13 +1,13 @@
-// Projecta S15-03 desktop host: bootstrap-first window over an app-owned service tree.
+// Projecta S15-03/04 desktop host: bootstrap-first window over an app-owned service tree.
 //
-// One main window renders the locally bundled bootstrap surface first, then
+// One main window renders the local first-run form or lifecycle surface, then
 // navigates the SAME window to the owned loopback Application API origin on
-// real readiness. The app spawns exactly one supervisor child (the existing
-// local CLI) and stops only that child on cancel/close via the existing
-// `stop` subcommand. No Tauri command is registered: the WebView has no
-// native bridge in this slice, so there is no capability to scope yet
-// (S15-06 owns the manifest). Explicit control/recovery/error UX belongs to
-// S15-04/S15-05; packaging belongs to S15-09.
+// real readiness. The first-run form provisions workspace state before the app
+// starts exactly one supervisor child (the existing local CLI); close stops
+// only that child via the existing `stop` subcommand. No Tauri command is
+// registered: the WebView has no native bridge in this slice, so there is no
+// capability to scope yet (S15-06 owns the manifest). Expanded recovery/error
+// UX belongs to S15-05; packaging belongs to S15-09.
 
 mod lifecycle;
 
@@ -16,9 +16,74 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::time::{Duration, Instant};
 use lifecycle::{
     BOOTSTRAP_SCHEME, LifecycleController, LifecyclePaths, LifecycleState, MAIN_WINDOW_LABEL,
-    api_origin, is_allowed_navigation, render_bootstrap,
+    api_origin, is_allowed_navigation, render_bootstrap, render_first_run,
 };
 use tauri::{Manager, Url};
+
+/// Default first-run display name offered as the form placeholder. This mirrors
+/// the launcher's own `FIRST_RUN_DISPLAY_NAME` so the placeholder text is never
+/// invented here; the authoritative default stays in the Python launcher.
+const FIRST_RUN_DEFAULT_NAME: &str = "My Projecta Workspace";
+
+/// Build a text/html response for the bootstrap surface.
+fn html_response(html: String) -> tauri::http::Response<Vec<u8>> {
+    tauri::http::Response::builder()
+        .header("Content-Type", "text/html")
+        .body(html.into_bytes())
+        .unwrap()
+}
+
+/// Read one query value from a `application/x-www-form-urlencoded` string.
+fn query_param(query: &str, key: &str) -> Option<String> {
+    query
+        .split('&')
+        .filter_map(|pair| pair.split_once('='))
+        .find(|(name, _)| *name == key)
+        .map(|(_, value)| percent_decode(value))
+}
+
+/// Decode `+` and `%XX` escapes from a form-encoded value.
+fn percent_decode(value: &str) -> String {
+    let bytes = value.replace('+', " ");
+    let mut decoded: Vec<u8> = Vec::with_capacity(bytes.len());
+    let mut raw = bytes.as_bytes().iter().copied();
+    while let Some(byte) = raw.next() {
+        if byte == b'%' {
+            let high = raw.next().and_then(|c| (c as char).to_digit(16));
+            let low = raw.next().and_then(|c| (c as char).to_digit(16));
+            match (high, low) {
+                (Some(high), Some(low)) => decoded.push((high * 16 + low) as u8),
+                _ => decoded.push(byte),
+            }
+        } else {
+            decoded.push(byte);
+        }
+    }
+    String::from_utf8_lossy(&decoded).into_owned()
+}
+
+/// Provision the first-run workspace from the same main window and, on success,
+/// continue into the ordinary cold start so the user sees one continuous
+/// journey. Failure re-renders the form with a finite refusal code.
+///
+/// A refused name produces NO writes: the Rust validation runs before any child
+/// process is spawned, so there is no partial customer state to clean up.
+fn provision_response(
+    lifecycle: &std::sync::Arc<LifecycleController>,
+    name: &str,
+    api_origin: &str,
+) -> tauri::http::Response<Vec<u8>> {
+    if let Err(code) = lifecycle.provision_first_run(name) {
+        let html = render_first_run(FIRST_RUN_DEFAULT_NAME, Some(&code));
+        return html_response(html);
+    }
+    // The workspace now exists; start the owned tree exactly as an existing
+    // workspace would. The existing watcher navigates the SAME window to the
+    // loopback SPA on real readiness.
+    lifecycle.spawn_cold_start();
+    let (state, code, pid) = lifecycle.snapshot();
+    html_response(render_bootstrap(state, code.as_deref(), pid, api_origin))
+}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -42,38 +107,67 @@ pub fn run() {
             .on_navigation(move |_webview, url| is_allowed_navigation(url, &guard_origin))
             .build();
 
-    // Bootstrap protocol: serves the locally bundled lifecycle surface with
-    // the live snapshot (no network fetch, no secrets, sanitized diagnostics).
+    // Bootstrap protocol serves the local first-run form or the lifecycle
+    // surface with the live snapshot (no network fetch, no secrets). The
+    // user's name is present in the form field and submitted through this
+    // protocol request; it is not copied into diagnostics or responses.
     let proto_lifecycle = lifecycle.clone();
     let proto_origin = origin.clone();
 
-    let startup_lifecycle = lifecycle.clone();
     let close_lifecycle = lifecycle.clone();
     let close_flag = closing.clone();
+    // The provision path and the setup path both start the owned tree, so the
+    // protocol handler and `setup` hold their own handles.
+    let provision_starter = lifecycle.clone();
+    let setup_lifecycle = lifecycle.clone();
 
     tauri::Builder::default()
         .plugin(guard)
-        .register_uri_scheme_protocol(BOOTSTRAP_SCHEME, move |_ctx, _request| {
-            let (state, code, pid) = proto_lifecycle.snapshot();
-            let html = render_bootstrap(state, code.as_deref(), pid, &proto_origin);
-            tauri::http::Response::builder()
-                .header("Content-Type", "text/html")
-                .body(html.into_bytes())
-                .unwrap()
+        .register_uri_scheme_protocol(BOOTSTRAP_SCHEME, move |_ctx, request| {
+            // A first-run submission reaches this handler through its protocol
+            // request. Cancel is a no-write dismissal; create validates and
+            // provisions. The name is carried by the form request but never
+            // echoed raw into the response.
+            if request.uri().path() == "/provision" {
+                let query = request.uri().query().unwrap_or_default();
+                let intent = query_param(query, "intent").unwrap_or_default();
+                let name = query_param(query, "name");
+                if intent == "cancel" {
+                    let html = render_first_run(FIRST_RUN_DEFAULT_NAME, None);
+                    return html_response(html);
+                }
+                if let Some(trimmed) = name.as_deref().map(str::trim).filter(|v| !v.is_empty()) {
+                    return provision_response(&provision_starter, trimmed, &proto_origin);
+                }
+                let invalid =
+                    render_first_run(FIRST_RUN_DEFAULT_NAME, Some("WORKSPACE_NAME_INVALID"));
+                return html_response(invalid);
+            }
+            let html = if proto_lifecycle.is_first_run() {
+                render_first_run(FIRST_RUN_DEFAULT_NAME, None)
+            } else {
+                let (state, code, pid) = proto_lifecycle.snapshot();
+                render_bootstrap(state, code.as_deref(), pid, &proto_origin)
+            };
+            html_response(html)
         })
         .setup(move |app| {
-            // App launch is the Start binding: cold start runs off the event
-            // loop so the bootstrap surface stays responsive.
-            let worker = startup_lifecycle.clone();
-            let handle = worker.take_startup_handle();
-            debug_assert!(handle.is_none());
-            let startup_thread = std::thread::spawn(move || worker.cold_start());
-            startup_lifecycle.set_startup_handle(startup_thread);
+            // First-run vs reopen: an existing workspace starts immediately
+            // (the S15-03 Start binding); a data root with no workspace shows the
+            // in-window first-run form instead, and only provisions when the
+            // user submits a valid name. No service tree is started while the
+            // form is unanswered, so a cancelled or refused first run leaves no
+            // partial customer state behind.
+            let first_run = setup_lifecycle.clone();
+            if !first_run.is_first_run() {
+                first_run.spawn_cold_start();
+            }
+
 
             // Same-window transition: on real readiness, navigate the main
             // view from bootstrap to the owned loopback SPA. Single attempt,
             // no retry — failure leaves the sanitized bootstrap failure page.
-            let watcher = startup_lifecycle.clone();
+            let watcher = setup_lifecycle.clone();
             let watcher_origin = origin.clone();
             let watcher_app = app.handle().clone();
             std::thread::spawn(move || {

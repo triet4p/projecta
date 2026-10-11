@@ -8,8 +8,28 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Added
 
-- Added a Tauri v2 desktop slice (`apps/desktop`) with one native window over the existing loopback Application API SPA. The host registers no native commands, refuses foreign navigation inside the privileged view, and starts no service itself; supervisor ownership, first-run, recovery, hardening, and packaging remain later Sprint 15 tasks. Verified against a disposable live backend with in-window project selection and Notes screen navigation; note draft save/commit activation inside the window remains unverified.
-- Integrated app-owned service lifecycle into the Tauri host (`apps/desktop`): app launch spawns the existing local supervisor as its only owned child, the same window moves from a bundled bootstrap surface to the loopback SPA on real readiness, a second launch refuses without a second backend, and cancellation/close stop only owned children with locks/ports released and data retained. Verified with disposable backends using process/port/status/data evidence; no retry loop, hidden service, or Rust process manager added.
+- Added a Tauri v2 desktop host (`apps/desktop`) with one native window over
+  the existing loopback Application API SPA. The host registers no native
+  commands and refuses foreign navigation inside the privileged view. Verified
+  with in-window project selection and Notes navigation; note draft save/commit
+  activation remains unverified.
+- Integrated app-owned lifecycle into the Tauri host (`apps/desktop`): existing
+  workspaces launch the local supervisor as the app's owned child, the same
+  window moves from bootstrap to the loopback SPA on real readiness, a second
+  launch refuses without a second backend, and cancel/close stop only owned
+  children with locks/ports released and data retained. Verified with
+  disposable backends using process/port/status/data evidence; no retry loop,
+  hidden service, or Rust process manager added.
+
+- Added first-run workspace provisioning to the existing Tauri v2 window.
+  Valid form submission reuses the audited project/actor generation and
+  DPAPI CurrentUser-protected runtime secret setup; Cancel and invalid names
+  leave no workspace state, and the data-only `provision` path does not install
+  OS shortcuts or write registry keys. Existing workspaces reopen without
+  reseeding or overwriting the catalog. Verified through the native WebView2
+  form, real runtime readiness, portable export, deletion, and empty-catalog
+  reopen using the internal 0.7.1 `unsigned-pre-release-test` channel
+  (`releaseEligible=false`; not for public distribution).
 
 ## [0.7.1] - 2026-10-09
 

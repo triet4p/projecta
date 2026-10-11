@@ -11,6 +11,7 @@
 
 use std::io::Read;
 use std::process::{Child, ChildStderr, Command, Stdio};
+use std::sync::Arc;
 use std::sync::Mutex;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::thread::JoinHandle;
@@ -352,6 +353,91 @@ impl LifecyclePaths {
         None
     }
 
+    /// Workspace registry marker inside the data root: `config/local-runtime.json`.
+    ///
+    /// The launcher writes this file exactly once, on a fresh data directory
+    /// only, and refuses to overwrite it. Its absence is therefore the single
+    /// authoritative first-run signal; its presence means an existing workspace
+    /// that MUST NOT be reseeded, overwritten, or re-provisioned.
+    #[must_use]
+    pub fn workspace_config_path(&self) -> std::path::PathBuf {
+        self.data_root.join("config/local-runtime.json")
+    }
+
+    /// Whether the data root already holds a provisioned workspace.
+    #[must_use]
+    pub fn has_workspace(&self) -> bool {
+        self.workspace_config_path().is_file()
+    }
+
+    /// Invoke the existing `provision` subcommand against these roots: the
+    /// workspace-initialization half of installation only. It reuses the
+    /// audited Python name validation, the generated project, the fixed
+    /// `local-operator` actor, and DPAPI CurrentUser protection of the runtime
+    /// secrets, and it NEVER performs OS installation (no package copy, no
+    /// Start-Menu shortcut, no HKCU write) — so provisioning from the main
+    /// window cannot install anything regardless of frozen or unfrozen
+    /// execution. Single attempt, bounded wait, no retry loop.
+    ///
+    /// `stdout` is returned sanitized (finite status text) and `stderr` is used
+    /// only to extract the launcher's trailing `[CODE]` token; neither is ever
+    /// surfaced raw to the WebView.
+    pub fn provision_workspace(&self, workspace_name: &str) -> Result<(), String> {
+        let mut command = Command::new(&self.python_exe);
+        command
+            .arg(&self.launcher_script)
+            .arg("provision")
+            .arg("--workspace-name")
+            .arg(workspace_name)
+            .env("PROJECTA_LAUNCHER_PACKAGE_ROOT", &self.package_root)
+            .env("PROJECTA_LAUNCHER_DATA_ROOT", &self.data_root)
+            .env("PYTHONDONTWRITEBYTECODE", "1")
+            .env("PYTHONNOUSERSITE", "1")
+            .stdin(Stdio::null())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped());
+        let Ok(mut child) = command.spawn() else {
+            return Err("PROVISION_SPAWN_FAILED".to_string());
+        };
+        let deadline = Instant::now() + Duration::from_secs(120);
+        loop {
+            match child.try_wait() {
+                Ok(Some(_)) => {
+                    let Ok(output) = child.wait_with_output() else {
+                        return Err("PROVISION_OUTPUT_UNREADABLE".to_string());
+                    };
+                    if output.status.success() {
+                        return Ok(());
+                    }
+                    let stderr = String::from_utf8_lossy(&output.stderr);
+                    return Err(extract_failure_code(&stderr).unwrap_or_else(|| {
+                        if stderr.contains("invalid choice") || stderr.contains("COMMAND_INVALID") {
+                            // A packaged launcher built before this subcommand
+                            // existed cannot provision in-window; surface a
+                            // finite, actionable code rather than a generic one.
+                            "FIRST_RUN_UNSUPPORTED_PACKAGE".to_string()
+                        } else {
+                            "PROVISION_FAILED".to_string()
+                        }
+                    }));
+                }
+                Ok(None) => {
+                    if Instant::now() >= deadline {
+                        let _ = child.kill();
+                        let _ = child.wait();
+                        return Err("PROVISION_TIMEOUT".to_string());
+                    }
+                    std::thread::sleep(Duration::from_millis(100));
+                }
+                Err(_) => {
+                    let _ = child.kill();
+                    let _ = child.wait();
+                    return Err("PROVISION_WAIT_FAILED".to_string());
+                }
+            }
+        }
+    }
+
     /// Invoke the existing `stop` subcommand against these roots: writes the
     /// `stop.json` request the running supervisor consumes before its own
     /// reverse-order shutdown. Best-effort; the caller still waits on (and,
@@ -465,16 +551,38 @@ pub fn bootstrap_url() -> String {
     format!("{BOOTSTRAP_SCHEME}://localhost/")
 }
 
+/// Host prefix WebView2 uses for the bundled bootstrap protocol.
+///
+/// WebView2 cannot navigate directly to a non-standard scheme, so wry
+/// rewrites `projecta-bootstrap://localhost/…` to the workaround URI
+/// `http://projecta-bootstrap.localhost/…` and reverts it before the custom
+/// protocol handler sees the request. Consults
+/// `wry::custom_protocol_workaround`.
+pub const BOOTSTRAP_WORKAROUND_HOST: &str = "projecta-bootstrap.localhost";
+
 /// Whether the privileged view may navigate to `url`.
 ///
 /// Exactly two sources are allowed: the locally bundled bootstrap surface
 /// (`projecta-bootstrap://localhost/`, host startup only) and the owned
-/// loopback API origin. Everything else (third-party URLs, foreign loopback
-/// ports, `file:` URLs, other custom schemes) is refused in this view per the
-/// desktop release contract.
+/// loopback API origin. The bootstrap surface is additionally reachable through
+/// WebView2's workaround host (`http://projecta-bootstrap.localhost/…`), because
+/// that is how the platform expresses a navigation to a non-standard scheme.
+/// Everything else (third-party URLs, foreign loopback ports, `file:` URLs,
+/// other custom schemes) is refused in this view per the desktop release
+/// contract.
 pub fn is_allowed_navigation(url: &Url, api_origin: &str) -> bool {
     if url.scheme() == BOOTSTRAP_SCHEME {
-        return url.host_str() == Some("localhost");
+        return url.host_str() == Some("localhost")
+            && url.port().is_none()
+            && url.username().is_empty()
+            && url.password().is_none();
+    }
+    // WebView2 rewrites the bundled protocol as this exact HTTP origin; keep
+    // it limited to its default port and reject credential-bearing URLs.
+    if url.scheme() == "http" && url.host_str() == Some(BOOTSTRAP_WORKAROUND_HOST) {
+        return url.port_or_known_default() == Some(80)
+            && url.username().is_empty()
+            && url.password().is_none();
     }
     if url.scheme() != "http" {
         return false;
@@ -496,12 +604,12 @@ pub fn is_allowed_navigation(url: &Url, api_origin: &str) -> bool {
 
 /// Render the bootstrap page for the current lifecycle snapshot: window
 /// chrome plus Start/Stop/diagnostics controls only. No API dependency exists
-/// in this state; S15-04 owns workspace provisioning UI and S15-05 owns the
-/// full state/error surface and explicit control wiring — app launch is the
-/// Start binding and window close is the Stop/Cancel binding in this slice.
-/// Content is sanitized: state, finite failure code, owned PID, and API origin
-/// only — never secrets, keys, or service output.
-#[must_use]
+/// in this state; the separate S15-04 first-run form handles workspace
+/// provisioning, while S15-05 owns the expanded state/error surface and
+/// explicit control wiring — app launch is the Start binding and window close
+/// is the Stop/Cancel binding in this slice. Content is sanitized: state,
+/// finite failure code, owned PID, and API origin only — never secrets, keys,
+/// or service output.
 pub fn render_bootstrap(
     state: LifecycleState,
     failure_code: Option<&str>,
@@ -564,6 +672,147 @@ button {{ margin-right: .5rem; padding: .4rem 1rem; }}
     )
 }
 
+/// Escape a value for a text node or a double-quoted HTML attribute.
+///
+/// The first-run surface is the one place a user-supplied string re-enters
+/// HTML, so it is escaped with the full five-character set (`& < > " '`) even
+/// though the value is already validated to be non-empty, ≤128 characters, and
+/// free of C0 control characters.
+#[must_use]
+fn escape_html(value: &str) -> String {
+    let mut escaped = String::with_capacity(value.len());
+    for character in value.chars() {
+        match character {
+            '&' => escaped.push_str("&amp;"),
+            '<' => escaped.push_str("&lt;"),
+            '>' => escaped.push_str("&gt;"),
+            '"' => escaped.push_str("&quot;"),
+            '\'' => escaped.push_str("&#39;"),
+            other => escaped.push(other),
+        }
+    }
+    escaped
+}
+
+/// Validate a first-run workspace display name against the exact rule the
+/// audited Python `provision_first_run_workspace` applies, so an invalid name
+/// is refused here and never reaches a child process that could write state.
+///
+/// The name must be non-empty after trimming, at most 128 characters, and free
+/// of C0 control characters. The generated project ID must match the launcher
+/// `PROJECT_ID_PATTERN` (`^[a-z0-9][a-z0-9-]{0,62}$`). Returns the trimmed
+/// name on success, or the finite refusal code on failure.
+#[must_use]
+pub fn validate_workspace_name(raw: &str) -> Result<String, &'static str> {
+    let trimmed = raw.trim();
+    if trimmed.is_empty() || trimmed.chars().count() > 128 {
+        return Err("WORKSPACE_NAME_INVALID");
+    }
+    if trimmed.chars().any(|character| (character as u32) < 0x20) {
+        return Err("WORKSPACE_NAME_INVALID");
+    }
+    if !matches_project_id_pattern(trimmed) {
+        return Err("WORKSPACE_NAME_INVALID");
+    }
+    Ok(trimmed.to_string())
+}
+
+/// Slug the display name exactly like `_slugify_first_run_project_id`, then
+/// assert the launcher project-ID pattern (`^[a-z0-9][a-z0-9-]{0,62}$`).
+/// The Python slugger truncates a long slug to 63 characters and prefixes a
+/// leading digit, so a valid display name always yields a valid project ID;
+/// the check stays as defense in depth.
+fn matches_project_id_pattern(name: &str) -> bool {
+    let mut slug: String = String::new();
+    let mut pending_separator = false;
+    for character in name.chars() {
+        if character.is_ascii_lowercase() || character.is_ascii_digit() {
+            if pending_separator && !slug.is_empty() {
+                slug.push('-');
+            }
+            pending_separator = false;
+            slug.push(character);
+        } else {
+            pending_separator = true;
+        }
+    }
+    if slug.is_empty() {
+        // `_slugify_first_run_project_id` falls back to the fixed default ID.
+        return true;
+    }
+    if slug.starts_with(|character: char| character.is_ascii_digit()) {
+        slug = format!("project-{slug}");
+    }
+    let trimmed: String = slug.chars().take(63).collect();
+    if trimmed.is_empty() {
+        return false;
+    }
+    let mut characters = trimmed.chars();
+    let first = characters.next().unwrap_or_default();
+    first.is_ascii_lowercase() || first.is_ascii_digit()
+}
+
+/// Render the first-run workspace form for the SAME main window: window chrome
+/// plus a name field and Create/Cancel controls only. No API dependency and no
+/// JavaScript exist in this state.
+///
+/// The form's `action` targets the WebView2 workaround URI
+/// (`http://projecta-bootstrap.localhost/provision`) because the platform cannot
+/// navigate directly to a non-standard scheme; wry reverts that URI back to
+/// `projecta-bootstrap://localhost/provision` before the custom protocol handler
+/// serves it, and the S15-03 navigation guard is extended to allow exactly that
+/// locally generated workaround host. No new Tauri command, capability, or CSP
+/// entry is introduced, and no script is served, so the trusted-origin and
+/// navigation invariants are unchanged.
+///
+/// The placeholder offers the launcher's own default name; nothing is written
+/// until the user submits, so a cancelled or invalid entry leaves no partial
+/// customer state.
+///
+/// Content is sanitized: only a finite refusal code is echoed. No secret, key,
+/// PID, or service output is ever rendered.
+#[must_use]
+pub fn render_first_run(default_name: &str, refusal_code: Option<&str>) -> String {
+    let escaped_placeholder = escape_html(default_name);
+    let readdressed = if let Some(code) = refusal_code {
+        format!(
+            "<p id=\"refusal\" data-testid=\"first-run-refusal\">That name is not accepted [{code}]. Enter a non-empty name of at most 128 characters.</p>"
+        )
+    } else {
+        String::new()
+    };
+    format!(
+        r#"<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Projecta</title>
+<style>
+body {{ font-family: system-ui, sans-serif; margin: 2rem; color: #1a1a1a; }}
+#refusal {{ color: #8a1c1c; }}
+form {{ margin-top: 1rem; }}
+label {{ display: block; margin-bottom: .35rem; }}
+input {{ padding: .4rem; width: 24rem; max-width: 100%; }}
+button {{ margin-top: .75rem; margin-right: .5rem; padding: .4rem 1rem; }}
+</style>
+</head>
+<body>
+<h1>Projecta</h1>
+<p>Create your local workspace. This computer only: nothing is uploaded, and a name you cannot identify is refused.</p>
+{readdressed}
+<form method="get" action="http://{BOOTSTRAP_WORKAROUND_HOST}/provision" data-testid="first-run-form">
+<label for="workspace-name">Workspace name</label>
+<input id="workspace-name" name="name" type="text" maxlength="128" placeholder="{escaped_placeholder}" data-testid="first-run-name">
+<div>
+<button type="submit" name="intent" value="create" data-testid="first-run-create">Create workspace</button>
+<button type="submit" name="intent" value="cancel" data-testid="first-run-cancel">Cancel</button>
+</div>
+</form>
+</body>
+</html>"#
+    )
+}
+
 /// App-owned lifecycle controller: spawn/stop exactly one supervisor child,
 /// poll readiness, and track the window state for bootstrap→SPA navigation.
 /// Interior mutability: the blocking `cold_start` runs on a worker thread
@@ -576,11 +825,18 @@ pub struct LifecycleController {
     supervisor: Mutex<Option<OwnedSupervisor>>,
     cancel: AtomicBool,
     startup_handle: Mutex<Option<JoinHandle<bool>>>,
+    /// Whether the data root had no workspace when this app launched. Read once
+    /// in `new` (before provisioning), then cleared only by a successful
+    /// `provision_first_run`, so a window that has just created its workspace
+    /// does not re-decide it is still first-run and re-show the form.
+    first_run: AtomicBool,
 }
 
 impl LifecycleController {
     #[must_use]
     pub fn new(paths: Option<LifecyclePaths>, api_port: u16) -> Self {
+        // First-run is decided once, before anything is provisioned.
+        let first_run = matches!(&paths, Some(paths) if !paths.has_workspace());
         Self {
             paths,
             api_port,
@@ -589,7 +845,15 @@ impl LifecycleController {
             supervisor: Mutex::new(None),
             cancel: AtomicBool::new(false),
             startup_handle: Mutex::new(None),
+            first_run: AtomicBool::new(first_run),
         }
+    }
+
+    /// Whether the launched data root has no workspace yet, so the window must
+    /// show the first-run form instead of starting the owned tree.
+    #[must_use]
+    pub fn is_first_run(&self) -> bool {
+        self.first_run.load(Ordering::SeqCst)
     }
 
     #[must_use]
@@ -645,6 +909,20 @@ impl LifecycleController {
     /// Stash the worker-thread handle running `cold_start` (setup path).
     pub fn set_startup_handle(&self, handle: JoinHandle<bool>) {
         *self.startup_handle.lock().unwrap_or_else(|e| e.into_inner()) = Some(handle);
+    }
+
+    /// Run `cold_start` on a worker thread and keep its handle so the close path
+    /// can join it exactly once. Used by both the auto-start (existing
+    /// workspace) path and the first-run provision path; calling it twice is a
+    /// no-op because `startup_handle` is already populated — the second thread
+    /// simply runs `cold_start`, which refuses with `ALREADY_STARTED` and starts
+    /// nothing.
+    pub fn spawn_cold_start(self: &std::sync::Arc<Self>) {
+        let worker = Arc::clone(self);
+        let handle = worker.take_startup_handle();
+        debug_assert!(handle.is_none());
+        let startup_thread = std::thread::spawn(move || worker.cold_start());
+        self.set_startup_handle(startup_thread);
     }
 
     /// Take the worker-thread handle (close path joins it exactly once).
@@ -776,6 +1054,53 @@ impl LifecycleController {
             self.set_state(LifecycleState::Failed, code);
         }
         false
+    }
+
+    /// Create the first-run workspace from the SAME main window, then start the
+    /// owned tree.
+    ///
+    /// Single attempt, bounded, no retry: an invalid name is refused in Rust
+    /// (mirroring the audited Python rule) so no child process is even spawned,
+    /// and every CLI failure maps to the launcher's own finite code. On success
+    /// the window straight into the ordinary cold start, so provisioning is one
+    /// continuous first-run journey rather than a second user action.
+    ///
+    /// Non-destructive by construction: the launcher's `provision` subcommand
+    /// refuses to overwrite an existing `local-runtime.json`, so an existing
+    /// workspace is never reseeded. This method also refuses to run at all once
+    /// this process has created a workspace.
+    pub fn provision_first_run(&self, raw_name: &str) -> Result<(), String> {
+        if self.has_supervisor() {
+            return Err("ALREADY_STARTED".to_string());
+        }
+        let Some(paths) = self.paths.clone() else {
+            // No bundled package at all: fail closed with the finite code rather
+            // than showing a first-run form that could never provision.
+            self.set_state(
+                LifecycleState::Failed,
+                Some("RUNTIME_PACKAGE_MISSING".to_string()),
+            );
+            return Err("RUNTIME_PACKAGE_MISSING".to_string());
+        };
+        if !self.first_run.load(Ordering::SeqCst) {
+            // An existing workspace is present (or was just created): nothing
+            // to provision. Never reseed, never overwrite.
+            return Err("WORKSPACE_ALREADY_PROVISIONED".to_string());
+        }
+        let trimmed = match validate_workspace_name(raw_name) {
+            Ok(trimmed) => trimmed,
+            // A refused name changes nothing: no state transition, no child
+            // process, no file written.
+            Err(code) => return Err(code.to_string()),
+        };
+        self.set_state(LifecycleState::Starting, None);
+        if let Err(code) = paths.provision_workspace(&trimmed) {
+            self.set_state(LifecycleState::Failed, Some(code.clone()));
+            return Err(code);
+        }
+        // Provisioning is complete; this process owns the workspace now.
+        self.first_run.store(false, Ordering::SeqCst);
+        Ok(())
     }
 
     /// Cancel a `starting` tree: promptly terminate the owned supervisor child
@@ -921,7 +1246,8 @@ mod lifecycle_tests {
     use super::{
         BOOTSTRAP_SCHEME, DEFAULT_API_PORT, LOOPBACK_HOST, LifecycleController, LifecyclePaths,
         LifecycleState, Readiness, api_origin, bootstrap_url, extract_failure_code,
-        is_allowed_navigation, poll_api_ready, render_bootstrap,
+        is_allowed_navigation, poll_api_ready, render_bootstrap, render_first_run,
+        validate_workspace_name,
     };
 
     #[test]
@@ -955,6 +1281,14 @@ mod lifecycle_tests {
             "file:///C:/Windows/win.ini",
             "tauri://localhost/",
             "projecta-bootstrap://other/",
+            // A lookalike workaround host must NOT be accepted: only the exact
+            // platform-generated prefix is.
+            "http://projecta-bootstrap.evil.test/",
+            "http://bootstrap.localhost/",
+            "http://projecta-bootstrap.localhost.example.test/",
+            "http://projecta-bootstrap.localhost:8080/provision?intent=create&name=X",
+            "http://user@projecta-bootstrap.localhost/provision",
+            "projecta-bootstrap://localhost:8080/",
         ] {
             let url: url::Url = raw.parse().expect("valid URL");
             assert!(
@@ -962,6 +1296,17 @@ mod lifecycle_tests {
                 "must refuse navigation to {raw}"
             );
         }
+        // WebView2's own rewrite of the bundled bootstrap surface is local and
+        // allowed, because it is how the platform navigates to a custom scheme.
+        let workaround: url::Url = "http://projecta-bootstrap.localhost/provision?intent=create&name=X"
+            .parse()
+            .expect("valid workaround URL");
+        assert!(is_allowed_navigation(&workaround, &origin));
+        let explicit_default_port: url::Url =
+            "http://projecta-bootstrap.localhost:80/provision?intent=create&name=X"
+                .parse()
+                .expect("valid default-port workaround URL");
+        assert!(is_allowed_navigation(&explicit_default_port, &origin));
     }
 
     #[test]
@@ -1081,5 +1426,167 @@ mod lifecycle_tests {
         assert_eq!(controller.failure_code().as_deref(), Some("RUNTIME_PACKAGE_MISSING"));
         assert!(controller.shutdown());
         assert_eq!(controller.state(), LifecycleState::Stopped);
+    }
+
+    #[test]
+    fn workspace_name_validation_matches_launcher_rule() {
+        // Mirrors `provision_first_run_workspace`: non-empty after trim, at
+        // most 128 characters, no C0 control characters, and a slug satisfying
+        // the launcher project-ID pattern.
+        assert_eq!(validate_workspace_name("  Team Notes  ").ok().as_deref(), Some("Team Notes"));
+        assert_eq!(validate_workspace_name("My Projecta Workspace").ok().as_deref(), Some("My Projecta Workspace"));
+        // A 128-character name is at the limit and is accepted: the slugger
+        // truncates the generated project ID to 63 characters, exactly like
+        // `_slugify_first_run_project_id`.
+        let edge = "a".repeat(128);
+        assert_eq!(validate_workspace_name(&edge).ok().as_deref(), Some(edge.as_str()));
+        for rejected in ["", "   ", "a".repeat(129).as_str(), "bad\nname", "tab\tname"] {
+            assert!(
+                validate_workspace_name(rejected).is_err(),
+                "must refuse invalid workspace name {rejected:?}"
+            );
+        }
+        // Unicode parity with the launcher: a non-breaking space is whitespace
+        // to both `str.strip` and `str::trim`, and a name whose every character
+        // is non-ASCII still slugs to a valid project ID.
+        assert!(validate_workspace_name("\u{00a0}").is_err());
+        assert!(validate_workspace_name("日本語のワークスペース").is_ok());
+        assert!(validate_workspace_name("Ünïcödé Näme").is_ok());
+    }
+
+    #[test]
+    fn first_run_form_exposes_the_real_user_path() {
+        let html = render_first_run("My Projecta Workspace", None);
+        // One form, one main window: the Create control submits the name.
+        assert!(html.contains("data-testid=\"first-run-form\""));
+        assert!(html.contains("data-testid=\"first-run-create\""));
+        assert!(html.contains("data-testid=\"first-run-cancel\""));
+        // The action targets the SAME packaged surface through WebView2's
+        // workaround host, so no new command, capability, or CSP entry is
+        // required.
+        assert!(html.contains("action=\"http://projecta-bootstrap.localhost/provision\""));
+        // No script surface is introduced (CSP `script-src` is unchanged).
+        assert!(!html.contains("<script"));
+        // No secret, key, service output, or PID is rendered.
+        assert!(!html.contains("dpapi"));
+        assert!(!html.contains("launcher.dpapi"));
+        assert!(!html.contains("postgres"));
+        assert!(!html.to_lowercase().contains("secret"));
+        assert!(!html.contains("managerPid"));
+    }
+
+    #[test]
+    fn first_run_form_escapes_user_supplied_placeholder() {
+        let escaped = render_first_run("a\"b<c>&d'e", None);
+        // The raw metacharacters never reach an attribute or text node.
+        assert!(escaped.contains("a&quot;b&lt;c&gt;&amp;d&#39;e"));
+        assert!(!escaped.contains("a\"b<c>"));
+    }
+
+    #[test]
+    fn first_run_refusal_renders_sanitized_finite_code() {
+        let html = render_first_run("My Projecta Workspace", Some("WORKSPACE_NAME_INVALID"));
+        assert!(html.contains("data-testid=\"first-run-refusal\""));
+        assert!(html.contains("WORKSPACE_NAME_INVALID"));
+        // The refusal is a finite code, never a raw launcher stderr line.
+        assert!(!html.contains("Projecta Local:"));
+    }
+
+    #[test]
+    fn first_run_detection_reads_existing_workspace_only() {
+        let data_root = disposable_root("s15-04-first-run-detect");
+        std::fs::create_dir_all(data_root.join("config")).expect("config dir");
+        let paths = || LifecyclePaths {
+            python_exe: std::path::PathBuf::from("C:/nonexistent/python.exe"),
+            launcher_script: std::path::PathBuf::from("C:/nonexistent/projecta_local.py"),
+            package_root: std::path::PathBuf::from("C:/nonexistent"),
+            data_root: data_root.clone(),
+        };
+        // No `config/local-runtime.json` yet: this is a first-run data root.
+        assert!(!paths().has_workspace());
+        assert!(LifecycleController::new(Some(paths()), DEFAULT_API_PORT).is_first_run());
+        // Once the registry exists, the same data root is an existing workspace.
+        std::fs::write(data_root.join("config/local-runtime.json"), "{\"formatVersion\":1}")
+            .expect("write registry");
+        assert!(!LifecycleController::new(Some(paths()), DEFAULT_API_PORT).is_first_run());
+        // No package at all cannot be a first run: fail closed to the ordinary
+        // RUNTIME_PACKAGE_MISSING lifecycle path rather than showing a form that
+        // could never provision.
+        assert!(!LifecycleController::new(None, DEFAULT_API_PORT).is_first_run());
+        let _ = std::fs::remove_dir_all(&data_root);
+    }
+
+    #[test]
+    fn provisioning_refuses_without_a_package_and_leaves_no_state() {
+        let controller = LifecycleController::new(None, DEFAULT_API_PORT);
+        assert!(!controller.is_first_run());
+        assert!(controller.provision_first_run("Any Name").is_err());
+        assert_eq!(
+            controller.failure_code().as_deref(),
+            Some("RUNTIME_PACKAGE_MISSING")
+        );
+        // Still no supervisor child was spawned: nothing to stop.
+        assert!(!controller.has_supervisor());
+        assert!(controller.shutdown());
+    }
+
+    #[test]
+    fn provisioning_refuses_an_invalid_name_before_spawning_anything() {
+        let data_root = disposable_root("s15-04-invalid-name");
+        let controller = LifecycleController::new(Some(nonexistent_paths(&data_root)), DEFAULT_API_PORT);
+        assert!(controller.is_first_run());
+        // An invalid name is refused in-process, so the (nonexistent) launcher
+        // is never invoked and no workspace config can be written.
+        let refused = controller.provision_first_run("bad\nname");
+        assert_eq!(refused.err().as_deref(), Some("WORKSPACE_NAME_INVALID"));
+        assert!(!data_root.join("config/local-runtime.json").is_file());
+        assert!(!controller.has_supervisor());
+        let _ = std::fs::remove_dir_all(&data_root);
+    }
+
+    #[test]
+    fn provisioning_an_existing_workspace_is_refused_not_reseeded() {
+        let data_root = disposable_root("s15-04-existing-workspace");
+        std::fs::create_dir_all(data_root.join("config")).expect("config dir");
+        std::fs::write(data_root.join("config/local-runtime.json"), "{\"formatVersion\":1}")
+            .expect("write registry");
+        // This is a reopen, not a first run: provisioning must refuse rather
+        // than overwrite the existing registry.
+        let controller =
+            LifecycleController::new(Some(nonexistent_paths(&data_root)), DEFAULT_API_PORT);
+        assert!(!controller.is_first_run());
+        let refused = controller.provision_first_run("Replacement Name");
+        assert_eq!(
+            refused.err().as_deref(),
+            Some("WORKSPACE_ALREADY_PROVISIONED")
+        );
+        let preserved =
+            std::fs::read_to_string(data_root.join("config/local-runtime.json"))
+                .expect("read registry");
+        assert_eq!(preserved, "{\"formatVersion\":1}");
+        assert!(!controller.has_supervisor());
+        let _ = std::fs::remove_dir_all(&data_root);
+    }
+
+    /// Paths bound to nonexistent executables, so a provisioning call that is
+    /// expected to fail must fail for the code under test, not a spawn reason.
+    fn nonexistent_paths(data_root: &std::path::Path) -> LifecyclePaths {
+        LifecyclePaths {
+            python_exe: std::path::PathBuf::from("C:/nonexistent/python.exe"),
+            launcher_script: std::path::PathBuf::from("C:/nonexistent/projecta_local.py"),
+            package_root: std::path::PathBuf::from("C:/nonexistent"),
+            data_root: data_root.to_path_buf(),
+        }
+    }
+
+    /// A fresh, uniquely named directory under the OS temp root.
+    fn disposable_root(label: &str) -> std::path::PathBuf {
+        let unique = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|elapsed| elapsed.as_nanos())
+            .unwrap_or(0);
+        let root = std::env::temp_dir().join(format!("{label}-{unique}"));
+        std::fs::create_dir_all(&root).expect("disposable root");
+        root
     }
 }

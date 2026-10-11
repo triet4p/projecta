@@ -802,11 +802,19 @@ def _slugify_first_run_project_id(display_name: str) -> str:
     return slug[:63]
 
 
-def provision_first_run_workspace(path: Path, *, display_name: str = FIRST_RUN_DISPLAY_NAME) -> WorkspaceConfig:
-    """Write the approved first-run workspace config once, on a fresh data directory only."""
+def _validate_first_run_display_name(display_name: str) -> str:
     name = display_name.strip()
     if not name or len(name) > 128 or any(ord(character) < 32 for character in name):
         raise RuntimeFailure("LOCAL_PROJECT_CONFIGURATION_INVALID", "The first-run workspace display name is invalid.")
+    project_id = _slugify_first_run_project_id(name)
+    if not PROJECT_ID_PATTERN.fullmatch(project_id):
+        raise RuntimeFailure("LOCAL_PROJECT_CONFIGURATION_INVALID", "The generated first-run project ID is invalid.")
+    return name
+
+
+def provision_first_run_workspace(path: Path, *, display_name: str = FIRST_RUN_DISPLAY_NAME) -> WorkspaceConfig:
+    """Write the approved first-run workspace config once, on a fresh data directory only."""
+    name = _validate_first_run_display_name(display_name)
     project_id = _slugify_first_run_project_id(name)
     if not PROJECT_ID_PATTERN.fullmatch(project_id):
         raise RuntimeFailure("LOCAL_PROJECT_CONFIGURATION_INVALID", "The generated first-run project ID is invalid.")
@@ -2353,19 +2361,28 @@ def _local_programs_root() -> Path:
     return Path(local_app_data) / "Programs" / "Projecta"
 
 
-def install(paths: ProjectaPaths, *, workspace_name: str | None = None) -> bool:
-    _require_windows_11_x64()
-    manifest = load_runtime_manifest(paths)
-    _require_package_distribution(manifest)
-    if getattr(sys, "frozen", False) and not _is_staged_runtime():
-        destination = _copy_package_to_version(
-            paths.package_root,
-            _local_programs_root(),
-            APP_VERSION,
-            paths.data_root,
-        )
-        paths = ProjectaPaths(destination, paths.data_root)
-        manifest = load_runtime_manifest(paths)
+def _prepare_first_run_workspace(
+    paths: ProjectaPaths,
+    manifest: Mapping[str, object],
+    *,
+    workspace_name: str | None,
+) -> bool:
+    """Write the per-user first-run artifacts: DPAPI secrets, the workspace
+    registry, and the installation record.
+
+    This is the *workspace initialization* half of installation. It performs no
+    OS installation: it never copies the package into the per-user programs
+    directory and never touches Start-Menu shortcuts, HKCU, or any other
+    registry key. `install` composes it with `_create_shortcuts`; the in-window
+    first-run path invokes it alone, so workspace provisioning cannot perform OS
+    installation regardless of frozen or unfrozen execution.
+
+    The selected display name is validated before any file is written, so a
+    refused name leaves no partial customer state: no DPAPI secret file, no
+    workspace registry, no installation record.
+    """
+    fresh_workspace = not paths.local_config.is_file()
+    selected_name = _validate_first_run_display_name(workspace_name) if fresh_workspace else None
     paths.ensure_user_directories()
     has_installation = paths.installation_config.exists()
     if has_installation:
@@ -2381,8 +2398,8 @@ def install(paths: ProjectaPaths, *, workspace_name: str | None = None) -> bool:
         raise RuntimeFailure("SECRET_STORE_RECOVERY_REQUIRED", "The installed DPAPI secret file is missing; no replacement was generated.")
     else:
         protect_runtime_secrets(paths.protected_secrets, generate_runtime_secrets())
-    if not paths.local_config.is_file():
-        provision_first_run_workspace(paths.local_config, display_name=workspace_name or FIRST_RUN_DISPLAY_NAME)
+    if fresh_workspace:
+        provision_first_run_workspace(paths.local_config, display_name=selected_name)
     current = load_json(paths.installation_config, "LOCAL_INSTALLATION_INVALID") if has_installation else {}
     atomic_json(
         paths.installation_config,
@@ -2394,8 +2411,42 @@ def install(paths: ProjectaPaths, *, workspace_name: str | None = None) -> bool:
             "installedAt": current.get("installedAt") or _utc_now(),
         },
     )
-    _create_shortcuts(paths)
     return manifest.get("releaseEligible") is True
+
+
+def provision(paths: ProjectaPaths, *, workspace_name: str | None = None) -> bool:
+    """First-run workspace provisioning only: no OS installation.
+
+    Distinct from `install`, this writes exactly the workspace artifacts
+    (`provision_first_run_workspace` validation, the fixed actor, the generated
+    project, DPAPI-protected configuration) and the installation record the
+    supervisor needs, and nothing else. It performs no package copy and no
+    shortcut/registry write, so the single main window can provision a fresh
+    workspace without any OS installation step. Re-provisioning an existing
+    workspace is refused rather than rewritten.
+    """
+    _require_windows_11_x64()
+    manifest = load_runtime_manifest(paths)
+    _require_package_distribution(manifest)
+    return _prepare_first_run_workspace(paths, manifest, workspace_name=workspace_name)
+
+
+def install(paths: ProjectaPaths, *, workspace_name: str | None = None) -> bool:
+    _require_windows_11_x64()
+    manifest = load_runtime_manifest(paths)
+    _require_package_distribution(manifest)
+    if getattr(sys, "frozen", False) and not _is_staged_runtime():
+        destination = _copy_package_to_version(
+            paths.package_root,
+            _local_programs_root(),
+            APP_VERSION,
+            paths.data_root,
+        )
+        paths = ProjectaPaths(destination, paths.data_root)
+        manifest = load_runtime_manifest(paths)
+    release_eligible = _prepare_first_run_workspace(paths, manifest, workspace_name=workspace_name)
+    _create_shortcuts(paths)
+    return release_eligible
 
 
 def _verify_update_package(
@@ -2587,6 +2638,11 @@ def _parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     commands = parser.add_subparsers(dest="command", required=True)
     install_parser = commands.add_parser("install", help="Install this package for the current Windows user")
     install_parser.add_argument("--workspace-name", help=argparse.SUPPRESS)
+    provision_parser = commands.add_parser(
+        "provision",
+        help="Provision the first-run workspace in the main window without installing OS shortcuts",
+    )
+    provision_parser.add_argument("--workspace-name", help=argparse.SUPPRESS)
     start = commands.add_parser("start", help="Start and supervise the local Projecta services")
     start.add_argument("--no-browser", action="store_true", help=argparse.SUPPRESS)
     commands.add_parser("stop", help="Request reverse-order graceful shutdown")
@@ -2615,6 +2671,14 @@ def main(argv: Sequence[str] | None = None) -> int:
                 print("Projecta is installed; the selected first-run workspace was provisioned.")
             else:
                 print("Projecta is installed for this Windows user.")
+            return 0
+        if args.command == "provision":
+            fresh_install = not paths.local_config.is_file()
+            provision(paths, workspace_name=args.workspace_name)
+            if fresh_install:
+                print("Projecta workspace provisioned in the main window; no OS installation was performed.")
+            else:
+                print("Projecta workspace is already provisioned; the existing workspace was left unchanged.")
             return 0
         if args.command == "start":
             return RuntimeManager(paths, open_browser=not args.no_browser).start()
