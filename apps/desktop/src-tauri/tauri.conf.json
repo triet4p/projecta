@@ -14,7 +14,7 @@
       {
         "label": "main",
         "title": "Projecta",
-        "url": "http://127.0.0.1:18732/",
+        "url": "projecta-bootstrap://localhost/",
         "width": 1280,
         "height": 860,
         "minWidth": 1024,
