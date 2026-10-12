@@ -1,5 +1,6 @@
-// Projecta S15-03/05 desktop host: bootstrap-first window over an app-owned
-// service tree, with the runtime-control surface in the SAME main window.
+// Projecta S15-03/05/06 desktop host: bootstrap-first window over an app-owned
+// service tree, with the runtime-control surface in the SAME main window and
+// an explicit WebView/native trust boundary.
 //
 // One main window renders the local first-run form, the lifecycle surface
 // (Start/Stop, bounded recovery, sanitized diagnostics for the contract's
@@ -9,10 +10,17 @@
 // starts exactly one supervisor child (the existing local CLI); close stops
 // only that child via the existing `stop` subcommand. The native Runtime menu
 // binds Start/Stop/Show-controls to the same lifecycle operations so the
-// controls stay reachable after the window shows the SPA. No Tauri command is
-// registered: the WebView has no native bridge in this slice, so there is no
-// capability to scope yet (S15-06 owns the manifest). Packaging belongs to
-// S15-09.
+// controls stay reachable after the window shows the SPA.
+//
+// Trust boundary (S15-06): the main window is created here — not from a
+// second declarative window — so its boundary handlers are explicit: it opens
+// only the bundled bootstrap surface, its navigation guard admits only the
+// bundled surface and the owned loopback API origin, it denies every
+// secondary window, and it denies every sensitive web permission. No Tauri
+// command is registered and no capability is granted: the WebView has no
+// native bridge at all (empty capability manifest, `withGlobalTauri: false`),
+// and supervisor operations stay in the existing local CLI. Packaging belongs
+// to S15-09.
 
 mod lifecycle;
 
@@ -21,11 +29,12 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::time::Duration;
 use lifecycle::{
     BOOTSTRAP_SCHEME, BOOTSTRAP_SURFACE_URL, LifecycleController, LifecyclePaths, LifecycleState,
-    MAIN_WINDOW_LABEL, StopOutcome, api_origin, is_allowed_navigation, render_bootstrap,
-    render_first_run, runtime_menu_action, RuntimeMenuAction,
+    MAIN_WINDOW_LABEL, StopOutcome, api_origin, is_allowed_navigation, main_window_url,
+    new_window_allowed, render_bootstrap, render_first_run, runtime_menu_action, RuntimeMenuAction,
 };
 use tauri::menu::{Menu, MenuItem, Submenu};
-use tauri::{Manager, Url};
+use tauri::webview::{NewWindowResponse, PermissionKind, PermissionResponse};
+use tauri::{Manager, Url, WebviewUrl, WebviewWindowBuilder};
 
 /// Default first-run display name offered as the form placeholder. This mirrors
 /// the launcher's own `FIRST_RUN_DISPLAY_NAME` so the placeholder text is never
@@ -252,6 +261,44 @@ pub fn run() {
             }
         })
         .setup(move |app| {
+            // The privileged main window is the only trusted surface. It is
+            // created here — never from a second declarative window — so its
+            // WebView-level boundary handlers are explicit and reviewable: it
+            // opens exactly the bundled bootstrap surface, refuses every
+            // secondary window, and grants no sensitive web permission. The
+            // window fields mirror the single declarative entry this replaces.
+            let main_window = WebviewWindowBuilder::new(
+                app,
+                MAIN_WINDOW_LABEL,
+                WebviewUrl::CustomProtocol(main_window_url()),
+            )
+            .title("Projecta")
+            .inner_size(1280.0, 860.0)
+            .min_inner_size(1024.0, 640.0)
+            .resizable(true)
+            .center()
+            .on_new_window(|url, _features| {
+                // A second window would render content outside the
+                // single-window contract and outside the privileged view's
+                // navigation guard, so every request to open one is denied.
+                // S15-07 owns the explicit external-link path.
+                if new_window_allowed(&url) {
+                    NewWindowResponse::Allow
+                } else {
+                    NewWindowResponse::Deny
+                }
+            })
+            .on_permission_request(|_webview, kind| match kind {
+                // The desktop needs no sensitive web permission in any state:
+                // the bundled surfaces use none and the loopback SPA asks for
+                // none. Automatic downloads stay at the platform default so
+                // S15-07's file-download adaptation is not preempted here.
+                PermissionKind::AutomaticDownloads => PermissionResponse::Default,
+                _ => PermissionResponse::Deny,
+            })
+            .build()?;
+            let _ = main_window;
+
             // First-run vs reopen: an existing workspace starts immediately
             // (the S15-03 Start binding); a data root with no workspace shows the
             // in-window first-run form instead, and only provisions when the

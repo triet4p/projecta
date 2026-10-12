@@ -1,4 +1,4 @@
-# Projecta Desktop (Tauri v2 — S15-04 first-run + S15-05 runtime controls)
+# Projecta Desktop (Tauri v2 — S15-04 first-run + S15-05 runtime controls + S15-06 trust boundary)
 
 One native Tauri v2 window owns exactly one service tree. On a fresh data
 root, it renders the bundled bootstrap surface (`projecta-bootstrap://localhost/`)
@@ -16,8 +16,8 @@ Window close is the Stop/Cancel binding: graceful reverse-order stop of owned
 children only via the existing `stop` subcommand (prompt owned-child
 termination on mid-startup cancel), releasing locks and ports while retaining
 data. No Tauri commands, retry loop, Rust process manager, hidden service,
-Tkinter, or browser companion. S15-06 trust hardening, S15-07 external-link
-adaptation, and S15-09 packaging remain later tasks.
+Tkinter, or browser companion. S15-07 external-link adaptation and S15-09
+packaging remain later tasks.
 
 ## Runtime controls in the same window (S15-05)
 
@@ -44,21 +44,67 @@ automatically. While the manager reports `shutdown-failed` it stays alive
 awaiting the explicit stop retry; the surface Stop writes that retry request
 instead of terminating the manager.
 
+## WebView/native trust boundary (S15-06)
+
+The privileged main window is the only trusted surface, and its boundary is
+explicit rather than inherited from defaults:
+
+- **Window creation.** The single `main` window is built in `setup()` from the
+  exact former declarative configuration (title `Projecta`, 1280x860, minimum
+  1024x640, resizable, centered, initially the bundled bootstrap surface) so
+  its WebView-level handlers are part of the reviewed host source instead of
+  window configuration. `tauri.conf.json` declares no window.
+- **Navigation.** The `on_navigation` guard admits exactly the bundled
+  bootstrap surface (`projecta-bootstrap://localhost/`, plus WebView2's exact
+  workaround origin `http://projecta-bootstrap.localhost/` on default port 80
+  without credentials) and the owned loopback API origin
+  `http://127.0.0.1:<port>/`. Every other target — third-party origins,
+  foreign loopback ports, `file:` URLs, other custom schemes, lookalike or
+  credential-bearing workaround hosts — is refused in that view.
+- **Secondary windows.** `window.open` and every other new-window request is
+  denied in the privileged view; a second window would render content outside
+  the single-window contract and outside the navigation guard. The explicit
+  external-link/system-browser action belongs to S15-07.
+- **Native bridge.** No Tauri command is registered and the capability
+  manifest is empty, so there is no IPC surface to scope: `withGlobalTauri`
+  is explicitly `false`, `window.__TAURI__` is absent, and a direct
+  `__TAURI_INTERNALS__.invoke(...)` attempt is refused by the ACL
+  (`… not allowed. Permissions associated with this command: …`). All
+  supervisor operations stay in the existing local CLI child process.
+- **Web permissions.** Sensitive web permissions (geolocation, notifications,
+  camera, microphone, clipboard read, and the rest) are denied in every state;
+  automatic downloads keep the platform default so S15-07's file-download
+  adaptation is not preempted.
+- **CSP and web security.** The loopback-only CSP, default same-origin policy,
+  and certificate verification are unchanged and never weakened to make
+  embedding work.
+- **Local API Host/Origin boundary.** The loopback entry point
+  (`projecta_api.local_server`) refuses requests whose `Host` header does not
+  name a loopback address (DNS-rebinding defense) and any request carrying a
+  foreign `Origin` header (local cross-origin forgery defense), with
+  `LOOPBACK_BOUNDARY_REJECTED` (403). Embedded/test composition is untouched;
+  the guard lives only at the loopback entry point.
+
 ## Layout
 
 - `package.json` — npm scripts (`tauri dev` / `tauri build`); pinned
   `@tauri-apps/cli 2.12.2` + `@tauri-apps/api 2.12.3`.
 - `src-tauri/Cargo.toml` — pinned `tauri =2.12.3`, `tauri-build =2.7.2`.
-- `src-tauri/tauri.conf.json` — single `main` window on the bootstrap
-  surface; loopback-only CSP; bundle disabled (S15-09 owns packaging).
+- `src-tauri/tauri.conf.json` — no declarative window (the host builds the
+  single `main` window in `setup()`), `withGlobalTauri: false`, loopback-only
+  CSP, empty capabilities; bundle disabled (S15-09 owns packaging).
 - `src-tauri/src/lifecycle.rs` — owned supervisor child, bounded `provision`
   command, readiness polling with manager-exit adoption, lifecycle surface
   renderer (states, controls, sanitized diagnostics), `LifecycleController`
   (cold start / first-run / cancel / user start-stop / adopt / shutdown),
-  navigation guard, tests.
-- `src-tauri/src/` — `main.rs` + `lib.rs`: bootstrap-first host, same-window
-  first-run form, lifecycle surface bindings (bundled form + native Runtime
-  menu), bootstrap⇄SPA transitions, and owned-tree shutdown.
+  navigation guard, main-window target and new-window policy, tests.
+- `src-tauri/src/` — `main.rs` + `lib.rs`: bootstrap-first host, the single
+  boundary-handled main window, same-window first-run form, lifecycle surface
+  bindings (bundled form + native Runtime menu), bootstrap⇄SPA transitions,
+  and owned-tree shutdown.
+- `apps/api/src/projecta_api/loopback_boundary.py` — loopback Host/Origin
+  guard wired only into the local loopback entry point
+  (`apps/api/src/projecta_api/local_server.py`).
 
 ## Disposable lifecycle smoke
 

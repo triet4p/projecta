@@ -734,6 +734,26 @@ pub fn bootstrap_url() -> String {
     format!("{BOOTSTRAP_SCHEME}://localhost/")
 }
 
+/// Initial URL of the privileged main window: exactly the bundled bootstrap
+/// surface, parsed so a malformed target fails at startup instead of at first
+/// render. The window never opens an external origin.
+#[must_use]
+pub fn main_window_url() -> Url {
+    Url::parse(bootstrap_url().as_str()).expect("valid bundled bootstrap URL")
+}
+
+/// Whether the privileged main view may open a NEW window for `url`.
+///
+/// Never. A secondary window would render content outside the single-window
+/// contract and outside the navigation guard this view applies, so every
+/// `window.open`-style request is denied in the main view. Explicit external
+/// destinations belong to the S15-07 system-browser action, not to a second
+/// privileged window.
+#[must_use]
+pub fn new_window_allowed(_url: &Url) -> bool {
+    false
+}
+
 /// Host prefix WebView2 uses for the bundled bootstrap protocol.
 ///
 /// WebView2 cannot navigate directly to a non-standard scheme, so wry
@@ -1779,8 +1799,8 @@ mod lifecycle_tests {
         BOOTSTRAP_SCHEME, BOOTSTRAP_SURFACE_URL, DEFAULT_API_PORT, FailureRecord, LOOPBACK_HOST,
         LifecycleController, LifecyclePaths, LifecycleSnapshot, LifecycleState, Readiness,
         StopOutcome, api_origin, bootstrap_url, extract_failure_code, is_allowed_navigation,
-        is_finite_code, is_service_name, poll_api_ready, render_bootstrap, render_first_run,
-        validate_workspace_name,
+        is_finite_code, is_service_name, main_window_url, new_window_allowed, poll_api_ready,
+        render_bootstrap, render_first_run, validate_workspace_name,
     };
 
     #[test]
@@ -1840,6 +1860,30 @@ mod lifecycle_tests {
                 .parse()
                 .expect("valid default-port workaround URL");
         assert!(is_allowed_navigation(&explicit_default_port, &origin));
+    }
+
+    #[test]
+    fn main_window_opens_exactly_the_bundled_bootstrap_surface() {
+        let target = main_window_url();
+        assert_eq!(target.scheme(), BOOTSTRAP_SCHEME);
+        assert_eq!(target.host_str(), Some("localhost"));
+        assert!(target.port().is_none());
+        assert!(target.username().is_empty());
+        assert!(target.password().is_none());
+    }
+
+    #[test]
+    fn no_secondary_window_is_ever_allowed() {
+        for raw in [
+            "https://example.test/",
+            "http://example.test/",
+            "http://127.0.0.1:18732/",
+            "http://localhost:18732/",
+            "file:///C:/Windows/win.ini",
+        ] {
+            let url: url::Url = raw.parse().expect("valid URL");
+            assert!(!new_window_allowed(&url), "must refuse a new window for {raw}");
+        }
     }
 
     #[test]

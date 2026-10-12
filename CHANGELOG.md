@@ -41,6 +41,22 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   `unsigned-pre-release-test` channel using controlled port collision,
   after-ready dependency failure, user-initiated start/stop, data retention,
   and owned-cleanup evidence.
+- Added WebView/native trust-boundary enforcement to the desktop host. The
+  single privileged window is created with explicit boundary handlers: only
+  the bundled bootstrap surface and the owned loopback API origin may be
+  navigated (foreign origins, foreign loopback ports, `file:` URLs, lookalike
+  or credential-bearing protocol hosts, and other custom schemes are refused),
+  every secondary-window request is denied, sensitive web permissions are
+  denied, and no native command or capability exists (`withGlobalTauri: false`,
+  empty capability manifest, direct invoke attempts refused by the ACL). The
+  loopback API entry point now also refuses foreign `Host` headers
+  (DNS-rebinding defense) and foreign `Origin` headers (local cross-origin
+  forgery defense) with `LOOPBACK_BOUNDARY_REJECTED`. CSP, same-origin policy,
+  and certificate verification are unchanged. Verified on disposable state with
+  the internal 0.7.1 `unsigned-pre-release-test` channel using actual
+  WebView2/CDP negative cases, listener-bound checks, connector default-false
+  and explicit opt-in runs through the real owned API, and the unchanged
+  production guard.
 
 ## [0.7.1] - 2026-10-09
 
