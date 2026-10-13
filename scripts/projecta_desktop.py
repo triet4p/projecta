@@ -39,7 +39,7 @@ class ProjectaDesktop:
         self.stop_button: ttk.Button
         self.browser_button: ttk.Button
 
-        root.title("Projecta 0.7.1 — unsigned Windows 11 x64 release")
+        root.title("Projecta 0.7.1 — unsigned Windows 10/11 x64 release")
         root.geometry("620x490")
         root.minsize(540, 430)
         root.protocol("WM_DELETE_WINDOW", self._close)
@@ -50,7 +50,7 @@ class ProjectaDesktop:
         ttk.Label(
             frame,
             text=(
-                "UNSIGNED RELEASE — Windows 11 x64 only. Windows cannot verify the publisher. "
+                "UNSIGNED RELEASE — Windows 10 22H2 / Windows 11 24H2+ x64. Windows cannot verify the publisher. "
                 "Check the published installer SHA-256 before running it. "
                 "This is not a signed release or clean-host certification."
             ),

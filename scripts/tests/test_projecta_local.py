@@ -127,6 +127,162 @@ def local_paths(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> launcher.Pro
     monkeypatch.setattr(launcher, "PORTS", {"unused": 0})
     return paths
 
+
+def _windows_version(build: int, product_type: int = 1) -> object:
+    class _Version:
+        pass
+
+    version = _Version()
+    version.build = build
+    version.product_type = product_type
+    return version
+
+
+def _on_supported_host(monkeypatch: pytest.MonkeyPatch, *, build: int = 26100) -> None:
+    monkeypatch.setattr(launcher.os, "name", "nt")
+    monkeypatch.setattr(launcher.platform, "machine", lambda: "AMD64")
+    monkeypatch.setattr(launcher, "_native_windows_machine", lambda: launcher.IMAGE_FILE_MACHINE_AMD64)
+    monkeypatch.setattr(launcher.sys, "getwindowsversion", lambda: _windows_version(build))
+
+
+@pytest.mark.parametrize(
+    ("build", "product_type", "accepted"),
+    [
+        (19045, 1, True),  # Windows 10 22H2 is the Windows 10 floor
+        (26100, 1, True),  # Windows 11 24H2 is the Windows 11 floor
+        (26200, 1, True),  # Windows 11 25H2 is the current annual release
+        (19044, 1, False),  # Windows 10 21H2 and older are out of scope
+        (10240, 1, False),  # Windows 10 1507 is out of scope
+        (22000, 1, False),  # Windows 11 21H2 is out of scope
+        (22631, 1, False),  # Windows 11 23H2 is out of scope
+        (19045, 3, False),  # Server product types are out of scope
+        (26100, 3, False),
+    ],
+)
+def test_platform_guard_matches_the_windows_10_22h2_and_windows_11_24h2_matrix(
+    monkeypatch: pytest.MonkeyPatch, build: int, product_type: int, accepted: bool
+) -> None:
+    _on_supported_host(monkeypatch, build=build)
+    monkeypatch.setattr(launcher.sys, "getwindowsversion", lambda: _windows_version(build, product_type))
+    if accepted:
+        launcher._require_supported_windows_x64()
+        return
+    with pytest.raises(launcher.RuntimeFailure) as failure:
+        launcher._require_supported_windows_x64()
+    assert failure.value.code == "PLATFORM_UNSUPPORTED"
+
+
+def test_platform_guard_refuses_unsupported_os_architecture_and_arm64_hosts(monkeypatch: pytest.MonkeyPatch) -> None:
+    _on_supported_host(monkeypatch)
+    monkeypatch.setattr(launcher.os, "name", "posix")
+    with pytest.raises(launcher.RuntimeFailure):
+        launcher._require_supported_windows_x64()
+
+    monkeypatch.setattr(launcher.os, "name", "nt")
+    monkeypatch.setattr(launcher.platform, "machine", lambda: "ARM64")
+    with pytest.raises(launcher.RuntimeFailure):
+        launcher._require_supported_windows_x64()
+
+    # An x64 process emulated on ARM64 Windows reports x64 itself; the host
+    # machine type is what refuses the ARM64 host.
+    monkeypatch.setattr(launcher.platform, "machine", lambda: "AMD64")
+    monkeypatch.setattr(launcher, "_native_windows_machine", lambda: 0xAA64)
+    with pytest.raises(launcher.RuntimeFailure):
+        launcher._require_supported_windows_x64()
+
+    monkeypatch.setattr(launcher, "_native_windows_machine", lambda: launcher.IMAGE_FILE_MACHINE_AMD64)
+    launcher._require_supported_windows_x64()
+
+
+def test_runtime_start_refuses_an_unsupported_build_before_creating_state(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    _on_supported_host(monkeypatch, build=22631)
+    paths = launcher.ProjectaPaths(tmp_path / "package", tmp_path / "user-data")
+    with pytest.raises(launcher.RuntimeFailure) as failure:
+        launcher.RuntimeManager(paths).start()
+    assert failure.value.code == "PLATFORM_UNSUPPORTED"
+    assert not paths.data_root.exists()
+
+
+_RUNTIME_ID = "3c9fe23bc69b4be0a2c5cfa4859b074a"
+
+
+def _active_runtime(
+    monkeypatch: pytest.MonkeyPatch, runtime_id: str = _RUNTIME_ID
+) -> list[dict[str, str]]:
+    """Make `request_stop` observe one active runtime and record stop-file writes."""
+    writes: list[dict[str, str]] = []
+    monkeypatch.setattr(launcher, "runtime_is_active", lambda _: True)
+    monkeypatch.setattr(
+        launcher,
+        "load_json",
+        lambda *_args, **_kwargs: {
+            "formatVersion": 1,
+            "state": "ready",
+            "runtimeId": runtime_id,
+            "managerPid": 4321,
+        },
+    )
+    monkeypatch.setattr(
+        launcher, "atomic_json", lambda path, value: writes.append({"path": str(path), **value})
+    )
+    return writes
+
+
+def test_stop_without_runtime_id_requests_the_active_runtime(
+    local_paths: launcher.ProjectaPaths, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    writes = _active_runtime(monkeypatch)
+    launcher.request_stop(local_paths)
+    assert [write["runtimeId"] for write in writes] == [_RUNTIME_ID]
+    assert writes[0]["path"] == str(local_paths.stop_file)
+
+
+def test_stop_with_the_matching_runtime_id_requests_that_runtime(
+    local_paths: launcher.ProjectaPaths, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    writes = _active_runtime(monkeypatch)
+    launcher.request_stop(local_paths, expected_runtime_id=_RUNTIME_ID)
+    assert [write["runtimeId"] for write in writes] == [_RUNTIME_ID]
+
+
+def test_stop_with_a_stale_or_foreign_runtime_id_refuses_without_writing(
+    local_paths: launcher.ProjectaPaths, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    writes = _active_runtime(monkeypatch)
+    for stale in ("0" * 32, "", "3c9fe23b"):
+        with pytest.raises(launcher.RuntimeFailure) as failure:
+            launcher.request_stop(local_paths, expected_runtime_id=stale)
+        assert failure.value.code == "PROCESS_OWNERSHIP_CONFLICT"
+    assert writes == []
+
+
+def test_stop_on_a_stopped_runtime_requests_nothing_even_with_a_runtime_id(
+    local_paths: launcher.ProjectaPaths, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    writes: list[dict[str, str]] = []
+    monkeypatch.setattr(launcher, "runtime_is_active", lambda _: False)
+    monkeypatch.setattr(
+        launcher, "atomic_json", lambda path, value: writes.append({"path": str(path), **value})
+    )
+    launcher.request_stop(local_paths, expected_runtime_id=_RUNTIME_ID)
+    assert writes == []
+
+
+def test_stop_cli_binds_the_runtime_id_argument_to_the_active_runtime(
+    local_paths: launcher.ProjectaPaths, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    writes = _active_runtime(monkeypatch)
+    monkeypatch.setattr(launcher.ProjectaPaths, "discover", classmethod(lambda cls: local_paths))
+    assert launcher.main(["stop", "--runtime-id", _RUNTIME_ID]) == 0
+    assert [write["runtimeId"] for write in writes] == [_RUNTIME_ID]
+    writes.clear()
+    assert launcher.main(["stop", "--runtime-id", "0" * 32]) == 2
+    assert writes == []
+    assert "PROCESS_OWNERSHIP_CONFLICT" in capsys.readouterr().err
+
+
 def test_api_readiness_probe_accepts_nested_dependency_latency() -> None:
     class DelayedReadyHandler(BaseHTTPRequestHandler):
         def do_GET(self) -> None:

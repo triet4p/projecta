@@ -14,6 +14,17 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   live operating system color-scheme synchronization under System mode, and
   high-contrast token calibration across all app-owned surfaces.
 
+### Changed
+
+- Extended the local desktop runtime to Windows 10 22H2 x64 alongside Windows 11
+  24H2 and newer x64. Unsupported Windows versions, Windows Server product types,
+  32-bit processes, and ARM64 hosts (including an x64 process emulated on ARM64)
+  still refuse with `PLATFORM_UNSUPPORTED` before any state is written.
+- `ProjectaLocal stop` accepts an optional `--runtime-id` that binds the graceful
+  stop request to that exact running runtime. A stale or foreign ID refuses with
+  `PROCESS_OWNERSHIP_CONFLICT` and writes no stop request, so it cannot stop or
+  disturb another owned runtime; the no-argument form is unchanged.
+
 ### Security
 
 - Enforced strict origin validation and mandatory `X-Projecta-Theme-Request` custom

@@ -41,10 +41,17 @@ child it could still spawn) outlives the window.
 
 Window close is the Stop/Cancel binding at every stage: an in-flight create
 child is stopped, an in-flight startup is cancelled, and the owned supervisor
-is stopped through the existing `stop` subcommand (reverse order, locks/ports
-released, data retained). No Tauri commands, retry loop, Rust process manager,
-hidden service, Tkinter, or browser companion. S15-09 packaging remains a later
-task.
+is stopped through the manager's existing runtimeId-matched `state/stop.json`
+protocol (reverse order, locks/ports released, data retained). No Tauri
+commands, retry loop, Rust process manager, hidden service, Tkinter, or browser
+companion. S15-09 packaging remains a later task.
+
+The same protocol is reachable from the launcher CLI: `stop` writes the request
+for the runtime named by the shared status, and `stop --runtime-id <id>` binds
+that request to one exact runtime identity — when the active runtime is a
+different one, the command refuses with `PROCESS_OWNERSHIP_CONFLICT` and writes
+no stop file, so a stale or foreign ID can never stop another owned runtime.
+The no-argument form keeps its existing behavior.
 
 On Windows, the host places the exact supervisor child in a kill-on-close
 Job Object using the extended-limit information required for
@@ -214,6 +221,20 @@ explicit rather than inherited from defaults:
   foreign `Origin` header (local cross-origin forgery defense), with
   `LOOPBACK_BOUNDARY_REJECTED` (403). Embedded/test composition is untouched;
   the guard lives only at the loopback entry point.
+
+## Supported Windows matrix (S15-08)
+
+The owned supervisor accepts Windows 10 22H2 (build 19045) and Windows 11 24H2
+and newer (build 26100+) on x64 workstations only, per the S15-01 contract §8.1.
+`_require_supported_windows_x64` in `projecta/scripts/projecta_local.py` is the
+single guard, applied by `start`, `provision`, `install`, and `apply_update`
+before any state is written; every other OS, build, Windows Server product type,
+32-bit process, or ARM64 host (including an x64 process emulated on ARM64,
+detected with `IsWow64Process2`) gets the finite `PLATFORM_UNSUPPORTED` refusal.
+The guard is never suppressed, and no matrix row is claimed as supported until
+its S15-16/S15-17 gate passes on the exact build; the packaged runtime's
+`minimumHost`/OS-baseline record and the installer notice are re-derived by
+S15-09/S15-10 before any package claims the matrix.
 
 ## Layout
 

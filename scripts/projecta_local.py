@@ -61,6 +61,17 @@ VC_RUNTIME_INSTALLER_PATTERN = re.compile(
     re.IGNORECASE,
 )
 
+# S15-01 desktop release contract §8.1: 1.0.0 supports Windows 10 22H2 (build
+# 19045) and Windows 11 24H2 or newer (build 26100+) on x64 workstations only;
+# every other OS, build, product type, or architecture refuses with
+# PLATFORM_UNSUPPORTED. These values are the supported floor, not compatibility
+# evidence: a matrix row is claimed only after its S15-16/S15-17 gate passes on
+# the exact build.
+WINDOWS_10_22H2_BUILD = 19045
+WINDOWS_11_24H2_BUILD = 26100
+IMAGE_FILE_MACHINE_AMD64 = 0x8664
+PLATFORM_UNSUPPORTED_MESSAGE = "Projecta Local supports Windows 10 22H2 and Windows 11 24H2 or newer, x64 only."
+
 
 def _is_app_local_vc_runtime(path: Path) -> bool:
     return VC_RUNTIME_DLL_PATTERN.fullmatch(path.name) is not None
@@ -1128,12 +1139,52 @@ def _append_readiness_failure(path: Path, service: str, timeout: float, probe: H
         stream.write(" ".join(fields) + "\n")
 
 
-def _require_windows_11_x64() -> None:
+def _native_windows_machine() -> int | None:
+    """Host Windows machine type, or None when the OS cannot report it.
+
+    `platform.machine()` describes the process, so an x64 process emulated on
+    an ARM64 host still reports x64 there. The S15-01 matrix refuses ARM64
+    Windows, and only the OS knows the host machine type.
+    """
+    try:
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        is_wow64_process2 = kernel32.IsWow64Process2
+        get_current_process = kernel32.GetCurrentProcess
+    except (AttributeError, OSError):
+        return None
+    is_wow64_process2.argtypes = [
+        ctypes.wintypes.HANDLE,
+        ctypes.POINTER(ctypes.wintypes.USHORT),
+        ctypes.POINTER(ctypes.wintypes.USHORT),
+    ]
+    is_wow64_process2.restype = ctypes.wintypes.BOOL
+    get_current_process.restype = ctypes.wintypes.HANDLE
+    process_machine = ctypes.wintypes.USHORT()
+    native_machine = ctypes.wintypes.USHORT()
+    try:
+        reported = is_wow64_process2(
+            get_current_process(),
+            ctypes.byref(process_machine),
+            ctypes.byref(native_machine),
+        )
+    except OSError:
+        return None
+    return int(native_machine.value) if reported else None
+
+
+def _require_supported_windows_x64() -> None:
+    """Refuse every OS, build, product type, or architecture outside the S15-01 §8.1 matrix."""
     if os.name != "nt" or struct.calcsize("P") != 8 or platform.machine().lower() not in {"amd64", "x86_64"}:
-        raise RuntimeFailure("PLATFORM_UNSUPPORTED", "Projecta Local supports Windows 11 x64 only.")
+        raise RuntimeFailure("PLATFORM_UNSUPPORTED", PLATFORM_UNSUPPORTED_MESSAGE)
+    native_machine = _native_windows_machine()
+    if native_machine is not None and native_machine != IMAGE_FILE_MACHINE_AMD64:
+        raise RuntimeFailure("PLATFORM_UNSUPPORTED", PLATFORM_UNSUPPORTED_MESSAGE)
     version = sys.getwindowsversion()
-    if version.build < 22000 or version.product_type != 1:
-        raise RuntimeFailure("PLATFORM_UNSUPPORTED", "Projecta Local supports Windows 11 x64 only.")
+    if version.product_type != 1:
+        raise RuntimeFailure("PLATFORM_UNSUPPORTED", PLATFORM_UNSUPPORTED_MESSAGE)
+    if version.build == WINDOWS_10_22H2_BUILD or version.build >= WINDOWS_11_24H2_BUILD:
+        return
+    raise RuntimeFailure("PLATFORM_UNSUPPORTED", PLATFORM_UNSUPPORTED_MESSAGE)
 
 
 class RuntimeManager:
@@ -1155,7 +1206,7 @@ class RuntimeManager:
         self._failure: RuntimeFailure | None = None
         self._pending_import: dict[str, object] | None = None
     def start(self) -> int:
-        _require_windows_11_x64()
+        _require_supported_windows_x64()
         self.paths.ensure_user_directories()
         with instance_lock(self.paths.lock_file):
             self._write_status("starting")
@@ -2425,14 +2476,14 @@ def provision(paths: ProjectaPaths, *, workspace_name: str | None = None) -> boo
     workspace without any OS installation step. Re-provisioning an existing
     workspace is refused rather than rewritten.
     """
-    _require_windows_11_x64()
+    _require_supported_windows_x64()
     manifest = load_runtime_manifest(paths)
     _require_package_distribution(manifest)
     return _prepare_first_run_workspace(paths, manifest, workspace_name=workspace_name)
 
 
 def install(paths: ProjectaPaths, *, workspace_name: str | None = None) -> bool:
-    _require_windows_11_x64()
+    _require_supported_windows_x64()
     manifest = load_runtime_manifest(paths)
     _require_package_distribution(manifest)
     if getattr(sys, "frozen", False) and not _is_staged_runtime():
@@ -2545,7 +2596,7 @@ def _verify_update_package(
 
 def apply_update(paths: ProjectaPaths, package: Path) -> None:
     """Verify and install a signed, data-contract-compatible package side by side."""
-    _require_windows_11_x64()
+    _require_supported_windows_x64()
     if runtime_is_active(paths):
         raise RuntimeFailure("RUNTIME_MUST_BE_STOPPED", "Stop Projecta Local before applying an update.")
     manifest = _verify_update_package(package)
@@ -2587,7 +2638,17 @@ def apply_update(paths: ProjectaPaths, package: Path) -> None:
     print(f"Signed update {manifest['projectaVersion']} verified and installed; local data was retained.")
 
 
-def request_stop(paths: ProjectaPaths) -> None:
+def request_stop(
+    paths: ProjectaPaths,
+    *,
+    expected_runtime_id: str | None = None,
+) -> None:
+    """Request the active runtime's reverse-order graceful shutdown.
+
+    `expected_runtime_id` binds the request to one exact published runtime
+    identity (contract §3.3): when the shared status names a different runtime,
+    the request is refused instead of writing another runtime's stop file.
+    """
     if not runtime_is_active(paths):
         print("Projecta Local is stopped; its data remains in the per-user data directory.")
         return
@@ -2598,6 +2659,11 @@ def request_stop(paths: ProjectaPaths) -> None:
     runtime_id = status.get("runtimeId")
     if not isinstance(runtime_id, str) or not runtime_id:
         raise RuntimeFailure("RUNTIME_STATUS_INVALID", "The active manager status is invalid.")
+    if expected_runtime_id is not None and runtime_id != expected_runtime_id:
+        raise RuntimeFailure(
+            "PROCESS_OWNERSHIP_CONFLICT",
+            "The active Projecta Local runtime is not the requested runtime; no stop was requested.",
+        )
     atomic_json(paths.stop_file, {"runtimeId": runtime_id, "requestedAt": _utc_now()})
     print("Graceful stop requested. The running launcher will stop dependent services in reverse order.")
 
@@ -2645,7 +2711,11 @@ def _parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     provision_parser.add_argument("--workspace-name", help=argparse.SUPPRESS)
     start = commands.add_parser("start", help="Start and supervise the local Projecta services")
     start.add_argument("--no-browser", action="store_true", help=argparse.SUPPRESS)
-    commands.add_parser("stop", help="Request reverse-order graceful shutdown")
+    stop = commands.add_parser("stop", help="Request reverse-order graceful shutdown")
+    stop.add_argument(
+        "--runtime-id",
+        help="Stop only the runtime with this exact runtimeId; refuse when the active runtime differs",
+    )
     commands.add_parser("status", help="Show local service readiness without changing data")
     backup = commands.add_parser("backup", help="Create or restore a stopped-runtime state snapshot")
     backup_commands = backup.add_subparsers(dest="backup_command", required=True)
@@ -2683,7 +2753,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         if args.command == "start":
             return RuntimeManager(paths, open_browser=not args.no_browser).start()
         if args.command == "stop":
-            request_stop(paths)
+            request_stop(paths, expected_runtime_id=args.runtime_id)
             return 0
         if args.command == "update":
             apply_update(paths, Path(str(args.package)))
