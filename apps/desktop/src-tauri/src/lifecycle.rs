@@ -2,7 +2,7 @@
 // runtime-control surface.
 //
 // The desktop owns exactly one supervisor tree: it spawns the existing local
-// CLI (`projecta/scripts/projecta_local.py start --no-browser`) as a child.
+// CLI (`projecta/scripts/projecta_local.py start`) as a child.
 // Graceful stop atomically writes the manager's existing `stop.json` protocol
 // only after the shared status still matches this exact child PID and fresh
 // runtime ID; the manager consumes only its own ID. The SAME main window
@@ -237,7 +237,6 @@ impl OwnedSupervisor {
         command
             .arg(launcher_script)
             .arg("start")
-            .arg("--no-browser")
             .env("PROJECTA_LAUNCHER_PACKAGE_ROOT", package_root)
             .env("PROJECTA_LAUNCHER_DATA_ROOT", data_root)
             .env("PYTHONDONTWRITEBYTECODE", "1")

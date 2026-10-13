@@ -81,6 +81,15 @@ SOURCE_INPUT_PATHS = (
     "apps/web/package-lock.json",
     "apps/web/vite.config.ts",
     "apps/web/tsconfig.json",
+    "apps/desktop/package.json",
+    "apps/desktop/package-lock.json",
+    "apps/desktop/src-tauri/Cargo.toml",
+    "apps/desktop/src-tauri/Cargo.lock",
+    "apps/desktop/src-tauri/tauri.conf.json",
+    "apps/desktop/src-tauri/build.rs",
+    "apps/desktop/src-tauri/src/main.rs",
+    "apps/desktop/src-tauri/src/lib.rs",
+    "apps/desktop/src-tauri/src/lifecycle.rs",
     "services/semantic-core/src/main",
     "services/semantic-core/pom.xml",
     "ontology",
@@ -88,7 +97,6 @@ SOURCE_INPUT_PATHS = (
     "scripts/build_native_package.py",
     "scripts/build_windows_installer.py",
     "scripts/projecta_local.py",
-    "scripts/projecta_desktop.py",
     "scripts/bootstrap_fuseki.py",
     "scripts/projecta_start.ps1",
     "scripts/vc_runtime_prerequisite.ps1",
@@ -289,6 +297,7 @@ def _write_source_provenance(
         for source_path, package_path in (
             ("apps/api sources and migrations", "projecta/api"),
             ("apps/web/dist", "projecta/web"),
+            ("cargo-built Tauri desktop release binary", "Projecta.exe"),
             ("services/semantic-core/target/classes", "projecta/semantic-core/classes"),
             ("services/semantic-core/target/lib", "projecta/semantic-core/lib"),
             ("ontology", "projecta/ontology"),
@@ -303,7 +312,6 @@ def _write_source_provenance(
             ("scripts/projecta_start.ps1", "ProjectaStart.ps1"),
             ("scripts/vc_runtime_prerequisite.ps1", "runtime/vc_runtime_prerequisite.ps1"),
             ("PyInstaller ProjectaLocal entry point", "ProjectaLocal.exe"),
-            ("PyInstaller Projecta desktop entry point", "Projecta.exe"),
         )
     ]
     document = {
@@ -658,6 +666,33 @@ def _write_ed25519_manifest_signature(package: Path, private_key: object) -> str
     )
     return hashlib.sha256(public_bytes).hexdigest()
 
+TAURI_DESKTOP_BINARY_NAME = "projecta-desktop.exe"
+
+
+def _tauri_desktop_release_binary() -> Path:
+    candidate = (
+        ROOT / "apps" / "desktop" / "src-tauri" / "target" / "release" / TAURI_DESKTOP_BINARY_NAME
+    )
+    if candidate.is_symlink() or not candidate.is_file():
+        raise SystemExit(
+            "the Tauri desktop release binary is missing; run cargo build --release in apps/desktop/src-tauri first."
+        )
+    return candidate
+
+
+def _stage_tauri_desktop(package: Path) -> dict[str, object]:
+    source = _tauri_desktop_release_binary()
+    destination = package / "Projecta.exe"
+    if destination.is_symlink() or destination.exists():
+        raise SystemExit("the packaged Projecta.exe output already exists or is unsafe.")
+    shutil.copy2(source, destination)
+    return {
+        "path": "Projecta.exe",
+        "size": destination.stat().st_size,
+        "sha256": sha256(destination),
+    }
+
+
 def _freeze_launcher(package: Path, trust_dir: Path) -> list[dict[str, str]]:
     try:
         import PyInstaller
@@ -670,7 +705,6 @@ def _freeze_launcher(package: Path, trust_dir: Path) -> list[dict[str, str]]:
     removed_inputs: list[dict[str, str]] = []
     for name, console, entrypoint in (
         ("ProjectaLocal", True, ROOT / "scripts" / "projecta_local.py"),
-        ("Projecta", False, ROOT / "scripts" / "projecta_desktop.py"),
     ):
         spec_root = work_root / f"{name.casefold()}-spec"
         build_root = work_root / f"{name.casefold()}-work"
@@ -1250,13 +1284,13 @@ def _write_native_dependency_manifest(package: Path) -> dict[str, object]:
     )
     runtime_root = package / "runtime"
     module_paths: dict[str, list[str]] = {}
-    images = sorted(
-        (
-            path for path in runtime_root.rglob("*")
-            if path.is_file() and path.suffix.casefold() in {".exe", ".dll", ".pyd"}
-        ),
-        key=lambda path: path.as_posix().casefold(),
-    )
+    seen: set[Path] = set()
+    images: list[Path] = []
+    for path in (*package.rglob("Projecta.exe"), *runtime_root.rglob("*")):
+        if path.is_file() and path.suffix.casefold() in {".exe", ".dll", ".pyd"} and path not in seen:
+            seen.add(path)
+            images.append(path)
+    images.sort(key=lambda path: path.as_posix().casefold())
     for path in images:
         module_paths.setdefault(path.name.casefold(), []).append(path.relative_to(package).as_posix())
     bundled_modules = set(module_paths)
@@ -1268,7 +1302,7 @@ def _write_native_dependency_manifest(package: Path) -> dict[str, object]:
         if launcher._is_app_local_vc_runtime(Path(folded)):
             return "externalPrerequisite"
         if folded in system_dlls or folded.startswith(api_set_prefixes):
-            return "windows11X64OSBaseline"
+            return "windowsX64OSBaseline"
         return "unresolved"
 
     entries: list[dict[str, object]] = []
@@ -1469,14 +1503,16 @@ def _write_native_dependency_manifest(package: Path) -> dict[str, object]:
         "formatVersion": 2,
         "runtimeVersions": dict(RUNTIME_VERSIONS),
         "minimumHost": {
-            "operatingSystem": "Windows 11",
-            "minimumBuild": 22000,
+            "operatingSystem": "Windows 10 22H2 / Windows 11 24H2+",
+            "minimumBuild": 19045,
+            "windows11MinimumBuild": 26100,
             "architecture": "x64",
+            "productType": "workstation-only",
         },
         "resolutionClasses": {
             "appLocal": "A DLL/PYD/EXE is present in the recursively staged runtime tree.",
-            "windows11X64OSBaseline": "Windows system DLL, UCRT, or OS API-set contract for the declared baseline.",
-            "unresolved": "Static or delay import not found in the package or declared Windows 11 x64 OS/API-set baseline.",
+            "windowsX64OSBaseline": "Windows system DLL, UCRT, or OS API-set contract for the declared Windows 10 22H2 / Windows 11 24H2+ x64 baseline.",
+            "unresolved": "Static or delay import not found in the package or declared Windows 10 22H2 / Windows 11 24H2+ x64 OS/API-set baseline.",
             "unverifiedDynamicStringCandidate": "DLL-like string in a loader-API importing image; not proven to be passed to a loader without code-flow analysis.",
             "externalPrerequisite": "Microsoft Visual C++ v14 x64 runtime installed per-machine only by the vendor installer after user consent.",
         },
@@ -2045,7 +2081,7 @@ def write_notices(
         "  https://learn.microsoft.com/en-us/cpp/windows/redistributing-visual-cpp-files?view=msvc-170.",
         "  Removed source DLLs, signed source metadata, and frozen-image exclusions are",
         "  recorded in runtime/vc-runtime-inventory.json.",
-        "- Recursive x64 PE static/delay import results, app-local module paths, the Windows 11 x64 OS/API-set",
+        "- Recursive x64 PE static/delay import results, app-local module paths, the Windows 10 22H2 / Windows 11 24H2+ x64 OS/API-set",
         "  baseline, and dynamic loader API/string candidates are recorded in runtime/native-dependency-manifest.json.",
         "  Unresolved static/delay imports fail the package build. DLL-like strings are candidates, not proof of",
         f"  a load call; {len(native_manifest['unverifiedDynamicStringCandidates'])} candidates need runtime path coverage,",
@@ -2242,6 +2278,20 @@ def verify_assembled(
     )
     if native_manifest["unresolvedDependencies"]:
         raise SystemExit("native runtime dependency manifest contains unresolved imports")
+    minimum_host = native_manifest.get("minimumHost")
+    if (
+        not isinstance(minimum_host, dict)
+        or minimum_host.get("minimumBuild") != launcher.WINDOWS_10_22H2_BUILD
+        or minimum_host.get("windows11MinimumBuild") != launcher.WINDOWS_11_24H2_BUILD
+        or minimum_host.get("architecture") != "x64"
+    ):
+        raise SystemExit("the package OS baseline does not match the supported Windows matrix.")
+    tauri_image = next(
+        (image for image in native_manifest.get("images", []) if image.get("path") == "Projecta.exe"),
+        None,
+    )
+    if not isinstance(tauri_image, dict) or tauri_image.get("unresolved"):
+        raise SystemExit("the packaged Tauri executable has unresolved native dependencies.")
     manifest = json.loads((package / "runtime-manifest.json").read_text(encoding="utf-8"))
     source_provenance = manifest.get("sourceProvenance")
     if (
@@ -2338,18 +2388,18 @@ def verify_assembled(
     from PyInstaller.archive.readers import CArchiveReader
 
 
-    for executable_name in ("Projecta.exe", "ProjectaLocal.exe"):
-        embedded = CArchiveReader(package / executable_name).toc
-        prohibited_embedded = sorted(
-            name
-            for name in embedded
-            if launcher._is_msvc_runtime_dll(Path(name))
-            or launcher._is_vc_runtime_installer(Path(name))
+    embedded = CArchiveReader(package / "ProjectaLocal.exe").toc
+    prohibited_embedded = sorted(
+        name
+        for name in embedded
+        if launcher._is_msvc_runtime_dll(Path(name))
+        or launcher._is_vc_runtime_installer(Path(name))
+    )
+    if prohibited_embedded:
+        raise SystemExit(
+            "ProjectaLocal.exe embeds prohibited Microsoft Visual C++ runtime payloads: "
+            f"{prohibited_embedded}"
         )
-        if prohibited_embedded:
-            raise SystemExit(
-                f"{executable_name} embeds prohibited Microsoft Visual C++ runtime payloads: {prohibited_embedded}"
-            )
     signature_path = package / "runtime-manifest.sig"
     if release_eligible:
         if (
@@ -2510,6 +2560,7 @@ def main(argv: list[str] | None = None) -> int:
         raise SystemExit("the frozen launcher trust anchor does not match the owner Ed25519 release key.")
     frozen_vc_inputs = _freeze_launcher(package, trust_dir)
     _complete_vc_runtime_inventory(package, source_vc_files, frozen_vc_inputs)
+    _stage_tauri_desktop(package)
     authenticode_signing = _sign_authenticode_images(package, signing) if signing is not None else None
     native_dependencies = _write_native_dependency_manifest(package)
     write_notices(

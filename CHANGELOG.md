@@ -16,14 +16,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Changed
 
+- Packaged the Tauri desktop host and the existing native backend as one
+  product: the runnable package now ships the cargo-built Tauri `Projecta.exe`
+  next to the frozen `ProjectaLocal.exe` supervisor, the compiled React UI,
+  pinned backend dependencies, provenance, notices/licenses, and version
+  metadata. The obsolete Tkinter launcher is removed with no compatibility
+  shim, and `start` never opens a system-browser app path.
 - Extended the local desktop runtime to Windows 10 22H2 x64 alongside Windows 11
-  24H2 and newer x64. Unsupported Windows versions, Windows Server product types,
-  32-bit processes, and ARM64 hosts (including an x64 process emulated on ARM64)
-  still refuse with `PLATFORM_UNSUPPORTED` before any state is written.
-- `ProjectaLocal stop` accepts an optional `--runtime-id` that binds the graceful
-  stop request to that exact running runtime. A stale or foreign ID refuses with
-  `PROCESS_OWNERSHIP_CONFLICT` and writes no stop request, so it cannot stop or
-  disturb another owned runtime; the no-argument form is unchanged.
 
 ### Security
 

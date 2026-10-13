@@ -66,7 +66,12 @@ def _signed_update_package(
     for index, relative in enumerate(required):
         path = package / relative
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(f"test payload {index}\n".encode())
+        if relative == "Projecta.exe":
+            path.write_bytes(
+                b"MZ" + b"\x00" * 58 + b"\x40\x00\x00\x00" + b"PE\0\0" + b"\x64\x86"
+            )
+        else:
+            path.write_bytes(f"test payload {index}\n".encode())
     policy_path = package / "runtime" / "vc-runtime-policy.json"
     policy_path.write_text(json.dumps(launcher.VC_RUNTIME_PREREQUISITE), encoding="utf-8")
     files = [
@@ -809,10 +814,35 @@ def test_signed_update_rejects_wrong_key_and_tampered_payload(
     assert wrong_signature.value.code == "UPDATE_SIGNATURE_INVALID"
 
     assert len(public_key) == 32
-    payload.write_bytes(b"tampered executable")
+    launcher._require_tauri_desktop_executable(package / "Projecta.exe")
+    payload.write_bytes(
+        b"MZ" + b"\x00" * 58 + b"\x40\x00\x00\x00" + b"PE\0\0" + b"\x64\x86" + b"tampered"
+    )
     with pytest.raises(launcher.RuntimeFailure) as bad_contents:
         launcher._verify_update_package(package, trusted_public_key=public_key)
     assert bad_contents.value.code == "UPDATE_PACKAGE_CONTENT_INVALID"
+
+
+def test_packaged_desktop_executable_must_be_the_tauri_host(tmp_path: Path) -> None:
+    good = tmp_path / "Projecta.exe"
+    good.write_bytes(
+        b"MZ" + b"\x00" * 58 + b"\x40\x00\x00\x00" + b"PE\0\0" + b"\x64\x86"
+    )
+    launcher._require_tauri_desktop_executable(good)
+
+    legacy = tmp_path / "legacy.exe"
+    legacy.write_bytes(
+        b"MZ" + b"\x00" * 58 + b"\x40\x00\x00\x00" + b"PE\0\0" + b"\x64\x86"
+        + b"PyInstaller:archive"
+    )
+    with pytest.raises(launcher.RuntimeFailure) as failure:
+        launcher._require_tauri_desktop_executable(legacy)
+    assert failure.value.code == "PACKAGE_RUNTIME_INCOMPLETE"
+
+    missing = tmp_path / "absent.exe"
+    with pytest.raises(launcher.RuntimeFailure) as absent:
+        launcher._require_tauri_desktop_executable(missing)
+    assert absent.value.code == "PACKAGE_RUNTIME_INCOMPLETE"
 
 
 @pytest.mark.parametrize(
@@ -945,7 +975,7 @@ def _legacy_queued_manager(tmp_path: Path, journal: dict[str, object]) -> launch
     (paths.data / "imports" / "ledger.json").write_text(
         json.dumps({"formatVersion": 1, "imports": {}}), encoding="utf-8"
     )
-    return launcher.RuntimeManager(paths, open_browser=False)
+    return launcher.RuntimeManager(paths)
 
 
 def test_legacy_queued_journal_resolves_finite_without_catalog_check(tmp_path: Path) -> None:

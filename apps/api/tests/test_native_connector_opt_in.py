@@ -273,7 +273,7 @@ def test_native_opt_in_controls_real_connector_install_route(
         ),
         encoding="utf-8",
     )
-    manager = launcher.RuntimeManager(paths, open_browser=False)
+    manager = launcher.RuntimeManager(paths)
     manager.workspace = launcher.WorkspaceConfig(project_id, "Native Local", actor_id)
     manager.secrets = launcher.RuntimeSecrets(
         database_password,

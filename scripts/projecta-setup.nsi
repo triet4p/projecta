@@ -38,7 +38,7 @@ Var HadPrevious
 Function .onInit
   IfSilent proceed
   SetShellVarContext current
-  MessageBox MB_ICONEXCLAMATION|MB_OKCANCEL|MB_DEFBUTTON2 "Projecta 0.7.1 is an owner-authorized unsigned Windows 11 x64 release. Windows cannot verify the publisher, and SmartScreen or antivirus software may warn. Continue only if you obtained this installer from the owner-approved source and verified its published SHA-256. Projecta itself installs and runs per-user and is never elevated. If the x64 Visual C++ prerequisite is missing, Internet access is required and setup will ask before downloading the official Microsoft installer; Microsoft's own license/consent UI and a Windows UAC prompt may appear. Only that vendor prerequisite can be elevated; Projecta and its services remain per-user. This is not clean-host or production certification. Continue?"
+  MessageBox MB_ICONEXCLAMATION|MB_OKCANCEL|MB_DEFBUTTON2 "Projecta 0.7.1 is an owner-authorized unsigned Windows 10 22H2 / Windows 11 24H2+ x64 release. Windows cannot verify the publisher, and SmartScreen or antivirus software may warn. Continue only if you obtained this installer from the owner-approved source and verified its published SHA-256. Projecta itself installs and runs per-user and is never elevated. If the x64 Visual C++ prerequisite is missing, Internet access is required and setup will ask before downloading the official Microsoft installer; Microsoft's own license/consent UI and a Windows UAC prompt may appear. Only that vendor prerequisite can be elevated; Projecta and its services remain per-user. This is not clean-host or production certification. Continue?"
   Abort
 proceed:
   SetShellVarContext current

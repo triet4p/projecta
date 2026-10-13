@@ -76,8 +76,9 @@ the owner's machine-2 QA acceptance or establish the missing-runtime branch.
 Projecta and its services remain per-user and are not elevated.
 
 The bundle includes local services and native runtimes without requiring Docker,
-Python, Node.js, a JDK, PostgreSQL, or Fuseki installed separately. It opens
-the current Windows account's default browser.
+Python, Node.js, a JDK, PostgreSQL, or Fuseki installed separately. The single
+main window is the only client; the desktop product never opens a system-browser
+app path.
 
 Windows may show a standard unsigned-file SmartScreen reputation warning for a
 published asset. Never disable security controls or override a Defender alert,

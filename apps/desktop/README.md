@@ -44,7 +44,8 @@ child is stopped, an in-flight startup is cancelled, and the owned supervisor
 is stopped through the manager's existing runtimeId-matched `state/stop.json`
 protocol (reverse order, locks/ports released, data retained). No Tauri
 commands, retry loop, Rust process manager, hidden service, Tkinter, or browser
-companion. S15-09 packaging remains a later task.
+companion. S15-09 packages this host as `Projecta.exe` next to the bundled
+runtime payload; `start` never opens a browser in any mode.
 
 The same protocol is reachable from the launcher CLI: `stop` writes the request
 for the runtime named by the shared status, and `stop --runtime-id <id>` binds

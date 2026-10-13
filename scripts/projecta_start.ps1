@@ -14,7 +14,7 @@ try {
     }
     $application = Join-Path $PSScriptRoot 'Projecta.exe'
     if (-not (Test-Path -LiteralPath $application -PathType Leaf)) {
-        throw 'The Projecta desktop application is missing from the installation.'
+        throw 'The Projecta Tauri desktop application is missing from the installation.'
     }
     Start-Process -FilePath $application -WorkingDirectory $PSScriptRoot -ErrorAction Stop
     exit 0

@@ -86,6 +86,49 @@ def _is_vc_runtime_installer(path: Path) -> bool:
 
 
 
+def _require_tauri_desktop_executable(path: Path) -> None:
+    """Refuse a packaged Projecta.exe that is not the Tauri desktop host.
+
+    The Tkinter control panel is removed by S15-09: the only accepted
+    Projecta.exe is an x64 Windows PE image (the cargo-built Tauri host),
+    never a PyInstaller archive or a missing file. The check reads bounded
+    header prefixes only; it proves shape, not provenance.
+    """
+    try:
+        stream = path.open("rb")
+    except OSError as error:
+        raise RuntimeFailure(
+            "PACKAGE_RUNTIME_INCOMPLETE", "The packaged Tauri desktop executable is absent."
+        ) from error
+    with stream:
+        header = stream.read(0x40)
+        if len(header) < 0x40 or header[:2] != b"MZ":
+            raise RuntimeFailure(
+                "PACKAGE_RUNTIME_INCOMPLETE", "The packaged desktop executable is not the Tauri host."
+            )
+        pe_offset = struct.unpack_from("<I", header, 0x3C)[0]
+        if pe_offset > 1024 * 1024:
+            raise RuntimeFailure(
+                "PACKAGE_RUNTIME_INCOMPLETE", "The packaged desktop executable is not the Tauri host."
+            )
+        stream.seek(pe_offset)
+        pe_header = stream.read(6)
+        if len(pe_header) < 6 or pe_header[:4] != b"PE\0\0":
+            raise RuntimeFailure(
+                "PACKAGE_RUNTIME_INCOMPLETE", "The packaged desktop executable is not the Tauri host."
+            )
+        if struct.unpack_from("<H", pe_header, 4)[0] != 0x8664:
+            raise RuntimeFailure(
+                "PACKAGE_RUNTIME_INCOMPLETE", "The packaged desktop executable is not the Tauri host."
+            )
+        stream.seek(0)
+        prefix = stream.read(1024 * 1024)
+    if b"PyInstaller:" in prefix:
+        raise RuntimeFailure(
+            "PACKAGE_RUNTIME_INCOMPLETE", "The packaged desktop executable is not the Tauri host."
+        )
+
+
 def _validate_vc_runtime_prerequisite(
     package_root: Path,
     manifest: Mapping[str, object],
@@ -764,6 +807,7 @@ def load_runtime_manifest(
     remaining = [path for path in required_files if path.name != "fuseki-config.template.ttl"]
     if not template_ok or any(not path.is_file() for path in remaining):
         raise RuntimeFailure("PACKAGE_RUNTIME_INCOMPLETE", "A required bundled runtime or application file is absent.")
+    _require_tauri_desktop_executable(paths.package_root / "Projecta.exe")
     jena_runtime = paths.project / "semantic-core" / "lib" / f"jena-fuseki-main-{RUNTIME_VERSIONS['fuseki']}.jar"
     if not jena_runtime.is_file():
         raise RuntimeFailure("PACKAGE_RUNTIME_INCOMPLETE", "The pinned Fuseki server runtime is absent.")
@@ -1192,11 +1236,14 @@ class RuntimeManager:
         self,
         paths: ProjectaPaths,
         *,
-        open_browser: bool = True,
         api_port: int | None = None,
+        **kwargs: object,
     ) -> None:
+        if kwargs.get("open_browser", False):
+            raise RuntimeFailure(
+                "COMMAND_INVALID", "The desktop product has no auto-browser app path."
+            )
         self.paths = paths
-        self.open_browser = open_browser
         self.api_port = api_port if api_port is not None else PORTS["api"]
         self.host = ProcessHost()
         self.runtime_id = uuid.uuid4().hex
@@ -1234,7 +1281,6 @@ class RuntimeManager:
                 self._write_status("ready")
                 print(f"Projecta Local is ready at http://127.0.0.1:{self.api_port}/")
                 _append_safe_log(self.paths.log_file, "ready")
-                self._open_browser()
                 self._supervise()
             except KeyboardInterrupt:
                 _append_safe_log(self.paths.log_file, "keyboard-stop-requested")
@@ -1985,19 +2031,6 @@ class RuntimeManager:
                 self._failure = stop_error
             time.sleep(0.5)
 
-    def _open_browser(self) -> None:
-        if not self.open_browser:
-            return
-        import webbrowser
-
-        try:
-            if not webbrowser.open(f"http://127.0.0.1:{self.api_port}/", new=2):
-                _append_safe_log(self.paths.log_file, "browser-open-failed")
-                print(f"Projecta Local is ready; open http://127.0.0.1:{self.api_port}/ in your browser.")
-        except OSError:
-            _append_safe_log(self.paths.log_file, "browser-open-failed")
-            print(f"Projecta Local is ready; open http://127.0.0.1:{self.api_port}/ in your browser.")
-
 
 def _is_reparse_point(path: Path) -> bool:
     if path.is_symlink():
@@ -2591,6 +2624,7 @@ def _verify_update_package(
         raise RuntimeFailure("UPDATE_PACKAGE_INVALID", "The update package notice index is missing or invalid.")
     if not required.issubset(listed):
         raise RuntimeFailure("UPDATE_PACKAGE_INVALID", "The update package omits required runtime or application files.")
+    _require_tauri_desktop_executable(package / "Projecta.exe")
     return manifest
 
 
@@ -2709,8 +2743,7 @@ def _parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         help="Provision the first-run workspace in the main window without installing OS shortcuts",
     )
     provision_parser.add_argument("--workspace-name", help=argparse.SUPPRESS)
-    start = commands.add_parser("start", help="Start and supervise the local Projecta services")
-    start.add_argument("--no-browser", action="store_true", help=argparse.SUPPRESS)
+    commands.add_parser("start", help="Start and supervise the local Projecta services")
     stop = commands.add_parser("stop", help="Request reverse-order graceful shutdown")
     stop.add_argument(
         "--runtime-id",
@@ -2751,7 +2784,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 print("Projecta workspace is already provisioned; the existing workspace was left unchanged.")
             return 0
         if args.command == "start":
-            return RuntimeManager(paths, open_browser=not args.no_browser).start()
+            return RuntimeManager(paths).start()
         if args.command == "stop":
             request_stop(paths, expected_runtime_id=args.runtime_id)
             return 0
