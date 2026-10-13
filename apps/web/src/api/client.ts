@@ -86,6 +86,12 @@ export interface ProjectArchiveDownload {
 export interface AuthSession {
   requestId: string;
   authenticated: boolean;
+  /**
+   * Server-provided session identity. `"server-owned-experience"` is the local
+   * desktop runtime's own context (no user session, nothing to sign out of);
+   * `"authenticated-user"` is a real identity-provider session.
+   */
+  identity?: string;
   actorId?: string;
   expiresAt?: string;
   projects?: Array<{ projectId: string; roles: string[]; revision: number }>;

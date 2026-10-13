@@ -51,6 +51,17 @@ export function AuthShell({
     );
   }
 
+  // The local desktop runtime authorizes every request server-side through the
+  // server-owned experience context (`identity: "server-owned-experience"`).
+  // That is not a user session: no identity provider is involved, `POST
+  // /auth/logout` revokes nothing, and the reload re-enters the same context.
+  // Rendering "Signed in / Sign out" for it would be chrome that cannot do what
+  // it says, so it is omitted for exactly that identity. Every other session
+  // (browser and production sign-in) keeps the controls unchanged.
+  if (session.identity === "server-owned-experience") {
+    return children(<></>);
+  }
+
   return children(
     <div aria-label="Session controls" className="session-controls" role="group">
       <span className="session-status" role="status">

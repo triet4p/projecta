@@ -14,9 +14,12 @@ import { ReviewScreen } from "../screens/ReviewScreen";
 import { KnowledgeScreen } from "../screens/KnowledgeScreen";
 import { SettingsScreen } from "../screens/SettingsScreen";
 import { WorkspaceHeader } from "./WorkspaceHeader";
+import { DESKTOP_MANAGEMENT_SURFACE_URL } from "./desktop-shell";
 import { navigationGroups, type Screen } from "./navigation";
 import { EmptyState, ErrorMessage } from "../ui";
 import { AuthShell } from "./AuthShell";
+import { ThemeProvider } from "./theme";
+import { ThemeSelector } from "./ThemeSelector";
 
 export function App(): ReactElement {
   const api = useMemo(() => new ProjectaApiClient(), []);
@@ -176,91 +179,111 @@ export function App(): ReactElement {
   })();
 
   const scopedScreen = active !== "Projects" && activeProject !== null;
+  // The desktop shell's own window is the only environment that defines
+  // `window.isTauri`; an ordinary browser has no bundled management surface at
+  // all, so the action exists only there and is never a dead control.
+  const managementHref = window.isTauri === true ? DESKTOP_MANAGEMENT_SURFACE_URL : null;
 
   return (
-    <AuthShell api={api}>
-      {(sessionChrome) => (
-        <div className="app-shell">
-          <a className="skip-link" href="#main-content">
-            Skip to main content
-          </a>
-          <header className="topbar">
-            <div className="topbar-brand">
-              <h1>Projecta</h1>
-              {activeProject && (
-                <div className="topbar-context">
-                  <span>Project workspace</span>
-                  <strong>{activeProject.name}</strong>
-                </div>
-              )}
-            </div>
-            <div className="topbar-status">
-              <span className="experience-badge">Server-owned context</span>
-              <span className={health ? "health-pill healthy" : "health-pill unavailable"}>
-                API {health ? "live" : "offline"}
-              </span>
-              {sessionChrome}
-            </div>
-          </header>
-          <div className={active === "Projects" ? "workspace project-selection" : "workspace"}>
-            {active !== "Projects" && (
-              <nav aria-label="Primary navigation" className="sidebar">
-                <button
-                  className="sidebar-new"
-                  onClick={() => {
-                    navigateWorkspace("Notes");
-                  }}
-                  type="button"
-                >
-                  <span>+ New Note</span>
-                </button>
-                {navigationGroups.map((group) => (
-                  <div className="sidebar-group" key={group.label}>
-                    <div className="sidebar-label">{group.label}</div>
-                    {group.items.map((item) => (
-                      <button
-                        aria-current={active === item ? "page" : undefined}
-                        className={active === item ? "nav-item active" : "nav-item"}
-                        data-nav-short={item.slice(0, 1)}
-                        key={item}
-                        onClick={() => navigateWorkspace(item)}
-                        type="button"
-                      >
-                        <span className="nav-label">{item}</span>
-                      </button>
-                    ))}
-                  </div>
-                ))}
-              </nav>
-            )}
-            <main className="main-content" id="main-content" tabIndex={-1}>
-              {scopedScreen && activeProject && (
-                <WorkspaceHeader
-                  onChangeProject={changeProject}
-                  project={activeProject}
-                  selectionRevision={selectionRevision}
+    <ThemeProvider>
+      <AuthShell api={api}>
+        {(sessionChrome) => (
+          <div className="app-shell">
+            <a className="skip-link" href="#main-content">
+              Skip to main content
+            </a>
+            <header className="topbar">
+              <div className="topbar-brand">
+                <img
+                  aria-hidden="true"
+                  alt=""
+                  className="brand-icon"
+                  height="22"
+                  src="/favicon.svg"
+                  width="22"
                 />
+                <h1>Projecta</h1>
+                {activeProject && (
+                  <div className="topbar-context">
+                    <span>Project workspace</span>
+                    <strong>{activeProject.name}</strong>
+                  </div>
+                )}
+              </div>
+              <div className="topbar-status">
+                <ThemeSelector />
+                {managementHref !== null && (
+                  <a className="pill-link" href={managementHref}>
+                    Manage workspace
+                  </a>
+                )}
+                <span className="experience-badge">Server-owned context</span>
+                <span className={health ? "health-pill healthy" : "health-pill unavailable"}>
+                  API {health ? "live" : "offline"}
+                </span>
+                {sessionChrome}
+              </div>
+            </header>
+            <div className={active === "Projects" ? "workspace project-selection" : "workspace"}>
+              {active !== "Projects" && (
+                <nav aria-label="Primary navigation" className="sidebar">
+                  <button
+                    className="sidebar-new"
+                    onClick={() => {
+                      navigateWorkspace("Notes");
+                    }}
+                    type="button"
+                  >
+                    <span>+ New Note</span>
+                  </button>
+                  {navigationGroups.map((group) => (
+                    <div className="sidebar-group" key={group.label}>
+                      <div className="sidebar-label">{group.label}</div>
+                      {group.items.map((item) => (
+                        <button
+                          aria-current={active === item ? "page" : undefined}
+                          className={active === item ? "nav-item active" : "nav-item"}
+                          data-nav-short={item.slice(0, 1)}
+                          key={item}
+                          onClick={() => navigateWorkspace(item)}
+                          type="button"
+                        >
+                          <span className="nav-label">{item}</span>
+                        </button>
+                      ))}
+                    </div>
+                  ))}
+                </nav>
               )}
-              {!activeProject && active !== "Projects" && (
-                <EmptyState
-                  title="Project selection required"
-                  action={
-                    <button onClick={() => setActive("Projects")} type="button">
-                      Open Projects
-                    </button>
-                  }
-                >
-                  Choose a project before opening a scoped workspace.
-                </EmptyState>
-              )}
-              {activeProject || active === "Projects" ? screen : null}
-              {healthError !== null && active === "Diagnostics" && (
-                <ErrorMessage error={healthError} />
-              )}
-            </main>
+              <main className="main-content" id="main-content" tabIndex={-1}>
+                {scopedScreen && activeProject && (
+                  <WorkspaceHeader
+                    onChangeProject={changeProject}
+                    project={activeProject}
+                    selectionRevision={selectionRevision}
+                  />
+                )}
+                {!activeProject && active !== "Projects" && (
+                  <EmptyState
+                    title="Project selection required"
+                    action={
+                      <button onClick={() => setActive("Projects")} type="button">
+                        Open Projects
+                      </button>
+                    }
+                  >
+                    Choose a project before opening a scoped workspace.
+                  </EmptyState>
+                )}
+                {activeProject || active === "Projects" ? screen : null}
+                {healthError !== null && active === "Diagnostics" && (
+                  <ErrorMessage error={healthError} />
+                )}
+              </main>
+            </div>
           </div>
-        </div>
-      )}
-    </AuthShell>
+        )}
+      </AuthShell>
+    </ThemeProvider>
   );
 }

@@ -1530,3 +1530,55 @@ test("an unavailable Overview Note reports its error without replacing it", asyn
   await selectedNote.getByRole("button", { name: "Back to Project Overview" }).click();
   await expect(page.getByRole("heading", { name: "Alpha workspace", level: 2 })).toBeVisible();
 });
+
+test("export confirmation opens on demand, cancels cleanly, and reopens cleared", async ({
+  page,
+}) => {
+  const exportPosts: string[] = [];
+  page.on("request", (request) => {
+    if (request.url().includes("/exports") && request.method() === "POST") {
+      exportPosts.push(request.url());
+    }
+  });
+  await mockApi(page);
+  await page.route(
+    `**/v1/projects/${project.handle}/overview`,
+    async (route) =>
+      await json(route, {
+        ...project,
+        portableExportEnabled: true,
+        currentRequirements: [],
+        openQuestions: [],
+        tasks: [],
+        blockers: [],
+        risks: [],
+        recentNotes: [],
+        pendingCandidates: [],
+        evidenceCoverage: { covered: 0, total: 0 },
+      }),
+  );
+  await openAlphaWorkspace(page);
+
+  const dialog = page.locator("dialog.export-dialog");
+  await expect(dialog).toBeHidden();
+
+  await page.getByRole("button", { name: "Export project" }).click();
+  await expect(dialog).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Export this project?" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Download archive" })).toBeDisabled();
+
+  await page.getByRole("button", { name: "Cancel" }).click();
+  await expect(dialog).toBeHidden();
+  // Cancelling must not export anything or disturb the overview journey.
+  expect(exportPosts).toEqual([]);
+  await expect(page.getByRole("heading", { name: "Alpha workspace", level: 2 })).toBeVisible();
+
+  // Reopening starts from cleared consent: checkbox unchecked, download gated.
+  await page.getByRole("button", { name: "Export project" }).click();
+  await expect(dialog).toBeVisible();
+  await expect(page.getByRole("button", { name: "Download archive" })).toBeDisabled();
+  await expect(page.locator("dialog.export-dialog input[type=checkbox]")).not.toBeChecked();
+  await page.getByRole("button", { name: "Cancel" }).click();
+  await expect(dialog).toBeHidden();
+  expect(exportPosts).toEqual([]);
+});

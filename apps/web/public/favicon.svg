@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <!-- Background squircle gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0f1623"/>
+      <stop offset="100%" stop-color="#0a0f17"/>
+    </linearGradient>
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255, 255, 255, 0.16)"/>
+      <stop offset="100%" stop-color="rgba(255, 255, 255, 0.04)"/>
+    </linearGradient>
+
+    <!-- Facet 1: Foundation Spine (Vertical Anchor) -->
+    <linearGradient id="spineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#142c82"/>
+    </linearGradient>
+
+    <!-- Facet 2: Top Cantilever (Synthesis Projection) -->
+    <linearGradient id="topGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#60a5fa"/>
+    </linearGradient>
+
+    <!-- Facet 3: Return Bridge (Consensus Arc) -->
+    <linearGradient id="returnGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Desktop App Container: Rounded Slate Squircle -->
+  <rect x="56" y="56" width="912" height="912" rx="200" ry="200" fill="url(#bgGrad)"/>
+  <rect x="57" y="57" width="910" height="910" rx="199" ry="199" fill="none" stroke="url(#borderGrad)" stroke-width="2"/>
+
+  <!-- Facet 1: Vertical Foundation Spine -->
+  <polygon points="280,355 410,225 410,795 280,795" fill="url(#spineGrad)"/>
+
+  <!-- Facet 3: Return Bridge Wing -->
+  <polygon points="740,335 740,455 630,565 410,565 410,435 570,435 610,395 610,355 740,335" fill="url(#returnGrad)"/>
+
+  <!-- Facet 2: Top Synthesis Cantilever -->
+  <polygon points="280,355 280,225 630,225 740,335 610,355 570,355 410,355 280,355" fill="url(#topGrad)"/>
+
+  <!-- Facet Precision Seam Lines -->
+  <line x1="740" y1="335" x2="610" y2="355" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+  <line x1="280" y1="355" x2="410" y2="225" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+</svg>

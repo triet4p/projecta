@@ -12,11 +12,12 @@
   "app": {
     "withGlobalTauri": false,
     "security": {
-      "csp": "default-src 'self' http://127.0.0.1:18732; script-src 'self' http://127.0.0.1:18732; style-src 'self' http://127.0.0.1:18732 'unsafe-inline'; img-src 'self' http://127.0.0.1:18732 data:; connect-src 'self' http://127.0.0.1:18732; font-src 'self' http://127.0.0.1:18732 data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
+      "csp": "default-src 'self' http://127.0.0.1:18732; script-src 'self' http://127.0.0.1:18732; style-src 'self' http://127.0.0.1:18732 'unsafe-inline'; img-src 'self' http://127.0.0.1:18732 data:; connect-src 'self' http://127.0.0.1:18732 http://projecta-bootstrap.localhost; font-src 'self' http://127.0.0.1:18732 data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'",
       "capabilities": []
     }
   },
   "bundle": {
-    "active": false
+    "active": false,
+    "icon": ["icons/icon.ico", "icons/icon.png"]
   }
 }

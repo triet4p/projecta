@@ -123,6 +123,7 @@ export function ProjectOverviewScreen({
           {overview.portableExportEnabled ? (
             <button
               onClick={() => {
+                if (exportDialog.current?.open) return;
                 setAuthorizationConfirmed(false);
                 setExportError(null);
                 exportDialog.current?.showModal();

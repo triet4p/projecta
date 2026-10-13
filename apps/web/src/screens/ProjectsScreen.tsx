@@ -541,77 +541,81 @@ export function ProjectsScreen({
       {deletionTarget && (
         <dialog
           aria-labelledby="project-deletion-title"
-          className="export-dialog"
+          className="export-dialog project-deletion-dialog"
           onCancel={(event) => {
             if (deletionWorking) event.preventDefault();
           }}
           onClose={closeDeletion}
           ref={deletionDialogRef}
         >
-          <h2 id="project-deletion-title">Delete {deletionTarget.name}?</h2>
-          <div className="export-warning" role="note">
-            <p>
-              This permanently deletes ALL data for <strong>{deletionTarget.name}</strong> (
-              <code>{deletionPreview?.projectId ?? deletionTarget.handle}</code>), including
-              semantic graphs, evidence objects, drafts and workflow history, connector state,
-              review receipts, correction and cost history, configuration audit rows, and this
-              scope&apos;s import ledger entries. There is no undo. Active exports or imports must
-              be idle first.
-            </p>
-            <p>
-              Not deleted: other projects, installation secrets and configuration, exported{" "}
-              <code>.projecta</code> files, and whole-installation backups. Logical removal only;
-              copies in backups or exported files remain wherever you kept them.
-            </p>
+          <div className="modal-header">
+            <h2 id="project-deletion-title">Delete {deletionTarget.name}?</h2>
           </div>
-          {deletionWorking && !deletionPreview && deletionError === null && (
-            <p className="project-meta" role="status">
-              Loading project scope…
-            </p>
-          )}
-          {deletionError !== null && <ErrorMessage error={deletionError} />}
-          {deletionPreview && (
-            <>
-              <dl className="import-details">
-                <div>
-                  <dt>Project ID</dt>
-                  <dd>
-                    <code>{deletionPreview.projectId}</code>
-                  </dd>
-                </div>
-                <div>
-                  <dt>Graph triples</dt>
-                  <dd>{deletionPreview.graphTriples.total}</dd>
-                </div>
-                <div>
-                  <dt>Evidence objects</dt>
-                  <dd>{deletionPreview.evidenceObjects}</dd>
-                </div>
-                <div>
-                  <dt>Ledger entries</dt>
-                  <dd>{deletionPreview.ledgerEntries}</dd>
-                </div>
-              </dl>
-              {deletionPreview.warnings.map((warning) => (
-                <p className="import-warning" key={warning} role="note">
-                  {warning}
-                </p>
-              ))}
-              <label className="stacked-label" htmlFor="project-deletion-identity">
-                Type the project name or project ID to confirm
-                <input
-                  autoComplete="off"
-                  disabled={deletionWorking}
-                  id="project-deletion-identity"
-                  onChange={(event) => setDeletionIdentity(event.currentTarget.value)}
-                  placeholder={deletionPreview.projectName}
-                  ref={deletionIdentityRef}
-                  value={deletionIdentity}
-                />
-              </label>
-            </>
-          )}
-          <div className="export-dialog-actions">
+          <div className="modal-body">
+            <div className="export-warning" role="note">
+              <p>
+                This permanently deletes ALL data for <strong>{deletionTarget.name}</strong> (
+                <code>{deletionPreview?.projectId ?? deletionTarget.handle}</code>), including
+                semantic graphs, evidence objects, drafts and workflow history, connector state,
+                review receipts, correction and cost history, configuration audit rows, and this
+                scope&apos;s import ledger entries. There is no undo. Active exports or imports must
+                be idle first.
+              </p>
+              <p>
+                Not deleted: other projects, installation secrets and configuration, exported{" "}
+                <code>.projecta</code> files, and whole-installation backups. Logical removal only;
+                copies in backups or exported files remain wherever you kept them.
+              </p>
+            </div>
+            {deletionWorking && !deletionPreview && deletionError === null && (
+              <p className="project-meta" role="status">
+                Loading project scope…
+              </p>
+            )}
+            {deletionError !== null && <ErrorMessage error={deletionError} />}
+            {deletionPreview && (
+              <>
+                <dl className="import-details">
+                  <div>
+                    <dt>Project ID</dt>
+                    <dd>
+                      <code>{deletionPreview.projectId}</code>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Graph triples</dt>
+                    <dd>{deletionPreview.graphTriples.total}</dd>
+                  </div>
+                  <div>
+                    <dt>Evidence objects</dt>
+                    <dd>{deletionPreview.evidenceObjects}</dd>
+                  </div>
+                  <div>
+                    <dt>Ledger entries</dt>
+                    <dd>{deletionPreview.ledgerEntries}</dd>
+                  </div>
+                </dl>
+                {deletionPreview.warnings.map((warning) => (
+                  <p className="import-warning" key={warning} role="note">
+                    {warning}
+                  </p>
+                ))}
+                <label className="stacked-label" htmlFor="project-deletion-identity">
+                  Type the project name or project ID to confirm
+                  <input
+                    autoComplete="off"
+                    disabled={deletionWorking}
+                    id="project-deletion-identity"
+                    onChange={(event) => setDeletionIdentity(event.currentTarget.value)}
+                    placeholder={deletionPreview.projectName}
+                    ref={deletionIdentityRef}
+                    value={deletionIdentity}
+                  />
+                </label>
+              </>
+            )}
+          </div>
+          <div className="modal-footer export-dialog-actions">
             <button
               className="secondary"
               disabled={deletionWorking}

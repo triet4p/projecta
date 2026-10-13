@@ -4,8 +4,11 @@ import type { ProjectaApiClient } from "../api/client";
 import type { LLMProfile, LLMProfileWrite } from "../api/generated";
 import { clearCredential, settingsCanSave } from "../form-state";
 import { Card, ErrorMessage, StateMessage } from "../ui";
+import { useTheme } from "../shell/theme";
+import { ThemeSelector } from "../shell/ThemeSelector";
 
 export function SettingsScreen({ api }: { api: ProjectaApiClient }) {
+  const { mode, error: themeError } = useTheme();
   const [profile, setProfile] = useState<LLMProfile | null>(null);
   const [providerType, setProviderType] =
     useState<LLMProfileWrite["providerType"]>("openai-response");
@@ -112,6 +115,29 @@ export function SettingsScreen({ api }: { api: ProjectaApiClient }) {
   if (loading) return <StateMessage kind="loading">Loading redacted runtime profile…</StateMessage>;
   return (
     <div className="screen-grid">
+      <Card>
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">Interface appearance</p>
+            <h2>Color scheme</h2>
+          </div>
+          <span className="experience-badge">
+            {mode === "system"
+              ? "System preference"
+              : mode === "dark"
+                ? "Dark theme"
+                : "Light theme"}
+          </span>
+        </div>
+        <p className="muted">
+          Choose between Light, Dark, or System color schemes. When System is selected, Projecta
+          automatically matches your operating system preference live.
+        </p>
+        {themeError !== null && <ErrorMessage error={themeError} />}
+        <div className="settings-theme-row">
+          <ThemeSelector />
+        </div>
+      </Card>
       <Card>
         <div className="section-heading">
           <div>

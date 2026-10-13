@@ -8,6 +8,24 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Added
 
+- Added discoverable, accessible Light / Dark / System theme selection across the
+  desktop application shell, Settings screen, and native workspace management
+  surface, with deterministic configuration persistence in `config/ui-preferences.json`,
+  live operating system color-scheme synchronization under System mode, and
+  high-contrast token calibration across all app-owned surfaces.
+
+### Security
+
+- Enforced strict origin validation and mandatory `X-Projecta-Theme-Request` custom
+  header protection on the desktop `/preferences/theme` endpoint, rejecting foreign
+  origins, missing Origin headers, lookalikes, and disallowed HTTP methods without
+  mutating stored UI preferences.
+
+### Fixed
+
+- Fixed desktop theme controller error handling to prevent claiming false persisted
+  modes upon host read or write failures, rolling back to previous state and presenting
+  honest error notifications.
 - Added a Tauri v2 desktop host (`apps/desktop`) with one native window over
   the existing loopback Application API SPA. The host registers no native
   commands and refuses foreign navigation inside the privileged view. Verified
@@ -34,8 +52,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   Tauri v2 window. The same window presents startup/readiness/stopped/failure
   and after-ready service failure states with Start/Stop controls, a bounded
   user-initiated recovery action, and sanitized diagnostics carrying the
-  supervisor's own finite failure code and failing service name; a native
-  Runtime menu keeps the controls reachable once the window serves the SPA.
+  supervisor's own finite failure code and failing service name; the surface's
+  own form is the only Start/Retry/Stop/Open binding (the host registers no
+  native menu bar).
   No automatic retry, no empty success screen, and no Rust process manager.
   Verified on disposable state with the internal 0.7.1
   `unsigned-pre-release-test` channel using controlled port collision,
@@ -57,6 +76,95 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   WebView2/CDP negative cases, listener-bound checks, connector default-false
   and explicit opt-in runs through the real owned API, and the unchanged
   production guard.
+- Adapted the browser-dependent interactions that the single-window desktop
+  hosting affects. Portable project export downloads the archive through the
+  window with an owned download destination (the platform's own download
+  folder by default; an absolute `PROJECTA_DESKTOP_DOWNLOAD_DIR` disposable
+  root when configured), the manual-transfer import file picker opens the
+  platform's file dialog and cancels with zero state change, keyboard
+  copy/paste keeps using the operating-system clipboard while clipboard-read
+  permission stays denied, tab order/Enter activation/same-document hash
+  navigation/reload behave as before on the owned loopback origin, and an
+  allowed external link (`window.open`, `target="_blank"` on an absolute
+  `http`/`https` destination) is opened in the user's system browser without
+  ever navigating the privileged view or opening a second window. Project
+  list, selection, import, and export still run through the existing
+  React/typed API surface. Verified in the actual Tauri window on disposable
+  data/WebView2/download roots with the internal 0.7.1
+  `unsigned-pre-release-test` channel using native file-dialog,
+  archive-hash, owned-probe, real-keyboard, and reload/isolation evidence.
+- Fixed the export confirmation dialog staying visible after Cancel. The closed
+  dialog is now hidden, it opens only on the explicit Export action, Cancel
+  closes it without exporting anything, and reopening starts from cleared
+  consent.
+- Added the desktop-only `Manage workspace` action to the header of the
+  built-in project workspace. It returns the same window to the workspace and
+  runtime management surface without stopping, restarting, or reseeding the
+  owned runtime, and it renders only inside the desktop window (a
+  browser-served copy of the same interface shows no such control).
+
+### Fixed
+
+- Fixed Windows supervisor process-tree containment: the host now configures
+  its kill-on-close Job Object with the extended-limit structure required by
+  Windows. A create/configure/assign failure is a finite spawn failure after
+  cleanup of only the exact newly created child, never a fallback to an
+  uncontained supervisor.
+
+### Changed
+
+- Removed the desktop window's native `Runtime` menu bar. It rendered as a
+  redundant strip between the OS title bar and the workspace-management
+  surface, duplicating controls the surface already exposes. The window keeps
+  its OS title bar and standard minimize/maximize/close controls, and
+  automatic startup, in-overlay cancel, and owned-tree cleanup are unchanged.
+  The round trip that menu carried is preserved: the runtime surface is still
+  the window's first and failure-time view, and the ready project workspace
+  returns to it through the desktop-only `Manage workspace` action in its own
+  header.
+
+- The desktop app now ships the real Projecta mark as its application icon
+  instead of the placeholder. One 1024x1024 master generates the executable's
+  Windows icon resource (Explorer, taskbar, Alt-Tab) and the window icon at
+  seven sizes from 16 to 256, and the same master backs the browser build's
+  favicon.
+
+- Added the distinct startup overlay above the workspace-management surface.
+  While the accepted workspace creation or the owned runtime startup is really
+  in flight, a non-modal overlay of the same window shows a loading state and
+  the same real service steps (never a timer or a percentage), keeps the
+  bounded `Cancel startup` action reachable, and never traps keyboard focus.
+  It disappears on real readiness, and on any terminal outcome the management
+  surface — failure code, failing service, diagnostics, and bounded recovery —
+  is fully reachable again. The inline create action no longer holds the
+  window on a blocking request: the accepted request runs on an app-owned
+  worker while the window keeps reporting its real outcome, and a refused name
+  still writes nothing.
+
+- Opening the desktop app now starts the local workspace runtime by itself, and
+  the former separate first-run screen and runtime Start/Stop page are replaced
+  by one workspace-management surface. It presents the local workspace (name
+  and project ID, never the data-root path), the eight real initialization
+  steps — application package, owned supervisor process, PostgreSQL `:15432`,
+  Fuseki `:18303`, Semantic Core `:18080`, API `:18732`, core readiness, and
+  session readiness — each with the status the app actually observed, and only
+  then the existing project workspace. There is no timer or percentage
+  progress, no empty success screen, and no automatic retry: Start/Retry stays
+  a single bounded user action, and Stop/Cancel stops only the services
+  Projecta started. A data root with no workspace shows an inline
+  create-workspace card on the same surface instead of a separate wizard, and
+  cancelling or refusing a name writes nothing.
+- Closing the desktop window now cancels workspace creation itself, not just a
+  running runtime: a create in flight is stopped as an app-owned child and the
+  window waits for its worker to finish before it exits, so no half-writing
+  process outlives the window and the data root is left exactly as the
+  launcher wrote it.
+- The desktop window no longer shows the `Signed in`/`Sign out` session
+  control. The local runtime authorizes requests through its own server-owned
+  context, where signing out revokes nothing and the next reload re-enters the
+  same context, so the control is omitted exactly for that local identity;
+  browser and production sign-in keep both controls, and API authorization,
+  Origin/Host protections, CSRF, and CSP are unchanged.
 
 ## [0.7.1] - 2026-10-09
 
