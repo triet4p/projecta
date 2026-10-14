@@ -132,6 +132,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   source revision bound to the package manifest alongside the WebView2
   prerequisite policy comparison; a provenance document from another source
   tree is refused during package verification.
+- Fixed supervisor readiness probing so a service that answers with a stalled,
+  reset, or malformed error body still surfaces the documented finite
+  `SERVICE_BECAME_UNREADY` failure and its sanitized readiness-log line,
+  instead of becoming a generic internal runtime error.
 
 ### Changed
 

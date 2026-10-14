@@ -385,6 +385,76 @@ def test_semantic_core_probe_fails_once_at_its_bounded_deadline() -> None:
     assert len(attempts) == 1
 
 
+def test_readiness_probe_keeps_the_status_when_an_error_body_stalls() -> None:
+    """A non-200 whose body stalls must surface its status code, not escape as an
+    unexpected exception: the supervisor's finite readiness-failure handling and
+    its sanitized log line depend on the probe returning normally."""
+
+    class StalledErrorHandler(BaseHTTPRequestHandler):
+        protocol_version = "HTTP/1.1"
+
+        def do_GET(self) -> None:
+            self.send_response(503)
+            self.send_header("Content-Length", "100")
+            self.end_headers()
+            self.wfile.write(b'{"status":"not-ready"')
+            self.wfile.flush()
+            time.sleep(2.0)
+
+        def log_message(self, format: str, *args: object) -> None:
+            return
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), StalledErrorHandler)
+    server.daemon_threads = True
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        probe = launcher._http_probe(
+            f"http://127.0.0.1:{server.server_port}/health/ready",
+            timeout=0.5,
+            capture_error_body=True,
+        )
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=5)
+
+    assert probe.status_code == 503
+    assert probe.response_body is None
+    assert probe.failure is None
+
+
+def test_readiness_probe_treats_a_malformed_response_as_a_transport_failure() -> None:
+    """A service that answers with a non-HTTP status line is a connection-level
+    probe failure, never an escaping `http.client.HTTPException`."""
+
+    class MalformedHandler(BaseHTTPRequestHandler):
+        def do_GET(self) -> None:
+            self.wfile.write(b"NOT-HTTP xyz\r\n\r\n")
+            self.wfile.flush()
+            self.close_connection = True
+
+        def log_message(self, format: str, *args: object) -> None:
+            return
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), MalformedHandler)
+    server.daemon_threads = True
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        probe = launcher._http_probe(
+            f"http://127.0.0.1:{server.server_port}/health/ready",
+            timeout=launcher.HTTP_PROBE_TIMEOUT_SECONDS,
+        )
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=5)
+
+    assert probe.status_code is None
+    assert probe.failure == "connection-error"
+
+
 def test_readiness_failure_log_keeps_only_safe_health_fields(tmp_path: Path) -> None:
     log_path = tmp_path / "logs" / "launcher.log"
     probe = launcher.HttpProbeResult(
@@ -569,6 +639,35 @@ def test_provision_refuses_to_rewrite_an_existing_workspace(
     assert fresh_paths.local_config.read_bytes() == original_config
     assert launcher.read_workspace_config(fresh_paths.local_config).project_name == "First Name"
     assert fresh_paths.protected_secrets.read_bytes() == original_secrets
+
+
+def test_contract_mismatch_refuses_the_upgrade_without_repairing_the_record(
+    fresh_paths: launcher.ProjectaPaths,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """An installed data root whose recorded runtime contract differs from the
+    package refuses with UPDATE_RECOVERY_REQUIRED and is left byte-for-byte
+    unchanged: no silent migration, no destructive repair (S15-11 upgrade
+    contract)."""
+    monkeypatch.setattr(launcher, "_create_shortcuts", lambda paths, *, package_root=None: None)
+    launcher.provision(fresh_paths, workspace_name="Upgraded Workspace")
+    installed = json.loads(fresh_paths.installation_config.read_text(encoding="utf-8"))
+    mismatched = {
+        **installed,
+        "runtimeVersions": {**installed["runtimeVersions"], "python": "3.11.9"},
+    }
+    fresh_paths.installation_config.write_text(json.dumps(mismatched, indent=2) + "\n", encoding="utf-8")
+    record_before = fresh_paths.installation_config.read_bytes()
+    workspace_before = fresh_paths.local_config.read_bytes()
+    secrets_before = fresh_paths.protected_secrets.read_bytes()
+
+    with pytest.raises(launcher.RuntimeFailure) as failure:
+        launcher.provision(fresh_paths)
+
+    assert failure.value.code == "UPDATE_RECOVERY_REQUIRED"
+    assert fresh_paths.installation_config.read_bytes() == record_before
+    assert fresh_paths.local_config.read_bytes() == workspace_before
+    assert fresh_paths.protected_secrets.read_bytes() == secrets_before
 
 
 def test_provision_rejects_invalid_name_without_partial_state(

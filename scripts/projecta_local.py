@@ -7,6 +7,7 @@ import base64
 import ctypes
 import ctypes.wintypes
 import hashlib
+import http.client
 import json
 import os
 import platform
@@ -1168,9 +1169,18 @@ def _http_probe(
         with opener.open(url, timeout=timeout) as response:
             return HttpProbeResult(response.status, None, None, int((time.monotonic() - started) * 1000))
     except urllib.error.HTTPError as error:
-        body = error.read(HEALTH_RESPONSE_BODY_LIMIT).decode("utf-8", "replace") if capture_error_body else None
+        body = None
+        if capture_error_body:
+            try:
+                body = error.read(HEALTH_RESPONSE_BODY_LIMIT).decode("utf-8", "replace")
+            except (OSError, http.client.HTTPException):
+                # A stalled, reset, or malformed error body must not escape the
+                # probe: the finite status code still has to reach the
+                # readiness-failure handling below, so the unreadable body is
+                # dropped instead of turning into an internal error.
+                body = None
         return HttpProbeResult(error.code, body, None, int((time.monotonic() - started) * 1000))
-    except (urllib.error.URLError, TimeoutError, OSError) as error:
+    except (urllib.error.URLError, TimeoutError, OSError, http.client.HTTPException) as error:
         reason = error.reason if isinstance(error, urllib.error.URLError) else error
         failure = "timeout" if isinstance(reason, TimeoutError) else "connection-error"
         return HttpProbeResult(None, None, failure, int((time.monotonic() - started) * 1000))
