@@ -2431,7 +2431,7 @@ $shortcut.Arguments = $env:PROJECTA_SHORTCUT_ARGUMENTS
 $shortcut.IconLocation = $env:PROJECTA_SHORTCUT_ICON
 $shortcut.TargetPath = $env:PROJECTA_SHORTCUT_TARGET
 $shortcut.WorkingDirectory = $env:PROJECTA_SHORTCUT_WORKING_DIRECTORY
-$shortcut.Description = 'Projecta 0.7.1 unsigned release test application'
+$shortcut.Description = 'Projecta desktop application'
 $shortcut.Save()
 """
     encoded = base64.b64encode(shortcut_script.encode("utf-16le")).decode("ascii")
@@ -2821,9 +2821,16 @@ def main(argv: Sequence[str] | None = None) -> int:
         paths = ProjectaPaths.discover()
         if args.command == "install":
             fresh_install = not paths.local_config.is_file()
+            manifest = load_runtime_manifest(paths)
             release_eligible = install(paths, workspace_name=args.workspace_name)
             if not release_eligible:
                 print("Projecta 0.7.1 unsigned test release installed. Publisher identity is unverified; signed updates remain required.")
+            elif manifest.get("authenticodeSigning") is None:
+                print(
+                    "Projecta owner release installed. The Windows binaries are NotSigned: Windows cannot "
+                    "verify the publisher and SmartScreen or antivirus software may warn; the Ed25519 update "
+                    "signature verified."
+                )
             elif fresh_install:
                 print("Projecta is installed; the selected first-run workspace was provisioned.")
             else:

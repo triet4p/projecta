@@ -39,8 +39,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   `package-lock.json`, and `tauri.conf.json` versions to agree with the
   release, pins the reviewed Tauri/Rust/JS dependency versions against their
   lockfiles, and refuses release/installer builds on tampered or mismatched
-  Tauri inputs. Existing Ed25519 update-signature verification and
-  owner-controlled Authenticode/timestamp trust are unchanged.
+  Tauri inputs. Existing Ed25519 update-signature verification is unchanged.
+- Made Authenticode signing optional for free-first GitHub distribution: an owner
+  release requires the Ed25519 update identity and verifies it end to end, while
+  unconfigured Authenticode builds and installs truthfully as `NotSigned` with a
+  disclosed Windows publisher/SmartScreen warning. Partially configured or invalid
+  Authenticode refuses instead of silently downgrading.
 - Enforced strict origin validation and mandatory `X-Projecta-Theme-Request` custom
   header protection on the desktop `/preferences/theme` endpoint, rejecting foreign
   origins, missing Origin headers, lookalikes, and disallowed HTTP methods without

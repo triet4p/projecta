@@ -297,10 +297,13 @@ default per-user WebView2 profile:
   (normal product behavior); set it to a task-owned disposable root so a
   proof run never writes into the owner's Downloads folder.
 
-Host-validation packages are intentionally rejected by the 0.7.1 runtime
-distribution gate. The only permitted local native smoke channel is the exact
-`--unsigned-pre-release-test` exception; it remains `releaseEligible=false` and
-is not for public distribution. Do not alter the signature gate.
+Host-validation packages are intentionally rejected by the runtime
+distribution gate. Local native smoke uses either the exact
+`--unsigned-pre-release-test` exception (`releaseEligible=false`, not for
+public distribution) or an owner Ed25519-signed release package. A signed
+release without configured Authenticode is truthfully `NotSigned`: Windows
+cannot verify the publisher and SmartScreen may warn; the Ed25519 update
+signature still verifies. Do not alter the signature gate.
 
 For smoke on a fresh workspace, launch against a fresh data root without
 running `install` or the OS installer: the management surface shows the inline

@@ -240,3 +240,227 @@ def test_installer_refuses_tampered_tauri_input(tmp_path: Path) -> None:
     with pytest.raises(SystemExit) as failure:
         installer._require_tauri_input_agreement({"sourceFiles": records})
     assert "differs from the release source" in str(failure.value)
+
+
+def _installer_test_anchor(monkeypatch: pytest.MonkeyPatch):
+    """Create a disposable owner anchor and point installer build-time config at it."""
+    import base64
+
+    from cryptography.hazmat.primitives import serialization
+    from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import build_windows_installer as installer
+
+    private_key = Ed25519PrivateKey.generate()
+    public_key = private_key.public_key().public_bytes(
+        serialization.Encoding.Raw,
+        serialization.PublicFormat.Raw,
+    )
+    public_b64 = base64.b64encode(public_key).decode("ascii")
+    monkeypatch.setenv("PROJECTA_UPDATE_PUBLIC_KEY_B64", public_b64)
+    return installer, private_key, public_key
+
+
+def _signed_release_manifest(
+    package: Path, fingerprint: str, *, signature: bytes | None = None
+) -> dict:
+    """Write a signed-release-shaped manifest exercising the real installer gate order."""
+    import hashlib
+    import json
+
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import build_windows_installer as installer
+    import projecta_local as launcher
+
+    manifest = {
+        "formatVersion": 1,
+        "projectaVersion": installer.APP_VERSION,
+        "dataContractVersion": 1,
+        "releaseEligible": True,
+        "distributionChannel": "signed-release",
+        "signatureAlgorithm": "Ed25519",
+        "publicKeyFingerprint": fingerprint,
+        "authenticodeSigning": None,
+        "runtimeVersions": dict(launcher.RUNTIME_VERSIONS),
+        "vcRuntimePrerequisite": dict(launcher.VC_RUNTIME_PREREQUISITE),
+        "webview2RuntimePrerequisite": dict(launcher.WEBVIEW2_RUNTIME_PREREQUISITE),
+        "sourceRevision": "rev-test",
+        "sourceRevisionMeaning": "test",
+        "sourceProvenance": {
+            "file": "runtime/source-provenance.json",
+            "sha256": "x",
+            "sourceRevision": "rev-test",
+            "sourceFilesSha256": "y",
+        },
+        "noticeFiles": [],
+        "files": [],
+    }
+    manifest_bytes = (json.dumps(manifest, indent=2) + "\n").encode("utf-8")
+    (package / "runtime-manifest.json").write_bytes(manifest_bytes)
+    if signature is not None:
+        import base64
+
+        (package / "runtime-manifest.sig").write_bytes(base64.b64encode(signature) + b"\n")
+    return manifest
+
+
+def test_installer_validate_accepts_signed_release_with_notsigned_authenticode(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """An Ed25519-signed release package with absent Authenticode passes the package gate."""
+    import hashlib
+
+    installer, private_key, public_key = _installer_test_anchor(monkeypatch)
+    import projecta_local as launcher
+
+    package = tmp_path / "package"
+    package.mkdir()
+    fingerprint = hashlib.sha256(public_key).hexdigest()
+    manifest_bytes_holder: dict[str, bytes] = {}
+    manifest = _signed_release_manifest(package, fingerprint)
+    manifest_bytes_holder["bytes"] = (package / "runtime-manifest.json").read_bytes()
+    import base64
+
+    (package / "runtime-manifest.sig").write_bytes(
+        base64.b64encode(private_key.sign(manifest_bytes_holder["bytes"])) + b"\n"
+    )
+    provenance = {
+        "sourceFiles": [
+            {"path": path, "size": 1, "sha256": "0" * 64}
+            for path in (
+                "apps/desktop/package.json",
+                "apps/desktop/package-lock.json",
+                "apps/desktop/src-tauri/Cargo.toml",
+                "apps/desktop/src-tauri/Cargo.lock",
+                "apps/desktop/src-tauri/tauri.conf.json",
+            )
+        ]
+    }
+    live_records = {
+        path: {"path": path, "size": 1, "sha256": "0" * 64}
+        for path in (
+            "apps/desktop/package.json",
+            "apps/desktop/package-lock.json",
+            "apps/desktop/src-tauri/Cargo.toml",
+            "apps/desktop/src-tauri/Cargo.lock",
+            "apps/desktop/src-tauri/tauri.conf.json",
+        )
+    }
+    monkeypatch.setattr(installer, "_package_source_provenance", lambda package, manifest: provenance)
+    monkeypatch.setattr(installer, "_source_file_record", lambda path: live_records[path.relative_to(installer.ROOT).as_posix()])
+    monkeypatch.setattr(installer, "validate_desktop_locks", lambda root: {})
+    real_anchor = launcher.RELEASE_UPDATE_PUBLIC_KEY_B64
+    monkeypatch.setattr(launcher, "load_runtime_manifest", lambda paths: manifest)
+
+    assert installer._validate_package(package) == manifest
+    assert launcher.RELEASE_UPDATE_PUBLIC_KEY_B64 == real_anchor
+
+
+def test_installer_validate_refuses_signed_release_without_signature_file(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A signed-release claim without the detached Ed25519 signature refuses."""
+    import hashlib
+
+    installer, _, public_key = _installer_test_anchor(monkeypatch)
+
+    package = tmp_path / "package"
+    package.mkdir()
+    _signed_release_manifest(package, hashlib.sha256(public_key).hexdigest())
+
+    with pytest.raises(SystemExit) as failure:
+        installer._validate_package(package)
+
+    assert "signed-release contract" in str(failure.value)
+
+
+def test_installer_validate_refuses_signed_release_with_wrong_anchor(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A manifest signed by another key refuses against the configured owner anchor."""
+    import base64
+    import hashlib
+
+    from cryptography.hazmat.primitives import serialization
+    from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+
+    installer, _, public_key = _installer_test_anchor(monkeypatch)
+
+    package = tmp_path / "package"
+    package.mkdir()
+    manifest = _signed_release_manifest(package, hashlib.sha256(public_key).hexdigest())
+    del manifest
+    other_key = Ed25519PrivateKey.generate()
+    other_signature = other_key.sign((package / "runtime-manifest.json").read_bytes())
+    (package / "runtime-manifest.sig").write_bytes(base64.b64encode(other_signature) + b"\n")
+
+    with pytest.raises(SystemExit) as failure:
+        installer._validate_package(package)
+
+    assert "signature is invalid" in str(failure.value)
+
+
+def test_installer_validate_refuses_signed_release_with_tampered_manifest(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A signed manifest modified after signing refuses against the owner anchor."""
+    import base64
+    import hashlib
+
+    installer, private_key, public_key = _installer_test_anchor(monkeypatch)
+
+    package = tmp_path / "package"
+    package.mkdir()
+    _signed_release_manifest(package, hashlib.sha256(public_key).hexdigest())
+    manifest_bytes = (package / "runtime-manifest.json").read_bytes()
+    (package / "runtime-manifest.sig").write_bytes(
+        base64.b64encode(private_key.sign(manifest_bytes)) + b"\n"
+    )
+    import json
+
+    manifest = json.loads((package / "runtime-manifest.json").read_bytes())
+    manifest["noticeFiles"] = ["THIRD-PARTY-NOTICES.md"]
+    (package / "runtime-manifest.json").write_bytes(
+        (json.dumps(manifest, indent=2) + "\n").encode("utf-8")
+    )
+
+    with pytest.raises(SystemExit) as failure:
+        installer._validate_package(package)
+
+    assert "signature is invalid" in str(failure.value)
+
+
+def test_installer_validate_refuses_signed_release_without_configured_anchor(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A signed-release package without build-time owner configuration refuses closed."""
+    import hashlib
+
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import build_windows_installer as installer
+    import projecta_local as launcher
+
+    from cryptography.hazmat.primitives import serialization
+    from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+
+    private_key = Ed25519PrivateKey.generate()
+    public_key = private_key.public_key().public_bytes(
+        serialization.Encoding.Raw,
+        serialization.PublicFormat.Raw,
+    )
+    monkeypatch.delenv("PROJECTA_UPDATE_PUBLIC_KEY_B64", raising=False)
+
+    package = tmp_path / "package"
+    package.mkdir()
+    _signed_release_manifest(
+        package,
+        hashlib.sha256(public_key).hexdigest(),
+        signature=private_key.sign(b"placeholder"),
+    )
+
+    with pytest.raises(SystemExit) as failure:
+        installer._validate_package(package)
+
+    assert "trust anchor is not configured" in str(failure.value)
+    assert launcher.RELEASE_UPDATE_PUBLIC_KEY_B64 is None

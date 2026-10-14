@@ -1,8 +1,16 @@
-"""Build the owner-authorized unsigned Projecta 0.7.1 Windows setup file."""
+"""Build the per-user Projecta Windows setup file from an authorized package.
+
+Two package shapes are accepted: the owner-authorized unsigned 0.7.1 test
+exception (``releaseEligible=false``), and an owner Ed25519-signed release
+package (``releaseEligible=true``, ``distributionChannel=signed-release``)
+whose Windows binaries are truthfully NotSigned when Authenticode is
+unconfigured. Anything else refuses.
+"""
 
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import json
 import os
@@ -144,6 +152,28 @@ def _require_tauri_input_agreement(provenance: dict[str, Any]) -> None:
     except ReleaseContractError as error:
         raise SystemExit(f"the Tauri desktop inputs do not satisfy the release contract: {error}") from error
 
+def _installer_release_trust_anchor() -> bytes:
+    """Return the owner Ed25519 trust anchor for build-time installer validation.
+
+    The anchor comes only from the authorized build-time owner configuration
+    (``PROJECTA_UPDATE_PUBLIC_KEY_B64``). The package's self-declared
+    fingerprint is never trusted: the manifest signature must verify against
+    this configured anchor. Unsigned-only 0.7.1 exception packages never reach
+    this helper.
+    """
+    encoded = os.environ.get("PROJECTA_UPDATE_PUBLIC_KEY_B64")
+    if not encoded:
+        raise SystemExit(
+            "the owner Ed25519 trust anchor is not configured; "
+            "PROJECTA_UPDATE_PUBLIC_KEY_B64 is required to validate a signed-release package."
+        )
+    try:
+        public_key = base64.b64decode(encoded, validate=True)
+    except (ValueError, base64.binascii.Error) as error:
+        raise SystemExit("PROJECTA_UPDATE_PUBLIC_KEY_B64 is invalid.") from error
+    if len(public_key) != 32:
+        raise SystemExit("PROJECTA_UPDATE_PUBLIC_KEY_B64 must encode a 32-byte Ed25519 public key.")
+    return public_key
 
 def _authenticode_status(path: Path) -> str:
     with path.open("rb") as stream:
@@ -188,28 +218,66 @@ def _validate_package(package: Path) -> dict[str, Any]:
         raise SystemExit("the package directory must be a real directory.")
     if APP_VERSION != launcher.APP_VERSION:
         raise SystemExit("the installer and launcher version pins do not match.")
+    manifest_path = package / "runtime-manifest.json"
+    signature_path = package / "runtime-manifest.sig"
+    try:
+        manifest = json.loads(manifest_path.read_bytes())
+    except (OSError, json.JSONDecodeError) as error:
+        raise SystemExit("the package manifest is missing or invalid.") from error
+    if not isinstance(manifest, dict):
+        raise SystemExit("the package manifest is missing or invalid.")
+    if manifest.get("projectaVersion") != APP_VERSION:
+        raise SystemExit("the package version does not match the installer version pin.")
+    if manifest.get("releaseEligible") is True:
+        # Build-time installer validation uses only the authorized owner
+        # configuration as its trust anchor. The worktree launcher carries no
+        # frozen anchor, and the package's self-declared fingerprint is never
+        # trusted: the detached manifest signature must verify against the
+        # configured anchor before any other release check runs.
+        anchor = _installer_release_trust_anchor()
+        if (
+            manifest.get("distributionChannel") != "signed-release"
+            or "unsignedPreReleaseException" in manifest
+            or manifest.get("signatureAlgorithm") != "Ed25519"
+            or not signature_path.is_file()
+            or signature_path.is_symlink()
+        ):
+            raise SystemExit("the owner release package does not satisfy the signed-release contract.")
+        try:
+            manifest_bytes = manifest_path.read_bytes()
+            launcher._verify_ed25519_signature(manifest_bytes, signature_path, anchor)
+        except launcher.RuntimeFailure as error:
+            raise SystemExit(f"the owner release package signature is invalid: {error.code}") from error
+        except OSError as error:
+            raise SystemExit("the owner release package manifest could not be read.") from error
+        if manifest.get("publicKeyFingerprint") != hashlib.sha256(anchor).hexdigest():
+            raise SystemExit("the owner release package fingerprint does not match its trust anchor.")
+    elif not (
+        manifest.get("releaseEligible") is False
+        and manifest.get("distributionChannel") == CHANNEL
+        and manifest.get("unsignedPreReleaseException") == EXCEPTION
+        and manifest.get("authenticodeSigning") is None
+        and not signature_path.exists()
+    ):
+        raise SystemExit("the package does not match the exact owner-authorized unsigned 0.7.1 exception.")
     paths = launcher.ProjectaPaths(package, ROOT / "build" / "installer-smoke-data-unused")
+    previous_anchor = launcher.RELEASE_UPDATE_PUBLIC_KEY_B64
+    if manifest.get("releaseEligible") is True:
+        launcher.RELEASE_UPDATE_PUBLIC_KEY_B64 = os.environ.get("PROJECTA_UPDATE_PUBLIC_KEY_B64")
     try:
         manifest = launcher.load_runtime_manifest(paths)
         launcher._require_package_distribution(manifest)
     except launcher.RuntimeFailure as error:
-        raise SystemExit(f"the package does not satisfy the 0.7.1 unsigned test release contract: {error.code}") from error
-    if (
-        manifest.get("projectaVersion") != APP_VERSION
-        or manifest.get("releaseEligible") is not False
-        or manifest.get("distributionChannel") != CHANNEL
-        or manifest.get("unsignedPreReleaseException") != EXCEPTION
-        or manifest.get("authenticodeSigning") is not None
-        or (package / "runtime-manifest.sig").exists()
-    ):
-        raise SystemExit("the package does not match the exact owner-authorized unsigned 0.7.1 exception.")
+        raise SystemExit(f"the package does not satisfy the runtime distribution contract: {error.code}") from error
+    finally:
+        launcher.RELEASE_UPDATE_PUBLIC_KEY_B64 = previous_anchor
     package_provenance = _package_source_provenance(package, manifest)
     _require_tauri_input_agreement(package_provenance)
     return manifest
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Build one per-user Projecta 0.7.1 unsigned installer.")
+    parser = argparse.ArgumentParser(description="Build one per-user Projecta Windows installer.")
     parser.add_argument("--package", type=Path, required=True, help="assembled package directory")
     parser.add_argument("--compiler", type=Path, default=DEFAULT_NSIS_ROOT / "makensis.exe")
     parser.add_argument("--nsis-archive", type=Path, default=DEFAULT_NSIS_ARCHIVE)
@@ -312,7 +380,12 @@ def main(argv: list[str] | None = None) -> int:
         temporary_output.unlink(missing_ok=True)
         raise SystemExit("installer source files changed while NSIS was compiling the candidate.")
     signature_status = _authenticode_status(temporary_output)
-    if signature_status != "NotSigned":
+    package_authenticode = manifest.get("authenticodeSigning")
+    if manifest.get("releaseEligible") is True:
+        if package_authenticode is None and signature_status != "NotSigned":
+            temporary_output.unlink(missing_ok=True)
+            raise SystemExit(f"the unsigned release installer must remain unsigned; Authenticode status was {signature_status}.")
+    elif signature_status != "NotSigned":
         temporary_output.unlink(missing_ok=True)
         raise SystemExit(f"the test installer must remain unsigned; Authenticode status was {signature_status}.")
     os.replace(temporary_output, output)
@@ -321,6 +394,11 @@ def main(argv: list[str] | None = None) -> int:
         "size": output.stat().st_size,
         "sha256": _sha256(output),
         "authenticodeStatus": signature_status,
+        "windowsPublisherWarning": (
+            "Windows cannot verify the publisher; SmartScreen or antivirus software may warn."
+            if signature_status == "NotSigned"
+            else None
+        ),
         "installScope": "Projecta is per-user and not elevated; installing Microsoft's WebView2 or Visual C++ prerequisite may request UAC after user consent.",
         "installDirectory": "%LOCALAPPDATA%\\Programs\\Projecta\\0.7.1",
         "mutableDataDirectory": "%LOCALAPPDATA%\\Projecta",
@@ -328,10 +406,9 @@ def main(argv: list[str] | None = None) -> int:
     }
     receipt = {
         "projectaVersion": APP_VERSION,
-        "releaseEligible": False,
-        "distributionChannel": CHANNEL,
-        "unsignedPreReleaseException": EXCEPTION,
-        "installerSourceRevision": source_revision,
+        "releaseEligible": manifest.get("releaseEligible"),
+        "distributionChannel": manifest.get("distributionChannel"),
+        "unsignedPreReleaseException": manifest.get("unsignedPreReleaseException"),
         "installerScriptSha256": _sha256(script),
         "sourceRevision": manifest["sourceRevision"],
         "sourceRevisionMeaning": manifest.get("sourceRevisionMeaning"),
@@ -350,16 +427,21 @@ def main(argv: list[str] | None = None) -> int:
         },
         "package": str(package),
         "signing": {
-            "authenticode": "NotSigned",
-            "ed25519ReleaseManifest": False,
-            "authenticodeVerification": "no PE IMAGE_DIRECTORY_ENTRY_SECURITY certificate table",
+            "authenticode": signature_status,
+            "packageAuthenticode": package_authenticode,
+            "ed25519ReleaseManifest": bool(manifest.get("releaseEligible") is True and (package / "runtime-manifest.sig").is_file()),
+            "authenticodeVerification": (
+                "no PE IMAGE_DIRECTORY_ENTRY_SECURITY certificate table"
+                if signature_status == "NotSigned"
+                else "PE IMAGE_DIRECTORY_ENTRY_SECURITY certificate table present; Windows publisher verification applies"
+            ),
             "cleanWindowsProof": False,
         },
     }
     receipt_path.parent.mkdir(parents=True, exist_ok=True)
     receipt_path.write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")
     print(f"installer {output} sha256={installer['sha256']} size={installer['size']}")
-    print(f"authenticode={signature_status}; releaseEligible=false; exception={EXCEPTION}")
+    print(f"authenticode={signature_status}; releaseEligible={manifest.get('releaseEligible')}; channel={manifest.get('distributionChannel')}")
     return 0
 
 

@@ -226,16 +226,17 @@ Cold start, whole-process-tree memory, installed/download size, and required dis
 
 ## 9. Signing policy and public artifact naming/inventory
 
-### 9.1 Signing policy (preserved, not relaxed)
+### 9.1 Signing policy (free-first GitHub distribution, owner-approved 2026-10-14)
 
-- Release channel rule: a releasable package has `releaseEligible=true`, `distributionChannel=signed-release`, an Ed25519 `runtime-manifest.sig` verifiable against the owner release key, a newer version, and matching runtime/data contracts. Anything else is refused (`UPDATE_SIGNATURE_REQUIRED`, `UPDATE_PACKAGE_INVALID`).
+- Release channel rule: a releasable package has `releaseEligible=true`, `distributionChannel=signed-release`, an Ed25519 `runtime-manifest.sig` verifiable against the stable owner release key, a newer version, and matching runtime/data contracts. Anything else is refused (`UPDATE_SIGNATURE_REQUIRED`, `UPDATE_PACKAGE_INVALID`). Ed25519 authenticates updates; it never authenticates the Windows publisher.
+- Authenticode is optional as one group: no certificate purchase, SignTool, or timestamp is required when Authenticode is unconfigured. Unconfigured releases build, install, and update with `authenticodeSigning: null` / `NotSigned` and MUST disclose that Windows cannot verify the publisher and SmartScreen or antivirus software may warn. When any Authenticode setting is configured, the full group (thumbprint + HTTPS RFC-3161 timestamp + SignTool + current code-signing certificate with private key) is required and MUST verify; partial or invalid configured Authenticode refuses instead of silently downgrading. No self-signed fake publisher trust and no verification suppression.
 - The unsigned 0.7.x exception (`unsigned-pre-release-test`, `releaseEligible=false`, `NotSigned`) does NOT authorize an unsigned 1.0.0. Internal unsigned trials remain explicitly ineligible for public release.
-- Signer/certificate identity, timestamping authority, and redistribution permission are unknown and unauthorized as of this contract. S15-12/S15-15 remain blocked on exactly those prerequisites; a missing signer leaves the gate blocked, never signed-by-description. No private keys in repository/artifacts, no signature bypass, no public upload without authorization.
+- Stable Ed25519 release identity custody/use is owner-granted for S15-12 W2 and in-scope corrections/review proof with the same identity; redistribution and publication stay separately gated. No private keys in repository/artifacts, no signature bypass, no public upload without authorization.
 
 ### 9.2 Public artifact naming and inventory
 
 - Installer name pattern: `Projecta-Setup-<semver>.exe` (0.7.1 precedent: `Projecta-Setup-0.7.1.exe`, NSIS 3.13, per-user, HKCU uninstall key, Start Menu `Programs\Projecta\Projecta.lnk`, uninstall retains `<data>`).
-- The exact 1.0.0 payload list is owned by S15-09 (package) and sealed by S15-15 (candidate). Every candidate MUST record: file inventory with sizes and SHA-256, source revision plus content-hashed build-input provenance, compiler/runtime inputs, Authenticode/timestamp identity, update-verification identity, payload provenance, required notices/licenses, and version metadata. Tampered or mismatched inputs/signatures refuse release/update (S15-12).
+- The exact 1.0.0 payload list is owned by S15-09 (package) and sealed by S15-15 (candidate). Every candidate MUST record: file inventory with sizes and SHA-256, source revision plus content-hashed build-input provenance, compiler/runtime inputs, actual Authenticode status (`Signed` with thumbprint/timestamp/subject or truthful `NotSigned` with the Windows warning) alongside the stable Ed25519 update-verification identity and public fingerprint, payload provenance, required notices/licenses, and version metadata. Tampered or mismatched inputs/signatures refuse release/update (S15-12).
 - Version identity stays single-source: `VERSION`, API pyproject/lock/runtime, web package/lock, Semantic Core pom, and launcher `APP_VERSION` MUST agree under `scripts/check_release_contract.py` (currently all `0.7.1`).
 
 ## 10. Desktop action map (acceptance core)
@@ -294,7 +295,7 @@ Out of scope for every action above: remote backends, new semantic APIs, credent
 
 Blocked until supplied (each blocks only its named gate):
 
-- Public signer identity, certificate/timestamp path, and redistribution permission — blocks S15-12/S15-15/S15-21 release claims. The policy (§9.1) is settled; the credentials are not.
+- Redistribution permission — blocks S15-15/S15-21 release claims. The free-first policy (§9.1) needs no certificate; the stable Ed25519 identity is granted for S15-12 W2 and in-scope corrections/review proof with the same identity.
 - Authorized disposable/resettable standard-user validation hosts for Windows 10 22H2 x64 and Windows 11 24H2/25H2 x64, with and without WebView2/VC prerequisites — blocks S15-16/S15-17. No host is claimed here.
 - Exact pinned Tauri version and its documented Windows/WebView2 floor — produced by S15-02, checked against §8.1.
 - Owner acceptance of the frozen candidate on a new host — S15-20; agent runs cannot supply it.

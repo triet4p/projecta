@@ -451,6 +451,27 @@ def _write_update_trust_module(*, release_eligible: bool = False) -> tuple[Path,
     (trust_dir / "_projecta_update_trust.py").write_text(source, encoding="utf-8")
     return trust_dir, fingerprint
 
+def _authenticode_settings_present() -> bool:
+    """Report whether any optional Authenticode setting is explicitly configured.
+
+    Authenticode is an optional group under the owner-approved free-first
+    GitHub distribution policy: when no Authenticode setting is present the
+    release pipeline must work without a certificate, SignTool, or timestamp
+    authority and truthfully record ``NotSigned``. When any Authenticode
+    setting is present the whole group is required and must verify, never
+    silently downgrade. Ambient tooling on PATH alone never counts as
+    configuration.
+    """
+    return any(
+        os.environ.get(name)
+        for name in (
+            "PROJECTA_AUTHENTICODE_THUMBPRINT",
+            "PROJECTA_AUTHENTICODE_TIMESTAMP_URL",
+            "PROJECTA_SIGNTOOL_PATH",
+        )
+    )
+
+
 def _load_release_signing_configuration(
     package: Path,
     archive: Path,
@@ -458,8 +479,6 @@ def _load_release_signing_configuration(
     required = (
         "PROJECTA_UPDATE_SIGNING_KEY_PATH",
         "PROJECTA_UPDATE_PUBLIC_KEY_B64",
-        "PROJECTA_AUTHENTICODE_THUMBPRINT",
-        "PROJECTA_AUTHENTICODE_TIMESTAMP_URL",
     )
     missing = [name for name in required if not os.environ.get(name)]
     if missing:
@@ -502,11 +521,27 @@ def _load_release_signing_configuration(
     )
     if len(public_key) != 32 or public_key != derived_public_key:
         raise SystemExit("the owner Ed25519 public trust anchor does not match the private signing key.")
-
-    thumbprint = re.sub(r"\s+", "", os.environ["PROJECTA_AUTHENTICODE_THUMBPRINT"]).upper()
+    signing: dict[str, object] = {
+        "ed25519PrivateKey": private_key,
+        "publicKeyFingerprint": hashlib.sha256(public_key).hexdigest(),
+        "authenticode": None,
+    }
+    if not _authenticode_settings_present():
+        return signing
+    thumbprint_value = os.environ.get("PROJECTA_AUTHENTICODE_THUMBPRINT")
+    timestamp_value = os.environ.get("PROJECTA_AUTHENTICODE_TIMESTAMP_URL")
+    configured = [thumbprint_value, timestamp_value]
+    if any(not value for value in configured):
+        raise SystemExit(
+            "optional Authenticode signing is partially configured; "
+            "PROJECTA_AUTHENTICODE_THUMBPRINT and PROJECTA_AUTHENTICODE_TIMESTAMP_URL "
+            "must both be set or both be absent."
+        )
+    assert thumbprint_value is not None and timestamp_value is not None
+    thumbprint = re.sub(r"\s+", "", thumbprint_value).upper()
     if re.fullmatch(r"[0-9A-F]{40}", thumbprint) is None:
         raise SystemExit("PROJECTA_AUTHENTICODE_THUMBPRINT must be a 40-digit SHA-1 certificate thumbprint.")
-    timestamp_url = os.environ["PROJECTA_AUTHENTICODE_TIMESTAMP_URL"]
+    timestamp_url = timestamp_value
     timestamp = urlparse(timestamp_url)
     if (
         timestamp.scheme != "https"
@@ -521,7 +556,7 @@ def _load_release_signing_configuration(
     signtool_value = os.environ.get("PROJECTA_SIGNTOOL_PATH")
     signtool = signtool_value or shutil.which("signtool.exe")
     if signtool is None or not Path(signtool).is_file():
-        raise SystemExit("Windows SDK SignTool is required for an owner-signed release package.")
+        raise SystemExit("Windows SDK SignTool is required for configured Authenticode signing.")
     powershell = shutil.which("powershell.exe")
     if powershell is None:
         raise SystemExit("PowerShell is required to validate the CurrentUser\\My code-signing identity.")
@@ -566,21 +601,20 @@ def _load_release_signing_configuration(
             "the selected CurrentUser\\My certificate must be current, contain the code-signing EKU, "
             "and have an accessible private key."
         )
-    return {
-        "ed25519PrivateKey": private_key,
-        "publicKeyFingerprint": hashlib.sha256(public_key).hexdigest(),
+    signing["authenticode"] = {
         "authenticodeThumbprint": thumbprint,
         "timestampUrl": timestamp_url,
         "signToolPath": str(Path(signtool).resolve()),
         "certificateSubject": certificate["Subject"],
         "certificateStore": "CurrentUser\\My",
     }
+    return signing
 
 
-def _sign_authenticode_images(package: Path, signing: dict[str, object]) -> dict[str, object]:
-    sign_tool = str(signing["signToolPath"])
-    thumbprint = str(signing["authenticodeThumbprint"])
-    timestamp_url = str(signing["timestampUrl"])
+def _sign_authenticode_images(package: Path, authenticode: dict[str, object]) -> dict[str, object]:
+    sign_tool = str(authenticode["signToolPath"])
+    thumbprint = str(authenticode["authenticodeThumbprint"])
+    timestamp_url = str(authenticode["timestampUrl"])
     images = sorted(
         (
             path for path in package.rglob("*")
@@ -640,8 +674,8 @@ def _sign_authenticode_images(package: Path, signing: dict[str, object]) -> dict
     return {
         "algorithm": "Authenticode-SHA256",
         "certificateThumbprint": thumbprint,
-        "certificateSubject": signing["certificateSubject"],
-        "certificateStore": signing["certificateStore"],
+        "certificateSubject": authenticode["certificateSubject"],
+        "certificateStore": authenticode["certificateStore"],
         "timestampAuthority": timestamp_url,
         "signedImageCount": len(images),
         "verifiedImageCount": len(images),
@@ -2044,7 +2078,8 @@ def write_notices(
         "# Third-party runtime notices",
         "",
         (
-            "Owner-signed release package. This inventory records input provenance and indexes"
+            "Owner Ed25519-signed release package. This inventory records input provenance and indexes"
+            " included license/notice files; Authenticode status is recorded in runtime-manifest.json."
             if release_eligible
             else (
                 "Owner-authorized unsigned 0.7.1 release; publisher identity is unverified."
@@ -2056,7 +2091,13 @@ def write_notices(
         (
             "Unsigned release exception is limited to Projecta 0.7.1 test distribution; this is not a signed release."
             if unsigned_pre_release_test
-            else "This package status is not owner approval."
+            else (
+                "Without configured Authenticode the Windows binaries are NotSigned: Windows cannot verify "
+                "the publisher and SmartScreen or antivirus software may warn; Ed25519 update authenticity "
+                "is unaffected."
+                if release_eligible
+                else "This package status is not owner approval."
+            )
         ),
         "",
         f"- CPython {RUNTIME_VERSIONS['python']} embeddable (x64): {PYTHON_SOURCE}",
@@ -2199,8 +2240,8 @@ def write_manifest(
         for path in legal_root.rglob("*")
         if path.is_file()
     )
-    if release_eligible and (public_key_fingerprint is None or authenticode_signing is None):
-        raise SystemExit("release manifests require a pinned Ed25519 trust anchor and verified Authenticode signing.")
+    if release_eligible and public_key_fingerprint is None:
+        raise SystemExit("release manifests require a pinned Ed25519 trust anchor.")
     if not release_eligible and authenticode_signing is not None:
         raise SystemExit("host-validation manifests cannot record release signing metadata.")
     if unsigned_pre_release_test and authenticode_signing is not None:
@@ -2461,6 +2502,8 @@ def verify_assembled(
         if manifest.get("publicKeyFingerprint") != hashlib.sha256(encoded_key).hexdigest():
             raise SystemExit("release manifest fingerprint does not match its owner trust anchor.")
         signing = manifest.get("authenticodeSigning")
+        if signing is None:
+            return
         if (
             not isinstance(signing, dict)
             or signing.get("signedImageCount", 0) <= 0
@@ -2501,13 +2544,13 @@ def _build_web_assets() -> None:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Build a host-validation bundle, owner-authorized 0.7.1 unsigned release, or signed release."
+        description="Build a host-validation bundle, owner-authorized 0.7.1 unsigned release, or owner release."
     )
     parser.add_argument("--manifest-only", action="store_true")
     parser.add_argument(
         "--release",
         action="store_true",
-        help="require owner Ed25519 and CurrentUser\\My Authenticode signing identities",
+        help="require the owner Ed25519 release identity; Authenticode signing applies only when configured",
     )
     parser.add_argument(
         "--unsigned-pre-release-test",
@@ -2561,7 +2604,8 @@ def main(argv: list[str] | None = None) -> int:
             archive_path = ROOT / archive_path
         archive_path = Path(os.path.abspath(archive_path))
     elif args.release:
-        archive_path = ROOT / "build" / f"ProjectaLocal-{APP_VERSION}-win-x64-OWNER-SIGNED.zip"
+        authenticode_suffix = "SIGNED" if _authenticode_settings_present() else "NOTSIGNED"
+        archive_path = ROOT / "build" / f"ProjectaLocal-{APP_VERSION}-win-x64-OWNER-{authenticode_suffix}.zip"
     else:
         archive_path = ARCHIVE
     if archive_path.is_symlink():
@@ -2606,7 +2650,9 @@ def main(argv: list[str] | None = None) -> int:
     frozen_vc_inputs = _freeze_launcher(package, trust_dir)
     _complete_vc_runtime_inventory(package, source_vc_files, frozen_vc_inputs)
     _stage_tauri_desktop(package)
-    authenticode_signing = _sign_authenticode_images(package, signing) if signing is not None else None
+    authenticode_config = signing.get("authenticode") if signing is not None else None
+    assert signing is None or isinstance(authenticode_config, (dict, type(None)))
+    authenticode_signing = _sign_authenticode_images(package, authenticode_config) if authenticode_config is not None else None
     native_dependencies = _write_native_dependency_manifest(package)
     write_notices(
         package,
@@ -2668,8 +2714,15 @@ def main(argv: list[str] | None = None) -> int:
             "publicKeyFingerprint": public_key_fingerprint,
             "signatureCreated": args.release,
             "authenticode": authenticode_signing,
+            "authenticodeStatus": "Signed" if authenticode_signing is not None else "NotSigned",
             "reason": (
-                "Owner Authenticode and Ed25519 signing completed and verified."
+                (
+                    "Owner Ed25519 release signed and Authenticode verified."
+                    if authenticode_signing is not None
+                    else "Owner Ed25519 release signed without Authenticode; "
+                    "Windows cannot verify the publisher and SmartScreen or antivirus "
+                    "software may warn until a configured Authenticode signature is present."
+                )
                 if args.release
                 else (
                     "Owner-authorized 0.7.1 unsigned test release exception; neither Authenticode nor manifest signature is present."
@@ -2686,9 +2739,12 @@ def main(argv: list[str] | None = None) -> int:
     )
     receipt_path.write_text(json.dumps(build_receipt, indent=2) + "\n", encoding="utf-8")
     if args.release:
-        print(f"assembled owner-signed release package {package} ({APP_VERSION})")
+        print(f"assembled owner release package {package} ({APP_VERSION})")
         print(f"archive {archive_path} sha256={archive['sha256']} size={archive['size']}")
-        print(f"releaseEligible=true; Authenticode PE images={authenticode_signing['verifiedImageCount']}")
+        if authenticode_signing is not None:
+            print(f"releaseEligible=true; Authenticode PE images={authenticode_signing['verifiedImageCount']}")
+        else:
+            print("releaseEligible=true; Authenticode=NotSigned; Windows publisher unverified, SmartScreen may warn.")
     elif args.unsigned_pre_release_test:
         print(f"assembled owner-authorized unsigned 0.7.1 package {package}")
         print(f"archive {archive_path} sha256={archive['sha256']} size={archive['size']}")
