@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import os
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -212,3 +213,30 @@ def test_shipped_installer_script_compiles_against_fixture_package(tmp_path: Pat
     assert completed.returncode == 0, completed.stderr[-2000:]
     assert output.is_file()
 
+
+def test_installer_refuses_package_missing_tauri_inputs(tmp_path: Path) -> None:
+    """A provenance record without Tauri inputs refuses before any install."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import build_windows_installer as installer
+
+    with pytest.raises(SystemExit) as failure:
+        installer._require_tauri_input_agreement({"sourceFiles": []})
+    assert "omits required Tauri inputs" in str(failure.value)
+
+
+def test_installer_refuses_tampered_tauri_input(tmp_path: Path) -> None:
+    """A recorded Tauri input that differs from the release tree refuses."""
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import build_windows_installer as installer
+
+    records = [installer._source_file_record(ROOT / path) for path in (
+        "apps/desktop/package.json",
+        "apps/desktop/package-lock.json",
+        "apps/desktop/src-tauri/Cargo.toml",
+        "apps/desktop/src-tauri/Cargo.lock",
+        "apps/desktop/src-tauri/tauri.conf.json",
+    )]
+    records[0] = {**records[0], "sha256": "0" * 64}
+    with pytest.raises(SystemExit) as failure:
+        installer._require_tauri_input_agreement({"sourceFiles": records})
+    assert "differs from the release source" in str(failure.value)

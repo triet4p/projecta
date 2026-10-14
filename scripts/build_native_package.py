@@ -2576,6 +2576,13 @@ def main(argv: list[str] | None = None) -> int:
     )
     if archive_path.exists() and not default_unsigned_archive:
         raise SystemExit("the requested package archive already exists; existing output was left untouched.")
+    if args.release:
+        from check_release_contract import ReleaseContractError, validate_desktop_locks
+
+        try:
+            validate_desktop_locks(ROOT)
+        except ReleaseContractError as error:
+            raise SystemExit(f"the Tauri desktop inputs do not satisfy the release contract: {error}") from error
     signing = _load_release_signing_configuration(package, archive_path) if args.release else None
     if package.exists() and (not output_is_default or args.unsigned_pre_release_test):
         raise SystemExit("the requested package directory already exists; existing output was left untouched.")

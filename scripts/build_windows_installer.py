@@ -16,6 +16,7 @@ from typing import Any
 import re
 
 import projecta_local as launcher
+from check_release_contract import ReleaseContractError, validate_desktop_locks
 
 ROOT = Path(__file__).resolve().parents[1]
 APP_VERSION = "0.7.1"
@@ -108,6 +109,42 @@ def _package_source_provenance(package: Path, manifest: dict[str, Any]) -> dict[
     return provenance
 
 
+def _require_tauri_input_agreement(provenance: dict[str, Any]) -> None:
+    """Refuse a package whose recorded Tauri inputs disagree with the release tree.
+
+    The installer never rebuilds the Tauri host; it binds the staged package to
+    the same version/lock agreement the release contract enforces, so a
+    tampered or mismatched Tauri input refuses here instead of shipping.
+    """
+    records = provenance.get("sourceFiles")
+    if not isinstance(records, list):
+        raise SystemExit("the package build-source provenance digest is inconsistent.")
+    by_path = {
+        record["path"]: record
+        for record in records
+        if isinstance(record, dict) and isinstance(record.get("path"), str)
+    }
+    required = (
+        "apps/desktop/package.json",
+        "apps/desktop/package-lock.json",
+        "apps/desktop/src-tauri/Cargo.toml",
+        "apps/desktop/src-tauri/Cargo.lock",
+        "apps/desktop/src-tauri/tauri.conf.json",
+    )
+    missing = [path for path in required if path not in by_path]
+    if missing:
+        raise SystemExit(f"the package provenance omits required Tauri inputs: {missing}")
+    live: dict[str, dict[str, object]] = {}
+    for path in required:
+        live[path] = _source_file_record(ROOT / path)
+        if by_path[path] != live[path]:
+            raise SystemExit(f"the packaged Tauri input differs from the release source: {path}")
+    try:
+        validate_desktop_locks(ROOT)
+    except ReleaseContractError as error:
+        raise SystemExit(f"the Tauri desktop inputs do not satisfy the release contract: {error}") from error
+
+
 def _authenticode_status(path: Path) -> str:
     with path.open("rb") as stream:
         dos_header = stream.read(64)
@@ -166,7 +203,8 @@ def _validate_package(package: Path) -> dict[str, Any]:
         or (package / "runtime-manifest.sig").exists()
     ):
         raise SystemExit("the package does not match the exact owner-authorized unsigned 0.7.1 exception.")
-    _package_source_provenance(package, manifest)
+    package_provenance = _package_source_provenance(package, manifest)
+    _require_tauri_input_agreement(package_provenance)
     return manifest
 
 

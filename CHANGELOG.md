@@ -34,6 +34,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Security
 
+- Bound the Tauri desktop inputs to the release trust policy: the release
+  contract now requires the desktop `Cargo.toml`, `package.json`,
+  `package-lock.json`, and `tauri.conf.json` versions to agree with the
+  release, pins the reviewed Tauri/Rust/JS dependency versions against their
+  lockfiles, and refuses release/installer builds on tampered or mismatched
+  Tauri inputs. Existing Ed25519 update-signature verification and
+  owner-controlled Authenticode/timestamp trust are unchanged.
 - Enforced strict origin validation and mandatory `X-Projecta-Theme-Request` custom
   header protection on the desktop `/preferences/theme` endpoint, rejecting foreign
   origins, missing Origin headers, lookalikes, and disallowed HTTP methods without

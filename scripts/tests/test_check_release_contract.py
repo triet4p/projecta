@@ -4,7 +4,9 @@ from unittest import TestCase
 from scripts.check_release_contract import (
     ReleaseContractError,
     declared_versions,
+    desktop_lock_pins,
     release_notes,
+    validate_desktop_locks,
     validate_release,
     version_from_tag,
 )
@@ -32,3 +34,23 @@ class ReleaseContractTest(TestCase):
         version, notes = validate_release(ROOT, "v0.7.1")
         self.assertEqual(version, "0.7.1")
         self.assertIn("### ", notes)
+
+    def test_desktop_versions_join_the_closed_release_contract(self) -> None:
+        versions = declared_versions(ROOT)
+        self.assertEqual(
+            {
+                versions["desktop Cargo.toml"],
+                versions["desktop package.json"],
+                versions["desktop package-lock root"],
+                versions["tauri.conf.json"],
+            },
+            {"0.7.1"},
+        )
+        self.assertEqual(set(versions.values()), {"0.7.1"})
+
+    def test_desktop_lock_pins_match_the_reviewed_tauri_inputs(self) -> None:
+        pins = validate_desktop_locks(ROOT)
+        self.assertEqual(pins["cargo manifest tauri"], "=2.12.3")
+        self.assertEqual(pins["cargo lock tauri"], "2.12.3")
+        self.assertEqual(pins["npm lock node_modules/@tauri-apps/api"], "2.12.3")
+        self.assertEqual(desktop_lock_pins(ROOT), pins)
