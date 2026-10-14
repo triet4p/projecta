@@ -35,6 +35,8 @@ def _signed_update_package(
         "ProjectaStart.ps1",
         "runtime/vc-runtime-policy.json",
         "runtime/vc_runtime_prerequisite.ps1",
+        "runtime/webview2-runtime-policy.json",
+        "runtime/webview2_runtime_prerequisite.ps1",
         "runtime/python/python.exe",
         "runtime/python/python312._pth",
         "runtime/python/uv.lock",
@@ -74,6 +76,8 @@ def _signed_update_package(
             path.write_bytes(f"test payload {index}\n".encode())
     policy_path = package / "runtime" / "vc-runtime-policy.json"
     policy_path.write_text(json.dumps(launcher.VC_RUNTIME_PREREQUISITE), encoding="utf-8")
+    webview2_policy_path = package / "runtime" / "webview2-runtime-policy.json"
+    webview2_policy_path.write_text(json.dumps(launcher.WEBVIEW2_RUNTIME_PREREQUISITE), encoding="utf-8")
     files = [
         {
             "path": relative,
@@ -93,6 +97,7 @@ def _signed_update_package(
                 "signatureAlgorithm": "Ed25519",
                 "runtimeVersions": dict(launcher.RUNTIME_VERSIONS),
                 "vcRuntimePrerequisite": dict(launcher.VC_RUNTIME_PREREQUISITE),
+                "webview2RuntimePrerequisite": dict(launcher.WEBVIEW2_RUNTIME_PREREQUISITE),
                 "noticeFiles": ["THIRD-PARTY-NOTICES.md"],
                 "files": files,
             },
@@ -875,6 +880,49 @@ def test_package_inventory_rejects_visual_cpp_runtime_payload(filename: str, tmp
 
     assert failure.value.code == "PACKAGE_CONTENT_INVALID"
 
+
+def test_webview2_prerequisite_contract_pins_guid_floor_and_source(tmp_path: Path) -> None:
+    policy = launcher.WEBVIEW2_RUNTIME_PREREQUISITE
+    assert policy["formatVersion"] == 1
+    assert policy["architecture"] == "x64"
+    assert policy["runtimeGuid"] == "{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}"
+    assert policy["minimumVersion"] == "109.0.1518.78"
+    assert policy["sourceUrl"] == "https://go.microsoft.com/fwlink/p/?LinkId=2124703"
+    assert policy["publisher"] == "Microsoft Corporation"
+    assert policy["installerFileName"] == "MicrosoftEdgeWebview2Setup.exe"
+    assert (
+        policy["integrityContract"]
+        == "sha256-of-authenticode-verified-download-rechecked-before-launch"
+    )
+
+
+def test_webview2_prerequisite_refuses_tampered_manifest_or_policy(tmp_path: Path) -> None:
+    package = tmp_path / "package"
+    runtime = package / "runtime"
+    runtime.mkdir(parents=True)
+    policy_path = runtime / "webview2-runtime-policy.json"
+    policy_path.write_text(json.dumps(launcher.WEBVIEW2_RUNTIME_PREREQUISITE), encoding="utf-8")
+    good_manifest = {"webview2RuntimePrerequisite": dict(launcher.WEBVIEW2_RUNTIME_PREREQUISITE)}
+    launcher._validate_webview2_runtime_prerequisite(
+        package, good_manifest, error_code="PACKAGE_MANIFEST_INVALID"
+    )
+    tampered_manifest = {
+        "webview2RuntimePrerequisite": {
+            **launcher.WEBVIEW2_RUNTIME_PREREQUISITE,
+            "minimumVersion": "1.0.0.0",
+        }
+    }
+    with pytest.raises(launcher.RuntimeFailure) as failure:
+        launcher._validate_webview2_runtime_prerequisite(
+            package, tampered_manifest, error_code="PACKAGE_MANIFEST_INVALID"
+        )
+    assert failure.value.code == "PACKAGE_MANIFEST_INVALID"
+    policy_path.write_text(json.dumps({**launcher.WEBVIEW2_RUNTIME_PREREQUISITE, "sourceUrl": "https://example.invalid/x"}), encoding="utf-8")
+    with pytest.raises(launcher.RuntimeFailure) as bad_policy:
+        launcher._validate_webview2_runtime_prerequisite(
+            package, good_manifest, error_code="PACKAGE_MANIFEST_INVALID"
+        )
+    assert bad_policy.value.code == "PACKAGE_MANIFEST_INVALID"
 def _workspace_registry(
     tmp_path: Path,
     header: tuple[str, str],

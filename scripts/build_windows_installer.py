@@ -283,7 +283,7 @@ def main(argv: list[str] | None = None) -> int:
         "size": output.stat().st_size,
         "sha256": _sha256(output),
         "authenticodeStatus": signature_status,
-        "installScope": "Projecta is per-user and not elevated; installing Microsoft's Visual C++ prerequisite may request UAC after user consent.",
+        "installScope": "Projecta is per-user and not elevated; installing Microsoft's WebView2 or Visual C++ prerequisite may request UAC after user consent.",
         "installDirectory": "%LOCALAPPDATA%\\Programs\\Projecta\\0.7.1",
         "mutableDataDirectory": "%LOCALAPPDATA%\\Projecta",
         "uninstallRetainsMutableData": True,

@@ -2,14 +2,24 @@
 param([switch]$InstallOnly)
 
 $ErrorActionPreference = 'Stop'
-$prerequisiteScript = Join-Path $PSScriptRoot 'runtime\vc_runtime_prerequisite.ps1'
 try {
-    . $prerequisiteScript
-    $policyPath = Join-Path $PSScriptRoot 'runtime\vc-runtime-policy.json'
-    $result = Ensure-ProjectaVcRuntime -PolicyPath $policyPath
+    # WebView2 first: the Tauri window cannot render without the Evergreen
+    # runtime. VC++ second: the bundled backend cannot start without it.
+    # Either gate stops safely (nonzero exit, nothing started) on installed-
+    # missing/declined/failed/restart-required paths; only a disclosed vendor
+    # installer may elevate.
+    $webview2Script = Join-Path $PSScriptRoot 'runtime\webview2_runtime_prerequisite.ps1'
+    . $webview2Script
+    $webview2Policy = Join-Path $PSScriptRoot 'runtime\webview2-runtime-policy.json'
+    $result = Ensure-ProjectaWebView2Runtime -PolicyPath $webview2Policy
+    if ($result -ne 0) { exit $result }
+    $vcScript = Join-Path $PSScriptRoot 'runtime\vc_runtime_prerequisite.ps1'
+    . $vcScript
+    $vcPolicy = Join-Path $PSScriptRoot 'runtime\vc-runtime-policy.json'
+    $result = Ensure-ProjectaVcRuntime -PolicyPath $vcPolicy
     if ($result -ne 0) { exit $result }
     if ($InstallOnly) {
-        Write-Host 'VC++ prerequisite ready; no Projecta application was started.'
+        Write-Host 'Prerequisites ready (WebView2 + VC++); no Projecta application was started.'
         exit 0
     }
     $application = Join-Path $PSScriptRoot 'Projecta.exe'

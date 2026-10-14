@@ -22,6 +22,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   pinned backend dependencies, provenance, notices/licenses, and version
   metadata. The obsolete Tkinter launcher is removed with no compatibility
   shim, and `start` never opens a system-browser app path.
+- Integrated the per-user NSIS installation flow with authentic dual
+  prerequisite handling: the WebView2 Evergreen runtime is detected directly
+  at its runtime GUID (an installed Edge browser is not proof), and the
+  official Microsoft Evergreen bootstrapper is offered with explicit consent
+  and signature/integrity verification when missing or below the floor. The
+  existing Visual C++ prerequisite flow is preserved; declining, failing, or
+  restart-required prerequisites stop safely with prior binaries and data
+  retained, and only a disclosed vendor installer may elevate.
 - Extended the local desktop runtime to Windows 10 22H2 x64 alongside Windows 11
 
 ### Security
@@ -120,6 +128,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   Windows. A create/configure/assign failure is a finite spawn failure after
   cleanup of only the exact newly created child, never a fallback to an
   uncontained supervisor.
+- Restored the assembled-package provenance check that keeps the recorded
+  source revision bound to the package manifest alongside the WebView2
+  prerequisite policy comparison; a provenance document from another source
+  tree is refused during package verification.
 
 ### Changed
 

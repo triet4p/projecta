@@ -38,7 +38,7 @@ Var HadPrevious
 Function .onInit
   IfSilent proceed
   SetShellVarContext current
-  MessageBox MB_ICONEXCLAMATION|MB_OKCANCEL|MB_DEFBUTTON2 "Projecta 0.7.1 is an owner-authorized unsigned Windows 10 22H2 / Windows 11 24H2+ x64 release. Windows cannot verify the publisher, and SmartScreen or antivirus software may warn. Continue only if you obtained this installer from the owner-approved source and verified its published SHA-256. Projecta itself installs and runs per-user and is never elevated. If the x64 Visual C++ prerequisite is missing, Internet access is required and setup will ask before downloading the official Microsoft installer; Microsoft's own license/consent UI and a Windows UAC prompt may appear. Only that vendor prerequisite can be elevated; Projecta and its services remain per-user. This is not clean-host or production certification. Continue?"
+  MessageBox MB_ICONEXCLAMATION|MB_OKCANCEL|MB_DEFBUTTON2 "Projecta 0.7.1 is an owner-authorized unsigned Windows 10 22H2 / Windows 11 24H2+ x64 release. Windows cannot verify the publisher, and SmartScreen or antivirus software may warn. Continue only if you obtained this installer from the owner-approved source and verified its published SHA-256. Projecta itself installs and runs per-user and is never elevated. If the WebView2 Evergreen runtime or the x64 Visual C++ prerequisite is missing, Internet access is required and setup will ask before downloading each official Microsoft installer; each Microsoft installer shows its own license/consent UI and a Windows UAC prompt may appear. Only those vendor prerequisites can be elevated; Projecta and its services remain per-user. An installed Edge browser is not proof the WebView2 runtime is present. This is not clean-host or production certification. Continue?" IDOK proceed
   Abort
 proceed:
   SetShellVarContext current
@@ -67,7 +67,7 @@ Section "Install Projecta 0.7.1"
 prerequisiteCheckFailed:
   SetOutPath "$INSTDIR\.."
   RMDir /r "$StageDir"
-  MessageBox MB_ICONSTOP|MB_OK "Projecta was not installed because its Microsoft Visual C++ prerequisite could not be prepared or verified. Nothing in an existing Projecta installation or workspace was changed. Connect to the Internet, rerun setup, and approve the Microsoft installer through its own license screen and Windows UAC prompt if required. Error code: $1"
+  MessageBox MB_ICONSTOP|MB_OK "Projecta was not installed because a Microsoft prerequisite (WebView2 Evergreen runtime or Visual C++ runtime) could not be prepared or verified. Nothing in an existing Projecta installation or workspace was changed. Connect to the Internet, rerun setup, and approve each Microsoft installer through its own license screen and Windows UAC prompt if required. An installed Edge browser is not proof the WebView2 runtime is present. Error code: $1"
   SetErrorLevel 30
   Abort
 

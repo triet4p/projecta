@@ -100,6 +100,7 @@ SOURCE_INPUT_PATHS = (
     "scripts/bootstrap_fuseki.py",
     "scripts/projecta_start.ps1",
     "scripts/vc_runtime_prerequisite.ps1",
+    "scripts/webview2_runtime_prerequisite.ps1",
     "scripts/projecta-setup.nsi",
 )
 SOURCE_IGNORED_DIRS = {"__pycache__", ".pytest_cache", ".ruff_cache"}
@@ -225,6 +226,7 @@ def _capture_source_provenance(
         "dataContractVersion": DATA_CONTRACT_VERSION,
         "runtimeVersions": dict(RUNTIME_VERSIONS),
         "vcRuntimePrerequisite": dict(launcher.VC_RUNTIME_PREREQUISITE),
+        "webview2RuntimePrerequisite": dict(launcher.WEBVIEW2_RUNTIME_PREREQUISITE),
         "sourceRevision": _source_revision(),
         "sourceRevisionMeaning": (
             "Git HEAD at build time; sourceFiles records the actual selected build inputs, "
@@ -311,6 +313,7 @@ def _write_source_provenance(
             ("wheel inventory of API dependencies", "runtime/python/wheel-manifest.json"),
             ("scripts/projecta_start.ps1", "ProjectaStart.ps1"),
             ("scripts/vc_runtime_prerequisite.ps1", "runtime/vc_runtime_prerequisite.ps1"),
+            ("scripts/webview2_runtime_prerequisite.ps1", "runtime/webview2_runtime_prerequisite.ps1"),
             ("PyInstaller ProjectaLocal entry point", "ProjectaLocal.exe"),
         )
     ]
@@ -1514,7 +1517,7 @@ def _write_native_dependency_manifest(package: Path) -> dict[str, object]:
             "windowsX64OSBaseline": "Windows system DLL, UCRT, or OS API-set contract for the declared Windows 10 22H2 / Windows 11 24H2+ x64 baseline.",
             "unresolved": "Static or delay import not found in the package or declared Windows 10 22H2 / Windows 11 24H2+ x64 OS/API-set baseline.",
             "unverifiedDynamicStringCandidate": "DLL-like string in a loader-API importing image; not proven to be passed to a loader without code-flow analysis.",
-            "externalPrerequisite": "Microsoft Visual C++ v14 x64 runtime installed per-machine only by the vendor installer after user consent.",
+            "externalPrerequisite": "Microsoft Visual C++ v14 x64 runtime installed per-machine only by the vendor installer after user consent; Microsoft WebView2 Evergreen runtime detected directly at its runtime GUID and installed by the official bootstrapper after user consent.",
         },
         "windowsSystemDlls": sorted(system_dlls),
         "apiSetPrefixes": list(api_set_prefixes),
@@ -1534,7 +1537,8 @@ def _write_native_dependency_manifest(package: Path) -> dict[str, object]:
                     },
                     key=str.casefold,
                 ),
-            }
+            },
+            "microsoftWebView2": dict(launcher.WEBVIEW2_RUNTIME_PREREQUISITE),
         },
         "images": entries,
         "unresolvedDependencies": sorted(unresolved),
@@ -1732,6 +1736,10 @@ def stage_project(dest: Path, pinned_license_files: dict[str, Path] | None = Non
     shutil.copy2(
         ROOT / "scripts" / "vc_runtime_prerequisite.ps1",
         dest.parent / "runtime" / "vc_runtime_prerequisite.ps1",
+    )
+    shutil.copy2(
+        ROOT / "scripts" / "webview2_runtime_prerequisite.ps1",
+        dest.parent / "runtime" / "webview2_runtime_prerequisite.ps1",
     )
 
 
@@ -1990,6 +1998,11 @@ def _complete_vc_runtime_inventory(
         json.dumps(launcher.VC_RUNTIME_PREREQUISITE, indent=2) + "\n",
         encoding="utf-8",
     )
+    webview2_policy_path = package / "runtime" / "webview2-runtime-policy.json"
+    webview2_policy_path.write_text(
+        json.dumps(launcher.WEBVIEW2_RUNTIME_PREREQUISITE, indent=2) + "\n",
+        encoding="utf-8",
+    )
     return inventory
 
 
@@ -2081,6 +2094,20 @@ def write_notices(
         "  https://learn.microsoft.com/en-us/cpp/windows/redistributing-visual-cpp-files?view=msvc-170.",
         "  Removed source DLLs, signed source metadata, and frozen-image exclusions are",
         "  recorded in runtime/vc-runtime-inventory.json.",
+        "- Microsoft WebView2 Evergreen runtime (x64): the runtime is never bundled,",
+        "  mirrored, or repackaged; an installed Edge browser is not proof it is present.",
+        "  Detection reads the Evergreen runtime GUID directly under the EdgeUpdate",
+        "  Clients key (HKLM 64-bit, HKLM 32-bit, HKCU); when the runtime is absent or",
+        "  below the policy minimum, the bootstrap offers the official Microsoft",
+        "  Evergreen bootstrapper downloaded directly from",
+        f"  {launcher.WEBVIEW2_RUNTIME_PREREQUISITE['sourceUrl']}.",
+        f"  Minimum Evergreen version: {launcher.WEBVIEW2_RUNTIME_PREREQUISITE['minimumVersion']}.",
+        "  The Microsoft Authenticode signature, publisher, and bootstrapper file name",
+        "  are verified and the downloaded file's SHA-256 is rechecked immediately",
+        "  before execution. The vendor's own license/consent UI runs (never silent);",
+        "  it may request administrator approval. Projecta and its services remain",
+        "  per-user and are never elevated; Windows is not restarted automatically.",
+        "  The policy contract is recorded in runtime/webview2-runtime-policy.json.",
         "- Recursive x64 PE static/delay import results, app-local module paths, the Windows 10 22H2 / Windows 11 24H2+ x64 OS/API-set",
         "  baseline, and dynamic loader API/string candidates are recorded in runtime/native-dependency-manifest.json.",
         "  Unresolved static/delay imports fail the package build. DLL-like strings are candidates, not proof of",
@@ -2138,6 +2165,7 @@ def write_manifest(
         {
             "runtime/vc-runtime-inventory.json",
             "runtime/vc-runtime-policy.json",
+            "runtime/webview2-runtime-policy.json",
         }
     )
     installer_notice = package / "runtime" / "installer-tool" / "NSIS-COPYING.txt"
@@ -2199,6 +2227,7 @@ def write_manifest(
         "authenticodeSigning": authenticode_signing,
         "runtimeVersions": dict(RUNTIME_VERSIONS),
         "vcRuntimePrerequisite": dict(launcher.VC_RUNTIME_PREREQUISITE),
+        "webview2RuntimePrerequisite": dict(launcher.WEBVIEW2_RUNTIME_PREREQUISITE),
         "noticeFiles": sorted(notice_files, key=str.casefold),
         "files": files,
     }
@@ -2259,6 +2288,8 @@ def verify_assembled(
         package / "runtime" / "vc-runtime-inventory.json",
         package / "runtime" / "vc-runtime-policy.json",
         package / "runtime" / "vc_runtime_prerequisite.ps1",
+        package / "runtime" / "webview2-runtime-policy.json",
+        package / "runtime" / "webview2_runtime_prerequisite.ps1",
         package / "ProjectaStart.ps1",
         package / "projecta" / "semantic-core" / "runtime-manifest.json",
         package / "projecta" / "semantic-core" / "java-third-party-notices.json",
@@ -2311,6 +2342,7 @@ def verify_assembled(
         or provenance_document.get("dataContractVersion") != manifest.get("dataContractVersion")
         or provenance_document.get("runtimeVersions") != manifest.get("runtimeVersions")
         or provenance_document.get("vcRuntimePrerequisite") != manifest.get("vcRuntimePrerequisite")
+        or provenance_document.get("webview2RuntimePrerequisite") != manifest.get("webview2RuntimePrerequisite")
         or provenance_document.get("sourceRevision") != manifest.get("sourceRevision")
         or provenance_document.get("sourceFilesSha256") != source_provenance.get("sourceFilesSha256")
         or not isinstance(source_files, list)
@@ -2342,6 +2374,7 @@ def verify_assembled(
         "runtime/python/wheel-manifest.json",
         "ProjectaStart.ps1",
         "runtime/vc_runtime_prerequisite.ps1",
+        "runtime/webview2_runtime_prerequisite.ps1",
         "ProjectaLocal.exe",
         "Projecta.exe",
     }
@@ -2360,17 +2393,22 @@ def verify_assembled(
     policy = json.loads(
         (package / "runtime" / "vc-runtime-policy.json").read_text(encoding="utf-8")
     )
+    webview2_policy = json.loads(
+        (package / "runtime" / "webview2-runtime-policy.json").read_text(encoding="utf-8")
+    )
     runtime_inventory = json.loads(
         (package / "runtime" / "vc-runtime-inventory.json").read_text(encoding="utf-8")
     )
     if (
         policy != launcher.VC_RUNTIME_PREREQUISITE
         or manifest.get("vcRuntimePrerequisite") != launcher.VC_RUNTIME_PREREQUISITE
+        or webview2_policy != launcher.WEBVIEW2_RUNTIME_PREREQUISITE
+        or manifest.get("webview2RuntimePrerequisite") != launcher.WEBVIEW2_RUNTIME_PREREQUISITE
         or runtime_inventory.get("deploymentMethod") != "microsoftPrerequisite"
         or runtime_inventory.get("minimumVersion") != launcher.VC_RUNTIME_PREREQUISITE["minimumVersion"]
         or runtime_inventory.get("sourceUrl") != launcher.VC_RUNTIME_PREREQUISITE["sourceUrl"]
     ):
-        raise SystemExit("the package Visual C++ prerequisite contract is missing or unsupported.")
+        raise SystemExit("the package prerequisite contract is missing or unsupported.")
     prohibited = [
         path.relative_to(package).as_posix()
         for path in package.rglob("*")

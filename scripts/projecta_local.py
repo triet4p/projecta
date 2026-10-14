@@ -47,6 +47,22 @@ VC_RUNTIME_PREREQUISITE = {
     "installerFileName": "VC_redist.x64.exe",
     "integrityContract": "sha256-of-authenticode-verified-download-rechecked-before-launch",
 }
+# S15-10 installer/prerequisite contract §8.2: the Tauri WebView requires the
+# WebView2 Evergreen Runtime, detected directly at the runtime GUID
+# ({F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}) under the EdgeUpdate Clients key.
+# An installed Edge browser key is never that proof. The floor below is the
+# wry-supported Evergreen series (this host carries 155.0.4283.45), not a
+# version-maximum claim: any newer Evergreen satisfies it.
+WEBVIEW2_RUNTIME_PREREQUISITE = {
+    "formatVersion": 1,
+    "architecture": "x64",
+    "runtimeGuid": "{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}",
+    "minimumVersion": "109.0.1518.78",
+    "sourceUrl": "https://go.microsoft.com/fwlink/p/?LinkId=2124703",
+    "publisher": "Microsoft Corporation",
+    "installerFileName": "MicrosoftEdgeWebview2Setup.exe",
+    "integrityContract": "sha256-of-authenticode-verified-download-rechecked-before-launch",
+}
 VC_RUNTIME_DLL_PATTERN = re.compile(
     r"^(?:msvcp140|msvcr140|vcruntime140|vccorlib140|concrt140|vcomp140|vcamp140|mfc140u?|mfcm140u?)[A-Za-z0-9_]*\.dll$",
     re.IGNORECASE,
@@ -141,6 +157,20 @@ def _validate_vc_runtime_prerequisite(
     policy = load_json(policy_path, error_code)
     if policy != VC_RUNTIME_PREREQUISITE:
         raise RuntimeFailure(error_code, "The package Visual C++ prerequisite policy is invalid.")
+
+
+def _validate_webview2_runtime_prerequisite(
+    package_root: Path,
+    manifest: Mapping[str, object],
+    *,
+    error_code: str,
+) -> None:
+    if manifest.get("webview2RuntimePrerequisite") != WEBVIEW2_RUNTIME_PREREQUISITE:
+        raise RuntimeFailure(error_code, "The package WebView2 prerequisite contract is unsupported.")
+    policy_path = package_root / "runtime" / "webview2-runtime-policy.json"
+    policy = load_json(policy_path, error_code)
+    if policy != WEBVIEW2_RUNTIME_PREREQUISITE:
+        raise RuntimeFailure(error_code, "The package WebView2 prerequisite policy is invalid.")
 
 
 try:
@@ -762,6 +792,11 @@ def load_runtime_manifest(
         manifest,
         error_code="PACKAGE_MANIFEST_INVALID",
     )
+    _validate_webview2_runtime_prerequisite(
+        paths.package_root,
+        manifest,
+        error_code="PACKAGE_MANIFEST_INVALID",
+    )
     if not (paths.package_root / "ProjectaStart.ps1").is_file():
         raise RuntimeFailure("PACKAGE_RUNTIME_INCOMPLETE", "The prerequisite-safe Projecta launcher is absent.")
     notices = manifest.get("noticeFiles")
@@ -798,6 +833,8 @@ def load_runtime_manifest(
         paths.package_root / "runtime" / "python" / "wheel-requirements.txt",
         paths.runtime / "vc-runtime-policy.json",
         paths.runtime / "vc_runtime_prerequisite.ps1",
+        paths.runtime / "webview2-runtime-policy.json",
+        paths.runtime / "webview2_runtime_prerequisite.ps1",
         paths.package_root / "ProjectaLocal.exe",
         paths.package_root / "Projecta.exe",
     )
@@ -2574,6 +2611,11 @@ def _verify_update_package(
         manifest,
         error_code="UPDATE_PACKAGE_INVALID",
     )
+    _validate_webview2_runtime_prerequisite(
+        package,
+        manifest,
+        error_code="UPDATE_PACKAGE_INVALID",
+    )
     required = {
         "ProjectaLocal.exe",
         "Projecta.exe",
@@ -2607,6 +2649,8 @@ def _verify_update_package(
         "ProjectaStart.ps1",
         "runtime/vc-runtime-policy.json",
         "runtime/vc_runtime_prerequisite.ps1",
+        "runtime/webview2-runtime-policy.json",
+        "runtime/webview2_runtime_prerequisite.ps1",
     }
     listed = {entry["path"] for entry in manifest["files"]}  # type: ignore[index]
     notice_files = manifest.get("noticeFiles")

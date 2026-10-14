@@ -223,7 +223,7 @@ explicit rather than inherited from defaults:
   `LOOPBACK_BOUNDARY_REJECTED` (403). Embedded/test composition is untouched;
   the guard lives only at the loopback entry point.
 
-## Supported Windows matrix (S15-08)
+## Supported Windows matrix (S15-08) and prerequisites (S15-10)
 
 The owned supervisor accepts Windows 10 22H2 (build 19045) and Windows 11 24H2
 and newer (build 26100+) on x64 workstations only, per the S15-01 contract §8.1.
@@ -233,9 +233,18 @@ before any state is written; every other OS, build, Windows Server product type,
 32-bit process, or ARM64 host (including an x64 process emulated on ARM64,
 detected with `IsWow64Process2`) gets the finite `PLATFORM_UNSUPPORTED` refusal.
 The guard is never suppressed, and no matrix row is claimed as supported until
-its S15-16/S15-17 gate passes on the exact build; the packaged runtime's
-`minimumHost`/OS-baseline record and the installer notice are re-derived by
-S15-09/S15-10 before any package claims the matrix.
+its S15-16/S15-17 gate passes on the exact build.
+
+Before the window starts, `ProjectaStart.ps1` enforces both vendor
+prerequisites in order — WebView2 Evergreen runtime first (the window cannot
+render without it), Visual C++ v14 x64 second (the bundled backend cannot start
+without it). WebView2 is detected directly at its runtime GUID under the
+EdgeUpdate Clients key (never the Edge browser key, never ClientState); when
+missing or below Evergreen `109.0.1518.78`, the official Microsoft bootstrapper
+is offered with its own consent UI and signature/integrity verification, and
+any decline/failure/restart-required outcome stops safely with prior binaries
+and data retained. Only a disclosed vendor installer may elevate; Projecta and
+its services stay per-user and non-elevated.
 
 ## Layout
 
