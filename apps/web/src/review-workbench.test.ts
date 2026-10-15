@@ -13,6 +13,8 @@ const detail = (
   projectScope: "selected",
   sourceVersion: { revision: 4, sourceVersionId: "sv_" + "a".repeat(64) },
   candidateRevision: 2,
+  correctionRevision: 0,
+  corrections: null,
   label: "A requirement",
   semanticType: "Requirement",
   lifecycleState: "pending-review",

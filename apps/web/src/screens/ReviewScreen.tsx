@@ -273,7 +273,15 @@ export function ReviewScreen({
       void api
         .getReviewCandidateDetail(projectHandle, candidate.handle)
         .then((nextDetail) => {
-          if (detailRequest.current === request) setDetail(nextDetail);
+          if (detailRequest.current !== request) return;
+          setDetail(nextDetail);
+          setLabel(nextDetail.corrections?.label ?? nextDetail.label);
+          setEditType(nextDetail.corrections?.entityType ?? nextDetail.semanticType);
+          setEditRelation(nextDetail.corrections?.relation ?? "");
+          setEditEntityLink(nextDetail.corrections?.entityLink ?? "");
+          setEditDate(nextDetail.corrections?.date ?? "");
+          setEditAssignment(nextDetail.corrections?.assignment ?? "");
+          setEditRevision(nextDetail.correctionRevision + 1);
         })
         .catch((nextError: unknown) => {
           if (detailRequest.current === request) setError(nextError);
@@ -310,13 +318,21 @@ export function ReviewScreen({
     ) {
       return;
     }
+    const request = detailRequest.current;
+    const candidateHandle = selected.handle;
     setBusy(true);
     setError(null);
     try {
-      setValidation(await api.validateSelectedCandidate(projectHandle, selected.handle));
-      setDecision(null);
+      const nextValidation = await api.validateSelectedCandidate(
+        projectHandle,
+        candidateHandle,
+      );
+      if (detailRequest.current === request) {
+        setValidation(nextValidation);
+        setDecision(null);
+      }
     } catch (nextError) {
-      setError(nextError);
+      if (detailRequest.current === request) setError(nextError);
     } finally {
       setBusy(false);
     }
@@ -658,6 +674,8 @@ export function ReviewScreen({
 
   const edit = async () => {
     if (!selected || detailBusy || !detail || detail.itemHandle !== selected.handle) return;
+    const request = detailRequest.current;
+    const candidateHandle = selected.handle;
     const payload = {
       ...(editType ? { entityType: editType } : {}),
       ...(editLabelValue() ? { label: editLabelValue() } : {}),
@@ -671,13 +689,29 @@ export function ReviewScreen({
     setBusy(true);
     setError(null);
     try {
-      const recorded = await api.editStructuredCandidate(projectHandle, selected.handle, payload);
-      setEditRevision(recorded.revision + 1);
-      setLabel(editLabelValue());
-      setEditNotice("Correction recorded with provenance. Revalidate before confirmation.");
-      setValidation(null);
+      const recorded = await api.editStructuredCandidate(projectHandle, candidateHandle, payload);
+      if (detailRequest.current === request) {
+        setEditRevision(recorded.revision + 1);
+        setLabel(recorded.corrections.label ?? editLabelValue());
+        setEditType(recorded.corrections.entityType ?? editType);
+        setEditRelation(recorded.corrections.relation ?? "");
+        setEditEntityLink(recorded.corrections.entityLink ?? "");
+        setEditDate(recorded.corrections.date ?? "");
+        setEditAssignment(recorded.corrections.assignment ?? "");
+        setDetail((current) =>
+          current?.itemHandle === candidateHandle
+            ? {
+                ...current,
+                correctionRevision: recorded.revision,
+                corrections: recorded.corrections,
+              }
+            : current,
+        );
+        setEditNotice("Correction recorded with provenance. Revalidate before confirmation.");
+        setValidation(null);
+      }
     } catch (nextError) {
-      setError(nextError);
+      if (detailRequest.current === request) setError(nextError);
     } finally {
       setBusy(false);
     }
@@ -812,6 +846,9 @@ export function ReviewScreen({
                   </span>
                   <span>
                     Candidate revision<strong>{detail.candidateRevision}</strong>
+                  </span>
+                  <span>
+                    Correction revision<strong>{detail.correctionRevision}</strong>
                   </span>
                   <span>
                     Validation<strong>{detail.validationState}</strong>
@@ -1356,8 +1393,13 @@ export function ReviewScreen({
               </div>
               <div>
                 <span>Edited</span>
-                <strong>{(detail?.edited?.label ?? label) || "No edit"}</strong>
-                <small>{(detail?.edited?.semanticType ?? editType) || "No type change"}</small>
+                <strong>
+                  {(detail?.corrections?.label ?? detail?.edited?.label ?? label) || "No edit"}
+                </strong>
+                <small>
+                  {(detail?.corrections?.entityType ?? detail?.edited?.semanticType ?? editType) ||
+                    "No type change"}
+                </small>
               </div>
             </div>
             <div className="candidate-edit-panel">

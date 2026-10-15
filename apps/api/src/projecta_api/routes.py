@@ -202,6 +202,7 @@ class ProjectDeletionRequest(BaseModel):
     typed_identity: str = Field(alias="typedIdentity", min_length=1, max_length=128)
     confirmed: Literal[True] = Field(alias="confirmed")
 
+
 class ReviewAbstainRequest(BaseModel):
     """Trusted-boundary input for an explicit, receipt-backed abstention."""
 
@@ -1110,6 +1111,15 @@ def create_router(
         receipt = _latest_review_receipt(extraction, context, selected.get("handle"))
         if receipt is not None:
             detail_raw["reviewReceipt"] = receipt
+        edit = request.app.state.structured_candidate_edit_store.latest(
+            context.project_id, candidate_handle
+        )
+        detail_raw["correctionRevision"] = edit.revision if edit is not None else 0
+        detail_raw["corrections"] = (
+            edit.payload.model_dump(mode="json", by_alias=True, exclude_none=True)
+            if edit is not None
+            else None
+        )
         result = project_review_detail(detail_raw, context.request_id, handle, candidate_handle)
         response.headers["X-Request-Id"] = context.request_id
         return result

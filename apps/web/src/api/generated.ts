@@ -790,6 +790,8 @@ export interface ReviewWorkbenchDetailResponse {
   projectScope: "selected";
   sourceVersion: ReviewSourceVersion;
   candidateRevision: number;
+  correctionRevision: number;
+  corrections: StructuredCandidateEditRequest | null;
   label: string;
   semanticType: string;
   lifecycleState: GraphLifecycleState;

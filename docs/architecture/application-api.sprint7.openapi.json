@@ -10536,6 +10536,22 @@
             "minimum": 0.0,
             "title": "Candidaterevision"
           },
+          "correctionRevision": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Correctionrevision"
+          },
+          "corrections": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StructuredCandidateEditRequest"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Corrections"
+          },
           "label": {
             "type": "string",
             "title": "Label"
@@ -10656,6 +10672,8 @@
           "projectScope",
           "sourceVersion",
           "candidateRevision",
+          "correctionRevision",
+          "corrections",
           "label",
           "semanticType",
           "lifecycleState",

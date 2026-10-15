@@ -22,6 +22,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   pinned backend dependencies, provenance, notices/licenses, and version
   metadata. The obsolete Tkinter launcher is removed with no compatibility
   shim, and `start` never opens a system-browser app path.
+- Kept packaged Tauri lifecycle identity bound to the frozen supervisor's
+  actual one-file worker: it is accepted only when active, directly parented
+  to the launched bootloader, in that launch's kill-on-close Job Object, and
+  resolving to the exact packaged executable; fresh runtime-ID and readiness
+  checks remain required.
 - Integrated the per-user NSIS installation flow with authentic dual
   prerequisite handling: the WebView2 Evergreen runtime is detected directly
   at its runtime GUID (an installed Edge browser is not proof), and the
@@ -52,9 +57,27 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Fixed
 
+- Fixed portable export refusing a valid project with "The project export
+  integrity check failed." whenever the project held a saved review decision
+  receipt or correction-burden event: the exporter now loads those records as
+  entities instead of raw database columns. Inconsistent or tampered receipt and
+  telemetry history is still refused.
+
+- Rehydrated saved candidate corrections and their server-owned revision after
+  review reselection so subsequent saves use the next revision while genuine
+  stale concurrent edits remain rejected.
+
 - Fixed desktop theme controller error handling to prevent claiming false persisted
   modes upon host read or write failures, rolling back to previous state and presenting
   honest error notifications.
+
+- Fixed packaged native startup and first-run provisioning failing with
+  `UPDATE_TRUST_ANCHOR_MISSING`: the Tauri host now invokes the packaged frozen
+  `ProjectaLocal.exe` for both `start` and `provision`, using its embedded
+  release-verification trust anchor. Each child receives the explicit
+  `LOCALAPPDATA` parent corresponding to its `<LOCALAPPDATA>/Projecta` data
+  root, and inherited launcher-root overrides are removed; manifest
+  verification remains enabled.
 - Added a Tauri v2 desktop host (`apps/desktop`) with one native window over
   the existing loopback Application API SPA. The host registers no native
   commands and refuses foreign navigation inside the privileged view. Verified

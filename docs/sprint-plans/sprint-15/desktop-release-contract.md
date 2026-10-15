@@ -115,7 +115,15 @@ S15-03 binds these to window controls (Start/Stop, bounded recovery, sanitized d
 ### 3.3 Second launch and close policy
 
 - While the per-user lock is held, a second launch MUST NOT start a second PostgreSQL/Fuseki/API tree (TDB2 one-writer rule). It MUST refuse with `RUNTIME_ALREADY_ACTIVE` unless it activates the exact existing window; refusal alone never establishes ownership.
-- Before spawning its manager child, the desktop snapshots the current status runtime ID. It MAY claim ownership only after that exact live child publishes a valid, different runtime ID and `managerPid` equal to that child's PID. Shared data root, lock, `starting` state, matching package/executable, ports, or readiness from another listener MUST NOT confer ownership.
+- Before spawning its supervisor child, the desktop snapshots the current status
+  runtime ID. It MAY claim ownership only after a valid, different runtime ID is
+  published by that exact live child or, for the frozen one-file supervisor,
+  its direct worker. The worker's `managerPid` must identify an active process
+  in this launch's kill-on-close Job Object, directly parented to the launched
+  child, and its image must resolve to the packaged `ProjectaLocal.exe`.
+  Readiness and current status must continue matching both runtime ID and
+  manager PID. Shared data root, lock, `starting` state, executable/path match
+  alone, ports, or readiness from another listener MUST NOT confer ownership.
 - Readiness and service-port observations count only after the exact identity above is established and the current status still matches both fields.
 - A desktop Stop/close request atomically replaces `state/stop.json` only while the shared status still matches the same runtime ID and manager PID. The request carries that runtime ID; the existing manager consumes it only if it matches its internal identity. A status change between validation and consumption therefore leaves the new owner untouched. **Implemented for the launcher CLI by S15-08:** `stop --runtime-id <id>` compares the shared status's runtime ID with the requested one and refuses a mismatch with `PROCESS_OWNERSHIP_CONFLICT` without writing `state/stop.json`; the no-argument `stop` keeps the existing active-runtime behavior, and an already-stopped runtime stays a no-op success.
 - Closing, stopping, or cancelling a second/refused/in-flight-unowned instance MUST leave the first runtime's service tree, status, lock, ports, and reachability intact at every timing. Without established identity, the desktop may only reap its exact child/job; it MUST NOT write shared status/stop files or terminate another tree.

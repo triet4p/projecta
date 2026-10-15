@@ -1,8 +1,8 @@
 // Projecta S15-03/05 lifecycle bridge: app-owned supervisor child + same-window
 // runtime-control surface.
 //
-// The desktop owns exactly one supervisor tree: it spawns the existing local
-// CLI (`projecta/scripts/projecta_local.py start`) as a child.
+// The desktop owns exactly one supervisor tree: it spawns the packaged frozen
+// `ProjectaLocal.exe start` child.
 // Graceful stop atomically writes the manager's existing `stop.json` protocol
 // only after the shared status still matches this exact child PID and fresh
 // runtime ID; the manager consumes only its own ID. The SAME main window
@@ -180,10 +180,9 @@ pub enum StopOutcome {
     ShutdownFailed,
 }
 
-/// Owned supervisor child: the running `projecta_local.py start` manager.
-/// Supervisor identity appears in the status file only after it acquires the
-/// shared runtime lock. The desktop accepts it only when the manager PID is its
-/// exact live child and the runtime ID differs from the pre-spawn snapshot.
+/// Owned supervisor process tree for the packaged `ProjectaLocal.exe start`.
+/// The desktop adopts only a fresh runtime identity from the exact launched
+/// process or its direct one-file worker proven in that launch's job.
 #[derive(Debug, Clone, PartialEq, Eq)]
 struct RuntimeIdentity {
     runtime_id: String,
@@ -205,42 +204,38 @@ impl StopRequestError {
     }
 }
 
-/// Owned supervisor child: the running `projecta_local.py start` manager.
-/// Shutdown is permitted only after this child publishes its fresh supervisor
-/// identity; the child handle alone remains safe to terminate as this
-/// instance's own process.
+/// Owned supervisor process tree: the running packaged `ProjectaLocal.exe
+/// start` and, for a frozen one-file build, its worker process. Shutdown is
+/// permitted only after this owned tree publishes a fresh supervisor identity;
+/// the direct child handle remains safe to terminate as this instance's process.
 pub struct OwnedSupervisor {
     child: Child,
     stderr: Option<ChildStderr>,
     previous_runtime_id: Option<String>,
     runtime_identity: Option<RuntimeIdentity>,
     _job: JobGuard,
+    #[cfg(windows)]
+    worker_image_buffer: Vec<u16>,
 }
 
 impl OwnedSupervisor {
-    /// Spawn the owned supervisor child via the bundled Python interpreter.
+    /// Spawn the owned, packaged frozen supervisor child.
     ///
-    /// `python_exe` is the bundled `runtime/python/python.exe`,
-    /// `launcher_script` is `projecta/scripts/projecta_local.py`, and
-    /// `package_root`/`data_root` become `PROJECTA_LAUNCHER_PACKAGE_ROOT` and
-    /// `PROJECTA_LAUNCHER_DATA_ROOT`. No WebView secret or foreign credential
-    /// is injected here; the supervisor scrubs and composes the service
-    /// environment itself (`_clear_inherited_secrets`).
+    /// The packaged `ProjectaLocal.exe` carries the release trust anchor. Bind
+    /// its frozen `LOCALAPPDATA\\Projecta` resolution to the data root already
+    /// selected by `LifecyclePaths`; do not invoke the source Python script,
+    /// which has no embedded release-verification key.
     pub fn spawn(
-        python_exe: &std::path::Path,
-        launcher_script: &std::path::Path,
-        package_root: &std::path::Path,
-        data_root: &std::path::Path,
+        supervisor_exe: &std::path::Path,
+        local_app_data: &std::path::Path,
         previous_runtime_id: Option<String>,
     ) -> std::io::Result<Self> {
-        let mut command = Command::new(python_exe);
+        let mut command = Command::new(supervisor_exe);
         command
-            .arg(launcher_script)
             .arg("start")
-            .env("PROJECTA_LAUNCHER_PACKAGE_ROOT", package_root)
-            .env("PROJECTA_LAUNCHER_DATA_ROOT", data_root)
-            .env("PYTHONDONTWRITEBYTECODE", "1")
-            .env("PYTHONNOUSERSITE", "1")
+            .env_remove("PROJECTA_LAUNCHER_PACKAGE_ROOT")
+            .env_remove("PROJECTA_LAUNCHER_DATA_ROOT")
+            .env("LOCALAPPDATA", local_app_data)
             .stdin(Stdio::null())
             .stdout(Stdio::null())
             .stderr(Stdio::piped());
@@ -271,6 +266,8 @@ impl OwnedSupervisor {
             previous_runtime_id,
             runtime_identity: None,
             _job: job,
+            #[cfg(windows)]
+            worker_image_buffer: vec![0_u16; 32_768],
         })
     }
 
@@ -279,9 +276,31 @@ impl OwnedSupervisor {
     pub fn pid(&self) -> u32 {
         self.child.id()
     }
-    /// Adopt the supervisor identity only after this exact child published a
-    /// fresh runtime record. The child handle's PID and a new runtime ID must
-    /// both match; shared roots, ports, and a `starting` state are insufficient.
+
+    fn owns_manager_process(&mut self, manager_pid: u32, expected_exe: &std::path::Path) -> bool {
+        if manager_pid == self.pid() {
+            return true;
+        }
+        #[cfg(windows)]
+        {
+            return self._job.contains_supervisor_process(
+                manager_pid,
+                self.pid(),
+                expected_exe,
+                &mut self.worker_image_buffer,
+            );
+        }
+        #[cfg(not(windows))]
+        {
+            let _ = expected_exe;
+            false
+        }
+    }
+
+    /// Adopt the supervisor identity only after this process tree publishes a
+    /// fresh runtime record. The manager must be this exact child, or its
+    /// active, direct frozen worker in the same kill-on-close job with the
+    /// exact packaged image; other job members and descendants are insufficient.
     fn observe_runtime_identity(&mut self, paths: &LifecyclePaths) -> bool {
         if self.runtime_identity.is_some() {
             return true;
@@ -295,9 +314,8 @@ impl OwnedSupervisor {
         let (Some(runtime_id), Some(manager_pid)) = (status.runtime_id, status.manager_pid) else {
             return false;
         };
-        let pid = self.pid();
         if status.state.is_none()
-            || manager_pid != pid
+            || !self.owns_manager_process(manager_pid, &paths.supervisor_exe)
             || self.previous_runtime_id.as_deref() == Some(runtime_id.as_str())
         {
             return false;
@@ -357,6 +375,7 @@ impl OwnedSupervisor {
     }
 }
 
+
 #[cfg(windows)]
 fn raw_handle_of(child: &Child) -> isize {
     use std::os::windows::io::AsRawHandle;
@@ -374,6 +393,45 @@ fn raw_handle_of(_child: &Child) -> isize {
 struct JobGuard {
     #[allow(dead_code)]
     handle: isize,
+}
+#[cfg(windows)]
+#[allow(dead_code)]
+#[repr(C)]
+struct ProcessEntry32W {
+    size: u32,
+    usage: u32,
+    process_id: u32,
+    default_heap_id: usize,
+    module_id: u32,
+    thread_count: u32,
+    parent_process_id: u32,
+    base_priority: i32,
+    flags: u32,
+    executable_name: [u16; 260],
+}
+
+#[cfg(windows)]
+fn process_has_parent(process_id: u32, expected_parent_id: u32) -> bool {
+    const TH32CS_SNAPPROCESS: u32 = 0x0000_0002;
+    let snapshot = unsafe { CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0) };
+    if snapshot == 0 || snapshot == -1 {
+        return false;
+    }
+    let mut entry: ProcessEntry32W = unsafe { std::mem::zeroed() };
+    entry.size = std::mem::size_of::<ProcessEntry32W>() as u32;
+    let mut found_parent = false;
+    let mut has_entry = unsafe { Process32FirstW(snapshot, &mut entry) } != 0;
+    while has_entry {
+        if entry.process_id == process_id {
+            found_parent = entry.parent_process_id == expected_parent_id;
+            break;
+        }
+        has_entry = unsafe { Process32NextW(snapshot, &mut entry) } != 0;
+    }
+    unsafe {
+        CloseHandle(snapshot);
+    }
+    found_parent
 }
 
 impl JobGuard {
@@ -422,6 +480,80 @@ impl JobGuard {
             JobMembership::InJob(in_job != 0)
         }
     }
+    #[cfg(windows)]
+    fn contains_supervisor_process(
+        &self,
+        pid: u32,
+        launch_pid: u32,
+        expected_exe: &std::path::Path,
+        image_buffer: &mut [u16],
+    ) -> bool {
+        const PROCESS_QUERY_INFORMATION: u32 = 0x0000_0400;
+        const PROCESS_QUERY_LIMITED_INFORMATION: u32 = 0x0000_1000;
+        const SYNCHRONIZE: u32 = 0x0010_0000;
+        const WAIT_TIMEOUT: u32 = 0x0000_0102;
+        if self.handle == 0 || image_buffer.is_empty() {
+            return false;
+        }
+        let process = unsafe {
+            OpenProcess(
+                PROCESS_QUERY_INFORMATION | PROCESS_QUERY_LIMITED_INFORMATION | SYNCHRONIZE,
+                0,
+                pid,
+            )
+        };
+        if process == 0 {
+            return false;
+        }
+        let mut in_job = 0_i32;
+        let in_owned_job =
+            unsafe { IsProcessInJob(process, self.handle, &mut in_job) } != 0 && in_job != 0;
+        let running = unsafe { WaitForSingleObject(process, 0) } == WAIT_TIMEOUT;
+        let direct_worker = in_owned_job && running && process_has_parent(pid, launch_pid);
+        let mut image_len = image_buffer.len() as u32;
+        let image_queried = direct_worker
+            && unsafe {
+                QueryFullProcessImageNameW(
+                    process,
+                    0,
+                    image_buffer.as_mut_ptr(),
+                    &mut image_len,
+                )
+            } != 0;
+        let still_running = unsafe { WaitForSingleObject(process, 0) } == WAIT_TIMEOUT;
+        unsafe {
+            CloseHandle(process);
+        }
+        if !image_queried
+            || !still_running
+            || image_len == 0
+            || image_len as usize > image_buffer.len()
+        {
+            return false;
+        }
+        let image_len = image_len as usize;
+        let image_len = if image_buffer[image_len - 1] == 0 {
+            image_len - 1
+        } else {
+            image_len
+        };
+        if image_len == 0 {
+            return false;
+        }
+        use std::os::windows::ffi::OsStringExt as _;
+        let image_path = std::path::PathBuf::from(std::ffi::OsString::from_wide(
+            &image_buffer[..image_len],
+        ));
+        let (Ok(image_path), Ok(expected_exe)) = (
+            std::fs::canonicalize(image_path),
+            std::fs::canonicalize(expected_exe),
+        ) else {
+            return false;
+        };
+        image_path
+            .to_string_lossy()
+            .eq_ignore_ascii_case(&expected_exe.to_string_lossy())
+    }
 }
 
 #[cfg(all(windows, test))]
@@ -438,6 +570,7 @@ impl JobGuard {
     fn assign(_process: isize) -> std::io::Result<Self> {
         Ok(Self { handle: 0 })
     }
+
 }
 
 #[cfg(windows)]
@@ -505,10 +638,18 @@ unsafe extern "system" {
     unsafe fn AssignProcessToJobObject(job: isize, process: isize) -> i32;
     unsafe fn CloseHandle(handle: isize) -> i32;
     unsafe fn MoveFileExW(existing: *const u16, new: *const u16, flags: u32) -> i32;
-    #[cfg(test)]
     unsafe fn OpenProcess(access: u32, inherit: i32, pid: u32) -> isize;
-    #[cfg(test)]
     unsafe fn IsProcessInJob(process: isize, job: isize, result: *mut i32) -> i32;
+    unsafe fn QueryFullProcessImageNameW(
+        process: isize,
+        flags: u32,
+        image_name: *mut u16,
+        size: *mut u32,
+    ) -> i32;
+    unsafe fn WaitForSingleObject(handle: isize, milliseconds: u32) -> u32;
+    unsafe fn CreateToolhelp32Snapshot(flags: u32, process_id: u32) -> isize;
+    unsafe fn Process32FirstW(snapshot: isize, entry: *mut ProcessEntry32W) -> i32;
+    unsafe fn Process32NextW(snapshot: isize, entry: *mut ProcessEntry32W) -> i32;
     #[cfg(test)]
     unsafe fn TerminateProcess(process: isize, exit_code: u32) -> i32;
     #[cfg(windows)]
@@ -681,53 +822,60 @@ pub struct UiPreferences {
 }
 
 
+/// Derive the frozen supervisor's `LOCALAPPDATA` parent only for its supported
+/// `<LOCALAPPDATA>/Projecta` data-root layout.
+fn local_app_data_for_projecta_root(
+    data_root: &std::path::Path,
+) -> Option<&std::path::Path> {
+    if data_root.file_name()? != std::ffi::OsStr::new("Projecta") {
+        return None;
+    }
+    data_root.parent()
+}
+
 /// Resolve lifecycle paths from the environment, falling back to the packaged
 /// sibling layout next to the running executable.
 ///
-/// - `PROJECTA_DESKTOP_PACKAGE_ROOT` (+ `PROJECTA_LAUNCHER_DATA_ROOT`) points
-///   at a staged/bundled tree: `<root>/projecta/scripts/projecta_local.py`
-///   plus `runtime/python/python.exe` must both exist.
-/// - Otherwise the sibling layout (`runtime/…`, `projecta/…` next to the
-///   desktop executable) with the per-user `%LOCALAPPDATA%\Projecta` data root.
+/// - `PROJECTA_DESKTOP_PACKAGE_ROOT` + `PROJECTA_LAUNCHER_DATA_ROOT` points
+///   at a staged/bundled tree containing `<root>/ProjectaLocal.exe`; the data
+///   root must be exactly `<task LOCALAPPDATA>/Projecta`.
+/// - Otherwise the sibling `ProjectaLocal.exe` beside the desktop executable
+///   uses the per-user `%LOCALAPPDATA%/Projecta` data root.
 #[derive(Debug, Clone)]
 pub struct LifecyclePaths {
-    pub python_exe: std::path::PathBuf,
-    pub launcher_script: std::path::PathBuf,
-    pub package_root: std::path::PathBuf,
+    pub supervisor_exe: std::path::PathBuf,
+    pub local_app_data: std::path::PathBuf,
     pub data_root: std::path::PathBuf,
 }
 
 impl LifecyclePaths {
-    /// Resolve from env/sibling layout; `None` when no bundled tree exists.
+    /// Resolve from environment/sibling layout; `None` when the packaged
+    /// frozen supervisor and its supported data-root layout are unavailable.
     #[must_use]
     pub fn resolve() -> Option<Self> {
         if let (Some(package_root), Some(data_root)) = (
             std::env::var_os("PROJECTA_DESKTOP_PACKAGE_ROOT").map(std::path::PathBuf::from),
             std::env::var_os("PROJECTA_LAUNCHER_DATA_ROOT").map(std::path::PathBuf::from),
         ) {
-            let python_exe = package_root.join("runtime/python/python.exe");
-            let launcher_script = package_root.join("projecta/scripts/projecta_local.py");
-            if python_exe.is_file() && launcher_script.is_file() {
+            let local_app_data = local_app_data_for_projecta_root(&data_root)?.to_path_buf();
+            let supervisor_exe = package_root.join("ProjectaLocal.exe");
+            if supervisor_exe.is_file() {
                 return Some(Self {
-                    python_exe,
-                    launcher_script,
-                    package_root,
+                    supervisor_exe,
+                    local_app_data,
                     data_root,
                 });
             }
             return None;
         }
         let exe_dir = std::env::current_exe().ok()?.parent()?.to_path_buf();
-        let python_exe = exe_dir.join("runtime/python/python.exe");
-        let launcher_script = exe_dir.join("projecta/scripts/projecta_local.py");
-        if python_exe.is_file() && launcher_script.is_file() {
-            let data_root = std::env::var_os("LOCALAPPDATA")
-                .map(std::path::PathBuf::from)
-                .map(|base| base.join("Projecta"))?;
+        let local_app_data = std::env::var_os("LOCALAPPDATA").map(std::path::PathBuf::from)?;
+        let data_root = local_app_data.join("Projecta");
+        let supervisor_exe = exe_dir.join("ProjectaLocal.exe");
+        if supervisor_exe.is_file() {
             return Some(Self {
-                python_exe,
-                launcher_script,
-                package_root: exe_dir,
+                supervisor_exe,
+                local_app_data,
                 data_root,
             });
         }
@@ -780,35 +928,27 @@ impl LifecyclePaths {
     }
 
 
-    /// Spawn the existing `provision` subcommand against these roots: the
-    /// workspace-initialization half of installation only. It reuses the
-    /// audited Python name validation, the generated project, the fixed
-    /// `local-operator` actor, and DPAPI CurrentUser protection of the runtime
-    /// secrets, and it NEVER performs OS installation (no package copy, no
-    /// Start-Menu shortcut, no HKCU write) — so provisioning from the main
-    /// window cannot install anything regardless of frozen or unfrozen
-    /// execution.
+    /// Spawn the packaged supervisor's data-only `provision` command against
+    /// this lifecycle's exact `%LOCALAPPDATA%/Projecta` root. It reuses the
+    /// audited Python name validation, generated project, fixed
+    /// `local-operator` actor, and DPAPI CurrentUser protection, and never
+    /// performs OS installation (no package copy, Start-Menu shortcut, or
+    /// registry write).
     ///
-    /// The caller (the controller) owns the bounded wait, the single-attempt
-    /// rule, and cancellation: the returned child is the ONLY process this app
-    /// ever starts for workspace creation, so ordinary close can stop it
-    /// without touching anything foreign.
+    /// The controller owns the bounded wait, single attempt, and cancellation:
+    /// this is the only process the app starts for workspace creation.
     ///
-    /// `stdout` is discarded (only the exit status and the finite `[CODE]`
-    /// token on `stderr` are used, and an unread pipe is a deadlock hazard),
-    /// `stderr` is piped and reduced to that token; neither stream is ever
-    /// surfaced raw to the WebView.
+    /// `stdout` is discarded and `stderr` is reduced to the supervisor's
+    /// finite failure token; raw launcher output is never surfaced to WebView.
     pub fn spawn_provision(&self, workspace_name: &str) -> Result<Child, String> {
-        let mut command = Command::new(&self.python_exe);
+        let mut command = Command::new(&self.supervisor_exe);
         command
-            .arg(&self.launcher_script)
             .arg("provision")
             .arg("--workspace-name")
             .arg(workspace_name)
-            .env("PROJECTA_LAUNCHER_PACKAGE_ROOT", &self.package_root)
-            .env("PROJECTA_LAUNCHER_DATA_ROOT", &self.data_root)
-            .env("PYTHONDONTWRITEBYTECODE", "1")
-            .env("PYTHONNOUSERSITE", "1")
+            .env_remove("PROJECTA_LAUNCHER_PACKAGE_ROOT")
+            .env_remove("PROJECTA_LAUNCHER_DATA_ROOT")
+            .env("LOCALAPPDATA", &self.local_app_data)
             .stdin(Stdio::null())
             .stdout(Stdio::null())
             .stderr(Stdio::piped());
@@ -2971,10 +3111,8 @@ impl LifecycleController {
             .read_runtime_status()
             .and_then(|status| status.runtime_id);
         let child = match OwnedSupervisor::spawn(
-            &paths.python_exe,
-            &paths.launcher_script,
-            &paths.package_root,
-            &paths.data_root,
+            &paths.supervisor_exe,
+            &paths.local_app_data,
             previous_runtime_id,
         ) {
             Ok(child) => child,
@@ -4616,12 +4754,11 @@ mod lifecycle_tests {
     #[test]
     fn second_cold_start_while_owned_refuses_without_second_child() {
         // Boundary: starting twice must not create a second supervisor tree.
-        // Feed an invalid package root (missing interpreter) so the first
-        // start fails fast, then verify a repeated start is still refused.
+        // Feed a missing packaged supervisor path so the first start fails fast,
+        // then verify a repeated start is still refused.
         let paths = LifecyclePaths {
-            python_exe: std::path::PathBuf::from("C:/nonexistent/python.exe"),
-            launcher_script: std::path::PathBuf::from("C:/nonexistent/projecta_local.py"),
-            package_root: std::path::PathBuf::from("C:/nonexistent"),
+            supervisor_exe: std::path::PathBuf::from("C:/nonexistent/ProjectaLocal.exe"),
+            local_app_data: std::path::PathBuf::from("C:/nonexistent/localappdata"),
             data_root: std::path::PathBuf::from("C:/nonexistent-data"),
         };
         let controller = LifecycleController::new(Some(paths), DEFAULT_API_PORT);
@@ -4791,6 +4928,173 @@ mod lifecycle_tests {
         assert_process_exited(manager_pid, &data_root, "cmd.exe");
     }
 
+    #[cfg(windows)]
+    #[test]
+    fn owned_job_identity_rejects_foreign_same_image_and_wrong_parent_workers() {
+        let data_root = disposable_root("s15-13-job-identity");
+        let _root_cleanup = TempRootCleanup(data_root.clone());
+        let executable = std::env::current_exe().expect("test executable path");
+        let mut launch = TaskChildCleanup(
+            std::process::Command::new(&executable)
+                .arg("job_identity_fixture_root")
+                .arg("--nocapture")
+                .env("PROJECTA_S15_JOB_ROOT", &data_root)
+                .spawn()
+                .expect("spawn task-owned launch fixture"),
+        );
+        let job = match super::JobGuard::assign(super::raw_handle_of(&launch.0)) {
+            Ok(job) => job,
+            Err(error) => {
+                let _ = launch.0.kill();
+                let _ = launch.0.wait();
+                panic!("assign test launch to owned job: {error}");
+            }
+        };
+        std::fs::write(data_root.join("start"), b"start worker")
+            .expect("release task-owned worker fixture");
+        let worker_ready = data_root.join("worker.ready");
+        wait_for_file(&data_root.join("worker.pid"), "same-image worker PID");
+        wait_for_file(&worker_ready, "same-image worker readiness");
+        let worker_pid = std::fs::read_to_string(data_root.join("worker.pid"))
+            .expect("read same-image worker PID")
+            .trim()
+            .parse::<u32>()
+            .expect("parse same-image worker PID");
+        let mut image_buffer = vec![0_u16; 32_768];
+        let worker_membership = job.contains_process(worker_pid);
+        let direct_worker_accepted = job.contains_supervisor_process(
+            worker_pid,
+            launch.0.id(),
+            &executable,
+            &mut image_buffer,
+        );
+        let wrong_parent_accepted = job.contains_supervisor_process(
+            worker_pid,
+            std::process::id(),
+            &executable,
+            &mut image_buffer,
+        );
+
+        let outside_ready = data_root.join("outside.ready");
+        let outside = TaskChildCleanup(
+            std::process::Command::new(&executable)
+                .arg("job_identity_fixture_worker")
+                .arg("--nocapture")
+                .env("PROJECTA_S15_JOB_WORKER", "1")
+                .env("PROJECTA_S15_JOB_WORKER_READY", &outside_ready)
+                .spawn()
+                .expect("spawn same-image worker outside owned job"),
+        );
+        wait_for_file(&outside_ready, "outside-job same-image worker readiness");
+        let outside_membership = job.contains_process(outside.0.id());
+        let outside_worker_accepted = job.contains_supervisor_process(
+            outside.0.id(),
+            launch.0.id(),
+            &executable,
+            &mut image_buffer,
+        );
+        drop(outside);
+        drop(job);
+        let _ = launch.0.wait();
+
+        assert_eq!(
+            worker_membership,
+            super::JobMembership::InJob(true),
+            "the direct worker must be in this launch's owned job"
+        );
+        assert!(
+            direct_worker_accepted,
+            "the exact direct worker with the packaged image is accepted"
+        );
+        assert!(
+            !wrong_parent_accepted,
+            "an in-job same-image process with another parent is not the worker"
+        );
+        assert_eq!(
+            outside_membership,
+            super::JobMembership::InJob(false),
+            "the foreign same-image worker is outside this launch's owned job"
+        );
+        assert!(
+            !outside_worker_accepted,
+            "same image and PID existence outside the job never establish ownership"
+        );
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn supervisor_refuses_reused_runtime_id_from_its_launched_child() {
+        let data_root = disposable_root("s15-13-stale-runtime-id");
+        let _root_cleanup = TempRootCleanup(data_root.clone());
+        prepare_runtime_root(&data_root);
+        let script = write_supervisor_test_script(&data_root);
+        let paths = test_lifecycle_paths(&data_root, &script);
+        let previous_runtime_id = "d".repeat(32);
+        let mut supervisor = super::OwnedSupervisor::spawn(
+            &script,
+            &paths.local_app_data,
+            Some(previous_runtime_id.clone()),
+        )
+        .expect("spawn task-owned supervisor fixture");
+        write_runtime_status(
+            &data_root,
+            &previous_runtime_id,
+            supervisor.pid(),
+            "ready",
+        );
+
+        let accepted = supervisor.observe_runtime_identity(&paths);
+        let adopted_identity = supervisor.runtime_identity().cloned();
+        let reaped = supervisor.kill_and_reap(std::time::Duration::from_secs(10));
+
+        assert!(!accepted, "a prior runtime ID is never adopted again");
+        assert!(
+            adopted_identity.is_none(),
+            "the stale runtime record does not become an owned identity"
+        );
+        assert!(reaped, "the task-owned launched child is reaped");
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn job_identity_fixture_worker() {
+        if std::env::var_os("PROJECTA_S15_JOB_WORKER").is_none() {
+            return;
+        }
+        let ready = std::env::var_os("PROJECTA_S15_JOB_WORKER_READY")
+            .expect("worker readiness path");
+        std::fs::write(ready, b"ready").expect("write worker readiness");
+        loop {
+            std::thread::sleep(std::time::Duration::from_secs(1));
+        }
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn job_identity_fixture_root() {
+        let Some(root) = std::env::var_os("PROJECTA_S15_JOB_ROOT") else {
+            return;
+        };
+        let root = std::path::PathBuf::from(root);
+        while !root.join("start").is_file() {
+            std::thread::sleep(std::time::Duration::from_millis(10));
+        }
+        let worker_ready = root.join("worker.ready");
+        let worker = std::process::Command::new(
+            std::env::current_exe().expect("test executable path"),
+        )
+        .arg("job_identity_fixture_worker")
+        .arg("--nocapture")
+        .env("PROJECTA_S15_JOB_WORKER", "1")
+        .env("PROJECTA_S15_JOB_WORKER_READY", &worker_ready)
+        .spawn()
+        .expect("spawn same-image child worker");
+        std::fs::write(root.join("worker.pid"), worker.id().to_string())
+            .expect("write same-image worker PID");
+        loop {
+            std::thread::sleep(std::time::Duration::from_secs(1));
+        }
+    }
     #[cfg(windows)]
     #[test]
     fn cancelling_after_own_runtime_identity_kills_only_its_startup_tree() {
@@ -4978,9 +5282,8 @@ mod lifecycle_tests {
         let data_root = disposable_root("s15-04-first-run-detect");
         std::fs::create_dir_all(data_root.join("config")).expect("config dir");
         let paths = || LifecyclePaths {
-            python_exe: std::path::PathBuf::from("C:/nonexistent/python.exe"),
-            launcher_script: std::path::PathBuf::from("C:/nonexistent/projecta_local.py"),
-            package_root: std::path::PathBuf::from("C:/nonexistent"),
+            supervisor_exe: std::path::PathBuf::from("C:/nonexistent/ProjectaLocal.exe"),
+            local_app_data: std::path::PathBuf::from("C:/nonexistent/localappdata"),
             data_root: data_root.clone(),
         };
         // No `config/local-runtime.json` yet: this is a first-run data root.
@@ -5044,16 +5347,12 @@ mod lifecycle_tests {
         std::fs::create_dir_all(&data_root).expect("data root");
         let script = data_root.join("slow.cmd");
         std::fs::write(&script, b"@ping -n 10 127.0.0.1 >nul\r\n").expect("write script");
-        // `spawn_provision` runs `python_exe launcher_script provision …`. A
-        // batch file used as `python_exe` is resolved and run by CreateProcess
-        // itself and ignores the trailing launcher/CLI arguments, so the owned
-        // child stays alive for the duration of the test with no launcher
-        // dependency. (`cmd.exe <script>` would NOT run the batch: without
-        // `/c`, cmd.exe reads commands from stdin, which is null here.)
+        // `spawn_provision` invokes the packaged supervisor with CLI arguments.
+        // This direct batch-file path ignores them and sleeps long enough for
+        // the test to exercise cancellation without a real launcher.
         let paths = LifecyclePaths {
-            python_exe: script,
-            launcher_script: data_root.join("launcher.py"),
-            package_root: data_root.clone(),
+            supervisor_exe: script,
+            local_app_data: data_root.clone(),
             data_root: data_root.clone(),
         };
         let controller =
@@ -5176,9 +5475,8 @@ mod lifecycle_tests {
     #[cfg(windows)]
     fn test_lifecycle_paths(root: &std::path::Path, script: &std::path::Path) -> LifecyclePaths {
         LifecyclePaths {
-            python_exe: script.to_path_buf(),
-            launcher_script: root.join("projecta_local.py"),
-            package_root: root.to_path_buf(),
+            supervisor_exe: script.to_path_buf(),
+            local_app_data: root.to_path_buf(),
             data_root: root.to_path_buf(),
         }
     }
@@ -5244,6 +5542,16 @@ mod lifecycle_tests {
     impl Drop for ShutdownControllerOnDrop {
         fn drop(&mut self) {
             let _ = self.0.shutdown();
+        }
+    }
+    #[cfg(windows)]
+    struct TaskChildCleanup(std::process::Child);
+
+    #[cfg(windows)]
+    impl Drop for TaskChildCleanup {
+        fn drop(&mut self) {
+            let _ = self.0.kill();
+            let _ = self.0.wait();
         }
     }
     #[cfg(windows)]
@@ -5396,9 +5704,8 @@ mod lifecycle_tests {
 
     fn nonexistent_paths(data_root: &std::path::Path) -> LifecyclePaths {
         LifecyclePaths {
-            python_exe: std::path::PathBuf::from("C:/nonexistent/python.exe"),
-            launcher_script: std::path::PathBuf::from("C:/nonexistent/projecta_local.py"),
-            package_root: std::path::PathBuf::from("C:/nonexistent"),
+            supervisor_exe: std::path::PathBuf::from("C:/nonexistent/ProjectaLocal.exe"),
+            local_app_data: data_root.to_path_buf(),
             data_root: data_root.to_path_buf(),
         }
     }
@@ -5552,9 +5859,8 @@ mod lifecycle_tests {
     fn ui_preferences_persistence_and_fallback() {
         let root = disposable_root("s15-07-theme-prefs");
         let paths = LifecyclePaths {
-            python_exe: std::path::PathBuf::from("C:/nonexistent/python.exe"),
-            launcher_script: std::path::PathBuf::from("C:/nonexistent/projecta_local.py"),
-            package_root: std::path::PathBuf::from("C:/nonexistent"),
+            supervisor_exe: std::path::PathBuf::from("C:/nonexistent/ProjectaLocal.exe"),
+            local_app_data: root.clone(),
             data_root: root.clone(),
         };
 

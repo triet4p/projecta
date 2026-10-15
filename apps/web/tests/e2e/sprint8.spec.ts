@@ -77,7 +77,12 @@ const capturedCandidate: CandidateFixture = {
   sourceExcerpt: captureSourceText,
 };
 
-function reviewDetail(candidate: CandidateFixture, manualCapture = false) {
+function reviewDetail(
+  candidate: CandidateFixture,
+  manualCapture = false,
+  correctionRevision = 0,
+  corrections: Record<string, unknown> | null = null,
+) {
   return {
     detailVersion: "review-workbench.v1",
     requestId: "req-review-detail",
@@ -93,6 +98,8 @@ function reviewDetail(candidate: CandidateFixture, manualCapture = false) {
       canonicalDigest: "source-canonical-digest",
     },
     candidateRevision: 1,
+    correctionRevision,
+    corrections,
     label: candidate.label,
     semanticType: candidate.proposedType,
     lifecycleState: candidate.lifecycleState,
@@ -349,6 +356,10 @@ async function mockApi(
   failGraph = false,
   candidateForQueue: CandidateFixture = reviewCandidate,
 ) {
+  const correctionState = new Map<
+    string,
+    { revision: number; corrections: Record<string, unknown> }
+  >();
   let noteSaved = false;
   let noteCommitted = false;
   await page.route("**/health/live", (route) => void json(route, { status: "live" }));
@@ -557,7 +568,16 @@ async function mockApi(
     if (reviewDetailMatch) {
       const candidate =
         reviewDetailMatch[1] === candidateForQueue.handle ? candidateForQueue : reviewCandidate;
-      return json(route, reviewDetail(candidate, candidate.handle === capturedCandidate.handle));
+      const correction = correctionState.get(candidate.handle);
+      return json(
+        route,
+        reviewDetail(
+          candidate,
+          candidate.handle === capturedCandidate.handle,
+          correction?.revision ?? 0,
+          correction?.corrections ?? null,
+        ),
+      );
     }
     if (pathname === `/v1/projects/${project.handle}/candidate-edit-options`) {
       return json(route, {
@@ -571,23 +591,74 @@ async function mockApi(
         assignments: [{ handle: "actor-h-reviewer", label: "Current reviewer" }],
       });
     }
-    if (pathname.includes("/candidates/candidate-h-abcdef0123456789abcdef01/edits")) {
+    const candidateEditMatch = pathname.match(
+      new RegExp(`^/v1/projects/${project.handle}/candidates/([^/]+)/edits$`),
+    );
+    if (candidateEditMatch) {
+      const candidateHandle = candidateEditMatch[1];
+      const input: unknown = request.postDataJSON();
+      const isObject = typeof input === "object" && input !== null && !Array.isArray(input);
+      const revisionValue =
+        isObject && "expectedRevision" in input ? input.expectedRevision : undefined;
+      const revision = typeof revisionValue === "number" ? revisionValue : Number.NaN;
+      const currentRevision = correctionState.get(candidateHandle)?.revision ?? 0;
+      if (revision !== currentRevision + 1) {
+        return json(
+          route,
+          {
+            type: "about:blank",
+            title: "Candidate edit conflict",
+            status: 409,
+            code: "CANDIDATE_EDIT_CONFLICT",
+            detail: "The candidate edit revision is stale.",
+          },
+          409,
+        );
+      }
+      const corrections: Record<string, unknown> = { expectedRevision: revision };
+      if (isObject) {
+        for (const field of [
+          "entityType",
+          "label",
+          "relation",
+          "entityLink",
+          "date",
+          "assignment",
+        ]) {
+          if (field in input && typeof input[field] === "string") {
+            corrections[field] = input[field];
+          }
+        }
+      }
+      correctionState.set(candidateHandle, { revision, corrections });
+      const requestId = request.headers()["x-request-id"] ?? "req-edit";
       return json(route, {
-        candidateHandle: "candidate-h-abcdef0123456789abcdef01",
-        revision: 1,
-        status: "recorded",
-        corrections: JSON.parse(request.postData() ?? "{}"),
+        candidateHandle,
+        editHandle: `edit-h-${revision}`,
+        revision,
+        corrections,
+        provenance: {
+          actor: "local-reviewer",
+          requestId,
+          recordedAt: "2026-10-15T00:00:00Z",
+        },
       });
     }
-    if (pathname.includes("/validations"))
+    const validationMatch = pathname.match(
+      new RegExp(`^/v1/projects/${project.handle}/candidates/([^/]+)/validations$`),
+    );
+    if (validationMatch) {
+      const candidateHandle = validationMatch[1];
+      const correction = correctionState.get(candidateHandle);
       return json(route, {
         conforms: true,
-        validatedAt: "2026-08-10T00:00:00Z",
+        validatedAt: "2026-10-15T00:00:00Z",
         violations: [],
-        correctionRevision: 1,
+        correctionRevision: correction?.revision ?? 0,
         correctionsValidated: true,
-        corrections: { type: "Requirement", label: "Review bounded browser journey" },
+        corrections: correction?.corrections ?? {},
       });
+    }
     if (pathname.includes("/confirmations"))
       return json(route, {
         decision: "confirmed",
@@ -637,6 +708,7 @@ async function mockApi(
       });
     return json(route, { requestId: "req-default" });
   });
+  return { correctionState };
 }
 
 test("project selection, Note lifecycle, graph, review, and Q&A stay ID-free", async ({
@@ -1255,13 +1327,17 @@ test("unfinished capture survives return to Notes and can be explicitly discarde
   expect(captureRequests).toBe(0);
 });
 
-test("capture opens the exact candidate for source-first review and explicit outcome", async ({
+test("a saved correction reloads its current revision before another save", async ({
   page,
 }) => {
   let submittedCapture: unknown = null;
   let approvalPayload: unknown = null;
   const graphMutations: string[] = [];
-  await mockApi(page, false, capturedCandidate);
+  const mock = await mockApi(page, false, capturedCandidate);
+  mock.correctionState.set(capturedCandidate.handle, {
+    revision: 1,
+    corrections: { label: "the blue cube", expectedRevision: 1 },
+  });
   page.on("request", (request) => {
     const url = new URL(request.url());
     if (url.pathname.endsWith("/manual-approvals")) {
@@ -1320,6 +1396,51 @@ test("capture opens the exact candidate for source-first review and explicit out
   await expect(page.locator(".source-quote")).toHaveText(captureSourceText);
   await expect(page.getByText("Source revision")).toBeVisible();
   await expect(page.getByRole("button", { name: "Record manual approval" })).toHaveCount(0);
+  await expect(page.getByLabel("Label")).toHaveValue("the blue cube");
+  const correctionRevisionValue = page
+    .locator(".review-evidence-panel .detail-grid span")
+    .filter({ hasText: "Correction revision" })
+    .locator("strong");
+  await expect(correctionRevisionValue).toHaveText("1");
+
+  await page.getByRole("button", { name: "Validate selected candidate" }).click();
+  await expect(page.getByText("Validation passed")).toBeVisible();
+  await page.getByLabel("Label").fill("the green cube");
+  await page.getByRole("button", { name: "Save correction" }).click();
+  await expect(page.getByText(/Correction recorded with provenance/)).toBeVisible();
+  await expect(page.getByText("Validation passed")).toHaveCount(0);
+
+  await candidateRow.click();
+  await expect(page.getByLabel("Label")).toHaveValue("the green cube");
+  await expect(correctionRevisionValue).toHaveText("2");
+  expect(mock.correctionState.get(capturedCandidate.handle)?.revision).toBe(2);
+
+  await page.getByLabel("Label").fill("the yellow cube");
+  await page.getByRole("button", { name: "Save correction" }).click();
+  await expect(page.getByText(/Correction recorded with provenance/)).toBeVisible();
+  await candidateRow.click();
+  await expect(page.getByLabel("Label")).toHaveValue("the yellow cube");
+  await expect(correctionRevisionValue).toHaveText("3");
+
+  mock.correctionState.set(capturedCandidate.handle, {
+    revision: 4,
+    corrections: { label: "the red cube", expectedRevision: 4 },
+  });
+  await page.getByLabel("Label").fill("the violet cube");
+  await page.getByRole("button", { name: "Save correction" }).click();
+  await expect(page.getByText(/candidate edit revision is stale/i)).toBeVisible();
+  expect(mock.correctionState.get(capturedCandidate.handle)?.revision).toBe(4);
+
+  await candidateRow.click();
+  await expect(page.getByLabel("Label")).toHaveValue("the red cube");
+  await expect(correctionRevisionValue).toHaveText("4");
+  await page.getByLabel("Label").fill("the violet cube");
+  await page.getByRole("button", { name: "Save correction" }).click();
+  await expect(page.getByText(/Correction recorded with provenance/)).toBeVisible();
+  await candidateRow.click();
+  await expect(page.getByLabel("Label")).toHaveValue("the violet cube");
+  await expect(correctionRevisionValue).toHaveText("5");
+
   await page.getByRole("button", { name: "Validate selected candidate" }).click();
   await expect(page.getByText("Validation passed")).toBeVisible();
   await page.getByRole("button", { name: "Record manual approval" }).click();

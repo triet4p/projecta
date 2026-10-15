@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import json
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -263,9 +264,48 @@ async def test_manual_capture_create_review_receipt_and_confirmation_fail_closed
         assert anchor["utf16End"] == len(_SOURCE_TEXT) + 1
 
         project_path = f"/v1/projects/{_PROJECT_HANDLE}/candidates/{candidate_handle}"
-        validation = await client.post(f"{project_path}/validations", headers=harness.headers)
+        initial_validation = await client.post(
+            f"{project_path}/validations", headers=harness.headers
+        )
+        assert initial_validation.status_code == 200, initial_validation.text
+
+        saved = await client.post(
+            f"{project_path}/edits",
+            headers=harness.headers,
+            json={"label": "the blue cube", "expectedRevision": 1},
+        )
+        assert saved.status_code == 200, saved.text
+        assert saved.json()["revision"] == 1
+
+        detail_response = await client.get(f"{project_path}/review-detail", headers=harness.headers)
+        assert detail_response.status_code == 200, detail_response.text
+        detail = detail_response.json()
+        assert detail["correctionRevision"] == 1
+        assert detail["corrections"]["label"] == "the blue cube"
+
+        saved_again = await client.post(
+            f"{project_path}/edits",
+            headers=harness.headers,
+            json={
+                "label": "the green cube",
+                "expectedRevision": detail["correctionRevision"] + 1,
+            },
+        )
+        assert saved_again.status_code == 200, saved_again.text
+        assert saved_again.json()["revision"] == 2
+
+        detail_response = await client.get(f"{project_path}/review-detail", headers=harness.headers)
+        assert detail_response.status_code == 200, detail_response.text
+        detail = detail_response.json()
+        assert detail["correctionRevision"] == 2
+        assert detail["corrections"]["label"] == "the green cube"
+
+        validation = await client.post(
+            f"{project_path}/validations", headers=harness.headers
+        )
         assert validation.status_code == 200, validation.text
         detail_response = await client.get(f"{project_path}/review-detail", headers=harness.headers)
+        assert detail_response.status_code == 200, detail_response.text
         detail = detail_response.json()
         anchor = detail["evidence"]["highlights"][0]
         approval = {
@@ -336,6 +376,43 @@ async def test_manual_capture_create_review_receipt_and_confirmation_fail_closed
     assert len(history) == 1
     assert history[0].source_version_revision == 1
     assert history[0].decision == "confirm"
+
+@pytest.mark.asyncio
+async def test_concurrent_candidate_edits_keep_stale_revision_refusal() -> None:
+    harness = _make_harness()
+    async with AsyncClient(transport=ASGITransport(app=harness.app), base_url="http://test") as client:
+        await _create_capture_and_get_detail(client, harness)
+        candidate_handle = harness.core.candidate_handle
+        project_path = f"/v1/projects/{_PROJECT_HANDLE}/candidates/{candidate_handle}"
+        blue_edit, green_edit = await asyncio.gather(
+            client.post(
+                f"{project_path}/edits",
+                headers=harness.headers,
+                json={"label": "the blue cube", "expectedRevision": 1},
+            ),
+            client.post(
+                f"{project_path}/edits",
+                headers=harness.headers,
+                json={"label": "the green cube", "expectedRevision": 1},
+            ),
+        )
+        assert {blue_edit.status_code, green_edit.status_code} == {200, 409}
+        saved = blue_edit if blue_edit.status_code == 200 else green_edit
+        stale = green_edit if blue_edit.status_code == 200 else blue_edit
+        assert saved.json()["revision"] == 1
+        assert stale.json()["code"] == "CANDIDATE_EDIT_CONFLICT"
+
+        latest_detail = await client.get(
+            f"{project_path}/review-detail", headers=harness.headers
+        )
+        assert latest_detail.status_code == 200, latest_detail.text
+        assert latest_detail.json()["correctionRevision"] == 1
+        assert (
+            latest_detail.json()["corrections"]["label"]
+            == saved.json()["corrections"]["label"]
+        )
+    assert harness.core.assertion_writes == []
+
 
 
 @pytest.mark.asyncio

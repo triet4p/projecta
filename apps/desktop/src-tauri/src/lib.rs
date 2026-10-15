@@ -593,9 +593,8 @@ mod tests {
         let root = std::env::temp_dir().join(format!("{label}-{unique}"));
         std::fs::create_dir_all(&root).expect("disposable theme root");
         let paths = LifecyclePaths {
-            python_exe: std::path::PathBuf::from("C:/nonexistent/python.exe"),
-            launcher_script: std::path::PathBuf::from("C:/nonexistent/projecta_local.py"),
-            package_root: std::path::PathBuf::from("C:/nonexistent"),
+            supervisor_exe: std::path::PathBuf::from("C:/nonexistent/ProjectaLocal.exe"),
+            local_app_data: root.clone(),
             data_root: root.clone(),
         };
         let controller = LifecycleController::new(Some(paths.clone()), DEFAULT_API_PORT);

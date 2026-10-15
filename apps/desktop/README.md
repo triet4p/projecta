@@ -27,14 +27,17 @@ the overlay truthful.
 
 A data root with no workspace shows the same surface with an inline
 create-workspace card (no separate wizard screen). Submitting a valid name
-accepts the request synchronously and runs the existing `provision` subcommand
-on an owned worker, so the window immediately renders the overlay in its
-creating mode instead of blocking on the request; the validation still runs in
-process first, so a refused or invalid name writes nothing and spawns nothing.
-The audited display-name validation, generated project ID, `local-operator`
-actor, and DPAPI CurrentUser-protected runtime secrets are unchanged. Creation
-is data-only: OS shortcuts and registry installation remain separate in both
-frozen and unfrozen execution. Cancel and refused names leave no workspace
+accepts the request synchronously and runs the packaged frozen
+`ProjectaLocal.exe provision` command on an owned worker, so the window
+immediately renders the creating overlay instead of blocking on the request;
+validation still runs in the host first, so a refused or invalid name writes
+nothing and spawns nothing. The audited display-name validation, generated
+project ID, `local-operator` actor, and DPAPI CurrentUser-protected runtime
+secrets are unchanged. Creation is data-only: OS shortcuts and registry
+installation remain separate. Both workspace provisioning and runtime start
+use the already-packaged frozen supervisor because the signed-release
+verification anchor is embedded there; the Tauri host invokes that existing
+sidecar rather than the source Python module. Cancel and refused names leave no
 state, and a create in flight is cancelled as an app-owned child if the window
 closes — the close path also joins the create worker, so no worker (and no
 child it could still spawn) outlives the window.
@@ -62,6 +65,13 @@ the existing finite `SUPERVISOR_SPAWN_FAILED` result is surfaced; the host
 never starts uncontained. This is a close/crash tree-cleanup backstop, not a
 replacement for graceful shutdown through the manager's existing `stop`
 protocol.
+
+For a frozen one-file supervisor, the manager can be the bootloader's direct
+worker; it is adopted only while active, in this launch's Job Object, directly
+parented to the launched bootloader, and resolving to the packaged
+`ProjectaLocal.exe` image. The runtime ID must be fresh, and ready status plus
+API readiness must still match that exact identity. An unrelated same-image
+process or other job descendant never establishes ownership.
 
 ## Browser-dependent interactions in the same window (S15-07)
 
@@ -264,8 +274,9 @@ its services stay per-user and non-elevated.
   generated from the single 1024×1024 designer master
   (`artifacts/sprint-15/handoffs/S15-07-UX-D2-assets/mark-1024.png`); there is no
   runtime icon code and the placeholder art is replaced in place.
-- `src-tauri/src/lifecycle.rs` — owned supervisor child, owned creation child,
-  bounded `provision` command, readiness polling with manager-exit adoption,
+- `src-tauri/src/lifecycle.rs` — starts and provisions through the packaged
+  frozen `ProjectaLocal.exe` with exact `%LOCALAPPDATA%/Projecta` routing;
+  owns supervisor and creation children, bounded `provision` command,
   real initialization-step model (`build_init_steps`), workspace-management
   renderer (states, controls, sanitized diagnostics), `LifecycleController`
   (cold start / create / cancel / user start-stop / adopt / shutdown /
@@ -286,9 +297,13 @@ Point the native app at a staged package copy, fresh data root, and separate
 WebView2 profile. Never use the owner `%LOCALAPPDATA%\Projecta` tree or the
 default per-user WebView2 profile:
 
-- `PROJECTA_DESKTOP_PACKAGE_ROOT` → staged package root (bundled
-  `runtime/python/python.exe` + `projecta/scripts/projecta_local.py`).
-- `PROJECTA_LAUNCHER_DATA_ROOT` → fresh task-owned data root.
+- `PROJECTA_DESKTOP_PACKAGE_ROOT` → staged package root containing the frozen
+  `ProjectaLocal.exe` supervisor.
+- `PROJECTA_LAUNCHER_DATA_ROOT` → task-owned `<LOCALAPPDATA>/Projecta` data
+  root. Set the Tauri host's `LOCALAPPDATA` to the unique task-owned parent;
+  the frozen child ignores the launcher-data override and derives this exact
+  root from `LOCALAPPDATA`, so never use an ambient default or the ignored
+  override alone for isolation.
 - `WEBVIEW2_USER_DATA_FOLDER` → fresh task-owned WebView2 profile.
 - `PROJECTA_S15_03_API_PORT` (default `18732`; `PROJECTA_S15_02_API_PORT`
   still honoured as fallback).

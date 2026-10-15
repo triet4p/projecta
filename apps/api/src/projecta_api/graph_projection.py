@@ -13,6 +13,7 @@ from hashlib import sha256
 from typing import Literal, cast
 
 from pydantic import BaseModel, ConfigDict, Field
+from projecta_api.structured_note import StructuredCandidateEditRequest
 
 ProjectionVersion = Literal["s8.graph.v1"]
 Direction = Literal["source-to-target", "target-to-source"]
@@ -282,6 +283,8 @@ class ReviewWorkbenchDetailResponse(BaseModel):
     project_scope: Literal["selected"] = Field(alias="projectScope")
     source_version: ReviewSourceVersion = Field(alias="sourceVersion")
     candidate_revision: int = Field(alias="candidateRevision", ge=0)
+    correction_revision: int = Field(alias="correctionRevision", ge=0)
+    corrections: StructuredCandidateEditRequest | None
     label: str
     semantic_type: str = Field(alias="semanticType")
     lifecycle_state: LifecycleState = Field(alias="lifecycleState")
@@ -559,6 +562,8 @@ def project_review_detail(
                 "canonicalDigest": _optional_digest(source.get("canonicalDigest")),
             },
             "candidateRevision": candidate_revision,
+            "correctionRevision": _bounded_int(raw.get("correctionRevision"), 0),
+            "corrections": raw.get("corrections"),
             "label": _required_display_string(candidate.get("label"), "Selected item"),
             "semanticType": _required_display_string(candidate.get("proposedType"), "Unknown"),
             "lifecycleState": _lifecycle(candidate.get("lifecycleState")),
