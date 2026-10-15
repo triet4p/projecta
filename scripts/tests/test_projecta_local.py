@@ -559,11 +559,11 @@ def fresh_paths(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> launcher.Pro
         launcher,
         "load_runtime_manifest",
         lambda _: {
-            "projectaVersion": launcher.UNSIGNED_PRE_RELEASE_VERSION,
+            "projectaVersion": launcher.APP_VERSION,
             "runtimeVersions": dict(launcher.RUNTIME_VERSIONS),
-            "releaseEligible": False,
-            "distributionChannel": launcher.UNSIGNED_PRE_RELEASE_CHANNEL,
-            "unsignedPreReleaseException": launcher.UNSIGNED_PRE_RELEASE_EXCEPTION,
+            "releaseEligible": True,
+            "distributionChannel": "signed-release",
+            "signatureAlgorithm": "Ed25519",
             "dataContractVersion": launcher.DATA_CONTRACT_VERSION,
         },
     )
@@ -859,26 +859,32 @@ def test_staged_runtime_override_never_authorizes_host_validation(
         assert failure.value.code == "PACKAGE_SIGNATURE_REQUIRED"
 
 
-def test_only_exact_0_7_1_unsigned_exception_is_enabled() -> None:
-    authorized = {
-        "projectaVersion": "0.7.1",
+def test_unsigned_pre_release_exception_is_scoped_to_its_own_release() -> None:
+    """The historical unsigned test channel is not an enabled distribution here.
+
+    The 0.7.1 unsigned exception is authorized only for the release it names, so
+    a launcher at another version refuses that package (and every variant of it)
+    instead of treating it as a distributable release.
+    """
+    historical_exception = {
+        "projectaVersion": launcher.UNSIGNED_PRE_RELEASE_VERSION,
         "releaseEligible": False,
         "distributionChannel": launcher.UNSIGNED_PRE_RELEASE_CHANNEL,
         "unsignedPreReleaseException": launcher.UNSIGNED_PRE_RELEASE_EXCEPTION,
     }
+    assert launcher.APP_VERSION != launcher.UNSIGNED_PRE_RELEASE_VERSION
 
-    launcher._require_package_distribution(authorized)
-
-    unauthorized = (
+    refused = (
+        historical_exception,
         {
-            **authorized,
+            **historical_exception,
             "projectaVersion": "0.7.0",
             "unsignedPreReleaseException": "projecta-0.7.0-unsigned-pre-release-test",
         },
-        {**authorized, "unsignedPreReleaseException": "another-exception"},
-        {**authorized, "distributionChannel": "host-validation"},
+        {**historical_exception, "unsignedPreReleaseException": "another-exception"},
+        {**historical_exception, "distributionChannel": "host-validation"},
     )
-    for manifest in unauthorized:
+    for manifest in refused:
         with pytest.raises(launcher.RuntimeFailure) as failure:
             launcher._require_package_distribution(manifest)
         assert failure.value.code == "PACKAGE_SIGNATURE_REQUIRED"

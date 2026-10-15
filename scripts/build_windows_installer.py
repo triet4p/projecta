@@ -1,10 +1,11 @@
 """Build the per-user Projecta Windows setup file from an authorized package.
 
-Two package shapes are accepted: the owner-authorized unsigned 0.7.1 test
-exception (``releaseEligible=false``), and an owner Ed25519-signed release
-package (``releaseEligible=true``, ``distributionChannel=signed-release``)
-whose Windows binaries are truthfully NotSigned when Authenticode is
-unconfigured. Anything else refuses.
+The buildable shape is an owner Ed25519-signed release package
+(``releaseEligible=true``, ``distributionChannel=signed-release``) whose Windows
+binaries are truthfully NotSigned when Authenticode is unconfigured. The
+historical 0.7.x unsigned test exception is recognized only to be refused: it is
+authorized for the release it names, which the current version pins are not.
+Anything else refuses.
 """
 
 from __future__ import annotations
@@ -27,13 +28,13 @@ import projecta_local as launcher
 from check_release_contract import ReleaseContractError, validate_desktop_locks
 
 ROOT = Path(__file__).resolve().parents[1]
-APP_VERSION = "0.7.1"
+APP_VERSION = "1.0.0"
 CHANNEL = "unsigned-pre-release-test"
 EXCEPTION = "projecta-0.7.1-unsigned-pre-release-test"
 NSIS_VERSION = "3.13"
 NSIS_ARCHIVE_SHA256 = "ba63dffc4410ee89193e1cb5a41989991bd77c61068da17e3156d136b7b0b3d8"
 NSIS_ARCHIVE_URL = "https://sourceforge.net/projects/nsis/files/NSIS%203/3.13/nsis-3.13.zip/"
-INSTALLER_NAME = "Projecta-Setup-0.7.1.exe"
+INSTALLER_NAME = "Projecta-Setup-1.0.0.exe"
 DEFAULT_NSIS_ROOT = ROOT / "build" / "tools" / "nsis-3.13" / "distribution" / "nsis-3.13"
 DEFAULT_NSIS_ARCHIVE = ROOT / "build" / "tools" / "nsis-3.13" / "nsis-3.13.zip"
 
@@ -287,7 +288,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     if sys.platform != "win32" or platform.machine().upper() not in {"AMD64", "X86_64"}:
-        raise SystemExit("the 0.7.1 x64 Windows installer must be compiled on a Windows x64 host.")
+        raise SystemExit("the x64 Windows installer must be compiled on a Windows x64 host.")
     package = _rooted(args.package)
     compiler = _rooted(args.compiler)
     nsis_archive = _rooted(args.nsis_archive)
@@ -400,7 +401,7 @@ def main(argv: list[str] | None = None) -> int:
             else None
         ),
         "installScope": "Projecta is per-user and not elevated; installing Microsoft's WebView2 or Visual C++ prerequisite may request UAC after user consent.",
-        "installDirectory": "%LOCALAPPDATA%\\Programs\\Projecta\\0.7.1",
+        "installDirectory": "%LOCALAPPDATA%\\Programs\\Projecta\\1.0.0",
         "mutableDataDirectory": "%LOCALAPPDATA%\\Projecta",
         "uninstallRetainsMutableData": True,
     }

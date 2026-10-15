@@ -43,7 +43,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DL = ROOT / "build" / "native-dl"
 OUT = ROOT / "build" / "native-package"
 
-APP_VERSION = "0.7.1"
+APP_VERSION = "1.0.0"
 DATA_CONTRACT_VERSION = 1
 UNSIGNED_PRE_RELEASE_VERSION = "0.7.1"
 UNSIGNED_PRE_RELEASE_CHANNEL = "unsigned-pre-release-test"

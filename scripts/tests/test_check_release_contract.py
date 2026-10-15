@@ -29,10 +29,11 @@ class ReleaseContractTest(TestCase):
         self.assertIn("Current", notes)
         self.assertNotIn("Previous", notes)
 
-    def test_unsigned_release_keeps_release_contract_closed(self) -> None:
-        self.assertEqual(set(declared_versions(ROOT).values()), {"0.7.1"})
-        version, notes = validate_release(ROOT, "v0.7.1")
-        self.assertEqual(version, "0.7.1")
+    def test_release_contract_keeps_every_component_version_closed(self) -> None:
+        version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
+        self.assertEqual(set(declared_versions(ROOT).values()), {version})
+        release_version, notes = validate_release(ROOT, f"v{version}")
+        self.assertEqual(release_version, version)
         self.assertIn("### ", notes)
 
     def test_desktop_versions_join_the_closed_release_contract(self) -> None:
@@ -44,9 +45,9 @@ class ReleaseContractTest(TestCase):
                 versions["desktop package-lock root"],
                 versions["tauri.conf.json"],
             },
-            {"0.7.1"},
+            {versions["VERSION"]},
         )
-        self.assertEqual(set(versions.values()), {"0.7.1"})
+        self.assertEqual(set(versions.values()), {versions["VERSION"]})
 
     def test_desktop_lock_pins_match_the_reviewed_tauri_inputs(self) -> None:
         pins = validate_desktop_locks(ROOT)

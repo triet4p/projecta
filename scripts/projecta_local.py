@@ -27,7 +27,7 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path, PurePosixPath
 
-APP_VERSION = "0.7.1"
+APP_VERSION = "1.0.0"
 DATA_CONTRACT_VERSION = 1
 UNSIGNED_PRE_RELEASE_VERSION = "0.7.1"
 UNSIGNED_PRE_RELEASE_CHANNEL = "unsigned-pre-release-test"
@@ -871,7 +871,7 @@ def _require_package_distribution(manifest: Mapping[str, object]) -> None:
         return
     raise RuntimeFailure(
         "PACKAGE_SIGNATURE_REQUIRED",
-        "This unsigned host-validation package is not enabled for the 0.7.1 release.",
+        f"This unsigned host-validation package is not enabled for release {APP_VERSION}.",
     )
 
 
@@ -2824,7 +2824,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             manifest = load_runtime_manifest(paths)
             release_eligible = install(paths, workspace_name=args.workspace_name)
             if not release_eligible:
-                print("Projecta 0.7.1 unsigned test release installed. Publisher identity is unverified; signed updates remain required.")
+                print(f"Projecta {APP_VERSION} unsigned test release installed. Publisher identity is unverified; signed updates remain required.")
             elif manifest.get("authenticodeSigning") is None:
                 print(
                     "Projecta owner release installed. The Windows binaries are NotSigned: Windows cannot "

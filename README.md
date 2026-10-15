@@ -16,76 +16,55 @@ and ask questions grounded in recorded evidence.
 
 ## Quick start
 
-### Windows 11 x64 unsigned 0.7.1 patch source
+### Windows 10 and Windows 11 x64 desktop application
 
-The published [Projecta 0.7.0 unsigned Windows 11 x64 release](https://github.com/triet4p/projecta/releases/tag/v0.7.0) remains
-available, but its frozen installer predates and does not contain the connector
-Enable/Disable 503 fix or the later native connector opt-in correction.
+Projecta 1.0.0 is one per-user Tauri v2 desktop application window on Windows 10
+and Windows 11 x64. It bundles its own local services and native runtimes, so it
+does not require Docker, Python, Node.js, a JDK, PostgreSQL, or Fuseki installed
+separately. The single main window is the only client; the desktop product never
+opens a system-browser app path.
 
-The 0.7.1 source contains the connector 503 fix and now forwards the documented
-`PROJECTA_CONNECTOR_LOCAL_ADMIN_ENABLED` opt-in only when explicitly set in the
-process that starts the local runtime. It defaults to off. The previously
-assembled 0.7.1 candidate predates this correction; a corrected, source-bound
-package must be rebuilt and verified before this opt-in is available in a
-downloadable 0.7.1 release. Do not run a checkout or file from the repository
-`build` directory. Until that release is published, use only the exact
-published 0.7.0 asset described in the
-[unsigned Windows installation guide](docs/sprint-plans/sprint-14/unsigned-0.7.0-machine-install.md).
+Supported targets (targeted support, not yet clean-host proven):
 
-For a corrected and verified 0.7.1 installation only, stop any running
-Projecta services first, then set the opt-in and start the installed native
-manager from the same PowerShell process:
+- Windows 10 22H2 x64 (build 19045).
+- Windows 11 24H2 x64 (build 26100) and Windows 11 25H2 x64.
+- Windows 11 23H2 and older, Windows 10 older than 22H2, any 32-bit Windows, and
+  ARM64 are refused with `PLATFORM_UNSUPPORTED`.
 
-```powershell
-$env:PROJECTA_CONNECTOR_LOCAL_ADMIN_ENABLED = "true"
-& "$env:LOCALAPPDATA\Programs\Projecta\0.7.1\ProjectaLocal.exe" start
-```
+Install and upgrade:
 
-This grants connector administration only to the local experience actor and
-project catalog. It is not production authentication or authorization. The
-current unsigned installation guide describes the corrected-version boundary
-and the same explicit start command.
+- Install `Projecta-Setup-1.0.0.exe` for the current Windows user. Setup is
+  per-user and is never elevated; it installs to
+  `%LOCALAPPDATA%\Programs\Projecta\1.0.0`, and mutable state stays in
+  `%LOCALAPPDATA%\Projecta`.
+- If the WebView2 Evergreen runtime or the x64 Visual C++ prerequisite is
+  missing, setup offers the official Microsoft installer under that installer's
+  own license and consent UI, and a Windows UAC prompt may appear for it alone.
+- Upgrading from a published 0.7.1 installation replaces the application payload
+  and keeps the workspace, stores, evidence, review receipts, and same-account
+  secret access. An ordinary uninstall removes the application and retains
+  `%LOCALAPPDATA%\Projecta`.
+- Updates are user-approved, stopped-runtime, and verified against the owner's
+  Ed25519 release signature. There is no silent update and no rollback.
 
+Release status and limits:
 
-The attempt-specific R1 package and ZIP audit confirmed that no versioned MSVC
-runtime DLLs or Microsoft Redistributable installer are bundled. Its embedded
-source provenance records 282 selected build inputs and hashes 17 derived
-package-output groups; the installer receipt also binds its source scripts and
-pinned NSIS inputs. An isolated developer-host smoke of the extracted R1
-package reached readiness for PostgreSQL, Fuseki, Semantic Core, and API. The
-browser captured an exact source span and recorded a source-bound manual
-approval receipt; stop/restart retained it, and a fixed-port collision failed
-safely. This is not clean-host proof: the exercised host already supplied the
-Visual C++ runtime, and 29 of 30 dynamic-string candidate names were not
-observed (not thereby proven missing).
+- No 1.0.0 tag, release, or public asset exists yet: this repository state seals
+  the release source identity. Do not run a checkout or use a file from the
+  repository `build` directory as a release.
+- This release is not Authenticode-signed; publisher signing is optional and
+  unconfigured. Windows cannot verify the publisher, and SmartScreen or
+  antivirus software may warn. Never disable security controls or override a
+  Defender alert, hard block, or organization policy.
+- The Windows targets above are a tested-target commitment, not clean-host
+  proof: fresh installs on the target operating systems, including the
+  missing-prerequisite branch and the measured resource floor, and owner
+  acceptance on a new host remain open in the
+  [current Sprint 15 plan](docs/sprint-plans/sprint-15.md).
 
-The owner accepted all four machine-2 QA checks and explicitly selected
-unsigned S14-08 task closure. Fresh evidence review passed and the reviewed
-source checkpoint was verified before Main marked the task complete.
-Clean-Windows/resource-floor, real missing-runtime vendor UAC,
-and signing remain separate open release gates; no signed, clean-certified,
-production, or `1.0.0` claim follows. See the
-[current Sprint 14 plan](docs/sprint-plans/sprint-14.md).
-
-The published v0.7.0 bundle is unsigned and `releaseEligible=false`; it remains
-without clean-Windows, signing, production, or `1.0.0` proof. The build worker
-did not run NSIS on the development host because its fixed per-user install
-target, shell Start Menu KnownFolder, and HKCU registration could not be
-safely redirected from the existing owner installation. This does not negate
-the owner's machine-2 QA acceptance or establish the missing-runtime branch.
-Projecta and its services remain per-user and are not elevated.
-
-The bundle includes local services and native runtimes without requiring Docker,
-Python, Node.js, a JDK, PostgreSQL, or Fuseki installed separately. The single
-main window is the only client; the desktop product never opens a system-browser
-app path.
-
-Windows may show a standard unsigned-file SmartScreen reputation warning for a
-published asset. Never disable security controls or override a Defender alert,
-hard block, or organization policy. The published 0.7.0 release is not clean-
-Windows proof, a signed release, or production readiness; signed update
-verification remains fail-closed.
-
+Historical 0.7.x records, including the unsigned 0.7.0 and 0.7.1 installers and
+their disclosed limits, remain in [CHANGELOG.md](CHANGELOG.md) and the
+[Sprint 14 plan](docs/sprint-plans/sprint-14.md).
 
 ### Development quick start (Docker Compose)
 
