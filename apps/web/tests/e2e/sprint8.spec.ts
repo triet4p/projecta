@@ -1327,9 +1327,7 @@ test("unfinished capture survives return to Notes and can be explicitly discarde
   expect(captureRequests).toBe(0);
 });
 
-test("a saved correction reloads its current revision before another save", async ({
-  page,
-}) => {
+test("a saved correction reloads its current revision before another save", async ({ page }) => {
   let submittedCapture: unknown = null;
   let approvalPayload: unknown = null;
   const graphMutations: string[] = [];

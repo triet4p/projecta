@@ -323,10 +323,7 @@ export function ReviewScreen({
     setBusy(true);
     setError(null);
     try {
-      const nextValidation = await api.validateSelectedCandidate(
-        projectHandle,
-        candidateHandle,
-      );
+      const nextValidation = await api.validateSelectedCandidate(projectHandle, candidateHandle);
       if (detailRequest.current === request) {
         setValidation(nextValidation);
         setDecision(null);
