@@ -28,6 +28,7 @@ from urllib.parse import urlsplit
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
+from starlette.types import ASGIApp
 
 LOOPBACK_HOST_NAMES = frozenset({"127.0.0.1", "localhost", "::1"})
 
@@ -83,7 +84,7 @@ def origin_header_allowed(origin_header: str | None, port: int) -> bool:
 class LoopbackBoundaryMiddleware(BaseHTTPMiddleware):
     """Refuse requests whose Host/Origin does not belong to this loopback API."""
 
-    def __init__(self, app: Callable[..., Awaitable[Response]], port: int) -> None:
+    def __init__(self, app: ASGIApp, port: int) -> None:
         super().__init__(app)
         self._port = port
 

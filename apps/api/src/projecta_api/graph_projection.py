@@ -13,6 +13,7 @@ from hashlib import sha256
 from typing import Literal, cast
 
 from pydantic import BaseModel, ConfigDict, Field
+
 from projecta_api.structured_note import StructuredCandidateEditRequest
 
 ProjectionVersion = Literal["s8.graph.v1"]

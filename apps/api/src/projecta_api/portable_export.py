@@ -695,20 +695,24 @@ def _write_postgres_payloads(
                     connection, project_id, connectors_path, limit=record_limit
                 )
                 record_total = sum(counts.values())
-                receipt_records, receipt_digests = _read_and_write_receipts(
-                    connection,
-                    project_id,
-                    receipts_path,
-                    limit=record_limit - record_total,
-                )
-                record_total += receipt_records
-                correction_count = _write_correction_events(
-                    connection,
-                    project_id,
-                    corrections_path,
-                    receipt_digests,
-                    limit=record_limit - record_total,
-                )
+                # One Session for the read-only snapshot: the entity selects below need an
+                # ORM execution context, and the transaction owner binds it to this same
+                # Core Connection so the REPEATABLE READ / READ ONLY snapshot is preserved.
+                with Session(bind=connection) as session:
+                    receipt_records, receipt_digests = _read_and_write_receipts(
+                        session,
+                        project_id,
+                        receipts_path,
+                        limit=record_limit - record_total,
+                    )
+                    record_total += receipt_records
+                    correction_count = _write_correction_events(
+                        session,
+                        project_id,
+                        corrections_path,
+                        receipt_digests,
+                        limit=record_limit - record_total,
+                    )
                 record_counts = {
                     **counts,
                     "reviewReceipts": receipt_records,
@@ -1058,7 +1062,7 @@ def _validate_connector_relationships(connection: Connection, project_id: str) -
             raise PortableExportFailure("EXPORT_INTEGRITY_FAILED")
 
 def _read_and_write_receipts(
-    connection: Connection,
+    session: Session,
     project_id: str,
     destination: Path,
     *,
@@ -1077,44 +1081,42 @@ def _read_and_write_receipts(
     receipt_digests: set[str] = set()
     count = 0
     with destination.open("xb") as output:
-        # A Core Connection executes this entity select as plain columns, so bind a
-        # Session exactly as the receipt repository does and keep streaming inside it.
-        with Session(bind=connection) as session:
-            for model in session.execute(statement).scalars():
-                try:
-                    record = receipt_from_row(model, "accepted")
-                    request_digest = _validate_receipt(model, record)
-                except PortableExportFailure:
-                    raise
-                except Exception as error:  # noqa: BLE001 - malformed source history is not a valid export.
-                    raise PortableExportFailure("EXPORT_INTEGRITY_FAILED") from error
-                key = (record.item_kind, record.item_handle_digest)
-                previous = groups.get(key)
-                expected_sequence = 1 if previous is None else previous[0] + 1
-                expected_previous = None if previous is None else previous[1]
-                if (
-                    record.sequence != expected_sequence
-                    or record.previous_decision_digest != expected_previous
-                ):
-                    raise PortableExportFailure("EXPORT_INTEGRITY_FAILED")
-                if previous is not None and (
-                    previous[2] != record.source_version_digest
-                    or previous[3] != record.source_version_revision
-                ):
-                    raise PortableExportFailure("EXPORT_INTEGRITY_FAILED")
-                groups[key] = (
-                    record.sequence,
-                    record.receipt_digest,
-                    record.source_version_digest,
-                    record.source_version_revision,
-                )
-                _write_json_line(
-                    output, _receipt_export_value(record, project_id, request_digest)
-                )
-                receipt_digests.add(record.receipt_digest)
-                count += 1
-                if count > limit:
-                    raise PortableExportFailure("EXPORT_TOO_LARGE", status_code=413)
+        # Entities need a bound Session; the export's read-only transaction owns it.
+        for model in session.execute(statement).scalars():
+            try:
+                record = receipt_from_row(model, "accepted")
+                request_digest = _validate_receipt(model, record)
+            except PortableExportFailure:
+                raise
+            except Exception as error:  # noqa: BLE001 - malformed source history is not a valid export.
+                raise PortableExportFailure("EXPORT_INTEGRITY_FAILED") from error
+            key = (record.item_kind, record.item_handle_digest)
+            previous = groups.get(key)
+            expected_sequence = 1 if previous is None else previous[0] + 1
+            expected_previous = None if previous is None else previous[1]
+            if (
+                record.sequence != expected_sequence
+                or record.previous_decision_digest != expected_previous
+            ):
+                raise PortableExportFailure("EXPORT_INTEGRITY_FAILED")
+            if previous is not None and (
+                previous[2] != record.source_version_digest
+                or previous[3] != record.source_version_revision
+            ):
+                raise PortableExportFailure("EXPORT_INTEGRITY_FAILED")
+            groups[key] = (
+                record.sequence,
+                record.receipt_digest,
+                record.source_version_digest,
+                record.source_version_revision,
+            )
+            _write_json_line(
+                output, _receipt_export_value(record, project_id, request_digest)
+            )
+            receipt_digests.add(record.receipt_digest)
+            count += 1
+            if count > limit:
+                raise PortableExportFailure("EXPORT_TOO_LARGE", status_code=413)
         output.flush()
         os.fsync(output.fileno())
     return count, frozenset(receipt_digests)
@@ -1163,7 +1165,7 @@ def _receipt_export_value(
     }
 
 def _write_correction_events(
-    connection: Connection,
+    session: Session,
     project_id: str,
     destination: Path,
     receipt_digests: frozenset[str],
@@ -1179,22 +1181,21 @@ def _write_correction_events(
     )
     count = 0
     with destination.open("xb") as output:
-        # Same Core-Connection limitation as receipts: entities require a bound Session.
-        with Session(bind=connection) as session:
-            for model in session.execute(statement).scalars():
-                try:
-                    record = event_from_row(model, "accepted")
-                except (TelemetryIntegrityError, ValueError, TypeError) as error:
-                    raise PortableExportFailure("EXPORT_INTEGRITY_FAILED") from error
-                if (
-                    record.project_digest != _digest_text(project_id)
-                    or record.review_receipt_digest not in receipt_digests
-                ):
-                    raise PortableExportFailure("EXPORT_INTEGRITY_FAILED")
-                _write_json_line(output, _correction_export_value(record, project_id))
-                count += 1
-                if count > limit:
-                    raise PortableExportFailure("EXPORT_TOO_LARGE", status_code=413)
+        # Same Session requirement as receipts: entities are not Core-connection rows.
+        for model in session.execute(statement).scalars():
+            try:
+                record = event_from_row(model, "accepted")
+            except (TelemetryIntegrityError, ValueError, TypeError) as error:
+                raise PortableExportFailure("EXPORT_INTEGRITY_FAILED") from error
+            if (
+                record.project_digest != _digest_text(project_id)
+                or record.review_receipt_digest not in receipt_digests
+            ):
+                raise PortableExportFailure("EXPORT_INTEGRITY_FAILED")
+            _write_json_line(output, _correction_export_value(record, project_id))
+            count += 1
+            if count > limit:
+                raise PortableExportFailure("EXPORT_TOO_LARGE", status_code=413)
         output.flush()
         os.fsync(output.fileno())
     return count

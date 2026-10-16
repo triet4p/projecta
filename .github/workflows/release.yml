@@ -97,6 +97,33 @@ jobs:
       - run: npm run build
         working-directory: apps/web
 
+  desktop-tauri:
+    # The packaged product ships the cargo-built Tauri host staged by
+    # scripts/build_native_package.py (apps/desktop/src-tauri/target/release/projecta-desktop.exe),
+    # but no job compiled or tested it: check_release_contract.py only validates the
+    # Tauri version/lock pins. Build the embedded web assets, run the host unit tests,
+    # and compile the release binary that packaging consumes.
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - uses: dtolnay/rust-toolchain@1.91.1
+      - name: Build the web assets the host embeds
+        run: |
+          npm ci
+          npm run build
+        working-directory: apps/web
+      - name: Test the Tauri host
+        run: cargo test --locked
+        working-directory: apps/desktop/src-tauri
+      - name: Build the Tauri host release binary
+        run: cargo build --release --locked
+        working-directory: apps/desktop/src-tauri
+
   semantic-core:
     runs-on: ubuntu-latest
     steps:
@@ -370,7 +397,7 @@ jobs:
     # here: they must never edit/create a release, replace a tag, or claim a
     # main-branch installer binary as the release source.
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    needs: [release-contract, api, web, semantic-core, repository-contracts, system, sprint10-validation, sprint10-acceptance, sprint10-recovery, sprint10-frontend-format, sprint10-connector-security, sprint11-deterministic, sprint11-acceptance, sprint11-recovery]
+    needs: [release-contract, api, web, desktop-tauri, semantic-core, repository-contracts, system, sprint10-validation, sprint10-acceptance, sprint10-recovery, sprint10-frontend-format, sprint10-connector-security, sprint11-deterministic, sprint11-acceptance, sprint11-recovery]
     runs-on: ubuntu-latest
     permissions:
       contents: write

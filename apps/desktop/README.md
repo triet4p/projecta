@@ -291,6 +291,21 @@ its services stay per-user and non-elevated.
   guard wired only into the local loopback entry point
   (`apps/api/src/projecta_api/local_server.py`).
 
+## Host build and release validation
+
+Build and test the host from `src-tauri/`: `cargo test --locked` runs the host's
+unit tests (navigation/trusted-origin enforcement plus the lifecycle
+ownership/close/cancel matrix), and `cargo build --release --locked` produces
+`src-tauri/target/release/projecta-desktop.exe`, the binary
+`scripts/build_native_package.py` stages. Both need the compiled frontend at
+`apps/web/dist` first (`npm ci` and `npm run build` in `apps/web`), because
+`tauri.conf.json` embeds `../../web/dist` at compile time and the host build fails
+with `The frontendDist configuration … but this path doesn't exist` without it.
+`.github/workflows/release.yml` runs exactly those commands in its `desktop-tauri`
+job on a Windows runner and lists that job among the gates required before
+`publish`, which still runs only on a `v*.*.*` tag push; manual dispatches remain
+validation-only.
+
 ## Disposable lifecycle smoke
 
 Point the native app at a staged package copy, fresh data root, and separate

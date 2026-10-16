@@ -42,16 +42,6 @@ from projecta_api.structured_note_store import (
 )
 
 
-class _FakeRow:
-    """Minimal Row shape: single-model tuple for Core Connection fakes."""
-
-    def __init__(self, values: tuple[object, ...]) -> None:
-        self._values = values
-
-    def tuple(self) -> tuple[object, ...]:
-        return self._values
-
-
 class ExportCore:
     async def project_catalog(
         self, context: TrustedActorContext, project_ids: list[str], limit: int = 100
@@ -478,20 +468,17 @@ async def test_receipt_export_iterates_core_rows_without_store_span_reference(tm
         receipt_digest=receipt_digest,
     )
     class Result:
-        # Core Connection yields Row tuples holding the single selected model.
-        def __iter__(self):
-            return iter([_FakeRow((row,))])
-
+        # A Session entity select yields the hydrated model for each selected row.
         def scalars(self):
-            return iter((row.receipt_id,))
+            return iter((row,))
 
-    class Connection:
+    class Session:
         def execute(self, statement):
             return Result()
 
     receipt_path = tmp_path / "review-receipts.jsonl"
     count, receipt_digests = export_module._read_and_write_receipts(
-        Connection(), project_id, receipt_path, limit=1
+        Session(), project_id, receipt_path, limit=1
     )
     assert count == 1
     assert receipt_digests == {receipt_digest}
@@ -566,20 +553,17 @@ def test_portable_export_iterates_core_correction_rows(tmp_path) -> None:
     )
 
     class Result:
-        # Core Connection yields Row tuples holding the single selected model.
-        def __iter__(self):
-            return iter([_FakeRow((row,))])
-
+        # A Session entity select yields the hydrated model for each selected row.
         def scalars(self):
-            return iter((row.event_id,))
+            return iter((row,))
 
-    class Connection:
+    class Session:
         def execute(self, statement):
             return Result()
 
     destination = tmp_path / "correction-burden-events.jsonl"
     count = export_module._write_correction_events(
-        Connection(),
+        Session(),
         project_id,
         destination,
         frozenset({event.review_receipt_digest}),
